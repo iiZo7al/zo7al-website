@@ -197,12 +197,13 @@ export default function GameScene({ onGameOver, score, stars, isGameOver }: Game
   return (
     <>
       <PerspectiveCamera makeDefault position={[0, 5, 10]} rotation={[-0.2, 0, 0]} />
-      <ambientLight intensity={1.0} />
+      <hemisphereLight intensity={0.8} color="#ffffff" groundColor="#000000" />
+      <ambientLight intensity={0.5} />
       <pointLight position={[10, 10, 10]} intensity={2} />
       <group ref={worldRef} />
       <group ref={rocketRef} position={[0, 0, 0]}>
-        <primitive object={rocketModel} scale={0.5} />
-        <pointLight position={[0, -1, 0]} intensity={2} color="#FF8E00" />
+        <primitive object={rocketModel} scale={1.2} />
+        <pointLight position={[0, -1, 0]} intensity={3} color="#FF8E00" />
       </group>
     </>
   );
