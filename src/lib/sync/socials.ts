@@ -48,7 +48,7 @@ const PLATFORM_COLORS: Record<string, string> = {
   twitch: "#9146FF",
   modrinth: "#32B16D",
   curseforge: "#F47B20",
-  fortnite: "#8B5CF6",
+  fortnite: "#00BFFF",
   epicgames: "#333333",
   kick: "#53FC18",
   snapchat: "#FFFC00",

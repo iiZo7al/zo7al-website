@@ -36,10 +36,8 @@ export default function FaqAccordion({
 
   const toggle = (index: number) => {
     setOpenKeys((prev) => {
-      const next = new Set(prev);
-      if (next.has(index)) next.delete(index);
-      else next.add(index);
-      return next;
+      if (prev.has(index)) return new Set();
+      return new Set([index]);
     });
   };
 
