@@ -33,14 +33,14 @@ export default function SocialGrid({
               <div
                 className="inline-flex h-12 w-12 items-center justify-center rounded-2xl transition-transform duration-300 group-hover:scale-110"
                 style={{
-                  background: "var(--surface-elevated)",
-                  boxShadow: `0 4px 12px ${social.color ?? "var(--accent)"}20`
+                  background: social.color ?? "var(--accent)",
+                  boxShadow: `0 8px 20px ${social.color ?? "var(--accent")}40`
                 }}
               >
                 <BrandIcon
                   slug={social.platform}
                   size={24}
-                  color={social.color ?? "var(--accent)"}
+                  color="#FFFFFF"
                 />
               </div>
               <svg
@@ -51,7 +51,7 @@ export default function SocialGrid({
                 className="text-[var(--text-muted)] transition-all duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:text-[var(--text)]"
                 aria-hidden="true"
               >
-                <path d="M4 12L12 4M12 4H5M12 4v7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M4 12L12 4M12 4H5M12 4v7" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </div>
 

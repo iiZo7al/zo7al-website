@@ -29,6 +29,17 @@ export default function SpaceExperience({ onGameStateChange }: SpaceExperiencePr
     };
   }, [gameState, onGameStateChange]);
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && (gameState === "GAME" || gameState === "GAMEOVER")) {
+        setGameState("SATURN");
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [gameState]);
+
   const triggerTransition = () => {
     setGameState("TRANSITION");
     setTimeout(() => {

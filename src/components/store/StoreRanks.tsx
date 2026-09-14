@@ -43,7 +43,7 @@ export default function StoreRanks() {
                     style={{ color: "var(--accent)" }}
                     aria-hidden="true"
                   >
-                    <path d="M3 8.5l3 3 7-7" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M3 8.5l3 3 7-7" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                   {perk}
                 </li>

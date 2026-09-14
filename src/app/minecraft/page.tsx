@@ -11,7 +11,7 @@ import MagneticButton from "@/components/cursor/MagneticButton";
 import { MINECRAFT_SERVER } from "@/lib/data/minecraft";
 
 export const metadata: Metadata = {
-  title: "Minecraft — ZO7AL Network",
+  title: "Minecraft — ZO7AL Projects",
   description: "Your next Minecraft adventure starts here.",
 };
 
