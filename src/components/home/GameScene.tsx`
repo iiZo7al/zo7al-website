@@ -5,7 +5,6 @@ import { useFrame, useLoader } from "@react-three/fiber";
 import { PerspectiveCamera } from "@react-three/drei";
 import * as THREE from "three";
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
-import { MTLLoader } from "three/examples/jsm/loaders/MTLLoader.js";
 
 interface GameSceneProps {
   onGameOver: (score: number, stars: number) => void;
