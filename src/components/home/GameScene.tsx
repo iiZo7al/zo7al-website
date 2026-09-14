@@ -137,32 +137,62 @@ export default function GameScene({ onGameOver, score, stars, isGameOver }: Game
 
   const spawnAsteroid = () => {
     if (!worldRef.current) return;
-    const mesh = meteorModel.clone() as unknown as THREE.Mesh;
+    const group = meteorModel.clone();
 
-    mesh.position.set(
+    // Extract the first mesh found in the group
+    let mesh: THREE.Mesh | null = null;
+    group.traverse((child) => {
+      if (child instanceof THREE.Mesh && !mesh) {
+        mesh = child;
+      }
+    });
+
+    if (!mesh) {
+      console.error("No mesh found in meteor model");
+      return;
+    }
+
+    // We clone the mesh for the actual game object
+    const asteroid = mesh.clone();
+
+    asteroid.position.set(
       (Math.random() - 0.5) * 30,
       (Math.random() - 0.5) * 20,
       -ASTEROID_SPAWN_DIST
     );
-    mesh.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI);
-    mesh.scale.setScalar(Math.random() * 1 + 0.5);
+    asteroid.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI);
+    asteroid.scale.setScalar(Math.random() * 1 + 0.5);
 
-    worldRef.current.add(mesh);
-    gameData.current.asteroids.push(mesh);
+    worldRef.current.add(asteroid);
+    gameData.current.asteroids.push(asteroid);
   };
 
   const spawnStar = () => {
     if (!worldRef.current) return;
-    const mesh = starModel.clone() as unknown as THREE.Mesh;
+    const group = starModel.clone();
 
-    mesh.position.set(
+    let mesh: THREE.Mesh | null = null;
+    group.traverse((child) => {
+      if (child instanceof THREE.Mesh && !mesh) {
+        mesh = child;
+      }
+    });
+
+    if (!mesh) {
+      console.error("No mesh found in star model");
+      return;
+    }
+
+    const star = mesh.clone();
+
+    star.position.set(
       (Math.random() - 0.5) * 20,
       (Math.random() - 0.5) * 10,
       -STAR_SPAWN_DIST
     );
 
-    worldRef.current.add(mesh);
-    gameData.current.stars.push(mesh);
+    worldRef.current.add(star);
+    gameData.current.stars.push(star);
   };
 
   return (
