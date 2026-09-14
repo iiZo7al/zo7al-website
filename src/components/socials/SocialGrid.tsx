@@ -34,7 +34,7 @@ export default function SocialGrid({
                 className="inline-flex h-12 w-12 items-center justify-center rounded-2xl transition-transform duration-300 group-hover:scale-110"
                 style={{
                   background: social.color ?? "var(--accent)",
-                  boxShadow: `0 8px 20px ${social.color ?? "var(--accent")}40`
+                  boxShadow: `0 8px 20px ${(social.color ?? "var(--accent)") + "40"}`
                 }}
               >
                 <BrandIcon
