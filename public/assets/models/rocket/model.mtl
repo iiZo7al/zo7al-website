@@ -1,0 +1,16 @@
+newmtl Fire
+Kd 1.000000 1.000000 1.000000
+Ks 0.040000 0.040000 0.040000
+Ns 32.000000
+map_Kd b9aad02784134191a2fa13abf67fbffc_RGB_Fire_BaseColor.png
+map_Ks 4dbf0e5c542c4c27a39f6b3338ea43b3_R_Fire_Roughtness.png
+map_bump e0bcf2eb63e642e79695b10086c80a91_N_Fire_Normal.png
+
+newmtl Rocket
+Kd 1.000000 1.000000 1.000000
+Ks 0.040000 0.040000 0.040000
+Ns 32.000000
+map_Kd 53c2762f4f3248b1bf89820b209628ca_RGB_Rocket_BaseColor.png
+map_Ks 6e8abb886f104d528fdbd9f95e4418c5_R_Rocket_Roughtness.png
+map_bump 00963c24915e47b58c25d4ceac0ee425_N_Rocket_Normal.png
+

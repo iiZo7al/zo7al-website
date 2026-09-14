@@ -1,0 +1,16 @@
+Title: Cartoon Star
+URL: http://sketchfab.com/3d-models/cartoon-star-8d8d7c521b43427a99e6df007004564a
+Author: https://sketchfab.com/CartoonObjects
+
+Vertices: 1054
+Polygons: 2104
+Animations: 0
+
+Download Date: 14/09/2026
+Download Format: OBJ
+Download Path: C:\Users\khloo\Downloads\3d_Ripper_Pro_v109\Downloads\CartoonObjects\02- Cartoon.Star\
+Download File: 8d8d7c521b43427a99e6df007004564a.obj
+
+Textures: 2
+#1: 037ab8fdd48042a793814c4d8a147029_RGB_Star_BaseColor.png
+#2: 5a1d0233fae744c88291995dba892e20_R_Star_Roughtness.png

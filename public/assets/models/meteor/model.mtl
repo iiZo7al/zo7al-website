@@ -1,0 +1,8 @@
+newmtl Meteor
+Kd 1.000000 1.000000 1.000000
+Ks 0.040000 0.040000 0.040000
+Ns 32.000000
+map_Kd 453cc9e80cc6423d94f70f926703fb81_RGB_Meteor_BaseColor.png
+map_Ks 9f1683fc59c34728a4462508f8e385bb_R_Meteor_Roughtness.png
+map_bump 6abdd65aa5194c89bbadbf454cf89e52_N_Meteor_Normal.png
+

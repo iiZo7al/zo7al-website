@@ -1,0 +1,7 @@
+newmtl Star
+Kd 1.000000 1.000000 1.000000
+Ks 0.040000 0.040000 0.040000
+Ns 32.000000
+map_Kd 037ab8fdd48042a793814c4d8a147029_RGB_Star_BaseColor.png
+map_Ks 5a1d0233fae744c88291995dba892e20_R_Star_Roughtness.png
+

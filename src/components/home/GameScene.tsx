@@ -1,9 +1,11 @@
 "use client";
 
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useMemo } from "react";
 import { useFrame } from "@react-three/fiber";
-import { Float, PerspectiveCamera, Text } from "@react-three/drei";
+import { Float, PerspectiveCamera, Text, useLoader } from "@react-three/drei";
 import * as THREE from "three";
+import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
+import { MTLLoader } from "three/examples/jsm/loaders/MTLLoader";
 
 interface GameSceneProps {
   onGameOver: (score: number, stars: number) => void;
@@ -24,13 +26,18 @@ export default function GameScene({ onGameOver, score, stars, isGameOver }: Game
   const [currentStars, setCurrentStars] = useState(0);
   const [input, setInput] = useState({ left: false, right: false });
 
+  // Load Models
+  const rocketModel = useLoader(OBJLoader, "/assets/models/rocket/d6e7e6e798b14ef489a13333300853d1.obj");
+  const starModel = useLoader(OBJLoader, "/assets/models/star/8d8d7c521b43427a99e6df007004564a.obj");
+  const meteorModel = useLoader(OBJLoader, "/assets/models/meteor/60136dbdd0434b48a763385058f651f7.obj");
+
   // Game state references to avoid re-renders in useFrame
   const gameData = useRef({
     speed: ASTEROID_SPEED,
     score: 0,
     collectedStars: 0,
-    asteroids: [] as any[],
-    stars: [] as any[],
+    asteroids: [] as THREE.Mesh[],
+    stars: [] as THREE.Mesh[],
     lastSpawnTime: 0,
     lastStarSpawnTime: 0,
   });
@@ -130,9 +137,7 @@ export default function GameScene({ onGameOver, score, stars, isGameOver }: Game
 
   const spawnAsteroid = () => {
     if (!worldRef.current) return;
-    const geometry = new THREE.IcosahedronGeometry(Math.random() * 1 + 0.5, 0);
-    const material = new THREE.MeshStandardMaterial({ color: "#555", roughness: 0.9 });
-    const mesh = new THREE.Mesh(geometry, material);
+    const mesh = meteorModel.clone();
 
     mesh.position.set(
       (Math.random() - 0.5) * 30,
@@ -140,6 +145,7 @@ export default function GameScene({ onGameOver, score, stars, isGameOver }: Game
       -ASTEROID_SPAWN_DIST
     );
     mesh.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI);
+    mesh.scale.setScalar(Math.random() * 1 + 0.5);
 
     worldRef.current.add(mesh);
     gameData.current.asteroids.push(mesh);
@@ -147,13 +153,7 @@ export default function GameScene({ onGameOver, score, stars, isGameOver }: Game
 
   const spawnStar = () => {
     if (!worldRef.current) return;
-    const geometry = new THREE.SphereGeometry(0.3, 16, 16);
-    const material = new THREE.MeshStandardMaterial({
-      color: "#FFD700",
-      emissive: "#FFFF00",
-      emissiveIntensity: 2
-    });
-    const mesh = new THREE.Mesh(geometry, material);
+    const mesh = starModel.clone();
 
     mesh.position.set(
       (Math.random() - 0.5) * 20,
@@ -174,19 +174,7 @@ export default function GameScene({ onGameOver, score, stars, isGameOver }: Game
       <group ref={worldRef} />
 
       <group ref={rocketRef} position={[0, 0, 0]}>
-        {/* Simple Rocket Model */}
-        <mesh position={[0, 0, 0]}>
-          <cylinderGeometry args={[0.4, 0.6, 2, 16]} />
-          <meshStandardMaterial color="#EEE" />
-        </mesh>
-        <mesh position={[0, 1.2, 0]}>
-          <coneGeometry args={[0.4, 0.8, 16]} />
-          <meshStandardMaterial color="#FF4500" />
-        </mesh>
-        <mesh position={[0, -0.8, 0]}>
-          <boxGeometry args={[0.8, 0.3, 0.8]} />
-          <meshStandardMaterial color="#333" />
-        </mesh>
+        <primitive object={rocketModel} scale={0.01} />
         {/* Engine glow */}
         <pointLight position={[0, -1, 0]} intensity={2} color="#FF8E00" />
       </group>

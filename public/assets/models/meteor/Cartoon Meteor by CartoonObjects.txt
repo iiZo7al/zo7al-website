@@ -1,0 +1,17 @@
+Title: Cartoon Meteor
+URL: http://sketchfab.com/3d-models/cartoon-meteor-60136dbdd0434b48a763385058f651f7
+Author: https://sketchfab.com/CartoonObjects
+
+Vertices: 1389
+Polygons: 2774
+Animations: 0
+
+Download Date: 14/09/2026
+Download Format: OBJ
+Download Path: C:\Users\khloo\Downloads\3d_Ripper_Pro_v109\Downloads\CartoonObjects\03- Cartoon.Meteor\
+Download File: 60136dbdd0434b48a763385058f651f7.obj
+
+Textures: 3
+#1: 453cc9e80cc6423d94f70f926703fb81_RGB_Meteor_BaseColor.png
+#2: 6abdd65aa5194c89bbadbf454cf89e52_N_Meteor_Normal.png
+#3: 9f1683fc59c34728a4462508f8e385bb_R_Meteor_Roughtness.png

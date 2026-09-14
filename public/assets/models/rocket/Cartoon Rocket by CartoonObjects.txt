@@ -1,0 +1,20 @@
+Title: Cartoon Rocket
+URL: http://sketchfab.com/3d-models/cartoon-rocket-d6e7e6e798b14ef489a13333300853d1
+Author: https://sketchfab.com/CartoonObjects
+
+Vertices: 1929
+Polygons: 3648
+Animations: 1
+
+Download Date: 14/09/2026
+Download Format: OBJ
+Download Path: C:\Users\khloo\Downloads\3d_Ripper_Pro_v109\Downloads\CartoonObjects\03- Cartoon.Rocket\
+Download File: d6e7e6e798b14ef489a13333300853d1.obj
+
+Textures: 6
+#1: 00963c24915e47b58c25d4ceac0ee425_N_Rocket_Normal.png
+#2: 4dbf0e5c542c4c27a39f6b3338ea43b3_R_Fire_Roughtness.png
+#3: 53c2762f4f3248b1bf89820b209628ca_RGB_Rocket_BaseColor.png
+#4: 6e8abb886f104d528fdbd9f95e4418c5_R_Rocket_Roughtness.png
+#5: b9aad02784134191a2fa13abf67fbffc_RGB_Fire_BaseColor.png
+#6: e0bcf2eb63e642e79695b10086c80a91_N_Fire_Normal.png
