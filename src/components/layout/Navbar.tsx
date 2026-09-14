@@ -90,9 +90,10 @@ export default function Navbar() {
                     />
                   )}
                   <span className="relative flex items-center gap-2">
-                    {ICON_MAP[link.icon as keyof typeof ICON_MAP] && (
-                      <ICON_MAP[link.icon as keyof typeof ICON_MAP] size={14} strokeWidth={2.5} />
-                    )}
+                    {(() => {
+                      const Icon = ICON_MAP[link.icon as keyof typeof ICON_MAP];
+                      return Icon ? <Icon size={14} strokeWidth={2.5} /> : null;
+                    })()}
                     {t(link.key)}
                   </span>
                 </Link>
