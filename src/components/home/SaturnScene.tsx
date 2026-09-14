@@ -82,9 +82,9 @@ export default function SaturnScene({ onTrigger, isTransitioning }: SaturnSceneP
       <mesh position={[0, 0, 0]}>
         <sphereGeometry args={[2, 64, 64]} />
         <meshStandardMaterial
-          color="#FF8E00"
+          color="#ff7a00"
           roughness={0.7}
-          emissive="#FF4500"
+          emissive="#ff7a00"
           emissiveIntensity={0.2}
         />
       </mesh>
@@ -113,7 +113,7 @@ export default function SaturnScene({ onTrigger, isTransitioning }: SaturnSceneP
       </mesh>
 
       {/* Ambient Glow */}
-      <pointLight position={[0, 0, 0]} intensity={2} color="#FF8E00" />
+      <pointLight position={[0, 0, 0]} intensity={2} color="#ff7a00" />
     </group>
   );
 }

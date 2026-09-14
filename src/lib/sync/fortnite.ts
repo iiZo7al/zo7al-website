@@ -55,7 +55,7 @@ export async function getSyncedFortniteMaps(): Promise<{
       const known = knownByCode.get(code);
       return {
         id: known?.id ?? slugify(info.title, code),
-        title: known?.title ?? info.title,
+        title: info.title,
         code,
         category: known?.category ?? "Featured",
         thumbnail: info.thumbnail ?? known?.thumbnail ?? "",
