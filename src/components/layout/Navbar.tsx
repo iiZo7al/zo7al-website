@@ -5,13 +5,22 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useTranslations } from "next-intl";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Home, Box, Package, Map, Share2 } from "lucide-react";
 import { NAV_LINKS, DISCORD_LINK, SITE } from "@/lib/data/site";
 import MagneticButton from "@/components/cursor/MagneticButton";
 import BrandIcon from "@/components/ui/BrandIcon";
 import LanguageSwitcher from "@/components/layout/LanguageSwitcher";
 
+const ICON_MAP = {
+  home: Home,
+  minecraft: Box,
+  modpacks: Package,
+  fortnite: Map,
+  socials: Share2,
+};
+
 export default function Navbar() {
+
   const pathname = usePathname();
   const t = useTranslations("nav");
   const [scrolled, setScrolled] = useState(false);
@@ -69,7 +78,7 @@ export default function Navbar() {
                 <Link
                   href={link.href}
                   data-cursor="link"
-                  className="relative px-4 py-2 text-sm font-medium rounded-full transition-colors duration-300"
+                  className="relative px-4 py-2 text-sm font-medium rounded-full transition-colors duration-300 flex items-center gap-2"
                   style={{ color: active ? "var(--text)" : "var(--text-muted)" }}
                 >
                   {active && (
@@ -80,7 +89,12 @@ export default function Navbar() {
                       transition={{ type: "spring", stiffness: 400, damping: 32 }}
                     />
                   )}
-                  <span className="relative">{t(link.key)}</span>
+                  <span className="relative flex items-center gap-2">
+                    {ICON_MAP[link.icon as keyof typeof ICON_MAP] && (
+                      <ICON_MAP[link.icon as keyof typeof ICON_MAP] size={14} strokeWidth={2.5} />
+                    )}
+                    {t(link.key)}
+                  </span>
                 </Link>
               </li>
             );
@@ -135,19 +149,23 @@ export default function Navbar() {
               backdropFilter: "blur(18px)",
             }}
           >
-            {NAV_LINKS.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="px-4 py-3 rounded-xl text-base font-medium"
-                style={{
-                  color: pathname === link.href ? "var(--text)" : "var(--text-muted)",
-                  background: pathname === link.href ? "var(--surface-elevated)" : "transparent",
-                }}
-              >
-                {t(link.key)}
-              </Link>
-            ))}
+            {NAV_LINKS.map((link) => {
+              const Icon = ICON_MAP[link.icon as keyof typeof ICON_MAP];
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="flex items-center gap-3 px-4 py-3 rounded-xl text-base font-medium"
+                  style={{
+                    color: pathname === link.href ? "var(--text)" : "var(--text-muted)",
+                    background: pathname === link.href ? "var(--surface-elevated)" : "transparent",
+                  }}
+                >
+                  {Icon && <Icon size={18} strokeWidth={2.5} />}
+                  {t(link.key)}
+                </Link>
+              );
+            })}
             <div className="h-px my-1" style={{ background: "var(--border)" }} />
             <Link href="/store" className="px-4 py-3 rounded-xl text-base font-medium" style={{ color: "var(--text-muted)" }}>
               {t("store")}

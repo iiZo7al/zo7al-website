@@ -3,6 +3,7 @@
 import Reveal from "@/components/ui/Reveal";
 import { SyncedSocial } from "@/lib/sync/socials";
 import { SocialPreview } from "@/lib/sync/previews";
+import BrandIcon from "@/components/ui/BrandIcon";
 
 export default function SocialGrid({
   socials,
@@ -29,12 +30,19 @@ export default function SocialGrid({
               aria-hidden="true"
             />
             <div className="flex items-center justify-between">
-              <span
-                className="inline-flex h-11 w-11 items-center justify-center rounded-xl text-sm font-bold"
-                style={{ background: "var(--surface-elevated)", color: social.color ?? "var(--accent)" }}
+              <div
+                className="inline-flex h-12 w-12 items-center justify-center rounded-2xl transition-transform duration-300 group-hover:scale-110"
+                style={{
+                  background: "var(--surface-elevated)",
+                  boxShadow: `0 4px 12px ${social.color ?? "var(--accent)"}20`
+                }}
               >
-                {social.label.slice(0, 2).toUpperCase()}
-              </span>
+                <BrandIcon
+                  slug={social.platform}
+                  size={24}
+                  color={social.color ?? "var(--accent)"}
+                />
+              </div>
               <svg
                 width="16"
                 height="16"

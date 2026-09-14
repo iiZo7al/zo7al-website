@@ -69,7 +69,7 @@ export default async function Footer() {
                 data-cursor="link"
                 className="flex items-center gap-2 text-sm text-[var(--text-muted)] hover:text-[var(--text)] transition-colors"
               >
-                <ShoppingBag size={14} />
+                <ShoppingBag size={14} strokeWidth={2.5} />
                 Store
               </a>
             </li>

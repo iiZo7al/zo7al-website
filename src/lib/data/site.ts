@@ -4,7 +4,7 @@
 // see the fallback UI in each section instead of guessing.
 
 export const SITE = {
-  name: "ZO7AL",
+  name: "Zo7al Projects",
   handle: "@iiZo7al",
   tagline: "Gaming creator. Minecraft builder. Fortnite creator.",
   description:
@@ -13,11 +13,11 @@ export const SITE = {
 } as const;
 
 export const NAV_LINKS = [
-  { key: "home", label: "Home", href: "/" },
-  { key: "minecraft", label: "Minecraft", href: "/minecraft" },
-  { key: "modpacks", label: "Modpacks", href: "/modpacks" },
-  { key: "fortnite", label: "Fortnite", href: "/fortnite" },
-  { key: "socials", label: "Socials", href: "/socials" },
+  { key: "home", label: "Home", href: "/", icon: "home" },
+  { key: "minecraft", label: "Minecraft", href: "/minecraft", icon: "cube" },
+  { key: "modpacks", label: "Modpacks", href: "/modpacks", icon: "package" },
+  { key: "fortnite", label: "Fortnite", href: "/fortnite", icon: "map" },
+  { key: "socials", label: "Socials", href: "/socials", icon: "share-2" },
 ] as const;
 
 export const STORE_LINK = "https://zo7al.tebex.io/";

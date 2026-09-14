@@ -14,8 +14,8 @@ import { isRtl } from "@/i18n/config";
 export const metadata: Metadata = {
   metadataBase: new URL("https://zo7al.example"),
   title: {
-    default: "ZO7AL — Gaming Universe",
-    template: "%s — ZO7AL",
+    default: "Zo7al Projects — Gaming Universe",
+    template: "%s — Zo7al Projects",
   },
   description:
     "Zo7al is a gaming creator building Minecraft networks, modpacks, Fortnite Creative maps and experimental gaming projects.",
