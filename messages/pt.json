@@ -1,0 +1,70 @@
+{
+  "nav": { "home": "Início", "minecraft": "Minecraft", "modpacks": "Modpacks", "fortnite": "Fortnite", "socials": "Redes", "store": "Loja", "discord": "Discord" },
+  "common": { "viewProject": "Ver projeto", "viewProfile": "Ver perfil", "openStore": "Abrir loja", "copy": "Copiar", "copied": "Copiado", "all": "Todos", "downloads": "downloads" },
+  "home": {
+    "eyebrow": "@iiZo7al — Universo Gamer", "headline1": "CONSTRUA.", "headline2": "JOGUE.", "headline3": "CRIE.",
+    "subtitle": "Servidores de Minecraft, mapas de Fortnite, modpacks e projetos gamer de Zo7al.", "ctaExplore": "Explorar ZO7AL", "ctaViewProjects": "Ver projetos", "scroll": "Rolar",
+    "universeEyebrow": "Os projetos", "universeTitle": "O universo ZO7AL", "universeText": "Explore os mundos, projetos e experiências criados por Zo7al.",
+    "minecraftMeta1": "MINECRAFT", "minecraftMeta2": "JAVA + BEDROCK", "minecraftTitle": "REDE ZO7AL", "minecraftText": "Uma rede de Minecraft feita para jogadores.", "minecraftCta": "Explorar rede",
+    "modpacksMeta1": "MODPACKS", "modpacksMeta2": "MODRINTH + CURSEFORGE", "modpacksTitle": "MODPACKS DE MINECRAFT", "modpacksText": "Experiências de Minecraft criadas e selecionadas por Zo7al.", "modpacksCta": "Ver modpacks",
+    "fortniteMeta1": "FORTNITE", "fortniteMeta2": "CRIATIVO", "fortniteTitle": "FORTNITE CRIATIVO", "fortniteText": "Mapas e experiências criados por Zo7al.", "fortniteCta": "Explorar mapas",
+    "aboutEyebrow": "Quem é Zo7al?", "aboutText": "Zo7al é um criador gamer que constrói redes de Minecraft, modpacks, mapas de Fortnite Criativo e projetos experimentais."
+  },
+  "minecraft": {
+    "eyebrow": "Minecraft", "title": "REDE ZO7AL", "text": "Sua próxima aventura no Minecraft começa aqui.", "openStore": "Abrir loja",
+    "connectEyebrow": "Conexão", "connectTitle": "Entre em segundos", "connectText": "Java e Bedrock, uma só rede.",
+    "compatEyebrow": "Compatibilidade", "compatTitle": "Versões suportadas", "gameplayEyebrow": "Modos de jogo", "gameplayTitle": "Modos",
+    "supportEyebrow": "Apoie a rede", "supportTitle": "APOIE O ZO7AL", "supportText": "Apoie a rede e conheça a loja oficial do Zo7al.",
+    "javaLabel": "IP de Java", "bedrockLabel": "Endereço Bedrock", "bedrockNote": "O suporte a Bedrock está em desenvolvimento — ainda não publicado.",
+    "copyJava": "Copiar IP de Java", "copyBedrock": "Copiar endereço Bedrock", "checkingStatus": "Verificando status…", "readyToPlay": "Rede ZO7AL — Pronta para jogar",
+    "online": "Online", "offline": "Offline", "players": "Jogadores", "version": "Versão", "address": "Endereço",
+    "statusUnavailable": "O status ao vivo não está disponível agora — conecte-se usando o endereço abaixo.", "modeLive": "Ativo", "modeSoon": "Em breve"
+  },
+  "modpacks": {
+    "eyebrow": "Modpacks", "title": "MINECRAFT, REINVENTADO.", "text": "Explore os projetos de Minecraft criados por Zo7al.",
+    "modrinthEyebrow": "Modrinth", "modrinthTitle": "Lançamentos no Modrinth", "modrinthLabel": "Modrinth", "modrinthLiveLabel": "Ao vivo do Modrinth",
+    "curseforgeEyebrow": "CurseForge", "curseforgeTitle": "Espelhos no CurseForge", "curseforgeLabel": "CurseForge", "curseforgeLiveLabel": "Sincronizado ao vivo com o CurseForge"
+  },
+  "fortnite": {
+    "eyebrow": "Fortnite Criativo", "title": "FORTNITE CRIATIVO", "text": "Mapas e experiências criados por Zo7al.", "creatorPage": "Página de criador",
+    "islandsEyebrow": "Ilhas", "islandsTitle": "Todos os mapas, em um só lugar", "islandsLabel": "Ilhas", "islandsLiveLabel": "Sincronizado ao vivo com Fortnite.com",
+    "copyCode": "Copiar código", "copied": "Copiado", "byZo7al": "por Zo7al"
+  },
+  "socials": {
+    "eyebrow": "Comunidade", "title": "SIGA A JORNADA.", "text": "Todas as plataformas, em um só lugar.", "label": "Redes sociais",
+    "liveLabel": "Sincronizado ao vivo com Linktree", "viewOnLinktree": "Ver no Linktree"
+  },
+  "store": {
+    "eyebrow": "Apoie o Zo7al", "title": "APOIE O ZO7AL", "text": "Apoie a rede e conheça a loja oficial do Zo7al.",
+    "ranksEyebrow": "Ranks", "ranksTitle": "Ranks do servidor", "ranksText": "Preços e benefícios conforme listados na loja oficial da Tebex.",
+    "getRank": "Obter", "mostPopular": "Mais popular", "allPurchases": "Todas as compras são processadas com segurança pela Tebex, a loja oficial do Zo7al.", "visitStore": "Visitar zo7al.tebex.io"
+  },
+  "faq": {
+    "eyebrow": "Precisa de ajuda?", "title": "Perguntas frequentes", "text": "Tudo sobre como entrar na rede, comprar um rank, jogar os mapas de Fortnite do Zo7al e obter suporte.",
+    "searchPlaceholder": "Buscar uma pergunta…", "noResults": "Nenhuma pergunta corresponde à sua busca.",
+    "categories": { "gettingStarted": "Primeiros passos", "storeRanks": "Loja e ranks", "fortnite": "Fortnite", "community": "Comunidade", "modpacks": "Modpacks" },
+    "items": [
+      { "category": "gettingStarted", "q": "O que é a ZO7AL Network?", "a": "Um servidor de Minecraft e universo gamer criado por Zo7al, com survival, PvP, modpacks e mapas de Fortnite Criativo." },
+      { "category": "gettingStarted", "q": "Como entro na Zo7al Network no Java?", "a": "Copie o endereço Java, zo7al.play-mc.fun, na página do Minecraft e adicione-o como servidor no menu multiplayer do Minecraft Java." },
+      { "category": "gettingStarted", "q": "Como entro na Zo7al Network no Bedrock?", "a": "O Bedrock ainda não foi publicado — está no roteiro de desenvolvimento. Entre no Discord para ser avisado assim que estiver disponível." },
+      { "category": "gettingStarted", "q": "O Bedrock é suportado?", "a": "Ainda não. A Java Edition tem suporte completo hoje, e o suporte ao Bedrock está planejado para uma futura atualização." },
+      { "category": "gettingStarted", "q": "Quais versões do Minecraft são suportadas?", "a": "1.8.9 para PvP clássico, 1.20.x para survival estável e 1.21.x para a versão mais recente." },
+      { "category": "gettingStarted", "q": "Como me conecto ao servidor?", "a": "Abra o Minecraft Java Edition, vá em Multiplayer, adicione um servidor e cole zo7al.play-mc.fun como endereço." },
+      { "category": "storeRanks", "q": "Como compro um rank?", "a": "Visite a loja oficial em zo7al.tebex.io, escolha VIP, MVP ou MVP+, e finalize a compra com segurança — seu rank é aplicado automaticamente." },
+      { "category": "storeRanks", "q": "Quais ranks estão disponíveis?", "a": "VIP ($9,99), MVP ($19,99) e MVP+ ($29,99). Cada nível inclui tudo do anterior, mais benefícios extras." },
+      { "category": "storeRanks", "q": "Onde fica a loja da Zo7al Network?", "a": "zo7al.tebex.io é a única loja oficial — sempre confira o domínio antes de pagar." },
+      { "category": "fortnite", "q": "Como entro em um mapa do Zo7al no Fortnite?", "a": "Abra o Fortnite, vá em Criativo, selecione \"Inserir um código\" e digite o código da ilha exibido em qualquer mapa na página do Fortnite." },
+      { "category": "fortnite", "q": "Onde encontro todos os mapas do Zo7al?", "a": "A página do Fortnite lista todas as ilhas publicadas com seus códigos, sincronizada com a página oficial de criador." },
+      { "category": "community", "q": "Qual é o servidor oficial do Discord do Zo7al?", "a": "discord.gg/nxScVYrSXq — o ponto de encontro para eventos, suporte e novidades da comunidade." },
+      { "category": "community", "q": "Onde encontro as redes sociais do Zo7al?", "a": "A página de Redes lista todas as plataformas verificadas, sincronizada ao vivo com o Linktree do Zo7al." },
+      { "category": "community", "q": "Como reporto um problema?", "a": "Entre no servidor do Discord e abra um ticket no canal de suporte — é a forma mais rápida de falar com a equipe." },
+      { "category": "community", "q": "Como entro em contato com o Zo7al?", "a": "O Discord é a melhor forma, ou por qualquer uma das redes sociais verificadas na página de Redes." },
+      { "category": "modpacks", "q": "Onde baixo os modpacks do Zo7al?", "a": "No Modrinth e no CurseForge — ambos com links diretos na página de Modpacks." }
+    ]
+  },
+  "footer": {
+    "tagline": "Criador gamer. Construtor de redes de Minecraft. Criador de Fortnite.", "siteLabel": "Site", "platformsLabel": "Plataformas",
+    "copyright": "Zo7al. Todos os direitos reservados.", "disclaimer": "Não é um serviço oficial da Minecraft, Epic Games ou Fortnite."
+  },
+  "language": { "label": "Idioma" }
+}

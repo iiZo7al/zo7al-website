@@ -1,0 +1,70 @@
+{
+  "nav": { "home": "首页", "minecraft": "我的世界", "modpacks": "整合包", "fortnite": "堡垒之夜", "socials": "社交媒体", "store": "商店", "discord": "Discord" },
+  "common": { "viewProject": "查看项目", "viewProfile": "查看主页", "openStore": "打开商店", "copy": "复制", "copied": "已复制", "all": "全部", "downloads": "次下载" },
+  "home": {
+    "eyebrow": "@iiZo7al — 游戏宇宙", "headline1": "建造。", "headline2": "游玩。", "headline3": "创造。",
+    "subtitle": "Zo7al 打造的我的世界服务器、堡垒之夜地图、整合包与游戏项目。", "ctaExplore": "探索 ZO7AL", "ctaViewProjects": "查看项目", "scroll": "向下滚动",
+    "universeEyebrow": "项目", "universeTitle": "ZO7AL 宇宙", "universeText": "探索 Zo7al 打造的世界、项目与体验。",
+    "minecraftMeta1": "我的世界", "minecraftMeta2": "JAVA + 基岩版", "minecraftTitle": "ZO7AL 服务器网络", "minecraftText": "为玩家打造的我的世界服务器网络。", "minecraftCta": "探索服务器",
+    "modpacksMeta1": "整合包", "modpacksMeta2": "MODRINTH + CURSEFORGE", "modpacksTitle": "我的世界整合包", "modpacksText": "由 Zo7al 制作与精选的我的世界体验。", "modpacksCta": "查看整合包",
+    "fortniteMeta1": "堡垒之夜", "fortniteMeta2": "创造模式", "fortniteTitle": "堡垒之夜创造模式", "fortniteText": "由 Zo7al 制作的地图与体验。", "fortniteCta": "探索地图",
+    "aboutEyebrow": "Zo7al 是谁？", "aboutText": "Zo7al 是一名游戏创作者，打造我的世界服务器网络、整合包、堡垒之夜创造模式地图及实验性游戏项目。"
+  },
+  "minecraft": {
+    "eyebrow": "我的世界", "title": "ZO7AL 服务器网络", "text": "你的下一段我的世界冒险从这里开始。", "openStore": "打开商店",
+    "connectEyebrow": "连接", "connectTitle": "几秒钟即可加入", "connectText": "Java 版与基岩版，同一个网络。",
+    "compatEyebrow": "兼容性", "compatTitle": "支持的版本", "gameplayEyebrow": "玩法", "gameplayTitle": "模式",
+    "supportEyebrow": "支持服务器网络", "supportTitle": "支持 ZO7AL", "supportText": "支持服务器网络，探索 Zo7al 官方商店。",
+    "javaLabel": "Java 版 IP", "bedrockLabel": "基岩版地址", "bedrockNote": "基岩版支持正在规划中——尚未上线。",
+    "copyJava": "复制 Java 版 IP", "copyBedrock": "复制基岩版地址", "checkingStatus": "正在检查状态…", "readyToPlay": "ZO7AL 服务器网络 — 准备就绪",
+    "online": "在线", "offline": "离线", "players": "玩家", "version": "版本", "address": "地址",
+    "statusUnavailable": "目前无法获取实时状态——请使用下方地址加入。", "modeLive": "已上线", "modeSoon": "即将推出"
+  },
+  "modpacks": {
+    "eyebrow": "整合包", "title": "我的世界，全新演绎。", "text": "探索 Zo7al 打造的我的世界项目。",
+    "modrinthEyebrow": "Modrinth", "modrinthTitle": "Modrinth 发布", "modrinthLabel": "Modrinth", "modrinthLiveLabel": "来自 Modrinth 的实时数据",
+    "curseforgeEyebrow": "CurseForge", "curseforgeTitle": "CurseForge 镜像", "curseforgeLabel": "CurseForge", "curseforgeLiveLabel": "与 CurseForge 实时同步"
+  },
+  "fortnite": {
+    "eyebrow": "堡垒之夜创造模式", "title": "堡垒之夜创造模式", "text": "由 Zo7al 制作的地图与体验。", "creatorPage": "创作者主页",
+    "islandsEyebrow": "岛屿", "islandsTitle": "所有地图，一目了然", "islandsLabel": "岛屿", "islandsLiveLabel": "与 Fortnite.com 实时同步",
+    "copyCode": "复制代码", "copied": "已复制", "byZo7al": "由 Zo7al 制作"
+  },
+  "socials": {
+    "eyebrow": "社区", "title": "关注这段旅程。", "text": "所有平台，一站直达。", "label": "社交媒体",
+    "liveLabel": "与 Linktree 实时同步", "viewOnLinktree": "在 Linktree 上查看"
+  },
+  "store": {
+    "eyebrow": "支持 Zo7al", "title": "支持 ZO7AL", "text": "支持服务器网络，探索 Zo7al 官方商店。",
+    "ranksEyebrow": "等级", "ranksTitle": "服务器等级", "ranksText": "价格与权益以官方 Tebex 商店列出为准。",
+    "getRank": "购买", "mostPopular": "最受欢迎", "allPurchases": "所有购买均通过 Zo7al 官方商店 Tebex 安全处理。", "visitStore": "访问 zo7al.tebex.io"
+  },
+  "faq": {
+    "eyebrow": "需要帮助？", "title": "常见问题", "text": "关于加入服务器、购买等级、畅玩 Zo7al 的堡垒之夜地图以及获取支持的一切信息。",
+    "searchPlaceholder": "搜索问题…", "noResults": "没有找到匹配的问题。",
+    "categories": { "gettingStarted": "新手入门", "storeRanks": "商店与等级", "fortnite": "堡垒之夜", "community": "社区", "modpacks": "整合包" },
+    "items": [
+      { "category": "gettingStarted", "q": "什么是 ZO7AL 服务器网络？", "a": "由 Zo7al 打造的我的世界服务器与游戏宇宙，涵盖生存、PvP、整合包以及堡垒之夜创造模式地图。" },
+      { "category": "gettingStarted", "q": "如何通过 Java 版加入 Zo7al 服务器网络？", "a": "从我的世界页面复制 Java 版地址 zo7al.play-mc.fun，并将其作为服务器添加到我的世界 Java 版的多人游戏菜单中。" },
+      { "category": "gettingStarted", "q": "如何通过基岩版加入 Zo7al 服务器网络？", "a": "基岩版尚未上线——已列入开发计划。加入 Discord 即可在开放的第一时间收到通知。" },
+      { "category": "gettingStarted", "q": "是否支持基岩版？", "a": "目前尚未支持。Java 版目前已完全支持，基岩版支持计划在未来更新中推出。" },
+      { "category": "gettingStarted", "q": "支持哪些我的世界版本？", "a": "经典 PvP 版本 1.8.9、稳定生存版本 1.20.x，以及最新版本 1.21.x。" },
+      { "category": "gettingStarted", "q": "如何连接到服务器？", "a": "打开我的世界 Java 版，进入多人游戏，添加服务器，并将 zo7al.play-mc.fun 粘贴为地址。" },
+      { "category": "storeRanks", "q": "如何购买等级？", "a": "访问官方商店 zo7al.tebex.io，选择 VIP、MVP 或 MVP+，安全结账——等级会自动应用到你的账户。" },
+      { "category": "storeRanks", "q": "有哪些等级可供选择？", "a": "VIP（9.99 美元）、MVP（19.99 美元）和 MVP+（29.99 美元）。每个等级都包含下一级的所有权益，并附加更多福利。" },
+      { "category": "storeRanks", "q": "Zo7al 服务器网络的商店在哪里？", "a": "zo7al.tebex.io 是唯一的官方商店——付款前请务必核实域名。" },
+      { "category": "fortnite", "q": "如何在堡垒之夜中加入 Zo7al 的地图？", "a": "打开堡垒之夜，进入创造模式，选择“输入代码”，输入堡垒之夜页面上任意地图显示的岛屿代码即可。" },
+      { "category": "fortnite", "q": "在哪里可以找到 Zo7al 的所有地图？", "a": "堡垒之夜页面列出了所有已发布的岛屿及其代码，并与官方创作者主页保持同步。" },
+      { "category": "community", "q": "Zo7al 的官方 Discord 服务器是什么？", "a": "discord.gg/nxScVYrSXq —— 活动、支持与社区动态的中心。" },
+      { "category": "community", "q": "在哪里可以找到 Zo7al 的社交媒体？", "a": "社交媒体页面列出了所有经过验证的平台，并与 Zo7al 的 Linktree 实时同步。" },
+      { "category": "community", "q": "如何报告问题？", "a": "加入 Discord 服务器，在支持频道开设工单——这是联系团队最快的方式。" },
+      { "category": "community", "q": "如何联系 Zo7al？", "a": "Discord 是最佳方式，也可以通过社交媒体页面列出的任意经过验证的平台联系。" },
+      { "category": "modpacks", "q": "在哪里可以下载 Zo7al 的整合包？", "a": "Modrinth 和 CurseForge 上均可下载，整合包页面提供了两者的直接链接。" }
+    ]
+  },
+  "footer": {
+    "tagline": "游戏创作者。我的世界服务器网络搭建者。堡垒之夜创作者。", "siteLabel": "网站", "platformsLabel": "平台",
+    "copyright": "Zo7al. 保留所有权利。", "disclaimer": "本站并非我的世界、Epic Games 或堡垒之夜的官方服务。"
+  },
+  "language": { "label": "语言" }
+}

@@ -1,0 +1,70 @@
+{
+  "nav": { "home": "Start", "minecraft": "Minecraft", "modpacks": "Modpacks", "fortnite": "Fortnite", "socials": "Social Media", "store": "Shop", "discord": "Discord" },
+  "common": { "viewProject": "Projekt ansehen", "viewProfile": "Profil ansehen", "openStore": "Shop öffnen", "copy": "Kopieren", "copied": "Kopiert", "all": "Alle", "downloads": "Downloads" },
+  "home": {
+    "eyebrow": "@iiZo7al — Gaming-Universum", "headline1": "BAUEN.", "headline2": "SPIELEN.", "headline3": "ERSCHAFFEN.",
+    "subtitle": "Minecraft-Server, Fortnite-Maps, Modpacks und Gaming-Projekte von Zo7al.", "ctaExplore": "ZO7AL entdecken", "ctaViewProjects": "Projekte ansehen", "scroll": "Scrollen",
+    "universeEyebrow": "Die Projekte", "universeTitle": "Das ZO7AL-Universum", "universeText": "Entdecke die Welten, Projekte und Erlebnisse von Zo7al.",
+    "minecraftMeta1": "MINECRAFT", "minecraftMeta2": "JAVA + BEDROCK", "minecraftTitle": "ZO7AL NETWORK", "minecraftText": "Ein Minecraft-Netzwerk, gebaut für Spieler.", "minecraftCta": "Netzwerk entdecken",
+    "modpacksMeta1": "MODPACKS", "modpacksMeta2": "MODRINTH + CURSEFORGE", "modpacksTitle": "MINECRAFT-MODPACKS", "modpacksText": "Minecraft-Erlebnisse, erstellt und kuratiert von Zo7al.", "modpacksCta": "Modpacks ansehen",
+    "fortniteMeta1": "FORTNITE", "fortniteMeta2": "CREATIVE", "fortniteTitle": "FORTNITE CREATIVE", "fortniteText": "Maps und Erlebnisse von Zo7al.", "fortniteCta": "Maps entdecken",
+    "aboutEyebrow": "Wer ist Zo7al?", "aboutText": "Zo7al ist ein Gaming-Creator, der Minecraft-Netzwerke, Modpacks, Fortnite-Creative-Maps und experimentelle Gaming-Projekte aufbaut."
+  },
+  "minecraft": {
+    "eyebrow": "Minecraft", "title": "ZO7AL NETWORK", "text": "Dein nächstes Minecraft-Abenteuer beginnt hier.", "openStore": "Shop öffnen",
+    "connectEyebrow": "Verbinden", "connectTitle": "In Sekunden beitreten", "connectText": "Java und Bedrock, ein Netzwerk.",
+    "compatEyebrow": "Kompatibilität", "compatTitle": "Unterstützte Versionen", "gameplayEyebrow": "Gameplay", "gameplayTitle": "Modi",
+    "supportEyebrow": "Unterstütze das Netzwerk", "supportTitle": "ZO7AL UNTERSTÜTZEN", "supportText": "Unterstütze das Netzwerk und besuche den offiziellen Zo7al-Shop.",
+    "javaLabel": "Java-IP", "bedrockLabel": "Bedrock-Adresse", "bedrockNote": "Bedrock-Unterstützung ist in Planung — noch nicht veröffentlicht.",
+    "copyJava": "Java-IP kopieren", "copyBedrock": "Bedrock-Adresse kopieren", "checkingStatus": "Status wird geprüft…", "readyToPlay": "ZO7AL Network — Bereit zum Spielen",
+    "online": "Online", "offline": "Offline", "players": "Spieler", "version": "Version", "address": "Adresse",
+    "statusUnavailable": "Live-Status ist gerade nicht verfügbar — verbinde dich über die Adresse unten.", "modeLive": "Live", "modeSoon": "Demnächst"
+  },
+  "modpacks": {
+    "eyebrow": "Modpacks", "title": "MINECRAFT, NEU GEDACHT.", "text": "Entdecke die Minecraft-Projekte von Zo7al.",
+    "modrinthEyebrow": "Modrinth", "modrinthTitle": "Modrinth-Releases", "modrinthLabel": "Modrinth", "modrinthLiveLabel": "Live von Modrinth",
+    "curseforgeEyebrow": "CurseForge", "curseforgeTitle": "CurseForge-Spiegel", "curseforgeLabel": "CurseForge", "curseforgeLiveLabel": "Live synchronisiert mit CurseForge"
+  },
+  "fortnite": {
+    "eyebrow": "Fortnite Creative", "title": "FORTNITE CREATIVE", "text": "Maps und Erlebnisse von Zo7al.", "creatorPage": "Creator-Seite",
+    "islandsEyebrow": "Inseln", "islandsTitle": "Alle Maps an einem Ort", "islandsLabel": "Inseln", "islandsLiveLabel": "Live synchronisiert mit Fortnite.com",
+    "copyCode": "Code kopieren", "copied": "Kopiert", "byZo7al": "von Zo7al"
+  },
+  "socials": {
+    "eyebrow": "Community", "title": "FOLGE DER REISE.", "text": "Jede Plattform an einem Ort.", "label": "Social Media",
+    "liveLabel": "Live synchronisiert mit Linktree", "viewOnLinktree": "Auf Linktree ansehen"
+  },
+  "store": {
+    "eyebrow": "Zo7al unterstützen", "title": "ZO7AL UNTERSTÜTZEN", "text": "Unterstütze das Netzwerk und besuche den offiziellen Zo7al-Shop.",
+    "ranksEyebrow": "Ränge", "ranksTitle": "Server-Ränge", "ranksText": "Preise und Vorteile wie im offiziellen Tebex-Shop gelistet.",
+    "getRank": "Holen", "mostPopular": "Am beliebtesten", "allPurchases": "Alle Käufe werden sicher über Tebex abgewickelt — den offiziellen Shop von Zo7al.", "visitStore": "zo7al.tebex.io besuchen"
+  },
+  "faq": {
+    "eyebrow": "Brauchst du Hilfe?", "title": "Häufig gestellte Fragen", "text": "Alles über den Beitritt zum Netzwerk, den Kauf eines Rangs, Zo7als Fortnite-Maps und den Support.",
+    "searchPlaceholder": "Frage suchen…", "noResults": "Keine Frage passt zu deiner Suche.",
+    "categories": { "gettingStarted": "Erste Schritte", "storeRanks": "Shop & Ränge", "fortnite": "Fortnite", "community": "Community", "modpacks": "Modpacks" },
+    "items": [
+      { "category": "gettingStarted", "q": "Was ist ZO7AL Network?", "a": "Ein Minecraft-Server und Gaming-Universum von Zo7al mit Survival, PvP, Modpacks und Fortnite-Creative-Maps." },
+      { "category": "gettingStarted", "q": "Wie trete ich Zo7al Network über Java bei?", "a": "Kopiere die Java-Adresse zo7al.play-mc.fun von der Minecraft-Seite und füge sie im Mehrspieler-Menü von Minecraft Java als Server hinzu." },
+      { "category": "gettingStarted", "q": "Wie trete ich Zo7al Network über Bedrock bei?", "a": "Bedrock ist noch nicht veröffentlicht — es steht auf der Roadmap. Tritt dem Discord bei, um sofort benachrichtigt zu werden." },
+      { "category": "gettingStarted", "q": "Wird Bedrock unterstützt?", "a": "Noch nicht. Java Edition wird heute vollständig unterstützt, Bedrock-Support ist für ein zukünftiges Update geplant." },
+      { "category": "gettingStarted", "q": "Welche Minecraft-Versionen werden unterstützt?", "a": "1.8.9 für klassisches PvP, 1.20.x für stabiles Survival und 1.21.x für die neueste Version." },
+      { "category": "gettingStarted", "q": "Wie verbinde ich mich mit dem Server?", "a": "Öffne Minecraft Java Edition, gehe zu Mehrspieler, füge einen Server hinzu und trage zo7al.play-mc.fun als Adresse ein." },
+      { "category": "storeRanks", "q": "Wie kaufe ich einen Rang?", "a": "Besuche den offiziellen Shop unter zo7al.tebex.io, wähle VIP, MVP oder MVP+ und bezahle sicher — dein Rang wird automatisch angewendet." },
+      { "category": "storeRanks", "q": "Welche Ränge gibt es?", "a": "VIP (9,99 $), MVP (19,99 $) und MVP+ (29,99 $). Jede Stufe enthält alles der vorherigen, plus weitere Vorteile." },
+      { "category": "storeRanks", "q": "Wo ist der Shop von Zo7al Network?", "a": "zo7al.tebex.io ist der einzige offizielle Shop — prüfe vor dem Bezahlen immer die Domain." },
+      { "category": "fortnite", "q": "Wie trete ich einer Zo7al-Map in Fortnite bei?", "a": "Öffne Fortnite, gehe zu Creative, wähle „Code eingeben“ und gib den Inselcode ein, der bei jeder Map auf der Fortnite-Seite steht." },
+      { "category": "fortnite", "q": "Wo finde ich alle Maps von Zo7al?", "a": "Die Fortnite-Seite listet jede veröffentlichte Insel mit ihrem Code, synchronisiert mit der offiziellen Creator-Seite." },
+      { "category": "community", "q": "Was ist der offizielle Zo7al-Discord-Server?", "a": "discord.gg/nxScVYrSXq — der Treffpunkt für Events, Support und Community-Updates." },
+      { "category": "community", "q": "Wo finde ich Zo7als Social Media?", "a": "Die Social-Media-Seite listet jede verifizierte Plattform, live synchronisiert mit Zo7als Linktree." },
+      { "category": "community", "q": "Wie melde ich ein Problem?", "a": "Tritt dem Discord-Server bei und eröffne ein Ticket im Support-Kanal — das ist der schnellste Weg zum Team." },
+      { "category": "community", "q": "Wie kontaktiere ich Zo7al?", "a": "Discord ist der beste Weg, oder über eine der verifizierten Social-Media-Plattformen auf der Social-Media-Seite." },
+      { "category": "modpacks", "q": "Wo lade ich Zo7als Modpacks herunter?", "a": "Auf Modrinth und CurseForge — beide mit direkten Links auf der Modpacks-Seite gelistet." }
+    ]
+  },
+  "footer": {
+    "tagline": "Gaming-Creator. Minecraft-Netzwerk-Erbauer. Fortnite-Creator.", "siteLabel": "Seite", "platformsLabel": "Plattformen",
+    "copyright": "Zo7al. Alle Rechte vorbehalten.", "disclaimer": "Kein offizieller Minecraft-, Epic-Games- oder Fortnite-Dienst."
+  },
+  "language": { "label": "Sprache" }
+}

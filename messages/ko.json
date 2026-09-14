@@ -1,0 +1,70 @@
+{
+  "nav": { "home": "홈", "minecraft": "마인크래프트", "modpacks": "모드팩", "fortnite": "포트나이트", "socials": "소셜", "store": "스토어", "discord": "디스코드" },
+  "common": { "viewProject": "프로젝트 보기", "viewProfile": "프로필 보기", "openStore": "스토어 열기", "copy": "복사", "copied": "복사됨", "all": "전체", "downloads": "다운로드" },
+  "home": {
+    "eyebrow": "@iiZo7al — 게이밍 유니버스", "headline1": "BUILD.", "headline2": "PLAY.", "headline3": "CREATE.",
+    "subtitle": "Zo7al의 마인크래프트 서버, 포트나이트 맵, 모드팩과 게이밍 프로젝트.", "ctaExplore": "ZO7AL 둘러보기", "ctaViewProjects": "프로젝트 보기", "scroll": "스크롤",
+    "universeEyebrow": "프로젝트", "universeTitle": "ZO7AL 유니버스", "universeText": "Zo7al이 만든 세계와 프로젝트, 경험을 둘러보세요.",
+    "minecraftMeta1": "마인크래프트", "minecraftMeta2": "자바 + 베드락", "minecraftTitle": "ZO7AL 네트워크", "minecraftText": "플레이어를 위해 만들어진 마인크래프트 네트워크.", "minecraftCta": "네트워크 둘러보기",
+    "modpacksMeta1": "모드팩", "modpacksMeta2": "MODRINTH + CURSEFORGE", "modpacksTitle": "마인크래프트 모드팩", "modpacksText": "Zo7al이 제작하고 엄선한 마인크래프트 경험.", "modpacksCta": "모드팩 보기",
+    "fortniteMeta1": "포트나이트", "fortniteMeta2": "크리에이티브", "fortniteTitle": "포트나이트 크리에이티브", "fortniteText": "Zo7al이 만든 맵과 경험.", "fortniteCta": "맵 둘러보기",
+    "aboutEyebrow": "Zo7al은 누구인가요?", "aboutText": "Zo7al은 마인크래프트 네트워크, 모드팩, 포트나이트 크리에이티브 맵, 실험적인 게임 프로젝트를 만드는 게이밍 크리에이터입니다."
+  },
+  "minecraft": {
+    "eyebrow": "마인크래프트", "title": "ZO7AL 네트워크", "text": "다음 마인크래프트 모험이 여기서 시작됩니다.", "openStore": "스토어 열기",
+    "connectEyebrow": "접속", "connectTitle": "몇 초 만에 참여하기", "connectText": "자바와 베드락, 하나의 네트워크.",
+    "compatEyebrow": "호환성", "compatTitle": "지원 버전", "gameplayEyebrow": "게임플레이", "gameplayTitle": "모드",
+    "supportEyebrow": "네트워크 후원하기", "supportTitle": "ZO7AL 후원하기", "supportText": "네트워크를 후원하고 Zo7al 공식 스토어를 둘러보세요.",
+    "javaLabel": "자바 IP", "bedrockLabel": "베드락 주소", "bedrockNote": "베드락 지원은 로드맵에 있습니다 — 아직 공개되지 않았습니다.",
+    "copyJava": "자바 IP 복사", "copyBedrock": "베드락 주소 복사", "checkingStatus": "상태 확인 중…", "readyToPlay": "ZO7AL 네트워크 — 플레이 준비 완료",
+    "online": "온라인", "offline": "오프라인", "players": "플레이어", "version": "버전", "address": "주소",
+    "statusUnavailable": "지금은 실시간 상태를 가져올 수 없습니다 — 아래 주소로 접속해 보세요.", "modeLive": "운영 중", "modeSoon": "출시 예정"
+  },
+  "modpacks": {
+    "eyebrow": "모드팩", "title": "마인크래프트, 새롭게.", "text": "Zo7al이 만든 마인크래프트 프로젝트를 둘러보세요.",
+    "modrinthEyebrow": "Modrinth", "modrinthTitle": "Modrinth 릴리스", "modrinthLabel": "Modrinth", "modrinthLiveLabel": "Modrinth에서 실시간 연동",
+    "curseforgeEyebrow": "CurseForge", "curseforgeTitle": "CurseForge 미러", "curseforgeLabel": "CurseForge", "curseforgeLiveLabel": "CurseForge와 실시간 동기화"
+  },
+  "fortnite": {
+    "eyebrow": "포트나이트 크리에이티브", "title": "포트나이트 크리에이티브", "text": "Zo7al이 만든 맵과 경험.", "creatorPage": "크리에이터 페이지",
+    "islandsEyebrow": "아일랜드", "islandsTitle": "모든 맵을 한곳에서", "islandsLabel": "아일랜드", "islandsLiveLabel": "Fortnite.com과 실시간 동기화",
+    "copyCode": "코드 복사", "copied": "복사됨", "byZo7al": "Zo7al 제작"
+  },
+  "socials": {
+    "eyebrow": "커뮤니티", "title": "여정을 따라가세요.", "text": "모든 플랫폼을 한곳에서.", "label": "소셜 미디어",
+    "liveLabel": "Linktree와 실시간 동기화", "viewOnLinktree": "Linktree에서 보기"
+  },
+  "store": {
+    "eyebrow": "Zo7al 후원하기", "title": "ZO7AL 후원하기", "text": "네트워크를 후원하고 Zo7al 공식 스토어를 둘러보세요.",
+    "ranksEyebrow": "등급", "ranksTitle": "서버 등급", "ranksText": "가격과 혜택은 공식 Tebex 스토어에 표시된 대로입니다.",
+    "getRank": "구매하기", "mostPopular": "인기 등급", "allPurchases": "모든 결제는 Zo7al 공식 스토어인 Tebex를 통해 안전하게 처리됩니다.", "visitStore": "zo7al.tebex.io 방문하기"
+  },
+  "faq": {
+    "eyebrow": "도움이 필요하신가요?", "title": "자주 묻는 질문", "text": "네트워크 참여, 등급 구매, Zo7al의 포트나이트 맵 플레이, 지원 요청에 관한 모든 것.",
+    "searchPlaceholder": "질문 검색…", "noResults": "검색과 일치하는 질문이 없습니다.",
+    "categories": { "gettingStarted": "시작하기", "storeRanks": "스토어 및 등급", "fortnite": "포트나이트", "community": "커뮤니티", "modpacks": "모드팩" },
+    "items": [
+      { "category": "gettingStarted", "q": "ZO7AL 네트워크란 무엇인가요?", "a": "Zo7al이 만든 마인크래프트 서버이자 게이밍 유니버스로, 서바이벌, PvP, 모드팩, 포트나이트 크리에이티브 맵을 아우릅니다." },
+      { "category": "gettingStarted", "q": "자바로 Zo7al 네트워크에 어떻게 참여하나요?", "a": "마인크래프트 페이지에서 자바 주소 zo7al.play-mc.fun을 복사해 마인크래프트 자바 에디션의 멀티플레이어 메뉴에 서버로 추가하세요." },
+      { "category": "gettingStarted", "q": "베드락으로 Zo7al 네트워크에 어떻게 참여하나요?", "a": "베드락은 아직 공개되지 않았습니다 — 로드맵에 포함되어 있습니다. 공개 즉시 알림을 받으려면 디스코드에 참여하세요." },
+      { "category": "gettingStarted", "q": "베드락을 지원하나요?", "a": "아직입니다. 현재는 자바 에디션만 완전히 지원되며, 베드락 지원은 향후 업데이트로 계획되어 있습니다." },
+      { "category": "gettingStarted", "q": "지원되는 마인크래프트 버전은 무엇인가요?", "a": "클래식 PvP를 위한 1.8.9, 안정적인 서바이벌을 위한 1.20.x, 최신 버전인 1.21.x를 지원합니다." },
+      { "category": "gettingStarted", "q": "서버에 어떻게 접속하나요?", "a": "마인크래프트 자바 에디션을 열고, 멀티플레이어로 이동해 서버를 추가한 뒤 주소에 zo7al.play-mc.fun을 붙여넣으세요." },
+      { "category": "storeRanks", "q": "등급은 어떻게 구매하나요?", "a": "공식 스토어 zo7al.tebex.io에서 VIP, MVP, MVP+ 중 하나를 선택해 안전하게 결제하세요 — 등급은 자동으로 적용됩니다." },
+      { "category": "storeRanks", "q": "어떤 등급이 있나요?", "a": "VIP($9.99), MVP($19.99), MVP+($29.99)가 있으며, 각 등급은 아래 등급의 혜택을 모두 포함하고 추가 혜택을 제공합니다." },
+      { "category": "storeRanks", "q": "Zo7al 네트워크 스토어는 어디에 있나요?", "a": "zo7al.tebex.io가 유일한 공식 스토어입니다 — 결제 전 항상 도메인을 확인하세요." },
+      { "category": "fortnite", "q": "포트나이트에서 Zo7al 맵에 어떻게 참여하나요?", "a": "포트나이트를 열고 크리에이티브로 이동해 \"코드 입력\"을 선택한 뒤, 포트나이트 페이지에 표시된 아일랜드 코드를 입력하세요." },
+      { "category": "fortnite", "q": "Zo7al의 모든 맵은 어디서 찾을 수 있나요?", "a": "포트나이트 페이지에는 공식 크리에이터 페이지와 동기화된 모든 아일랜드가 코드와 함께 나열됩니다." },
+      { "category": "community", "q": "Zo7al의 공식 디스코드 서버는 무엇인가요?", "a": "discord.gg/nxScVYrSXq — 이벤트, 지원, 커뮤니티 소식의 허브입니다." },
+      { "category": "community", "q": "Zo7al의 소셜 미디어는 어디서 찾을 수 있나요?", "a": "소셜 페이지에는 Zo7al의 Linktree와 실시간 동기화된 모든 확인된 플랫폼이 나열됩니다." },
+      { "category": "community", "q": "문제는 어떻게 신고하나요?", "a": "디스코드 서버에 참여해 지원 채널에서 티켓을 열어주세요 — 팀에 가장 빠르게 연락할 수 있는 방법입니다." },
+      { "category": "community", "q": "Zo7al에게 어떻게 연락하나요?", "a": "디스코드가 가장 좋은 방법이며, 소셜 페이지에 나열된 확인된 소셜 미디어 플랫폼을 통해서도 연락할 수 있습니다." },
+      { "category": "modpacks", "q": "Zo7al의 모드팩은 어디서 다운로드하나요?", "a": "Modrinth와 CurseForge에서 다운로드할 수 있으며, 두 곳 모두 모드팩 페이지에 직접 링크로 연결되어 있습니다." }
+    ]
+  },
+  "footer": {
+    "tagline": "게이밍 크리에이터. 마인크래프트 네트워크 빌더. 포트나이트 크리에이터.", "siteLabel": "사이트", "platformsLabel": "플랫폼",
+    "copyright": "Zo7al. All rights reserved.", "disclaimer": "공식 마인크래프트, Epic Games 또는 포트나이트 서비스가 아닙니다."
+  },
+  "language": { "label": "언어" }
+}

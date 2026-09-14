@@ -1,0 +1,70 @@
+{
+  "nav": { "home": "ホーム", "minecraft": "Minecraft", "modpacks": "Modpack", "fortnite": "Fortnite", "socials": "SNS", "store": "ストア", "discord": "Discord" },
+  "common": { "viewProject": "プロジェクトを見る", "viewProfile": "プロフィールを見る", "openStore": "ストアを開く", "copy": "コピー", "copied": "コピーしました", "all": "すべて", "downloads": "ダウンロード" },
+  "home": {
+    "eyebrow": "@iiZo7al — ゲーミングユニバース", "headline1": "BUILD.", "headline2": "PLAY.", "headline3": "CREATE.",
+    "subtitle": "Zo7alによるMinecraftサーバー、Fortniteマップ、Modpack、ゲームプロジェクト。", "ctaExplore": "ZO7ALを探索", "ctaViewProjects": "プロジェクトを見る", "scroll": "スクロール",
+    "universeEyebrow": "プロジェクト", "universeTitle": "ZO7ALの世界", "universeText": "Zo7alが作り上げた世界、プロジェクト、体験を探索しよう。",
+    "minecraftMeta1": "MINECRAFT", "minecraftMeta2": "JAVA + BEDROCK", "minecraftTitle": "ZO7AL NETWORK", "minecraftText": "プレイヤーのために作られたMinecraftネットワーク。", "minecraftCta": "ネットワークを見る",
+    "modpacksMeta1": "MODPACK", "modpacksMeta2": "MODRINTH + CURSEFORGE", "modpacksTitle": "MINECRAFT MODPACK", "modpacksText": "Zo7alが制作・厳選したMinecraft体験。", "modpacksCta": "Modpackを見る",
+    "fortniteMeta1": "FORTNITE", "fortniteMeta2": "クリエイティブ", "fortniteTitle": "FORTNITE クリエイティブ", "fortniteText": "Zo7alが作成したマップと体験。", "fortniteCta": "マップを見る",
+    "aboutEyebrow": "Zo7alとは？", "aboutText": "Zo7alはMinecraftネットワーク、Modpack、Fortniteクリエイティブマップ、実験的なゲームプロジェクトを手がけるゲーミングクリエイターです。"
+  },
+  "minecraft": {
+    "eyebrow": "Minecraft", "title": "ZO7AL NETWORK", "text": "次のMinecraftの冒険はここから始まる。", "openStore": "ストアを開く",
+    "connectEyebrow": "接続", "connectTitle": "数秒で参加", "connectText": "JavaとBedrock、ひとつのネットワーク。",
+    "compatEyebrow": "対応状況", "compatTitle": "対応バージョン", "gameplayEyebrow": "ゲームプレイ", "gameplayTitle": "モード",
+    "supportEyebrow": "ネットワークを応援", "supportTitle": "ZO7ALを応援しよう", "supportText": "ネットワークを応援し、Zo7al公式ストアをチェックしよう。",
+    "javaLabel": "Java IP", "bedrockLabel": "Bedrockアドレス", "bedrockNote": "Bedrock対応は計画中です — まだ公開されていません。",
+    "copyJava": "Java IPをコピー", "copyBedrock": "Bedrockアドレスをコピー", "checkingStatus": "ステータスを確認中…", "readyToPlay": "ZO7AL Network — プレイ準備完了",
+    "online": "オンライン", "offline": "オフライン", "players": "プレイヤー", "version": "バージョン", "address": "アドレス",
+    "statusUnavailable": "現在ライブステータスは取得できません — 下記のアドレスで接続してください。", "modeLive": "稼働中", "modeSoon": "近日公開"
+  },
+  "modpacks": {
+    "eyebrow": "Modpack", "title": "MINECRAFT、再構築。", "text": "Zo7alが手がけたMinecraftプロジェクトを探索しよう。",
+    "modrinthEyebrow": "Modrinth", "modrinthTitle": "Modrinthのリリース", "modrinthLabel": "Modrinth", "modrinthLiveLabel": "Modrinthからライブ取得",
+    "curseforgeEyebrow": "CurseForge", "curseforgeTitle": "CurseForgeのミラー", "curseforgeLabel": "CurseForge", "curseforgeLiveLabel": "CurseForgeとライブ同期中"
+  },
+  "fortnite": {
+    "eyebrow": "Fortnite クリエイティブ", "title": "FORTNITE クリエイティブ", "text": "Zo7alが作成したマップと体験。", "creatorPage": "クリエイターページ",
+    "islandsEyebrow": "アイランド", "islandsTitle": "すべてのマップを一か所に", "islandsLabel": "アイランド", "islandsLiveLabel": "Fortnite.comとライブ同期中",
+    "copyCode": "コードをコピー", "copied": "コピーしました", "byZo7al": "Zo7al作成"
+  },
+  "socials": {
+    "eyebrow": "コミュニティ", "title": "旅を追いかけよう。", "text": "すべてのプラットフォームを一か所に。", "label": "SNS",
+    "liveLabel": "Linktreeとライブ同期中", "viewOnLinktree": "Linktreeで見る"
+  },
+  "store": {
+    "eyebrow": "Zo7alを応援", "title": "ZO7ALを応援しよう", "text": "ネットワークを応援し、Zo7al公式ストアをチェックしよう。",
+    "ranksEyebrow": "ランク", "ranksTitle": "サーバーランク", "ranksText": "価格と特典は公式Tebexストアの表示に基づきます。",
+    "getRank": "購入", "mostPopular": "人気No.1", "allPurchases": "すべての購入はZo7al公式ストアであるTebexを通じて安全に処理されます。", "visitStore": "zo7al.tebex.io を見る"
+  },
+  "faq": {
+    "eyebrow": "お困りですか？", "title": "よくある質問", "text": "ネットワークへの参加方法、ランクの購入方法、Zo7alのFortniteマップの遷び方、サポートについて。",
+    "searchPlaceholder": "質問を検索…", "noResults": "検索条件に一致する質問はありません。",
+    "categories": { "gettingStarted": "はじめに", "storeRanks": "ストアとランク", "fortnite": "Fortnite", "community": "コミュニティ", "modpacks": "Modpack" },
+    "items": [
+      { "category": "gettingStarted", "q": "ZO7AL Networkとは何ですか？", "a": "Zo7alが構築したMinecraftサーバー兵ゲーミングユニバースで、サバイバル、PvP、Modpack、Fortniteクリエイティブマップを含みます。" },
+      { "category": "gettingStarted", "q": "Javaで Zo7al Network に参加するには？", "a": "MinecraftページからJavaアドレス zo7al.play-mc.fun をコピーし、Minecraft Java Editionのマルチプレイメニューにサーバーとして追加してください。" },
+      { "category": "gettingStarted", "q": "BedrockでZo7al Networkに参加するには？", "a": "Bedrock版はまだ公開されていません — 開発計画に含まれています。公開され次第通知を受け取るにはDiscordに参加してください。" },
+      { "category": "gettingStarted", "q": "Bedrockに対応していますか？", "a": "まだ対応していません。現在はJava Editionのみ完全対応しており、Bedrock対応は今後のアップデートで予定されています。" },
+      { "category": "gettingStarted", "q": "対応しているMinecraftのバージョンは？", "a": "クラシックPvP向けの1.8.9、安定したサバイバル向けの1.20.x、そして最新版の1.21.xに対応しています。" },
+      { "category": "gettingStarted", "q": "サーバーへの接続方法は？", "a": "Minecraft Java Editionを開き、マルチプレイに進み、サーバーを追加して、アドレスに zo7al.play-mc.fun を貼り付けてください。" },
+      { "category": "storeRanks", "q": "ランクの購入方法は？", "a": "公式ストア zo7al.tebex.io にアクセスし、VIP、MVP、MVP+のいずれかを選んで安全に決済してください。ランクは自動的に付与されます。" },
+      { "category": "storeRanks", "q": "利用できるランクは？", "a": "VIP（$9.99）、MVP（$19.99）、MVP+（$29.99）。各ランクは下位ランクの特典をすべて含み、さらに特典が追加されます。" },
+      { "category": "storeRanks", "q": "Zo7al Networkのストアはどこですか？", "a": "zo7al.tebex.io が唯一の公式ストアです — 支払い前に必ずドメインを確認してください。" },
+      { "category": "fortnite", "q": "FortniteでZo7alのマップに参加するには？", "a": "Fortniteを開き、クリエイティブに進み、「コードを入力」を選択し、Fortniteページに表示されているアイランドコードを入力してください。" },
+      { "category": "fortnite", "q": "Zo7alのすべてのマップはどこで見られますか？", "a": "Fortniteページには公開済みのすべてのアイランドがコード付きで一覧表示され、公式クリエイターページと同期しています。" },
+      { "category": "community", "q": "Zo7alの公式Discordサーバーは？", "a": "discord.gg/nxScVYrSXq — イベント、サポート、コミュニティ更新情報の拠点です。" },
+      { "category": "community", "q": "Zo7alのSNSはどこで見られますか？", "a": "SNSページには確認済みのすべてのプラットフォームが、Zo7alのLinktreeとライブ同期して表示されます。" },
+      { "category": "community", "q": "問題を報告するには？", "a": "Discordサーバーに参加し、サポートチャンネルでチケットを開いてください — チームに最も早く連絡できる方法です。" },
+      { "category": "community", "q": "Zo7alに連絡するには？", "a": "Discordが最適な方法です。またはSNSページに掲載されている確認済みのSNSプラットフォームからも連絡できます。" },
+      { "category": "modpacks", "q": "Zo7alのModpackはどこでダウンロードできますか？", "a": "ModrinthとCurseForgeで、どちらもModpackページに直接リンクが掲載されています。" }
+    ]
+  },
+  "footer": {
+    "tagline": "ゲーミングクリエイター。Minecraftネットワーク構築者。Fortniteクリエイター。", "siteLabel": "サイト", "platformsLabel": "プラットフォーム",
+    "copyright": "Zo7al. All rights reserved.", "disclaimer": "Minecraft、Epic Games、Fortniteの公式サービスではありません。"
+  },
+  "language": { "label": "言語" }
+}
