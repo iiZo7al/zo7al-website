@@ -41,7 +41,31 @@ export default function GameScene({ onGameOver, score, stars, isGameOver }: Game
   const starModel = useLoader(OBJLoader, "/assets/models/star/8d8d7c521b43427a99e6df007004564a.obj");
   const meteorModel = useLoader(OBJLoader, "/assets/models/meteor/60136dbdd0434b48a763385058f651f7.obj");
 
-  // Game state references to avoid re-renders in useFrame
+  // Apply materials from MTL files
+  useEffect(() => {
+    const applyMaterials = async (model: THREE.Group, mtlPath: string) => {
+      try {
+        const mtlLoader = new MTLLoader();
+        const materials = await mtlLoader.loadAsync(mtlPath);
+        materials.preload();
+        model.traverse((child) => {
+          if (child instanceof THREE.Mesh) {
+            const matName = child.material.name;
+            if (materials.materials[matName]) {
+              child.material = materials.materials[matName];
+            }
+          }
+        });
+      } catch (e) {
+        console.error(`Failed to load MTL at ${mtlPath}:`, e);
+      }
+    };
+
+    applyMaterials(rocketModel, "/assets/models/rocket/model.mtl");
+    applyMaterials(starModel, "/assets/models/star/model.mtl");
+    applyMaterials(meteorModel, "/assets/models/meteor/model.mtl");
+  }, [rocketModel, starModel, meteorModel]);
+
   const gameData = useRef({
     speed: ASTEROID_SPEED,
     score: 0,
@@ -72,7 +96,6 @@ export default function GameScene({ onGameOver, score, stars, isGameOver }: Game
   useFrame((state, delta) => {
     if (isGameOver) return;
 
-    // 1. Movement
     if (rocketRef.current) {
       const moveSpeed = 15 * delta;
       if (input.left) rocketRef.current.position.x -= moveSpeed;
@@ -81,7 +104,6 @@ export default function GameScene({ onGameOver, score, stars, isGameOver }: Game
       rocketRef.current.rotation.z = THREE.MathUtils.lerp(rocketRef.current.rotation.z, input.left ? 0.2 : input.right ? -0.2 : 0, 0.1);
     }
 
-    // 2. World Movement & Spawning
     const time = state.clock.getElapsedTime();
     gameData.current.speed += 0.0001;
 
@@ -102,7 +124,6 @@ export default function GameScene({ onGameOver, score, stars, isGameOver }: Game
       gameData.current.lastStarSpawnTime = time;
     }
 
-    // 3. Collision & Cleanup
     const rocketPos = rocketRef.current?.position || { x: 0, y: 0, z: 0 };
 
     gameData.current.asteroids = gameData.current.asteroids.filter((ast) => {
@@ -141,7 +162,6 @@ export default function GameScene({ onGameOver, score, stars, isGameOver }: Game
     if (!worldRef.current) return;
     const group = meteorModel.clone();
     const sourceMesh = findFirstMesh(group);
-
     if (!sourceMesh) return;
 
     const asteroid = sourceMesh.clone();
@@ -161,7 +181,6 @@ export default function GameScene({ onGameOver, score, stars, isGameOver }: Game
     if (!worldRef.current) return;
     const group = starModel.clone();
     const sourceMesh = findFirstMesh(group);
-
     if (!sourceMesh) return;
 
     const star = sourceMesh.clone();
@@ -178,11 +197,11 @@ export default function GameScene({ onGameOver, score, stars, isGameOver }: Game
   return (
     <>
       <PerspectiveCamera makeDefault position={[0, 5, 10]} rotation={[-0.2, 0, 0]} />
-      <ambientLight intensity={0.4} />
-      <pointLight position={[10, 10, 10]} intensity={1.5} />
+      <ambientLight intensity={1.0} />
+      <pointLight position={[10, 10, 10]} intensity={2} />
       <group ref={worldRef} />
       <group ref={rocketRef} position={[0, 0, 0]}>
-        <primitive object={rocketModel} scale={0.01} />
+        <primitive object={rocketModel} scale={0.5} />
         <pointLight position={[0, -1, 0]} intensity={2} color="#FF8E00" />
       </group>
     </>
