@@ -46,7 +46,7 @@ export default async function Footer() {
 
         <div>
           <p className="text-label mb-4">{t("footer.platformsLabel")}</p>
-          <ul className="flex flex-col gap-3">
+          <ul className="flex flex-wrap gap-x-6 gap-y-3">
             {socials.map((s) => (
               <li key={s.id}>
                 <a
