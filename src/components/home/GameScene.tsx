@@ -137,7 +137,7 @@ export default function GameScene({ onGameOver, score, stars, isGameOver }: Game
 
   const spawnAsteroid = () => {
     if (!worldRef.current) return;
-    const mesh = meteorModel.clone() as THREE.Mesh;
+    const mesh = meteorModel.clone() as unknown as THREE.Mesh;
 
     mesh.position.set(
       (Math.random() - 0.5) * 30,
@@ -153,7 +153,7 @@ export default function GameScene({ onGameOver, score, stars, isGameOver }: Game
 
   const spawnStar = () => {
     if (!worldRef.current) return;
-    const mesh = starModel.clone() as THREE.Mesh;
+    const mesh = starModel.clone() as unknown as THREE.Mesh;
 
     mesh.position.set(
       (Math.random() - 0.5) * 20,
