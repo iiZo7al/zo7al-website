@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useRef, useState, useEffect, useMemo } from "react";
-import { useFrame } from "@react-three/fiber";
-import { Float, PerspectiveCamera, Text, useLoader } from "@react-three/drei";
+import { useFrame, useLoader } from "@react-three/fiber";
+import { Float, PerspectiveCamera, Text } from "@react-three/drei";
 import * as THREE from "three";
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
 import { MTLLoader } from "three/examples/jsm/loaders/MTLLoader";
