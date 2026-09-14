@@ -46,7 +46,7 @@ export default function LanguageSwitcher({ variant = "desktop" }: { variant?: "d
               }}
             >
               {LOCALE_LABELS[loc].native}
-              {loc === locale && <Check size={14} style={{ color: "var(--accent)" }} />}
+              {loc === locale && <Check size={14} strokeWidth={2.5} style={{ color: "var(--accent)" }} />}
             </button>
           ))}
         </div>
@@ -64,7 +64,7 @@ export default function LanguageSwitcher({ variant = "desktop" }: { variant?: "d
         aria-expanded={open}
         className="flex items-center gap-1.5 rounded-full px-3 py-2 text-sm font-medium text-[var(--text-muted)] transition-colors hover:text-[var(--text)]"
       >
-        <Globe size={16} />
+        <Globe size={16} strokeWidth={2.5} />
         <span className="hidden lg:inline">{LOCALE_LABELS[locale as keyof typeof LOCALE_LABELS]?.native}</span>
       </button>
 
@@ -94,7 +94,7 @@ export default function LanguageSwitcher({ variant = "desktop" }: { variant?: "d
                 }}
               >
                 {LOCALE_LABELS[loc].native}
-                {loc === locale && <Check size={14} style={{ color: "var(--accent)" }} />}
+                {loc === locale && <Check size={14} strokeWidth={2.5} style={{ color: "var(--accent)" }} />}
               </button>
             ))}
           </motion.div>

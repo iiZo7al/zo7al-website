@@ -65,12 +65,12 @@ function CopyRow({
           >
             {copied ? (
               <>
-                <Check size={14} />
+                <Check size={14} strokeWidth={2.5} />
                 {copiedLabel}
               </>
             ) : (
               <>
-                <Copy size={14} />
+                <Copy size={14} strokeWidth={2.5} />
                 {copyLabel}
               </>
             )}

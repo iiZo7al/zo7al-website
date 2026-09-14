@@ -49,6 +49,7 @@ export default function FaqAccordion({
       <div className="relative mb-8">
         <Search
           size={17}
+          strokeWidth={2.5}
           className="pointer-events-none absolute start-4 top-1/2 -translate-y-1/2 text-[var(--text-muted)]"
           aria-hidden="true"
         />
@@ -100,7 +101,7 @@ export default function FaqAccordion({
           className="flex flex-col items-center gap-3 rounded-2xl border py-16 text-center"
           style={{ borderColor: "var(--border)", background: "var(--surface)" }}
         >
-          <MessageCircleQuestion size={28} className="text-[var(--text-muted)]" aria-hidden="true" />
+          <MessageCircleQuestion size={28} strokeWidth={2.5} className="text-[var(--text-muted)]" aria-hidden="true" />
           <p className="text-[var(--text-muted)]">{noResults}</p>
         </div>
       ) : (
@@ -154,6 +155,7 @@ function FaqRow({
         </span>
         <ChevronDown
           size={18}
+          strokeWidth={2.5}
           className="shrink-0 text-[var(--text-muted)] transition-transform duration-300 motion-reduce:transition-none"
           style={{ transform: open ? "rotate(180deg)" : "rotate(0deg)" }}
           aria-hidden="true"

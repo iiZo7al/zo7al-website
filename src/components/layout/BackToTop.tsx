@@ -39,7 +39,7 @@ export default function BackToTop() {
             boxShadow: "0 0 24px var(--glow)",
           }}
         >
-          <ArrowUp size={18} style={{ color: "var(--accent)" }} aria-hidden="true" />
+          <ArrowUp size={18} strokeWidth={2.5} style={{ color: "var(--accent)" }} aria-hidden="true" />
         </motion.button>
       )}
     </AnimatePresence>
