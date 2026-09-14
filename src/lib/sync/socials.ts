@@ -39,6 +39,30 @@ const PLATFORM_LABELS: Record<string, string> = {
   patreon: "Patreon",
 };
 
+const PLATFORM_COLORS: Record<string, string> = {
+  youtube: "#FF0000",
+  discord: "#5865F2",
+  tiktok: "#000000",
+  instagram: "#E4405F",
+  x: "#000000",
+  twitch: "#9146FF",
+  modrinth: "#32B16D",
+  curseforge: "#F47B20",
+  fortnite: "#8B5CF6",
+  epicgames: "#333333",
+  kick: "#53FC18",
+  snapchat: "#FFFC00",
+  telegram: "#0088cc",
+  whatsapp: "#25D366",
+  roblox: "#E2231A",
+  bluesky: "#0085ff",
+  playstation: "#003087",
+  linktree: "#44E58D",
+  facebook: "#1877F2",
+  threads: "#000000",
+  patreon: "#F96854",
+};
+
 function isNoiseLinktreeUrl(url: URL): boolean {
   if (url.hostname !== "linktr.ee") return false;
   const segments = url.pathname.split("/").filter(Boolean);
@@ -85,6 +109,7 @@ export async function getSyncedSocials(): Promise<{
         label: PLATFORM_LABELS[platform] ?? link.title ?? platform,
         url: link.url,
         description: link.title,
+        color: PLATFORM_COLORS[platform],
       });
     }
 
@@ -98,6 +123,7 @@ export async function getSyncedSocials(): Promise<{
         label: s.label,
         url: s.url,
         description: s.description,
+        color: PLATFORM_COLORS[s.id],
       })),
       source: "fallback",
     };
