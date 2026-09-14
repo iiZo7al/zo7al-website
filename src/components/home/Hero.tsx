@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import SpaceExperience from "./SpaceExperience";
 import MagneticButton from "@/components/cursor/MagneticButton";
 
@@ -11,7 +11,7 @@ const EASE = [0.16, 1, 0.3, 1] as const;
 
 const container = {
   hidden: {},
-  show: { transition: { staggerChildren: 0.09, delayChildren: 0.1 } },
+  show: { opacity: 1, y: 0, transition: { staggerChildren: 0.09, delayChildren: 0.1 } },
 };
 const item = {
   hidden: { opacity: 0, y: 22 },
@@ -21,10 +21,11 @@ const item = {
 export default function Hero() {
   const t = useTranslations("home");
   const [gameActive, setGameActive] = useState(false);
+  const onGameStateChange = useCallback((state: string) => setGameActive(state !== "SATURN"), []);
 
   return (
     <section className="relative flex min-h-[100svh] items-center justify-center pt-[var(--nav-height)]">
-      <SpaceExperience onGameStateChange={(state) => setGameActive(state === "GAME" || state === "GAMEOVER")} />
+      <SpaceExperience onGameStateChange={onGameStateChange} />
 
       <motion.div
         variants={container}
@@ -32,7 +33,8 @@ export default function Hero() {
         animate={gameActive ? { opacity: 0, y: -20 } : "show"}
         transition={{ duration: 0.5, ease: "easeIn" }}
         className="relative z-10 mx-auto flex max-w-4xl flex-col items-center px-6 text-center"
-        style={{ pointerEvents: gameActive ? "none" : "auto" }}
+        style={{ pointerEvents: "none" }}
+        inert={gameActive}
       >
         <motion.p variants={item} className="text-label mb-6" style={{ color: "var(--accent)" }}>
           {t("eyebrow")}
@@ -56,7 +58,7 @@ export default function Hero() {
           {t("subtitle")}
         </motion.p>
 
-        <motion.div variants={item} className="mt-10 flex flex-wrap items-center justify-center gap-4">
+        <motion.div variants={item} className="mt-10 flex flex-wrap items-center justify-center gap-4" style={{ pointerEvents: gameActive ? "none" : "auto" }}>
           <MagneticButton>
             <Link
               href="/minecraft"
@@ -84,7 +86,7 @@ export default function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: gameActive ? 0 : 1 }}
         transition={{ delay: 1, duration: 0.8 }}
-        className="absolute bottom-10 left-1/2 z-10 -translate-x-1/2 text-[var(--text-muted)]"
+        className="pointer-events-none absolute bottom-10 left-1/2 z-10 -translate-x-1/2 text-[var(--text-muted)]"
       >
         <div className="flex flex-col items-center gap-2">
           <span className="text-label">{t("scroll")}</span>
