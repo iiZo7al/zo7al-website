@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Hero from "@/components/home/Hero";
 import UniverseShowcase from "@/components/home/UniverseShowcase";
-import AboutSection from "@/components/home/AboutSection";
 import FaqSection from "@/components/faq/FaqSection";
 
 export const metadata: Metadata = {
@@ -15,7 +14,6 @@ export default function HomePage() {
     <main data-accent="home">
       <Hero />
       <UniverseShowcase />
-      <AboutSection />
       <FaqSection />
     </main>
   );
