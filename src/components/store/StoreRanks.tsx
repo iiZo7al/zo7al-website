@@ -1,10 +1,12 @@
 "use client";
+import { useTranslations } from "next-intl";
 
 import Reveal from "@/components/ui/Reveal";
 import MagneticButton from "@/components/cursor/MagneticButton";
 import { STORE_RANKS } from "@/lib/data/store";
 
 export default function StoreRanks() {
+  const t = useTranslations("store"), ui = useTranslations("ui");
   return (
     <div className="grid gap-6 sm:grid-cols-3">
       {STORE_RANKS.map((rank, i) => (
@@ -22,18 +24,18 @@ export default function StoreRanks() {
                 className="absolute -top-3 left-7 rounded-full px-3 py-1 text-[11px] font-semibold"
                 style={{ background: "var(--accent)", color: "#07080B" }}
               >
-                Most popular
+                {t("mostPopular")}
               </span>
             )}
             <p className="text-label" style={{ color: "var(--accent)" }}>
-              Rank
+              {ui("rank")}
             </p>
             <h3 className="mt-2 text-2xl font-bold">{rank.name}</h3>
             <p className="mt-3 text-3xl font-bold">{rank.price}</p>
 
             <ul className="mt-6 flex-1 space-y-3">
-              {rank.perks.map((perk) => (
-                <li key={perk} className="flex items-start gap-2 text-sm text-[var(--text-muted)]">
+              {rank.perks.map((perk, i) => (
+                <li key={ui(`perk_${rank.id}_${i}`)} className="flex items-start gap-2 text-sm text-[var(--text-muted)]">
                   <svg
                     width="14"
                     height="14"
@@ -45,7 +47,7 @@ export default function StoreRanks() {
                   >
                     <path d="M3 8.5l3 3 7-7" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
-                  {perk}
+                  {ui(`perk_${rank.id}_${i}`)}
                 </li>
               ))}
             </ul>
@@ -63,7 +65,7 @@ export default function StoreRanks() {
                   border: rank.featured ? "none" : "1px solid var(--border-strong)",
                 }}
               >
-                Get {rank.name}
+                {t("getRank")} {rank.name}
               </a>
             </MagneticButton>
           </div>
@@ -72,3 +74,4 @@ export default function StoreRanks() {
     </div>
   );
 }
+

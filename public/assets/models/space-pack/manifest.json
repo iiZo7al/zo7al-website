@@ -1,0 +1,72 @@
+[
+  {
+    "name": "Asteroid",
+    "model": "Asteroid.glb",
+    "color": "bd5a5ae6a88641349ba7f8feb785ed57_RGB_Asteroid_BaseColor.png",
+    "normal": "ba5f2aa7990a4e6cacc3bd814533b3f2_N_Asteroid_Normal.png",
+    "roughness": "83def38722364523a3f041ba253d689c_R_Asteroid_Roughtness.png"
+  },
+  {
+    "name": "Comet",
+    "model": "Comet.glb",
+    "color": "b02f25e0a54f4bc8862f4ad571f2ba3c_RGB_Comet_BaseColor.png",
+    "normal": "be9f8a50195f4265a5b96d1f567c0a8e_N_Comet_Normal.png",
+    "roughness": "702657fd0d654d059f1de3ab08d45a12_R_Comet_Roughtness.png"
+  },
+  {
+    "name": "Satellite",
+    "model": "Satellite.glb",
+    "color": "3a91c257610942dc8f297ebf5914311f_RGB_Satellite_BaseColor.png",
+    "normal": "e1391208b4e94f27bc870700213e0b5d_N_Satellite_Normal.png",
+    "roughness": "ce62b30b1d2c49419dcff0af12812880_R_Satellite_Roughtness.png"
+  },
+  {
+    "name": "SpaceCapsule",
+    "model": "SpaceCapsule.glb",
+    "color": "89f682fe303e47b9857c6dc196f282dd_RGB_SpaceCapsule_BaseColor.png",
+    "normal": "13698e7389de4a38b3c987d48b4c9023_N_SpaceCapsule_Normal.png",
+    "roughness": "69dc6ddac08d429b8928f3f869faaf82_R_SpaceCapsule_Roughtness.png"
+  },
+  {
+    "name": "Sputnik",
+    "model": "Sputnik.glb",
+    "color": "e6f0201b3e4a4e5ba175cc36e97bd084_RGB_Sputnik_BaseColor.png",
+    "normal": "82895ca676a34400a93470a0f34948dc_N_Sputnik_Normal.png",
+    "roughness": "92364ba36c7d47118c0779c7395868e1_R_Sputnik_Roughtness.png"
+  },
+  {
+    "name": "UFO",
+    "model": "UFO.glb",
+    "color": "2546fe4c6518432e87d734b9487f5f62_RGB_UFO_BaseColor.png",
+    "normal": "4d2c825afeef447f84dd8dc8cae9dd4f_N_UFO_Normal.png",
+    "roughness": "b7b43089bf38495ea53757f3fea4289d_R_UFO_Roughtness.png"
+  },
+  {
+    "name": "Earth",
+    "model": "Earth.glb",
+    "color": "47a30ca92a2e4ab59e782972835939e7_RGB_Earth_BaseColor.png",
+    "normal": "a1da87be9ffa4806bf48053511f84b9a_N_Earth_Normal.png",
+    "roughness": "e815dbef496b4da2aa56d5cd135e4d0f_R_Earth_Roughtness.png"
+  },
+  {
+    "name": "FullMoon",
+    "model": "FullMoon.glb",
+    "color": "e2453166c7254575af9346eebbbeeed5_RGB_FullMoon_BaseColor.png",
+    "normal": "7602494b701940a1b012c3d64ce68cf8_N_FullMoon_Normal.png",
+    "roughness": "50417898e6b9471f807162abcc74f98a_R_FullMoon_Roughtness.png"
+  },
+  {
+    "name": "Planet_B",
+    "model": "Planet_B.glb",
+    "color": "c9f565ba883d4d189e840aff0cd5c3be_RGB_Planet_B_BaseColor.png",
+    "normal": "1d063b99212f4c3cbbac4cd531e8db2c_N_Planet_B_Normal.png",
+    "roughness": "16a2579241d241d5afbc0e952f491d17_R_Planet_B_Roughtness.png"
+  },
+  {
+    "name": "Planet_H",
+    "model": "Planet_H.glb",
+    "color": "149118c4b019427283435e79bb132de4_RGB_Planet_H_BaseColor.png",
+    "normal": "5da6833931b24eba887b5585da2d79e6_N_Planet_H_Normal.png",
+    "roughness": "8b1f9b67ffe440b28268b945c48b699b_R_Planet_H_Roughtness.png"
+  }
+]

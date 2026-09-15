@@ -1,4 +1,5 @@
 "use client";
+import { useTranslations } from "next-intl";
 
 import Reveal from "@/components/ui/Reveal";
 import { SyncedSocial } from "@/lib/sync/socials";
@@ -6,12 +7,12 @@ import { SocialPreview } from "@/lib/sync/previews";
 import BrandIcon from "@/components/ui/BrandIcon";
 
 export default function SocialGrid({
-  socials,
-  previews
+  socials
 }: {
   socials: SyncedSocial[];
   previews: Record<string, SocialPreview | null>
 }) {
+  const t = useTranslations("ui");
   return (
     <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
       {socials.map((social, i) => (
@@ -58,7 +59,7 @@ export default function SocialGrid({
             <p className="mt-5 font-semibold">{social.label}</p>
             <p className="text-sm text-[var(--text-muted)]">{social.handle ?? ""}</p>
             <p className="mt-3 text-sm leading-relaxed text-[var(--text-muted)]">
-              {social.description}
+              {t.has(`social_${social.id}`) ? t(`social_${social.id}`) : social.description}
             </p>
           </a>
         </Reveal>
@@ -66,3 +67,4 @@ export default function SocialGrid({
     </div>
   );
 }
+
