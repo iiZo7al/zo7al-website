@@ -56,6 +56,11 @@ export function useSpaceModels() {
     });
     const models = [rocket.scene, ...sources].map((source, index) => {
       const clone = source.clone(true);
+      if (index === 0) {
+        // The supplied mesh has a baked diagonal longitudinal axis. Align its
+        // measured principal axis with screen-up before centering/scaling.
+        clone.quaternion.setFromUnitVectors(new THREE.Vector3(-0.36537422, 0.78477997, 0.5006217).normalize(), new THREE.Vector3(0, 1, 0));
+      }
       clone.traverse((child) => {
         if (!(child instanceof THREE.Mesh)) return;
         // The supplied OBJ incorrectly labels BOTH groups as Fire. Mesh names

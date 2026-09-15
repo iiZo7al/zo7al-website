@@ -9,7 +9,7 @@ import {
   getFlightBounds,
   readFlightInput,
   stepFlight,
-  pointerFlightInput,
+  stepPointerFlight,
 } from "../src/components/home/rocket-motion.ts";
 
 const idle = { x: 0, y: 0 };
@@ -239,8 +239,18 @@ test("arrows match WASD and duplicate keys never double speed", () => {
 test("pointer steering converges without overshoot across refresh rates", () => {
   for (const fps of [30, 60, 144]) {
     const motion = createMotion(), target = { x: 4, y: -2 };
-    for(let i=0;i<fps*4;i++) stepFlight(motion, pointerFlightInput(motion,target), openArena, 1/fps);
+    for(let i=0;i<fps*4;i++) stepPointerFlight(motion, target, openArena, 1/fps);
     near(motion.x, target.x, 0.001); near(motion.y, target.y, 0.001);
     assert.ok(Math.hypot(motion.vx,motion.vy)<0.01);
+  }
+});
+
+test("mouse reaches 95 percent of target in 150ms and stays within the arena", () => {
+  for (const fps of [30, 60, 144]) {
+    const m=createMotion();
+    for(let i=0;i<Math.ceil(fps*0.15);i++) stepPointerFlight(m,{x:8,y:4},openArena,1/fps);
+    assert.ok(m.x>=7.6 && m.x<=8); assert.ok(m.y>=3.8 && m.y<=4);
+    for(let i=0;i<fps;i++) stepPointerFlight(m,{x:100,y:-100},{x:10,y:5},1/fps);
+    assert.ok(m.x<=10 && m.y>=-5);
   }
 });

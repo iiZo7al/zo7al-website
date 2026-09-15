@@ -1,5 +1,9 @@
 # Space Run
 
+## 1.0.2
+- Keep the rocket upright and forward-facing, including while steering.
+- Replace slow velocity-based mouse steering with fast, bounded pointer following.
+
 ## 1.0.1
 - Add WASD, arrow keys and pointer-follow controls; hide the cursor during flight.
 - Fix negative source UV coordinates using repeat wrapping for all model maps.

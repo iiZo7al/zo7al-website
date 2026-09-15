@@ -5,8 +5,8 @@ import { useFrame } from "@react-three/fiber";
 import { PerspectiveCamera } from "@react-three/drei";
 import * as THREE from "three";
 import {
-  CAMERA_FOLLOW, FLIGHT_CAMERA_DISTANCE, FLIGHT_CAMERA_FOV, FLIGHT_SPEED,
-  getFlightBounds, readFlightInput, pointerFlightInput, stepFlight, type FlightInput,
+  CAMERA_FOLLOW, FLIGHT_CAMERA_DISTANCE, FLIGHT_CAMERA_FOV,
+  getFlightBounds, readFlightInput, stepPointerFlight, stepFlight, type FlightInput,
 } from "./rocket-motion";
 import { useSpacePack, DistantWorlds } from "./SpacePack";
 import type { SpaceSound } from "./space-audio";
@@ -68,7 +68,9 @@ export default function GameScene({ onGameOver, onProgress, touchInput, isGameOv
     const down = (e: KeyboardEvent) => {
       if (e.target instanceof HTMLElement && e.target.closest("input, textarea, select, [contenteditable]")) return;
       if (e.ctrlKey || e.metaKey || e.altKey) { reset(); return; }
-      if (codes.has(e.code)) { e.preventDefault(); pressed.add(e.code); pointer.current.active = false; }
+      if (codes.has(e.code)) { e.preventDefault(); pressed.add(e.code);
+        if (pointer.current.active) { motion.current.vx = 0; motion.current.vy = 0; }
+        pointer.current.active = false; }
     };
     const move = (e: PointerEvent) => {
       if (e.pointerType !== "mouse" || !(e.target instanceof HTMLCanvasElement)) return;
@@ -124,16 +126,18 @@ export default function GameScene({ onGameOver, onProgress, touchInput, isGameOv
     const dt = Math.min(delta, 1 / 20);
     const oldRocket = { ...motion.current };
     const bounds = getFlightBounds(state.size.width / Math.max(1, state.size.height), state.size.height);
-    let input = readFlightInput(keys.current, touchInput.current);
+    const input = readFlightInput(keys.current, touchInput.current);
     if (keys.current.size || Math.hypot(touchInput.current.x, touchInput.current.y) > 0) pointer.current.active = false;
+    let pointerMoved = false;
     if (pointer.current.active) {
       pointerRay.setFromCamera(new THREE.Vector2(pointer.current.x, pointer.current.y), state.camera);
       if (pointerRay.ray.intersectPlane(flightPlane, pointerWorld)) {
-        input = pointerFlightInput(motion.current, { x: THREE.MathUtils.clamp(pointerWorld.x, -bounds.x, bounds.x), y: THREE.MathUtils.clamp(pointerWorld.y, -bounds.y, bounds.y) });
+        stepPointerFlight(motion.current, pointerWorld, bounds, dt);
+        pointerMoved = true;
       }
     }
-    stepFlight(motion.current, input, bounds, dt);
-    const { x, y, vx, vy } = motion.current;
+    if (!pointerMoved) stepFlight(motion.current, input, bounds, dt);
+    const { x, y } = motion.current;
     g.elapsed += dt;
     const time = g.elapsed;
     g.speed = Math.min(58, 26 + time * 0.28);
@@ -142,8 +146,7 @@ export default function GameScene({ onGameOver, onProgress, touchInput, isGameOv
 
     if (rocketRef.current) {
       rocketRef.current.position.set(x, y, 0);
-      rocketRef.current.rotation.z = THREE.MathUtils.damp(rocketRef.current.rotation.z, -vx / FLIGHT_SPEED * (reducedMotion.current ? 0.05 : 0.3), 12, dt);
-      rocketRef.current.rotation.x = THREE.MathUtils.damp(rocketRef.current.rotation.x, vy / FLIGHT_SPEED * 0.1, 12, dt);
+      rocketRef.current.rotation.set(0, 0, 0);
       if (shieldRef.current) shieldRef.current.visible = time < g.invulnerableUntil;
     }
     if (flameRef.current) flameRef.current.scale.y = reducedMotion.current ? 1 : 1 + Math.sin(time * 35) * 0.12;
@@ -236,7 +239,7 @@ export default function GameScene({ onGameOver, onProgress, touchInput, isGameOv
           <sphereGeometry args={[0.68, 16, 12]} />
           <meshBasicMaterial color="#80d9ff" transparent opacity={0.22} wireframe depthWrite={false} />
         </mesh>
-        <group rotation={[-0.65, 0, 0]}>
+        <group>
           <primitive object={models.rocket} dispose={null} />
           <group ref={flameRef} position={[0, -0.7, 0]}>
             <mesh position={[0, -0.3, 0]} rotation={[0, 0, Math.PI]}>

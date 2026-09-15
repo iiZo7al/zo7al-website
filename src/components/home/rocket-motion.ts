@@ -47,10 +47,17 @@ export function stepFlight(motion: FlightMotion, input: FlightInput, bounds: Fli
 }
 
 
-/** Convert a world-space pointer target into bounded analog steering. */
-export function pointerFlightInput(motion: FlightInput, target: FlightInput): FlightInput {
-  const x = (target.x - motion.x) * 5 / FLIGHT_SPEED;
-  const y = (target.y - motion.y) * 5 / FLIGHT_SPEED;
-  const length = Math.max(1, Math.hypot(x, y));
-  return { x: x / length, y: y / length };
+/** Fast, frame-rate-independent pointer following without keyboard acceleration. */
+export function stepPointerFlight(motion: FlightMotion, target: FlightInput, bounds: FlightBounds, delta: number): void {
+  const dt = Math.min(Math.max(delta, 0), 1 / 20);
+  if (dt === 0) return;
+  const x = Math.max(-bounds.x, Math.min(bounds.x, target.x));
+  const y = Math.max(-bounds.y, Math.min(bounds.y, target.y));
+  const blend = -Math.expm1(-24 * dt);
+  const dx = (x - motion.x) * blend;
+  const dy = (y - motion.y) * blend;
+  motion.x += dx;
+  motion.y += dy;
+  motion.vx = dx / dt;
+  motion.vy = dy / dt;
 }
