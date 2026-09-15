@@ -9,6 +9,7 @@ import {
   getFlightBounds,
   readFlightInput,
   stepFlight,
+  pointerFlightInput,
 } from "../src/components/home/rocket-motion.ts";
 
 const idle = { x: 0, y: 0 };
@@ -31,7 +32,7 @@ test("physical WASD codes map to the four screen directions", () => {
   assert.deepEqual(inputFor("KeyA"), { x: -1, y: 0 });
   assert.deepEqual(inputFor("KeyS"), { x: 0, y: -1 });
   assert.deepEqual(inputFor("KeyD"), { x: 1, y: 0 });
-  for (const code of ["ArrowUp", "ArrowLeft", "ArrowDown", "ArrowRight", "w", "a", "s", "d", "Space"]) {
+  for (const code of ["w", "a", "s", "d", "Space"]) {
     assert.deepEqual(inputFor(code), idle);
   }
 });
@@ -225,5 +226,21 @@ test("extremely narrow or initially zero-sized viewports produce finite nonnegat
     const bounds = getFlightBounds(aspect, height);
     assert.ok(Number.isFinite(bounds.x) && bounds.x >= 0);
     assert.ok(Number.isFinite(bounds.y) && bounds.y >= 0);
+  }
+});
+
+
+test("arrows match WASD and duplicate keys never double speed", () => {
+  for (const [arrow, wasd] of [["ArrowUp", "KeyW"], ["ArrowDown", "KeyS"], ["ArrowLeft", "KeyA"], ["ArrowRight", "KeyD"]]) {
+    assert.deepEqual(inputFor(arrow), inputFor(wasd));
+    assert.deepEqual(inputFor(arrow, wasd), inputFor(wasd));
+  }
+});
+test("pointer steering converges without overshoot across refresh rates", () => {
+  for (const fps of [30, 60, 144]) {
+    const motion = createMotion(), target = { x: 4, y: -2 };
+    for(let i=0;i<fps*4;i++) stepFlight(motion, pointerFlightInput(motion,target), openArena, 1/fps);
+    near(motion.x, target.x, 0.001); near(motion.y, target.y, 0.001);
+    assert.ok(Math.hypot(motion.vx,motion.vy)<0.01);
   }
 });

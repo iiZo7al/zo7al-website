@@ -68,6 +68,8 @@
   },
   "language": { "label": "언어" },
   "game": {
+    "version": "버전 {version}",
+    "pointerHelp": "WASD / 방향키 · 마우스를 움직여 조종",
     "title": "ZO7AL / 우주 비행",
     "play": "우주 비행 플레이",
     "loading": "비행 준비 중…",
@@ -96,7 +98,7 @@
     "sounds": "효과음",
     "move": "이동",
     "drag": "드래그하여 이동",
-    "keysHelp": "W 위, A 왼쪽, S 아래, D 오른쪽. 키를 조합하면 대각선으로 이동합니다.",
+    "keysHelp": "WASD / 방향키 · 마우스를 움직여 조종",
     "joystick": "로켓 이동 조이스틱",
     "joystickHelp": "원하는 방향으로 드래그하세요. 놓으면 감속합니다. W, A, S, D도 사용할 수 있습니다.",
     "lgTitle": "세계 순위",

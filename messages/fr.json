@@ -68,6 +68,8 @@
   },
   "language": { "label": "Langue" },
   "game": {
+    "version": "Version {version}",
+    "pointerHelp": "WASD / flèches · déplacez la souris pour piloter",
     "title": "ZO7AL / Vol spatial",
     "play": "Jouer au vol spatial",
     "loading": "Préparation du vol…",
@@ -96,7 +98,7 @@
     "sounds": "Effets sonores",
     "move": "Bouger",
     "drag": "Glissez pour bouger",
-    "keysHelp": "W en haut, A à gauche, S en bas et D à droite. Combinez les touches pour les diagonales.",
+    "keysHelp": "WASD / flèches · déplacez la souris pour piloter",
     "joystick": "Joystick de la fusée",
     "joystickHelp": "Glissez dans une direction. Relâchez pour ralentir. Vous pouvez aussi utiliser W, A, S et D.",
     "lgTitle": "Classement mondial",

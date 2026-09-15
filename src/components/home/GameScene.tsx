@@ -6,7 +6,7 @@ import { PerspectiveCamera } from "@react-three/drei";
 import * as THREE from "three";
 import {
   CAMERA_FOLLOW, FLIGHT_CAMERA_DISTANCE, FLIGHT_CAMERA_FOV, FLIGHT_SPEED,
-  getFlightBounds, readFlightInput, stepFlight, type FlightInput,
+  getFlightBounds, readFlightInput, pointerFlightInput, stepFlight, type FlightInput,
 } from "./rocket-motion";
 import { useSpacePack, DistantWorlds } from "./SpacePack";
 import type { SpaceSound } from "./space-audio";
@@ -36,6 +36,10 @@ export default function GameScene({ onGameOver, onProgress, touchInput, isGameOv
   const worldRef = useRef<THREE.Group>(null);
   const cameraRef = useRef<THREE.PerspectiveCamera>(null);
   const dustRef = useRef<THREE.Points>(null);
+  const pointer = useRef({ active: false, x: 0, y: 0 });
+  const pointerRay = useMemo(() => new THREE.Raycaster(), []);
+  const flightPlane = useMemo(() => new THREE.Plane(new THREE.Vector3(0, 0, 1), 0), []);
+  const pointerWorld = useMemo(() => new THREE.Vector3(), []);
   const keys = useRef(new Set<string>());
   const motion = useRef({ x: 0, y: 0, vx: 0, vy: 0 });
   const reducedMotion = useRef(false);
@@ -57,15 +61,21 @@ export default function GameScene({ onGameOver, onProgress, touchInput, isGameOv
 
   useEffect(() => {
     const pressed = keys.current;
-    const reset = () => { pressed.clear(); };
+    const reset = () => { pressed.clear(); pointer.current.active = false; };
     reset();
     if (paused || isGameOver) return;
-    const codes = new Set(["KeyW", "KeyA", "KeyS", "KeyD"]);
+    const codes = new Set(["KeyW", "KeyA", "KeyS", "KeyD", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"]);
     const down = (e: KeyboardEvent) => {
       if (e.target instanceof HTMLElement && e.target.closest("input, textarea, select, [contenteditable]")) return;
       if (e.ctrlKey || e.metaKey || e.altKey) { reset(); return; }
-      if (codes.has(e.code)) { e.preventDefault(); pressed.add(e.code); }
+      if (codes.has(e.code)) { e.preventDefault(); pressed.add(e.code); pointer.current.active = false; }
     };
+    const move = (e: PointerEvent) => {
+      if (e.pointerType !== "mouse" || !(e.target instanceof HTMLCanvasElement)) return;
+      const bounds = e.target.getBoundingClientRect();
+      pointer.current = { active: true, x: (e.clientX - bounds.left) / bounds.width * 2 - 1, y: 1 - (e.clientY - bounds.top) / bounds.height * 2 };
+    };
+    window.addEventListener("pointermove", move);
     const up = (e: KeyboardEvent) => { pressed.delete(e.code); };
     const media = window.matchMedia("(prefers-reduced-motion: reduce)");
     const preference = () => { reducedMotion.current = media.matches; };
@@ -77,6 +87,7 @@ export default function GameScene({ onGameOver, onProgress, touchInput, isGameOv
     return () => {
       reset();
       media.removeEventListener("change", preference);
+      window.removeEventListener("pointermove", move);
       window.removeEventListener("keydown", down);
       window.removeEventListener("keyup", up);
       window.removeEventListener("blur", reset);
@@ -113,7 +124,15 @@ export default function GameScene({ onGameOver, onProgress, touchInput, isGameOv
     const dt = Math.min(delta, 1 / 20);
     const oldRocket = { ...motion.current };
     const bounds = getFlightBounds(state.size.width / Math.max(1, state.size.height), state.size.height);
-    stepFlight(motion.current, readFlightInput(keys.current, touchInput.current), bounds, dt);
+    let input = readFlightInput(keys.current, touchInput.current);
+    if (keys.current.size || Math.hypot(touchInput.current.x, touchInput.current.y) > 0) pointer.current.active = false;
+    if (pointer.current.active) {
+      pointerRay.setFromCamera(new THREE.Vector2(pointer.current.x, pointer.current.y), state.camera);
+      if (pointerRay.ray.intersectPlane(flightPlane, pointerWorld)) {
+        input = pointerFlightInput(motion.current, { x: THREE.MathUtils.clamp(pointerWorld.x, -bounds.x, bounds.x), y: THREE.MathUtils.clamp(pointerWorld.y, -bounds.y, bounds.y) });
+      }
+    }
+    stepFlight(motion.current, input, bounds, dt);
     const { x, y, vx, vy } = motion.current;
     g.elapsed += dt;
     const time = g.elapsed;
@@ -204,8 +223,8 @@ export default function GameScene({ onGameOver, onProgress, touchInput, isGameOv
     <>
       <PerspectiveCamera ref={cameraRef} makeDefault position={[0, 0, FLIGHT_CAMERA_DISTANCE]} fov={FLIGHT_CAMERA_FOV} />
       <hemisphereLight intensity={1.4} color="#b8d4ff" groundColor="#16102b" />
-      <directionalLight position={[4, 7, 6]} intensity={4} color="#fff2dc" />
-      <directionalLight position={[-6, 1, -4]} intensity={3} color="#72bcff" />
+      <directionalLight position={[4, 7, 6]} intensity={2} color="#fff2dc" />
+      <directionalLight position={[-6, 1, -4]} intensity={1} color="#b8d4ff" />
       <points ref={dustRef}>
         <bufferGeometry><bufferAttribute attach="attributes-position" args={[dust, 3]} /></bufferGeometry>
         <pointsMaterial color="#bddeff" size={0.065} transparent opacity={0.7} sizeAttenuation depthWrite={false} />

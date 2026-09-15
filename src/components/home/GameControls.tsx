@@ -110,10 +110,10 @@ export default function GameControls({ onMove, onExit }: GameControlsProps) {
           role="group"
           aria-label={t("keysHelp")}
         >
-          <div className="keys" aria-hidden="true">
-            {["W", "A", "S", "D"].map((key) => <kbd key={key}>{key}</kbd>)}
+          <div className="keys" dir="ltr" aria-hidden="true">
+            {["W", "A", "S", "D", "↑", "←", "↓", "→"].map((key) => <kbd key={key}>{key}</kbd>)}
           </div>
-          <span className="control-label">{t("move")}</span>
+          <span className="control-label">{t("pointerHelp")}</span>
         </div>
 
         <div className="touch-guide">
@@ -163,7 +163,7 @@ export default function GameControls({ onMove, onExit }: GameControlsProps) {
         .game-controls {
           position: absolute;
           inset-inline: 0;
-          bottom: 0;
+          bottom: 24px;
           z-index: 20;
           display: flex;
           align-items: flex-end;
@@ -277,13 +277,13 @@ export default function GameControls({ onMove, onExit }: GameControlsProps) {
           outline: 2px solid var(--accent);
           outline-offset: 4px;
         }
-        @media (any-pointer: coarse), (max-width: 600px) {
+        @media (any-pointer: coarse), (max-width: 600px), (max-height: 500px) {
           .touch-guide { display: flex; }
         }
         @media (hover: none) and (pointer: coarse) {
           .keyboard-guide, .exit-button kbd { display: none; }
         }
-        @media (max-width: 600px) {
+        @media (max-width: 600px), (max-height: 500px) {
           .keyboard-guide { display: none; }
         }
         @media (max-width: 480px) {

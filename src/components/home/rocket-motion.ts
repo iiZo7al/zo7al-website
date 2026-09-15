@@ -8,8 +8,8 @@ export const FLIGHT_CAMERA_FOV = 55;
 export const CAMERA_FOLLOW = 0.2;
 
 export function readFlightInput(keys: ReadonlySet<string>, touch: FlightInput): FlightInput {
-  const x = Number(keys.has("KeyD")) - Number(keys.has("KeyA")) + touch.x;
-  const y = Number(keys.has("KeyW")) - Number(keys.has("KeyS")) + touch.y;
+  const x = Number(keys.has("KeyD") || keys.has("ArrowRight")) - Number(keys.has("KeyA") || keys.has("ArrowLeft")) + touch.x;
+  const y = Number(keys.has("KeyW") || keys.has("ArrowUp")) - Number(keys.has("KeyS") || keys.has("ArrowDown")) + touch.y;
   const length = Math.max(1, Math.hypot(x, y));
   return { x: x / length, y: y / length };
 }
@@ -44,4 +44,13 @@ export function stepFlight(motion: FlightMotion, input: FlightInput, bounds: Fli
   motion.y = Math.max(-bounds.y, Math.min(bounds.y, motion.y));
   if ((motion.x >= bounds.x && motion.vx > 0) || (motion.x <= -bounds.x && motion.vx < 0)) motion.vx = 0;
   if ((motion.y >= bounds.y && motion.vy > 0) || (motion.y <= -bounds.y && motion.vy < 0)) motion.vy = 0;
+}
+
+
+/** Convert a world-space pointer target into bounded analog steering. */
+export function pointerFlightInput(motion: FlightInput, target: FlightInput): FlightInput {
+  const x = (target.x - motion.x) * 5 / FLIGHT_SPEED;
+  const y = (target.y - motion.y) * 5 / FLIGHT_SPEED;
+  const length = Math.max(1, Math.hypot(x, y));
+  return { x: x / length, y: y / length };
 }

@@ -70,7 +70,7 @@ export default async function Footer() {
                 className="flex items-center gap-2 text-sm text-[var(--text-muted)] hover:text-[var(--text)] transition-colors"
               >
                 <ShoppingBag size={14} strokeWidth={2.5} />
-                Store
+                {t("nav.store")}
               </a>
             </li>
           </ul>
@@ -87,3 +87,4 @@ export default async function Footer() {
     </footer>
   );
 }
+

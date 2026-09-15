@@ -239,3 +239,15 @@ button:focus-visible,
   border-radius: 999px;
   border: 2px solid var(--bg);
 }
+
+
+html.space-flight-active .cursor-dot,
+html.space-flight-active .cursor-ring,
+html.space-flight-active .cursor-glow { visibility: hidden !important; }
+[data-space-flight="true"] canvas { cursor: none !important; }
+html.space-flight-active [data-space-flight="true"] button { cursor: pointer !important; }
+
+@media (max-height: 500px) {
+  .space-hint { display: none; }
+  .space-audio-controls { top: 8px !important; left: 170px !important; right: 16px !important; justify-content: flex-end; }
+}

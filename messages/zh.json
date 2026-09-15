@@ -68,6 +68,8 @@
   },
   "language": { "label": "语言" },
   "game": {
+    "version": "版本 {version}",
+    "pointerHelp": "WASD / 方向键 · 移动鼠标控制飞船",
     "title": "ZO7AL / 太空飞行",
     "play": "开始太空飞行",
     "loading": "正在准备飞行…",
@@ -96,7 +98,7 @@
     "sounds": "音效",
     "move": "移动",
     "drag": "拖动以移动",
-    "keysHelp": "W向上、A向左、S向下、D向右。组合按键可斜向移动。",
+    "keysHelp": "WASD / 方向键 · 移动鼠标控制飞船",
     "joystick": "火箭移动摇杆",
     "joystickHelp": "向任意方向拖动，松开即可减速。也可使用W、A、S、D。",
     "lgTitle": "世界排行榜",

@@ -68,6 +68,8 @@
   },
   "language": { "label": "Idioma" },
   "game": {
+    "version": "Versión {version}",
+    "pointerHelp": "WASD / flechas · mueve el ratón para dirigir",
     "title": "ZO7AL / Viaje espacial",
     "play": "Jugar al viaje espacial",
     "loading": "Preparando el vuelo…",
@@ -96,7 +98,7 @@
     "sounds": "Efectos de sonido",
     "move": "Mover",
     "drag": "Arrastra para moverte",
-    "keysHelp": "W arriba, A izquierda, S abajo y D derecha. Combina teclas para moverte en diagonal.",
+    "keysHelp": "WASD / flechas · mueve el ratón para dirigir",
     "joystick": "Joystick del cohete",
     "joystickHelp": "Arrastra en cualquier dirección. Suelta para frenar. También puedes usar W, A, S y D.",
     "lgTitle": "Clasificación mundial",

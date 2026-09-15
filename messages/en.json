@@ -165,6 +165,8 @@
   },
   "language": { "label": "Language" },
   "game": {
+    "version": "Version {version}",
+    "pointerHelp": "WASD / arrows · move mouse to steer",
     "title": "ZO7AL / Space Run",
     "play": "Play Space Run",
     "loading": "Preparing flight…",
@@ -193,7 +195,7 @@
     "sounds": "Sound effects",
     "move": "Move",
     "drag": "Drag to move",
-    "keysHelp": "W moves up, A left, S down and D right. Combine keys for diagonal movement.",
+    "keysHelp": "WASD / arrows · move mouse to steer",
     "joystick": "Rocket movement joystick",
     "joystickHelp": "Drag in any direction to move. Release to slow down. You can also use W, A, S and D.",
     "lgTitle": "World leaderboard",

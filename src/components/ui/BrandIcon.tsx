@@ -108,7 +108,7 @@ export default function BrandIcon({
       viewBox="0 0 24 24"
       width={size}
       height={size}
-      fill={color ?? `#${icon.hex}`}
+      fill={color ?? ({ fortnite: "#87CEFA", x: "#FFFFFF", twitter: "#FFFFFF", threads: "#FFFFFF", epicgames: "#FFFFFF", tiktok: "#FFFFFF", roblox: "#FFFFFF" } as Record<string, string>)[slug] ?? `#${icon.hex}`}
       className={className}
       aria-hidden="true"
     >
@@ -116,3 +116,4 @@ export default function BrandIcon({
     </svg>
   );
 }
+
