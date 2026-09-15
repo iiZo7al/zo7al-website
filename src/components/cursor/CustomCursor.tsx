@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
 
 type CursorMode = "default" | "link" | "button" | "project" | "image" | "copy";
@@ -13,14 +14,6 @@ const RING_SIZE: Record<CursorMode, number> = {
   copy: 64,
 };
 
-const DEFAULT_LABEL: Record<CursorMode, string> = {
-  default: "",
-  link: "",
-  button: "VIEW",
-  project: "EXPLORE",
-  image: "VIEW",
-  copy: "COPY",
-};
 
 /**
  * Renders the floating dot / ring / glow, driven by a rAF loop with simple
@@ -32,6 +25,7 @@ const DEFAULT_LABEL: Record<CursorMode, string> = {
  * prefers-reduced-motion.
  */
 export default function CustomCursor() {
+  const t = useTranslations("ui"), tc = useTranslations("common");
   const dotRef = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
   const glowRef = useRef<HTMLDivElement>(null);
@@ -140,7 +134,7 @@ export default function CustomCursor() {
   }, []);
 
   const size = RING_SIZE[mode];
-  const label = flash ?? DEFAULT_LABEL[mode];
+  const label = flash ?? (mode === "project" ? t("explore") : mode === "copy" ? tc("copy") : mode === "button" || mode === "image" ? t("view") : "");
   const active = mode !== "default" || !!flash;
 
   return (
@@ -170,3 +164,4 @@ export default function CustomCursor() {
 export function flashCursor(label: string, duration = 1100) {
   window.dispatchEvent(new CustomEvent("zo7al:cursor-flash", { detail: { label, duration } }));
 }
+

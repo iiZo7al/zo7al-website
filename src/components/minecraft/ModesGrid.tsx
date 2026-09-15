@@ -1,7 +1,9 @@
+import { getTranslations } from "next-intl/server";
 import { MINECRAFT_MODES } from "@/lib/data/minecraft";
 import Reveal from "@/components/ui/Reveal";
 
-export default function ModesGrid() {
+export default async function ModesGrid() {
+  const t = await getTranslations("minecraft"), ui = await getTranslations("ui");
   return (
     <div className="grid gap-5 sm:grid-cols-3">
       {MINECRAFT_MODES.map((m, i) => (
@@ -20,13 +22,14 @@ export default function ModesGrid() {
               aria-hidden="true"
             />
             <p className="text-label mb-4" style={{ color: m.status === "live" ? "var(--accent)" : "var(--text-muted)" }}>
-              {m.status === "live" ? "Live" : "Coming Soon"}
+              {t(m.status === "live" ? "modeLive" : "modeSoon")}
             </p>
-            <h3 className="text-2xl font-bold">{m.title}</h3>
-            <p className="mt-3 text-sm leading-relaxed text-[var(--text-muted)]">{m.description}</p>
+            <h3 className="text-2xl font-bold">{m.id === "pvp" ? "PvP" : ui(m.id === "survival" ? "survival" : "newMode")}</h3>
+            <p className="mt-3 text-sm leading-relaxed text-[var(--text-muted)]">{ui(m.id === "survival" ? "survivalText" : m.id === "pvp" ? "pvpText" : "newModeText")}</p>
           </div>
         </Reveal>
       ))}
     </div>
   );
 }
+

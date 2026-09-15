@@ -1,11 +1,14 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 import Reveal from "@/components/ui/Reveal";
 import { FortniteMap, islandCodeUrl } from "@/lib/data/fortnite";
 import { flashCursor } from "@/components/cursor/CustomCursor";
 
 export default function MapGallery({ maps: providedMaps }: { maps: FortniteMap[] }) {
+  const t = useTranslations("fortnite"), tc = useTranslations("common"), ui = useTranslations("ui");
+  const categoryLabel = (cat: string) => cat === "All" ? tc("all") : ui.has(`cat_${cat.replace(/\W/g, "")}`) ? ui(`cat_${cat.replace(/\W/g, "")}`) : cat;
   const maps = providedMaps;
   const categories = useMemo(
     () => ["All", ...Array.from(new Set(maps.map((m) => m.category)))],
@@ -21,7 +24,7 @@ export default function MapGallery({ maps: providedMaps }: { maps: FortniteMap[]
     try {
       await navigator.clipboard.writeText(code);
       setCopiedId(id);
-      flashCursor("COPIED", 1100);
+      flashCursor(t("copied"), 1100);
       window.setTimeout(() => setCopiedId((c) => (c === id ? null : c)), 1400);
     } catch {
       // no-op — code remains visible to copy manually
@@ -33,7 +36,7 @@ export default function MapGallery({ maps: providedMaps }: { maps: FortniteMap[]
       <div className="mb-10 flex flex-wrap gap-2">
         {categories.map((cat) => (
           <button
-            key={cat}
+            key={categoryLabel(cat)}
             onClick={() => setActive(cat)}
             data-cursor="link"
             className="rounded-full border px-4 py-2 text-sm font-medium transition-colors"
@@ -43,7 +46,7 @@ export default function MapGallery({ maps: providedMaps }: { maps: FortniteMap[]
               color: active === cat ? "#07080B" : "var(--text-muted)",
             }}
           >
-            {cat}
+            {categoryLabel(cat)}
           </button>
         ))}
       </div>
@@ -77,13 +80,13 @@ export default function MapGallery({ maps: providedMaps }: { maps: FortniteMap[]
                   className="absolute left-4 top-4 rounded-full px-3 py-1 text-[11px] font-semibold"
                   style={{ background: "rgba(7,8,11,0.6)", color: "var(--accent-secondary)" }}
                 >
-                  {map.category}
+                  {categoryLabel(map.category)}
                 </span>
               </a>
 
               <div className="p-5">
                 <p className="font-semibold">{map.title}</p>
-                <p className="mt-1 text-xs text-[var(--text-muted)]">by Zo7al</p>
+                <p className="mt-1 text-xs text-[var(--text-muted)]">{t("byZo7al")}</p>
 
                 <div className="mt-4 flex items-center justify-between gap-3">
                   <code className="text-xs text-[var(--text-muted)]">{map.code}</code>
@@ -98,7 +101,7 @@ export default function MapGallery({ maps: providedMaps }: { maps: FortniteMap[]
                       color: copiedId === map.id ? "#07080B" : "var(--text)",
                     }}
                   >
-                    {copiedId === map.id ? "Copied" : "Copy Code"}
+                    {t(copiedId === map.id ? "copied" : "copyCode")}
                   </button>
                 </div>
               </div>
@@ -109,3 +112,4 @@ export default function MapGallery({ maps: providedMaps }: { maps: FortniteMap[]
     </div>
   );
 }
+

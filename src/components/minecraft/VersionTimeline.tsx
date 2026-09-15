@@ -1,7 +1,9 @@
+import { getTranslations } from "next-intl/server";
 import { MINECRAFT_VERSIONS } from "@/lib/data/minecraft";
 import Reveal from "@/components/ui/Reveal";
 
-export default function VersionTimeline() {
+export default async function VersionTimeline() {
+  const ui = await getTranslations("ui");
   return (
     <div className="relative grid gap-4 sm:grid-cols-3">
       <div
@@ -21,12 +23,13 @@ export default function VersionTimeline() {
             />
             <p className="text-2xl font-bold">{v.label}</p>
             <p className="text-label mt-1" style={{ color: "var(--accent)" }}>
-              {v.tag}
+              {ui(i === 0 ? "legacy" : i === 1 ? "survival" : "latest")}
             </p>
-            <p className="mt-3 text-sm text-[var(--text-muted)]">{v.description}</p>
+            <p className="mt-3 text-sm text-[var(--text-muted)]">{ui(i === 0 ? "legacyText" : i === 1 ? "modernText" : "latestText")}</p>
           </div>
         </Reveal>
       ))}
     </div>
   );
 }
+

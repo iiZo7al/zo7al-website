@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { sweptHit, rankRuns, readRuns } from '../src/components/home/space-game-rules.ts';
+import { sweptHit } from '../src/components/home/space-game-rules.ts';
 
 test('fast objects crossing the rocket collide even when both endpoints miss', () => {
   assert.equal(sweptHit({x:0,y:0,z:-4}, {x:0,y:0,z:4}, 1), true);
@@ -14,21 +14,32 @@ test('relative-motion collision includes a rocket crossing sideways', () => {
   assert.equal(sweptHit({x:-3,y:2,z:-2}, {x:3,y:2,z:2}, 0.5), false);
 });
 
-const run = (id, score, stars=0) => ({id, name:'Pilot', score, stars, date:'2026-09-15T00:00:00Z'});
-test('leaderboard ranks numerically, breaks ties by stars and retains only ten', () => {
-  const ranked = rankRuns(Array.from({length:15}, (_,i) => run(String(i), i*100)));
-  assert.equal(ranked.length, 10);
-  assert.equal(ranked[0].score, 1400);
-  assert.equal(ranked.at(-1).score, 500);
-  assert.equal(rankRuns([run('a',100,1),run('b',100,2)])[0].id, 'b');
+import { validResult, plausibleResult } from '../src/lib/server/space-validation.ts';
+const result = { id:'12345678-1234-1234-1234-123456789abc', token:'a'.repeat(64), name:'زحل', score:1000, stars:1 };
+test('global results validate names, integers and run credentials', () => {
+  assert.equal(validResult(result),true);
+  for (const change of [{score:-1},{score:NaN},{score:1.5},{stars:7000},{name:' '},{name:'x'.repeat(21)},{token:'bad'},{id:'-'.repeat(36)}]) assert.equal(validResult({...result,...change}),false);
+});
+test('server time bounds reject impossible or expired submissions', () => {
+  assert.equal(plausibleResult(1000,1,10),true);
+  assert.equal(plausibleResult(999999,1,10),false);
+  assert.equal(plausibleResult(1000,100,10),false);
+  assert.equal(plausibleResult(1000,1,7201),false);
 });
 
-test('corrupt storage and invalid records cannot break the leaderboard', () => {
-  assert.deepEqual(readRuns('{broken'), []);
-  assert.deepEqual(readRuns('null'), []);
-  assert.deepEqual(rankRuns([null, {}, run('a',NaN), run('b',-1), {...run('c',1),date:'bad'}]), []);
-  assert.equal(rankRuns([run('a',100), run('a',100)]).length, 1);
-  const original = [run('a',1),run('b',2)];
-  rankRuns(original);
-  assert.equal(original[0].id, 'a');
+import { readFileSync } from 'node:fs';
+const locales=['en','ar','de','es','fr','ja','ko','pt','tr','zh'];
+const catalogs=locales.map(locale=>JSON.parse(readFileSync(new URL(`../messages/${locale}.json`,import.meta.url),'utf8')));
+test('all ten languages contain every game and site UI message with matching placeholders',()=>{
+  for(const namespace of ['game','ui']) {
+    const english=catalogs[0][namespace];
+    for(const catalog of catalogs) {
+      assert.deepEqual(Object.keys(catalog[namespace]).sort(),Object.keys(english).sort());
+      for(const key of Object.keys(english)) {
+        assert.equal(typeof catalog[namespace][key],'string');
+        assert.ok(catalog[namespace][key].trim());
+        assert.deepEqual((catalog[namespace][key].match(/\{\w+\}/g)||[]).sort(),(english[key].match(/\{\w+\}/g)||[]).sort());
+      }
+    }
+  }
 });

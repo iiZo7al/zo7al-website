@@ -21,6 +21,7 @@ const ICON_MAP = {
 
 export default function Navbar() {
 
+  const ui = useTranslations("ui");
   const pathname = usePathname();
   const t = useTranslations("nav");
   const [scrolled, setScrolled] = useState(false);
@@ -128,7 +129,7 @@ export default function Navbar() {
 
         <button
           className="md:hidden flex items-center justify-center p-2"
-          aria-label={mobileOpen ? "Close menu" : "Open menu"}
+          aria-label={ui(mobileOpen ? "closeMenu" : "openMenu")}
           aria-expanded={mobileOpen}
           onClick={() => setMobileOpen((v) => !v)}
         >
@@ -189,3 +190,4 @@ export default function Navbar() {
     </header>
   );
 }
+

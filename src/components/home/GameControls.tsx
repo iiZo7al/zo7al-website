@@ -2,6 +2,8 @@
 
 import { useCallback, useEffect, useId, useRef, type PointerEvent } from "react";
 
+import { useTranslations } from "next-intl";
+
 interface GameControlsProps {
   onMove: (x: number, y: number) => void;
   onExit: () => void;
@@ -10,6 +12,7 @@ interface GameControlsProps {
 const DEAD_ZONE = 0.12;
 
 export default function GameControls({ onMove, onExit }: GameControlsProps) {
+  const t = useTranslations("game");
   const instructionsId = useId();
   const joystickRef = useRef<HTMLButtonElement>(null);
   const knobRef = useRef<HTMLSpanElement>(null);
@@ -100,17 +103,17 @@ export default function GameControls({ onMove, onExit }: GameControlsProps) {
   };
 
   return (
-    <div className="game-controls" dir="ltr">
+    <div className="game-controls" >
       <div className="movement-controls">
         <div
           className="keyboard-guide"
           role="group"
-          aria-label="W moves up, A moves left, S moves down, D moves right. Combine keys to move diagonally."
+          aria-label={t("keysHelp")}
         >
           <div className="keys" aria-hidden="true">
             {["W", "A", "S", "D"].map((key) => <kbd key={key}>{key}</kbd>)}
           </div>
-          <span className="control-label">Move</span>
+          <span className="control-label">{t("move")}</span>
         </div>
 
         <div className="touch-guide">
@@ -118,7 +121,7 @@ export default function GameControls({ onMove, onExit }: GameControlsProps) {
             ref={joystickRef}
             type="button"
             className="joystick"
-            aria-label="Rocket movement joystick"
+            aria-label={t("joystick")}
             aria-describedby={instructionsId}
             onPointerDown={startJoystick}
             onPointerMove={updateJoystick}
@@ -136,9 +139,9 @@ export default function GameControls({ onMove, onExit }: GameControlsProps) {
               <span />
             </span>
           </button>
-          <span className="control-label">Drag to move</span>
+          <span className="control-label">{t("drag")}</span>
           <span id={instructionsId} className="sr-only">
-            Drag in any direction to move. Release to slow down. You can also use W, A, S and D on a keyboard.
+            {t("joystickHelp")}
           </span>
         </div>
       </div>
@@ -152,7 +155,7 @@ export default function GameControls({ onMove, onExit }: GameControlsProps) {
         }}
       >
         <span aria-hidden="true">↗</span>
-        <span>Exit flight</span>
+        <span>{t("exit")}</span>
         <kbd aria-hidden="true">Esc</kbd>
       </button>
 
@@ -226,7 +229,7 @@ export default function GameControls({ onMove, onExit }: GameControlsProps) {
           -webkit-tap-highlight-color: transparent;
         }
         .joystick[data-active="true"] {
-          border-color: rgba(255, 142, 0, 0.75);
+          border-color: var(--accent);
           cursor: grabbing;
         }
         .joystick-knob {
@@ -234,7 +237,7 @@ export default function GameControls({ onMove, onExit }: GameControlsProps) {
           width: 42px;
           height: 42px;
           place-items: center;
-          border: 1px solid rgba(255, 169, 64, 0.9);
+          border: 1px solid var(--accent);
           border-radius: 50%;
           background: #25190f;
           box-shadow: 0 0 18px rgba(255, 142, 0, 0.18);
@@ -245,7 +248,7 @@ export default function GameControls({ onMove, onExit }: GameControlsProps) {
           width: 7px;
           height: 7px;
           border-radius: 50%;
-          background: #ff9b26;
+          background: var(--accent);
         }
         .direction { position: absolute; font-size: 13px; pointer-events: none; }
         .up { top: 6px; }
@@ -269,9 +272,9 @@ export default function GameControls({ onMove, onExit }: GameControlsProps) {
           cursor: pointer;
         }
         .exit-button kbd { color: rgba(255, 255, 255, 0.45); font-size: 10px; }
-        .exit-button:hover { border-color: #ff8e00; color: white; }
+        .exit-button:hover { border-color: var(--accent); color: white; }
         .joystick:focus-visible, .exit-button:focus-visible {
-          outline: 2px solid #ff9b26;
+          outline: 2px solid var(--accent);
           outline-offset: 4px;
         }
         @media (any-pointer: coarse), (max-width: 600px) {
@@ -303,3 +306,4 @@ export default function GameControls({ onMove, onExit }: GameControlsProps) {
     </div>
   );
 }
+

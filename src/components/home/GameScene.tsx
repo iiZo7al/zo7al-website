@@ -8,6 +8,8 @@ import {
   CAMERA_FOLLOW, FLIGHT_CAMERA_DISTANCE, FLIGHT_CAMERA_FOV, FLIGHT_SPEED,
   getFlightBounds, readFlightInput, stepFlight, type FlightInput,
 } from "./rocket-motion";
+import { useSpacePack, DistantWorlds } from "./SpacePack";
+import type { SpaceSound } from "./space-audio";
 import { useSpaceModels } from "./SpaceModels";
 import { MAX_SHIELDS, STAR_BONUS, sweptHit } from "./space-game-rules";
 
@@ -18,12 +20,16 @@ interface GameSceneProps {
   touchInput: RefObject<FlightInput>;
   isGameOver?: boolean;
   paused?: boolean;
+  onReady: () => void;
+  onSound: (sound: SpaceSound) => void;
 }
 type Obstacle = { object: THREE.Group; radius: number; spin: number };
 type Burst = { object: THREE.Points; life: number };
 
-export default function GameScene({ onGameOver, onProgress, touchInput, isGameOver, paused }: GameSceneProps) {
+export default function GameScene({ onGameOver, onProgress, touchInput, isGameOver, paused, onReady, onSound }: GameSceneProps) {
   const models = useSpaceModels();
+  const pack = useSpacePack();
+  useEffect(() => { onReady(); }, [onReady]);
   const rocketRef = useRef<THREE.Group>(null);
   const shieldRef = useRef<THREE.Mesh>(null);
   const flameRef = useRef<THREE.Group>(null);
@@ -133,7 +139,8 @@ export default function GameScene({ onGameOver, onProgress, touchInput, isGameOv
     }
 
     const spawn = (star: boolean) => {
-      const object = (star ? models.star : models.meteor).clone(true);
+      const source = star ? models.star : Math.random() < 0.45 ? models.meteor : pack.obstacles[Math.floor(Math.random() * pack.obstacles.length)];
+      const object = source.clone(true);
       const size = star ? 1 : 0.9 + Math.random() * 1.1;
       object.scale.multiplyScalar(size);
       object.position.set((Math.random() * 2 - 1) * bounds.x * 0.9, (Math.random() * 2 - 1) * bounds.y * 0.9, -85);
@@ -156,6 +163,7 @@ export default function GameScene({ onGameOver, onProgress, touchInput, isGameOv
     g.asteroids = g.asteroids.filter((item) => {
       const hit = advance(item);
       if (hit && time >= g.invulnerableUntil) {
+        onSound("hit");
         g.shields--; g.combo = 0; g.invulnerableUntil = time + 1.5;
         burst(item.object.position, "#ff7547");
         item.object.removeFromParent();
@@ -167,9 +175,10 @@ export default function GameScene({ onGameOver, onProgress, touchInput, isGameOv
     if (g.shields <= 0) { g.ended = true; onGameOver(Math.floor(g.score), g.stars); return; }
     g.starsInFlight = g.starsInFlight.filter((item) => {
       if (advance(item)) {
+        onSound("collect");
         g.stars++; g.combo = Math.min(5, g.combo + 1); g.lastCollection = time;
         g.score += STAR_BONUS * g.combo;
-        if (g.stars % 10 === 0) g.shields = Math.min(MAX_SHIELDS, g.shields + 1);
+        if (g.stars % 10 === 0) { g.shields = Math.min(MAX_SHIELDS, g.shields + 1); onSound("shield"); }
         burst(item.object.position, "#ffd96d");
         item.object.removeFromParent(); return false;
       }
@@ -201,6 +210,7 @@ export default function GameScene({ onGameOver, onProgress, touchInput, isGameOv
         <bufferGeometry><bufferAttribute attach="attributes-position" args={[dust, 3]} /></bufferGeometry>
         <pointsMaterial color="#bddeff" size={0.065} transparent opacity={0.7} sizeAttenuation depthWrite={false} />
       </points>
+      <DistantWorlds worlds={pack.scenery} paused={Boolean(paused || isGameOver)} />
       <group ref={worldRef} dispose={null} />
       <group ref={rocketRef}>
         <mesh ref={shieldRef} visible={false} scale={[1, 1.4, 1]}>
