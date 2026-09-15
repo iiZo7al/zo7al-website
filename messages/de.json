@@ -68,6 +68,8 @@
   },
   "language": { "label": "Sprache" },
   "game": {
+    "version": "Version {version}",
+    "pointerHelp": "WASD / Pfeile · mit der Maus steuern",
     "title": "ZO7AL / Weltraumflug",
     "play": "Weltraumflug spielen",
     "loading": "Flug wird vorbereitet…",
@@ -96,7 +98,7 @@
     "sounds": "Soundeffekte",
     "move": "Bewegen",
     "drag": "Zum Bewegen ziehen",
-    "keysHelp": "W nach oben, A links, S unten und D rechts. Tasten für diagonale Bewegung kombinieren.",
+    "keysHelp": "WASD / Pfeile · mit der Maus steuern",
     "joystick": "Raketen-Joystick",
     "joystickHelp": "In eine Richtung ziehen. Zum Abbremsen loslassen. W, A, S und D funktionieren ebenfalls.",
     "lgTitle": "Weltrangliste",

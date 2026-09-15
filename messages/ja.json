@@ -68,6 +68,8 @@
   },
   "language": { "label": "言語" },
   "game": {
+    "version": "バージョン {version}",
+    "pointerHelp": "WASD / 矢印キー · マウスを動かして操縦",
     "title": "ZO7AL / 宇宙フライト",
     "play": "宇宙フライトをプレイ",
     "loading": "フライトを準備中…",
@@ -96,7 +98,7 @@
     "sounds": "効果音",
     "move": "移動",
     "drag": "ドラッグして移動",
-    "keysHelp": "Wで上、Aで左、Sで下、Dで右。キーを組み合わせると斜めに移動します。",
+    "keysHelp": "WASD / 矢印キー · マウスを動かして操縦",
     "joystick": "ロケットの移動ジョイスティック",
     "joystickHelp": "好きな方向にドラッグ。離すと減速します。W、A、S、Dも使えます。",
     "lgTitle": "世界ランキング",

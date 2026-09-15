@@ -68,6 +68,8 @@
   },
   "language": { "label": "Idioma" },
   "game": {
+    "version": "Versão {version}",
+    "pointerHelp": "WASD / setas · mova o mouse para pilotar",
     "title": "ZO7AL / Voo espacial",
     "play": "Jogar voo espacial",
     "loading": "Preparando o voo…",
@@ -96,7 +98,7 @@
     "sounds": "Efeitos sonoros",
     "move": "Mover",
     "drag": "Arraste para mover",
-    "keysHelp": "W para cima, A esquerda, S baixo e D direita. Combine teclas para movimentos diagonais.",
+    "keysHelp": "WASD / setas · mova o mouse para pilotar",
     "joystick": "Joystick do foguete",
     "joystickHelp": "Arraste em qualquer direção. Solte para desacelerar. Você também pode usar W, A, S e D.",
     "lgTitle": "Classificação mundial",

@@ -1,0 +1,2 @@
+# Space Run maintenance
+For each future change affecting Space Run gameplay, models, controls, audio or UI, increment GAME_VERSION in game-version.ts once per delivered update (semantic versioning). Add a brief entry to GAME_CHANGELOG.md. Keep all game strings in all ten message catalogs, preserve Arabic RTL, and verify desktop keyboard/mouse plus mobile touch. Never place server credentials in client code.

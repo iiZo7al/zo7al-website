@@ -68,6 +68,8 @@
   },
   "language": { "label": "Dil" },
   "game": {
+    "version": "Sürüm {version}",
+    "pointerHelp": "WASD / oklar · yön vermek için fareyi hareket ettir",
     "title": "ZO7AL / Uzay Uçuşu",
     "play": "Uzay Uçuşu oyna",
     "loading": "Uçuş hazırlanıyor…",
@@ -96,7 +98,7 @@
     "sounds": "Ses efektleri",
     "move": "Hareket",
     "drag": "Hareket için sürükle",
-    "keysHelp": "W yukarı, A sola, S aşağı, D sağa. Çapraz hareket için tuşları birleştir.",
+    "keysHelp": "WASD / oklar · yön vermek için fareyi hareket ettir",
     "joystick": "Roket kontrol çubuğu",
     "joystickHelp": "Herhangi bir yöne sürükle. Yavaşlamak için bırak. W, A, S ve D de kullanılabilir.",
     "lgTitle": "Dünya sıralaması",

@@ -8,8 +8,8 @@ export const FLIGHT_CAMERA_FOV = 55;
 export const CAMERA_FOLLOW = 0.2;
 
 export function readFlightInput(keys: ReadonlySet<string>, touch: FlightInput): FlightInput {
-  const x = Number(keys.has("KeyD")) - Number(keys.has("KeyA")) + touch.x;
-  const y = Number(keys.has("KeyW")) - Number(keys.has("KeyS")) + touch.y;
+  const x = Number(keys.has("KeyD") || keys.has("ArrowRight")) - Number(keys.has("KeyA") || keys.has("ArrowLeft")) + touch.x;
+  const y = Number(keys.has("KeyW") || keys.has("ArrowUp")) - Number(keys.has("KeyS") || keys.has("ArrowDown")) + touch.y;
   const length = Math.max(1, Math.hypot(x, y));
   return { x: x / length, y: y / length };
 }
@@ -44,4 +44,20 @@ export function stepFlight(motion: FlightMotion, input: FlightInput, bounds: Fli
   motion.y = Math.max(-bounds.y, Math.min(bounds.y, motion.y));
   if ((motion.x >= bounds.x && motion.vx > 0) || (motion.x <= -bounds.x && motion.vx < 0)) motion.vx = 0;
   if ((motion.y >= bounds.y && motion.vy > 0) || (motion.y <= -bounds.y && motion.vy < 0)) motion.vy = 0;
+}
+
+
+/** Fast, frame-rate-independent pointer following without keyboard acceleration. */
+export function stepPointerFlight(motion: FlightMotion, target: FlightInput, bounds: FlightBounds, delta: number): void {
+  const dt = Math.min(Math.max(delta, 0), 1 / 20);
+  if (dt === 0) return;
+  const x = Math.max(-bounds.x, Math.min(bounds.x, target.x));
+  const y = Math.max(-bounds.y, Math.min(bounds.y, target.y));
+  const blend = -Math.expm1(-24 * dt);
+  const dx = (x - motion.x) * blend;
+  const dy = (y - motion.y) * blend;
+  motion.x += dx;
+  motion.y += dy;
+  motion.vx = dx / dt;
+  motion.vy = dy / dt;
 }

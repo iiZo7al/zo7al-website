@@ -15,13 +15,15 @@ export function useSpacePack() {
   const prepared = useMemo(() => {
     const maps = textures.map((texture, index) => {
       const clone = texture.clone();
+      clone.wrapS = clone.wrapT = THREE.RepeatWrapping;
+      clone.needsUpdate = true;
       // OBJ UVs retain the TextureLoader convention in these geometry-only GLBs.
       clone.colorSpace = index % 3 === 0 ? THREE.SRGBColorSpace : THREE.NoColorSpace;
       return clone;
     });
     const materials = manifest.map((item, index) => new THREE.MeshStandardMaterial({
       map: maps[index * 3], normalMap: maps[index * 3 + 1], roughnessMap: maps[index * 3 + 2],
-      roughness: 0.8, metalness: ["Satellite", "Sputnik", "UFO", "SpaceCapsule"].includes(item.name) ? 0.45 : 0.08,
+      roughness: 1, metalness: 0.04, envMapIntensity: 0.4, normalScale: new THREE.Vector2(0.5, 0.5),
     }));
     const models = sources.map((source, index) => {
       const clone = source.scene.clone(true);
