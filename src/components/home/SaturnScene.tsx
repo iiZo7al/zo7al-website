@@ -6,7 +6,6 @@ import { PerspectiveCamera } from "@react-three/drei";
 import * as THREE from "three";
 
 interface SaturnSceneProps {
-  onTrigger: () => void;
   isTransitioning?: boolean;
 }
 
@@ -22,7 +21,7 @@ const CAMERA_FOV = 45;
 const ORBIT_NORMAL = new THREE.Vector3(0, -Math.sin(RING_TILT), Math.cos(RING_TILT));
 const ORBIT_AXIS = new THREE.Vector3(0, Math.cos(RING_TILT), Math.sin(RING_TILT));
 
-export default function SaturnScene({ onTrigger, isTransitioning }: SaturnSceneProps) {
+export default function SaturnScene({ isTransitioning }: SaturnSceneProps) {
   const moonRef = useRef<THREE.Group>(null);
   const groupRef = useRef<THREE.Group>(null);
   const cameraRef = useRef<THREE.PerspectiveCamera>(null);
@@ -34,7 +33,6 @@ export default function SaturnScene({ onTrigger, isTransitioning }: SaturnSceneP
   const captureTarget = useRef<PointerCaptureTarget | null>(null);
   const lastPointerAngle = useRef(0);
   const lastPointerTime = useRef(0);
-  const didTrigger = useRef(false);
   const reducedMotion = useRef(false);
   const intersection = useRef(new THREE.Vector3());
   const orbitPlane = useRef(new THREE.Plane());
@@ -46,7 +44,6 @@ export default function SaturnScene({ onTrigger, isTransitioning }: SaturnSceneP
 
   useEffect(() => {
     if (isTransitioning) return;
-    didTrigger.current = false;
     velocity.current = 0;
     activePointer.current = null;
     cameraRef.current?.position.set(0, 0, cameraDistance);
@@ -107,7 +104,7 @@ export default function SaturnScene({ onTrigger, isTransitioning }: SaturnSceneP
     if (!moonRef.current) return;
 
     if (activePointer.current === null) {
-      angle.current += velocity.current * delta;
+      angle.current += ((reducedMotion.current ? 0 : 0.12) + velocity.current) * delta;
       velocity.current *= Math.exp(-2.5 * delta);
     }
 
@@ -117,11 +114,6 @@ export default function SaturnScene({ onTrigger, isTransitioning }: SaturnSceneP
       orbitalOffset * ORBIT_AXIS.y,
       orbitalOffset * ORBIT_AXIS.z,
     );
-
-    if (!isTransitioning && !didTrigger.current && Math.abs(velocity.current) > 8) {
-      didTrigger.current = true;
-      onTrigger();
-    }
 
     if (isTransitioning && cameraRef.current && !reducedMotion.current) {
       cameraRef.current.position.z = THREE.MathUtils.damp(cameraRef.current.position.z, 2, 3, delta);
@@ -163,7 +155,7 @@ export default function SaturnScene({ onTrigger, isTransitioning }: SaturnSceneP
     const change = Math.atan2(Math.sin(difference), Math.cos(difference));
     const elapsed = Math.max((event.timeStamp - lastPointerTime.current) / 1000, 1 / 240);
     angle.current += change;
-    velocity.current = THREE.MathUtils.lerp(velocity.current, change / elapsed, 0.65);
+    velocity.current = THREE.MathUtils.clamp(THREE.MathUtils.lerp(velocity.current, change / elapsed, 0.65), -0.6, 0.6);
     lastPointerAngle.current = pointerAngle;
     lastPointerTime.current = event.timeStamp;
   };
@@ -230,3 +222,4 @@ export default function SaturnScene({ onTrigger, isTransitioning }: SaturnSceneP
     </>
   );
 }
+
