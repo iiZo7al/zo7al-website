@@ -8,6 +8,8 @@ import {
   CAMERA_FOLLOW, FLIGHT_CAMERA_DISTANCE, FLIGHT_CAMERA_FOV,
   getFlightBounds, readFlightInput, stepPointerFlight, stepFlight, type FlightInput,
 } from "./rocket-motion";
+import EnginePlume from "./EnginePlume";
+import { makeBurst, stepBurst, disposeBurst, type FlightBurst } from "./flight-effects";
 import { useSpacePack, DistantWorlds } from "./SpacePack";
 import type { SpaceSound } from "./space-audio";
 import { useSpaceModels } from "./SpaceModels";
@@ -24,15 +26,14 @@ interface GameSceneProps {
   onSound: (sound: SpaceSound) => void;
 }
 type Obstacle = { object: THREE.Group; radius: number; spin: number };
-type Burst = { object: THREE.Points; life: number };
+
 
 export default function GameScene({ onGameOver, onProgress, touchInput, isGameOver, paused, onReady, onSound }: GameSceneProps) {
   const models = useSpaceModels();
   const pack = useSpacePack();
   useEffect(() => { onReady(); }, [onReady]);
   const rocketRef = useRef<THREE.Group>(null);
-  const shieldRef = useRef<THREE.Mesh>(null);
-  const flameRef = useRef<THREE.Group>(null);
+  const bodyRef = useRef<THREE.Group>(null);
   const worldRef = useRef<THREE.Group>(null);
   const cameraRef = useRef<THREE.PerspectiveCamera>(null);
   const dustRef = useRef<THREE.Points>(null);
@@ -44,8 +45,8 @@ export default function GameScene({ onGameOver, onProgress, touchInput, isGameOv
   const motion = useRef({ x: 0, y: 0, vx: 0, vy: 0 });
   const reducedMotion = useRef(false);
   const data = useRef({ speed: 26, score: 0, stars: 0, shields: MAX_SHIELDS, combo: 0,
-    asteroids: [] as Obstacle[], starsInFlight: [] as Obstacle[], bursts: [] as Burst[],
-    lastSpawn: 0, lastStar: -1, elapsed: 0, lastHud: 0, invulnerableUntil: 0, lastCollection: -10, ended: false });
+    asteroids: [] as Obstacle[], starsInFlight: [] as Obstacle[], bursts: [] as FlightBurst[],
+    hitAt: -10, lastSpawn: 0, lastStar: -1, elapsed: 0, lastHud: 0, invulnerableUntil: 0, lastCollection: -10, ended: false });
   // Deterministic seed avoids render-time randomness and hydration differences.
   const dust = useMemo(() => {
     const positions = new Float32Array(700 * 3);
@@ -100,29 +101,22 @@ export default function GameScene({ onGameOver, onProgress, touchInput, isGameOv
     const current = data.current;
     return () => {
       [...current.asteroids, ...current.starsInFlight].forEach(({ object }) => object.removeFromParent());
-      current.bursts.forEach(({ object }) => {
-        object.removeFromParent(); object.geometry.dispose(); (object.material as THREE.Material).dispose();
-      });
+      current.bursts.forEach(disposeBurst);
       current.asteroids = []; current.starsInFlight = []; current.bursts = [];
     };
   }, []);
 
-  const burst = (position: THREE.Vector3, color: string) => {
-    if (!worldRef.current || reducedMotion.current) return;
-    const vertices = new Float32Array(54);
-    for (let i = 0; i < vertices.length; i++) vertices[i] = (Math.random() - 0.5) * 0.4;
-    const geometry = new THREE.BufferGeometry();
-    geometry.setAttribute("position", new THREE.BufferAttribute(vertices, 3));
-    const material = new THREE.PointsMaterial({ color, size: 0.13, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending });
-    const object = new THREE.Points(geometry, material);
-    object.position.copy(position);
-    worldRef.current.add(object);
-    data.current.bursts.push({ object, life: 0.55 });
+  const burst = (position: THREE.Vector3, impact: boolean) => {
+    if (!worldRef.current) return;
+    const effect = makeBurst(position, impact, reducedMotion.current);
+    worldRef.current.add(effect.object); data.current.bursts.push(effect);
   };
 
   useFrame((state, delta) => {
     const g = data.current;
-    if (isGameOver || paused || g.ended || document.hidden || !worldRef.current) return;
+    if (paused || document.hidden || !worldRef.current) return;
+    g.bursts = g.bursts.filter((particle) => stepBurst(particle, Math.min(delta, 0.05)));
+    if (isGameOver || g.ended) return;
     const dt = Math.min(delta, 1 / 20);
     const oldRocket = { ...motion.current };
     const bounds = getFlightBounds(state.size.width / Math.max(1, state.size.height), state.size.height);
@@ -147,9 +141,9 @@ export default function GameScene({ onGameOver, onProgress, touchInput, isGameOv
     if (rocketRef.current) {
       rocketRef.current.position.set(x, y, 0);
       rocketRef.current.rotation.set(0, 0, 0);
-      if (shieldRef.current) shieldRef.current.visible = time < g.invulnerableUntil;
+      if (bodyRef.current) bodyRef.current.rotation.y = reducedMotion.current ? 0 : time * 0.16;
     }
-    if (flameRef.current) flameRef.current.scale.y = reducedMotion.current ? 1 : 1 + Math.sin(time * 35) * 0.12;
+
     if (cameraRef.current) {
       cameraRef.current.position.x = THREE.MathUtils.damp(THREE.MathUtils.clamp(cameraRef.current.position.x, -bounds.x * CAMERA_FOLLOW, bounds.x * CAMERA_FOLLOW), x * CAMERA_FOLLOW, 5, dt);
       cameraRef.current.position.y = THREE.MathUtils.damp(THREE.MathUtils.clamp(cameraRef.current.position.y, -bounds.y * CAMERA_FOLLOW, bounds.y * CAMERA_FOLLOW), y * CAMERA_FOLLOW, 5, dt);
@@ -187,7 +181,8 @@ export default function GameScene({ onGameOver, onProgress, touchInput, isGameOv
       if (hit && time >= g.invulnerableUntil) {
         onSound("hit");
         g.shields--; g.combo = 0; g.invulnerableUntil = time + 1.5;
-        burst(item.object.position, "#ff7547");
+        g.hitAt = time;
+        burst(new THREE.Vector3(x, y, 0), true);
         item.object.removeFromParent();
         return false;
       }
@@ -201,19 +196,10 @@ export default function GameScene({ onGameOver, onProgress, touchInput, isGameOv
         g.stars++; g.combo = Math.min(5, g.combo + 1); g.lastCollection = time;
         g.score += STAR_BONUS * g.combo;
         if (g.stars % 10 === 0) { g.shields = Math.min(MAX_SHIELDS, g.shields + 1); onSound("shield"); }
-        burst(item.object.position, "#ffd96d");
+        burst(item.object.position, false);
         item.object.removeFromParent(); return false;
       }
       if (item.object.position.z > 12) { item.object.removeFromParent(); return false; }
-      return true;
-    });
-    g.bursts = g.bursts.filter((particle) => {
-      particle.life -= dt;
-      particle.object.scale.addScalar(dt * 6);
-      (particle.object.material as THREE.PointsMaterial).opacity = Math.max(0, particle.life / 0.55);
-      if (particle.life <= 0) {
-        particle.object.removeFromParent(); particle.object.geometry.dispose(); (particle.object.material as THREE.Material).dispose(); return false;
-      }
       return true;
     });
     if (time - g.lastHud >= 0.1) {
@@ -235,22 +221,10 @@ export default function GameScene({ onGameOver, onProgress, touchInput, isGameOv
       <DistantWorlds worlds={pack.scenery} paused={Boolean(paused || isGameOver)} />
       <group ref={worldRef} dispose={null} />
       <group ref={rocketRef}>
-        <mesh ref={shieldRef} visible={false} scale={[1, 1.4, 1]}>
-          <sphereGeometry args={[0.68, 16, 12]} />
-          <meshBasicMaterial color="#80d9ff" transparent opacity={0.22} wireframe depthWrite={false} />
-        </mesh>
-        <group>
-          <primitive object={models.rocket} dispose={null} />
-          <group ref={flameRef} position={[0, -0.7, 0]}>
-            <mesh position={[0, -0.3, 0]} rotation={[0, 0, Math.PI]}>
-              <coneGeometry args={[0.13, 0.85, 16]} />
-              <meshBasicMaterial color="#72cfff" transparent opacity={0.7} blending={THREE.AdditiveBlending} depthWrite={false} />
-            </mesh>
-            <mesh position={[0, -0.18, 0]} rotation={[0, 0, Math.PI]}>
-              <coneGeometry args={[0.065, 0.5, 12]} />
-              <meshBasicMaterial color="#e1f6ff" toneMapped={false} />
-            </mesh>
-            <pointLight color="#67bbff" intensity={8} distance={4} decay={2} />
+        <group rotation={[-1.25, 0, 0]}>
+          <group ref={bodyRef}>
+            <primitive object={models.rocket} dispose={null} />
+            <EnginePlume paused={Boolean(paused || isGameOver)} />
           </group>
         </group>
       </group>

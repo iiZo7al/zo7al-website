@@ -1,4 +1,5 @@
 "use client";
+import { spaceApi } from "./space-api";
 
 import { useState, Suspense, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
@@ -53,7 +54,7 @@ export default function SpaceExperience({ onGameStateChange }: SpaceExperiencePr
     const controller = new AbortController(); ticketRequest.current = controller;
     setTicket(null); setRunId(crypto.randomUUID()); setEntering(true); setPaused(false);
     setGameState("TRANSITION");
-    void fetch("/api/space-run/start", { method: "POST", signal: controller.signal })
+    void fetch(spaceApi("start"), { method: "POST", signal: controller.signal })
       .then(async (response) => {
         if (!response.ok) return;
         const result = await response.json();
@@ -95,8 +96,8 @@ export default function SpaceExperience({ onGameStateChange }: SpaceExperiencePr
   useEffect(() => {
     if (!active) return;
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") { event.preventDefault(); exitGame(); }
-      if (event.code === "KeyP" && gameState === "GAME" && !entering && !event.repeat &&
+      if (event.code === "KeyP" && !(event.target instanceof HTMLElement && event.target.closest("input, textarea, select, [contenteditable]"))) { event.preventDefault(); exitGame(); }
+      if (event.key === "Escape" && gameState === "GAME" && !entering && !event.repeat &&
         !(event.target instanceof HTMLElement && event.target.closest("input, textarea"))) {
         event.preventDefault(); audio.unlock(); setPaused((value) => !value);
       }
@@ -147,7 +148,7 @@ export default function SpaceExperience({ onGameStateChange }: SpaceExperiencePr
           <Lightformer color="#ffb86b" intensity={1} scale={[5, 8, 1]} position={[-5, 0, 3]} rotation={[0, Math.PI / 4, 0]} />
         </Environment>
         <Stars radius={100} depth={50} count={2500} factor={4} saturation={0} fade speed={reducedMotion ? 0 : 1} />
-        {!inFlight && <SaturnScene onTrigger={triggerTransition} isTransitioning={gameState === "TRANSITION"} />}
+        {!inFlight && <SaturnScene isTransitioning={gameState === "TRANSITION"} />}
         {inFlight && <GameScene key={run} onGameOver={handleGameOver} onProgress={updateProgress} touchInput={touchInput} isGameOver={gameState === "GAMEOVER"} paused={paused || entering} onReady={flightReady} onSound={playSound} />}
       </Suspense>
     </Canvas>

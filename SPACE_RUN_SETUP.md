@@ -1,3 +1,24 @@
+# Live Space Run backend
+
+The game now calls a deployed Neon Function directly. Database credentials and SPACE_RUN_SECRET remain in Neon. The frontend contains only the public API URL in `src/components/home/space-api.ts`.
+
+- Project: `blue-grass-05010492` (`zo7al-space-run`)
+- Production branch: `br-steep-star-a580g5uk`
+- Database: `space_run`
+- Function: `spacerun`
+- API: https://br-steep-star-a580g5uk-spacerun.compute.c-1.us-east-2.aws.neon.tech
+- Source: `functions/space-run/index.ts`; it shares the existing validated route handlers.
+
+GET /leaderboard and POST /start are public anonymous-game endpoints. POST /finish requires the unguessable run token, validates scores, and is idempotent. CORS supports the deployed website and previews without sending cookies. The database is never exposed directly. This is score plausibility checking, not server-authoritative anti-cheat.
+
+For backend changes, bundle with esbuild (Node 24 ESM with the documented CommonJS require banner), zip the entry as index.mjs, and deploy with Neon. Preserve SPACE_RUN_SECRET when deploying. Do not commit secrets.
+
+A separate verification branch `br-red-thunder-a5fedlod` expires on 2026-09-17 at 02:45:35 UTC; its QA scores are isolated from production.
+
+The existing Next.js routes remain available for self-hosting with the configuration below, but the game uses the live Neon endpoint by default.
+
+---
+
 # Space Run: shared leaderboard
 
 The world leaderboard uses PostgreSQL. It is shared between browsers and server instances; it does not use localStorage. Existing personal browser scores are not uploaded because they were never verified by the server.

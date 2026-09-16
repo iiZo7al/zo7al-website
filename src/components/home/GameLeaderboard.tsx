@@ -1,4 +1,5 @@
 "use client";
+import { spaceApi } from "./space-api";
 
 import { useCallback, useEffect, useState, type FormEvent } from "react";
 import { useLocale, useTranslations } from "next-intl";
@@ -19,7 +20,7 @@ export default function GameLeaderboard({ score, stars, ticket }: { score: numbe
 
   const refresh = useCallback(async (signal?: AbortSignal) => {
     try {
-      const response = await fetch("/api/space-run/leaderboard", { cache: "no-store", signal });
+      const response = await fetch(spaceApi("leaderboard"), { cache: "no-store", signal });
       if (!response.ok) throw new Error("UNAVAILABLE");
       const data = await response.json();
       if (!Array.isArray(data.records)) throw new Error("INVALID_RESPONSE");
@@ -39,7 +40,7 @@ export default function GameLeaderboard({ score, stars, ticket }: { score: numbe
     if (saved || busy || !ticket) return;
     setBusy(true); setError("");
     try {
-      const response = await fetch("/api/space-run/finish", {
+      const response = await fetch(spaceApi("finish"), {
         method: "POST", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...ticket, name: name.trim(), score, stars }),
       });
