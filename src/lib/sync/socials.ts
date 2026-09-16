@@ -106,7 +106,7 @@ export async function getSyncedSocials(): Promise<{
       items.push({
         id: dedupeKey,
         platform,
-        label: PLATFORM_LABELS[platform] ?? link.title ?? platform,
+        label: platform === "linktree" && parsed.pathname.toLowerCase().replace(/\/$/, "") === "/zo7algames" ? "Zo7al Games" : PLATFORM_LABELS[platform] ?? link.title ?? platform,
         url: link.url,
         description: link.title,
         color: PLATFORM_COLORS[platform],
@@ -114,6 +114,9 @@ export async function getSyncedSocials(): Promise<{
     }
 
     if (items.length === 0) throw new Error("no recognizable links parsed");
+    for (const account of SOCIALS_FALLBACK) {
+      if (!items.some((item) => account.id === "linktree" ? item.url.toLowerCase().replace(/\/$/, "") === account.url.toLowerCase() : item.platform === account.id)) items.push({ ...account, platform: account.id });
+    }
     return { items, source: "live" };
   } catch {
     return {
@@ -129,3 +132,4 @@ export async function getSyncedSocials(): Promise<{
     };
   }
 }
+

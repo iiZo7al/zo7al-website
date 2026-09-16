@@ -15,7 +15,9 @@ export default function SocialGrid({
   const t = useTranslations("ui");
   return (
     <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-      {socials.map((social, i) => (
+      {socials.map((social, i) => {
+        const descriptionKey = social.platform === "linktree" && !/linktr\.ee\/zo7algames\/?$/i.test(social.url) ? "" : `social_${social.platform}`;
+        return (
         <Reveal key={social.id} delay={i * 0.04}>
           <a
             href={social.url}
@@ -59,11 +61,11 @@ export default function SocialGrid({
             <p className="mt-5 font-semibold">{social.label}</p>
             <p className="text-sm text-[var(--text-muted)]">{social.handle ?? ""}</p>
             <p className="mt-3 text-sm leading-relaxed text-[var(--text-muted)]">
-              {t.has(`social_${social.id}`) ? t(`social_${social.id}`) : social.description}
+              {descriptionKey && t.has(descriptionKey) ? t(descriptionKey) : social.description}
             </p>
           </a>
         </Reveal>
-      ))}
+      ); })}
     </div>
   );
 }

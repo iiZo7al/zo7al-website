@@ -4,8 +4,9 @@ import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { AnimatePresence, motion } from "framer-motion";
-import { Globe, Check } from "lucide-react";
+import { Check } from "lucide-react";
 import { LOCALES, LOCALE_LABELS, LOCALE_COOKIE } from "@/i18n/config";
+import LanguageFlag from "@/components/ui/LanguageFlag";
 import { setLocaleCookie } from "@/lib/set-cookie";
 
 export default function LanguageSwitcher({ variant = "desktop" }: { variant?: "desktop" | "mobile" }) {
@@ -45,7 +46,7 @@ export default function LanguageSwitcher({ variant = "desktop" }: { variant?: "d
                 color: loc === locale ? "var(--text)" : "var(--text-muted)",
               }}
             >
-              {LOCALE_LABELS[loc].native}
+              <span className="flex items-center gap-2"><LanguageFlag locale={loc} />{LOCALE_LABELS[loc].native}</span>
               {loc === locale && <Check size={14} strokeWidth={2.5} style={{ color: "var(--accent)" }} />}
             </button>
           ))}
@@ -64,7 +65,7 @@ export default function LanguageSwitcher({ variant = "desktop" }: { variant?: "d
         aria-expanded={open}
         className="flex items-center gap-1.5 rounded-full px-3 py-2 text-sm font-medium text-[var(--text-muted)] transition-colors hover:text-[var(--text)]"
       >
-        <Globe size={16} strokeWidth={2.5} />
+        <LanguageFlag locale={locale} />
         <span className="hidden lg:inline">{LOCALE_LABELS[locale as keyof typeof LOCALE_LABELS]?.native}</span>
       </button>
 
@@ -93,7 +94,7 @@ export default function LanguageSwitcher({ variant = "desktop" }: { variant?: "d
                   color: loc === locale ? "var(--text)" : "var(--text-muted)",
                 }}
               >
-                {LOCALE_LABELS[loc].native}
+                <span className="flex items-center gap-2"><LanguageFlag locale={loc} />{LOCALE_LABELS[loc].native}</span>
                 {loc === locale && <Check size={14} strokeWidth={2.5} style={{ color: "var(--accent)" }} />}
               </button>
             ))}
@@ -103,3 +104,4 @@ export default function LanguageSwitcher({ variant = "desktop" }: { variant?: "d
     </div>
   );
 }
+

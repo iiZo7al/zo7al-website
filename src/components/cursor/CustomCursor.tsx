@@ -47,6 +47,7 @@ export default function CustomCursor() {
     let visible = false;
 
     const onMove = (e: MouseEvent) => {
+      document.documentElement.classList.add("cursor-visible");
       mouse.x = e.clientX;
       mouse.y = e.clientY;
       if (!visible) {
@@ -97,7 +98,10 @@ export default function CustomCursor() {
       const resolved = resolveMode(e.target as Element);
       setMode(resolved?.mode ?? "default");
     };
+    const hide = () => { visible = false; document.documentElement.classList.remove("cursor-visible"); };
+    const onVisibility = () => { if (document.hidden) hide(); };
     const onOut = (e: MouseEvent) => {
+      if (!e.relatedTarget) hide();
       const related = e.relatedTarget as Element | null;
       if (!related || !related.closest("[data-cursor]")) {
         setMode("default");
@@ -114,6 +118,8 @@ export default function CustomCursor() {
       window.setTimeout(() => setFlash(null), detail.duration ?? 1100);
     };
 
+    window.addEventListener("blur", hide);
+    document.addEventListener("visibilitychange", onVisibility);
     window.addEventListener("mousemove", onMove, { passive: true });
     document.addEventListener("mouseover", onOver);
     document.addEventListener("mouseout", onOut);
@@ -123,6 +129,9 @@ export default function CustomCursor() {
 
     return () => {
       cancelAnimationFrame(raf);
+      hide();
+      window.removeEventListener("blur", hide);
+      document.removeEventListener("visibilitychange", onVisibility);
       window.removeEventListener("mousemove", onMove);
       document.removeEventListener("mouseover", onOver);
       document.removeEventListener("mouseout", onOut);

@@ -6,7 +6,7 @@
     "subtitle": "سيرفرات ماينكرافت، مابات فورتنايت، مودباكات، ومشاريع ألعاب من زحل.", "ctaExplore": "استكشف ZO7AL", "ctaViewProjects": "شاهد المشاريع", "scroll": "مرر للأسفل",
     "universeEyebrow": "المشاريع", "universeTitle": "عالم زحل", "universeText": "استكشف العوالم والمشاريع والتجارب التي بناها زحل.",
     "minecraftMeta1": "ماينكرافت", "minecraftMeta2": "جافا + بيدروك", "minecraftTitle": "شبكة زحل", "minecraftText": "شبكة ماينكرافت مبنية للاعبين.", "minecraftCta": "استكشف الشبكة",
-    "modpacksMeta1": "المودباكات", "modpacksMeta2": "مودرينث + كيرس فورج", "modpacksTitle": "مودباكات ماينكرافت", "modpacksText": "تجارب ماينكرافت من صنع وتنسيق زحل.", "modpacksCta": "شاهد المودباكات",
+    "modpacksMeta1": "المودباكات", "modpacksMeta2": "Modrinth + CurseForge", "modpacksTitle": "مودباكات ماينكرافت", "modpacksText": "تجارب ماينكرافت من صنع وتنسيق زحل.", "modpacksCta": "شاهد المودباكات",
     "fortniteMeta1": "فورتنايت", "fortniteMeta2": "كرييتف", "fortniteTitle": "فورتنايت كرييتف", "fortniteText": "مابات وتجارب من صنع زحل.", "fortniteCta": "استكشف المابات",
     "aboutEyebrow": "من هو زحل؟", "aboutText": "زحل صانع محتوى ألعاب يبني شبكات ماينكرافت، ومودباكات، ومابات فورتنايت كرييتف، ومشاريع ألعاب تجريبية."
   },
@@ -22,8 +22,8 @@
   },
   "modpacks": {
     "eyebrow": "المودباكات", "title": "ماينكرافت، بحلّة جديدة.", "text": "استكشف مشاريع ماينكرافت من صنع زحل.",
-    "modrinthEyebrow": "مودرينث", "modrinthTitle": "إصدارات مودرينث", "modrinthLabel": "مودرينث", "modrinthLiveLabel": "مباشر من مودرينث",
-    "curseforgeEyebrow": "كيرس فورج", "curseforgeTitle": "نسخ كيرس فورج", "curseforgeLabel": "كيرس فورج", "curseforgeLiveLabel": "متزامن مباشرة مع كيرس فورج"
+    "modrinthEyebrow": "Modrinth", "modrinthTitle": "إصدارات Modrinth", "modrinthLabel": "Modrinth", "modrinthLiveLabel": "مباشر من Modrinth",
+    "curseforgeEyebrow": "CurseForge", "curseforgeTitle": "نسخ CurseForge", "curseforgeLabel": "CurseForge", "curseforgeLiveLabel": "متزامن مباشرة مع CurseForge"
   },
   "fortnite": {
     "eyebrow": "فورتنايت كرييتف", "title": "فورتنايت كرييتف", "text": "مابات وتجارب من صنع زحل.", "creatorPage": "صفحة المطور",
@@ -59,7 +59,7 @@
       { "category": "community", "q": "أين أجد حسابات زحل في التواصل الاجتماعي؟", "a": "صفحة التواصل الاجتماعي تعرض كل منصة موثقة، وتتزامن مباشرة مع Linktree الخاص بزحل." },
       { "category": "community", "q": "كيف أبلّغ عن مشكلة؟", "a": "انضم لسيرفر الديسكورد وافتح تذكرة في قناة الدعم — هذه أسرع طريقة للوصول للفريق." },
       { "category": "community", "q": "كيف أتواصل مع زحل؟", "a": "الديسكورد هو أفضل طريقة، أو عبر أي من حسابات التواصل الموثقة في صفحة التواصل الاجتماعي." },
-      { "category": "modpacks", "q": "من أين أحمّل مودباكات زحل؟", "a": "من مودرينث وكيرس فورج — كلاهما مدرج مع روابط مباشرة في صفحة المودباكات." }
+      { "category": "modpacks", "q": "من أين أحمّل مودباكات زحل؟", "a": "من Modrinth وCurseForge — كلاهما مدرج مع روابط مباشرة في صفحة المودباكات." }
     ]
   },
   "footer": {
@@ -150,6 +150,9 @@
     "perk_mvp-plus_2": "ميزات حصرية",
     "perk_mvp-plus_3": "أولوية دخول السيرفر",
     "perk_mvp-plus_4": "صلاحيات متقدمة",
+    "social_snapchat": "يوميات ولقطات من خلف الكواليس.",
+    "social_threads": "أفكار سريعة ونقاشات مع المجتمع.",
+    "social_linktree": "جميع حسابات وروابط Zo7al Games في مكان واحد.",
     "social_youtube": "بنايات ماينكرافت ومودباكات ومابات فورتنايت.",
     "social_discord": "مجتمع السيرفر والمودباكات والمابات.",
     "social_tiktok": "مقاطع قصيرة من الشبكة وجزر فورتنايت.",

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { NAV_LINKS, SITE, STORE_LINK } from "@/lib/data/site";
 import BrandIcon from "@/components/ui/BrandIcon";
-import { ShoppingBag } from "lucide-react";
+import SolidIcon from "@/components/ui/SolidIcon";
 import { getSyncedSocials } from "@/lib/sync/socials";
 
 export default async function Footer() {
@@ -69,7 +69,7 @@ export default async function Footer() {
                 data-cursor="link"
                 className="flex items-center gap-2 text-sm text-[var(--text-muted)] hover:text-[var(--text)] transition-colors"
               >
-                <ShoppingBag size={14} strokeWidth={2.5} />
+                <SolidIcon name="shopping-bag" size={14} />
                 {t("nav.store")}
               </a>
             </li>
@@ -83,6 +83,7 @@ export default async function Footer() {
       >
         <p>© {SITE.year} {t("footer.copyright")}</p>
         <p>{t("footer.disclaimer")}</p>
+        <a href="https://www.flaticon.com/uicons" target="_blank" rel="noopener noreferrer" className="underline underline-offset-4">Uicons by Flaticon</a>
       </div>
     </footer>
   );

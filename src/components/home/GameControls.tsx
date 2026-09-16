@@ -7,11 +7,12 @@ import { useTranslations } from "next-intl";
 interface GameControlsProps {
   onMove: (x: number, y: number) => void;
   onExit: () => void;
+  allowExit?: boolean;
 }
 
 const DEAD_ZONE = 0.12;
 
-export default function GameControls({ onMove, onExit }: GameControlsProps) {
+export default function GameControls({ onMove, onExit, allowExit = true }: GameControlsProps) {
   const t = useTranslations("game");
   const instructionsId = useId();
   const joystickRef = useRef<HTMLButtonElement>(null);
@@ -146,7 +147,7 @@ export default function GameControls({ onMove, onExit }: GameControlsProps) {
         </div>
       </div>
 
-      <button
+      {allowExit && <button
         type="button"
         className="exit-button"
         onClick={() => {
@@ -156,8 +157,8 @@ export default function GameControls({ onMove, onExit }: GameControlsProps) {
       >
         <span aria-hidden="true">↗</span>
         <span>{t("exit")}</span>
-        <kbd aria-hidden="true">Esc</kbd>
-      </button>
+        <kbd aria-hidden="true">P</kbd>
+      </button>}
 
       <style jsx>{`
         .game-controls {
