@@ -251,3 +251,8 @@ html.space-flight-active [data-space-flight="true"] button { cursor: pointer !im
   .space-hint { display: none; }
   .space-audio-controls { top: 8px !important; left: 170px !important; right: 16px !important; justify-content: flex-end; }
 }
+
+html:not(.cursor-visible) .cursor-dot,
+html:not(.cursor-visible) .cursor-ring,
+html:not(.cursor-visible) .cursor-glow { visibility: hidden; }
+@media (display-mode: standalone), (display-mode: fullscreen) { .website-shell { display: none; } }

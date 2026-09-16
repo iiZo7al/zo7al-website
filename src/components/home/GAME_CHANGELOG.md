@@ -1,5 +1,12 @@
 # Space Run
 
+## 1.0.4
+- Zo7al Game home-screen install: dedicated game-only launch, supplied app icon, no website exit controls.
+- Show only each anonymous player’s best verified score globally.
+- Hide the custom cursor until movement and whenever focus/pointer leaves the page.
+- Attach the engine plume to the measured nozzle anchor, with a continuous hot core.
+- Correct displayed keyboard hints to Esc pause and P exit without changing bindings.
+
 ## 1.0.3
 - Connect the shared leaderboard to a deployed Neon/PostgreSQL backend.
 - Remove spin-to-launch; keep a slow draggable moon orbit.

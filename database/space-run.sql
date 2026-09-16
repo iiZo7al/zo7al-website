@@ -10,3 +10,7 @@ CREATE TABLE IF NOT EXISTS space_runs (
 );
 CREATE INDEX IF NOT EXISTS space_runs_ranking ON space_runs (score DESC, stars DESC, completed_at ASC) WHERE completed_at IS NOT NULL;
 CREATE INDEX IF NOT EXISTS space_runs_client_started ON space_runs (client_hash, started_at DESC);
+
+-- Additive upgrade; preserve run tickets for idempotency and abuse checks.
+ALTER TABLE space_runs ADD COLUMN IF NOT EXISTS player_hash text;
+CREATE INDEX IF NOT EXISTS space_runs_player_best ON space_runs (player_hash, score DESC, stars DESC, completed_at ASC) WHERE completed_at IS NOT NULL;

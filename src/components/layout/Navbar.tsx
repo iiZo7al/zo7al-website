@@ -5,19 +5,13 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useTranslations } from "next-intl";
-import { Menu, X, Home, Box, Package, Map, Share2 } from "lucide-react";
+import SolidIcon from "@/components/ui/SolidIcon";
 import { NAV_LINKS, DISCORD_LINK, SITE } from "@/lib/data/site";
 import MagneticButton from "@/components/cursor/MagneticButton";
 import BrandIcon from "@/components/ui/BrandIcon";
 import LanguageSwitcher from "@/components/layout/LanguageSwitcher";
 
-const ICON_MAP = {
-  home: Home,
-  minecraft: Box,
-  modpacks: Package,
-  fortnite: Map,
-  socials: Share2,
-};
+const ICON_MAP = { home: "home", minecraft: "cube", modpacks: "box", fortnite: "map", socials: "share" } as const;
 
 export default function Navbar() {
 
@@ -92,8 +86,8 @@ export default function Navbar() {
                   )}
                   <span className="relative flex items-center gap-2">
                     {(() => {
-                      const Icon = ICON_MAP[link.icon as keyof typeof ICON_MAP];
-                      return Icon ? <Icon size={14} strokeWidth={2.5} /> : null;
+                      const Icon = ICON_MAP[link.key];
+                      return Icon ? <SolidIcon name={Icon} size={14} /> : null;
                     })()}
                     {t(link.key)}
                   </span>
@@ -133,7 +127,7 @@ export default function Navbar() {
           aria-expanded={mobileOpen}
           onClick={() => setMobileOpen((v) => !v)}
         >
-          {mobileOpen ? <X size={20} /> : <Menu size={20} />}
+          <SolidIcon name={mobileOpen ? "cross" : "menu-burger"} size={20} />
         </button>
       </nav>
 
@@ -152,7 +146,7 @@ export default function Navbar() {
             }}
           >
             {NAV_LINKS.map((link) => {
-              const Icon = ICON_MAP[link.icon as keyof typeof ICON_MAP];
+              const Icon = ICON_MAP[link.key];
               return (
                 <Link
                   key={link.href}
@@ -163,7 +157,7 @@ export default function Navbar() {
                     background: pathname === link.href ? "var(--surface-elevated)" : "transparent",
                   }}
                 >
-                  {Icon && <Icon size={18} strokeWidth={2.5} />}
+                  {Icon && <SolidIcon name={Icon} size={18} />}
                   {t(link.key)}
                 </Link>
               );

@@ -51,3 +51,11 @@ Music and effects are original Web Audio synthesis. There are no external audio 
 The uploaded Cartoon Space Pack was split into normalized indexed GLB meshes. Six new obstacle variants accompany the original meteors; Earth, the Moon and two planets form the background. Asset credit is in `public/assets/models/space-pack/CREDITS.txt`.
 
 Game UI, sound controls, transitions, leaderboard states and remaining site interface text have translations in all ten existing languages. Published external project names and descriptions retain their source text.
+
+## Version 1.0.4: personal best and installed app
+
+Run `database/space-run.sql` before deploying the new function: it adds nullable `player_hash` and an index without rewriting existing results. `/start` accepts a 256-bit private anonymous player key in `X-Space-Player`; only its HMAC is stored. Rankings select one best completed run per player (score, stars, earliest completion), preserving old run tickets for idempotency. Old clients without a key retain independent runs. Names and IP addresses are never used to merge players. Clearing browser storage or using another browser creates a separate player identity; account-based cross-device identity is not implemented.
+
+The manifest installs **Zo7al Game** with the supplied artwork and starts at `/game`. Installed launches from older saved homepage URLs redirect to `/game`. Game-only mode hides site navigation and exit controls, including on pause and game over. Keyboard P cannot return to the website in this mode. iOS uses standalone mode with safe areas; browser/OS status bars remain controlled by the OS. Offline play is not advertised.
+
+Selected solid icons are self-hosted SVG outlines from Flaticon Uicons 3.0.0, with visible footer attribution. Country flags are self-hosted from FlagCDN.

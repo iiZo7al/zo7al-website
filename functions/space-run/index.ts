@@ -6,7 +6,7 @@ import { GET as leaderboard } from "../../src/app/api/space-run/leaderboard/rout
 // are public; writing a score requires that run's unguessable session token.
 const handler = {
   async fetch(request: Request): Promise<Response> {
-    const cors = { "Access-Control-Allow-Origin": "*", "Access-Control-Allow-Methods": "GET, POST, OPTIONS", "Access-Control-Allow-Headers": "Content-Type", "Access-Control-Max-Age": "600", "Cache-Control": "no-store" };
+    const cors = { "Access-Control-Allow-Origin": "*", "Access-Control-Allow-Methods": "GET, POST, OPTIONS", "Access-Control-Allow-Headers": "Content-Type, X-Space-Player", "Access-Control-Max-Age": "600", "Cache-Control": "no-store" };
     if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: cors });
     const path = new URL(request.url).pathname.replace(/\/$/, "");
     let response: Response;
