@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
+import SolidIcon from "@/components/ui/SolidIcon";
+import BrandIcon from "@/components/ui/BrandIcon";
 import PageHero from "@/components/ui/PageHero";
 import SocialGrid from "@/components/socials/SocialGrid";
 import { getSyncedSocials } from "@/lib/sync/socials";
@@ -26,15 +28,15 @@ export default async function SocialsPage() {
       <section className="relative pb-24 sm:pb-32">
         <div className="mx-auto max-w-[1180px] px-6">
           <div className="mb-8 flex items-center justify-between">
-            <p className="text-label">{source === "live" ? t("liveLabel") : t("label")}</p>
+            <p className="text-label flex items-center gap-2"><SolidIcon name="share" size={16} />{source === "live" ? t("liveLabel") : t("label")}</p>
             <a
               href="https://linktr.ee/Zo7al"
               target="_blank"
               rel="noopener noreferrer"
               data-cursor="link"
-              className="text-sm font-medium text-[var(--text-muted)] hover:text-[var(--text)] transition-colors"
+              className="flex items-center gap-2 text-sm font-medium text-[var(--text-muted)] hover:text-[var(--text)] transition-colors"
             >
-              {t("viewOnLinktree")} ↗
+              <BrandIcon slug="linktree" size={16} />{t("viewOnLinktree")}<SolidIcon name="arrow-up-right" size={12} />
             </a>
           </div>
           <SocialGrid socials={items} previews={previews} />
@@ -43,3 +45,4 @@ export default async function SocialsPage() {
     </main>
   );
 }
+

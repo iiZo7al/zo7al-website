@@ -5,6 +5,8 @@ import BrandIcon from "@/components/ui/BrandIcon";
 import SolidIcon from "@/components/ui/SolidIcon";
 import { getSyncedSocials } from "@/lib/sync/socials";
 
+const FOOTER_ICONS = { home: "home", minecraft: "cube", modpacks: "box", fortnite: "map", socials: "share", store: "shopping-bag" } as const;
+
 export default async function Footer() {
   const [t, { items: socials }] = await Promise.all([
     getTranslations(),
@@ -35,8 +37,9 @@ export default async function Footer() {
                 <Link
                   href={l.href}
                   data-cursor="link"
-                  className="text-sm text-[var(--text-muted)] hover:text-[var(--text)] transition-colors"
+                  className="flex items-center gap-2 text-sm text-[var(--text-muted)] hover:text-[var(--text)] transition-colors"
                 >
+                  <SolidIcon name={FOOTER_ICONS[l.key]} size={15} className="shrink-0" />
                   {t(`nav.${l.key}`)}
                 </Link>
               </li>
