@@ -1,5 +1,8 @@
 # Space Run
 
+## 1.0.5
+- Add a translated Enter cursor label to the homepage game launch button.
+
 ## 1.0.4
 - Zo7al Game home-screen install: dedicated game-only launch, supplied app icon, no website exit controls.
 - Show only each anonymous player’s best verified score globally.

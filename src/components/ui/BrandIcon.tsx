@@ -49,6 +49,13 @@ export const BRAND_ICONS: Record<string, SimpleIcon> = {
   patreon: siPatreon,
 };
 
+const DISPLAY_COLORS: Record<string, string> = { fortnite: "#87CEFA", x: "#FFFFFF", twitter: "#FFFFFF", threads: "#FFFFFF", epicgames: "#FFFFFF", tiktok: "#FFFFFF", roblox: "#FFFFFF" };
+
+/** Keep platform labels and icons in the same readable brand color. */
+export function brandDisplayColor(slug: string): string {
+  return DISPLAY_COLORS[slug] ?? (BRAND_ICONS[slug] ? `#${BRAND_ICONS[slug].hex}` : "var(--text)");
+}
+
 /** Best-effort platform detection from any URL, used by the live-synced link lists. */
 export function detectPlatform(url: string): string | null {
   try {
@@ -108,7 +115,7 @@ export default function BrandIcon({
       viewBox="0 0 24 24"
       width={size}
       height={size}
-      fill={color ?? ({ fortnite: "#87CEFA", x: "#FFFFFF", twitter: "#FFFFFF", threads: "#FFFFFF", epicgames: "#FFFFFF", tiktok: "#FFFFFF", roblox: "#FFFFFF" } as Record<string, string>)[slug] ?? `#${icon.hex}`}
+      fill={color ?? brandDisplayColor(slug)}
       className={className}
       aria-hidden="true"
     >

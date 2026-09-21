@@ -32,12 +32,32 @@
   },
   "socials": {
     "eyebrow": "المجتمع", "title": "تابع الرحلة.", "text": "كل منصة، في مكان واحد.", "label": "التواصل الاجتماعي",
-    "liveLabel": "متزامن مباشرة مع Linktree", "viewOnLinktree": "عرض على Linktree"
+    "liveLabel": "متزامن مباشرة مع Linktree", "viewOnLinktree": "عرض على Linktree",
+    "gamesEyebrow": "حسابات الألعاب",
+    "gamesText": "تابع Zo7al Games على حساباته الرسمية. تُحدّث الروابط من صفحته في Linktree."
   },
   "store": {
     "eyebrow": "ادعم زحل", "title": "ادعم زحل", "text": "ادعم الشبكة واستكشف متجر زحل الرسمي.",
     "ranksEyebrow": "الرتب", "ranksTitle": "رتب السيرفر", "ranksText": "الأسعار والمزايا كما هي مدرجة في متجر Tebex الرسمي.",
-    "getRank": "احصل على", "mostPopular": "الأكثر طلبًا", "allPurchases": "جميع المشتريات تتم بأمان عبر Tebex — المتجر الرسمي لزحل.", "visitStore": "زر zo7al.tebex.io"
+    "getRank": "احصل على", "mostPopular": "الأكثر طلبًا", "allPurchases": "جميع المشتريات تتم بأمان عبر Tebex — المتجر الرسمي لزحل.", "visitStore": "زر zo7al.tebex.io",
+    "checkoutUnavailable": "الدفع غير متاح مؤقتًا. حاول مرة أخرى لاحقًا.",
+    "pricePending": "يظهر السعر عند توفر الدفع",
+    "checkoutTitle": "إتمام الشراء",
+    "close": "إغلاق",
+    "username": "اسمك في Minecraft",
+    "usernameHelp": "اكتب اسمك داخل اللعبة بدقة حتى تصل مشترياتك إلى الحساب الصحيح.",
+    "preparing": "جارٍ تجهيز الدفع…",
+    "continuePayment": "المتابعة للدفع",
+    "paymentError": "تعذر تحميل الدفع. أغلق هذه النافذة وحاول مرة أخرى.",
+    "browseRanks": "استكشف الرتب",
+    "serverLink": "استكشف السيرفر",
+    "secureTitle": "دفع آمن",
+    "secureText": "تُعالج المدفوعات بأمان عبر Tebex.",
+    "supportTitle": "ادعم الشبكة",
+    "supportText": "مشترياتك تساعد في دعم السيرفر ومجتمعه.",
+    "helpTitle": "تحتاج مساعدة؟",
+    "helpText": "انضم إلى مجتمعنا في Discord للمساعدة في مشترياتك.",
+    "checkoutNote": "تظهر الضرائب النهائية والعملة وخيارات الدفع عند إتمام الشراء."
   },
   "faq": {
     "eyebrow": "تحتاج مساعدة؟", "title": "الأسئلة الشائعة", "text": "كل ما يخص الانضمام للشبكة، شراء رتبة، لعب مابات زحل في فورتنايت، والحصول على الدعم.",
@@ -116,7 +136,8 @@
     "you": "أنت",
     "refresh": "تحديث",
     "globalUnavailable": "لا يمكن إدراج هذه الرحلة في الترتيب العالمي أثناء تعذّر الاتصال بالخدمة.",
-    "audioHelp": "تحكّم بالموسيقى والمؤثرات الصوتية كلٌّ على حدة."
+    "audioHelp": "تحكّم بالموسيقى والمؤثرات الصوتية كلٌّ على حدة.",
+    "enter": "دخول"
   },
   "ui": {
     "backToTop": "العودة للأعلى",
@@ -168,6 +189,15 @@
     "cat_ClanWars": "حروب العشائر",
     "cat_BuildFight": "معارك بناء",
     "cat_1v1v1": "واحد ضد واحد ضد واحد",
-    "cat_RedvsBlue": "الأحمر ضد الأزرق"
+    "cat_RedvsBlue": "الأحمر ضد الأزرق",
+    "gamesAccount": "حساب Zo7al Games على {platform}."
+  },
+  "lost": {
+    "eyebrow": "تائه في الفضاء",
+    "title": "هذه الصفحة تحطّمت.",
+    "text": "يبدو أن هذه الصفحة خرجت إلى مدار آخر. لنعد بك إلى الرئيسية.",
+    "home": "الصفحة الرئيسية",
+    "explore": "استكشف",
+    "direction": "rtl"
   }
 }

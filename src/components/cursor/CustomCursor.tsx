@@ -32,6 +32,7 @@ export default function CustomCursor() {
   const labelRef = useRef<HTMLSpanElement>(null);
 
   const [mode, setMode] = useState<CursorMode>("default");
+  const [hoverLabel, setHoverLabel] = useState<string | null>(null);
   const [flash, setFlash] = useState<string | null>(null);
 
   useEffect(() => {
@@ -97,6 +98,7 @@ export default function CustomCursor() {
     const onOver = (e: MouseEvent) => {
       const resolved = resolveMode(e.target as Element);
       setMode(resolved?.mode ?? "default");
+      setHoverLabel(resolved?.label ?? null);
     };
     const hide = () => { visible = false; document.documentElement.classList.remove("cursor-visible"); };
     const onVisibility = () => { if (document.hidden) hide(); };
@@ -105,6 +107,7 @@ export default function CustomCursor() {
       const related = e.relatedTarget as Element | null;
       if (!related || !related.closest("[data-cursor]")) {
         setMode("default");
+        setHoverLabel(null);
       }
     };
 
@@ -143,7 +146,7 @@ export default function CustomCursor() {
   }, []);
 
   const size = RING_SIZE[mode];
-  const label = flash ?? (mode === "project" ? t("explore") : mode === "copy" ? tc("copy") : mode === "button" || mode === "image" ? t("view") : "");
+  const label = flash ?? hoverLabel ?? (mode === "project" ? t("explore") : mode === "copy" ? tc("copy") : mode === "button" || mode === "image" ? t("view") : "");
   const active = mode !== "default" || !!flash;
 
   return (

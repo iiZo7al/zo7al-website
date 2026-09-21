@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
-import PageHero from "@/components/ui/PageHero";
+import Link from "next/link";
+import ServerHero from "@/components/ui/ServerHero";
 import SectionHeader from "@/components/ui/SectionHeader";
 import Reveal from "@/components/ui/Reveal";
 import ServerStatus from "@/components/minecraft/ServerStatus";
@@ -8,7 +9,6 @@ import ServerConnect from "@/components/minecraft/ServerConnect";
 import VersionTimeline from "@/components/minecraft/VersionTimeline";
 import ModesGrid from "@/components/minecraft/ModesGrid";
 import MagneticButton from "@/components/cursor/MagneticButton";
-import { MINECRAFT_SERVER } from "@/lib/data/minecraft";
 
 export const metadata: Metadata = {
   title: "Minecraft — ZO7AL Projects",
@@ -20,20 +20,18 @@ export default async function MinecraftPage() {
 
   return (
     <main data-accent="minecraft">
-      <PageHero eyebrow={t("eyebrow")} title={t("title")} text={t("text")}>
+      <ServerHero eyebrow={t("eyebrow")} title={t("title")} text={t("text")}>
         <MagneticButton>
-          <a
-            href={MINECRAFT_SERVER.storeUrl}
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            href="/store"
             data-cursor="button"
             className="inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-sm font-semibold"
             style={{ background: "var(--accent)", color: "#07080B" }}
           >
             {t("openStore")}
-          </a>
+          </Link>
         </MagneticButton>
-      </PageHero>
+      </ServerHero>
 
       <section className="relative pb-20 sm:pb-28">
         <div className="mx-auto max-w-[1180px] px-6">
@@ -83,16 +81,14 @@ export default async function MinecraftPage() {
               </p>
               <div className="mt-8">
                 <MagneticButton>
-                  <a
-                    href={MINECRAFT_SERVER.storeUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    data-cursor="button"
+                  <Link
+                    href="/store"
+                                    data-cursor="button"
                     className="inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-sm font-semibold"
                     style={{ background: "var(--accent)", color: "#07080B" }}
                   >
                     {t("openStore")} →
-                  </a>
+                  </Link>
                 </MagneticButton>
               </div>
             </div>
@@ -102,3 +98,4 @@ export default async function MinecraftPage() {
     </main>
   );
 }
+
