@@ -5,12 +5,13 @@ import Reveal from "@/components/ui/Reveal";
 import { SyncedSocial } from "@/lib/sync/socials";
 import { SocialPreview } from "@/lib/sync/previews";
 import SolidIcon from "@/components/ui/SolidIcon";
-import BrandIcon from "@/components/ui/BrandIcon";
+import BrandIcon, { brandDisplayColor } from "@/components/ui/BrandIcon";
 
 export default function SocialGrid({
-  socials
+  socials, games = false
 }: {
   socials: SyncedSocial[];
+  games?: boolean;
   previews: Record<string, SocialPreview | null>
 }) {
   const t = useTranslations("ui");
@@ -53,10 +54,10 @@ export default function SocialGrid({
               <SolidIcon name="arrow-up-right" size={16} className="shrink-0 text-[var(--text-muted)] transition-all duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:text-[var(--text)]" />
             </div>
 
-            <p className="mt-5 font-semibold" style={modrinth ? { color: brandColor } : undefined}>{social.label}</p>
+            <p className="mt-5 font-semibold" style={{ color: brandDisplayColor(social.platform) }}>{social.label}</p>
             {showHandle && <p className="text-sm text-[var(--text-muted)]">{social.handle}</p>}
             <p className="mt-3 text-sm leading-relaxed text-[var(--text-muted)]">
-              {descriptionKey && t.has(descriptionKey) ? t(descriptionKey) : social.description}
+              {games ? t("gamesAccount", { platform: social.label }) : descriptionKey && t.has(descriptionKey) ? t(descriptionKey) : social.description}
             </p>
           </a>
         </Reveal>

@@ -32,12 +32,32 @@
   },
   "socials": {
     "eyebrow": "커뮤니티", "title": "여정을 따라가세요.", "text": "모든 플랫폼을 한곳에서.", "label": "소셜 미디어",
-    "liveLabel": "Linktree와 실시간 동기화", "viewOnLinktree": "Linktree에서 보기"
+    "liveLabel": "Linktree와 실시간 동기화", "viewOnLinktree": "Linktree에서 보기",
+    "gamesEyebrow": "게임 공식 계정",
+    "gamesText": "Zo7al Games의 공식 채널을 팔로우하세요. 링크는 Linktree에서 동기화됩니다."
   },
   "store": {
     "eyebrow": "Zo7al 후원하기", "title": "ZO7AL 후원하기", "text": "네트워크를 후원하고 Zo7al 공식 스토어를 둘러보세요.",
     "ranksEyebrow": "등급", "ranksTitle": "서버 등급", "ranksText": "가격과 혜택은 공식 Tebex 스토어에 표시된 대로입니다.",
-    "getRank": "구매하기", "mostPopular": "인기 등급", "allPurchases": "모든 결제는 Zo7al 공식 스토어인 Tebex를 통해 안전하게 처리됩니다.", "visitStore": "zo7al.tebex.io 방문하기"
+    "getRank": "구매하기", "mostPopular": "인기 등급", "allPurchases": "모든 결제는 Zo7al 공식 스토어인 Tebex를 통해 안전하게 처리됩니다.", "visitStore": "zo7al.tebex.io 방문하기",
+    "checkoutUnavailable": "현재 결제를 이용할 수 없습니다. 나중에 다시 시도해 주세요.",
+    "pricePending": "결제가 활성화되면 가격이 표시됩니다",
+    "checkoutTitle": "구매하기",
+    "close": "닫기",
+    "username": "Minecraft 사용자 이름",
+    "usernameHelp": "구매한 상품이 올바른 계정으로 전달되도록 게임 내 이름을 정확히 입력하세요.",
+    "preparing": "결제 준비 중…",
+    "continuePayment": "결제로 이동",
+    "paymentError": "결제를 불러오지 못했습니다. 이 창을 닫고 다시 시도해 주세요.",
+    "browseRanks": "등급 둘러보기",
+    "serverLink": "서버 둘러보기",
+    "secureTitle": "안전한 결제",
+    "secureText": "Tebex에서 결제를 안전하게 처리합니다.",
+    "supportTitle": "네트워크 지원",
+    "supportText": "구매를 통해 서버와 커뮤니티를 지원할 수 있습니다.",
+    "helpTitle": "도움이 필요하신가요?",
+    "helpText": "구매 관련 도움이 필요하면 Discord 커뮤니티에 참여하세요.",
+    "checkoutNote": "최종 세금, 통화 및 결제 수단은 결제 시 표시됩니다."
   },
   "faq": {
     "eyebrow": "도움이 필요하신가요?", "title": "자주 묻는 질문", "text": "네트워크 참여, 등급 구매, Zo7al의 포트나이트 맵 플레이, 지원 요청에 관한 모든 것.",
@@ -116,7 +136,8 @@
     "you": "나",
     "refresh": "새로고침",
     "globalUnavailable": "서비스를 사용할 수 없는 동안 이 비행은 세계 순위에 등록할 수 없습니다.",
-    "audioHelp": "음악과 효과음을 따로 켜거나 끕니다."
+    "audioHelp": "음악과 효과음을 따로 켜거나 끕니다.",
+    "enter": "입장"
   },
   "ui": {
     "backToTop": "맨 위로",
@@ -168,6 +189,15 @@
     "cat_ClanWars": "클랜 전쟁",
     "cat_BuildFight": "건설 전투",
     "cat_1v1v1": "1대1대1",
-    "cat_RedvsBlue": "레드 대 블루"
+    "cat_RedvsBlue": "레드 대 블루",
+    "gamesAccount": "{platform}의 Zo7al Games."
+  },
+  "lost": {
+    "eyebrow": "우주에서 길을 잃었어요",
+    "title": "이 페이지가 부서졌어요.",
+    "text": "페이지가 다른 궤도로 떠난 것 같아요. 홈으로 돌아가 볼까요?",
+    "home": "홈으로",
+    "explore": "둘러보기",
+    "direction": "ltr"
   }
 }

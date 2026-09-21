@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { NAV_LINKS, SITE, STORE_LINK } from "@/lib/data/site";
-import BrandIcon from "@/components/ui/BrandIcon";
+import BrandIcon, { brandDisplayColor } from "@/components/ui/BrandIcon";
 import SolidIcon from "@/components/ui/SolidIcon";
 import { getSyncedSocials } from "@/lib/sync/socials";
 
@@ -60,7 +60,7 @@ export default async function Footer() {
                   className="flex items-center gap-2 text-sm text-[var(--text-muted)] hover:text-[var(--text)] transition-colors"
                 >
                   <BrandIcon slug={s.platform} size={14} />
-                  {s.label}
+                  <span style={{ color: brandDisplayColor(s.platform) }}>{s.label}</span>
                 </a>
               </li>
             ))}

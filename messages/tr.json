@@ -32,12 +32,32 @@
   },
   "socials": {
     "eyebrow": "Topluluk", "title": "YOLCULUĞU TAKİP ET.", "text": "Her platform, tek bir yerde.", "label": "Sosyal medya",
-    "liveLabel": "Linktree ile canlı senkronize", "viewOnLinktree": "Linktree'de Gör"
+    "liveLabel": "Linktree ile canlı senkronize", "viewOnLinktree": "Linktree'de Gör",
+    "gamesEyebrow": "Oyun hesaplarımız",
+    "gamesText": "Zo7al Games’i resmi kanallarında takip edin. Bağlantılar Linktree ile eşitlenir."
   },
   "store": {
     "eyebrow": "Zo7al'i destekle", "title": "ZO7AL'İ DESTEKLE", "text": "Ağı destekle ve Zo7al'in resmi mağazasını keşfet.",
     "ranksEyebrow": "Rütbeler", "ranksTitle": "Sunucu rütbeleri", "ranksText": "Fiyatlar ve ayrıcalıklar resmi Tebex mağazasında listelendiği gibidir.",
-    "getRank": "Al", "mostPopular": "En popüler", "allPurchases": "Tüm satın alımlar, Zo7al'in resmi mağazası Tebex üzerinden güvenle işlenir.", "visitStore": "zo7al.tebex.io'yu Ziyaret Et"
+    "getRank": "Al", "mostPopular": "En popüler", "allPurchases": "Tüm satın alımlar, Zo7al'in resmi mağazası Tebex üzerinden güvenle işlenir.", "visitStore": "zo7al.tebex.io'yu Ziyaret Et",
+    "checkoutUnavailable": "Ödeme geçici olarak kullanılamıyor. Lütfen daha sonra tekrar deneyin.",
+    "pricePending": "Ödeme açıldığında fiyat gösterilir",
+    "checkoutTitle": "Ödeme",
+    "close": "Kapat",
+    "username": "Minecraft kullanıcı adı",
+    "usernameHelp": "Satın aldıklarınızın doğru hesaba ulaşması için oyun içindeki adınızı tam olarak girin.",
+    "preparing": "Ödeme hazırlanıyor…",
+    "continuePayment": "Ödemeye devam et",
+    "paymentError": "Ödeme yüklenemedi. Bu pencereyi kapatıp tekrar deneyin.",
+    "browseRanks": "Rütbeleri keşfet",
+    "serverLink": "Sunucuyu keşfet",
+    "secureTitle": "Güvenli ödeme",
+    "secureText": "Ödemeler Tebex tarafından güvenle işlenir.",
+    "supportTitle": "Ağı destekle",
+    "supportText": "Satın alımınız sunucuyu ve topluluğunu destekler.",
+    "helpTitle": "Yardım mı gerekiyor?",
+    "helpText": "Satın alma desteği için Discord topluluğumuza katılın.",
+    "checkoutNote": "Son vergiler, para birimi ve ödeme seçenekleri ödeme sırasında gösterilir."
   },
   "faq": {
     "eyebrow": "Yardıma mı ihtiyacın var?", "title": "Sıkça sorulan sorular", "text": "Ağa katılma, rütbe satın alma, Zo7al'in Fortnite haritalarını oynama ve destek alma hakkında her şey.",
@@ -116,7 +136,8 @@
     "you": "Sen",
     "refresh": "Yenile",
     "globalUnavailable": "Hizmet kullanılamazken bu uçuş dünya sıralamasına giremez.",
-    "audioHelp": "Müzik ve ses efektlerini ayrı ayrı açıp kapat."
+    "audioHelp": "Müzik ve ses efektlerini ayrı ayrı açıp kapat.",
+    "enter": "Gir"
   },
   "ui": {
     "backToTop": "Başa dön",
@@ -168,6 +189,15 @@
     "cat_ClanWars": "Klan savaşları",
     "cat_BuildFight": "İnşa savaşları",
     "cat_1v1v1": "1e1e1",
-    "cat_RedvsBlue": "Kırmızıya karşı mavi"
+    "cat_RedvsBlue": "Kırmızıya karşı mavi",
+    "gamesAccount": "{platform} üzerinde Zo7al Games."
+  },
+  "lost": {
+    "eyebrow": "Uzayda kayboldu",
+    "title": "Bu sayfa parçalandı.",
+    "text": "Bu sayfa başka bir yörüngeye savrulmuş gibi görünüyor. Ana sayfaya dönelim.",
+    "home": "Ana sayfa",
+    "explore": "Keşfet",
+    "direction": "ltr"
   }
 }

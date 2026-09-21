@@ -32,12 +32,32 @@
   },
   "socials": {
     "eyebrow": "コミュニティ", "title": "旅を追いかけよう。", "text": "すべてのプラットフォームを一か所に。", "label": "SNS",
-    "liveLabel": "Linktreeとライブ同期中", "viewOnLinktree": "Linktreeで見る"
+    "liveLabel": "Linktreeとライブ同期中", "viewOnLinktree": "Linktreeで見る",
+    "gamesEyebrow": "ゲーム公式アカウント",
+    "gamesText": "Zo7al Gamesの公式チャンネルをフォローしましょう。リンクはLinktreeから同期されます。"
   },
   "store": {
     "eyebrow": "Zo7alを応援", "title": "ZO7ALを応援しよう", "text": "ネットワークを応援し、Zo7al公式ストアをチェックしよう。",
     "ranksEyebrow": "ランク", "ranksTitle": "サーバーランク", "ranksText": "価格と特典は公式Tebexストアの表示に基づきます。",
-    "getRank": "購入", "mostPopular": "人気No.1", "allPurchases": "すべての購入はZo7al公式ストアであるTebexを通じて安全に処理されます。", "visitStore": "zo7al.tebex.io を見る"
+    "getRank": "購入", "mostPopular": "人気No.1", "allPurchases": "すべての購入はZo7al公式ストアであるTebexを通じて安全に処理されます。", "visitStore": "zo7al.tebex.io を見る",
+    "checkoutUnavailable": "現在お支払いをご利用いただけません。後でもう一度お試しください。",
+    "pricePending": "お支払いが利用可能になると価格が表示されます",
+    "checkoutTitle": "購入手続き",
+    "close": "閉じる",
+    "username": "Minecraftのユーザー名",
+    "usernameHelp": "購入内容が正しいアカウントに届くよう、ゲーム内の名前を正確に入力してください。",
+    "preparing": "お支払いを準備中…",
+    "continuePayment": "お支払いへ進む",
+    "paymentError": "お支払いを読み込めませんでした。この画面を閉じて再度お試しください。",
+    "browseRanks": "ランクを見る",
+    "serverLink": "サーバーを見る",
+    "secureTitle": "安全なお支払い",
+    "secureText": "お支払いはTebexが安全に処理します。",
+    "supportTitle": "ネットワークを応援",
+    "supportText": "ご購入はサーバーとコミュニティの支援につながります。",
+    "helpTitle": "お困りですか？",
+    "helpText": "購入に関するお問い合わせはDiscordコミュニティへ。",
+    "checkoutNote": "最終的な税金、通貨、お支払い方法は購入手続きで表示されます。"
   },
   "faq": {
     "eyebrow": "お困りですか？", "title": "よくある質問", "text": "ネットワークへの参加方法、ランクの購入方法、Zo7alのFortniteマップの遷び方、サポートについて。",
@@ -116,7 +136,8 @@
     "you": "あなた",
     "refresh": "更新",
     "globalUnavailable": "サービスが利用できない間、このフライトは世界ランキングに参加できません。",
-    "audioHelp": "音楽と効果音を個別に切り替えます。"
+    "audioHelp": "音楽と効果音を個別に切り替えます。",
+    "enter": "入る"
   },
   "ui": {
     "backToTop": "トップへ戻る",
@@ -168,6 +189,15 @@
     "cat_ClanWars": "クラン戦",
     "cat_BuildFight": "建築バトル",
     "cat_1v1v1": "1対1対1",
-    "cat_RedvsBlue": "赤対青"
+    "cat_RedvsBlue": "赤対青",
+    "gamesAccount": "{platform}のZo7al Games。"
+  },
+  "lost": {
+    "eyebrow": "宇宙で迷子に",
+    "title": "このページは壊れてしまいました。",
+    "text": "このページは別の軌道に飛んでいったようです。ホームに戻りましょう。",
+    "home": "ホームに戻る",
+    "explore": "探索する",
+    "direction": "ltr"
   }
 }

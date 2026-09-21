@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { ArrowDown } from "lucide-react";
 import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { useState, useCallback } from "react";
@@ -90,9 +91,16 @@ export default function Hero() {
       >
         <div className="flex flex-col items-center gap-2">
           <span className="text-label">{t("scroll")}</span>
-          <span className="h-8 w-px" style={{ background: "var(--border-strong)" }} />
+          <span
+            className="home-scroll-arrow inline-flex text-[var(--accent)]"
+            aria-hidden="true"
+            style={{ animationPlayState: gameActive ? "paused" : "running" }}
+          >
+            <ArrowDown size={22} strokeWidth={1.8} />
+          </span>
         </div>
       </motion.div>
     </section>
   );
 }
+

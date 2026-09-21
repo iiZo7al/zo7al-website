@@ -110,7 +110,9 @@
     "text": "Every platform, one place to start.",
     "label": "Socials",
     "liveLabel": "Synced live from Linktree",
-    "viewOnLinktree": "View on Linktree"
+    "viewOnLinktree": "View on Linktree",
+    "gamesEyebrow": "Our gaming accounts",
+    "gamesText": "Follow Zo7al Games across its official channels. Links sync from its Linktree."
   },
   "store": {
     "eyebrow": "Support Zo7al",
@@ -122,7 +124,25 @@
     "getRank": "Get",
     "mostPopular": "Most popular",
     "allPurchases": "All purchases are processed securely through Tebex — Zo7al's official store.",
-    "visitStore": "Visit zo7al.tebex.io"
+    "visitStore": "Visit zo7al.tebex.io",
+    "checkoutUnavailable": "Checkout is temporarily unavailable. Please try again later.",
+    "pricePending": "Price available when checkout is online",
+    "checkoutTitle": "Checkout",
+    "close": "Close",
+    "username": "Minecraft username",
+    "usernameHelp": "Enter your exact in-game username so your purchase reaches the correct account.",
+    "preparing": "Preparing checkout…",
+    "continuePayment": "Continue to payment",
+    "paymentError": "Could not load checkout. Please close this window and try again.",
+    "browseRanks": "Explore ranks",
+    "serverLink": "Explore the server",
+    "secureTitle": "Secure checkout",
+    "secureText": "Payments are processed securely by Tebex.",
+    "supportTitle": "Support the network",
+    "supportText": "Your purchase helps support the server and its community.",
+    "helpTitle": "Need help?",
+    "helpText": "Join our Discord community for purchase support.",
+    "checkoutNote": "Final taxes, currency and payment options are shown at checkout."
   },
   "faq": {
     "eyebrow": "Need help?",
@@ -213,7 +233,8 @@
     "you": "You",
     "refresh": "Refresh",
     "globalUnavailable": "This flight cannot enter the world rankings while the service is unavailable.",
-    "audioHelp": "Toggle music and sound effects independently."
+    "audioHelp": "Toggle music and sound effects independently.",
+    "enter": "Enter"
   },
   "ui": {
     "backToTop": "Back to top",
@@ -265,6 +286,15 @@
     "cat_ClanWars": "Clan wars",
     "cat_BuildFight": "Build fights",
     "cat_1v1v1": "1v1v1",
-    "cat_RedvsBlue": "Red vs blue"
+    "cat_RedvsBlue": "Red vs blue",
+    "gamesAccount": "Zo7al Games on {platform}."
+  },
+  "lost": {
+    "eyebrow": "Lost in space",
+    "title": "This page fell apart.",
+    "text": "Looks like this page broke off into another orbit. Let’s get you back home.",
+    "home": "Go home",
+    "explore": "Explore",
+    "direction": "ltr"
   }
 }

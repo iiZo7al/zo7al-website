@@ -94,7 +94,7 @@ export async function getSyncedSocials(): Promise<{
       } catch {
         continue;
       }
-      if (isNoiseLinktreeUrl(parsed)) continue;
+      if (isNoiseLinktreeUrl(parsed) || (parsed.hostname === "linktr.ee" && parsed.pathname.toLowerCase().replace(/\/$/, "") === "/zo7algames")) continue;
 
       const platform = detectPlatform(link.url) ?? (parsed.hostname === "linktr.ee" ? "linktree" : null);
       if (!platform) continue;
@@ -115,7 +115,7 @@ export async function getSyncedSocials(): Promise<{
 
     if (items.length === 0) throw new Error("no recognizable links parsed");
     for (const account of SOCIALS_FALLBACK) {
-      if (!items.some((item) => account.id === "linktree" ? item.url.toLowerCase().replace(/\/$/, "") === account.url.toLowerCase() : item.platform === account.id)) items.push({ ...account, platform: account.id });
+      if (!items.some((item) => item.platform === account.id)) items.push({ ...account, platform: account.id });
     }
     return { items, source: "live" };
   } catch {
@@ -133,3 +133,36 @@ export async function getSyncedSocials(): Promise<{
   }
 }
 
+
+const GAMES_FALLBACK = [
+  ["fortnite", "https://www.fortnite.com/@zo7algames"],
+  ["roblox", "https://www.roblox.com/communities/35871241/Zo7al-Games"],
+  ["instagram", "https://instagram.com/zo7algames"],
+  ["tiktok", "https://tiktok.com/@zo7algemes"],
+  ["youtube", "https://youtube.com/@Zo7alGames"],
+  ["snapchat", "https://www.snapchat.com/add/Zo7algames"],
+  ["threads", "https://www.threads.com/@zo7algemes"],
+  ["x", "https://x.com/Zo7alGames"],
+  ["bluesky", "https://bsky.app/profile/zo7algames.bsky.social"],
+] as const;
+
+export async function getSyncedGamesSocials(): Promise<{ items: SyncedSocial[]; source: "live" | "fallback" }> {
+  try {
+    const html = await fetchExternal("https://linktr.ee/Zo7alGames", 3600);
+    const data = extractNextData(html);
+    if (!data) throw new Error("missing source");
+    const items: SyncedSocial[] = [], seen = new Set<string>();
+    for (const link of findLinkObjects(data)) {
+      const url = new URL(link.url), platform = detectPlatform(link.url);
+      if (url.protocol !== "https:" || !platform || platform === "linktree") continue;
+      const key = platform + ":" + url.pathname.replace(/\/$/, "").toLowerCase();
+      if (seen.has(key)) continue;
+      seen.add(key);
+      items.push({ id: "games:" + key, platform, label: PLATFORM_LABELS[platform] ?? platform, url: link.url, color: PLATFORM_COLORS[platform] });
+    }
+    if (!items.length) throw new Error("empty source");
+    return { items, source: "live" };
+  } catch {
+    return { items: GAMES_FALLBACK.map(([platform, url]) => ({ id: "games:" + platform, platform, label: PLATFORM_LABELS[platform], url, color: PLATFORM_COLORS[platform] })), source: "fallback" };
+  }
+}

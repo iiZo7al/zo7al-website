@@ -32,12 +32,32 @@
   },
   "socials": {
     "eyebrow": "社区", "title": "关注这段旅程。", "text": "所有平台，一站直达。", "label": "社交媒体",
-    "liveLabel": "与 Linktree 实时同步", "viewOnLinktree": "在 Linktree 上查看"
+    "liveLabel": "与 Linktree 实时同步", "viewOnLinktree": "在 Linktree 上查看",
+    "gamesEyebrow": "游戏官方账号",
+    "gamesText": "关注 Zo7al Games 的官方频道。链接从 Linktree 同步。"
   },
   "store": {
     "eyebrow": "支持 Zo7al", "title": "支持 ZO7AL", "text": "支持服务器网络，探索 Zo7al 官方商店。",
     "ranksEyebrow": "等级", "ranksTitle": "服务器等级", "ranksText": "价格与权益以官方 Tebex 商店列出为准。",
-    "getRank": "购买", "mostPopular": "最受欢迎", "allPurchases": "所有购买均通过 Zo7al 官方商店 Tebex 安全处理。", "visitStore": "访问 zo7al.tebex.io"
+    "getRank": "购买", "mostPopular": "最受欢迎", "allPurchases": "所有购买均通过 Zo7al 官方商店 Tebex 安全处理。", "visitStore": "访问 zo7al.tebex.io",
+    "checkoutUnavailable": "暂时无法付款，请稍后重试。",
+    "pricePending": "付款功能上线后显示价格",
+    "checkoutTitle": "结账",
+    "close": "关闭",
+    "username": "Minecraft 用户名",
+    "usernameHelp": "请输入准确的游戏内用户名，以便将购买内容发送到正确的账户。",
+    "preparing": "正在准备付款…",
+    "continuePayment": "继续付款",
+    "paymentError": "无法加载付款页面。请关闭此窗口并重试。",
+    "browseRanks": "浏览等级",
+    "serverLink": "探索服务器",
+    "secureTitle": "安全付款",
+    "secureText": "付款由 Tebex 安全处理。",
+    "supportTitle": "支持社区",
+    "supportText": "您的购买将帮助支持服务器及其社区。",
+    "helpTitle": "需要帮助？",
+    "helpText": "加入我们的 Discord 社区，获取购买相关帮助。",
+    "checkoutNote": "最终税费、币种和付款方式将在结账时显示。"
   },
   "faq": {
     "eyebrow": "需要帮助？", "title": "常见问题", "text": "关于加入服务器、购买等级、畅玩 Zo7al 的堡垒之夜地图以及获取支持的一切信息。",
@@ -116,7 +136,8 @@
     "you": "你",
     "refresh": "刷新",
     "globalUnavailable": "服务不可用时，本次飞行无法进入世界排行榜。",
-    "audioHelp": "分别开启或关闭音乐和音效。"
+    "audioHelp": "分别开启或关闭音乐和音效。",
+    "enter": "进入"
   },
   "ui": {
     "backToTop": "返回顶部",
@@ -168,6 +189,15 @@
     "cat_ClanWars": "部落战争",
     "cat_BuildFight": "建筑对战",
     "cat_1v1v1": "1对1对1",
-    "cat_RedvsBlue": "红蓝对战"
+    "cat_RedvsBlue": "红蓝对战",
+    "gamesAccount": "Zo7al Games 的 {platform} 账号。"
+  },
+  "lost": {
+    "eyebrow": "迷失太空",
+    "title": "这个页面碎裂了。",
+    "text": "这个页面似乎漂到了另一条轨道。让我们回到首页吧。",
+    "home": "返回首页",
+    "explore": "探索",
+    "direction": "ltr"
   }
 }

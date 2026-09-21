@@ -256,3 +256,11 @@ html:not(.cursor-visible) .cursor-dot,
 html:not(.cursor-visible) .cursor-ring,
 html:not(.cursor-visible) .cursor-glow { visibility: hidden; }
 @media (display-mode: standalone), (display-mode: fullscreen) { .website-shell { display: none; } }
+
+body:has(.lost-page) header, body:has(.lost-page) footer, body:has(.lost-page) .back-to-top { display: none; }
+
+@keyframes scroll-hint-bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(7px); } }
+.home-scroll-arrow { animation: scroll-hint-bounce 1.8s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { .home-scroll-arrow { animation: none; } }
+html.cursor-ready .checkout-shell, html.cursor-ready .checkout-shell * { cursor: auto; }
+html.cursor-ready .checkout-shell button { cursor: pointer; }

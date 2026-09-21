@@ -32,12 +32,32 @@
   },
   "socials": {
     "eyebrow": "Comunidade", "title": "SIGA A JORNADA.", "text": "Todas as plataformas, em um só lugar.", "label": "Redes sociais",
-    "liveLabel": "Sincronizado ao vivo com Linktree", "viewOnLinktree": "Ver no Linktree"
+    "liveLabel": "Sincronizado ao vivo com Linktree", "viewOnLinktree": "Ver no Linktree",
+    "gamesEyebrow": "Nossas contas de jogos",
+    "gamesText": "Siga Zo7al Games nos canais oficiais. Os links são sincronizados com o Linktree."
   },
   "store": {
     "eyebrow": "Apoie o Zo7al", "title": "APOIE O ZO7AL", "text": "Apoie a rede e conheça a loja oficial do Zo7al.",
     "ranksEyebrow": "Ranks", "ranksTitle": "Ranks do servidor", "ranksText": "Preços e benefícios conforme listados na loja oficial da Tebex.",
-    "getRank": "Obter", "mostPopular": "Mais popular", "allPurchases": "Todas as compras são processadas com segurança pela Tebex, a loja oficial do Zo7al.", "visitStore": "Visitar zo7al.tebex.io"
+    "getRank": "Obter", "mostPopular": "Mais popular", "allPurchases": "Todas as compras são processadas com segurança pela Tebex, a loja oficial do Zo7al.", "visitStore": "Visitar zo7al.tebex.io",
+    "checkoutUnavailable": "O pagamento está temporariamente indisponível. Tente novamente mais tarde.",
+    "pricePending": "Preço disponível quando o pagamento estiver ativo",
+    "checkoutTitle": "Finalizar compra",
+    "close": "Fechar",
+    "username": "Nome de usuário do Minecraft",
+    "usernameHelp": "Digite seu nome exato no jogo para que a compra chegue à conta correta.",
+    "preparing": "Preparando o pagamento…",
+    "continuePayment": "Continuar para o pagamento",
+    "paymentError": "Não foi possível carregar o pagamento. Feche esta janela e tente novamente.",
+    "browseRanks": "Explorar ranks",
+    "serverLink": "Explorar o servidor",
+    "secureTitle": "Pagamento seguro",
+    "secureText": "Os pagamentos são processados com segurança pela Tebex.",
+    "supportTitle": "Apoie a rede",
+    "supportText": "Sua compra ajuda a apoiar o servidor e sua comunidade.",
+    "helpTitle": "Precisa de ajuda?",
+    "helpText": "Entre na nossa comunidade do Discord para obter ajuda com compras.",
+    "checkoutNote": "Os impostos finais, a moeda e as formas de pagamento são mostrados na finalização."
   },
   "faq": {
     "eyebrow": "Precisa de ajuda?", "title": "Perguntas frequentes", "text": "Tudo sobre como entrar na rede, comprar um rank, jogar os mapas de Fortnite do Zo7al e obter suporte.",
@@ -116,7 +136,8 @@
     "you": "Você",
     "refresh": "Atualizar",
     "globalUnavailable": "Este voo não pode entrar na classificação enquanto o serviço estiver indisponível.",
-    "audioHelp": "Ative ou desative música e efeitos separadamente."
+    "audioHelp": "Ative ou desative música e efeitos separadamente.",
+    "enter": "Entrar"
   },
   "ui": {
     "backToTop": "Voltar ao topo",
@@ -168,6 +189,15 @@
     "cat_ClanWars": "Guerras de clãs",
     "cat_BuildFight": "Batalhas de construção",
     "cat_1v1v1": "1 contra 1 contra 1",
-    "cat_RedvsBlue": "Vermelho contra azul"
+    "cat_RedvsBlue": "Vermelho contra azul",
+    "gamesAccount": "Zo7al Games no {platform}."
+  },
+  "lost": {
+    "eyebrow": "Perdido no espaço",
+    "title": "Esta página se desfez.",
+    "text": "Parece que esta página foi para outra órbita. Vamos voltar ao início.",
+    "home": "Ir ao início",
+    "explore": "Explorar",
+    "direction": "ltr"
   }
 }

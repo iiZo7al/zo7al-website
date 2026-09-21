@@ -74,7 +74,6 @@ export const SOCIALS = [
   },
   { id: "snapchat", label: "Snapchat", handle: "iiZo7al", url: "https://www.snapchat.com/add/iiZo7al", description: "Daily moments and behind the scenes.", color: "#FFFC00" },
   { id: "threads", label: "Threads", handle: "@iizo7al", url: "https://www.threads.com/@iizo7al", description: "Quick thoughts and conversations with the community.", color: "#FFFFFF" },
-  { id: "linktree", label: "Zo7al Games", handle: "Zo7alGames", url: "https://linktr.ee/Zo7alGames", description: "All Zo7al Games accounts and links in one place.", color: "#44E58D" },
   {
     id: "modrinth",
     label: "Modrinth",
