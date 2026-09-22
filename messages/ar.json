@@ -37,6 +37,8 @@
     "gamesText": "تابع Zo7al Games على حساباته الرسمية. تُحدّث الروابط من صفحته في Linktree."
   },
   "store": {
+    "details": "التفاصيل",
+    "descriptionUnavailable": "الوصف غير متاح حاليًا. حاول مرة أخرى لاحقًا.",
     "eyebrow": "ادعم زحل", "title": "ادعم زحل", "text": "ادعم الشبكة واستكشف متجر زحل الرسمي.",
     "ranksEyebrow": "الرتب", "ranksTitle": "رتب السيرفر", "ranksText": "الأسعار والمزايا كما هي مدرجة في متجر Tebex الرسمي.",
     "getRank": "احصل على", "mostPopular": "الأكثر طلبًا", "allPurchases": "جميع المشتريات تتم بأمان عبر Tebex — المتجر الرسمي لزحل.", "visitStore": "زر zo7al.tebex.io",

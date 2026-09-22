@@ -14,17 +14,20 @@ const locales: Record<string,string> = { en:"en_US", ar:"ar_SA", es:"es_ES", fr:
 export default function StoreRanks({ products, live }: { products: StoreProduct[]; live: boolean }) {
   const t = useTranslations("store"), ui = useTranslations("ui"), locale = useLocale();
   const [selected, setSelected] = useState<StoreProduct | null>(null), [username, setUsername] = useState("");
+  const [details, setDetails] = useState<StoreProduct | null>(null);
+  const detailsDialog = useRef<HTMLDialogElement>(null);
+  useEffect(() => { if (details) detailsDialog.current?.showModal(); else detailsDialog.current?.close(); }, [details]);
   const [busy, setBusy] = useState(false), [error, setError] = useState(false), [ident, setIdent] = useState("");
   const [sdkReady, setSdkReady] = useState(false), [sdkError, setSdkError] = useState(false);
   const dialog = useRef<HTMLDialogElement>(null), embed = useRef<HTMLDivElement>(null), abort = useRef<AbortController | null>(null);
   useEffect(() => { if (selected) dialog.current?.showModal(); else dialog.current?.close(); }, [selected]);
   useEffect(() => () => abort.current?.abort(), []);
   useEffect(() => {
-    if (!selected) return;
+    if (!selected && !details) return;
     const previous = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     return () => { document.body.style.overflow = previous; };
-  }, [selected]);
+  }, [selected, details]);
   useEffect(() => {
     if (!ident || !sdkReady || !embed.current || !window.Tebex) return;
     const element = embed.current;
@@ -63,17 +66,22 @@ export default function StoreRanks({ products, live }: { products: StoreProduct[
             {rank?.featured && <span className="store-rank-badge">{t("mostPopular")}</span>}
           </div>
           <p className="text-label">{ui("rank")}</p>
-          <h3 className="text-display store-rank-name"><bdi>{product.name}</bdi></h3>
+          <h3 className="text-display store-rank-name"><bdi dir="ltr">{product.name}</bdi></h3>
           <p className={`store-rank-price${product.price === null ? " store-price-pending" : ""}`}>{price(product)}</p>
           {rank ? <ul className="store-rank-perks">{rank.perks.map((_, i) =>
             <li key={i}><Check size={15} aria-hidden="true" /><span>{ui(`perk_${rank.id}_${i}`)}</span></li>
           )}</ul> : <p className="store-rank-description">{product.description}</p>}
-          <button disabled={!live || !product.available} onClick={() => setSelected(product)} data-cursor="button" className={`store-action${rank?.featured ? " store-action-primary" : ""}`}>
-            <span>{t("getRank")} <bdi>{product.name}</bdi></span><ArrowRight size={16} className="store-direction" aria-hidden="true" />
+          <div className="store-rank-actions"><button disabled={!live || !product.available} onClick={() => setSelected(product)} data-cursor="button" className={`store-action${rank?.featured ? " store-action-primary" : ""}`}>
+            <span>{t("getRank")} <bdi dir="ltr">{product.name}</bdi></span><ArrowRight size={16} className="store-direction" aria-hidden="true" />
           </button>
+          <button type="button" className="store-action store-details-button" onClick={() => setDetails(product)} data-cursor="button" aria-haspopup="dialog">{t("details")}</button></div>
         </article>;
       })}
     </div>
+    <dialog ref={detailsDialog} onCancel={() => setDetails(null)} onClose={() => setDetails(null)} aria-labelledby="rank-details-title" className="checkout-shell store-checkout">
+      <header className="store-checkout-header"><h2 id="rank-details-title">{t("details")} · <bdi dir="ltr">{details?.name}</bdi></h2><button type="button" className="store-close" onClick={() => setDetails(null)} aria-label={t("close")}><X size={20} aria-hidden="true" /></button></header>
+      <div className="store-checkout-body store-full-description">{details?.description ? details.description.split(/\n+/).map((line, index) => <p dir="auto" key={index}>{line}</p>) : <p>{t("descriptionUnavailable")}</p>}</div>
+    </dialog>
     <dialog ref={dialog} onCancel={close} onClose={close} aria-labelledby="checkout-title" aria-describedby="checkout-description" className="checkout-shell store-checkout">
       <header className="store-checkout-header">
         <div className="store-checkout-brand"><Image src="/assets/site/server-logo.png" alt="Zo7al Network" width={40} height={40} /><span className="text-label">{t("checkoutTitle")}</span></div>
@@ -81,7 +89,7 @@ export default function StoreRanks({ products, live }: { products: StoreProduct[
       </header>
       <div className="store-checkout-body">
         <div className="store-order-summary">
-          <div><p className="text-label">{ui("rank")}</p><h2 id="checkout-title" className="text-display">{selected?.name}</h2></div>
+          <div><p className="text-label">{ui("rank")}</p><h2 id="checkout-title" className="text-display"><bdi dir="ltr">{selected?.name}</bdi></h2></div>
           <p className="store-order-price">{selected && price(selected)}</p>
         </div>
         <p id="checkout-description" className="store-checkout-description">{t("checkoutNote")}</p>

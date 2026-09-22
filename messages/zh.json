@@ -37,6 +37,8 @@
     "gamesText": "关注 Zo7al Games 的官方频道。链接从 Linktree 同步。"
   },
   "store": {
+    "details": "详情",
+    "descriptionUnavailable": "暂时无法获取描述，请稍后重试。",
     "eyebrow": "支持 Zo7al", "title": "支持 ZO7AL", "text": "支持服务器网络，探索 Zo7al 官方商店。",
     "ranksEyebrow": "等级", "ranksTitle": "服务器等级", "ranksText": "价格与权益以官方 Tebex 商店列出为准。",
     "getRank": "购买", "mostPopular": "最受欢迎", "allPurchases": "所有购买均通过 Zo7al 官方商店 Tebex 安全处理。", "visitStore": "访问 zo7al.tebex.io",
