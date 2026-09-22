@@ -9,7 +9,7 @@ function moduleUrl(path, replacements = {}) {
   return 'data:text/javascript;base64,' + Buffer.from(ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022 } }).outputText).toString('base64');
 }
 const data = moduleUrl('src/lib/data/store.ts');
-const backend = moduleUrl('src/lib/server/tebex.ts', {'@/lib/data/store': data});
+const backend = moduleUrl('src/lib/server/tebex.ts', {'@/lib/data/store': data, './store-description': moduleUrl('src/lib/server/store-description.ts')});
 const {getStoreCatalog} = await import(backend);
 const {POST} = await import(moduleUrl('src/app/api/store/checkout/route.ts', {'@/lib/server/tebex': backend}));
 const request = (body, origin = 'https://zo7al.test', ip = '203.0.113.5') => new Request('https://zo7al.test/api/store/checkout', {method:'POST', headers:{origin,'x-forwarded-for':ip},body:JSON.stringify(body)});

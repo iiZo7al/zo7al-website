@@ -51,3 +51,10 @@
 @media(max-width: 800px) { .store-rank-grid { grid-template-columns: 1fr; } .store-rank { padding: 28px; } .store-rank-top { margin-bottom: 24px; } }
 @media(max-width: 480px) { .store-checkout { width: calc(100% - 24px); max-height: calc(100dvh - 24px); border-radius: 20px; } .store-checkout-header { padding: 16px 20px; } .store-checkout-body { padding: 24px 20px; } .store-order-summary h2 { font-size: 32px; } .store-order-price { font-size: 21px; } .store-checkout-footer { padding: 16px 20px; } }
 @media(prefers-reduced-motion: reduce) { .store-rank,.store-action,.store-close,.store-checkout-form input { transition: none; } .store-rank:hover { transform: none; } .store-spinner { animation: none; } }
+
+.store-rank-actions { display: flex; align-items: stretch; gap: 10px; flex-wrap: wrap; margin-top: auto; }
+.store-rank-actions > .store-action:first-child { flex: 1 1 150px; min-width: 0; }
+.store-details-button { flex: 0 1 auto; padding-inline: 18px; }
+.store-full-description { line-height: 1.9; color: var(--text-muted); overflow-wrap: anywhere; }
+.store-full-description p + p { margin-top: 12px; }
+.store-full-description p { unicode-bidi: plaintext; }

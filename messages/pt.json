@@ -37,6 +37,8 @@
     "gamesText": "Siga Zo7al Games nos canais oficiais. Os links são sincronizados com o Linktree."
   },
   "store": {
+    "details": "Detalhes",
+    "descriptionUnavailable": "A descrição está indisponível. Tente novamente mais tarde.",
     "eyebrow": "Apoie o Zo7al", "title": "APOIE O ZO7AL", "text": "Apoie a rede e conheça a loja oficial do Zo7al.",
     "ranksEyebrow": "Ranks", "ranksTitle": "Ranks do servidor", "ranksText": "Preços e benefícios conforme listados na loja oficial da Tebex.",
     "getRank": "Obter", "mostPopular": "Mais popular", "allPurchases": "Todas as compras são processadas com segurança pela Tebex, a loja oficial do Zo7al.", "visitStore": "Visitar zo7al.tebex.io",
