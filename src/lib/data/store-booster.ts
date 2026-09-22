@@ -2,7 +2,7 @@ import type { StoreProduct } from "../server/tebex";
 
 // A Discord offer, kept outside the Tebex checkout catalog.
 export const BOOSTER_PRODUCT: StoreProduct = {
-  id: -1, name: "Booster", price: 4.99, currency: "USD", image: null, available: true,
+  id: -1, name: "Booster", price: 4.99, currency: "USD", image: "/assets/site/booster.png", available: true,
   description: `باقة Booster – Zo7al Network
 عند دعم سيرفر Zo7al Network ببوست واحد أو أكثر على Discord ستحصل على رتبة Booster مع المميزات التالية:
 

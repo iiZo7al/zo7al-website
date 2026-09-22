@@ -125,6 +125,13 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
     : product.price === null
     ? t("pricePending")
     : new Intl.NumberFormat(locale, { style: "currency", currency: product.currency }).format(product.price) + (isMonthlyRank(product) ? ` · ${t("monthly")}` : "");
+  const displayProducts = [...products];
+  const mvpPlusPlus = displayProducts.findIndex(product => product.name.trim().toUpperCase() === "MVP++");
+  const mvpPlus = displayProducts.findIndex(product => product.id === 7312784 || product.name.trim().toUpperCase() === "MVP+");
+  if (mvpPlusPlus > mvpPlus && mvpPlus >= 0) {
+    const [monthlyRank] = displayProducts.splice(mvpPlusPlus, 1);
+    displayProducts.splice(mvpPlus, 0, monthlyRank);
+  }
   const currentSelected = products.find(product => product.id === selected?.id) ?? selected;
   const currentDetails = products.find(product => product.id === details?.id) ?? details;
   return <>
@@ -135,7 +142,7 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
       {paymentStatus === "paid" && <p>{t("paymentSuccessNote")}</p>}
     </div>}
     <div className="store-rank-grid">
-      {[...products, BOOSTER_PRODUCT].map(product => {
+      {[...displayProducts, BOOSTER_PRODUCT].map(product => {
         const booster = product.id === BOOSTER_PRODUCT.id;
         const featured = product.id === 7312784;
         const bullets = product.description.split(/\n+/).filter(line => line.startsWith("• ")).map(line => line.slice(2));
