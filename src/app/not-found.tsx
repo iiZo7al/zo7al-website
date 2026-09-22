@@ -7,7 +7,7 @@ export default async function NotFound() {
   return <main data-accent="home" className="lost-page relative isolate min-h-svh overflow-hidden bg-[#07080b]">
     <Image src="/assets/site/lost-saturn-hq.webp" alt="" fill unoptimized priority sizes="100vw" className="object-contain object-bottom md:object-cover md:object-center" />
     <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/20 to-transparent md:bg-gradient-to-r md:from-black/40 md:via-transparent" />
-    <div className="relative mx-auto max-w-[1440px] px-7 pb-[65vh] pt-20 md:pb-32 md:pt-[22vh]" dir="ltr">
+    <div className="relative mx-auto max-w-[1440px] px-7 pb-[65vh] pt-32 md:pb-32 md:pt-[max(8rem,22vh)]" dir="ltr">
       <div className="max-w-[410px] text-start" dir={t("direction")}>
         <p className="text-xs font-bold tracking-[0.3em] text-orange-500">{t("eyebrow")}</p>
         <h1 aria-label="404" dir="ltr" className="mt-4 flex items-center text-[7rem] font-black leading-none tracking-tighter sm:text-[9rem]">4<span className="relative text-orange-500">0<span aria-hidden="true" className="absolute inset-x-[-12%] top-[45%] h-[22%] -rotate-[35deg] rounded-[50%] border-[7px] border-orange-500 bg-transparent" /></span>4</h1>
