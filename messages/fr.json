@@ -37,6 +37,8 @@
     "gamesText": "Suivez Zo7al Games sur ses comptes officiels. Les liens sont synchronisés depuis Linktree."
   },
   "store": {
+    "monthly": "Par mois",
+    "boosterPrice": "À partir de 4.99+",
     "details": "Détails",
     "descriptionUnavailable": "La description est indisponible. Réessayez plus tard.",
     "eyebrow": "Minecraft", "title": "Boutique Zo7al Network", "text": "Soutenez le réseau et découvrez la boutique officielle de Zo7al.",

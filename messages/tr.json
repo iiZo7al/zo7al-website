@@ -37,6 +37,8 @@
     "gamesText": "Zo7al Games’i resmi kanallarında takip edin. Bağlantılar Linktree ile eşitlenir."
   },
   "store": {
+    "monthly": "Aylık",
+    "boosterPrice": "4.99+ başlangıç fiyatıyla",
     "details": "Ayrıntılar",
     "descriptionUnavailable": "Açıklama şu anda kullanılamıyor. Lütfen daha sonra tekrar deneyin.",
     "eyebrow": "Minecraft", "title": "Zo7al Network Mağazası", "text": "Ağı destekle ve Zo7al'in resmi mağazasını keşfet.",
