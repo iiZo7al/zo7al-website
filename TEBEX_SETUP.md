@@ -4,13 +4,15 @@ The store uses the Tebex Headless API for its live catalog and baskets, then Teb
 
 ## Activate on Vercel
 
-1. Open your **Zo7al Minecraft store** in [Tebex Creator](https://creator.tebex.io/developers/api-keys). Under **Developers → API Keys**, copy the **Headless API Public Token**. Do not use a plugin secret, private key or Checkout API secret.
-2. In Vercel, open **zo7al-website → Settings → Environment Variables**. Add `TEBEX_PUBLIC_TOKEN` with that token to Production and any Preview environments where you want to test.
+1. Open your **Zo7al Minecraft store** in [Tebex Creator](https://creator.tebex.io/developers/api-keys). Under **Developers → API Keys**, copy the **Headless API Public Token**. Also copy the **Private Key** from the same Headless API credentials. Do not use the Minecraft plugin secret or a webhook signing secret.
+2. In Vercel, open **zo7al-website → Settings → Environment Variables**. Add `TEBEX_PUBLIC_TOKEN` and `TEBEX_PRIVATE_KEY` to Production and any Preview environments where you want to test. Enter the private key directly in Vercel; never send it in chat, commit it, or prefix it with `NEXT_PUBLIC_`.
 3. Redeploy the website after merging this change. Confirm `/store` displays the current products and prices from your own Tebex store.
 4. In Tebex, confirm your Minecraft integration, packages and delivery commands are configured. Install/configure the Tebex server plugin as required by your store. The website does not grant ranks itself.
 5. Use Tebex's supported test-payment flow to check a real Minecraft username, basket contents, payment completion, cancellation and delivery on your server. Repeat on desktop and iPhone/Android. No real payment has been verified by this code change.
 
-No private Tebex key is required for the public Headless endpoints used here. Keep any unrelated private keys in server environment settings, never in browser code or messages.
+Public catalog reads use only the public token. Server-side basket creation with the visitor `ip_address` requires HTTP Basic authentication: public token as username, private key as password. The server adds this header only to the authenticated Tebex request. The private key stays server-side.
+
+The original implementation incorrectly treated basket creation as public. Live Tebex returned HTTP 422 with `Basic auth credentials are required`; this was the cause of checkout returning HTTP 502. Missing credentials now return HTTP 503 with `CONFIGURATION`. After adding the private key, redeploy before testing. A successful catalog read does not verify payment readiness.
 
 ## Behavior and scope
 
@@ -22,4 +24,4 @@ No private Tebex key is required for the public Headless endpoints used here. Ke
 - The per-instance rate limit is a basic abuse guard, not a distributed limiter. Apply hosting-level rate limits if needed.
 - New or renamed products come from Tebex. The three existing rank descriptions use the site's ten translations; any new product description is supplied by Tebex and should be localized in your store/content workflow.
 
-References: [Headless API](https://docs.tebex.io/developers/headless-api/overview), [Tebex.js](https://docs.tebex.io/developers/tebex.js/overview), [official Node SDK](https://github.com/tebexio/tebex-sdk-nodejs).
+References: [Headless API authorization](https://docs.tebex.io/developers/headless-api/authorization), [Tebex.js](https://docs.tebex.io/developers/tebex.js/overview), [official Node SDK](https://github.com/tebexio/tebex-sdk-nodejs).
