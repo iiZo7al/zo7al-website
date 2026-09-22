@@ -15,10 +15,10 @@ import { isRtl } from "@/i18n/config";
 export const viewport: Viewport = { width: "device-width", initialScale: 1, viewportFit: "cover", themeColor: "#07080b" };
 
 export const metadata: Metadata = {
-  applicationName: "Zo7al Game",
-  manifest: "/manifest.webmanifest",
-  appleWebApp: { capable: true, title: "Zo7al Game", statusBarStyle: "black-translucent" },
-  icons: { apple: [{ url: "/assets/app/icon-180.png", sizes: "180x180", type: "image/png" }] },
+  applicationName: "Zo7al Projects",
+  manifest: "/site.webmanifest",
+  appleWebApp: { capable: true, title: "Zo7al Projects", statusBarStyle: "black-translucent" },
+  icons: { icon: [{ url: "/icon.svg", type: "image/svg+xml" }], apple: [{ url: "/assets/site/icon-180.png", sizes: "180x180", type: "image/png" }] },
   metadataBase: new URL("https://zo7al.example"),
   title: {
     default: "Zo7al Projects — Gaming Universe",
