@@ -2,9 +2,22 @@ import "server-only";
 import { STORE_RANKS } from "@/lib/data/store";
 export interface StoreProduct { id: number; name: string; price: number | null; currency: string; description: string; rankId?: string; available: boolean; }
 export function tebexToken() { return process.env.TEBEX_PUBLIC_TOKEN?.trim(); }
-export async function tebexRequest(path: string, body?: object) {
-  const response = await fetch(`https://headless.tebex.io/api/${path}`, { method: body ? "POST" : "GET", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: body ? JSON.stringify(body) : undefined, cache: "no-store", signal: AbortSignal.timeout(12000) });
-  if (!response.ok) throw new Error(`TEBEX_${response.status}`);
+export function tebexPrivateKey() { return process.env.TEBEX_PRIVATE_KEY?.trim(); }
+export class TebexConfigurationError extends Error {
+  constructor() { super("TEBEX_CONFIGURATION"); }
+}
+export async function tebexRequest(path: string, body?: object, authenticated = false) {
+  const headers: Record<string, string> = { "Content-Type": "application/json", Accept: "application/json" };
+  if (authenticated) {
+    const token = tebexToken(), privateKey = tebexPrivateKey();
+    if (!token || !privateKey) throw new TebexConfigurationError();
+    headers.Authorization = `Basic ${Buffer.from(`${token}:${privateKey}`).toString("base64")}`;
+  }
+  const response = await fetch(`https://headless.tebex.io/api/${path}`, { method: body ? "POST" : "GET", headers, body: body ? JSON.stringify(body) : undefined, cache: "no-store", signal: AbortSignal.timeout(12000) });
+  if (!response.ok) {
+    if (authenticated && (response.status === 401 || response.status === 403)) throw new TebexConfigurationError();
+    throw new Error(`TEBEX_${response.status}`);
+  }
   return response.json();
 }
 export async function getStoreCatalog(): Promise<{ products: StoreProduct[]; live: boolean }> {

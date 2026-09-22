@@ -15,15 +15,20 @@ const {POST} = await import(moduleUrl('src/app/api/store/checkout/route.ts', {'@
 const request = (body, origin = 'https://zo7al.test', ip = '203.0.113.5') => new Request('https://zo7al.test/api/store/checkout', {method:'POST', headers:{origin,'x-forwarded-for':ip},body:JSON.stringify(body)});
 
 test('checkout validates catalog, preserves Tebex prices and fails closed', async () => {
-  const originalFetch = globalThis.fetch, originalToken = process.env.TEBEX_PUBLIC_TOKEN;
+  const originalFetch = globalThis.fetch, originalToken = process.env.TEBEX_PUBLIC_TOKEN, originalPrivateKey = process.env.TEBEX_PRIVATE_KEY;
   const calls = [];
   try {
     delete process.env.TEBEX_PUBLIC_TOKEN;
     assert.equal((await getStoreCatalog()).live, false);
     assert.equal((await POST(request({packageId:7312779,username:'Player'}))).status, 503);
     process.env.TEBEX_PUBLIC_TOKEN = 'test-public-token';
+    delete process.env.TEBEX_PRIVATE_KEY;
+    const missingKey = await POST(request({packageId:7312779,username:'Player'}));
+    assert.equal(missingKey.status,503);
+    assert.deepEqual(await missingKey.json(),{error:'CONFIGURATION'});
+    process.env.TEBEX_PRIVATE_KEY = 'test-private-key';
     globalThis.fetch = async (url, options) => {
-      calls.push({url,body:options.body && JSON.parse(options.body)});
+      calls.push({url,headers:options.headers,body:options.body && JSON.parse(options.body)});
       if (url.endsWith('categories?includePackages=1')) return Response.json({data:[{packages:[{id:7312779,name:'VIP',total_price:14.25,currency:'EUR'},{id:9,name:'Custom',variables:[{}]}]},{dynamic:true,packages:[{id:10,name:'Dynamic'}]}]});
       if (url.endsWith('/accounts/test-public-token/baskets')) return Response.json({data:{ident:'basket_123'}});
       if (url.endsWith('/baskets/basket_123/packages')) return Response.json({data:{ident:'basket_123'}});
@@ -43,14 +48,22 @@ test('checkout validates catalog, preserves Tebex prices and fails closed', asyn
     assert.deepEqual(await result.json(),{ident:'basket_123'});
     assert.equal(result.headers.get('cache-control'),'no-store');
     const basket = calls.find(call=>call.url.endsWith('/accounts/test-public-token/baskets'));
+    assert.equal(basket.headers.Authorization, 'Basic ' + Buffer.from('test-public-token:test-private-key').toString('base64'));
+    assert.ok(calls.filter(call=>call.url.endsWith('categories?includePackages=1')).every(call=>!call.headers.Authorization));
     assert.equal(basket.body.username,'Player');
     assert.equal(basket.body.ip_address,'203.0.113.5');
     assert.equal(basket.body.complete_url,'https://zo7al.test/store');
     assert.deepEqual(calls.at(-1).body,{package_id:'7312779',quantity:1});
+    const validFetch = globalThis.fetch;
+    globalThis.fetch = async (url,options) => url.endsWith('/accounts/test-public-token/baskets')
+      ? new Response('private upstream response', {status:401}) : validFetch(url,options);
+    const denied = await POST(request({packageId:7312779,username:'Player'},undefined,'203.0.113.11'));
+    assert.equal(denied.status,503);
+    assert.deepEqual(await denied.json(),{error:'CONFIGURATION'});
     globalThis.fetch = async()=>{throw Error('upstream offline');};
     assert.equal((await POST(request({packageId:7312779,username:'Player'}))).status,503);
     assert.equal((await getStoreCatalog()).live,false);
     for(let i=0;i<8;i++) await POST(request({packageId:7312779,username:'Player'},undefined,'203.0.113.9'));
     assert.equal((await POST(request({packageId:7312779,username:'Player'},undefined,'203.0.113.9'))).status,429);
-  } finally { globalThis.fetch=originalFetch; if(originalToken===undefined) delete process.env.TEBEX_PUBLIC_TOKEN; else process.env.TEBEX_PUBLIC_TOKEN=originalToken; }
+  } finally { globalThis.fetch=originalFetch; if(originalToken===undefined) delete process.env.TEBEX_PUBLIC_TOKEN; else process.env.TEBEX_PUBLIC_TOKEN=originalToken; if(originalPrivateKey===undefined) delete process.env.TEBEX_PRIVATE_KEY; else process.env.TEBEX_PRIVATE_KEY=originalPrivateKey; }
 });
