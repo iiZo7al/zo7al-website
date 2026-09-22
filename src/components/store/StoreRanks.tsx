@@ -131,13 +131,14 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
       {paymentStatus === "paid" && <p>{t("paymentSuccessNote")}</p>}
     </div>}
     <div className="store-rank-grid">
-      {products.map((product, index) => {
-        const featured = index === 0;
+      {products.map(product => {
+        const featured = product.id === 7312784;
         const bullets = product.description.split(/\n+/).filter(line => line.startsWith("• ")).map(line => line.slice(2));
         const localized = bullets.filter(line => locale === "ar" ? /[\u0600-\u06ff]/.test(line) : !/[\u0600-\u06ff]/.test(line));
         const perks = (localized.length ? localized : bullets).slice(0, 5);
         return <article key={product.id} className={`store-rank${featured ? " store-rank-featured" : ""}`}>
           <div className="store-rank-top">
+            {featured && <span className="store-rank-badge absolute end-6 top-6 whitespace-nowrap">{t("mostPopular")}</span>}
             {product.image ? <Image unoptimized src={product.image} alt={product.name} width={160} height={120} className="store-product-image" /> : <span className="store-rank-icon"><ShieldCheck size={24} strokeWidth={1.5} aria-hidden="true" /></span>}
           </div>
           <p className="text-label">{ui("rank")}</p>
