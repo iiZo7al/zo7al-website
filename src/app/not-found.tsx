@@ -5,7 +5,7 @@ import { Home, Rocket } from "lucide-react";
 export default async function NotFound() {
   const t = await getTranslations("lost");
   return <main data-accent="home" className="lost-page relative isolate min-h-svh overflow-hidden bg-[#07080b]">
-    <Image src="/assets/site/lost-saturn.webp" alt="" fill unoptimized priority sizes="100vw" className="object-cover object-[64%_center] md:object-center" />
+    <Image src="/assets/site/lost-saturn-hq.webp" alt="" fill unoptimized priority sizes="100vw" className="object-contain object-bottom md:object-cover md:object-center" />
     <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/20 to-transparent md:bg-gradient-to-r md:from-black/40 md:via-transparent" />
     <div className="relative mx-auto max-w-[1440px] px-7 pb-[65vh] pt-20 md:pb-32 md:pt-[22vh]" dir="ltr">
       <div className="max-w-[410px] text-start" dir={t("direction")}>
