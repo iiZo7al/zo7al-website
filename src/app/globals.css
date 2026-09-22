@@ -257,7 +257,6 @@ html:not(.cursor-visible) .cursor-ring,
 html:not(.cursor-visible) .cursor-glow { visibility: hidden; }
 @media (display-mode: standalone), (display-mode: fullscreen) { .website-shell { display: none; } }
 
-body:has(.lost-page) .website-shell > header { display: none; }
 
 @keyframes scroll-hint-bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(7px); } }
 .home-scroll-arrow { animation: scroll-hint-bounce 1.8s ease-in-out infinite; }
