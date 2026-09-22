@@ -2,7 +2,9 @@
 import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
 import Script from "next/script";
-import { Check, ShieldCheck, Crown, Gem, X, ArrowRight } from "lucide-react";
+import Image from "next/image";
+import "./store.css";
+import { Check, ShieldCheck, Crown, Gem, X, ArrowRight, LoaderCircle, AlertCircle } from "lucide-react";
 import type { StoreProduct } from "@/lib/server/tebex";
 import { STORE_RANKS } from "@/lib/data/store";
 
@@ -17,6 +19,12 @@ export default function StoreRanks({ products, live }: { products: StoreProduct[
   const dialog = useRef<HTMLDialogElement>(null), embed = useRef<HTMLDivElement>(null), abort = useRef<AbortController | null>(null);
   useEffect(() => { if (selected) dialog.current?.showModal(); else dialog.current?.close(); }, [selected]);
   useEffect(() => () => abort.current?.abort(), []);
+  useEffect(() => {
+    if (!selected) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = previous; };
+  }, [selected]);
   useEffect(() => {
     if (!ident || !sdkReady || !embed.current || !window.Tebex) return;
     const element = embed.current;
@@ -35,25 +43,60 @@ export default function StoreRanks({ products, live }: { products: StoreProduct[
       if (!response.ok) throw Error(); const data = await response.json(); if (!data.ident) throw Error(); if (!controller.signal.aborted) setIdent(data.ident);
     } catch { if (!controller.signal.aborted) setError(true); } finally { if (!controller.signal.aborted) setBusy(false); }
   };
+  const price = (product: StoreProduct) => product.price === null
+    ? t("pricePending")
+    : new Intl.NumberFormat(locale, { style: "currency", currency: product.currency }).format(product.price);
+  const orderedProducts = [...products].sort((a, b) => {
+    const order = (p: StoreProduct) => { const i = STORE_RANKS.findIndex(r => r.id === p.rankId); return i < 0 ? STORE_RANKS.length : i; };
+    return order(a) - order(b);
+  });
   return <>
     {selected && <Script src="https://js.tebex.io/v/1.js" strategy="afterInteractive" onReady={() => setSdkReady(true)} onError={() => setSdkError(true)} />}
-    {!live && <p role="status" className="mb-8 rounded-2xl border border-orange-500/20 bg-orange-500/5 p-4 text-sm text-[var(--text-muted)]">{t("checkoutUnavailable")}</p>}
-    <div className="grid gap-6 md:grid-cols-3">{products.map((product, index) => {
-      const rank = STORE_RANKS.find(r => r.id === product.rankId), Icon = index % 3 === 0 ? ShieldCheck : index % 3 === 1 ? Gem : Crown;
-      return <article key={product.id} className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-7 transition-colors hover:border-orange-500/50">
-        <div aria-hidden="true" className="absolute -end-12 -top-16 h-44 w-44 rounded-full bg-orange-500/10 blur-3xl" />
-        <div className="mb-8 flex items-center justify-between"><span className="flex h-14 w-14 items-center justify-center rounded-2xl border border-orange-500/25 bg-orange-500/10 text-orange-400"><Icon size={28} /></span><span className="font-mono text-xs text-[var(--text-muted)]">0{index+1}</span></div>
-        <p className="text-label text-orange-400">{ui("rank")}</p><h3 className="mt-2 text-4xl font-black tracking-tight"><bdi>{product.name}</bdi></h3>
-        <p className="mt-5 min-h-10 text-3xl font-bold">{product.price === null ? <span className="text-sm font-normal text-[var(--text-muted)]">{t("pricePending")}</span> : new Intl.NumberFormat(locale,{style:"currency",currency:product.currency}).format(product.price)}</p>
-        {rank ? <ul className="my-7 flex-1 space-y-3 border-t border-white/5 pt-6">{rank.perks.map((_,i)=><li key={i} className="flex gap-2 text-sm leading-relaxed text-[var(--text-muted)]"><Check size={16} className="mt-1 shrink-0 text-orange-400" />{ui(`perk_${rank.id}_${i}`)}</li>)}</ul> : <p className="my-7 flex-1 whitespace-pre-line text-sm leading-relaxed text-[var(--text-muted)]">{product.description}</p>}
-        <button disabled={!live || !product.available} onClick={()=>setSelected(product)} data-cursor="button" className="mt-auto flex w-full items-center justify-between rounded-2xl bg-orange-500 px-5 py-4 text-sm font-bold text-black transition-colors hover:bg-orange-400 disabled:cursor-not-allowed disabled:opacity-40"><span>{t("getRank")} <bdi>{product.name}</bdi></span><ArrowRight size={17} className="rtl:rotate-180" /></button>
-      </article>;
-    })}</div>
-    <dialog ref={dialog} onCancel={close} onClose={close} aria-labelledby="checkout-title" className="checkout-shell fixed inset-0 m-auto max-h-[94dvh] w-[min(640px,calc(100%_-_24px))] overflow-y-auto rounded-3xl border border-white/10 bg-[#0b0d12] p-5 text-white backdrop:bg-black/80 sm:p-7">
-      <div className="mb-5 flex items-center justify-between gap-3"><h2 id="checkout-title" className="text-xl font-bold">{selected?.name} · {t("checkoutTitle")}</h2><button type="button" onClick={close} aria-label={t("close")} className="rounded-full border border-white/15 p-2"><X size={18} /></button></div>
-      {!ident ? <form onSubmit={pay}><label htmlFor="store-username" className="text-sm text-zinc-300">{t("username")}</label><input id="store-username" required autoComplete="username" minLength={3} maxLength={32} pattern="[.a-zA-Z0-9_ ]{3,32}" value={username} onChange={e=>setUsername(e.target.value)} className="mt-2 w-full rounded-xl border border-white/20 bg-black/30 px-4 py-3 outline-none focus:border-orange-500" /><p className="mt-3 text-xs leading-relaxed text-zinc-400">{t("usernameHelp")}</p><button disabled={busy || !sdkReady || sdkError} className="mt-6 w-full rounded-xl bg-orange-500 px-5 py-3 font-bold text-black disabled:opacity-40">{t(busy || !sdkReady ? "preparing" : "continuePayment")}</button></form> : <div ref={embed} className="min-h-[480px] w-full [&_iframe]:max-w-full" />}
-      {(error || sdkError) && <p role="alert" className="mt-4 text-sm text-orange-300">{t("paymentError")}</p>}
-      <p className="mt-5 flex items-center gap-2 text-xs text-zinc-400"><ShieldCheck size={15} className="shrink-0 text-orange-400" />{t("allPurchases")}</p>
+    {!live && <p role="status" className="store-notice"><ShieldCheck size={18} aria-hidden="true" />{t("checkoutUnavailable")}</p>}
+    <div className="store-rank-grid">
+      {orderedProducts.map(product => {
+        const rank = STORE_RANKS.find(r => r.id === product.rankId);
+        const Icon = rank?.id === "mvp-plus" ? Crown : rank?.id === "mvp" ? Gem : ShieldCheck;
+        return <article key={product.id} className={`store-rank${rank?.featured ? " store-rank-featured" : ""}`}>
+          <div className="store-rank-top">
+            <span className="store-rank-icon"><Icon size={24} strokeWidth={1.5} aria-hidden="true" /></span>
+            {rank?.featured && <span className="store-rank-badge">{t("mostPopular")}</span>}
+          </div>
+          <p className="text-label">{ui("rank")}</p>
+          <h3 className="text-display store-rank-name"><bdi>{product.name}</bdi></h3>
+          <p className={`store-rank-price${product.price === null ? " store-price-pending" : ""}`}>{price(product)}</p>
+          {rank ? <ul className="store-rank-perks">{rank.perks.map((_, i) =>
+            <li key={i}><Check size={15} aria-hidden="true" /><span>{ui(`perk_${rank.id}_${i}`)}</span></li>
+          )}</ul> : <p className="store-rank-description">{product.description}</p>}
+          <button disabled={!live || !product.available} onClick={() => setSelected(product)} data-cursor="button" className={`store-action${rank?.featured ? " store-action-primary" : ""}`}>
+            <span>{t("getRank")} <bdi>{product.name}</bdi></span><ArrowRight size={16} className="store-direction" aria-hidden="true" />
+          </button>
+        </article>;
+      })}
+    </div>
+    <dialog ref={dialog} onCancel={close} onClose={close} aria-labelledby="checkout-title" aria-describedby="checkout-description" className="checkout-shell store-checkout">
+      <header className="store-checkout-header">
+        <div className="store-checkout-brand"><Image src="/assets/site/server-logo.png" alt="Zo7al Network" width={40} height={40} /><span className="text-label">{t("checkoutTitle")}</span></div>
+        <button type="button" onClick={close} aria-label={t("close")} className="store-close"><X size={20} aria-hidden="true" /></button>
+      </header>
+      <div className="store-checkout-body">
+        <div className="store-order-summary">
+          <div><p className="text-label">{ui("rank")}</p><h2 id="checkout-title" className="text-display">{selected?.name}</h2></div>
+          <p className="store-order-price">{selected && price(selected)}</p>
+        </div>
+        <p id="checkout-description" className="store-checkout-description">{t("checkoutNote")}</p>
+        {!ident ? <form onSubmit={pay} className="store-checkout-form">
+          <label htmlFor="store-username">{t("username")}</label>
+          <input id="store-username" required autoComplete="username" autoCapitalize="none" spellCheck={false} dir="ltr" aria-describedby="store-username-help" minLength={3} maxLength={32} pattern="[.a-zA-Z0-9_ ]{3,32}" value={username} onChange={e => setUsername(e.target.value)} />
+          <p id="store-username-help">{t("usernameHelp")}</p>
+          <button disabled={busy || !sdkReady || sdkError} className="store-action store-action-primary store-pay" aria-busy={busy}>
+            <span>{t(busy || !sdkReady ? "preparing" : "continuePayment")}</span>
+            {busy || !sdkReady ? <LoaderCircle size={18} className="store-spinner" aria-hidden="true" /> : <ArrowRight size={18} className="store-direction" aria-hidden="true" />}
+          </button>
+        </form> : <div ref={embed} className="store-checkout-embed" />}
+        {(error || sdkError) && <p role="alert" className="store-notice store-checkout-error"><AlertCircle size={18} aria-hidden="true" /><span>{t("paymentError")}</span></p>}
+      </div>
+      <footer className="store-checkout-footer"><ShieldCheck size={16} aria-hidden="true" /><p>{t("allPurchases")}</p></footer>
     </dialog>
   </>;
 }
