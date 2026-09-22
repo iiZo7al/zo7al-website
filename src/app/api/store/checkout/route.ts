@@ -1,5 +1,5 @@
 import { isIP } from "node:net";
-import { getStoreCatalog, tebexRequest, tebexToken, tebexPrivateKey, TebexConfigurationError, TebexRequestError } from "@/lib/server/tebex";
+import { getStoreCatalog, ownsStorePackage, tebexRequest, tebexToken, tebexPrivateKey, TebexConfigurationError, TebexRequestError } from "@/lib/server/tebex";
 export const runtime = "nodejs";
 const attempts = new Map<string, { count: number; expires: number }>();
 export async function POST(request: Request) {
@@ -27,9 +27,12 @@ export async function POST(request: Request) {
     if (!catalog.live) return Response.json({ error: "UNAVAILABLE" }, { status: 503 });
     if (!catalog.products.some(p => p.id === body.packageId && p.available)) return Response.json({ error: "INVALID" }, { status: 400 });
     stage = "CREATE";
-    const result = await tebexRequest(`accounts/${encodeURIComponent(token)}/baskets`, { username: body.username.trim(), ip_address: ip, complete_url: `${origin}/store`, cancel_url: `${origin}/store`, complete_auto_redirect: false }, true);
+    const result = await tebexRequest(`accounts/${encodeURIComponent(token)}/baskets`, { username: body.username.trim(), ip_address: ip, complete_url: `${origin}/store?checkout=complete`, cancel_url: `${origin}/store`, complete_auto_redirect: false }, true);
     const ident = result.data?.ident;
     if (typeof ident !== "string" || !/^[a-zA-Z0-9_-]+$/.test(ident)) throw Error("INVALID_BASKET");
+    if (await ownsStorePackage(result.data?.username_id, body.packageId!)) {
+      return Response.json({ error: "ALREADY_OWNED" }, { status: 409, headers: { "Cache-Control": "no-store" } });
+    }
     // Only package ID and quantity are sent. Price and fulfillment belong to Tebex.
     stage = "PACKAGE";
     await tebexRequest(`baskets/${encodeURIComponent(ident)}/packages`, { package_id: String(body.packageId), quantity: 1 });
@@ -37,6 +40,9 @@ export async function POST(request: Request) {
   } catch (error) {
     // Never expose upstream responses, usernames, basket identifiers or credentials.
     if (error instanceof TebexConfigurationError) return Response.json({ error: "CONFIGURATION" }, { status: 503 });
+    if (stage === "PACKAGE" && error instanceof TebexRequestError && error.purchaseRestricted) {
+      return Response.json({ error: "PURCHASE_RESTRICTED" }, { status: 409, headers: { "Cache-Control": "no-store" } });
+    }
     const diagnostic = error instanceof TebexRequestError ? `${stage}_${error.status}` : `${stage}_FAILED`;
     console.warn("Tebex checkout failed", { diagnostic });
     return Response.json({ error: "UNAVAILABLE", diagnostic }, { status: 502 });
