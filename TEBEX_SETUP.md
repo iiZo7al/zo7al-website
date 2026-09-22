@@ -25,3 +25,17 @@ The original implementation incorrectly treated basket creation as public. Live 
 - New or renamed products come from Tebex. The three existing rank descriptions use the site's ten translations; any new product description is supplied by Tebex and should be localized in your store/content workflow.
 
 References: [Headless API authorization](https://docs.tebex.io/developers/headless-api/authorization), [Tebex.js](https://docs.tebex.io/developers/tebex.js/overview), [official Node SDK](https://github.com/tebexio/tebex-sdk-nodejs).
+
+## Live catalog and ownership
+
+The store reads names, prices, descriptions, images, package order and newly added packages directly from Tebex. Open pages refresh every 60 seconds and when returning to the tab. No local rank list controls the store cards. A temporary refresh failure retains the last successful catalog; checkout always revalidates with Tebex.
+
+To display **Owned** reliably, add `TEBEX_PLUGIN_SECRET` to Vercel for this project's Production and Preview environments, then redeploy. Obtain the game-server secret from https://creator.tebex.io/game-servers → Edit. This is distinct from the Headless private key. Never put it in browser code or paste it into a public issue. The server checks active packages for the username ID returned by Tebex and exposes only the ownership outcome, not purchase records.
+
+Without this optional secret, checkout still works but a generic Tebex purchase restriction cannot be called ownership. The UI explains that the rank may already be owned or subject to another restriction. With the secret configured, confirmed active ownership returns `ALREADY_OWNED` before adding the package. API failures never fabricate an owned state.
+
+Live diagnosis: VIP and MVP+ were rejected for iiZo7al with `The product isn't purchasable`; MVP succeeded. VIP and MVP+ were accepted for a different valid username. Every current rank has a lifetime user limit of 1; ownership was not independently verified without the game-server secret. No payments were made.
+
+## Payment success message
+
+The embedded `payment:complete` event triggers a server-side basket-status check; the event or `?checkout=complete` URL flag alone never marks payment successful. The page displays its celebration only when Tebex returns the matching basket with `complete: true`. Session storage preserves the basket across a checkout return. Delayed confirmation is retried for a bounded period and displayed as pending, not successful. This is presentation only: Tebex continues handling fulfillment; no items are granted from browser events.

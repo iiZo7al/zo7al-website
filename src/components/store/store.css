@@ -58,3 +58,12 @@
 .store-full-description { line-height: 1.9; color: var(--text-muted); overflow-wrap: anywhere; }
 .store-full-description p + p { margin-top: 12px; }
 .store-full-description p { unicode-bidi: plaintext; }
+
+.store-product-image { width: 160px; height: 120px; object-fit: contain; margin-inline: auto; }
+.store-description-preview { display: -webkit-box; -webkit-line-clamp: 6; -webkit-box-orient: vertical; overflow: hidden; flex: none; }
+.store-details-image { display: block; width: 100%; max-height: 280px; object-fit: contain; margin: 0 auto 24px; }
+
+.store-payment-status { padding: 28px; margin-bottom: 28px; border: 1px solid var(--border-strong); border-radius: 20px; background: var(--surface); text-align: center; }
+.store-payment-status h2 { font-size: clamp(22px,4vw,32px); font-weight: 700; }
+.store-payment-status p { margin-top: 12px; line-height: 1.8; color: var(--text-muted); }
+.store-payment-success { border-color: var(--accent); background: color-mix(in srgb,var(--accent) 8%,var(--surface)); }
