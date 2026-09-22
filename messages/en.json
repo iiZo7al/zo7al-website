@@ -115,6 +115,8 @@
     "gamesText": "Follow Zo7al Games across its official channels. Links sync from its Linktree."
   },
   "store": {
+    "monthly": "Monthly",
+    "boosterPrice": "From 4.99+",
     "details": "Details",
     "descriptionUnavailable": "The description is currently unavailable. Please try again later.",
     "eyebrow": "Minecraft",

@@ -37,6 +37,8 @@
     "gamesText": "关注 Zo7al Games 的官方频道。链接从 Linktree 同步。"
   },
   "store": {
+    "monthly": "每月",
+    "boosterPrice": "4.99+ 起",
     "details": "详情",
     "descriptionUnavailable": "暂时无法获取描述，请稍后重试。",
     "eyebrow": "我的世界", "title": "Zo7al Network 商店", "text": "支持服务器网络，探索 Zo7al 官方商店。",

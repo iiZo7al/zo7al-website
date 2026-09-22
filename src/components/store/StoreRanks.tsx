@@ -4,8 +4,10 @@ import { useEffect, useRef, useState } from "react";
 import Script from "next/script";
 import Image from "next/image";
 import "./store.css";
+import { BOOSTER_PRODUCT, isMonthlyRank } from "@/lib/data/store-booster";
+import { DISCORD_LINK } from "@/lib/data/site";
 import DetailsIcon from "@/components/ui/DetailsIcon";
-import { Check, ShieldCheck, X, ArrowRight, LoaderCircle, AlertCircle } from "lucide-react";
+import { Check, ShieldCheck, X, ArrowRight, LoaderCircle, AlertCircle, Zap } from "lucide-react";
 import type { StoreProduct } from "@/lib/server/tebex";
 
 type CheckoutSdk = { on: (event: "payment:complete", handler: () => void) => void; init: (options: { ident: string; theme: string; locale: string; colors: {name: string; color: string}[] }) => void; render: (element: HTMLElement, width: number, height: number, newTab: boolean) => void; };
@@ -118,9 +120,11 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
       }
     } catch { if (!controller.signal.aborted) setError("paymentError"); } finally { if (!controller.signal.aborted) setBusy(false); }
   };
-  const price = (product: StoreProduct) => product.price === null
+  const price = (product: StoreProduct) => product.id === BOOSTER_PRODUCT.id
+    ? t("boosterPrice")
+    : product.price === null
     ? t("pricePending")
-    : new Intl.NumberFormat(locale, { style: "currency", currency: product.currency }).format(product.price);
+    : new Intl.NumberFormat(locale, { style: "currency", currency: product.currency }).format(product.price) + (isMonthlyRank(product) ? ` · ${t("monthly")}` : "");
   const currentSelected = products.find(product => product.id === selected?.id) ?? selected;
   const currentDetails = products.find(product => product.id === details?.id) ?? details;
   return <>
@@ -131,23 +135,24 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
       {paymentStatus === "paid" && <p>{t("paymentSuccessNote")}</p>}
     </div>}
     <div className="store-rank-grid">
-      {products.map(product => {
+      {[...products, BOOSTER_PRODUCT].map(product => {
+        const booster = product.id === BOOSTER_PRODUCT.id;
         const featured = product.id === 7312784;
         const bullets = product.description.split(/\n+/).filter(line => line.startsWith("• ")).map(line => line.slice(2));
         const localized = bullets.filter(line => locale === "ar" ? /[\u0600-\u06ff]/.test(line) : !/[\u0600-\u06ff]/.test(line));
         const perks = (localized.length ? localized : bullets).slice(0, 5);
         return <article key={product.id} className={`store-rank${featured ? " store-rank-featured" : ""}`}>
           <div className="store-rank-top">
-            {featured && <span className="store-rank-badge absolute end-6 top-6 whitespace-nowrap">{t("mostPopular")}</span>}
-            {product.image ? <Image unoptimized src={product.image} alt={product.name} width={160} height={120} className="store-product-image" /> : <span className="store-rank-icon"><ShieldCheck size={24} strokeWidth={1.5} aria-hidden="true" /></span>}
+            {featured && <span className="store-rank-badge">{t("mostPopular")}</span>}
+            {product.image ? <Image unoptimized src={product.image} alt={product.name} width={160} height={120} className="store-product-image" /> : <span className="store-rank-icon">{booster ? <Zap size={24} strokeWidth={1.5} aria-hidden="true" /> : <ShieldCheck size={24} strokeWidth={1.5} aria-hidden="true" />}</span>}
           </div>
           <p className="text-label">{ui("rank")}</p>
           <h3 className="text-display store-rank-name"><bdi dir="ltr">{product.name}</bdi></h3>
           <p className={`store-rank-price${product.price === null ? " store-price-pending" : ""}`}>{price(product)}</p>
           {perks.length ? <ul className="store-rank-perks">{perks.map((perk, index) => <li key={index}><Check size={15} aria-hidden="true" /><span dir="auto">{perk}</span></li>)}</ul> : <p dir="auto" className="store-rank-description store-description-preview">{product.description || t("descriptionUnavailable")}</p>}
-          <div className="store-rank-actions"><button disabled={!live || !product.available} onClick={() => setSelected(product)} data-cursor="button" className={`store-action${featured ? " store-action-primary" : ""}`}>
+          <div className="store-rank-actions">{booster ? <a href={DISCORD_LINK} target="_blank" rel="noopener noreferrer" data-cursor="button" className="store-action"><span>{t("getRank")} <bdi dir="ltr">Booster</bdi></span><ArrowRight size={16} className="store-direction" aria-hidden="true" /></a> : <button disabled={!live || !product.available} onClick={() => setSelected(product)} data-cursor="button" className={`store-action${featured ? " store-action-primary" : ""}`}>
             <span>{t("getRank")} <bdi dir="ltr">{product.name}</bdi></span><ArrowRight size={16} className="store-direction" aria-hidden="true" />
-          </button>
+          </button>}
           <button type="button" className="store-action store-details-button" onClick={() => setDetails(product)} data-cursor="button" aria-haspopup="dialog" aria-label={`${t("details")} — ${product.name}`} title={t("details")}><DetailsIcon /></button></div>
         </article>;
       })}
