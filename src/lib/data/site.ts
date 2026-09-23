@@ -29,7 +29,7 @@ export const SOCIALS = [
     label: "YouTube",
     handle: "@iiZo7al",
     url: "https://www.youtube.com/@iiZo7al",
-    description: "Minecraft builds, modpack showcases and Fortnite map breakdowns.",
+    description: "Fortnite, Minecraft and more — gaming challenges and laughs with friends.",
     color: "#FF3B30",
   },
   {
@@ -37,7 +37,7 @@ export const SOCIALS = [
     label: "Discord",
     handle: "Zo7al Network",
     url: "https://discord.gg/nxScVYrSXq",
-    description: "The community hub for the server, modpacks and map releases.",
+    description: "Join the community to chat about games and share your best moments.",
     color: "#8B5CF6",
   },
   {
@@ -45,7 +45,7 @@ export const SOCIALS = [
     label: "TikTok",
     handle: "@iizo7al",
     url: "https://www.tiktok.com/@iizo7al",
-    description: "Short-form clips from the network and Fortnite islands.",
+    description: "Quick gaming clips, funny moments and highlights from my videos.",
     color: "#19D9FF",
   },
   {
@@ -53,7 +53,7 @@ export const SOCIALS = [
     label: "Instagram",
     handle: "@iiZo7al",
     url: "https://www.instagram.com/iiZo7al",
-    description: "Behind-the-scenes shots and announcements.",
+    description: "Gaming moments, behind the scenes and updates from my content journey.",
     color: "#FF7A00",
   },
   {
@@ -61,7 +61,7 @@ export const SOCIALS = [
     label: "X",
     handle: "@iiZo7al",
     url: "https://x.com/iiZo7al",
-    description: "Updates, polls and project news, first.",
+    description: "New videos, gaming thoughts and conversations with you.",
     color: "#FFFFFF",
   },
   {
@@ -69,7 +69,7 @@ export const SOCIALS = [
     label: "Twitch",
     handle: "iiZo7al",
     url: "https://www.twitch.tv/iiZo7al",
-    description: "Live builds and server events.",
+    description: "Find me on Twitch for gaming and community chat.",
     color: "#8B5CF6",
   },
   { id: "snapchat", label: "Snapchat", handle: "iiZo7al", url: "https://www.snapchat.com/add/iiZo7al", description: "Daily moments and behind the scenes.", color: "#FFFC00" },
