@@ -75,3 +75,14 @@
   .store-rank:hover .store-product-image { transform: scale(1.06); }
   .store-details-button:hover { color: var(--accent); transform: translateY(-2px); }
 }
+
+.store-price-value { display: inline-flex; align-items: baseline; flex-wrap: wrap; }
+.store-price-period { color: #777b83; font-size: .65em; font-weight: 400; letter-spacing: normal; }
+.store-order-price { white-space: normal; }
+.store-subscription-link { color: var(--accent); text-decoration: underline; text-underline-offset: 4px; }
+.store-subscription-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+.store-detail-perk { display: flex; align-items: flex-start; gap: 10px; }
+.store-detail-perk svg { flex-shrink: 0; margin-top: 6px; color: var(--accent); }
+
+.store-rank-reveal { min-width: 0; scroll-snap-align: start; display: flex; }
+.store-rank-reveal > .store-rank { width: 100%; }

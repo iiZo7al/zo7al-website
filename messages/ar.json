@@ -11,11 +11,13 @@
     "aboutEyebrow": "من هو زحل؟", "aboutText": "زحل صانع محتوى ألعاب يبني شبكات ماينكرافت، ومودباكات، ومابات فورتنايت كرييتف، ومشاريع ألعاب تجريبية."
   },
   "minecraft": {
+    "copyPort": "نسخ المنفذ",
+    "bedrockPort": "منفذ Bedrock",
     "eyebrow": "ماينكرافت", "title": "شبكة زحل", "text": "مغامرتك القادمة في ماينكرافت تبدأ من هنا.", "openStore": "افتح المتجر",
     "connectEyebrow": "الاتصال", "connectTitle": "انضم خلال ثوانٍ", "connectText": "جافا وبيدروك، شبكة واحدة.",
     "compatEyebrow": "التوافق", "compatTitle": "الإصدارات المدعومة", "gameplayEyebrow": "طريقة اللعب", "gameplayTitle": "الأنماط",
     "supportEyebrow": "ادعم الشبكة", "supportTitle": "ادعم زحل", "supportText": "ادعم الشبكة واستكشف متجر زحل الرسمي.",
-    "javaLabel": "عنوان جافا", "bedrockLabel": "عنوان بيدروك", "bedrockNote": "دعم بيدروك قيد التطوير — لم يُنشر بعد.",
+    "javaLabel": "عنوان جافا", "bedrockLabel": "عنوان بيدروك", "bedrockNote": "بيدروك: zo7al.play-mc.fun — المنفذ 25807.",
     "copyJava": "انسخ عنوان جافا", "copyBedrock": "انسخ عنوان بيدروك", "checkingStatus": "جارٍ التحقق من الحالة…", "readyToPlay": "شبكة زحل — جاهزة للعب",
     "online": "متصل", "offline": "غير متصل", "players": "اللاعبون", "version": "الإصدار", "address": "العنوان",
     "statusUnavailable": "حالة السيرفر المباشرة غير متاحة الآن — استخدم العنوان أدناه للانضمام.", "modeLive": "متاح الآن", "modeSoon": "قريبًا"
@@ -23,7 +25,7 @@
   "modpacks": {
     "eyebrow": "المودباكات", "title": "ماينكرافت، بحلّة جديدة.", "text": "استكشف مشاريع ماينكرافت من صنع زحل.",
     "modrinthEyebrow": "Modrinth", "modrinthTitle": "إصدارات Modrinth", "modrinthLabel": "Modrinth", "modrinthLiveLabel": "مباشر من Modrinth",
-    "curseforgeEyebrow": "CurseForge", "curseforgeTitle": "نسخ CurseForge", "curseforgeLabel": "CurseForge", "curseforgeLiveLabel": "متزامن مباشرة مع CurseForge"
+    "curseforgeEyebrow": "CurseForge", "curseforgeTitle": "إصدارات CurseForge", "curseforgeLabel": "مباشر من CURSEFORGE", "curseforgeLiveLabel": "مباشر من CURSEFORGE"
   },
   "fortnite": {
     "eyebrow": "فورتنايت كرييتف", "title": "فورتنايت كرييتف", "text": "مابات وتجارب من صنع زحل.", "creatorPage": "صفحة المطور",
@@ -37,6 +39,7 @@
     "gamesText": "تابع Zo7al Games على حساباته الرسمية. تُحدّث الروابط من صفحته في Linktree."
   },
   "store": {
+    "manageSubscriptions": "تقدر تشوف أو تلغي اشتراكاتك من هنا.",
     "monthly": "شهريًا",
     "boosterPrice": "من 4.99+",
     "details": "التفاصيل",
@@ -76,8 +79,8 @@
     "items": [
       { "category": "gettingStarted", "q": "ما هي شبكة ZO7AL؟", "a": "شبكة ماينكرافت وعالم ألعاب بناه زحل، يشمل السيرفايفل، والـPvP، والمودباكات، ومابات فورتنايت كرييتف." },
       { "category": "gettingStarted", "q": "كيف أنضم لشبكة زحل عبر جافا؟", "a": "انسخ عنوان جافا zo7al.play-mc.fun من صفحة ماينكرافت وأضفه كسيرفر في قائمة اللعب الجماعي بنسخة جافا." },
-      { "category": "gettingStarted", "q": "كيف أنضم لشبكة زحل عبر بيدروك؟", "a": "نسخة بيدروك لم تُنشر بعد — هي على خطة التطوير. انضم للديسكورد لتصلك أول إشعار عند إطلاقها." },
-      { "category": "gettingStarted", "q": "هل بيدروك مدعوم؟", "a": "ليس بعد. نسخة جافا مدعومة بالكامل حاليًا، ودعم بيدروك مخطط له في تحديث قادم." },
+      { "category": "gettingStarted", "q": "كيف أنضم لشبكة زحل عبر بيدروك؟", "a": "أضف سيرفرًا في Minecraft Bedrock بعنوان zo7al.play-mc.fun والمنفذ 25807." },
+      { "category": "gettingStarted", "q": "هل بيدروك مدعوم؟", "a": "نعم. بيدروك: zo7al.play-mc.fun — المنفذ 25807." },
       { "category": "gettingStarted", "q": "ما هي إصدارات ماينكرافت المدعومة؟", "a": "1.8.9 للـPvP الكلاسيكي، 1.20.x للسيرفايفل المستقر، و1.21.x لأحدث إصدار." },
       { "category": "gettingStarted", "q": "كيف أتصل بالسيرفر؟", "a": "افتح ماينكرافت جافا، اذهب إلى اللعب الجماعي، أضف سيرفرًا، والصق zo7al.play-mc.fun كعنوان." },
       { "category": "storeRanks", "q": "كيف أشتري رتبة؟", "a": "زر المتجر الرسمي zo7al.tebex.io، اختر VIP أو MVP أو MVP+، وأكمل الدفع بأمان — الرتبة تُفعّل تلقائيًا في حسابك." },
@@ -210,4 +213,50 @@
     "explore": "استكشف",
     "direction": "rtl"
   }
+,
+  "storeDescription": {
+    "vipAndMvp": "VIP وMVP",
+    "title": "رتبة {rank} – Zo7al Network",
+    "upgrade": "ترقية {rank} – Zo7al Network",
+    "introPermanent": "عند شراء هذه الباقة ستحصل على رتبة {rank} بشكل دائم مع المميزات التالية:",
+    "introInherited": "عند شراء هذه الباقة ستحصل على رتبة {rank} بشكل دائم، وتشمل جميع مميزات {inherits} بالإضافة إلى:",
+    "introMonthly": "عند شراء هذه الباقة ستحصل على رتبة {rank} لمدة شهر، وتشمل جميع مميزات {inherits} بالإضافة إلى:",
+    "introBooster": "عند دعم سيرفر Zo7al Network على Discord ببوست واحد أو أكثر، ستحصل على رتبة Booster مع المميزات التالية:",
+    "game": "🎮 مميزات داخل السيرفر:",
+    "discord": "💬 مميزات الديسكورد:",
+    "delivery": "📦 طريقة الاستلام:",
+    "prefix": "برفكس في الشات: [{rank}]",
+    "exclusivePrefix": "برفكس حصري في الشات: [{rank}]",
+    "chatColor": "لون شات حصري لرتبة {rank}",
+    "command": "استخدام الأمر {command}",
+    "homes": "عدد {count} هومات (/sethome)",
+    "supportBasic": "أولوية دعم أساسية داخل السيرفر",
+    "supportGame": "أولوية دعم داخل السيرفر",
+    "supportHigherGame": "أولوية دعم أعلى داخل السيرفر",
+    "supportHighestGame": "أولوية دعم قصوى داخل السيرفر",
+    "role": "رتبة {rank} في Discord",
+    "channels": "دخول قنوات {rank} الخاصة في Discord",
+    "nameColor": "لون اسم مميز في Discord",
+    "exclusiveNameColor": "لون اسم حصري في Discord",
+    "supportHigher": "أولوية أعلى في الدعم",
+    "supportHighest": "أولوية قصوى في الدعم",
+    "supporterBadge": "شارة مميزة للداعمين",
+    "announcements": "الوصول إلى الإعلانات الحصرية",
+    "queue": "أولوية دخول السيرفر (إذا كان نظام الانتظار مفعلاً)",
+    "deliverAuto": "يتم تسليم الرتبة تلقائيًا خلال 1–5 دقائق بعد الدفع.",
+    "username": "يرجى إدخال اسم حساب Minecraft الصحيح عند الشراء.",
+    "deliveryHelp": "إذا لم تستلم الرتبة خلال 10–15 دقيقة، أعد تسجيل الدخول أو تواصل مع الدعم مع رقم الطلب.",
+    "permanent": "مدة الرتبة: دائمة.",
+    "once": "نوع الدفع: مرة واحدة فقط (غير متكرر).",
+    "monthDuration": "مدة الرتبة: شهر واحد (30 يومًا).",
+    "recurring": "نوع الدفع: اشتراك شهري متكرر.",
+    "renewal": "يتجدد الاشتراك تلقائيًا كل شهر ما لم يتم إلغاؤه.",
+    "boost": "قم بعمل بوست واحد أو أكثر لسيرفر Zo7al Network على Discord.",
+    "grantBoost": "بعد تفعيل البوست، تُمنح رتبة Booster تلقائيًا أو بعد التحقق من حسابك.",
+    "linkAccounts": "يرجى التأكد من ربط حساب Discord بحساب Minecraft الصحيح.",
+    "boostHelp": "إذا لم تستلم الرتبة، يرجى التواصل مع الدعم.",
+    "boostDuration": "مدة الرتبة: تستمر طوال بقاء بوست واحد على الأقل فعالًا في Discord.",
+    "boostPrice": "السعر: بوست واحد أو أكثر لسيرفر Discord.",
+    "boostEnd": "عند انتهاء أو إزالة جميع البوستات، تُزال رتبة Booster ومميزاتها."
+}
 }

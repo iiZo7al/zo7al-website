@@ -55,6 +55,7 @@ function CopyRow({
           <button
             type="button"
             onClick={handleCopy}
+            aria-label={`${copyLabel} — ${label}`}
             data-cursor="copy"
             className="inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition-colors"
             style={{
@@ -95,10 +96,11 @@ export default function ServerConnect() {
       <CopyRow
         label={t("bedrockLabel")}
         address={MINECRAFT_SERVER.bedrockAddress}
-        disabledNote={t("bedrockNote")}
         copyLabel={t("copyBedrock")}
         copiedLabel={tc("copied")}
       />
+      <CopyRow label={t("bedrockPort")} address={MINECRAFT_SERVER.bedrockPort} copyLabel={t("copyPort")} copiedLabel={tc("copied")} />
     </div>
   );
 }
+

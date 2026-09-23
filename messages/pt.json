@@ -11,11 +11,13 @@
     "aboutEyebrow": "Quem é Zo7al?", "aboutText": "Zo7al é um criador gamer que constrói redes de Minecraft, modpacks, mapas de Fortnite Criativo e projetos experimentais."
   },
   "minecraft": {
+    "copyPort": "Copiar porta",
+    "bedrockPort": "Porta Bedrock",
     "eyebrow": "Minecraft", "title": "REDE ZO7AL", "text": "Sua próxima aventura no Minecraft começa aqui.", "openStore": "Abrir loja",
     "connectEyebrow": "Conexão", "connectTitle": "Entre em segundos", "connectText": "Java e Bedrock, uma só rede.",
     "compatEyebrow": "Compatibilidade", "compatTitle": "Versões suportadas", "gameplayEyebrow": "Modos de jogo", "gameplayTitle": "Modos",
     "supportEyebrow": "Apoie a rede", "supportTitle": "APOIE O ZO7AL", "supportText": "Apoie a rede e conheça a loja oficial do Zo7al.",
-    "javaLabel": "IP de Java", "bedrockLabel": "Endereço Bedrock", "bedrockNote": "O suporte a Bedrock está em desenvolvimento — ainda não publicado.",
+    "javaLabel": "IP de Java", "bedrockLabel": "Endereço Bedrock", "bedrockNote": "Bedrock: zo7al.play-mc.fun — porta 25807.",
     "copyJava": "Copiar IP de Java", "copyBedrock": "Copiar endereço Bedrock", "checkingStatus": "Verificando status…", "readyToPlay": "Rede ZO7AL — Pronta para jogar",
     "online": "Online", "offline": "Offline", "players": "Jogadores", "version": "Versão", "address": "Endereço",
     "statusUnavailable": "O status ao vivo não está disponível agora — conecte-se usando o endereço abaixo.", "modeLive": "Ativo", "modeSoon": "Em breve"
@@ -23,7 +25,7 @@
   "modpacks": {
     "eyebrow": "Modpacks", "title": "MINECRAFT, REINVENTADO.", "text": "Explore os projetos de Minecraft criados por Zo7al.",
     "modrinthEyebrow": "Modrinth", "modrinthTitle": "Lançamentos no Modrinth", "modrinthLabel": "Modrinth", "modrinthLiveLabel": "Ao vivo do Modrinth",
-    "curseforgeEyebrow": "CurseForge", "curseforgeTitle": "Espelhos no CurseForge", "curseforgeLabel": "CurseForge", "curseforgeLiveLabel": "Sincronizado ao vivo com o CurseForge"
+    "curseforgeEyebrow": "CurseForge", "curseforgeTitle": "Lançamentos no CurseForge", "curseforgeLabel": "Ao vivo do CURSEFORGE", "curseforgeLiveLabel": "Ao vivo do CURSEFORGE"
   },
   "fortnite": {
     "eyebrow": "Fortnite Criativo", "title": "FORTNITE CRIATIVO", "text": "Mapas e experiências criados por Zo7al.", "creatorPage": "Página de criador",
@@ -37,7 +39,8 @@
     "gamesText": "Siga Zo7al Games nos canais oficiais. Os links são sincronizados com o Linktree."
   },
   "store": {
-    "monthly": "Mensal",
+    "manageSubscriptions": "Você pode consultar ou cancelar suas assinaturas aqui.",
+    "monthly": "mês",
     "boosterPrice": "A partir de 4.99+",
     "details": "Detalhes",
     "descriptionUnavailable": "A descrição está indisponível. Tente novamente mais tarde.",
@@ -76,8 +79,8 @@
     "items": [
       { "category": "gettingStarted", "q": "O que é a ZO7AL Network?", "a": "Um servidor de Minecraft e universo gamer criado por Zo7al, com survival, PvP, modpacks e mapas de Fortnite Criativo." },
       { "category": "gettingStarted", "q": "Como entro na Zo7al Network no Java?", "a": "Copie o endereço Java, zo7al.play-mc.fun, na página do Minecraft e adicione-o como servidor no menu multiplayer do Minecraft Java." },
-      { "category": "gettingStarted", "q": "Como entro na Zo7al Network no Bedrock?", "a": "O Bedrock ainda não foi publicado — está no roteiro de desenvolvimento. Entre no Discord para ser avisado assim que estiver disponível." },
-      { "category": "gettingStarted", "q": "O Bedrock é suportado?", "a": "Ainda não. A Java Edition tem suporte completo hoje, e o suporte ao Bedrock está planejado para uma futura atualização." },
+      { "category": "gettingStarted", "q": "Como entro na Zo7al Network no Bedrock?", "a": "Adicione um servidor no Minecraft Bedrock com o endereço zo7al.play-mc.fun e a porta 25807." },
+      { "category": "gettingStarted", "q": "O Bedrock é suportado?", "a": "Sim. Bedrock: zo7al.play-mc.fun — porta 25807." },
       { "category": "gettingStarted", "q": "Quais versões do Minecraft são suportadas?", "a": "1.8.9 para PvP clássico, 1.20.x para survival estável e 1.21.x para a versão mais recente." },
       { "category": "gettingStarted", "q": "Como me conecto ao servidor?", "a": "Abra o Minecraft Java Edition, vá em Multiplayer, adicione um servidor e cole zo7al.play-mc.fun como endereço." },
       { "category": "storeRanks", "q": "Como compro um rank?", "a": "Visite a loja oficial em zo7al.tebex.io, escolha VIP, MVP ou MVP+, e finalize a compra com segurança — seu rank é aplicado automaticamente." },
@@ -210,4 +213,50 @@
     "explore": "Explorar",
     "direction": "ltr"
   }
+,
+  "storeDescription": {
+    "vipAndMvp": "VIP e MVP",
+    "title": "Rank {rank} – Zo7al Network",
+    "upgrade": "Upgrade {rank} – Zo7al Network",
+    "introPermanent": "Ao comprar este pacote, você receberá permanentemente o rank {rank} com os seguintes benefícios:",
+    "introInherited": "Ao comprar este pacote, você receberá permanentemente o rank {rank}, com todos os benefícios de {inherits}, além de:",
+    "introMonthly": "Ao comprar este pacote, você receberá o rank {rank} por um mês, com todos os benefícios de {inherits}, além de:",
+    "introBooster": "Ao dar um ou mais impulsos ao servidor Discord da Zo7al Network, você receberá o rank Booster com os seguintes benefícios:",
+    "game": "🎮 Benefícios no jogo:",
+    "discord": "💬 Benefícios no Discord:",
+    "delivery": "📦 Informações de entrega:",
+    "prefix": "Prefixo no chat: [{rank}]",
+    "exclusivePrefix": "Prefixo exclusivo no chat: [{rank}]",
+    "chatColor": "Cor de chat exclusiva do rank {rank}",
+    "command": "Acesso a {command}",
+    "homes": "{count} casas (/sethome)",
+    "supportBasic": "Prioridade básica de suporte no jogo",
+    "supportGame": "Prioridade de suporte no jogo",
+    "supportHigherGame": "Maior prioridade de suporte no jogo",
+    "supportHighestGame": "Prioridade máxima de suporte no jogo",
+    "role": "Cargo {rank} no Discord",
+    "channels": "Acesso a canais exclusivos de {rank} no Discord",
+    "nameColor": "Cor de nome especial no Discord",
+    "exclusiveNameColor": "Cor de nome exclusiva no Discord",
+    "supportHigher": "Maior prioridade de suporte",
+    "supportHighest": "Prioridade máxima de suporte",
+    "supporterBadge": "Insígnia exclusiva de apoiador",
+    "announcements": "Acesso a anúncios exclusivos",
+    "queue": "Prioridade de entrada no servidor (se o sistema de fila estiver ativo)",
+    "deliverAuto": "O rank é entregue automaticamente em 1–5 minutos após o pagamento.",
+    "username": "Insira seu nome de usuário correto do Minecraft ao pagar.",
+    "deliveryHelp": "Se não receber em 10–15 minutos, entre novamente ou contate o suporte com o número do pedido.",
+    "permanent": "Duração do rank: permanente.",
+    "once": "Tipo de pagamento: compra única (não recorrente).",
+    "monthDuration": "Duração do rank: 1 mês (30 dias).",
+    "recurring": "Tipo de pagamento: assinatura mensal recorrente.",
+    "renewal": "A assinatura é renovada automaticamente todos os meses, a menos que seja cancelada.",
+    "boost": "Dê um ou mais impulsos ao servidor Discord da Zo7al Network.",
+    "grantBoost": "Quando o impulso estiver ativo, o rank Booster será concedido automaticamente ou após verificar sua conta.",
+    "linkAccounts": "Verifique se sua conta do Discord está vinculada à conta correta do Minecraft.",
+    "boostHelp": "Se não receber o rank, contate o suporte.",
+    "boostDuration": "Duração: enquanto pelo menos um impulso do Discord permanecer ativo.",
+    "boostPrice": "Preço: um ou mais impulsos de servidor do Discord.",
+    "boostEnd": "Se todos os impulsos expirarem ou forem removidos, o rank Booster e seus benefícios também serão removidos."
+}
 }
