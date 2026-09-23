@@ -94,6 +94,12 @@
     "curseforgeLiveLabel": "Live from CURSEFORGE"
   },
   "fortnite": {
+    "watchVideo": "Watch map video",
+    "islandCode": "Island code",
+    "tags": "Tags",
+    "detailsUnavailable": "Map details could not be loaded. You can view them on Fortnite.",
+    "viewOnFortnite": "View on Fortnite",
+
     "eyebrow": "Fortnite Creative",
     "title": "FORTNITE CREATIVE",
     "text": "Maps and experiences built by Zo7al.",
@@ -117,6 +123,11 @@
     "gamesText": "My accounts for Fortnite and Roblox maps and gaming project announcements. Links sync from Linktree."
   },
   "store": {
+    "coinsTitle": "Coins",
+    "productsTitle": "Products",
+    "catalogTitle": "Store catalog",
+    "browseProducts": "Browse products",
+
     "manageSubscriptions": "You can view or cancel your subscriptions here.",
     "monthly": "month",
     "boosterPrice": "From 4.99+",
@@ -329,6 +340,21 @@
   }
 ,
   "storeDescription": {
+    "coinsHeading": "🪙 {count} Coins – Zo7al Network",
+    "coinsIntro": "By purchasing this package, you will receive {count} Coins added directly to your Minecraft account.",
+    "coinsBonusIntro": "By purchasing this package, you will receive {count} Coins + {bonus}% Bonus added directly to your Minecraft account.",
+    "coinsIncludes": "🎁 Package Includes:",
+    "coinsAmount": "{count} Coins",
+    "coinsBonus": "+{bonus}% Bonus ({count} Coins)",
+    "coinsTotal": "Total: {count} Coins",
+    "coinsReceived": "Total Received: {count} Coins.",
+    "coinsQuantity": "Amount: {count} Coins.",
+    "coinsUse": "Coins can be used in the Zo7al Network in-game store",
+    "coinsPurchase": "Purchase available items, upgrades, and other server content using your Coins",
+    "coinsLinked": "Coins are linked to the Minecraft username entered at checkout",
+    "coinsDelivery": "Coins are delivered automatically within 1–5 minutes after payment.",
+    "coinsDeliveryHelp": "If your Coins are not received within 10–15 minutes, please relog or contact support with your order ID.",
+
     "vipAndMvp": "VIP and MVP",
     "title": "{rank} Rank – Zo7al Network",
     "upgrade": "{rank} Upgrade – Zo7al Network",

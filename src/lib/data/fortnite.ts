@@ -1,3 +1,5 @@
+import { fortniteLocale } from "../sync/fortnite-parser";
+
 export const FORTNITE_PROFILE_URL = "https://www.fortnite.com/@zo7al";
 export const FORTNITE_CREATOR_CODE = "zo7al";
 
@@ -8,6 +10,9 @@ export type FortniteMap = {
   category: string;
   thumbnail: string;
   featured?: boolean;
+  description?: string;
+  tags?: string[];
+  videoUrl?: string;
 };
 
 // Verified against the live creator page — island codes and artwork only,
@@ -15,7 +20,7 @@ export type FortniteMap = {
 export const FORTNITE_MAPS: FortniteMap[] = [
   {
     id: "saturn-sniper",
-    title: "Saturn Sniper",
+    title: "سنايبرات زحل Zo7al 💥🚀",
     code: "0633-4212-9611",
     category: "Sniper",
     thumbnail:
@@ -24,7 +29,7 @@ export const FORTNITE_MAPS: FortniteMap[] = [
   },
   {
     id: "solo-scrims-galaxy",
-    title: "Solo Scrims Galaxy",
+    title: "SOLO SCRIMS GALAXY سكرمز الجالكسي 🏆🚀",
     code: "3325-4001-0926",
     category: "Scrims",
     thumbnail:
@@ -33,7 +38,7 @@ export const FORTNITE_MAPS: FortniteMap[] = [
   },
   {
     id: "all-weapons",
-    title: "All Weapons",
+    title: "ALL WEAPONS زحل Zo7al 🚀✨",
     code: "4904-5829-1966",
     category: "Fun",
     thumbnail:
@@ -42,7 +47,7 @@ export const FORTNITE_MAPS: FortniteMap[] = [
   },
   {
     id: "clan-wars",
-    title: "Clan Wars",
+    title: "حرب الكلانات زحل Zo7al 🚀💥",
     code: "6387-4453-1682",
     category: "Clan Wars",
     thumbnail:
@@ -50,7 +55,7 @@ export const FORTNITE_MAPS: FortniteMap[] = [
   },
   {
     id: "best-1v1",
-    title: "Best 1v1 Map",
+    title: "Best 1v1 Map زحل Zo7al 🎵🚀",
     code: "2994-5126-9804",
     category: "Build Fight",
     thumbnail:
@@ -58,7 +63,7 @@ export const FORTNITE_MAPS: FortniteMap[] = [
   },
   {
     id: "solo-scrims-delulu",
-    title: "Solo Scrims Delulu",
+    title: "SOLO SCRIMS DELULU سكرمز ديلولو🏆🚀",
     code: "7067-2620-1606",
     category: "Scrims",
     thumbnail:
@@ -66,7 +71,7 @@ export const FORTNITE_MAPS: FortniteMap[] = [
   },
   {
     id: "red-vs-blue",
-    title: "Red vs Blue",
+    title: "🔴 أحمر مقابل أزرق 🔵 زحل Zo7al 🚀",
     code: "3310-5985-8629",
     category: "Red vs Blue",
     thumbnail:
@@ -74,7 +79,7 @@ export const FORTNITE_MAPS: FortniteMap[] = [
   },
   {
     id: "1v1v1-infinite",
-    title: "1v1v1 Infinite",
+    title: "1v1v1 Invinite زحل Zo7al ✅🚀",
     code: "4621-8547-5867",
     category: "1v1v1",
     thumbnail:
@@ -82,7 +87,7 @@ export const FORTNITE_MAPS: FortniteMap[] = [
   },
   {
     id: "1v1v1-one-shot",
-    title: "1v1v1 One Shot",
+    title: "1v1v1 One Shot زحل Zo7al ✅🚀",
     code: "1888-6512-8811",
     category: "1v1v1",
     thumbnail:
@@ -90,7 +95,7 @@ export const FORTNITE_MAPS: FortniteMap[] = [
   },
   {
     id: "1v1v1-reload",
-    title: "1v1v1 Reload",
+    title: "1v1v1 Reload زحل Zo7al ✅🚀",
     code: "6995-1684-7602",
     category: "1v1v1",
     thumbnail:
@@ -98,7 +103,7 @@ export const FORTNITE_MAPS: FortniteMap[] = [
   },
   {
     id: "fight-me-build",
-    title: "Fight Me In Build",
+    title: "عاركني بالبناء زحل Zo7al💎🚀",
     code: "2404-2844-7787",
     category: "Build Fight",
     thumbnail:
@@ -106,6 +111,7 @@ export const FORTNITE_MAPS: FortniteMap[] = [
   },
 ];
 
-export function islandCodeUrl(code: string) {
-  return `https://www.fortnite.com/creative/island-codes/${code}`;
+export function islandCodeUrl(code: string, locale = "en") {
+  return `https://www.fortnite.com/@zo7al/${code}?lang=${fortniteLocale(locale)}`;
 }
+

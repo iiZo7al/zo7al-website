@@ -25,12 +25,13 @@ export async function POST(request: Request) {
   try {
     const catalog = await getStoreCatalog();
     if (!catalog.live) return Response.json({ error: "UNAVAILABLE" }, { status: 503 });
-    if (!catalog.products.some(p => p.id === body.packageId && p.available)) return Response.json({ error: "INVALID" }, { status: 400 });
+    const product = catalog.products.find(p => p.id === body.packageId && p.available);
+    if (!product) return Response.json({ error: "INVALID" }, { status: 400 });
     stage = "CREATE";
     const result = await tebexRequest(`accounts/${encodeURIComponent(token)}/baskets`, { username: body.username.trim(), ip_address: ip, complete_url: `${origin}/store?checkout=complete`, cancel_url: `${origin}/store`, complete_auto_redirect: false }, true);
     const ident = result.data?.ident;
     if (typeof ident !== "string" || !/^[a-zA-Z0-9_-]+$/.test(ident)) throw Error("INVALID_BASKET");
-    if (await ownsStorePackage(result.data?.username_id, body.packageId!)) {
+    if (product.ownershipCheck !== false && await ownsStorePackage(result.data?.username_id, body.packageId!)) {
       return Response.json({ error: "ALREADY_OWNED" }, { status: 409, headers: { "Cache-Control": "no-store" } });
     }
     // Only package ID and quantity are sent. Price and fulfillment belong to Tebex.

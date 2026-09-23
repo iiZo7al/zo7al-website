@@ -28,6 +28,12 @@
     "curseforgeEyebrow": "CurseForge", "curseforgeTitle": "CurseForge sürümleri", "curseforgeLabel": "CURSEFORGE’dan canlı", "curseforgeLiveLabel": "CURSEFORGE’dan canlı"
   },
   "fortnite": {
+    "watchVideo": "Harita videosunu izle",
+    "islandCode": "Ada kodu",
+    "tags": "Etiketler",
+    "detailsUnavailable": "Harita ayrıntıları yüklenemedi. Fortnite üzerinden görüntüleyebilirsin.",
+    "viewOnFortnite": "Fortnite üzerinde görüntüle",
+
     "eyebrow": "Fortnite Creative", "title": "FORTNITE CREATIVE", "text": "Zo7al tarafından oluşturulan haritalar ve deneyimler.", "creatorPage": "İçerik Üreticisi Sayfası",
     "islandsEyebrow": "Adalar", "islandsTitle": "Tüm haritalar tek yerde", "islandsLabel": "Adalar", "islandsLiveLabel": "Fortnite.com ile canlı senkronize",
     "copyCode": "Kodu Kopyala", "copied": "Kopyalandı", "byZo7al": "Zo7al tarafından"
@@ -39,6 +45,11 @@
     "gamesText": "Fortnite ve Roblox haritalarım ile oyun projelerimin duyuruları için hesaplarım. Bağlantılar Linktree ile eşitlenir."
   },
   "store": {
+    "coinsTitle": "Coinler",
+    "productsTitle": "Ürünler",
+    "catalogTitle": "Mağaza kataloğu",
+    "browseProducts": "Ürünlere göz at",
+
     "manageSubscriptions": "Aboneliklerinizi buradan görüntüleyebilir veya iptal edebilirsiniz.",
     "monthly": "ay",
     "boosterPrice": "4.99+ başlangıç fiyatıyla",
@@ -232,6 +243,21 @@
   }
 ,
   "storeDescription": {
+    "coinsHeading": "🪙 {count} Coin – Zo7al Network",
+    "coinsIntro": "Bu paketi satın aldığında Minecraft hesabına doğrudan {count} Coin eklenir.",
+    "coinsBonusIntro": "Bu paketi satın aldığında Minecraft hesabına doğrudan {count} Coin + %{bonus} bonus eklenir.",
+    "coinsIncludes": "🎁 Paket İçeriği:",
+    "coinsAmount": "{count} Coin",
+    "coinsBonus": "+%{bonus} Bonus ({count} Coin)",
+    "coinsTotal": "Toplam: {count} Coin",
+    "coinsReceived": "Toplam Alınan: {count} Coin.",
+    "coinsQuantity": "Miktar: {count} Coin.",
+    "coinsUse": "Coinler Zo7al Network oyun içi mağazasında kullanılabilir",
+    "coinsPurchase": "Coinlerinle mevcut eşyaları, yükseltmeleri ve diğer sunucu içeriklerini satın al",
+    "coinsLinked": "Coinler ödeme sırasında girilen Minecraft kullanıcı adına bağlanır",
+    "coinsDelivery": "Coinler ödeme sonrasında 1–5 dakika içinde otomatik olarak teslim edilir.",
+    "coinsDeliveryHelp": "Coinlerin 10–15 dakika içinde gelmezse yeniden giriş yap veya sipariş numaranla destek ekibine ulaş.",
+
     "vipAndMvp": "VIP ve MVP",
     "title": "{rank} Rütbesi – Zo7al Network",
     "upgrade": "{rank} Yükseltmesi – Zo7al Network",

@@ -28,6 +28,12 @@
     "curseforgeEyebrow": "CurseForge", "curseforgeTitle": "Lanzamientos de CurseForge", "curseforgeLabel": "En directo desde CURSEFORGE", "curseforgeLiveLabel": "En directo desde CURSEFORGE"
   },
   "fortnite": {
+    "watchVideo": "Ver vídeo del mapa",
+    "islandCode": "Código de isla",
+    "tags": "Etiquetas",
+    "detailsUnavailable": "No se pudieron cargar los detalles del mapa. Puedes verlos en Fortnite.",
+    "viewOnFortnite": "Ver en Fortnite",
+
     "eyebrow": "Fortnite Creativo", "title": "FORTNITE CREATIVO", "text": "Mapas y experiencias creados por Zo7al.", "creatorPage": "Página de creador",
     "islandsEyebrow": "Islas", "islandsTitle": "Todos los mapas, en un solo lugar", "islandsLabel": "Islas", "islandsLiveLabel": "Sincronizado en vivo con Fortnite.com",
     "copyCode": "Copiar código", "copied": "Copiado", "byZo7al": "por Zo7al"
@@ -39,6 +45,11 @@
     "gamesText": "Mis cuentas de mapas de Fortnite y Roblox y anuncios de proyectos de juegos. Los enlaces se sincronizan con Linktree."
   },
   "store": {
+    "coinsTitle": "Monedas",
+    "productsTitle": "Productos",
+    "catalogTitle": "Catálogo de la tienda",
+    "browseProducts": "Ver productos",
+
     "manageSubscriptions": "Puedes ver o cancelar tus suscripciones aquí.",
     "monthly": "mes",
     "boosterPrice": "Desde 4.99+",
@@ -232,6 +243,21 @@
   }
 ,
   "storeDescription": {
+    "coinsHeading": "🪙 {count} monedas – Zo7al Network",
+    "coinsIntro": "Al comprar este paquete recibirás {count} monedas directamente en tu cuenta de Minecraft.",
+    "coinsBonusIntro": "Al comprar este paquete recibirás {count} monedas + {bonus}% extra directamente en tu cuenta de Minecraft.",
+    "coinsIncludes": "🎁 El paquete incluye:",
+    "coinsAmount": "{count} monedas",
+    "coinsBonus": "+{bonus}% extra ({count} monedas)",
+    "coinsTotal": "Total: {count} monedas",
+    "coinsReceived": "Total recibido: {count} monedas.",
+    "coinsQuantity": "Cantidad: {count} monedas.",
+    "coinsUse": "Las monedas se pueden usar en la tienda de Zo7al Network dentro del juego",
+    "coinsPurchase": "Compra objetos, mejoras y otros contenidos disponibles del servidor con tus monedas",
+    "coinsLinked": "Las monedas se vinculan al nombre de Minecraft introducido al pagar",
+    "coinsDelivery": "Las monedas se entregan automáticamente en 1–5 minutos tras el pago.",
+    "coinsDeliveryHelp": "Si no recibes tus monedas en 10–15 minutos, vuelve a entrar o contacta con soporte con tu número de pedido.",
+
     "vipAndMvp": "VIP y MVP",
     "title": "Rango {rank} – Zo7al Network",
     "upgrade": "Mejora {rank} – Zo7al Network",

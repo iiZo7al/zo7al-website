@@ -28,6 +28,12 @@
     "curseforgeEyebrow": "CurseForge", "curseforgeTitle": "CurseForge 发布版本", "curseforgeLabel": "实时来自 CURSEFORGE", "curseforgeLiveLabel": "实时来自 CURSEFORGE"
   },
   "fortnite": {
+    "watchVideo": "观看地图视频",
+    "islandCode": "岛屿代码",
+    "tags": "标签",
+    "detailsUnavailable": "无法加载地图详情。你可以在Fortnite查看。",
+    "viewOnFortnite": "在Fortnite查看",
+
     "eyebrow": "堡垒之夜创造模式", "title": "堡垒之夜创造模式", "text": "由 Zo7al 制作的地图与体验。", "creatorPage": "创作者主页",
     "islandsEyebrow": "岛屿", "islandsTitle": "所有地图，一目了然", "islandsLabel": "岛屿", "islandsLiveLabel": "与 Fortnite.com 实时同步",
     "copyCode": "复制代码", "copied": "已复制", "byZo7al": "由 Zo7al 制作"
@@ -39,6 +45,11 @@
     "gamesText": "这些账号用于发布我的堡垒之夜与Roblox地图及游戏项目公告。链接与Linktree同步。"
   },
   "store": {
+    "coinsTitle": "金币",
+    "productsTitle": "商品",
+    "catalogTitle": "商店商品",
+    "browseProducts": "浏览商品",
+
     "manageSubscriptions": "你可以在这里查看或取消订阅。",
     "monthly": "月",
     "boosterPrice": "4.99+ 起",
@@ -232,6 +243,21 @@
   }
 ,
   "storeDescription": {
+    "coinsHeading": "🪙 {count}金币 – Zo7al Network",
+    "coinsIntro": "购买此礼包后，{count}金币将直接添加到你的Minecraft账号。",
+    "coinsBonusIntro": "购买此礼包后，{count}金币及{bonus}%额外奖励将直接添加到你的Minecraft账号。",
+    "coinsIncludes": "🎁 礼包内容：",
+    "coinsAmount": "{count}金币",
+    "coinsBonus": "+{bonus}%额外奖励（{count}金币）",
+    "coinsTotal": "总计：{count}金币",
+    "coinsReceived": "总共获得：{count}金币。",
+    "coinsQuantity": "数量：{count}金币。",
+    "coinsUse": "金币可用于Zo7al Network游戏内商店",
+    "coinsPurchase": "使用金币购买商店中提供的物品、升级及其他服务器内容",
+    "coinsLinked": "金币绑定至结账时输入的Minecraft用户名",
+    "coinsDelivery": "付款后1–5分钟内自动发放金币。",
+    "coinsDeliveryHelp": "若10–15分钟内未收到金币，请重新登录或提供订单号联系支持。",
+
     "vipAndMvp": "VIP 和 MVP",
     "title": "{rank} 等级 – Zo7al Network",
     "upgrade": "{rank} 升级 – Zo7al Network",

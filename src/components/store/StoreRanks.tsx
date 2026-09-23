@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Script from "next/script";
 import Image from "next/image";
 import "./store.css";
+import { groupStoreProducts } from "@/lib/data/store-groups";
 import { BOOSTER_PRODUCT, isMonthlyRank } from "@/lib/data/store-booster";
 import { DISCORD_LINK } from "@/lib/data/site";
 import { localizedDescription } from "@/lib/data/store-localization";
@@ -131,13 +132,8 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
     : product.price === null
     ? t("pricePending")
     : <span className="store-price-value" dir="ltr"><bdi>{new Intl.NumberFormat("en-US", { style: "currency", currency: product.currency, currencyDisplay: "narrowSymbol" }).format(product.price)}</bdi>{isMonthlyRank(product) && <span className="store-price-period">/<bdi dir="auto">{t("monthly")}</bdi></span>}</span>;
-  const displayProducts = [...products];
-  const mvpPlusPlus = displayProducts.findIndex(product => product.name.trim().toUpperCase() === "MVP++");
-  const mvpPlus = displayProducts.findIndex(product => product.id === 7312784 || product.name.trim().toUpperCase() === "MVP+");
-  if (mvpPlusPlus > mvpPlus && mvpPlus >= 0) {
-    const [monthlyRank] = displayProducts.splice(mvpPlusPlus, 1);
-    displayProducts.splice(mvpPlus, 0, monthlyRank);
-  }
+  const groups = groupStoreProducts(products, BOOSTER_PRODUCT);
+  const categoryLabel = (name?: string) => /^(ranks?|الرتب)$/i.test(name?.trim() ?? "") ? t("ranksTitle") : /^(coins?|العملات)$/i.test(name?.trim() ?? "") ? t("coinsTitle") : name || t("productsTitle");
   const currentSelected = products.find(product => product.id === selected?.id) ?? selected;
   const currentDetails = products.find(product => product.id === details?.id) ?? details;
   return <>
@@ -147,8 +143,13 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
       <h2>{t(paymentStatus === "paid" ? "paymentSuccess" : paymentStatus === "checking" ? "paymentChecking" : "paymentPending")}</h2>
       {paymentStatus === "paid" && <><p>{t("paymentSuccessNote")}</p><p>{subscriptionLink}</p></>}
     </div>}
-    <div className="store-rank-grid">
-      {[...displayProducts, BOOSTER_PRODUCT].map((product, index) => {
+    {groups.map(group => <section key={group.id} aria-labelledby={`store-group-${group.id}`} className="mb-14">
+      <div className="mb-5 flex items-center gap-4">
+        {group.image && <Image unoptimized src={group.image} alt="" width={140} height={80} className="h-20 w-36 object-contain" />}
+        <h2 id={`store-group-${group.id}`} dir="auto" className="text-display text-3xl">{categoryLabel(group.name)}</h2>
+      </div>
+      <div className="store-rank-grid">
+      {group.products.map((product, index) => {
         const booster = product.id === BOOSTER_PRODUCT.id;
         const featured = product.id === 7312784;
         const lines = describe(product);
@@ -158,7 +159,7 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
             {featured && <span className="store-rank-badge">{t("mostPopular")}</span>}
             {product.image ? <Image unoptimized src={product.image} alt={product.name} width={160} height={120} className="store-product-image" /> : <span className="store-rank-icon">{booster ? <Zap size={24} strokeWidth={1.5} aria-hidden="true" /> : <ShieldCheck size={24} strokeWidth={1.5} aria-hidden="true" />}</span>}
           </div>
-          <p className="text-label">{ui("rank")}</p>
+          <p className="text-label">{booster ? ui("rank") : categoryLabel(product.category?.name)}</p>
           <h3 className="text-display store-rank-name"><bdi dir="ltr">{product.name}</bdi></h3>
           <p className={`store-rank-price${product.price === null ? " store-price-pending" : ""}`}>{price(product)}</p>
           {perks.length ? <ul className="store-rank-perks">{perks.map((perk, index) => <li key={index}><Check size={15} aria-hidden="true" /><span dir="auto">{perk}</span></li>)}</ul> : <p dir="auto" className="store-rank-description store-description-preview">{lines.join("\n") || t("descriptionUnavailable")}</p>}
@@ -168,7 +169,8 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
           <button type="button" className="store-action store-details-button" onClick={() => setDetails(product)} data-cursor="button" aria-haspopup="dialog" aria-label={`${t("details")} — ${product.name}`} title={t("details")}><DetailsIcon /></button></div>
         </article></motion.div>;
       })}
-    </div>
+      </div>
+    </section>)}
     <dialog ref={detailsDialog} onCancel={() => setDetails(null)} onClose={() => setDetails(null)} aria-labelledby="rank-details-title" className="checkout-shell store-checkout">
       <header className="store-checkout-header"><h2 id="rank-details-title">{t("details")} · <bdi dir="ltr">{currentDetails?.name}</bdi></h2><button type="button" className="store-close" onClick={() => setDetails(null)} aria-label={t("close")}><X size={20} aria-hidden="true" /></button></header>
       <div className="store-checkout-body store-full-description">{currentDetails?.image && <Image unoptimized src={currentDetails.image} alt={currentDetails.name} width={480} height={320} className="store-details-image" />}{currentDetails?.description ? describe(currentDetails).map((line, index) => line.startsWith("• ") ? <p className="store-detail-perk" key={index}><Check size={16} aria-hidden="true" /><span dir="auto">{line.slice(2)}</span></p> : <p dir="auto" key={index}>{line}</p>) : <p>{t("descriptionUnavailable")}</p>}</div>
@@ -180,7 +182,7 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
       </header>
       <div className="store-checkout-body">
         <div className="store-order-summary">
-          <div><p className="text-label">{ui("rank")}</p><h2 id="checkout-title" className="text-display"><bdi dir="ltr">{currentSelected?.name}</bdi></h2></div>
+          <div><p className="text-label">{categoryLabel(currentSelected?.category?.name)}</p><h2 id="checkout-title" className="text-display"><bdi dir="ltr">{currentSelected?.name}</bdi></h2></div>
           <p className="store-order-price">{currentSelected && price(currentSelected)}</p>
         </div>
         <p id="checkout-description" className="store-checkout-description">{t("checkoutNote")}</p>
