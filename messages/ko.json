@@ -8,7 +8,7 @@
     "minecraftMeta1": "마인크래프트", "minecraftMeta2": "자바 + 베드락", "minecraftTitle": "ZO7AL 네트워크", "minecraftText": "플레이어를 위해 만들어진 마인크래프트 네트워크.", "minecraftCta": "네트워크 둘러보기",
     "modpacksMeta1": "모드팩", "modpacksMeta2": "MODRINTH + CURSEFORGE", "modpacksTitle": "마인크래프트 모드팩", "modpacksText": "Zo7al이 제작하고 엄선한 마인크래프트 경험.", "modpacksCta": "모드팩 보기",
     "fortniteMeta1": "포트나이트", "fortniteMeta2": "크리에이티브", "fortniteTitle": "포트나이트 크리에이티브", "fortniteText": "Zo7al이 만든 맵과 경험.", "fortniteCta": "맵 둘러보기",
-    "aboutEyebrow": "Zo7al은 누구인가요?", "aboutText": "Zo7al은 마인크래프트 네트워크, 모드팩, 포트나이트 크리에이티브 맵, 실험적인 게임 프로젝트를 만드는 게이밍 크리에이터입니다."
+    "aboutEyebrow": "Zo7al은 누구인가요?", "aboutText": "Zo7al로 알려진 Khaled는 포트나이트, 마인크래프트 등 다양한 게임과 도전, 친구들과의 웃긴 순간을 공유하는 유튜버이자 게임 크리에이터입니다."
   },
   "minecraft": {
     "copyPort": "포트 복사",
@@ -73,25 +73,26 @@
     "checkoutNote": "최종 세금, 통화 및 결제 수단은 결제 시 표시됩니다."
   },
   "faq": {
-    "eyebrow": "도움이 필요하신가요?", "title": "자주 묻는 질문", "text": "네트워크 참여, 등급 구매, Zo7al의 포트나이트 맵 플레이, 지원 요청에 관한 모든 것.",
+    "eyebrow": "도움이 필요하신가요?", "title": "자주 묻는 질문", "text": "Zo7al의 영상과 소셜 계정, 서버, 스토어, 게임 프로젝트에 대해 알아보세요.",
     "searchPlaceholder": "질문 검색…", "noResults": "검색과 일치하는 질문이 없습니다.",
     "categories": { "gettingStarted": "시작하기", "storeRanks": "스토어 및 등급", "fortnite": "포트나이트", "community": "커뮤니티", "modpacks": "모드팩" },
     "items": [
+      {"category": "gettingStarted", "q": "Zo7al은 누구인가요?", "a": "Zo7al로 알려진 Khaled는 포트나이트, 마인크래프트 등 다양한 게임과 도전, 친구들과의 웃긴 순간을 공유하는 유튜버이자 게임 크리에이터입니다."},
       { "category": "gettingStarted", "q": "ZO7AL 네트워크란 무엇인가요?", "a": "Zo7al이 만든 마인크래프트 서버이자 게이밍 유니버스로, 서바이벌, PvP, 모드팩, 포트나이트 크리에이티브 맵을 아우릅니다." },
       { "category": "gettingStarted", "q": "자바로 Zo7al 네트워크에 어떻게 참여하나요?", "a": "마인크래프트 페이지에서 자바 주소 zo7al.play-mc.fun을 복사해 마인크래프트 자바 에디션의 멀티플레이어 메뉴에 서버로 추가하세요." },
       { "category": "gettingStarted", "q": "베드락으로 Zo7al 네트워크에 어떻게 참여하나요?", "a": "Minecraft Bedrock에서 주소 zo7al.play-mc.fun, 포트 25807로 서버를 추가하세요." },
       { "category": "gettingStarted", "q": "베드락을 지원하나요?", "a": "네. Bedrock: zo7al.play-mc.fun — 포트 25807." },
       { "category": "gettingStarted", "q": "지원되는 마인크래프트 버전은 무엇인가요?", "a": "클래식 PvP를 위한 1.8.9, 안정적인 서바이벌을 위한 1.20.x, 최신 버전인 1.21.x를 지원합니다." },
-      { "category": "gettingStarted", "q": "서버에 어떻게 접속하나요?", "a": "마인크래프트 자바 에디션을 열고, 멀티플레이어로 이동해 서버를 추가한 뒤 주소에 zo7al.play-mc.fun을 붙여넣으세요." },
-      { "category": "storeRanks", "q": "등급은 어떻게 구매하나요?", "a": "공식 스토어 zo7al.tebex.io에서 VIP, MVP, MVP+ 중 하나를 선택해 안전하게 결제하세요 — 등급은 자동으로 적용됩니다." },
-      { "category": "storeRanks", "q": "어떤 등급이 있나요?", "a": "VIP($9.99), MVP($19.99), MVP+($29.99)가 있으며, 각 등급은 아래 등급의 혜택을 모두 포함하고 추가 혜택을 제공합니다." },
-      { "category": "storeRanks", "q": "Zo7al 네트워크 스토어는 어디에 있나요?", "a": "zo7al.tebex.io가 유일한 공식 스토어입니다 — 결제 전 항상 도메인을 확인하세요." },
+      { "category": "gettingStarted", "q": "어떤 영상을 만드나요?", "a": "포트나이트, 마인크래프트 등 다양한 게임 영상과 Shorts, 도전, 웃긴 순간, 친구들과의 플레이를 올립니다. YouTube 채널은 @iiZo7al입니다." },
+      { "category": "storeRanks", "q": "등급은 어떻게 구매하나요?", "a": "/store에서 등급을 선택하고 Minecraft 사용자 이름을 입력한 뒤 Tebex로 안전하게 결제하세요. Booster는 Discord 서버 부스트로 받습니다." },
+      { "category": "storeRanks", "q": "어떤 등급이 있나요?", "a": "VIP, MVP, MVP+, 월간 MVP++, Discord Booster가 있습니다. 최신 가격, 혜택, 조건은 /store에서 확인하세요." },
+      { "category": "storeRanks", "q": "Zo7al 네트워크 스토어는 어디에 있나요?", "a": "/store에서 스토어를 여세요. 결제는 Tebex로 처리되며 구독 확인 및 취소는 portal.tebex.io에서 가능합니다." },
       { "category": "fortnite", "q": "포트나이트에서 Zo7al 맵에 어떻게 참여하나요?", "a": "포트나이트를 열고 크리에이티브로 이동해 \"코드 입력\"을 선택한 뒤, 포트나이트 페이지에 표시된 아일랜드 코드를 입력하세요." },
       { "category": "fortnite", "q": "Zo7al의 모든 맵은 어디서 찾을 수 있나요?", "a": "포트나이트 페이지에는 공식 크리에이터 페이지와 동기화된 모든 아일랜드가 코드와 함께 나열됩니다." },
       { "category": "community", "q": "Zo7al의 공식 디스코드 서버는 무엇인가요?", "a": "discord.gg/nxScVYrSXq — 이벤트, 지원, 커뮤니티 소식의 허브입니다." },
-      { "category": "community", "q": "Zo7al의 소셜 미디어는 어디서 찾을 수 있나요?", "a": "소셜 페이지에는 Zo7al의 Linktree와 실시간 동기화된 모든 확인된 플랫폼이 나열됩니다." },
+      { "category": "community", "q": "Zo7al의 소셜 미디어는 어디서 찾을 수 있나요?", "a": "소셜 페이지에서 YouTube 채널 @iiZo7al과 다른 계정을 확인하세요. 링크는 공식 Linktree와 동기화됩니다." },
       { "category": "community", "q": "문제는 어떻게 신고하나요?", "a": "디스코드 서버에 참여해 지원 채널에서 티켓을 열어주세요 — 팀에 가장 빠르게 연락할 수 있는 방법입니다." },
-      { "category": "community", "q": "Zo7al에게 어떻게 연락하나요?", "a": "디스코드가 가장 좋은 방법이며, 소셜 페이지에 나열된 확인된 소셜 미디어 플랫폼을 통해서도 연락할 수 있습니다." },
+      { "category": "community", "q": "Zo7al에게 어떻게 연락하나요?", "a": "광고 및 협업 문의: ads@zo7al.net. 서버나 구매 관련 지원은 소셜 페이지의 Discord를 이용하세요." },
       { "category": "modpacks", "q": "Zo7al의 모드팩은 어디서 다운로드하나요?", "a": "Modrinth와 CurseForge에서 다운로드할 수 있으며, 두 곳 모두 모드팩 페이지에 직접 링크로 연결되어 있습니다." }
     ]
   },

@@ -8,7 +8,7 @@
     "minecraftMeta1": "我的世界", "minecraftMeta2": "JAVA + 基岩版", "minecraftTitle": "ZO7AL 服务器网络", "minecraftText": "为玩家打造的我的世界服务器网络。", "minecraftCta": "探索服务器",
     "modpacksMeta1": "整合包", "modpacksMeta2": "MODRINTH + CURSEFORGE", "modpacksTitle": "我的世界整合包", "modpacksText": "由 Zo7al 制作与精选的我的世界体验。", "modpacksCta": "查看整合包",
     "fortniteMeta1": "堡垒之夜", "fortniteMeta2": "创造模式", "fortniteTitle": "堡垒之夜创造模式", "fortniteText": "由 Zo7al 制作的地图与体验。", "fortniteCta": "探索地图",
-    "aboutEyebrow": "Zo7al 是谁？", "aboutText": "Zo7al 是一名游戏创作者，打造我的世界服务器网络、整合包、堡垒之夜创造模式地图及实验性游戏项目。"
+    "aboutEyebrow": "Zo7al 是谁？", "aboutText": "Khaled，也叫 Zo7al，是一名游戏 YouTuber 和内容创作者，分享堡垒之夜、Minecraft 等游戏、挑战以及和朋友们的欢乐时刻。"
   },
   "minecraft": {
     "copyPort": "复制端口",
@@ -73,25 +73,26 @@
     "checkoutNote": "最终税费、币种和付款方式将在结账时显示。"
   },
   "faq": {
-    "eyebrow": "需要帮助？", "title": "常见问题", "text": "关于加入服务器、购买等级、畅玩 Zo7al 的堡垒之夜地图以及获取支持的一切信息。",
+    "eyebrow": "需要帮助？", "title": "常见问题", "text": "了解 Zo7al、他的视频和社交账号，以及服务器、商店和游戏项目。",
     "searchPlaceholder": "搜索问题…", "noResults": "没有找到匹配的问题。",
     "categories": { "gettingStarted": "新手入门", "storeRanks": "商店与等级", "fortnite": "堡垒之夜", "community": "社区", "modpacks": "整合包" },
     "items": [
+      {"category": "gettingStarted", "q": "Zo7al 是谁？", "a": "Khaled，也叫 Zo7al，是一名游戏 YouTuber 和内容创作者，分享堡垒之夜、Minecraft 等游戏、挑战以及和朋友们的欢乐时刻。"},
       { "category": "gettingStarted", "q": "什么是 ZO7AL 服务器网络？", "a": "由 Zo7al 打造的我的世界服务器与游戏宇宙，涵盖生存、PvP、整合包以及堡垒之夜创造模式地图。" },
       { "category": "gettingStarted", "q": "如何通过 Java 版加入 Zo7al 服务器网络？", "a": "从我的世界页面复制 Java 版地址 zo7al.play-mc.fun，并将其作为服务器添加到我的世界 Java 版的多人游戏菜单中。" },
       { "category": "gettingStarted", "q": "如何通过基岩版加入 Zo7al 服务器网络？", "a": "在 Minecraft 基岩版中添加服务器，地址为 zo7al.play-mc.fun，端口为 25807。" },
       { "category": "gettingStarted", "q": "是否支持基岩版？", "a": "支持。基岩版：zo7al.play-mc.fun — 端口 25807。" },
       { "category": "gettingStarted", "q": "支持哪些我的世界版本？", "a": "经典 PvP 版本 1.8.9、稳定生存版本 1.20.x，以及最新版本 1.21.x。" },
-      { "category": "gettingStarted", "q": "如何连接到服务器？", "a": "打开我的世界 Java 版，进入多人游戏，添加服务器，并将 zo7al.play-mc.fun 粘贴为地址。" },
-      { "category": "storeRanks", "q": "如何购买等级？", "a": "访问官方商店 zo7al.tebex.io，选择 VIP、MVP 或 MVP+，安全结账——等级会自动应用到你的账户。" },
-      { "category": "storeRanks", "q": "有哪些等级可供选择？", "a": "VIP（9.99 美元）、MVP（19.99 美元）和 MVP+（29.99 美元）。每个等级都包含下一级的所有权益，并附加更多福利。" },
-      { "category": "storeRanks", "q": "Zo7al 服务器网络的商店在哪里？", "a": "zo7al.tebex.io 是唯一的官方商店——付款前请务必核实域名。" },
+      { "category": "gettingStarted", "q": "你制作哪类视频？", "a": "游戏视频和 Shorts：堡垒之夜、Minecraft 等游戏、挑战、搞笑瞬间和朋友联机。我的 YouTube 频道是 @iiZo7al。" },
+      { "category": "storeRanks", "q": "如何购买等级？", "a": "打开 /store，选择等级，输入 Minecraft 用户名并通过 Tebex 安全付款。Booster 通过助力我们的 Discord 服务器获得。" },
+      { "category": "storeRanks", "q": "有哪些等级可供选择？", "a": "VIP、MVP、MVP+、月付 MVP++ 和 Discord Booster。请在 /store 查看当前价格、权益及条件。" },
+      { "category": "storeRanks", "q": "Zo7al 服务器网络的商店在哪里？", "a": "商店位于 /store。付款通过 Tebex 处理，可在 portal.tebex.io 查看或取消订阅。" },
       { "category": "fortnite", "q": "如何在堡垒之夜中加入 Zo7al 的地图？", "a": "打开堡垒之夜，进入创造模式，选择“输入代码”，输入堡垒之夜页面上任意地图显示的岛屿代码即可。" },
       { "category": "fortnite", "q": "在哪里可以找到 Zo7al 的所有地图？", "a": "堡垒之夜页面列出了所有已发布的岛屿及其代码，并与官方创作者主页保持同步。" },
       { "category": "community", "q": "Zo7al 的官方 Discord 服务器是什么？", "a": "discord.gg/nxScVYrSXq —— 活动、支持与社区动态的中心。" },
-      { "category": "community", "q": "在哪里可以找到 Zo7al 的社交媒体？", "a": "社交媒体页面列出了所有经过验证的平台，并与 Zo7al 的 Linktree 实时同步。" },
+      { "category": "community", "q": "在哪里可以找到 Zo7al 的社交媒体？", "a": "在社交页面找到我的 YouTube 频道 @iiZo7al 及其他账号。账号链接与我的官方 Linktree 同步。" },
       { "category": "community", "q": "如何报告问题？", "a": "加入 Discord 服务器，在支持频道开设工单——这是联系团队最快的方式。" },
-      { "category": "community", "q": "如何联系 Zo7al？", "a": "Discord 是最佳方式，也可以通过社交媒体页面列出的任意经过验证的平台联系。" },
+      { "category": "community", "q": "如何联系 Zo7al？", "a": "广告与合作请联系 ads@zo7al.net。服务器或购买相关支持，请通过社交页面加入 Discord。" },
       { "category": "modpacks", "q": "在哪里可以下载 Zo7al 的整合包？", "a": "Modrinth 和 CurseForge 上均可下载，整合包页面提供了两者的直接链接。" }
     ]
   },

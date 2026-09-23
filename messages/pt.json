@@ -8,7 +8,7 @@
     "minecraftMeta1": "MINECRAFT", "minecraftMeta2": "JAVA + BEDROCK", "minecraftTitle": "REDE ZO7AL", "minecraftText": "Uma rede de Minecraft feita para jogadores.", "minecraftCta": "Explorar rede",
     "modpacksMeta1": "MODPACKS", "modpacksMeta2": "MODRINTH + CURSEFORGE", "modpacksTitle": "MODPACKS DE MINECRAFT", "modpacksText": "Experiências de Minecraft criadas e selecionadas por Zo7al.", "modpacksCta": "Ver modpacks",
     "fortniteMeta1": "FORTNITE", "fortniteMeta2": "CRIATIVO", "fortniteTitle": "FORTNITE CRIATIVO", "fortniteText": "Mapas e experiências criados por Zo7al.", "fortniteCta": "Explorar mapas",
-    "aboutEyebrow": "Quem é Zo7al?", "aboutText": "Zo7al é um criador gamer que constrói redes de Minecraft, modpacks, mapas de Fortnite Criativo e projetos experimentais."
+    "aboutEyebrow": "Quem é Zo7al?", "aboutText": "Khaled, conhecido como Zo7al, é youtuber e criador de conteúdo de Fortnite, Minecraft e outros jogos, com desafios e momentos engraçados com amigos."
   },
   "minecraft": {
     "copyPort": "Copiar porta",
@@ -73,25 +73,26 @@
     "checkoutNote": "Os impostos finais, a moeda e as formas de pagamento são mostrados na finalização."
   },
   "faq": {
-    "eyebrow": "Precisa de ajuda?", "title": "Perguntas frequentes", "text": "Tudo sobre como entrar na rede, comprar um rank, jogar os mapas de Fortnite do Zo7al e obter suporte.",
+    "eyebrow": "Precisa de ajuda?", "title": "Perguntas frequentes", "text": "Conheça Zo7al, seus vídeos e redes sociais, além do servidor, da loja e dos projetos de jogos.",
     "searchPlaceholder": "Buscar uma pergunta…", "noResults": "Nenhuma pergunta corresponde à sua busca.",
     "categories": { "gettingStarted": "Primeiros passos", "storeRanks": "Loja e ranks", "fortnite": "Fortnite", "community": "Comunidade", "modpacks": "Modpacks" },
     "items": [
+      {"category": "gettingStarted", "q": "Quem é Zo7al?", "a": "Khaled, conhecido como Zo7al, é youtuber e criador de conteúdo de Fortnite, Minecraft e outros jogos, com desafios e momentos engraçados com amigos."},
       { "category": "gettingStarted", "q": "O que é a ZO7AL Network?", "a": "Um servidor de Minecraft e universo gamer criado por Zo7al, com survival, PvP, modpacks e mapas de Fortnite Criativo." },
       { "category": "gettingStarted", "q": "Como entro na Zo7al Network no Java?", "a": "Copie o endereço Java, zo7al.play-mc.fun, na página do Minecraft e adicione-o como servidor no menu multiplayer do Minecraft Java." },
       { "category": "gettingStarted", "q": "Como entro na Zo7al Network no Bedrock?", "a": "Adicione um servidor no Minecraft Bedrock com o endereço zo7al.play-mc.fun e a porta 25807." },
       { "category": "gettingStarted", "q": "O Bedrock é suportado?", "a": "Sim. Bedrock: zo7al.play-mc.fun — porta 25807." },
       { "category": "gettingStarted", "q": "Quais versões do Minecraft são suportadas?", "a": "1.8.9 para PvP clássico, 1.20.x para survival estável e 1.21.x para a versão mais recente." },
-      { "category": "gettingStarted", "q": "Como me conecto ao servidor?", "a": "Abra o Minecraft Java Edition, vá em Multiplayer, adicione um servidor e cole zo7al.play-mc.fun como endereço." },
-      { "category": "storeRanks", "q": "Como compro um rank?", "a": "Visite a loja oficial em zo7al.tebex.io, escolha VIP, MVP ou MVP+, e finalize a compra com segurança — seu rank é aplicado automaticamente." },
-      { "category": "storeRanks", "q": "Quais ranks estão disponíveis?", "a": "VIP ($9,99), MVP ($19,99) e MVP+ ($29,99). Cada nível inclui tudo do anterior, mais benefícios extras." },
-      { "category": "storeRanks", "q": "Onde fica a loja da Zo7al Network?", "a": "zo7al.tebex.io é a única loja oficial — sempre confira o domínio antes de pagar." },
+      { "category": "gettingStarted", "q": "Que tipo de vídeos você faz?", "a": "Vídeos de jogos e Shorts: Fortnite, Minecraft e outros jogos, desafios, momentos engraçados e partidas com amigos. Meu canal no YouTube é @iiZo7al." },
+      { "category": "storeRanks", "q": "Como compro um rank?", "a": "Abra /store, escolha um rank, informe seu nome no Minecraft e pague com segurança pelo Tebex. Booster é obtido ao impulsionar nosso servidor Discord." },
+      { "category": "storeRanks", "q": "Quais ranks estão disponíveis?", "a": "VIP, MVP, MVP+, MVP++ mensal e Booster do Discord. Confira preços, benefícios e condições atuais em /store." },
+      { "category": "storeRanks", "q": "Onde fica a loja da Zo7al Network?", "a": "Abra a loja em /store. Os pagamentos são processados pelo Tebex; consulte ou cancele assinaturas em portal.tebex.io." },
       { "category": "fortnite", "q": "Como entro em um mapa do Zo7al no Fortnite?", "a": "Abra o Fortnite, vá em Criativo, selecione \"Inserir um código\" e digite o código da ilha exibido em qualquer mapa na página do Fortnite." },
       { "category": "fortnite", "q": "Onde encontro todos os mapas do Zo7al?", "a": "A página do Fortnite lista todas as ilhas publicadas com seus códigos, sincronizada com a página oficial de criador." },
       { "category": "community", "q": "Qual é o servidor oficial do Discord do Zo7al?", "a": "discord.gg/nxScVYrSXq — o ponto de encontro para eventos, suporte e novidades da comunidade." },
-      { "category": "community", "q": "Onde encontro as redes sociais do Zo7al?", "a": "A página de Redes lista todas as plataformas verificadas, sincronizada ao vivo com o Linktree do Zo7al." },
+      { "category": "community", "q": "Onde encontro as redes sociais do Zo7al?", "a": "Encontre meu canal no YouTube @iiZo7al e minhas outras contas na página de redes sociais. Os links são sincronizados com meu Linktree oficial." },
       { "category": "community", "q": "Como reporto um problema?", "a": "Entre no servidor do Discord e abra um ticket no canal de suporte — é a forma mais rápida de falar com a equipe." },
-      { "category": "community", "q": "Como entro em contato com o Zo7al?", "a": "O Discord é a melhor forma, ou por qualquer uma das redes sociais verificadas na página de Redes." },
+      { "category": "community", "q": "Como entro em contato com o Zo7al?", "a": "Para publicidade e parcerias: ads@zo7al.net. Para suporte do servidor ou compras, entre no Discord pela página de redes sociais." },
       { "category": "modpacks", "q": "Onde baixo os modpacks do Zo7al?", "a": "No Modrinth e no CurseForge — ambos com links diretos na página de Modpacks." }
     ]
   },

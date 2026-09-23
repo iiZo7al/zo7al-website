@@ -8,7 +8,7 @@
     "minecraftMeta1": "MINECRAFT", "minecraftMeta2": "JAVA + BEDROCK", "minecraftTitle": "ZO7AL NETWORK", "minecraftText": "プレイヤーのために作られたMinecraftネットワーク。", "minecraftCta": "ネットワークを見る",
     "modpacksMeta1": "MODPACK", "modpacksMeta2": "MODRINTH + CURSEFORGE", "modpacksTitle": "MINECRAFT MODPACK", "modpacksText": "Zo7alが制作・厳選したMinecraft体験。", "modpacksCta": "Modpackを見る",
     "fortniteMeta1": "FORTNITE", "fortniteMeta2": "クリエイティブ", "fortniteTitle": "FORTNITE クリエイティブ", "fortniteText": "Zo7alが作成したマップと体験。", "fortniteCta": "マップを見る",
-    "aboutEyebrow": "Zo7alとは？", "aboutText": "Zo7alはMinecraftネットワーク、Modpack、Fortniteクリエイティブマップ、実験的なゲームプロジェクトを手がけるゲーミングクリエイターです。"
+    "aboutEyebrow": "Zo7alとは？", "aboutText": "Zo7al こと Khaled は、Fortnite や Minecraft などのゲーム、チャレンジ、仲間との笑える瞬間を発信する YouTuber・ゲームクリエイターです。"
   },
   "minecraft": {
     "copyPort": "ポートをコピー",
@@ -73,25 +73,26 @@
     "checkoutNote": "最終的な税金、通貨、お支払い方法は購入手続きで表示されます。"
   },
   "faq": {
-    "eyebrow": "お困りですか？", "title": "よくある質問", "text": "ネットワークへの参加方法、ランクの購入方法、Zo7alのFortniteマップの遷び方、サポートについて。",
+    "eyebrow": "お困りですか？", "title": "よくある質問", "text": "Zo7al の動画やSNS、サーバー、ストア、ゲームプロジェクトについてご案内します。",
     "searchPlaceholder": "質問を検索…", "noResults": "検索条件に一致する質問はありません。",
     "categories": { "gettingStarted": "はじめに", "storeRanks": "ストアとランク", "fortnite": "Fortnite", "community": "コミュニティ", "modpacks": "Modpack" },
     "items": [
+      {"category": "gettingStarted", "q": "Zo7al とは？", "a": "Zo7al こと Khaled は、Fortnite や Minecraft などのゲーム、チャレンジ、仲間との笑える瞬間を発信する YouTuber・ゲームクリエイターです。"},
       { "category": "gettingStarted", "q": "ZO7AL Networkとは何ですか？", "a": "Zo7alが構築したMinecraftサーバー兵ゲーミングユニバースで、サバイバル、PvP、Modpack、Fortniteクリエイティブマップを含みます。" },
       { "category": "gettingStarted", "q": "Javaで Zo7al Network に参加するには？", "a": "MinecraftページからJavaアドレス zo7al.play-mc.fun をコピーし、Minecraft Java Editionのマルチプレイメニューにサーバーとして追加してください。" },
       { "category": "gettingStarted", "q": "BedrockでZo7al Networkに参加するには？", "a": "Minecraft Bedrock でアドレス zo7al.play-mc.fun、ポート 25807 のサーバーを追加してください。" },
       { "category": "gettingStarted", "q": "Bedrockに対応していますか？", "a": "はい。Bedrock：zo7al.play-mc.fun — ポート 25807。" },
       { "category": "gettingStarted", "q": "対応しているMinecraftのバージョンは？", "a": "クラシックPvP向けの1.8.9、安定したサバイバル向けの1.20.x、そして最新版の1.21.xに対応しています。" },
-      { "category": "gettingStarted", "q": "サーバーへの接続方法は？", "a": "Minecraft Java Editionを開き、マルチプレイに進み、サーバーを追加して、アドレスに zo7al.play-mc.fun を貼り付けてください。" },
-      { "category": "storeRanks", "q": "ランクの購入方法は？", "a": "公式ストア zo7al.tebex.io にアクセスし、VIP、MVP、MVP+のいずれかを選んで安全に決済してください。ランクは自動的に付与されます。" },
-      { "category": "storeRanks", "q": "利用できるランクは？", "a": "VIP（$9.99）、MVP（$19.99）、MVP+（$29.99）。各ランクは下位ランクの特典をすべて含み、さらに特典が追加されます。" },
-      { "category": "storeRanks", "q": "Zo7al Networkのストアはどこですか？", "a": "zo7al.tebex.io が唯一の公式ストアです — 支払い前に必ずドメインを確認してください。" },
+      { "category": "gettingStarted", "q": "どんな動画を作っていますか？", "a": "Fortnite、Minecraft などのゲーム動画や Shorts、チャレンジ、笑える瞬間、仲間とのプレイを発信しています。YouTube チャンネルは @iiZo7al です。" },
+      { "category": "storeRanks", "q": "ランクの購入方法は？", "a": "/store でランクを選び、Minecraft ユーザー名を入力して Tebex で安全に支払えます。Booster は Discord サーバーのブーストで獲得できます。" },
+      { "category": "storeRanks", "q": "利用できるランクは？", "a": "VIP、MVP、MVP+、月額 MVP++、Discord Booster があります。最新の価格・特典・条件は /store で確認できます。" },
+      { "category": "storeRanks", "q": "Zo7al Networkのストアはどこですか？", "a": "ストアは /store です。決済は Tebex 経由で行われ、サブスクリプションの確認・解約は portal.tebex.io でできます。" },
       { "category": "fortnite", "q": "FortniteでZo7alのマップに参加するには？", "a": "Fortniteを開き、クリエイティブに進み、「コードを入力」を選択し、Fortniteページに表示されているアイランドコードを入力してください。" },
       { "category": "fortnite", "q": "Zo7alのすべてのマップはどこで見られますか？", "a": "Fortniteページには公開済みのすべてのアイランドがコード付きで一覧表示され、公式クリエイターページと同期しています。" },
       { "category": "community", "q": "Zo7alの公式Discordサーバーは？", "a": "discord.gg/nxScVYrSXq — イベント、サポート、コミュニティ更新情報の拠点です。" },
-      { "category": "community", "q": "Zo7alのSNSはどこで見られますか？", "a": "SNSページには確認済みのすべてのプラットフォームが、Zo7alのLinktreeとライブ同期して表示されます。" },
+      { "category": "community", "q": "Zo7alのSNSはどこで見られますか？", "a": "YouTube チャンネル @iiZo7al と他のアカウントはSNSページに掲載しています。リンクは公式 Linktree と同期しています。" },
       { "category": "community", "q": "問題を報告するには？", "a": "Discordサーバーに参加し、サポートチャンネルでチケットを開いてください — チームに最も早く連絡できる方法です。" },
-      { "category": "community", "q": "Zo7alに連絡するには？", "a": "Discordが最適な方法です。またはSNSページに掲載されている確認済みのSNSプラットフォームからも連絡できます。" },
+      { "category": "community", "q": "Zo7alに連絡するには？", "a": "広告・コラボのご相談は ads@zo7al.net へ。サーバーや購入のサポートはSNSページから Discord に参加してください。" },
       { "category": "modpacks", "q": "Zo7alのModpackはどこでダウンロードできますか？", "a": "ModrinthとCurseForgeで、どちらもModpackページに直接リンクが掲載されています。" }
     ]
   },
