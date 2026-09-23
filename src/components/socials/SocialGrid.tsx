@@ -21,7 +21,12 @@ export default function SocialGrid({
         const modrinth = social.platform === "modrinth";
         const brandColor = modrinth ? "#00AF5C" : social.color ?? "var(--accent)";
         const showHandle = Boolean(social.handle) && !["modrinth", "curseforge"].includes(social.platform);
-        const descriptionKey = social.platform === "linktree" && !/linktr\.ee\/zo7algames\/?$/i.test(social.url) ? "" : `social_${social.platform}`;
+        const platform = social.platform === "x" && /^https:\/\/(?:www\.)?(?:x|twitter)\.com\/i\/communities\//i.test(social.url)
+          ? "x_community"
+          : social.platform;
+        const descriptionKey = social.platform === "linktree" && !/^https:\/\/linktr\.ee\/zo7algames\/?(?:[?#]|$)/i.test(social.url)
+          ? ""
+          : games ? `games_social_${platform}` : `social_${platform}`;
         return (
         <Reveal key={social.id} delay={i * 0.04}>
           <a
@@ -57,7 +62,7 @@ export default function SocialGrid({
             <p className="mt-5 font-semibold" style={{ color: brandDisplayColor(social.platform) }}>{social.label}</p>
             {showHandle && <p className="text-sm text-[var(--text-muted)]">{social.handle}</p>}
             <p className="mt-3 text-sm leading-relaxed text-[var(--text-muted)]">
-              {games ? t("gamesAccount", { platform: social.label }) : descriptionKey && t.has(descriptionKey) ? t(descriptionKey) : social.description}
+              {descriptionKey && t.has(descriptionKey) ? t(descriptionKey) : social.description || (games ? t("gamesAccount", { platform: social.label }) : social.label)}
             </p>
           </a>
         </Reveal>
@@ -65,4 +70,3 @@ export default function SocialGrid({
     </div>
   );
 }
-
