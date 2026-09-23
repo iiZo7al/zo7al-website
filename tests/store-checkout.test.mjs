@@ -143,3 +143,26 @@ test('success confirmation requires a completed matching basket from Tebex, neve
     assert.equal((await paymentStatus(request)).status,503);
   } finally { globalThis.fetch=originalFetch; if(originalToken===undefined) delete process.env.TEBEX_PUBLIC_TOKEN; else process.env.TEBEX_PUBLIC_TOKEN=originalToken; }
 });
+
+test('Coins retain their category and can be bought again; lifetime ranks still require ownership checks', async () => {
+  const savedFetch=globalThis.fetch;
+  const saved=Object.fromEntries(['TEBEX_PUBLIC_TOKEN','TEBEX_PRIVATE_KEY','TEBEX_PLUGIN_SECRET'].map(k=>[k,process.env[k]]));
+  try {
+    process.env.TEBEX_PUBLIC_TOKEN='test-public-token'; process.env.TEBEX_PRIVATE_KEY='test-private-key'; process.env.TEBEX_PLUGIN_SECRET='test-plugin-secret';
+    let added=0;
+    globalThis.fetch=async(url)=>{
+      if(url.endsWith('categories?includePackages=1'))return Response.json({data:[{id:2,name:'Coins',order:1,packages:[{id:88,name:'1,000 Coins',type:'single',user_limit:null,total_price:2.99,currency:'USD'}]},{id:1,name:'Ranks',order:0,packages:[{id:77,name:'VIP',type:'single',user_limit:{limit:1,period_length:null},total_price:9.99,currency:'USD'}]}]});
+      if(url.includes('plugin.tebex.io')) throw Error('Consumables must not be blocked by past purchase ownership');
+      if(url.endsWith('/baskets')) return Response.json({data:{ident:'coin_basket',username_id:'player_uuid'}});
+      if(url.endsWith('/packages')) {added++;return Response.json({data:{}});}
+      throw Error('Unexpected URL');
+    };
+    const catalog=await getStoreCatalog();
+    assert.deepEqual(catalog.products.map(p=>p.category.name),['Ranks','Coins']);
+    assert.equal(catalog.products[0].ownershipCheck,true);
+    assert.equal(catalog.products[1].ownershipCheck,false);
+    assert.equal(catalog.products[1].price,2.99);
+    for(let i=0;i<2;i++) assert.equal((await POST(request({packageId:88,username:'Player'},undefined,'203.0.113.99'))).status,200);
+    assert.equal(added,2);
+  } finally { globalThis.fetch=savedFetch; for(const [key,value] of Object.entries(saved)) if(value===undefined) delete process.env[key]; else process.env[key]=value; }
+});

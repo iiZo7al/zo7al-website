@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import PageHero from "@/components/ui/PageHero";
 import SectionHeader from "@/components/ui/SectionHeader";
 import MapGallery from "@/components/fortnite/MapGallery";
 import MagneticButton from "@/components/cursor/MagneticButton";
 import { FORTNITE_PROFILE_URL } from "@/lib/data/fortnite";
+import { fortniteLocale } from "@/lib/sync/fortnite-parser";
 import { getSyncedFortniteMaps } from "@/lib/sync/fortnite";
 
 export const metadata: Metadata = {
@@ -15,9 +16,10 @@ export const metadata: Metadata = {
 export const revalidate = 21600; // 6 hours
 
 export default async function FortnitePage() {
+  const locale = await getLocale();
   const [t, { items, source }] = await Promise.all([
     getTranslations("fortnite"),
-    getSyncedFortniteMaps(),
+    getSyncedFortniteMaps(locale),
   ]);
 
   return (
@@ -25,7 +27,7 @@ export default async function FortnitePage() {
       <PageHero eyebrow={t("eyebrow")} title={t("title")} text={t("text")}>
         <MagneticButton>
           <a
-            href={FORTNITE_PROFILE_URL}
+            href={`${FORTNITE_PROFILE_URL}?lang=${fortniteLocale(locale)}`}
             target="_blank"
             rel="noopener noreferrer"
             data-cursor="button"
@@ -51,3 +53,4 @@ export default async function FortnitePage() {
     </main>
   );
 }
+

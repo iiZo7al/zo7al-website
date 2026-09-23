@@ -6,6 +6,14 @@ export function descriptionLines(description: string): string[] {
 }
 
 const patterns: [RegExp, string, string[]][] = [
+  [/^🪙 ([\d,]+) Coins – Zo7al Network$/, "coinsHeading", ["count"]],
+  [/^By purchasing this package, you will receive ([\d,]+) Coins added directly to your Minecraft account\.$/, "coinsIntro", ["count"]],
+  [/^By purchasing this package, you will receive ([\d,]+) Coins \+ (\d+)% Bonus added directly to your Minecraft account\.$/, "coinsBonusIntro", ["count", "bonus"]],
+  [/^([\d,]+) Coins$/, "coinsAmount", ["count"]],
+  [/^\+(\d+)% Bonus \(([\d,]+) Coins\)$/, "coinsBonus", ["bonus", "count"]],
+  [/^Total: ([\d,]+) Coins$/, "coinsTotal", ["count"]],
+  [/^Total Received: ([\d,]+) Coins\.$/, "coinsReceived", ["count"]],
+  [/^Amount: ([\d,]+) Coins\.$/, "coinsQuantity", ["count"]],
   [/^(.+) Rank – Zo7al Network$/, "title", ["rank"]],
   [/^(.+) Upgrade – Zo7al Network$/, "upgrade", ["rank"]],
   [/^By purchasing this package, you will permanently receive the (.+) Rank with the following benefits:$/, "introPermanent", ["rank"]],
@@ -43,6 +51,13 @@ export function localizedDescription(description: string, translate: Translator)
 }
 
 const sourcePhrases: Record<string, string> = {
+  "🎁 Package Includes:": "coinsIncludes",
+  "🪙 Package Includes:": "coinsIncludes",
+  "Coins can be used in the Zo7al Network in-game store": "coinsUse",
+  "Purchase available items, upgrades, and other server content using your Coins": "coinsPurchase",
+  "Coins are linked to the Minecraft username entered at checkout": "coinsLinked",
+  "Coins are delivered automatically within 1–5 minutes after payment.": "coinsDelivery",
+  "If your Coins are not received within 10–15 minutes, please relog or contact support with your order ID.": "coinsDeliveryHelp",
   "By boosting the Zo7al Network Discord server with one or more Server Boosts, you will receive the Booster Rank with the following benefits:": "introBooster",
   "🎮 In-Game Benefits:": "game",
   "💬 Discord Benefits:": "discord",

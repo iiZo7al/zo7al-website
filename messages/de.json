@@ -28,6 +28,12 @@
     "curseforgeEyebrow": "CurseForge", "curseforgeTitle": "CurseForge-Veröffentlichungen", "curseforgeLabel": "Live von CURSEFORGE", "curseforgeLiveLabel": "Live von CURSEFORGE"
   },
   "fortnite": {
+    "watchVideo": "Map-Video ansehen",
+    "islandCode": "Inselcode",
+    "tags": "Tags",
+    "detailsUnavailable": "Die Map-Details konnten nicht geladen werden. Du kannst sie auf Fortnite ansehen.",
+    "viewOnFortnite": "Auf Fortnite ansehen",
+
     "eyebrow": "Fortnite Creative", "title": "FORTNITE CREATIVE", "text": "Maps und Erlebnisse von Zo7al.", "creatorPage": "Creator-Seite",
     "islandsEyebrow": "Inseln", "islandsTitle": "Alle Maps an einem Ort", "islandsLabel": "Inseln", "islandsLiveLabel": "Live synchronisiert mit Fortnite.com",
     "copyCode": "Code kopieren", "copied": "Kopiert", "byZo7al": "von Zo7al"
@@ -39,6 +45,11 @@
     "gamesText": "Meine Konten für Fortnite- und Roblox-Maps und Ankündigungen von Spieleprojekten. Links werden mit Linktree synchronisiert."
   },
   "store": {
+    "coinsTitle": "Coins",
+    "productsTitle": "Produkte",
+    "catalogTitle": "Shop-Angebot",
+    "browseProducts": "Produkte ansehen",
+
     "manageSubscriptions": "Hier kannst du deine Abonnements ansehen oder kündigen.",
     "monthly": "Monat",
     "boosterPrice": "Ab 4.99+",
@@ -232,6 +243,21 @@
   }
 ,
   "storeDescription": {
+    "coinsHeading": "🪙 {count} Coins – Zo7al Network",
+    "coinsIntro": "Mit diesem Paket erhältst du {count} Coins direkt auf dein Minecraft-Konto.",
+    "coinsBonusIntro": "Mit diesem Paket erhältst du {count} Coins + {bonus}% Bonus direkt auf dein Minecraft-Konto.",
+    "coinsIncludes": "🎁 Paketinhalt:",
+    "coinsAmount": "{count} Coins",
+    "coinsBonus": "+{bonus}% Bonus ({count} Coins)",
+    "coinsTotal": "Gesamt: {count} Coins",
+    "coinsReceived": "Insgesamt erhalten: {count} Coins.",
+    "coinsQuantity": "Menge: {count} Coins.",
+    "coinsUse": "Coins können im Ingame-Shop von Zo7al Network verwendet werden",
+    "coinsPurchase": "Kaufe verfügbare Gegenstände, Upgrades und andere Serverinhalte mit deinen Coins",
+    "coinsLinked": "Coins werden dem beim Bezahlen angegebenen Minecraft-Namen zugeordnet",
+    "coinsDelivery": "Coins werden automatisch innerhalb von 1–5 Minuten nach der Zahlung geliefert.",
+    "coinsDeliveryHelp": "Falls deine Coins nach 10–15 Minuten nicht angekommen sind, melde dich erneut an oder kontaktiere den Support mit deiner Bestellnummer.",
+
     "vipAndMvp": "VIP und MVP",
     "title": "Rang {rank} – Zo7al Network",
     "upgrade": "{rank}-Upgrade – Zo7al Network",

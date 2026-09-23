@@ -28,6 +28,12 @@
     "curseforgeEyebrow": "CurseForge", "curseforgeTitle": "CurseForge リリース", "curseforgeLabel": "CURSEFORGE からライブ取得", "curseforgeLiveLabel": "CURSEFORGE からライブ取得"
   },
   "fortnite": {
+    "watchVideo": "マップの動画を見る",
+    "islandCode": "島のコード",
+    "tags": "タグ",
+    "detailsUnavailable": "マップの詳細を読み込めませんでした。Fortniteで確認できます。",
+    "viewOnFortnite": "Fortniteで見る",
+
     "eyebrow": "Fortnite クリエイティブ", "title": "FORTNITE クリエイティブ", "text": "Zo7alが作成したマップと体験。", "creatorPage": "クリエイターページ",
     "islandsEyebrow": "アイランド", "islandsTitle": "すべてのマップを一か所に", "islandsLabel": "アイランド", "islandsLiveLabel": "Fortnite.comとライブ同期中",
     "copyCode": "コードをコピー", "copied": "コピーしました", "byZo7al": "Zo7al作成"
@@ -39,6 +45,11 @@
     "gamesText": "フォートナイトとRobloxのマップやゲームプロジェクトの告知用アカウント。リンクはLinktreeと同期されます。"
   },
   "store": {
+    "coinsTitle": "コイン",
+    "productsTitle": "商品",
+    "catalogTitle": "ストアの商品",
+    "browseProducts": "商品を見る",
+
     "manageSubscriptions": "サブスクリプションの確認・解約はこちら。",
     "monthly": "月",
     "boosterPrice": "4.99+ から",
@@ -232,6 +243,21 @@
   }
 ,
   "storeDescription": {
+    "coinsHeading": "🪙 {count}コイン – Zo7al Network",
+    "coinsIntro": "このパッケージを購入すると、Minecraftアカウントに{count}コインが直接追加されます。",
+    "coinsBonusIntro": "このパッケージを購入すると、Minecraftアカウントに{count}コインと{bonus}%のボーナスが直接追加されます。",
+    "coinsIncludes": "🎁 パッケージ内容：",
+    "coinsAmount": "{count}コイン",
+    "coinsBonus": "+{bonus}%ボーナス（{count}コイン）",
+    "coinsTotal": "合計：{count}コイン",
+    "coinsReceived": "受取合計：{count}コイン。",
+    "coinsQuantity": "数量：{count}コイン。",
+    "coinsUse": "コインはZo7al Networkのゲーム内ストアで使えます",
+    "coinsPurchase": "コインで販売中のアイテム、アップグレード、その他のサーバーコンテンツを購入できます",
+    "coinsLinked": "コインは支払い時に入力したMinecraftユーザー名に紐づけられます",
+    "coinsDelivery": "コインは支払い後1～5分以内に自動で届きます。",
+    "coinsDeliveryHelp": "10～15分経ってもコインが届かない場合は、再ログインするか注文番号を添えてサポートへご連絡ください。",
+
     "vipAndMvp": "VIP と MVP",
     "title": "{rank} ランク – Zo7al Network",
     "upgrade": "{rank} アップグレード – Zo7al Network",

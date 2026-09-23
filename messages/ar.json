@@ -28,6 +28,12 @@
     "curseforgeEyebrow": "CurseForge", "curseforgeTitle": "إصدارات CurseForge", "curseforgeLabel": "مباشر من CURSEFORGE", "curseforgeLiveLabel": "مباشر من CURSEFORGE"
   },
   "fortnite": {
+    "watchVideo": "شاهد فيديو الماب",
+    "islandCode": "كود الماب",
+    "tags": "التصنيفات",
+    "detailsUnavailable": "تعذر تحميل تفاصيل الماب. تقدر تشوفها في موقع فورتنايت.",
+    "viewOnFortnite": "عرض على فورتنايت",
+
     "eyebrow": "فورتنايت كرييتف", "title": "فورتنايت كرييتف", "text": "مابات وتجارب من صنع زحل.", "creatorPage": "صفحة المطور",
     "islandsEyebrow": "الجزر", "islandsTitle": "كل ماب في مكان واحد", "islandsLabel": "الجزر", "islandsLiveLabel": "متزامن مباشرة مع Fortnite.com",
     "copyCode": "انسخ الكود", "copied": "تم النسخ", "byZo7al": "من صنع زحل"
@@ -39,6 +45,11 @@
     "gamesText": "حساباتي لمابات فورتنايت وروبلوكس وإعلانات مشاريع الألعاب. تتزامن الروابط مع Linktree."
   },
   "store": {
+    "coinsTitle": "العملات",
+    "productsTitle": "المنتجات",
+    "catalogTitle": "منتجات المتجر",
+    "browseProducts": "تصفح المنتجات",
+
     "manageSubscriptions": "تقدر تشوف أو تلغي اشتراكاتك من هنا.",
     "monthly": "شهريًا",
     "boosterPrice": "من 4.99+",
@@ -232,6 +243,21 @@
   }
 ,
   "storeDescription": {
+    "coinsHeading": "🪙 {count} عملة – Zo7al Network",
+    "coinsIntro": "عند شراء هذه الباقة، تُضاف {count} عملة مباشرة إلى حسابك في ماينكرافت.",
+    "coinsBonusIntro": "عند شراء هذه الباقة، تُضاف {count} عملة مع مكافأة {bonus}% مباشرة إلى حسابك في ماينكرافت.",
+    "coinsIncludes": "🎁 محتويات الباقة:",
+    "coinsAmount": "{count} عملة",
+    "coinsBonus": "مكافأة +{bonus}% ({count} عملة)",
+    "coinsTotal": "الإجمالي: {count} عملة",
+    "coinsReceived": "إجمالي ما تستلمه: {count} عملة.",
+    "coinsQuantity": "الكمية: {count} عملة.",
+    "coinsUse": "تُستخدم العملات في متجر Zo7al Network داخل اللعبة",
+    "coinsPurchase": "اشترِ العناصر والترقيات ومحتوى السيرفر المتاح باستخدام عملاتك",
+    "coinsLinked": "ترتبط العملات باسم حساب ماينكرافت الذي تدخله عند الدفع",
+    "coinsDelivery": "تُسلّم العملات تلقائيًا خلال 1–5 دقائق بعد الدفع.",
+    "coinsDeliveryHelp": "إذا لم تستلم العملات خلال 10–15 دقيقة، أعد تسجيل الدخول أو تواصل مع الدعم مع رقم الطلب.",
+
     "vipAndMvp": "VIP وMVP",
     "title": "رتبة {rank} – Zo7al Network",
     "upgrade": "ترقية {rank} – Zo7al Network",

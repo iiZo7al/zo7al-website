@@ -1,6 +1,6 @@
 import "server-only";
 import { storeDescriptionText } from "./store-description";
-export interface StoreProduct { id: number; name: string; price: number | null; currency: string; description: string; image: string | null; available: boolean; }
+export interface StoreProduct { id: number; name: string; price: number | null; currency: string; description: string; image: string | null; available: boolean; category?: { id: number; name: string; image: string | null }; ownershipCheck?: boolean; }
 export function tebexToken() { return process.env.TEBEX_PUBLIC_TOKEN?.trim(); }
 export function tebexPrivateKey() { return process.env.TEBEX_PRIVATE_KEY?.trim(); }
 export class TebexConfigurationError extends Error {
@@ -50,7 +50,10 @@ export async function getStoreCatalog(): Promise<{ products: StoreProduct[]; liv
       const price = rawPrice == null ? null : Number(rawPrice);
       products.push({ id: pkg.id, name: String(pkg.name), price: price !== null && Number.isFinite(price) ? price : null,
         currency: /^[A-Z]{3}$/.test(pkg.currency) ? pkg.currency : "USD", description: storeDescriptionText(pkg.description),
-        image: packageImage(pkg), available: !category.dynamic && !(pkg.variables?.length) });
+        image: packageImage(pkg),
+        category: { id: Number(category.id ?? pkg.category?.id ?? 0), name: String(category.name ?? pkg.category?.name ?? ""), image: packageImage({ image: category.image_url }) },
+        ownershipCheck: pkg.user_limit === undefined && pkg.type === undefined ? undefined : pkg.type === "subscription" || (pkg.user_limit?.limit === 1 && pkg.user_limit?.period_length == null),
+        available: !category.dynamic && !(pkg.variables?.length) });
     }
     return { products, live: true };
   } catch { return { products: [], live: false }; }
