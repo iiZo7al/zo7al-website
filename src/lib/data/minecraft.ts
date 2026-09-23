@@ -1,8 +1,7 @@
 export const MINECRAFT_SERVER = {
   javaAddress: "zo7al.play-mc.fun",
-  // No verified Bedrock address is published yet — the UI must say so
-  // rather than invent one.
-  bedrockAddress: null as string | null,
+  bedrockAddress: "zo7al.play-mc.fun",
+  bedrockPort: "25807",
   storeUrl: "https://zo7al.tebex.io/",
   discordUrl: "https://discord.gg/nxScVYrSXq",
 };
@@ -49,3 +48,4 @@ export const MINECRAFT_MODES = [
     description: "Something new is in development for the network.",
   },
 ] as const;
+

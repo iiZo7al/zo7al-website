@@ -11,11 +11,13 @@
     "aboutEyebrow": "Zo7al 是谁？", "aboutText": "Zo7al 是一名游戏创作者，打造我的世界服务器网络、整合包、堡垒之夜创造模式地图及实验性游戏项目。"
   },
   "minecraft": {
+    "copyPort": "复制端口",
+    "bedrockPort": "基岩版端口",
     "eyebrow": "我的世界", "title": "ZO7AL 服务器网络", "text": "你的下一段我的世界冒险从这里开始。", "openStore": "打开商店",
     "connectEyebrow": "连接", "connectTitle": "几秒钟即可加入", "connectText": "Java 版与基岩版，同一个网络。",
     "compatEyebrow": "兼容性", "compatTitle": "支持的版本", "gameplayEyebrow": "玩法", "gameplayTitle": "模式",
     "supportEyebrow": "支持服务器网络", "supportTitle": "支持 ZO7AL", "supportText": "支持服务器网络，探索 Zo7al 官方商店。",
-    "javaLabel": "Java 版 IP", "bedrockLabel": "基岩版地址", "bedrockNote": "基岩版支持正在规划中——尚未上线。",
+    "javaLabel": "Java 版 IP", "bedrockLabel": "基岩版地址", "bedrockNote": "基岩版：zo7al.play-mc.fun — 端口 25807。",
     "copyJava": "复制 Java 版 IP", "copyBedrock": "复制基岩版地址", "checkingStatus": "正在检查状态…", "readyToPlay": "ZO7AL 服务器网络 — 准备就绪",
     "online": "在线", "offline": "离线", "players": "玩家", "version": "版本", "address": "地址",
     "statusUnavailable": "目前无法获取实时状态——请使用下方地址加入。", "modeLive": "已上线", "modeSoon": "即将推出"
@@ -23,7 +25,7 @@
   "modpacks": {
     "eyebrow": "整合包", "title": "我的世界，全新演绎。", "text": "探索 Zo7al 打造的我的世界项目。",
     "modrinthEyebrow": "Modrinth", "modrinthTitle": "Modrinth 发布", "modrinthLabel": "Modrinth", "modrinthLiveLabel": "来自 Modrinth 的实时数据",
-    "curseforgeEyebrow": "CurseForge", "curseforgeTitle": "CurseForge 镜像", "curseforgeLabel": "CurseForge", "curseforgeLiveLabel": "与 CurseForge 实时同步"
+    "curseforgeEyebrow": "CurseForge", "curseforgeTitle": "CurseForge 发布版本", "curseforgeLabel": "实时来自 CURSEFORGE", "curseforgeLiveLabel": "实时来自 CURSEFORGE"
   },
   "fortnite": {
     "eyebrow": "堡垒之夜创造模式", "title": "堡垒之夜创造模式", "text": "由 Zo7al 制作的地图与体验。", "creatorPage": "创作者主页",
@@ -37,7 +39,8 @@
     "gamesText": "关注 Zo7al Games 的官方频道。链接从 Linktree 同步。"
   },
   "store": {
-    "monthly": "每月",
+    "manageSubscriptions": "你可以在这里查看或取消订阅。",
+    "monthly": "月",
     "boosterPrice": "4.99+ 起",
     "details": "详情",
     "descriptionUnavailable": "暂时无法获取描述，请稍后重试。",
@@ -76,8 +79,8 @@
     "items": [
       { "category": "gettingStarted", "q": "什么是 ZO7AL 服务器网络？", "a": "由 Zo7al 打造的我的世界服务器与游戏宇宙，涵盖生存、PvP、整合包以及堡垒之夜创造模式地图。" },
       { "category": "gettingStarted", "q": "如何通过 Java 版加入 Zo7al 服务器网络？", "a": "从我的世界页面复制 Java 版地址 zo7al.play-mc.fun，并将其作为服务器添加到我的世界 Java 版的多人游戏菜单中。" },
-      { "category": "gettingStarted", "q": "如何通过基岩版加入 Zo7al 服务器网络？", "a": "基岩版尚未上线——已列入开发计划。加入 Discord 即可在开放的第一时间收到通知。" },
-      { "category": "gettingStarted", "q": "是否支持基岩版？", "a": "目前尚未支持。Java 版目前已完全支持，基岩版支持计划在未来更新中推出。" },
+      { "category": "gettingStarted", "q": "如何通过基岩版加入 Zo7al 服务器网络？", "a": "在 Minecraft 基岩版中添加服务器，地址为 zo7al.play-mc.fun，端口为 25807。" },
+      { "category": "gettingStarted", "q": "是否支持基岩版？", "a": "支持。基岩版：zo7al.play-mc.fun — 端口 25807。" },
       { "category": "gettingStarted", "q": "支持哪些我的世界版本？", "a": "经典 PvP 版本 1.8.9、稳定生存版本 1.20.x，以及最新版本 1.21.x。" },
       { "category": "gettingStarted", "q": "如何连接到服务器？", "a": "打开我的世界 Java 版，进入多人游戏，添加服务器，并将 zo7al.play-mc.fun 粘贴为地址。" },
       { "category": "storeRanks", "q": "如何购买等级？", "a": "访问官方商店 zo7al.tebex.io，选择 VIP、MVP 或 MVP+，安全结账——等级会自动应用到你的账户。" },
@@ -210,4 +213,50 @@
     "explore": "探索",
     "direction": "ltr"
   }
+,
+  "storeDescription": {
+    "vipAndMvp": "VIP 和 MVP",
+    "title": "{rank} 等级 – Zo7al Network",
+    "upgrade": "{rank} 升级 – Zo7al Network",
+    "introPermanent": "购买此礼包后，你将永久获得 {rank} 等级及以下权益：",
+    "introInherited": "购买此礼包后，你将永久获得 {rank} 等级，包含 {inherits} 的所有权益，并额外享有：",
+    "introMonthly": "购买此礼包后，你将获得为期一个月的 {rank} 等级，包含 {inherits} 的所有权益，并额外享有：",
+    "introBooster": "为 Zo7al Network Discord 服务器提供一个或多个服务器助力后，你将获得 Booster 等级及以下权益：",
+    "game": "🎮 游戏内权益：",
+    "discord": "💬 Discord 权益：",
+    "delivery": "📦 发放说明：",
+    "prefix": "聊天前缀：[{rank}]",
+    "exclusivePrefix": "专属聊天前缀：[{rank}]",
+    "chatColor": "{rank} 专属聊天颜色",
+    "command": "可使用 {command}",
+    "homes": "可设置 {count} 个家（/sethome）",
+    "supportBasic": "基础游戏内客服优先权",
+    "supportGame": "游戏内客服优先权",
+    "supportHigherGame": "更高的游戏内客服优先权",
+    "supportHighestGame": "最高的游戏内客服优先权",
+    "role": "Discord {rank} 身份组",
+    "channels": "可进入 {rank} 专属 Discord 频道",
+    "nameColor": "特殊 Discord 名称颜色",
+    "exclusiveNameColor": "专属 Discord 名称颜色",
+    "supportHigher": "更高的客服优先权",
+    "supportHighest": "最高的客服优先权",
+    "supporterBadge": "专属支持者徽章",
+    "announcements": "可查看专属公告",
+    "queue": "优先进入服务器（若已启用排队系统）",
+    "deliverAuto": "付款后 1–5 分钟内自动发放等级。",
+    "username": "结账时请输入正确的 Minecraft 用户名。",
+    "deliveryHelp": "若 10–15 分钟内未收到，请重新登录，或提供订单编号联系客服。",
+    "permanent": "等级有效期：永久。",
+    "once": "付款类型：一次性购买（非订阅）。",
+    "monthDuration": "等级有效期：1 个月（30 天）。",
+    "recurring": "付款类型：按月续费订阅。",
+    "renewal": "除非取消，否则订阅将每月自动续费。",
+    "boost": "为 Zo7al Network Discord 服务器提供一个或多个服务器助力。",
+    "grantBoost": "助力生效后，Booster 等级将自动发放，或在账号验证后发放。",
+    "linkAccounts": "请确保 Discord 账号已绑定正确的 Minecraft 账号。",
+    "boostHelp": "若未收到等级，请联系客服。",
+    "boostDuration": "等级有效期：至少一个 Discord 服务器助力保持有效期间。",
+    "boostPrice": "价格：一个或多个 Discord 服务器助力。",
+    "boostEnd": "如果所有助力到期或被移除，Booster 等级及其权益也将被移除。"
+}
 }

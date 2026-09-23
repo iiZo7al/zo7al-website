@@ -11,11 +11,13 @@
     "aboutEyebrow": "Zo7alとは？", "aboutText": "Zo7alはMinecraftネットワーク、Modpack、Fortniteクリエイティブマップ、実験的なゲームプロジェクトを手がけるゲーミングクリエイターです。"
   },
   "minecraft": {
+    "copyPort": "ポートをコピー",
+    "bedrockPort": "Bedrock ポート",
     "eyebrow": "Minecraft", "title": "ZO7AL NETWORK", "text": "次のMinecraftの冒険はここから始まる。", "openStore": "ストアを開く",
     "connectEyebrow": "接続", "connectTitle": "数秒で参加", "connectText": "JavaとBedrock、ひとつのネットワーク。",
     "compatEyebrow": "対応状況", "compatTitle": "対応バージョン", "gameplayEyebrow": "ゲームプレイ", "gameplayTitle": "モード",
     "supportEyebrow": "ネットワークを応援", "supportTitle": "ZO7ALを応援しよう", "supportText": "ネットワークを応援し、Zo7al公式ストアをチェックしよう。",
-    "javaLabel": "Java IP", "bedrockLabel": "Bedrockアドレス", "bedrockNote": "Bedrock対応は計画中です — まだ公開されていません。",
+    "javaLabel": "Java IP", "bedrockLabel": "Bedrockアドレス", "bedrockNote": "Bedrock：zo7al.play-mc.fun — ポート 25807。",
     "copyJava": "Java IPをコピー", "copyBedrock": "Bedrockアドレスをコピー", "checkingStatus": "ステータスを確認中…", "readyToPlay": "ZO7AL Network — プレイ準備完了",
     "online": "オンライン", "offline": "オフライン", "players": "プレイヤー", "version": "バージョン", "address": "アドレス",
     "statusUnavailable": "現在ライブステータスは取得できません — 下記のアドレスで接続してください。", "modeLive": "稼働中", "modeSoon": "近日公開"
@@ -23,7 +25,7 @@
   "modpacks": {
     "eyebrow": "Modpack", "title": "MINECRAFT、再構築。", "text": "Zo7alが手がけたMinecraftプロジェクトを探索しよう。",
     "modrinthEyebrow": "Modrinth", "modrinthTitle": "Modrinthのリリース", "modrinthLabel": "Modrinth", "modrinthLiveLabel": "Modrinthからライブ取得",
-    "curseforgeEyebrow": "CurseForge", "curseforgeTitle": "CurseForgeのミラー", "curseforgeLabel": "CurseForge", "curseforgeLiveLabel": "CurseForgeとライブ同期中"
+    "curseforgeEyebrow": "CurseForge", "curseforgeTitle": "CurseForge リリース", "curseforgeLabel": "CURSEFORGE からライブ取得", "curseforgeLiveLabel": "CURSEFORGE からライブ取得"
   },
   "fortnite": {
     "eyebrow": "Fortnite クリエイティブ", "title": "FORTNITE クリエイティブ", "text": "Zo7alが作成したマップと体験。", "creatorPage": "クリエイターページ",
@@ -37,7 +39,8 @@
     "gamesText": "Zo7al Gamesの公式チャンネルをフォローしましょう。リンクはLinktreeから同期されます。"
   },
   "store": {
-    "monthly": "月額",
+    "manageSubscriptions": "サブスクリプションの確認・解約はこちら。",
+    "monthly": "月",
     "boosterPrice": "4.99+ から",
     "details": "詳細",
     "descriptionUnavailable": "説明は現在表示できません。後でもう一度お試しください。",
@@ -76,8 +79,8 @@
     "items": [
       { "category": "gettingStarted", "q": "ZO7AL Networkとは何ですか？", "a": "Zo7alが構築したMinecraftサーバー兵ゲーミングユニバースで、サバイバル、PvP、Modpack、Fortniteクリエイティブマップを含みます。" },
       { "category": "gettingStarted", "q": "Javaで Zo7al Network に参加するには？", "a": "MinecraftページからJavaアドレス zo7al.play-mc.fun をコピーし、Minecraft Java Editionのマルチプレイメニューにサーバーとして追加してください。" },
-      { "category": "gettingStarted", "q": "BedrockでZo7al Networkに参加するには？", "a": "Bedrock版はまだ公開されていません — 開発計画に含まれています。公開され次第通知を受け取るにはDiscordに参加してください。" },
-      { "category": "gettingStarted", "q": "Bedrockに対応していますか？", "a": "まだ対応していません。現在はJava Editionのみ完全対応しており、Bedrock対応は今後のアップデートで予定されています。" },
+      { "category": "gettingStarted", "q": "BedrockでZo7al Networkに参加するには？", "a": "Minecraft Bedrock でアドレス zo7al.play-mc.fun、ポート 25807 のサーバーを追加してください。" },
+      { "category": "gettingStarted", "q": "Bedrockに対応していますか？", "a": "はい。Bedrock：zo7al.play-mc.fun — ポート 25807。" },
       { "category": "gettingStarted", "q": "対応しているMinecraftのバージョンは？", "a": "クラシックPvP向けの1.8.9、安定したサバイバル向けの1.20.x、そして最新版の1.21.xに対応しています。" },
       { "category": "gettingStarted", "q": "サーバーへの接続方法は？", "a": "Minecraft Java Editionを開き、マルチプレイに進み、サーバーを追加して、アドレスに zo7al.play-mc.fun を貼り付けてください。" },
       { "category": "storeRanks", "q": "ランクの購入方法は？", "a": "公式ストア zo7al.tebex.io にアクセスし、VIP、MVP、MVP+のいずれかを選んで安全に決済してください。ランクは自動的に付与されます。" },
@@ -210,4 +213,50 @@
     "explore": "探索する",
     "direction": "ltr"
   }
+,
+  "storeDescription": {
+    "vipAndMvp": "VIP と MVP",
+    "title": "{rank} ランク – Zo7al Network",
+    "upgrade": "{rank} アップグレード – Zo7al Network",
+    "introPermanent": "このパッケージを購入すると、以下の特典付きの {rank} ランクを永久に獲得できます：",
+    "introInherited": "このパッケージでは {rank} ランクを永久に獲得し、{inherits} の全特典に加えて以下を利用できます：",
+    "introMonthly": "このパッケージでは {rank} ランクを1か月間獲得し、{inherits} の全特典に加えて以下を利用できます：",
+    "introBooster": "Zo7al Network の Discord サーバーに1回以上ブーストすると、以下の特典付きの Booster ランクを獲得できます：",
+    "game": "🎮 ゲーム内特典：",
+    "discord": "💬 Discord 特典：",
+    "delivery": "📦 受け取り方法：",
+    "prefix": "チャットの接頭辞：[{rank}]",
+    "exclusivePrefix": "限定チャット接頭辞：[{rank}]",
+    "chatColor": "{rank} 専用チャットカラー",
+    "command": "{command} の利用",
+    "homes": "ホームを{count}か所設定可能（/sethome）",
+    "supportBasic": "ゲーム内サポートの基本優先対応",
+    "supportGame": "ゲーム内サポート優先対応",
+    "supportHigherGame": "ゲーム内サポートの高優先対応",
+    "supportHighestGame": "ゲーム内サポートの最優先対応",
+    "role": "Discord の {rank} ロール",
+    "channels": "{rank} 専用 Discord チャンネルへのアクセス",
+    "nameColor": "Discord の特別な名前カラー",
+    "exclusiveNameColor": "Discord の限定名前カラー",
+    "supportHigher": "サポートの高優先対応",
+    "supportHighest": "サポートの最優先対応",
+    "supporterBadge": "限定サポーターバッジ",
+    "announcements": "限定お知らせへのアクセス",
+    "queue": "サーバーへの優先参加（待機列システムが有効な場合）",
+    "deliverAuto": "支払い後1～5分以内にランクが自動で付与されます。",
+    "username": "購入時に正しい Minecraft ユーザー名を入力してください。",
+    "deliveryHelp": "10～15分以内に届かない場合は、再ログインするか注文番号を添えてサポートに連絡してください。",
+    "permanent": "ランクの有効期間：永久。",
+    "once": "支払い方法：買い切り（継続課金なし）。",
+    "monthDuration": "ランクの有効期間：1か月（30日）。",
+    "recurring": "支払い方法：月額の継続サブスクリプション。",
+    "renewal": "解約しない限り、サブスクリプションは毎月自動更新されます。",
+    "boost": "Zo7al Network の Discord サーバーを1回以上ブーストしてください。",
+    "grantBoost": "ブーストが有効になると、自動またはアカウント確認後に Booster ランクが付与されます。",
+    "linkAccounts": "Discord アカウントが正しい Minecraft アカウントに連携されていることを確認してください。",
+    "boostHelp": "ランクが付与されない場合は、サポートに連絡してください。",
+    "boostDuration": "ランクの有効期間：Discord サーバーブーストが1つ以上有効な間。",
+    "boostPrice": "価格：Discord サーバーブースト1つ以上。",
+    "boostEnd": "すべてのブーストが期限切れまたは解除された場合、Booster ランクと特典も失われます。"
+}
 }

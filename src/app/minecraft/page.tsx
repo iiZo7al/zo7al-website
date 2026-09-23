@@ -8,7 +8,7 @@ import ServerConnect from "@/components/minecraft/ServerConnect";
 import VersionTimeline from "@/components/minecraft/VersionTimeline";
 import ModesGrid from "@/components/minecraft/ModesGrid";
 import MagneticButton from "@/components/cursor/MagneticButton";
-import { MINECRAFT_SERVER } from "@/lib/data/minecraft";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Minecraft — ZO7AL Projects",
@@ -22,16 +22,14 @@ export default async function MinecraftPage() {
     <main data-accent="minecraft">
       <PageHero eyebrow={t("eyebrow")} title={t("title")} text={t("text")}>
         <MagneticButton>
-          <a
-            href={MINECRAFT_SERVER.storeUrl}
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            href="/store"
             data-cursor="button"
             className="inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-sm font-semibold"
             style={{ background: "var(--accent)", color: "#07080B" }}
           >
             {t("openStore")}
-          </a>
+          </Link>
         </MagneticButton>
       </PageHero>
 
@@ -83,16 +81,14 @@ export default async function MinecraftPage() {
               </p>
               <div className="mt-8">
                 <MagneticButton>
-                  <a
-                    href={MINECRAFT_SERVER.storeUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <Link
+                    href="/store"
                     data-cursor="button"
                     className="inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-sm font-semibold"
                     style={{ background: "var(--accent)", color: "#07080B" }}
                   >
                     {t("openStore")} →
-                  </a>
+                  </Link>
                 </MagneticButton>
               </div>
             </div>

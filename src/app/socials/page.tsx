@@ -48,7 +48,7 @@ export default async function SocialsPage() {
           <p className="text-label text-[var(--accent)]">{t("gamesEyebrow")}</p>
           <h2 id="games-socials-title" className="mt-3 text-4xl font-bold">Zo7al Games</h2>
           <p className="mt-4 max-w-xl text-[var(--text-muted)]">{t("gamesText")}</p>
-          <div className="my-8 flex flex-wrap items-center justify-between gap-4 text-sm text-[var(--text-muted)]"><span>{games.source === "live" ? t("liveLabel") : t("label")}</span><a href="https://linktr.ee/Zo7alGames" target="_blank" rel="noopener noreferrer" data-cursor="link" className="flex items-center gap-2"><BrandIcon slug="linktree" size={16} />{t("viewOnLinktree")}</a></div>
+          <div className="my-8 flex flex-wrap items-center justify-between gap-4 text-sm text-[var(--text-muted)]"><span className="text-label flex items-center gap-2"><SolidIcon name="share" size={16} />{games.source === "live" ? t("liveLabel") : t("label")}</span><a href="https://linktr.ee/Zo7alGames" target="_blank" rel="noopener noreferrer" data-cursor="link" className="flex items-center gap-2"><BrandIcon slug="linktree" size={16} />{t("viewOnLinktree")}<SolidIcon name="arrow-up-right" size={12} /></a></div>
           <SocialGrid socials={games.items} previews={{}} games />
         </div>
       </section>

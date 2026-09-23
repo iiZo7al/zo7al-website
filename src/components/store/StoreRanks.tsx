@@ -6,6 +6,8 @@ import Image from "next/image";
 import "./store.css";
 import { BOOSTER_PRODUCT, isMonthlyRank } from "@/lib/data/store-booster";
 import { DISCORD_LINK } from "@/lib/data/site";
+import { localizedDescription } from "@/lib/data/store-localization";
+import { motion, useReducedMotion } from "framer-motion";
 import DetailsIcon from "@/components/ui/DetailsIcon";
 import { Check, ShieldCheck, X, ArrowRight, LoaderCircle, AlertCircle, Zap } from "lucide-react";
 import type { StoreProduct } from "@/lib/server/tebex";
@@ -36,6 +38,10 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
     return () => { controller.abort(); clearInterval(timer); window.removeEventListener("focus", refresh); };
   }, [initialLive]);
   const t = useTranslations("store"), ui = useTranslations("ui"), locale = useLocale();
+  const descriptionT = useTranslations("storeDescription");
+  const reduceMotion = useReducedMotion();
+  const describe = (product: StoreProduct) => localizedDescription(product.description, descriptionT);
+  const subscriptionLink = <a href="https://portal.tebex.io/" target="_blank" rel="noopener noreferrer" className="store-subscription-link">{t("manageSubscriptions")}</a>;
   const [selected, setSelected] = useState<StoreProduct | null>(null), [username, setUsername] = useState("");
   const [details, setDetails] = useState<StoreProduct | null>(null);
   const detailsDialog = useRef<HTMLDialogElement>(null);
@@ -124,7 +130,14 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
     ? t("boosterPrice")
     : product.price === null
     ? t("pricePending")
-    : new Intl.NumberFormat(locale, { style: "currency", currency: product.currency }).format(product.price) + (isMonthlyRank(product) ? ` · ${t("monthly")}` : "");
+    : <span className="store-price-value" dir="ltr"><bdi>{new Intl.NumberFormat("en-US", { style: "currency", currency: product.currency, currencyDisplay: "narrowSymbol" }).format(product.price)}</bdi>{isMonthlyRank(product) && <span className="store-price-period">/<bdi dir="auto">{t("monthly")}</bdi></span>}</span>;
+  const displayProducts = [...products];
+  const mvpPlusPlus = displayProducts.findIndex(product => product.name.trim().toUpperCase() === "MVP++");
+  const mvpPlus = displayProducts.findIndex(product => product.id === 7312784 || product.name.trim().toUpperCase() === "MVP+");
+  if (mvpPlusPlus > mvpPlus && mvpPlus >= 0) {
+    const [monthlyRank] = displayProducts.splice(mvpPlusPlus, 1);
+    displayProducts.splice(mvpPlus, 0, monthlyRank);
+  }
   const currentSelected = products.find(product => product.id === selected?.id) ?? selected;
   const currentDetails = products.find(product => product.id === details?.id) ?? details;
   return <>
@@ -132,16 +145,15 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
     {!live && <p role="status" className="store-notice"><ShieldCheck size={18} aria-hidden="true" />{t("checkoutUnavailable")}</p>}
     {paymentStatus !== "idle" && <div ref={confirmation} role="status" aria-live="polite" className={`store-payment-status${paymentStatus === "paid" ? " store-payment-success" : ""}`}>
       <h2>{t(paymentStatus === "paid" ? "paymentSuccess" : paymentStatus === "checking" ? "paymentChecking" : "paymentPending")}</h2>
-      {paymentStatus === "paid" && <p>{t("paymentSuccessNote")}</p>}
+      {paymentStatus === "paid" && <><p>{t("paymentSuccessNote")}</p><p>{subscriptionLink}</p></>}
     </div>}
     <div className="store-rank-grid">
-      {[...products, BOOSTER_PRODUCT].map(product => {
+      {[...displayProducts, BOOSTER_PRODUCT].map((product, index) => {
         const booster = product.id === BOOSTER_PRODUCT.id;
         const featured = product.id === 7312784;
-        const bullets = product.description.split(/\n+/).filter(line => line.startsWith("• ")).map(line => line.slice(2));
-        const localized = bullets.filter(line => locale === "ar" ? /[\u0600-\u06ff]/.test(line) : !/[\u0600-\u06ff]/.test(line));
-        const perks = (localized.length ? localized : bullets).slice(0, 5);
-        return <article key={product.id} className={`store-rank${featured ? " store-rank-featured" : ""}`}>
+        const lines = describe(product);
+        const perks = lines.filter(line => line.startsWith("• ")).map(line => line.slice(2)).slice(0, 5);
+        return <motion.div key={product.id} initial={reduceMotion ? false : { opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.1 }} transition={{ duration: 0.7, delay: Math.min(index * 0.06, 0.3), ease: [0.16, 1, 0.3, 1] }} className="store-rank-reveal"><article className={`store-rank${featured ? " store-rank-featured" : ""}`}>
           <div className="store-rank-top">
             {featured && <span className="store-rank-badge">{t("mostPopular")}</span>}
             {product.image ? <Image unoptimized src={product.image} alt={product.name} width={160} height={120} className="store-product-image" /> : <span className="store-rank-icon">{booster ? <Zap size={24} strokeWidth={1.5} aria-hidden="true" /> : <ShieldCheck size={24} strokeWidth={1.5} aria-hidden="true" />}</span>}
@@ -149,17 +161,17 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
           <p className="text-label">{ui("rank")}</p>
           <h3 className="text-display store-rank-name"><bdi dir="ltr">{product.name}</bdi></h3>
           <p className={`store-rank-price${product.price === null ? " store-price-pending" : ""}`}>{price(product)}</p>
-          {perks.length ? <ul className="store-rank-perks">{perks.map((perk, index) => <li key={index}><Check size={15} aria-hidden="true" /><span dir="auto">{perk}</span></li>)}</ul> : <p dir="auto" className="store-rank-description store-description-preview">{product.description || t("descriptionUnavailable")}</p>}
+          {perks.length ? <ul className="store-rank-perks">{perks.map((perk, index) => <li key={index}><Check size={15} aria-hidden="true" /><span dir="auto">{perk}</span></li>)}</ul> : <p dir="auto" className="store-rank-description store-description-preview">{lines.join("\n") || t("descriptionUnavailable")}</p>}
           <div className="store-rank-actions">{booster ? <a href={DISCORD_LINK} target="_blank" rel="noopener noreferrer" data-cursor="button" className="store-action"><span>{t("getRank")} <bdi dir="ltr">Booster</bdi></span><ArrowRight size={16} className="store-direction" aria-hidden="true" /></a> : <button disabled={!live || !product.available} onClick={() => setSelected(product)} data-cursor="button" className={`store-action${featured ? " store-action-primary" : ""}`}>
             <span>{t("getRank")} <bdi dir="ltr">{product.name}</bdi></span><ArrowRight size={16} className="store-direction" aria-hidden="true" />
           </button>}
           <button type="button" className="store-action store-details-button" onClick={() => setDetails(product)} data-cursor="button" aria-haspopup="dialog" aria-label={`${t("details")} — ${product.name}`} title={t("details")}><DetailsIcon /></button></div>
-        </article>;
+        </article></motion.div>;
       })}
     </div>
     <dialog ref={detailsDialog} onCancel={() => setDetails(null)} onClose={() => setDetails(null)} aria-labelledby="rank-details-title" className="checkout-shell store-checkout">
       <header className="store-checkout-header"><h2 id="rank-details-title">{t("details")} · <bdi dir="ltr">{currentDetails?.name}</bdi></h2><button type="button" className="store-close" onClick={() => setDetails(null)} aria-label={t("close")}><X size={20} aria-hidden="true" /></button></header>
-      <div className="store-checkout-body store-full-description">{currentDetails?.image && <Image unoptimized src={currentDetails.image} alt={currentDetails.name} width={480} height={320} className="store-details-image" />}{currentDetails?.description ? currentDetails.description.split(/\n+/).map((line, index) => <p dir="auto" key={index}>{line}</p>) : <p>{t("descriptionUnavailable")}</p>}</div>
+      <div className="store-checkout-body store-full-description">{currentDetails?.image && <Image unoptimized src={currentDetails.image} alt={currentDetails.name} width={480} height={320} className="store-details-image" />}{currentDetails?.description ? describe(currentDetails).map((line, index) => line.startsWith("• ") ? <p className="store-detail-perk" key={index}><Check size={16} aria-hidden="true" /><span dir="auto">{line.slice(2)}</span></p> : <p dir="auto" key={index}>{line}</p>) : <p>{t("descriptionUnavailable")}</p>}</div>
     </dialog>
     <dialog ref={dialog} onCancel={close} onClose={close} aria-labelledby="checkout-title" aria-describedby="checkout-description" className="checkout-shell store-checkout">
       <header className="store-checkout-header">
@@ -183,7 +195,7 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
         </form> : <div ref={embed} className="store-checkout-embed" />}
         {paymentStatus === "checking" && <p role="status" className="store-notice">{t("paymentChecking")}</p>}
         {paymentStatus === "pending" && <p role="status" className="store-notice">{t("paymentPending")}</p>}
-        {(error || sdkError) && <p role="alert" className="store-notice store-checkout-error"><AlertCircle size={18} aria-hidden="true" /><span>{t(error ?? "paymentError")}</span></p>}
+        {(error || sdkError) && <p role="alert" className="store-notice store-checkout-error"><AlertCircle size={18} aria-hidden="true" /><span>{t(error ?? "paymentError")}{error === "alreadyOwned" && <><br />{subscriptionLink}</>}</span></p>}
       </div>
       <footer className="store-checkout-footer"><ShieldCheck size={16} aria-hidden="true" /><p>{t("allPurchases")}</p></footer>
     </dialog>

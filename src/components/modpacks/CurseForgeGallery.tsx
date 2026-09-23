@@ -1,4 +1,5 @@
 import { getTranslations } from "next-intl/server";
+import SolidIcon from "@/components/ui/SolidIcon";
 import Reveal from "@/components/ui/Reveal";
 import { CURSEFORGE_PROFILE_URL, type CurseForgeProject } from "@/lib/data/curseforge";
 
@@ -34,9 +35,10 @@ export default async function CurseForgeGallery({
               target="_blank"
               rel="noopener noreferrer"
               data-cursor="project"
-              className="group flex h-full gap-5 rounded-2xl border p-6 transition-colors hover:border-[var(--border-strong)]"
+              className="group relative flex h-full gap-5 rounded-2xl border p-6 pt-12 transition-colors hover:border-[var(--border-strong)]"
               style={{ background: "var(--surface)", borderColor: "var(--border)" }}
             >
+              <SolidIcon name="arrow-up-right" size={16} className="absolute left-5 top-5 text-[var(--text-muted)] transition-transform group-hover:-translate-y-1" />
               {project.iconUrl ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
@@ -78,3 +80,4 @@ export default async function CurseForgeGallery({
     </div>
   );
 }
+

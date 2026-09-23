@@ -2,37 +2,8 @@ import type { StoreProduct } from "../server/tebex";
 
 // A Discord offer, kept outside the Tebex checkout catalog.
 export const BOOSTER_PRODUCT: StoreProduct = {
-  id: -1, name: "Booster", price: 4.99, currency: "USD", image: null, available: true,
-  description: `باقة Booster – Zo7al Network
-عند دعم سيرفر Zo7al Network ببوست واحد أو أكثر على Discord ستحصل على رتبة Booster مع المميزات التالية:
-
-🎮 مميزات داخل السيرفر:
-• برفكس في الشات: [BOOSTER]
-• لون شات مخصص لرتبة Booster
-• أمر /kit booster
-• عدد 4 هومات (/sethome)
-• أمر /hat
-• أمر /craft
-• أولوية دعم داخل السيرفر
-
-💬 مميزات الديسكورد:
-• رتبة Booster في Discord
-• دخول قنوات Booster الخاصة
-• لون اسم مميز في الديسكورد
-• شارة مميزة للداعمين
-• أولوية أعلى في الدعم
-
-📦 طريقة الاستلام:
-• قم بعمل Server Boost واحد أو أكثر لسيرفر Zo7al Network على Discord.
-• بعد تفعيل البوست، يتم منح رتبة Booster تلقائياً أو بعد التحقق من حسابك.
-• يجب ربط حساب Discord بحساب Minecraft الصحيح.
-• في حال عدم استلام الرتبة، يرجى التواصل مع الدعم.
-
-مدة الرتبة: تستمر طوال مدة بقاء بوست واحد على الأقل فعالاً.
-السعر: Discord Server Boost واحد أو أكثر.
-عند انتهاء أو إزالة جميع البوستات، يتم إزالة رتبة Booster ومميزاتها.
-
-Booster Rank – Zo7al Network
+  id: -1, name: "Booster", price: 4.99, currency: "USD", image: "/assets/site/booster.png", available: true,
+  description: `Booster Rank – Zo7al Network
 By boosting the Zo7al Network Discord server with one or more Server Boosts, you will receive the Booster Rank with the following benefits:
 
 🎮 In-Game Benefits:

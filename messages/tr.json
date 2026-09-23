@@ -11,11 +11,13 @@
     "aboutEyebrow": "Zo7al kimdir?", "aboutText": "Zo7al; Minecraft ağları, modpack'ler, Fortnite Creative haritaları ve deneysel oyun projeleri geliştiren bir oyun içerik üreticisidir."
   },
   "minecraft": {
+    "copyPort": "Bağlantı noktasını kopyala",
+    "bedrockPort": "Bedrock Bağlantı Noktası",
     "eyebrow": "Minecraft", "title": "ZO7AL NETWORK", "text": "Bir sonraki Minecraft macerana burada başla.", "openStore": "Mağazayı Aç",
     "connectEyebrow": "Bağlan", "connectTitle": "Saniyeler içinde katıl", "connectText": "Java ve Bedrock, tek ağda.",
     "compatEyebrow": "Uyumluluk", "compatTitle": "Desteklenen sürümler", "gameplayEyebrow": "Oyunanış", "gameplayTitle": "Modlar",
     "supportEyebrow": "Ağı destekle", "supportTitle": "ZO7AL'İ DESTEKLE", "supportText": "Ağı destekle ve Zo7al'in resmi mağazasını keşfet.",
-    "javaLabel": "Java IP", "bedrockLabel": "Bedrock Adresi", "bedrockNote": "Bedrock desteği yol haritasında — henüz yayınlanmadı.",
+    "javaLabel": "Java IP", "bedrockLabel": "Bedrock Adresi", "bedrockNote": "Bedrock: zo7al.play-mc.fun — bağlantı noktası 25807.",
     "copyJava": "Java IP'sini Kopyala", "copyBedrock": "Bedrock Adresini Kopyala", "checkingStatus": "Durum kontrol ediliyor…", "readyToPlay": "ZO7AL Network — Oynamaya hazır",
     "online": "Çevrimiçi", "offline": "Çevrimdışı", "players": "Oyuncular", "version": "Sürüm", "address": "Adres",
     "statusUnavailable": "Canlı durum şu anda kullanılamıyor — aşağıdaki adresle bağlan.", "modeLive": "Aktif", "modeSoon": "Yakında"
@@ -23,7 +25,7 @@
   "modpacks": {
     "eyebrow": "Modpack'ler", "title": "MINECRAFT, YENİDEN TASARLANDI.", "text": "Zo7al'in oluşturduğu Minecraft projelerini keşfet.",
     "modrinthEyebrow": "Modrinth", "modrinthTitle": "Modrinth sürümleri", "modrinthLabel": "Modrinth", "modrinthLiveLabel": "Modrinth'ten canlı",
-    "curseforgeEyebrow": "CurseForge", "curseforgeTitle": "CurseForge yansımaları", "curseforgeLabel": "CurseForge", "curseforgeLiveLabel": "CurseForge ile canlı senkronize"
+    "curseforgeEyebrow": "CurseForge", "curseforgeTitle": "CurseForge sürümleri", "curseforgeLabel": "CURSEFORGE’dan canlı", "curseforgeLiveLabel": "CURSEFORGE’dan canlı"
   },
   "fortnite": {
     "eyebrow": "Fortnite Creative", "title": "FORTNITE CREATIVE", "text": "Zo7al tarafından oluşturulan haritalar ve deneyimler.", "creatorPage": "İçerik Üreticisi Sayfası",
@@ -37,7 +39,8 @@
     "gamesText": "Zo7al Games’i resmi kanallarında takip edin. Bağlantılar Linktree ile eşitlenir."
   },
   "store": {
-    "monthly": "Aylık",
+    "manageSubscriptions": "Aboneliklerinizi buradan görüntüleyebilir veya iptal edebilirsiniz.",
+    "monthly": "ay",
     "boosterPrice": "4.99+ başlangıç fiyatıyla",
     "details": "Ayrıntılar",
     "descriptionUnavailable": "Açıklama şu anda kullanılamıyor. Lütfen daha sonra tekrar deneyin.",
@@ -76,8 +79,8 @@
     "items": [
       { "category": "gettingStarted", "q": "ZO7AL Network nedir?", "a": "Zo7al tarafından kurulmuş; survival, PvP, modpack'ler ve Fortnite Creative haritalarını kapsayan bir Minecraft sunucusu ve oyun evreni." },
       { "category": "gettingStarted", "q": "Zo7al Network'e Java ile nasıl katılırım?", "a": "Minecraft sayfasından Java adresini, zo7al.play-mc.fun, kopyala ve Minecraft Java Edition'ın çok oyunculu menüsüne sunucu olarak ekle." },
-      { "category": "gettingStarted", "q": "Zo7al Network'e Bedrock ile nasıl katılırım?", "a": "Bedrock henüz yayınlanmadı — yol haritasında. Açıldığı anda haberdar olmak için Discord'a katıl." },
-      { "category": "gettingStarted", "q": "Bedrock destekleniyor mu?", "a": "Henüz değil. Java Edition bugün tam olarak destekleniyor, Bedrock desteği ise gelecekteki bir güncelleme için planlanıyor." },
+      { "category": "gettingStarted", "q": "Zo7al Network'e Bedrock ile nasıl katılırım?", "a": "Minecraft Bedrock’ta zo7al.play-mc.fun adresi ve 25807 bağlantı noktasıyla bir sunucu ekleyin." },
+      { "category": "gettingStarted", "q": "Bedrock destekleniyor mu?", "a": "Evet. Bedrock: zo7al.play-mc.fun — bağlantı noktası 25807." },
       { "category": "gettingStarted", "q": "Hangi Minecraft sürümleri destekleniyor?", "a": "Klasik PvP için 1.8.9, kararlı survival için 1.20.x ve en güncel sürüm için 1.21.x." },
       { "category": "gettingStarted", "q": "Sunucuya nasıl bağlanırım?", "a": "Minecraft Java Edition'ı aç, Çok Oyunculu'ya git, bir sunucu ekle ve adres olarak zo7al.play-mc.fun'ı yapıştır." },
       { "category": "storeRanks", "q": "Bir rütbeyi nasıl satın alırım?", "a": "zo7al.tebex.io adresindeki resmi mağazayı ziyaret et, VIP, MVP veya MVP+ seç ve güvenle ödeme yap — rütben otomatik olarak uygulanır." },
@@ -210,4 +213,50 @@
     "explore": "Keşfet",
     "direction": "ltr"
   }
+,
+  "storeDescription": {
+    "vipAndMvp": "VIP ve MVP",
+    "title": "{rank} Rütbesi – Zo7al Network",
+    "upgrade": "{rank} Yükseltmesi – Zo7al Network",
+    "introPermanent": "Bu paketi satın alarak aşağıdaki avantajlarla kalıcı {rank} rütbesini alırsınız:",
+    "introInherited": "Bu paketle tüm {inherits} avantajlarına ek olarak şunları içeren kalıcı {rank} rütbesini alırsınız:",
+    "introMonthly": "Bu paketle tüm {inherits} avantajlarına ek olarak şunları içeren {rank} rütbesini bir aylığına alırsınız:",
+    "introBooster": "Zo7al Network Discord sunucusuna bir veya daha fazla takviye yaparak şu avantajlarla Booster rütbesini alırsınız:",
+    "game": "🎮 Oyun İçi Avantajlar:",
+    "discord": "💬 Discord Avantajları:",
+    "delivery": "📦 Teslimat Bilgileri:",
+    "prefix": "Sohbet öneki: [{rank}]",
+    "exclusivePrefix": "Özel sohbet öneki: [{rank}]",
+    "chatColor": "{rank} için özel sohbet rengi",
+    "command": "{command} komutuna erişim",
+    "homes": "{count} ev noktası (/sethome)",
+    "supportBasic": "Oyun içinde temel destek önceliği",
+    "supportGame": "Oyun içi destek önceliği",
+    "supportHigherGame": "Oyun içinde daha yüksek destek önceliği",
+    "supportHighestGame": "Oyun içinde en yüksek destek önceliği",
+    "role": "Discord’da {rank} rolü",
+    "channels": "{rank} özel Discord kanallarına erişim",
+    "nameColor": "Discord’da özel isim rengi",
+    "exclusiveNameColor": "Discord’da ayrıcalıklı isim rengi",
+    "supportHigher": "Daha yüksek destek önceliği",
+    "supportHighest": "En yüksek destek önceliği",
+    "supporterBadge": "Özel destekçi rozeti",
+    "announcements": "Özel duyurulara erişim",
+    "queue": "Sunucuya giriş önceliği (kuyruk sistemi etkinse)",
+    "deliverAuto": "Rütbe, ödemeden sonra 1–5 dakika içinde otomatik olarak verilir.",
+    "username": "Ödeme sırasında doğru Minecraft kullanıcı adınızı girin.",
+    "deliveryHelp": "10–15 dakika içinde almazsanız yeniden giriş yapın veya sipariş numaranızla desteğe başvurun.",
+    "permanent": "Rütbe süresi: kalıcı.",
+    "once": "Ödeme türü: tek seferlik satın alma (tekrarlanmaz).",
+    "monthDuration": "Rütbe süresi: 1 ay (30 gün).",
+    "recurring": "Ödeme türü: aylık yinelenen abonelik.",
+    "renewal": "İptal edilmediği sürece abonelik her ay otomatik yenilenir.",
+    "boost": "Zo7al Network Discord sunucusuna bir veya daha fazla takviye yapın.",
+    "grantBoost": "Takviyeniz etkinleştiğinde Booster rütbesi otomatik olarak veya hesap doğrulamasından sonra verilir.",
+    "linkAccounts": "Discord hesabınızın doğru Minecraft hesabına bağlı olduğundan emin olun.",
+    "boostHelp": "Rütbeyi almazsanız desteğe başvurun.",
+    "boostDuration": "Rütbe süresi: en az bir Discord sunucu takviyesi etkin kaldığı sürece.",
+    "boostPrice": "Fiyat: bir veya daha fazla Discord sunucu takviyesi.",
+    "boostEnd": "Tüm takviyeler sona ererse veya kaldırılırsa Booster rütbesi ve avantajları da kaldırılır."
+}
 }
