@@ -45,7 +45,7 @@
     "fortniteText": "Maps and experiences created by Zo7al.",
     "fortniteCta": "Explore Maps",
     "aboutEyebrow": "Who is Zo7al?",
-    "aboutText": "Zo7al is a gaming creator building Minecraft networks, modpacks, Fortnite Creative maps and experimental gaming projects."
+    "aboutText": "Khaled, known as Zo7al, is a YouTuber and gaming creator sharing Fortnite, Minecraft and other games, challenges and funny moments with friends."
   },
   "minecraft": {
     "copyPort": "Copy port",
@@ -160,7 +160,7 @@
   "faq": {
     "eyebrow": "Need help?",
     "title": "Frequently asked questions",
-    "text": "Everything about joining the network, buying a rank, playing Zo7al's Fortnite maps and getting support.",
+    "text": "Get to know Zo7al, find his videos and social accounts, and learn about the server, store and gaming projects.",
     "searchPlaceholder": "Search a question…",
     "noResults": "No questions match your search.",
     "categories": {
@@ -171,21 +171,22 @@
       "modpacks": "Modpacks"
     },
     "items": [
+      {"category": "gettingStarted", "q": "Who is Zo7al?", "a": "Khaled, known as Zo7al, is a YouTuber and gaming creator sharing Fortnite, Minecraft and other games, challenges and funny moments with friends."},
       { "category": "gettingStarted", "q": "What is ZO7AL Network?", "a": "A Minecraft server and gaming universe built by Zo7al, spanning survival, PvP, modpacks and Fortnite Creative maps." },
       { "category": "gettingStarted", "q": "How do I join Zo7al Network on Java?", "a": "Copy the Java address, zo7al.play-mc.fun, from the Minecraft page and add it as a server in Minecraft Java Edition's multiplayer menu." },
       { "category": "gettingStarted", "q": "How do I join Zo7al Network on Bedrock?", "a": "Add a server in Minecraft Bedrock with address zo7al.play-mc.fun and port 25807." },
       { "category": "gettingStarted", "q": "Is Bedrock supported?", "a": "Yes. Bedrock: zo7al.play-mc.fun — port 25807." },
       { "category": "gettingStarted", "q": "What Minecraft versions are supported?", "a": "1.8.9 for classic PvP, 1.20.x for stable survival, and 1.21.x for the latest release line." },
-      { "category": "gettingStarted", "q": "How do I connect to the server?", "a": "Open Minecraft Java Edition, go to Multiplayer, add a server, and paste zo7al.play-mc.fun as the address." },
-      { "category": "storeRanks", "q": "How do I buy a rank?", "a": "Visit the official store at zo7al.tebex.io, choose VIP, MVP or MVP+, and check out securely — your rank applies automatically." },
-      { "category": "storeRanks", "q": "What ranks are available?", "a": "VIP ($9.99), MVP ($19.99) and MVP+ ($29.99). Each tier includes everything from the one below it, plus more perks." },
-      { "category": "storeRanks", "q": "Where is the Zo7al Network store?", "a": "zo7al.tebex.io is the one and only official store — always double-check the domain before paying." },
+      { "category": "gettingStarted", "q": "What kind of videos do you make?", "a": "Gaming videos and Shorts: Fortnite, Minecraft and other games, challenges, funny moments and playing with friends. Find my channel on YouTube at @iiZo7al." },
+      { "category": "storeRanks", "q": "How do I buy a rank?", "a": "Open /store, choose a rank, enter your Minecraft username and complete payment securely through Tebex. Booster is obtained by boosting our Discord server." },
+      { "category": "storeRanks", "q": "What ranks are available?", "a": "VIP, MVP, MVP+, monthly MVP++ and Discord Booster. Check /store for current prices, benefits and conditions." },
+      { "category": "storeRanks", "q": "Where is the Zo7al Network store?", "a": "Open the Store page at /store. Payments are processed through Tebex, and subscriptions can be viewed or cancelled at portal.tebex.io." },
       { "category": "fortnite", "q": "How do I join a Zo7al Fortnite map?", "a": "Open Fortnite, go to Creative, select \"Enter a code\", and type in the island code shown on any map on the Fortnite page." },
       { "category": "fortnite", "q": "Where can I find all Zo7al maps?", "a": "The Fortnite page lists every published island with its code, kept in sync with the official creator page." },
       { "category": "community", "q": "What is the official Zo7al Discord server?", "a": "discord.gg/nxScVYrSXq — the hub for events, support and community updates." },
-      { "category": "community", "q": "Where can I find Zo7al's social media?", "a": "The Socials page lists every verified platform, synced live from Zo7al's Linktree." },
+      { "category": "community", "q": "Where can I find Zo7al's social media?", "a": "Find my YouTube channel @iiZo7al and my other accounts on the Socials page. The account links sync from my official Linktree." },
       { "category": "community", "q": "How do I report a problem?", "a": "Join the Discord server and open a ticket in the support channel — that's the fastest way to reach the team." },
-      { "category": "community", "q": "How do I contact Zo7al?", "a": "Discord is the best way, or through any of the verified social platforms listed on the Socials page." },
+      { "category": "community", "q": "How do I contact Zo7al?", "a": "For advertising and collaborations, email ads@zo7al.net. For server or purchase support, join our Discord through the Socials page." },
       { "category": "modpacks", "q": "Where can I download Zo7al modpacks?", "a": "On Modrinth and CurseForge — both are listed with direct links on the Modpacks page." }
     ]
   },

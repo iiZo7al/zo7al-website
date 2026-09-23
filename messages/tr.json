@@ -8,7 +8,7 @@
     "minecraftMeta1": "MINECRAFT", "minecraftMeta2": "JAVA + BEDROCK", "minecraftTitle": "ZO7AL NETWORK", "minecraftText": "Oyuncular için kurulmuş bir Minecraft ağı.", "minecraftCta": "Ağı Keşfet",
     "modpacksMeta1": "MODPACK'LER", "modpacksMeta2": "MODRINTH + CURSEFORGE", "modpacksTitle": "MINECRAFT MODPACK'LERİ", "modpacksText": "Zo7al tarafından oluşturulan ve derlenen Minecraft deneyimleri.", "modpacksCta": "Modpack'leri Gör",
     "fortniteMeta1": "FORTNITE", "fortniteMeta2": "CREATIVE", "fortniteTitle": "FORTNITE CREATIVE", "fortniteText": "Zo7al tarafından oluşturulan haritalar ve deneyimler.", "fortniteCta": "Haritaları Keşfet",
-    "aboutEyebrow": "Zo7al kimdir?", "aboutText": "Zo7al; Minecraft ağları, modpack'ler, Fortnite Creative haritaları ve deneysel oyun projeleri geliştiren bir oyun içerik üreticisidir."
+    "aboutEyebrow": "Zo7al kimdir?", "aboutText": "Zo7al olarak tanınan Khaled; Fortnite, Minecraft ve diğer oyunları, mücadeleleri ve arkadaşlarıyla eğlenceli anlarını paylaşan bir YouTuber ve oyun içerik üreticisidir."
   },
   "minecraft": {
     "copyPort": "Bağlantı noktasını kopyala",
@@ -73,25 +73,26 @@
     "checkoutNote": "Son vergiler, para birimi ve ödeme seçenekleri ödeme sırasında gösterilir."
   },
   "faq": {
-    "eyebrow": "Yardıma mı ihtiyacın var?", "title": "Sıkça sorulan sorular", "text": "Ağa katılma, rütbe satın alma, Zo7al'in Fortnite haritalarını oynama ve destek alma hakkında her şey.",
+    "eyebrow": "Yardıma mı ihtiyacın var?", "title": "Sıkça sorulan sorular", "text": "Zo7al’ı, videolarını ve sosyal hesaplarını tanı; sunucu, mağaza ve oyun projeleri hakkında bilgi edin.",
     "searchPlaceholder": "Bir soru ara…", "noResults": "Aramanızla eşleşen soru bulunamadı.",
     "categories": { "gettingStarted": "Başlarken", "storeRanks": "Mağaza ve Rütbeler", "fortnite": "Fortnite", "community": "Topluluk", "modpacks": "Modpack'ler" },
     "items": [
+      {"category": "gettingStarted", "q": "Zo7al kimdir?", "a": "Zo7al olarak tanınan Khaled; Fortnite, Minecraft ve diğer oyunları, mücadeleleri ve arkadaşlarıyla eğlenceli anlarını paylaşan bir YouTuber ve oyun içerik üreticisidir."},
       { "category": "gettingStarted", "q": "ZO7AL Network nedir?", "a": "Zo7al tarafından kurulmuş; survival, PvP, modpack'ler ve Fortnite Creative haritalarını kapsayan bir Minecraft sunucusu ve oyun evreni." },
       { "category": "gettingStarted", "q": "Zo7al Network'e Java ile nasıl katılırım?", "a": "Minecraft sayfasından Java adresini, zo7al.play-mc.fun, kopyala ve Minecraft Java Edition'ın çok oyunculu menüsüne sunucu olarak ekle." },
       { "category": "gettingStarted", "q": "Zo7al Network'e Bedrock ile nasıl katılırım?", "a": "Minecraft Bedrock’ta zo7al.play-mc.fun adresi ve 25807 bağlantı noktasıyla bir sunucu ekleyin." },
       { "category": "gettingStarted", "q": "Bedrock destekleniyor mu?", "a": "Evet. Bedrock: zo7al.play-mc.fun — bağlantı noktası 25807." },
       { "category": "gettingStarted", "q": "Hangi Minecraft sürümleri destekleniyor?", "a": "Klasik PvP için 1.8.9, kararlı survival için 1.20.x ve en güncel sürüm için 1.21.x." },
-      { "category": "gettingStarted", "q": "Sunucuya nasıl bağlanırım?", "a": "Minecraft Java Edition'ı aç, Çok Oyunculu'ya git, bir sunucu ekle ve adres olarak zo7al.play-mc.fun'ı yapıştır." },
-      { "category": "storeRanks", "q": "Bir rütbeyi nasıl satın alırım?", "a": "zo7al.tebex.io adresindeki resmi mağazayı ziyaret et, VIP, MVP veya MVP+ seç ve güvenle ödeme yap — rütben otomatik olarak uygulanır." },
-      { "category": "storeRanks", "q": "Hangi rütbeler mevcut?", "a": "VIP (9,99 $), MVP (19,99 $) ve MVP+ (29,99 $). Her seviye, altındaki her şeyi ve daha fazla ayrıcalığı içerir." },
-      { "category": "storeRanks", "q": "Zo7al Network mağazası nerede?", "a": "zo7al.tebex.io tek resmi mağazadır — ödeme yapmadan önce her zaman alan adını kontrol et." },
+      { "category": "gettingStarted", "q": "Ne tür videolar hazırlıyorsun?", "a": "Oyun videoları ve Shorts: Fortnite, Minecraft ve diğer oyunlar, mücadeleler, komik anlar ve arkadaşlarla oyun. YouTube kanalım: @iiZo7al." },
+      { "category": "storeRanks", "q": "Bir rütbeyi nasıl satın alırım?", "a": "/store sayfasını aç, rütbeni seç, Minecraft kullanıcı adını gir ve Tebex üzerinden güvenle öde. Booster, Discord sunucumuzu takviye ederek alınır." },
+      { "category": "storeRanks", "q": "Hangi rütbeler mevcut?", "a": "VIP, MVP, MVP+, aylık MVP++ ve Discord Booster. Güncel fiyatlar, avantajlar ve koşullar için /store sayfasına bak." },
+      { "category": "storeRanks", "q": "Zo7al Network mağazası nerede?", "a": "/store adresindeki mağazayı aç. Ödemeler Tebex üzerinden işlenir; aboneliklerini portal.tebex.io adresinden görüntüleyebilir veya iptal edebilirsin." },
       { "category": "fortnite", "q": "Fortnite'ta bir Zo7al haritasına nasıl katılırım?", "a": "Fortnite'ı aç, Creative'e git, \"Bir kod gir\" seçeneğini kullan ve Fortnite sayfasındaki herhangi bir haritada görünen ada kodunu yaz." },
       { "category": "fortnite", "q": "Zo7al'in tüm haritalarını nerede bulabilirim?", "a": "Fortnite sayfası, resmi içerik üreticisi sayfasıyla senkronize olarak yayınlanan her adayı koduyla birlikte listeler." },
       { "category": "community", "q": "Zo7al'in resmi Discord sunucusu nedir?", "a": "discord.gg/nxScVYrSXq — etkinlikler, destek ve topluluk güncellemeleri için merkez." },
-      { "category": "community", "q": "Zo7al'in sosyal medya hesaplarını nerede bulabilirim?", "a": "Sosyal Medya sayfası, Zo7al'in Linktree'siyle canlı senkronize olarak doğrulanmış her platformu listeler." },
+      { "category": "community", "q": "Zo7al'in sosyal medya hesaplarını nerede bulabilirim?", "a": "YouTube kanalım @iiZo7al ve diğer hesaplarım sosyal medya sayfasında. Bağlantılar resmî Linktree hesabımdan eşitlenir." },
       { "category": "community", "q": "Bir sorunu nasıl bildiririm?", "a": "Discord sunucusuna katıl ve destek kanalında bir talep aç — ekibe ulaşmanın en hızlı yolu budur." },
-      { "category": "community", "q": "Zo7al ile nasıl iletişime geçerim?", "a": "En iyi yol Discord'dur, ya da Sosyal Medya sayfasında listelenen doğrulanmış sosyal medya platformlarından biri." },
+      { "category": "community", "q": "Zo7al ile nasıl iletişime geçerim?", "a": "Reklam ve iş birlikleri için: ads@zo7al.net. Sunucu veya satın alma desteği için sosyal medya sayfasından Discord’a katıl." },
       { "category": "modpacks", "q": "Zo7al'in modpack'lerini nereden indirebilirim?", "a": "Modrinth ve CurseForge üzerinden — ikisi de Modpack'ler sayfasında doğrudan bağlantılarla listelenir." }
     ]
   },
