@@ -14,7 +14,7 @@ export default async function VersionTimeline() {
       {MINECRAFT_VERSIONS.map((v, i) => (
         <Reveal key={v.id} delay={i * 0.06}>
           <div
-            className="relative rounded-2xl border p-6"
+            className="card-glow relative rounded-2xl border p-6"
             style={{ background: "var(--surface)", borderColor: "var(--border)" }}
           >
             <span

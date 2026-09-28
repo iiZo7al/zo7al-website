@@ -36,7 +36,7 @@ function CopyRow({
 
   return (
     <div
-      className="flex flex-col gap-4 rounded-2xl border p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8"
+      className="card-glow flex flex-col gap-4 rounded-2xl border p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8"
       style={{ background: "var(--surface)", borderColor: "var(--border)" }}
     >
       <div>

@@ -263,3 +263,34 @@ html:not(.cursor-visible) .cursor-glow { visibility: hidden; }
 @media (prefers-reduced-motion: reduce) { .home-scroll-arrow { animation: none; } }
 html.cursor-ready .checkout-shell, html.cursor-ready .checkout-shell * { cursor: auto; }
 html.cursor-ready .checkout-shell button { cursor: pointer; }
+
+/* Shared corner light for content cards. No overlay can intercept a click. */
+.card-glow {
+  position: relative;
+  isolation: isolate;
+}
+.card-glow::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(180px 160px at 100% 0%,
+    color-mix(in srgb, var(--card-glow-color, var(--accent)) 65%, transparent),
+    color-mix(in srgb, var(--card-glow-color, var(--accent)) 22%, transparent) 42%,
+    transparent 85%);
+  mix-blend-mode: screen;
+  opacity: 0;
+  transition: opacity 500ms ease;
+}
+@media (hover: hover) {
+  .card-glow:hover::after { opacity: 1; }
+}
+.card-glow:focus-within::after { opacity: 1; }
+@media (hover: none) {
+  .card-glow:active::after { opacity: 0.65; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .card-glow::after { transition: none; }
+}

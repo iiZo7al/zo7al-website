@@ -96,7 +96,7 @@ export default function FaqAccordion({
       {/* Results */}
       {filtered.length === 0 ? (
         <div
-          className="flex flex-col items-center gap-3 rounded-2xl border py-16 text-center"
+          className="card-glow flex flex-col items-center gap-3 rounded-2xl border py-16 text-center"
           style={{ borderColor: "var(--border)", background: "var(--surface)" }}
         >
           <MessageCircleQuestion size={28} strokeWidth={2.5} className="text-[var(--text-muted)]" aria-hidden="true" />
@@ -132,7 +132,7 @@ function FaqRow({
 
   return (
     <div
-      className="group overflow-hidden rounded-2xl border transition-colors"
+      className="card-glow group overflow-hidden rounded-2xl border transition-colors"
       style={{
         background: "var(--surface)",
         borderColor: open ? "var(--accent)" : "var(--border)",
@@ -174,3 +174,4 @@ function FaqRow({
     </div>
   );
 }
+

@@ -4,7 +4,7 @@ export default function ProjectArt({
   variant: "minecraft" | "modpacks" | "fortnite";
 }) {
   return (
-    <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border" style={{ borderColor: "var(--border)" }}>
+    <div className="card-glow relative aspect-[4/3] w-full overflow-hidden rounded-2xl border" style={{ borderColor: "var(--border)" }}>
       <div
         className="absolute inset-0 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.06]"
         style={{
@@ -60,3 +60,4 @@ export default function ProjectArt({
     </div>
   );
 }
+

@@ -1,4 +1,5 @@
 "use client";
+import type { CSSProperties } from "react";
 import { useTranslations } from "next-intl";
 
 import Reveal from "@/components/ui/Reveal";
@@ -34,14 +35,9 @@ export default function SocialGrid({
             target="_blank"
             rel="noopener noreferrer"
             data-cursor="link"
-            className="group relative flex h-full flex-col overflow-hidden rounded-2xl border p-6 transition-all duration-300 hover:-translate-y-1"
-            style={{ background: "var(--surface)", borderColor: "var(--border)" }}
+            className="card-glow group relative flex h-full flex-col overflow-hidden rounded-2xl border p-6 transition-all duration-300 hover:-translate-y-1"
+            style={{ background: "var(--surface)", borderColor: "var(--border)", "--card-glow-color": brandColor } as CSSProperties}
           >
-            <div
-              className="pointer-events-none absolute -right-8 -top-8 h-28 w-28 rounded-full opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-40"
-              style={{ background: brandColor }}
-              aria-hidden="true"
-            />
             <div className="flex items-center justify-between">
               <div
                 className="inline-flex h-12 w-12 items-center justify-center rounded-2xl transition-transform duration-300 group-hover:scale-110"

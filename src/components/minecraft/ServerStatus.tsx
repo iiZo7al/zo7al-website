@@ -58,7 +58,7 @@ export default function ServerStatus() {
 
   return (
     <div
-      className="rounded-2xl border p-6 sm:p-8"
+      className="card-glow rounded-2xl border p-6 sm:p-8"
       style={{ background: "var(--surface)", borderColor: "var(--border)" }}
       aria-live="polite"
     >
@@ -110,3 +110,4 @@ export default function ServerStatus() {
     </div>
   );
 }
+
