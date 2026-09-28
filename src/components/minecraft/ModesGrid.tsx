@@ -9,18 +9,13 @@ export default async function ModesGrid() {
       {MINECRAFT_MODES.map((m, i) => (
         <Reveal key={m.id} delay={i * 0.06}>
           <div
-            className="group relative h-full overflow-hidden rounded-2xl border p-7"
+            className="card-glow group relative h-full overflow-hidden rounded-2xl border p-7"
             style={{
               background: "var(--surface)",
               borderColor: "var(--border)",
               opacity: m.status === "soon" ? 0.7 : 1,
             }}
           >
-            <div
-              className="absolute -right-10 -top-10 h-32 w-32 rounded-full opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-100"
-              style={{ background: "var(--accent)" }}
-              aria-hidden="true"
-            />
             <p className="text-label mb-4" style={{ color: m.status === "live" ? "var(--accent)" : "var(--text-muted)" }}>
               {t(m.status === "live" ? "modeLive" : "modeSoon")}
             </p>

@@ -74,7 +74,7 @@ export default function MapGallery({ maps: providedMaps }: { maps: FortniteMap[]
             <div
               onPointerEnter={event => { if (event.pointerType === "mouse") setHovered(map.id); }}
               onPointerLeave={() => setHovered(null)}
-              className="group h-full overflow-hidden rounded-2xl border"
+              className="card-glow group h-full overflow-hidden rounded-2xl border"
               style={{ background: "var(--surface)", borderColor: "var(--border)" }}
             >
               <a
@@ -137,11 +137,11 @@ export default function MapGallery({ maps: providedMaps }: { maps: FortniteMap[]
               <img src={details.thumbnail} alt={details.title} className="aspect-video min-w-0 flex-1 rounded-xl object-cover" />
               {details.videoUrl && <a href={details.videoUrl} target="_blank" rel="noopener noreferrer" className="store-action store-details-button" aria-label={t("watchVideo")} title={t("watchVideo")}><SolidIcon name="arrow-up-right" size={20} /></a>}
             </div>
-            <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-[var(--border)] p-4">
+            <div className="card-glow flex flex-wrap items-center justify-between gap-3 rounded-xl border border-[var(--border)] p-4">
               <div><p className="mb-1 text-xs text-[var(--text-muted)]">{t("islandCode")}</p><code dir="ltr">{details.code}</code></div>
               <button type="button" className="store-action" onClick={() => copyCode(details.id, details.code)}>{t(copiedId === details.id ? "copied" : "copyCode")}</button>
             </div>
-            <p dir="auto" className="whitespace-pre-line text-sm leading-7 text-[var(--text-muted)]">{details.description || t("detailsUnavailable")}</p>
+            <p dir="auto" className="whitespace-pre-line text-sm leading-7 text-[var(--text-muted)]">{t.has(`descriptions.${details.code}`) ? t(`descriptions.${details.code}`) : details.description || t("detailsUnavailable")}</p>
             {!!details.tags?.length && <ul aria-label={t("tags")} className="flex flex-wrap gap-2">{details.tags.map(tag => <li key={tag} dir="auto" className="rounded-full border border-[var(--border)] px-3 py-1.5 text-xs font-semibold">{tag}</li>)}</ul>}
             <a href={islandCodeUrl(details.code, locale)} target="_blank" rel="noopener noreferrer" className="store-action">{t("viewOnFortnite")}<SolidIcon name="arrow-up-right" size={16} /></a>
           </div>

@@ -71,7 +71,7 @@ export default async function MinecraftPage() {
       <section className="relative border-t py-24 sm:py-32" style={{ borderColor: "var(--border)" }}>
         <div className="mx-auto max-w-[1180px] px-6">
           <Reveal className="text-center" y={20}>
-            <div style={{ background: "var(--surface)", borderColor: "var(--border)" }} className="rounded-3xl border p-10 sm:p-16">
+            <div style={{ background: "var(--surface)", borderColor: "var(--border)" }} className="card-glow rounded-3xl border p-10 sm:p-16">
               <p className="text-label mb-4" style={{ color: "var(--accent)" }}>
                 {t("supportEyebrow")}
               </p>

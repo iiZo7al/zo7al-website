@@ -151,10 +151,11 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
       <div className="store-rank-grid">
       {group.products.map((product, index) => {
         const booster = product.id === BOOSTER_PRODUCT.id;
-        const featured = product.id === 7312784;
+        // Tebex package IDs: MVP+ and the 100,000 Coins package.
+        const featured = product.id === 7312784 || product.id === 7692129;
         const lines = describe(product);
         const perks = lines.filter(line => line.startsWith("• ")).map(line => line.slice(2)).slice(0, 5);
-        return <motion.div key={product.id} initial={reduceMotion ? false : { opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.1 }} transition={{ duration: 0.7, delay: Math.min(index * 0.06, 0.3), ease: [0.16, 1, 0.3, 1] }} className="store-rank-reveal"><article className={`store-rank${featured ? " store-rank-featured" : ""}`}>
+        return <motion.div key={product.id} initial={reduceMotion ? false : { opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.1 }} transition={{ duration: 0.7, delay: Math.min(index * 0.06, 0.3), ease: [0.16, 1, 0.3, 1] }} className="store-rank-reveal"><article className={`card-glow store-rank${featured ? " store-rank-featured" : ""}`}>
           <div className="store-rank-top">
             {featured && <span className="store-rank-badge">{t("mostPopular")}</span>}
             {product.image ? <Image unoptimized src={product.image} alt={product.name} width={160} height={120} className="store-product-image" /> : <span className="store-rank-icon">{booster ? <Zap size={24} strokeWidth={1.5} aria-hidden="true" /> : <ShieldCheck size={24} strokeWidth={1.5} aria-hidden="true" />}</span>}
