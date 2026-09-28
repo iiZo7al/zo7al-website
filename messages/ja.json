@@ -25,7 +25,19 @@
   "modpacks": {
     "eyebrow": "Modpack", "title": "MINECRAFT、再構築。", "text": "Zo7alが手がけたMinecraftプロジェクトを探索しよう。",
     "modrinthEyebrow": "Modrinth", "modrinthTitle": "Modrinthのリリース", "modrinthLabel": "Modrinth", "modrinthLiveLabel": "Modrinthからライブ取得",
-    "curseforgeEyebrow": "CurseForge", "curseforgeTitle": "CurseForge リリース", "curseforgeLabel": "CURSEFORGE からライブ取得", "curseforgeLiveLabel": "CURSEFORGE からライブ取得"
+    "curseforgeEyebrow": "CurseForge", "curseforgeTitle": "CurseForge リリース", "curseforgeLabel": "CURSEFORGE からライブ取得", "curseforgeLiveLabel": "CURSEFORGE からライブ取得",
+    "gameVersions": "Minecraftのバージョン",
+    "loaders": "Modローダー",
+    "updated": "最終更新",
+    "license": "ライセンス",
+    "description": "説明",
+    "releases": "リリース",
+    "notListed": "記載なし",
+    "noRelease": "リリース情報はありません。プロジェクトページをご確認ください。",
+    "detailsLoading": "詳細を更新中…",
+    "detailsLive": "Modrinthの最新情報",
+    "detailsFallback": "更新できませんでした。保存済みの情報を表示しています。参照元をご確認ください。",
+    "detailsSnapshot": "参照元から保存した情報です。最新情報はプロジェクトページをご確認ください。"
   },
   "fortnite": {
     "watchVideo": "マップの動画を見る",
@@ -97,6 +109,7 @@
       { "category": "storeRanks", "q": "ランクの購入方法は？", "a": "/store でランクを選び、Minecraft ユーザー名を入力して Tebex で安全に支払えます。Booster は Discord サーバーのブーストで獲得できます。" },
       { "category": "storeRanks", "q": "利用できるランクは？", "a": "VIP、MVP、MVP+、月額 MVP++、Discord Booster があります。最新の価格・特典・条件は /store で確認できます。" },
       { "category": "storeRanks", "q": "Zo7al Networkのストアはどこですか？", "a": "ストアは /store です。決済は Tebex 経由で行われ、サブスクリプションの確認・解約は portal.tebex.io でできます。" },
+      {"category": "storeRanks", "q": "Coinsの購入方法は？再購入できますか？", "a": "/storeのCoinsからパッケージを選び、正確なMinecraftユーザー名を入力してTebexで支払います。数量とボーナスは詳細に表示されます。Coinsはランクとは別のゲーム内通貨で、何度でも購入できます。受け取りが遅れている場合は取引番号を添えてDiscordサポートに連絡してください。"},
       { "category": "fortnite", "q": "FortniteでZo7alのマップに参加するには？", "a": "Fortniteを開き、クリエイティブに進み、「コードを入力」を選択し、Fortniteページに表示されているアイランドコードを入力してください。" },
       { "category": "fortnite", "q": "Zo7alのすべてのマップはどこで見られますか？", "a": "Fortniteページには公開済みのすべてのアイランドがコード付きで一覧表示され、公式クリエイターページと同期しています。" },
       { "category": "community", "q": "Zo7alの公式Discordサーバーは？", "a": "discord.gg/nxScVYrSXq — イベント、サポート、コミュニティ更新情報の拠点です。" },

@@ -1,4 +1,5 @@
 import { getTranslations } from "next-intl/server";
+import ModpackDetailsButton from "./ModpackDetailsButton";
 import SolidIcon from "@/components/ui/SolidIcon";
 import Reveal from "@/components/ui/Reveal";
 import { CURSEFORGE_PROFILE_URL, type CurseForgeProject } from "@/lib/data/curseforge";
@@ -30,15 +31,11 @@ export default async function CurseForgeGallery({
       <div className="grid gap-5 sm:grid-cols-2">
         {projects.map((project, i) => (
           <Reveal key={project.id} delay={i * 0.05}>
-            <a
-              href={project.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              data-cursor="project"
+            <article
               className="group relative flex h-full gap-5 rounded-2xl border p-6 pt-12 transition-colors hover:border-[var(--border-strong)]"
               style={{ background: "var(--surface)", borderColor: "var(--border)" }}
             >
-              <SolidIcon name="arrow-up-right" size={16} className="absolute left-5 top-5 text-[var(--text-muted)] transition-transform group-hover:-translate-y-1" />
+              <a href={project.url} target="_blank" rel="noopener noreferrer" aria-label={`${tc("viewProject")} — ${project.title}`} className="absolute left-5 top-5 text-[var(--text-muted)] transition-transform hover:-translate-y-1"><SolidIcon name="arrow-up-right" size={16} /></a>
               {project.iconUrl ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
@@ -54,26 +51,27 @@ export default async function CurseForgeGallery({
                   style={{ background: "var(--surface-elevated)" }}
                 />
               )}
-              <div className="flex flex-1 flex-col">
+              <div className="flex min-w-0 flex-1 flex-col">
                 <p className="font-semibold">{project.title}</p>
                 {project.description && (
                   <p className="mt-2 flex-1 text-sm leading-relaxed text-[var(--text-muted)]">
                     {project.description}
                   </p>
                 )}
-                <div className="mt-4 flex items-center justify-between text-sm">
+                <div className="mt-4 flex flex-wrap items-center justify-between gap-3 text-sm">
                   <span className="text-[var(--text-muted)]">
                     {project.downloads > 0 ? `${project.downloads} ${tc("downloads")}` : "\u00A0"}
                   </span>
-                  <span
+                  <a href={project.url} target="_blank" rel="noopener noreferrer"
                     className="font-semibold transition-transform group-hover:translate-x-1"
                     style={{ color: "var(--accent-secondary)" }}
                   >
                     {tc("viewProject")} →
-                  </span>
+                  </a>
+                  <ModpackDetailsButton project={project} source="CurseForge" />
                 </div>
               </div>
-            </a>
+            </article>
           </Reveal>
         ))}
       </div>

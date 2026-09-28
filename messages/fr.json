@@ -25,7 +25,19 @@
   "modpacks": {
     "eyebrow": "Modpacks", "title": "MINECRAFT, RÉINVENTÉ.", "text": "Explorez les projets Minecraft créés par Zo7al.",
     "modrinthEyebrow": "Modrinth", "modrinthTitle": "Sorties Modrinth", "modrinthLabel": "Modrinth", "modrinthLiveLabel": "En direct depuis Modrinth",
-    "curseforgeEyebrow": "CurseForge", "curseforgeTitle": "Versions CurseForge", "curseforgeLabel": "En direct de CURSEFORGE", "curseforgeLiveLabel": "En direct de CURSEFORGE"
+    "curseforgeEyebrow": "CurseForge", "curseforgeTitle": "Versions CurseForge", "curseforgeLabel": "En direct de CURSEFORGE", "curseforgeLiveLabel": "En direct de CURSEFORGE",
+    "gameVersions": "Versions de Minecraft",
+    "loaders": "Chargeurs de mods",
+    "updated": "Dernière mise à jour",
+    "license": "Licence",
+    "description": "Description",
+    "releases": "Versions publiées",
+    "notListed": "Non indiqué",
+    "noRelease": "Aucune information de version disponible. Consultez la page du projet.",
+    "detailsLoading": "Actualisation des détails…",
+    "detailsLive": "Détails actuels de Modrinth",
+    "detailsFallback": "Échec de l’actualisation. Les données enregistrées sont affichées ; consultez la source.",
+    "detailsSnapshot": "Données enregistrées depuis la source. Consultez la page du projet pour les nouveautés."
   },
   "fortnite": {
     "watchVideo": "Voir la vidéo de la map",
@@ -97,6 +109,7 @@
       { "category": "storeRanks", "q": "Comment acheter un grade ?", "a": "Ouvre /store, choisis un grade, saisis ton pseudo Minecraft et paie via Tebex. Le grade Booster s’obtient en boostant notre serveur Discord." },
       { "category": "storeRanks", "q": "Quels grades sont disponibles ?", "a": "VIP, MVP, MVP+, MVP++ mensuel et Booster Discord. Consulte /store pour les prix, avantages et conditions actuels." },
       { "category": "storeRanks", "q": "Où se trouve la boutique de Zo7al Network ?", "a": "Ouvre la boutique à /store. Les paiements passent par Tebex ; les abonnements se consultent ou se résilient sur portal.tebex.io." },
+      {"category": "storeRanks", "q": "Comment acheter des Coins et puis-je en racheter ?", "a": "Ouvrez /store et choisissez un pack Coins. Saisissez votre pseudo Minecraft exact et payez via Tebex. Les détails indiquent la quantité et les bonus. Les Coins sont une monnaie en jeu, distincte des grades, achetable plusieurs fois. En cas de retard de livraison, contactez le support Discord avec la référence de transaction."},
       { "category": "fortnite", "q": "Comment rejoindre une map Zo7al sur Fortnite ?", "a": "Ouvrez Fortnite, allez dans Créatif, sélectionnez « Entrer un code », et tapez le code d'île affiché sur n'importe quelle map de la page Fortnite." },
       { "category": "fortnite", "q": "Où trouver toutes les maps de Zo7al ?", "a": "La page Fortnite liste toutes les îles publiées avec leur code, synchronisée avec la page créateur officielle." },
       { "category": "community", "q": "Quel est le serveur Discord officiel de Zo7al ?", "a": "discord.gg/nxScVYrSXq — le hub des événements, du support et des actualités de la communauté." },

@@ -25,7 +25,19 @@
   "modpacks": {
     "eyebrow": "Modpack'ler", "title": "MINECRAFT, YENİDEN TASARLANDI.", "text": "Zo7al'in oluşturduğu Minecraft projelerini keşfet.",
     "modrinthEyebrow": "Modrinth", "modrinthTitle": "Modrinth sürümleri", "modrinthLabel": "Modrinth", "modrinthLiveLabel": "Modrinth'ten canlı",
-    "curseforgeEyebrow": "CurseForge", "curseforgeTitle": "CurseForge sürümleri", "curseforgeLabel": "CURSEFORGE’dan canlı", "curseforgeLiveLabel": "CURSEFORGE’dan canlı"
+    "curseforgeEyebrow": "CurseForge", "curseforgeTitle": "CurseForge sürümleri", "curseforgeLabel": "CURSEFORGE’dan canlı", "curseforgeLiveLabel": "CURSEFORGE’dan canlı",
+    "gameVersions": "Minecraft sürümleri",
+    "loaders": "Mod yükleyicileri",
+    "updated": "Son güncelleme",
+    "license": "Lisans",
+    "description": "Açıklama",
+    "releases": "Yayımlanan sürümler",
+    "notListed": "Belirtilmemiş",
+    "noRelease": "Sürüm bilgisi bulunamadı. Proje sayfasını kontrol edin.",
+    "detailsLoading": "Proje ayrıntıları güncelleniyor…",
+    "detailsLive": "Modrinth üzerindeki güncel bilgiler",
+    "detailsFallback": "Güncellenemedi. Kayıtlı bilgiler gösteriliyor; kaynağı kontrol edin.",
+    "detailsSnapshot": "Kaynaktan kaydedilen bilgiler. Güncellemeler için proje sayfasını kontrol edin."
   },
   "fortnite": {
     "watchVideo": "Harita videosunu izle",
@@ -97,6 +109,7 @@
       { "category": "storeRanks", "q": "Bir rütbeyi nasıl satın alırım?", "a": "/store sayfasını aç, rütbeni seç, Minecraft kullanıcı adını gir ve Tebex üzerinden güvenle öde. Booster, Discord sunucumuzu takviye ederek alınır." },
       { "category": "storeRanks", "q": "Hangi rütbeler mevcut?", "a": "VIP, MVP, MVP+, aylık MVP++ ve Discord Booster. Güncel fiyatlar, avantajlar ve koşullar için /store sayfasına bak." },
       { "category": "storeRanks", "q": "Zo7al Network mağazası nerede?", "a": "/store adresindeki mağazayı aç. Ödemeler Tebex üzerinden işlenir; aboneliklerini portal.tebex.io adresinden görüntüleyebilir veya iptal edebilirsin." },
+      {"category": "storeRanks", "q": "Coins nasıl satın alınır? Tekrar satın alabilir miyim?", "a": "/store sayfasında Coins bölümünden bir paket seçin. Minecraft kullanıcı adınızı doğru girip Tebex üzerinden ödeme yapın. Paket ayrıntılarında miktar ve bonuslar gösterilir. Coins, rütbelerden ayrı oyun içi para birimidir ve tekrar satın alınabilir. Teslimat gecikirse işlem numaranızla Discord desteğine başvurun."},
       { "category": "fortnite", "q": "Fortnite'ta bir Zo7al haritasına nasıl katılırım?", "a": "Fortnite'ı aç, Creative'e git, \"Bir kod gir\" seçeneğini kullan ve Fortnite sayfasındaki herhangi bir haritada görünen ada kodunu yaz." },
       { "category": "fortnite", "q": "Zo7al'in tüm haritalarını nerede bulabilirim?", "a": "Fortnite sayfası, resmi içerik üreticisi sayfasıyla senkronize olarak yayınlanan her adayı koduyla birlikte listeler." },
       { "category": "community", "q": "Zo7al'in resmi Discord sunucusu nedir?", "a": "discord.gg/nxScVYrSXq — etkinlikler, destek ve topluluk güncellemeleri için merkez." },

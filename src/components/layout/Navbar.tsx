@@ -163,7 +163,8 @@ export default function Navbar() {
               );
             })}
             <div className="h-px my-1" style={{ background: "var(--border)" }} />
-            <Link href="/store" className="px-4 py-3 rounded-xl text-base font-medium" style={{ color: "var(--text-muted)" }}>
+            <Link href="/store" className="flex items-center gap-3 px-4 py-3 rounded-xl text-base font-medium" style={{ color: "var(--text-muted)" }}>
+              <SolidIcon name="shopping-bag" size={18} />
               {t("store")}
             </Link>
             <a

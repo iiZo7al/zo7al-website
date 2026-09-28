@@ -1,8 +1,10 @@
+import details from "./modrinth-details.json";
+import type { ModpackDetails } from "./modpack-details";
 export const MODRINTH_USER = "iiZo7al";
 export const MODRINTH_PROFILE_URL = "https://modrinth.com/user/iiZo7al";
 export const MODRINTH_API_URL = `https://api.modrinth.com/v2/user/${MODRINTH_USER}/projects`;
 
-export type ModrinthProject = {
+export type ModrinthProject = ModpackDetails & {
   id: string;
   slug: string;
   title: string;
@@ -17,7 +19,7 @@ export type ModrinthProject = {
 // Verified snapshot, used only if the live Modrinth API request fails or is
 // unavailable (e.g. offline preview). The live client component always
 // tries api.modrinth.com first.
-export const MODRINTH_FALLBACK: ModrinthProject[] = [
+const PROJECTS: ModrinthProject[] = [
   {
     id: "iizo7al-pvp",
     slug: "iizo7al-pvp",
@@ -58,3 +60,6 @@ export const MODRINTH_FALLBACK: ModrinthProject[] = [
     url: "https://modrinth.com/server/zo7al-network",
   },
 ];
+
+
+export const MODRINTH_FALLBACK: ModrinthProject[] = PROJECTS.map(project => ({ ...project, ...details[project.slug as keyof typeof details] }));

@@ -25,7 +25,19 @@
   "modpacks": {
     "eyebrow": "整合包", "title": "我的世界，全新演绎。", "text": "探索 Zo7al 打造的我的世界项目。",
     "modrinthEyebrow": "Modrinth", "modrinthTitle": "Modrinth 发布", "modrinthLabel": "Modrinth", "modrinthLiveLabel": "来自 Modrinth 的实时数据",
-    "curseforgeEyebrow": "CurseForge", "curseforgeTitle": "CurseForge 发布版本", "curseforgeLabel": "实时来自 CURSEFORGE", "curseforgeLiveLabel": "实时来自 CURSEFORGE"
+    "curseforgeEyebrow": "CurseForge", "curseforgeTitle": "CurseForge 发布版本", "curseforgeLabel": "实时来自 CURSEFORGE", "curseforgeLiveLabel": "实时来自 CURSEFORGE",
+    "gameVersions": "Minecraft 版本",
+    "loaders": "模组加载器",
+    "updated": "最后更新",
+    "license": "许可证",
+    "description": "描述",
+    "releases": "发布版本",
+    "notListed": "来源未注明",
+    "noRelease": "暂无发布版本信息，请查看项目页面。",
+    "detailsLoading": "正在更新项目详情…",
+    "detailsLive": "来自 Modrinth 的最新详情",
+    "detailsFallback": "无法更新，正在显示已保存的信息；请查看来源。",
+    "detailsSnapshot": "从来源保存的信息。最新更新请查看项目页面。"
   },
   "fortnite": {
     "watchVideo": "观看地图视频",
@@ -97,6 +109,7 @@
       { "category": "storeRanks", "q": "如何购买等级？", "a": "打开 /store，选择等级，输入 Minecraft 用户名并通过 Tebex 安全付款。Booster 通过助力我们的 Discord 服务器获得。" },
       { "category": "storeRanks", "q": "有哪些等级可供选择？", "a": "VIP、MVP、MVP+、月付 MVP++ 和 Discord Booster。请在 /store 查看当前价格、权益及条件。" },
       { "category": "storeRanks", "q": "Zo7al 服务器网络的商店在哪里？", "a": "商店位于 /store。付款通过 Tebex 处理，可在 portal.tebex.io 查看或取消订阅。" },
+      {"category": "storeRanks", "q": "如何购买 Coins？可以重复购买吗？", "a": "打开 /store，在 Coins 分类中选择礼包，输入准确的 Minecraft 用户名并通过 Tebex 支付。礼包详情显示数量和赠送奖励。Coins 是独立于等级的游戏内货币，可以重复购买。如到账延迟，请提供交易编号并联系 Discord 客服。"},
       { "category": "fortnite", "q": "如何在堡垒之夜中加入 Zo7al 的地图？", "a": "打开堡垒之夜，进入创造模式，选择“输入代码”，输入堡垒之夜页面上任意地图显示的岛屿代码即可。" },
       { "category": "fortnite", "q": "在哪里可以找到 Zo7al 的所有地图？", "a": "堡垒之夜页面列出了所有已发布的岛屿及其代码，并与官方创作者主页保持同步。" },
       { "category": "community", "q": "Zo7al 的官方 Discord 服务器是什么？", "a": "discord.gg/nxScVYrSXq —— 活动、支持与社区动态的中心。" },
