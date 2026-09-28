@@ -26,7 +26,7 @@ export async function getSyncedFortniteMaps(locale = "en"): Promise<{
       try {
         const html = await fetchExternal(islandCodeUrl(map.code, locale), 21600);
         const details = parseIslandDetails(html, map.code);
-        if (details) hydrated.set(map.code, { ...map, ...details, thumbnail: details.thumbnail ?? map.thumbnail });
+        if (details) hydrated.set(map.code, { ...map, ...details, description: details.description || map.description, tags: details.tags?.length ? details.tags : map.tags, thumbnail: details.thumbnail ?? map.thumbnail });
       } catch { /* A missing detail page never removes a valid island. */ }
     }
   }));

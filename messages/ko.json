@@ -25,7 +25,19 @@
   "modpacks": {
     "eyebrow": "모드팩", "title": "마인크래프트, 새롭게.", "text": "Zo7al이 만든 마인크래프트 프로젝트를 둘러보세요.",
     "modrinthEyebrow": "Modrinth", "modrinthTitle": "Modrinth 릴리스", "modrinthLabel": "Modrinth", "modrinthLiveLabel": "Modrinth에서 실시간 연동",
-    "curseforgeEyebrow": "CurseForge", "curseforgeTitle": "CurseForge 릴리스", "curseforgeLabel": "CURSEFORGE에서 실시간 동기화", "curseforgeLiveLabel": "CURSEFORGE에서 실시간 동기화"
+    "curseforgeEyebrow": "CurseForge", "curseforgeTitle": "CurseForge 릴리스", "curseforgeLabel": "CURSEFORGE에서 실시간 동기화", "curseforgeLiveLabel": "CURSEFORGE에서 실시간 동기화",
+    "gameVersions": "Minecraft 버전",
+    "loaders": "모드 로더",
+    "updated": "마지막 업데이트",
+    "license": "라이선스",
+    "description": "설명",
+    "releases": "출시 버전",
+    "notListed": "정보 없음",
+    "noRelease": "출시 버전 정보가 없습니다. 프로젝트 페이지를 확인하세요.",
+    "detailsLoading": "프로젝트 정보 업데이트 중…",
+    "detailsLive": "Modrinth 최신 정보",
+    "detailsFallback": "업데이트하지 못했습니다. 저장된 정보를 표시합니다. 출처를 확인하세요.",
+    "detailsSnapshot": "출처에서 저장한 정보입니다. 최신 정보는 프로젝트 페이지를 확인하세요."
   },
   "fortnite": {
     "watchVideo": "맵 영상 보기",
@@ -97,6 +109,7 @@
       { "category": "storeRanks", "q": "등급은 어떻게 구매하나요?", "a": "/store에서 등급을 선택하고 Minecraft 사용자 이름을 입력한 뒤 Tebex로 안전하게 결제하세요. Booster는 Discord 서버 부스트로 받습니다." },
       { "category": "storeRanks", "q": "어떤 등급이 있나요?", "a": "VIP, MVP, MVP+, 월간 MVP++, Discord Booster가 있습니다. 최신 가격, 혜택, 조건은 /store에서 확인하세요." },
       { "category": "storeRanks", "q": "Zo7al 네트워크 스토어는 어디에 있나요?", "a": "/store에서 스토어를 여세요. 결제는 Tebex로 처리되며 구독 확인 및 취소는 portal.tebex.io에서 가능합니다." },
+      {"category": "storeRanks", "q": "Coins는 어떻게 구매하나요? 재구매할 수 있나요?", "a": "/store의 Coins에서 패키지를 선택하고 정확한 Minecraft 사용자 이름을 입력한 뒤 Tebex로 결제하세요. 수량과 보너스는 패키지 상세 정보에 표시됩니다. Coins는 등급과 별개인 게임 내 화폐로 여러 번 구매할 수 있습니다. 지급이 늦어지면 거래 번호와 함께 Discord 지원팀에 문의하세요."},
       { "category": "fortnite", "q": "포트나이트에서 Zo7al 맵에 어떻게 참여하나요?", "a": "포트나이트를 열고 크리에이티브로 이동해 \"코드 입력\"을 선택한 뒤, 포트나이트 페이지에 표시된 아일랜드 코드를 입력하세요." },
       { "category": "fortnite", "q": "Zo7al의 모든 맵은 어디서 찾을 수 있나요?", "a": "포트나이트 페이지에는 공식 크리에이터 페이지와 동기화된 모든 아일랜드가 코드와 함께 나열됩니다." },
       { "category": "community", "q": "Zo7al의 공식 디스코드 서버는 무엇인가요?", "a": "discord.gg/nxScVYrSXq — 이벤트, 지원, 커뮤니티 소식의 허브입니다." },

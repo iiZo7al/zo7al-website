@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
+import ModpackDetailsButton from "./ModpackDetailsButton";
 import SolidIcon from "@/components/ui/SolidIcon";
 import Reveal from "@/components/ui/Reveal";
 import {
@@ -20,6 +21,10 @@ type RawProject = {
   downloads: number;
   project_type: string;
   categories: string[];
+  body?: string;
+  game_versions?: string[];
+  loaders?: string[];
+  updated?: string;
 };
 
 export default function ModpackGallery() {
@@ -41,6 +46,11 @@ export default function ModpackGallery() {
       .then((data: RawProject[]) => {
         if (cancelled || !Array.isArray(data) || data.length === 0) return;
         const mapped: ModrinthProject[] = data.map((p) => ({
+          ...MODRINTH_FALLBACK.find(project => project.slug === p.slug),
+          body: p.body || MODRINTH_FALLBACK.find(project => project.slug === p.slug)?.body,
+          gameVersions: p.game_versions,
+          loaders: p.loaders,
+          updated: p.updated,
           id: p.id,
           slug: p.slug,
           title: p.title,
@@ -89,15 +99,11 @@ export default function ModpackGallery() {
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {list.map((project, i) => (
           <Reveal key={project.id} delay={i * 0.05}>
-            <a
-              href={project.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              data-cursor="project"
+            <article
               className="group relative flex h-full flex-col rounded-2xl border p-6 pt-12 transition-colors hover:border-[var(--border-strong)]"
               style={{ background: "var(--surface)", borderColor: "var(--border)" }}
             >
-              <SolidIcon name="arrow-up-right" size={16} className="absolute left-5 top-5 text-[var(--text-muted)] transition-transform group-hover:-translate-y-1" />
+              <a href={project.url} target="_blank" rel="noopener noreferrer" aria-label={`${tc("viewProject")} — ${project.title}`} className="absolute left-5 top-5 text-[var(--text-muted)] transition-transform hover:-translate-y-1"><SolidIcon name="arrow-up-right" size={16} /></a>
               <div className="flex items-center gap-3">
                 {project.iconUrl ? (
                   // eslint-disable-next-line @next/next/no-img-element
@@ -138,16 +144,17 @@ export default function ModpackGallery() {
                 ))}
               </div>
 
-              <div className="mt-5 flex items-center justify-between text-sm">
+              <div className="mt-5 flex flex-wrap items-center justify-between gap-3 text-sm">
                 <span className="text-[var(--text-muted)]">{project.downloads} {tc("downloads")}</span>
-                <span
+                <a href={project.url} target="_blank" rel="noopener noreferrer"
                   className="font-semibold transition-transform group-hover:translate-x-1"
                   style={{ color: "var(--accent)" }}
                 >
                   {tc("viewProject")} →
-                </span>
+                </a>
+                <ModpackDetailsButton project={project} source="Modrinth" />
               </div>
-            </a>
+            </article>
           </Reveal>
         ))}
       </div>

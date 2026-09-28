@@ -25,7 +25,19 @@
   "modpacks": {
     "eyebrow": "المودباكات", "title": "ماينكرافت، بحلّة جديدة.", "text": "استكشف مشاريع ماينكرافت من صنع زحل.",
     "modrinthEyebrow": "Modrinth", "modrinthTitle": "إصدارات Modrinth", "modrinthLabel": "Modrinth", "modrinthLiveLabel": "مباشر من Modrinth",
-    "curseforgeEyebrow": "CurseForge", "curseforgeTitle": "إصدارات CurseForge", "curseforgeLabel": "مباشر من CURSEFORGE", "curseforgeLiveLabel": "مباشر من CURSEFORGE"
+    "curseforgeEyebrow": "CurseForge", "curseforgeTitle": "إصدارات CurseForge", "curseforgeLabel": "مباشر من CURSEFORGE", "curseforgeLiveLabel": "مباشر من CURSEFORGE",
+    "gameVersions": "إصدارات ماينكرافت",
+    "loaders": "مشغّل المودات",
+    "updated": "آخر تحديث",
+    "license": "الترخيص",
+    "description": "الوصف",
+    "releases": "الإصدارات",
+    "notListed": "غير مذكور في المصدر",
+    "noRelease": "لا تتوفر معلومات إصدار. راجع صفحة المشروع.",
+    "detailsLoading": "جاري تحديث تفاصيل المشروع…",
+    "detailsLive": "أحدث التفاصيل من Modrinth",
+    "detailsFallback": "تعذّر التحديث. نعرض المعلومات المحفوظة؛ راجع المصدر لآخر التحديثات.",
+    "detailsSnapshot": "معلومات محفوظة من المصدر. راجع صفحة المشروع لآخر التحديثات."
   },
   "fortnite": {
     "watchVideo": "شاهد فيديو الماب",
@@ -97,6 +109,7 @@
       { "category": "storeRanks", "q": "كيف أشتري رتبة؟", "a": "افتح /store، اختر الرتبة، أدخل اسم حساب ماينكرافت وأكمل الدفع بأمان عبر Tebex. رتبة Booster تحصل عليها ببوست لسيرفر الديسكورد." },
       { "category": "storeRanks", "q": "ما هي الرتب المتوفرة؟", "a": "VIP وMVP وMVP+ وMVP++ الشهرية وBooster للديسكورد. شوف /store للأسعار الحالية والمميزات والشروط." },
       { "category": "storeRanks", "q": "أين يقع متجر شبكة زحل؟", "a": "افتح صفحة المتجر /store. الدفع يتم عبر Tebex، وتقدر تشوف أو تلغي اشتراكاتك من portal.tebex.io." },
+      {"category": "storeRanks", "q": "كيف أشتري العملات، وهل أقدر أشتريها أكثر من مرة؟", "a": "افتح /store واختر باقة من قسم العملات (Coins)، ثم أدخل اسم حساب ماينكرافت الصحيح وأكمل الدفع عبر Tebex. تفاصيل الباقة توضح كمية العملات وأي بونص إضافي. العملات رصيد داخل السيرفر، وهي منفصلة عن الرتب وتقدر تشتريها أكثر من مرة. إذا تأخر الاستلام، تواصل مع دعم الديسكورد وأرفق رقم العملية."},
       { "category": "fortnite", "q": "كيف أدخل ماب زحل في فورتنايت؟", "a": "افتح فورتنايت، اذهب إلى كرييتف، اختر \"أدخل كود\"، واكتب كود الجزيرة الموجود بجانب أي ماب في صفحة فورتنايت." },
       { "category": "fortnite", "q": "أين أجد كل مابات زحل؟", "a": "صفحة فورتنايت تعرض كل جزيرة منشورة مع كودها، وتُحدَّث تلقائيًا من صفحة المطور الرسمية." },
       { "category": "community", "q": "ما هو سيرفر ديسكورد زحل الرسمي؟", "a": "discord.gg/nxScVYrSXq — المكان الرئيسي للفعاليات والدعم وتحديثات المجتمع." },

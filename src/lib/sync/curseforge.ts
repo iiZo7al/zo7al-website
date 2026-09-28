@@ -28,6 +28,7 @@ export async function getSyncedCurseForgeProjects(): Promise<{
 
       const known = CURSEFORGE_PROJECTS.find((p) => p.url.endsWith(slug));
       found.set(slug, {
+        ...known,
         id: known?.id ?? slug,
         title: known?.title ?? title,
         description: known?.description ?? "",
@@ -44,3 +45,4 @@ export async function getSyncedCurseForgeProjects(): Promise<{
     return { items: CURSEFORGE_PROJECTS, source: "fallback" };
   }
 }
+

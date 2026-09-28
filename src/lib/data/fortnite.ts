@@ -1,3 +1,4 @@
+import { FORTNITE_DETAILS } from "./fortnite-details";
 import { fortniteLocale } from "../sync/fortnite-parser";
 
 export const FORTNITE_PROFILE_URL = "https://www.fortnite.com/@zo7al";
@@ -17,7 +18,7 @@ export type FortniteMap = {
 
 // Verified against the live creator page — island codes and artwork only,
 // nothing invented.
-export const FORTNITE_MAPS: FortniteMap[] = [
+const MAPS: FortniteMap[] = [
   {
     id: "saturn-sniper",
     title: "سنايبرات زحل Zo7al 💥🚀",
@@ -110,6 +111,8 @@ export const FORTNITE_MAPS: FortniteMap[] = [
       "https://cdn-0001.qstv.on.epicgames.com/emPFatMRpdjmHUIPot/image/landscape_comp_s.jpeg",
   },
 ];
+
+export const FORTNITE_MAPS: FortniteMap[] = MAPS.map(map => ({ ...map, ...FORTNITE_DETAILS[map.code] }));
 
 export function islandCodeUrl(code: string, locale = "en") {
   return `https://www.fortnite.com/@zo7al/${code}?lang=${fortniteLocale(locale)}`;

@@ -91,7 +91,19 @@
     "curseforgeEyebrow": "CurseForge",
     "curseforgeTitle": "CurseForge releases",
     "curseforgeLabel": "Live from CURSEFORGE",
-    "curseforgeLiveLabel": "Live from CURSEFORGE"
+    "curseforgeLiveLabel": "Live from CURSEFORGE",
+    "gameVersions": "Minecraft versions",
+    "loaders": "Mod loaders",
+    "updated": "Last updated",
+    "license": "License",
+    "description": "Description",
+    "releases": "Releases",
+    "notListed": "Not listed by the source",
+    "noRelease": "No release information is available. Check the project page.",
+    "detailsLoading": "Updating project details…",
+    "detailsLive": "Current details from Modrinth",
+    "detailsFallback": "Could not refresh. Showing saved details; check the source for updates.",
+    "detailsSnapshot": "Saved source details. Check the project page for the latest updates."
   },
   "fortnite": {
     "watchVideo": "Watch map video",
@@ -191,6 +203,7 @@
       { "category": "storeRanks", "q": "How do I buy a rank?", "a": "Open /store, choose a rank, enter your Minecraft username and complete payment securely through Tebex. Booster is obtained by boosting our Discord server." },
       { "category": "storeRanks", "q": "What ranks are available?", "a": "VIP, MVP, MVP+, monthly MVP++ and Discord Booster. Check /store for current prices, benefits and conditions." },
       { "category": "storeRanks", "q": "Where is the Zo7al Network store?", "a": "Open the Store page at /store. Payments are processed through Tebex, and subscriptions can be viewed or cancelled at portal.tebex.io." },
+      {"category": "storeRanks", "q": "How do I buy Coins, and can I buy them again?", "a": "Open /store and choose a package in Coins. Enter your exact Minecraft username and pay through Tebex. The package details show the amount and any bonus. Coins are in-game currency, separate from ranks, and can be purchased more than once. If delivery is delayed, contact Discord support with your transaction reference."},
       { "category": "fortnite", "q": "How do I join a Zo7al Fortnite map?", "a": "Open Fortnite, go to Creative, select \"Enter a code\", and type in the island code shown on any map on the Fortnite page." },
       { "category": "fortnite", "q": "Where can I find all Zo7al maps?", "a": "The Fortnite page lists every published island with its code, kept in sync with the official creator page." },
       { "category": "community", "q": "What is the official Zo7al Discord server?", "a": "discord.gg/nxScVYrSXq — the hub for events, support and community updates." },

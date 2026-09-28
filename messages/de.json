@@ -25,7 +25,19 @@
   "modpacks": {
     "eyebrow": "Modpacks", "title": "MINECRAFT, NEU GEDACHT.", "text": "Entdecke die Minecraft-Projekte von Zo7al.",
     "modrinthEyebrow": "Modrinth", "modrinthTitle": "Modrinth-Releases", "modrinthLabel": "Modrinth", "modrinthLiveLabel": "Live von Modrinth",
-    "curseforgeEyebrow": "CurseForge", "curseforgeTitle": "CurseForge-Veröffentlichungen", "curseforgeLabel": "Live von CURSEFORGE", "curseforgeLiveLabel": "Live von CURSEFORGE"
+    "curseforgeEyebrow": "CurseForge", "curseforgeTitle": "CurseForge-Veröffentlichungen", "curseforgeLabel": "Live von CURSEFORGE", "curseforgeLiveLabel": "Live von CURSEFORGE",
+    "gameVersions": "Minecraft-Versionen",
+    "loaders": "Mod-Loader",
+    "updated": "Zuletzt aktualisiert",
+    "license": "Lizenz",
+    "description": "Beschreibung",
+    "releases": "Veröffentlichungen",
+    "notListed": "Nicht angegeben",
+    "noRelease": "Keine Versionsinformationen verfügbar. Sieh auf der Projektseite nach.",
+    "detailsLoading": "Projektdetails werden aktualisiert…",
+    "detailsLive": "Aktuelle Details von Modrinth",
+    "detailsFallback": "Aktualisierung fehlgeschlagen. Gespeicherte Details werden angezeigt; prüfe die Quelle.",
+    "detailsSnapshot": "Gespeicherte Quelldaten. Aktuelle Informationen findest du auf der Projektseite."
   },
   "fortnite": {
     "watchVideo": "Map-Video ansehen",
@@ -97,6 +109,7 @@
       { "category": "storeRanks", "q": "Wie kaufe ich einen Rang?", "a": "Öffne /store, wähle einen Rang, gib deinen Minecraft-Namen ein und bezahle sicher über Tebex. Booster erhältst du durch einen Boost unseres Discord-Servers." },
       { "category": "storeRanks", "q": "Welche Ränge gibt es?", "a": "VIP, MVP, MVP+, monatliches MVP++ und Discord Booster. Aktuelle Preise, Vorteile und Bedingungen findest du unter /store." },
       { "category": "storeRanks", "q": "Wo ist der Shop von Zo7al Network?", "a": "Öffne den Shop unter /store. Zahlungen laufen über Tebex; Abonnements kannst du auf portal.tebex.io ansehen oder kündigen." },
+      {"category": "storeRanks", "q": "Wie kaufe ich Coins und kann ich sie erneut kaufen?", "a": "Öffne /store und wähle ein Coins-Paket. Gib deinen genauen Minecraft-Namen ein und bezahle über Tebex. Die Paketdetails zeigen Menge und Bonus. Coins sind Spielwährung, unabhängig von Rängen, und mehrfach kaufbar. Bei verzögerter Lieferung kontaktiere den Discord-Support mit deiner Transaktionsnummer."},
       { "category": "fortnite", "q": "Wie trete ich einer Zo7al-Map in Fortnite bei?", "a": "Öffne Fortnite, gehe zu Creative, wähle „Code eingeben“ und gib den Inselcode ein, der bei jeder Map auf der Fortnite-Seite steht." },
       { "category": "fortnite", "q": "Wo finde ich alle Maps von Zo7al?", "a": "Die Fortnite-Seite listet jede veröffentlichte Insel mit ihrem Code, synchronisiert mit der offiziellen Creator-Seite." },
       { "category": "community", "q": "Was ist der offizielle Zo7al-Discord-Server?", "a": "discord.gg/nxScVYrSXq — der Treffpunkt für Events, Support und Community-Updates." },
