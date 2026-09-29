@@ -20,7 +20,14 @@
     "javaLabel": "Java IP", "bedrockLabel": "Bedrockアドレス", "bedrockNote": "Bedrock：zo7al.play-mc.fun — ポート 25807。",
     "copyJava": "Java IPをコピー", "copyBedrock": "Bedrockアドレスをコピー", "checkingStatus": "ステータスを確認中…", "readyToPlay": "ZO7AL Network — プレイ準備完了",
     "online": "オンライン", "offline": "オフライン", "players": "プレイヤー", "version": "バージョン", "address": "アドレス",
-    "statusUnavailable": "現在ライブステータスは取得できません — 下記のアドレスで接続してください。", "modeLive": "稼働中", "modeSoon": "近日公開"
+    "statusUnavailable": "現在ライブステータスは取得できません — 下記のアドレスで接続してください。", "modeLive": "稼働中", "modeSoon": "近日公開",
+    "sharedAddress": "Java・Bedrock 共通IP",
+    "portLabel": "ポート",
+    "javaTutorial": "参加方法 — Java",
+    "bedrockTutorial": "参加方法 — Bedrock",
+    "javaInstructions": "Minecraft Java → マルチプレイ → サーバーを追加を開きます。サーバーアドレスに {address} を入力し、保存して参加してください。",
+    "bedrockInstructions": "Minecraft Bedrock → 遊ぶ → サーバー → サーバーを追加を開きます。アドレスに {address}、ポートに {port} を入力し、保存して参加してください。",
+    "bedrockPortNotice": "現在の Bedrock ポート {port} を使用してください。動画では別のポートが表示されています。"
   },
   "modpacks": {
     "eyebrow": "Modpack", "title": "MINECRAFT、再構築。", "text": "Zo7alが手がけたMinecraftプロジェクトを探索しよう。",
@@ -67,7 +74,13 @@
     "eyebrow": "コミュニティ", "title": "旅を追いかけよう。", "text": "すべてのプラットフォームを一か所に。", "label": "SNS",
     "liveLabel": "Linktreeとライブ同期中", "viewOnLinktree": "Linktreeで見る",
     "gamesEyebrow": "ゲーム公式アカウント",
-    "gamesText": "フォートナイトとRobloxのマップやゲームプロジェクトの告知用アカウント。リンクはLinktreeと同期されます。"
+    "gamesText": "フォートナイトとRobloxのマップやゲームプロジェクトの告知用アカウント。リンクはLinktreeと同期されます。",
+    "preview": "プロフィールのプレビュー",
+    "previewLoading": "公開プレビューを読み込み中…",
+    "previewSource": "公開プロフィールからのプレビューです。",
+    "previewUnavailable": "ライブプレビューは利用できません。下のボタンからプロフィールを開けます。",
+    "latestVideo": "最新の動画",
+    "openProfile": "{platform} を開く"
   },
   "store": {
     "coinsTitle": "コイン",

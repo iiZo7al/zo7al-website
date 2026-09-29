@@ -134,7 +134,7 @@ export default function SaturnScene({ isTransitioning }: SaturnSceneProps) {
   };
 
   const handlePointerDown = (event: ThreeEvent<PointerEvent>) => {
-    if (isTransitioning || activePointer.current !== null || event.button !== 0) return;
+    if (event.pointerType !== "mouse" || !window.matchMedia("(hover: hover) and (pointer: fine)").matches || isTransitioning || activePointer.current !== null || event.button !== 0) return;
     const pointerAngle = getPointerAngle(event);
     if (pointerAngle === null) return;
     event.stopPropagation();

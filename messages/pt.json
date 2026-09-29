@@ -20,7 +20,14 @@
     "javaLabel": "IP de Java", "bedrockLabel": "Endereço Bedrock", "bedrockNote": "Bedrock: zo7al.play-mc.fun — porta 25807.",
     "copyJava": "Copiar IP de Java", "copyBedrock": "Copiar endereço Bedrock", "checkingStatus": "Verificando status…", "readyToPlay": "Rede ZO7AL — Pronta para jogar",
     "online": "Online", "offline": "Offline", "players": "Jogadores", "version": "Versão", "address": "Endereço",
-    "statusUnavailable": "O status ao vivo não está disponível agora — conecte-se usando o endereço abaixo.", "modeLive": "Ativo", "modeSoon": "Em breve"
+    "statusUnavailable": "O status ao vivo não está disponível agora — conecte-se usando o endereço abaixo.", "modeLive": "Ativo", "modeSoon": "Em breve",
+    "sharedAddress": "Java e Bedrock · IP",
+    "portLabel": "Porta",
+    "javaTutorial": "Como entrar — Java",
+    "bedrockTutorial": "Como entrar — Bedrock",
+    "javaInstructions": "Abra Minecraft Java → Multijogador → Adicionar servidor. Digite {address} como endereço do servidor, salve e entre.",
+    "bedrockInstructions": "Abra Minecraft Bedrock → Jogar → Servidores → Adicionar servidor. Digite {address} como endereço e {port} como porta, salve e entre.",
+    "bedrockPortNotice": "Use a porta atual do Bedrock: {port}. O vídeo mostra outra porta."
   },
   "modpacks": {
     "eyebrow": "Modpacks", "title": "MINECRAFT, REINVENTADO.", "text": "Explore os projetos de Minecraft criados por Zo7al.",
@@ -67,7 +74,13 @@
     "eyebrow": "Comunidade", "title": "SIGA A JORNADA.", "text": "Todas as plataformas, em um só lugar.", "label": "Redes sociais",
     "liveLabel": "Sincronizado ao vivo com Linktree", "viewOnLinktree": "Ver no Linktree",
     "gamesEyebrow": "Nossas contas de jogos",
-    "gamesText": "Minhas contas de mapas de Fortnite e Roblox e anúncios de projetos de jogos. Os links são sincronizados com o Linktree."
+    "gamesText": "Minhas contas de mapas de Fortnite e Roblox e anúncios de projetos de jogos. Os links são sincronizados com o Linktree.",
+    "preview": "Prévia do perfil",
+    "previewLoading": "Carregando a prévia pública…",
+    "previewSource": "Prévia do perfil público.",
+    "previewUnavailable": "A prévia ao vivo não está disponível. Você pode abrir o perfil abaixo.",
+    "latestVideo": "Vídeo mais recente",
+    "openProfile": "Abrir {platform}"
   },
   "store": {
     "coinsTitle": "Moedas",

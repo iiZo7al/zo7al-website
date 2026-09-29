@@ -20,7 +20,14 @@
     "javaLabel": "Java IP", "bedrockLabel": "Bedrock Adresi", "bedrockNote": "Bedrock: zo7al.play-mc.fun — bağlantı noktası 25807.",
     "copyJava": "Java IP'sini Kopyala", "copyBedrock": "Bedrock Adresini Kopyala", "checkingStatus": "Durum kontrol ediliyor…", "readyToPlay": "ZO7AL Network — Oynamaya hazır",
     "online": "Çevrimiçi", "offline": "Çevrimdışı", "players": "Oyuncular", "version": "Sürüm", "address": "Adres",
-    "statusUnavailable": "Canlı durum şu anda kullanılamıyor — aşağıdaki adresle bağlan.", "modeLive": "Aktif", "modeSoon": "Yakında"
+    "statusUnavailable": "Canlı durum şu anda kullanılamıyor — aşağıdaki adresle bağlan.", "modeLive": "Aktif", "modeSoon": "Yakında",
+    "sharedAddress": "Java ve Bedrock · IP",
+    "portLabel": "Port",
+    "javaTutorial": "Nasıl katılınır — Java",
+    "bedrockTutorial": "Nasıl katılınır — Bedrock",
+    "javaInstructions": "Minecraft Java → Çok Oyunculu → Sunucu Ekle yolunu aç. Sunucu adresi olarak {address} yaz, kaydet ve katıl.",
+    "bedrockInstructions": "Minecraft Bedrock → Oyna → Sunucular → Sunucu Ekle yolunu aç. Adres olarak {address}, port olarak {port} yaz, kaydet ve katıl.",
+    "bedrockPortNotice": "Güncel Bedrock portunu kullan: {port}. Videoda farklı bir port gösteriliyor."
   },
   "modpacks": {
     "eyebrow": "Modpack'ler", "title": "MINECRAFT, YENİDEN TASARLANDI.", "text": "Zo7al'in oluşturduğu Minecraft projelerini keşfet.",
@@ -67,7 +74,13 @@
     "eyebrow": "Topluluk", "title": "YOLCULUĞU TAKİP ET.", "text": "Her platform, tek bir yerde.", "label": "Sosyal medya",
     "liveLabel": "Linktree ile canlı senkronize", "viewOnLinktree": "Linktree'de Gör",
     "gamesEyebrow": "Oyun hesaplarımız",
-    "gamesText": "Fortnite ve Roblox haritalarım ile oyun projelerimin duyuruları için hesaplarım. Bağlantılar Linktree ile eşitlenir."
+    "gamesText": "Fortnite ve Roblox haritalarım ile oyun projelerimin duyuruları için hesaplarım. Bağlantılar Linktree ile eşitlenir.",
+    "preview": "Profil önizlemesi",
+    "previewLoading": "Herkese açık önizleme yükleniyor…",
+    "previewSource": "Herkese açık profilden önizleme.",
+    "previewUnavailable": "Canlı önizleme kullanılamıyor. Profili aşağıdan açabilirsin.",
+    "latestVideo": "Son video",
+    "openProfile": "{platform} profilini aç"
   },
   "store": {
     "coinsTitle": "Coinler",

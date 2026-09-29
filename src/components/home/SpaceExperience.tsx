@@ -146,7 +146,8 @@ export default function SpaceExperience({ onGameStateChange, gameOnly = false }:
     role={active ? "dialog" : undefined} aria-modal={active ? true : undefined} aria-label={active ? t("title") : undefined} tabIndex={active ? -1 : undefined}
     onPointerDownCapture={() => audio.unlock()}>
     <Canvas camera={{ position: [0, 0, 10], fov: 45 }} gl={{ antialias: true, powerPreference: "high-performance" }} dpr={[1, 1.5]}
-      style={{ touchAction: "none", background: inFlight ? "radial-gradient(ellipse at 72% 22%, #251608 0%, transparent 48%), radial-gradient(ellipse at 18% 75%, #14111a 0%, #07080b 65%)" : "var(--bg)" }}>
+      className={!active ? "idle-space-canvas" : undefined}
+      style={{ touchAction: active ? "none" : "pan-y", background: inFlight ? "radial-gradient(ellipse at 72% 22%, #251608 0%, transparent 48%), radial-gradient(ellipse at 18% 75%, #14111a 0%, #07080b 65%)" : "var(--bg)" }}>
       <Suspense fallback={<Html center><span role="status" className="whitespace-nowrap text-xs text-[var(--accent)]">{t(inFlight ? "loading" : "orbitLoading")}</span></Html>}>
         <Environment resolution={128} frames={1}>
           <Lightformer form="ring" color="#b8d8ff" intensity={3} scale={10} position={[0, 5, -10]} />

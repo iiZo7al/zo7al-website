@@ -20,7 +20,14 @@
     "javaLabel": "IP Java", "bedrockLabel": "Adresse Bedrock", "bedrockNote": "Bedrock : zo7al.play-mc.fun — port 25807.",
     "copyJava": "Copier l'IP Java", "copyBedrock": "Copier l'adresse Bedrock", "checkingStatus": "Vérification du statut…", "readyToPlay": "Réseau ZO7AL — Prêt à jouer",
     "online": "En ligne", "offline": "Hors ligne", "players": "Joueurs", "version": "Version", "address": "Adresse",
-    "statusUnavailable": "Le statut en direct n'est pas disponible pour le moment — connectez-vous avec l'adresse ci-dessous.", "modeLive": "Disponible", "modeSoon": "Bientôt disponible"
+    "statusUnavailable": "Le statut en direct n'est pas disponible pour le moment — connectez-vous avec l'adresse ci-dessous.", "modeLive": "Disponible", "modeSoon": "Bientôt disponible",
+    "sharedAddress": "Java et Bedrock · IP",
+    "portLabel": "Port",
+    "javaTutorial": "Comment rejoindre — Java",
+    "bedrockTutorial": "Comment rejoindre — Bedrock",
+    "javaInstructions": "Ouvre Minecraft Java → Multijoueur → Ajouter un serveur. Saisis {address} comme adresse du serveur, enregistre et rejoins-le.",
+    "bedrockInstructions": "Ouvre Minecraft Bedrock → Jouer → Serveurs → Ajouter un serveur. Saisis {address} comme adresse et {port} comme port, enregistre et rejoins-le.",
+    "bedrockPortNotice": "Utilise le port Bedrock actuel : {port}. La vidéo affiche un autre port."
   },
   "modpacks": {
     "eyebrow": "Modpacks", "title": "MINECRAFT, RÉINVENTÉ.", "text": "Explorez les projets Minecraft créés par Zo7al.",
@@ -67,7 +74,13 @@
     "eyebrow": "Communauté", "title": "SUIVEZ L'AVENTURE.", "text": "Toutes les plateformes, en un seul endroit.", "label": "Réseaux sociaux",
     "liveLabel": "Synchronisé en direct avec Linktree", "viewOnLinktree": "Voir sur Linktree",
     "gamesEyebrow": "Nos comptes de jeux",
-    "gamesText": "Mes comptes dédiés aux maps Fortnite et Roblox et aux annonces de projets de jeux. Les liens sont synchronisés avec Linktree."
+    "gamesText": "Mes comptes dédiés aux maps Fortnite et Roblox et aux annonces de projets de jeux. Les liens sont synchronisés avec Linktree.",
+    "preview": "Aperçu du profil",
+    "previewLoading": "Chargement de l’aperçu public…",
+    "previewSource": "Aperçu du profil public.",
+    "previewUnavailable": "L’aperçu en direct est indisponible. Tu peux ouvrir le profil ci-dessous.",
+    "latestVideo": "Dernière vidéo",
+    "openProfile": "Ouvrir {platform}"
   },
   "store": {
     "coinsTitle": "Pièces",

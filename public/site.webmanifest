@@ -1,8 +1,8 @@
 {
-  "id": "/",
-  "name": "Zo7al Projects",
-  "short_name": "Zo7al",
-  "start_url": "/",
+  "id": "/game",
+  "name": "Zo7al Game",
+  "short_name": "Zo7al Game",
+  "start_url": "/game",
   "scope": "/",
   "display": "standalone",
   "background_color": "#07080b",
