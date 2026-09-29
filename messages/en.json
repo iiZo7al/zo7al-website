@@ -78,7 +78,14 @@
     "address": "Address",
     "statusUnavailable": "Live status is unavailable right now — connect with the address below to jump in.",
     "modeLive": "Live",
-    "modeSoon": "Coming Soon"
+    "modeSoon": "Coming Soon",
+    "sharedAddress": "Java & Bedrock · IP",
+    "portLabel": "Port",
+    "javaTutorial": "How to join — Java",
+    "bedrockTutorial": "How to join — Bedrock",
+    "javaInstructions": "Open Minecraft Java → Multiplayer → Add Server. Enter {address} as the server address, save and join.",
+    "bedrockInstructions": "Open Minecraft Bedrock → Play → Servers → Add Server. Enter {address} as the address and {port} as the port, then save and join.",
+    "bedrockPortNotice": "Use the current Bedrock port: {port}. The video shows a different port."
   },
   "modpacks": {
     "eyebrow": "Modpacks",
@@ -145,7 +152,13 @@
     "liveLabel": "Synced live from Linktree",
     "viewOnLinktree": "View on Linktree",
     "gamesEyebrow": "Our gaming accounts",
-    "gamesText": "My accounts for Fortnite and Roblox maps and gaming project announcements. Links sync from Linktree."
+    "gamesText": "My accounts for Fortnite and Roblox maps and gaming project announcements. Links sync from Linktree.",
+    "preview": "Profile preview",
+    "previewLoading": "Loading the public preview…",
+    "previewSource": "Preview from the public profile.",
+    "previewUnavailable": "The platform’s live preview is unavailable. You can still open the profile below.",
+    "latestVideo": "Latest video",
+    "openProfile": "Open {platform}"
   },
   "store": {
     "coinsTitle": "Coins",

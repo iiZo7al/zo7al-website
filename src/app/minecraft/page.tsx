@@ -9,6 +9,7 @@ import VersionTimeline from "@/components/minecraft/VersionTimeline";
 import ModesGrid from "@/components/minecraft/ModesGrid";
 import MagneticButton from "@/components/cursor/MagneticButton";
 import Link from "next/link";
+import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "Minecraft — ZO7AL Projects",
@@ -21,6 +22,8 @@ export default async function MinecraftPage() {
   return (
     <main data-accent="minecraft">
       <PageHero eyebrow={t("eyebrow")} title={t("title")} text={t("text")}>
+        <div className="flex flex-wrap items-center gap-6">
+        <Image src="/assets/site/server-logo.png" width={208} height={198} alt="Z7" className="h-14 w-auto" priority />
         <MagneticButton>
           <Link
             href="/store"
@@ -31,6 +34,7 @@ export default async function MinecraftPage() {
             {t("openStore")}
           </Link>
         </MagneticButton>
+        </div>
       </PageHero>
 
       <section className="relative pb-20 sm:pb-28">

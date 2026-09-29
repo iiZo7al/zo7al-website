@@ -20,7 +20,14 @@
     "javaLabel": "Java-IP", "bedrockLabel": "Bedrock-Adresse", "bedrockNote": "Bedrock: zo7al.play-mc.fun — Port 25807.",
     "copyJava": "Java-IP kopieren", "copyBedrock": "Bedrock-Adresse kopieren", "checkingStatus": "Status wird geprüft…", "readyToPlay": "ZO7AL Network — Bereit zum Spielen",
     "online": "Online", "offline": "Offline", "players": "Spieler", "version": "Version", "address": "Adresse",
-    "statusUnavailable": "Live-Status ist gerade nicht verfügbar — verbinde dich über die Adresse unten.", "modeLive": "Live", "modeSoon": "Demnächst"
+    "statusUnavailable": "Live-Status ist gerade nicht verfügbar — verbinde dich über die Adresse unten.", "modeLive": "Live", "modeSoon": "Demnächst",
+    "sharedAddress": "Java und Bedrock · IP",
+    "portLabel": "Port",
+    "javaTutorial": "So trittst du bei — Java",
+    "bedrockTutorial": "So trittst du bei — Bedrock",
+    "javaInstructions": "Öffne Minecraft Java → Mehrspieler → Server hinzufügen. Gib {address} als Serveradresse ein, speichere und tritt bei.",
+    "bedrockInstructions": "Öffne Minecraft Bedrock → Spielen → Server → Server hinzufügen. Gib {address} als Adresse und {port} als Port ein, speichere und tritt bei.",
+    "bedrockPortNotice": "Verwende den aktuellen Bedrock-Port: {port}. Im Video wird ein anderer Port gezeigt."
   },
   "modpacks": {
     "eyebrow": "Modpacks", "title": "MINECRAFT, NEU GEDACHT.", "text": "Entdecke die Minecraft-Projekte von Zo7al.",
@@ -67,7 +74,13 @@
     "eyebrow": "Community", "title": "FOLGE DER REISE.", "text": "Jede Plattform an einem Ort.", "label": "Social Media",
     "liveLabel": "Live synchronisiert mit Linktree", "viewOnLinktree": "Auf Linktree ansehen",
     "gamesEyebrow": "Unsere Gaming-Kanäle",
-    "gamesText": "Meine Konten für Fortnite- und Roblox-Maps und Ankündigungen von Spieleprojekten. Links werden mit Linktree synchronisiert."
+    "gamesText": "Meine Konten für Fortnite- und Roblox-Maps und Ankündigungen von Spieleprojekten. Links werden mit Linktree synchronisiert.",
+    "preview": "Profilvorschau",
+    "previewLoading": "Öffentliche Vorschau wird geladen…",
+    "previewSource": "Vorschau des öffentlichen Profils.",
+    "previewUnavailable": "Die Live-Vorschau ist nicht verfügbar. Du kannst das Profil unten öffnen.",
+    "latestVideo": "Neuestes Video",
+    "openProfile": "{platform} öffnen"
   },
   "store": {
     "coinsTitle": "Coins",

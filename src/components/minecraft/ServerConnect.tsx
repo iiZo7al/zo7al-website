@@ -5,18 +5,24 @@ import { useTranslations } from "next-intl";
 import { Check, Copy } from "lucide-react";
 import { MINECRAFT_SERVER } from "@/lib/data/minecraft";
 import { flashCursor } from "@/components/cursor/CustomCursor";
+import DetailsDialog from "@/components/ui/DetailsDialog";
+import DetailsIcon from "@/components/ui/DetailsIcon";
 import MagneticButton from "@/components/cursor/MagneticButton";
 
 function CopyRow({
   label,
   address,
-  disabledNote,
+  subtitle,
+  detailsLabel,
+  onDetails,
   copyLabel,
   copiedLabel,
 }: {
   label: string;
   address: string | null;
-  disabledNote?: string;
+  subtitle?: string;
+  detailsLabel: string;
+  onDetails: () => void;
   copyLabel: string;
   copiedLabel: string;
 }) {
@@ -46,11 +52,14 @@ function CopyRow({
             {address}
           </p>
         ) : (
-          <p className="text-lg text-[var(--text-muted)]">{disabledNote}</p>
+          <p className="text-lg text-[var(--text-muted)]">—</p>
         )}
+        {subtitle && <p className="mt-2 text-sm text-[var(--text-muted)]">{subtitle}</p>}
       </div>
 
       {address && (
+        <div className="flex items-center gap-3">
+        <button type="button" onClick={onDetails} aria-label={detailsLabel} title={detailsLabel} aria-haspopup="dialog" className="inline-flex size-12 items-center justify-center rounded-full border border-[var(--border-strong)] transition-colors hover:text-[var(--accent)]"><DetailsIcon /></button>
         <MagneticButton>
           <button
             type="button"
@@ -77,6 +86,7 @@ function CopyRow({
             )}
           </button>
         </MagneticButton>
+        </div>
       )}
     </div>
   );
@@ -85,22 +95,25 @@ function CopyRow({
 export default function ServerConnect() {
   const t = useTranslations("minecraft");
   const tc = useTranslations("common");
+  const [tutorial, setTutorial] = useState<"java" | "bedrock" | null>(null);
   return (
     <div className="grid gap-5">
-      <CopyRow
-        label={t("javaLabel")}
-        address={MINECRAFT_SERVER.javaAddress}
-        copyLabel={t("copyJava")}
-        copiedLabel={tc("copied")}
-      />
-      <CopyRow
-        label={t("bedrockLabel")}
-        address={MINECRAFT_SERVER.bedrockAddress}
-        copyLabel={t("copyBedrock")}
-        copiedLabel={tc("copied")}
-      />
-      <CopyRow label={t("bedrockPort")} address={MINECRAFT_SERVER.bedrockPort} copyLabel={t("copyPort")} copiedLabel={tc("copied")} />
+      <CopyRow label={t("sharedAddress")} address={MINECRAFT_SERVER.javaAddress}
+        copyLabel={tc("copy")} copiedLabel={tc("copied")}
+        detailsLabel={t("javaTutorial")} onDetails={() => setTutorial("java")} />
+      <CopyRow label={t("portLabel")} subtitle="Bedrock" address={MINECRAFT_SERVER.bedrockPort}
+        copyLabel={t("copyPort")} copiedLabel={tc("copied")}
+        detailsLabel={t("bedrockTutorial")} onDetails={() => setTutorial("bedrock")} />
+      {tutorial && <DetailsDialog title={t(tutorial === "java" ? "javaTutorial" : "bedrockTutorial")} onClose={() => setTutorial(null)}>
+        <div className="space-y-5 p-5 sm:p-7">
+          {tutorial === "bedrock" && <p className="rounded-xl border border-[var(--border-strong)] bg-[var(--bg)] p-4 text-sm text-[var(--accent)]">{t("bedrockPortNotice", { port: MINECRAFT_SERVER.bedrockPort })}</p>}
+          <video key={tutorial} controls playsInline preload="metadata" poster={`/assets/tutorials/${tutorial}.jpg`} className="aspect-video w-full rounded-2xl bg-black">
+            <source src={`/assets/tutorials/${tutorial}.mp4`} type="video/mp4" />
+          </video>
+          <p className="text-sm leading-relaxed text-[var(--text-muted)]">{t(tutorial === "java" ? "javaInstructions" : "bedrockInstructions", { address: MINECRAFT_SERVER.javaAddress, port: MINECRAFT_SERVER.bedrockPort })}</p>
+          <p className="rounded-xl border border-[var(--border)] p-4 font-mono text-sm" dir="ltr">{MINECRAFT_SERVER.javaAddress}{tutorial === "bedrock" && <span className="mt-2 block">{t("portLabel")}: {MINECRAFT_SERVER.bedrockPort}</span>}</p>
+        </div>
+      </DetailsDialog>}
     </div>
   );
 }
-

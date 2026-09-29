@@ -20,7 +20,14 @@
     "javaLabel": "Java 版 IP", "bedrockLabel": "基岩版地址", "bedrockNote": "基岩版：zo7al.play-mc.fun — 端口 25807。",
     "copyJava": "复制 Java 版 IP", "copyBedrock": "复制基岩版地址", "checkingStatus": "正在检查状态…", "readyToPlay": "ZO7AL 服务器网络 — 准备就绪",
     "online": "在线", "offline": "离线", "players": "玩家", "version": "版本", "address": "地址",
-    "statusUnavailable": "目前无法获取实时状态——请使用下方地址加入。", "modeLive": "已上线", "modeSoon": "即将推出"
+    "statusUnavailable": "目前无法获取实时状态——请使用下方地址加入。", "modeLive": "已上线", "modeSoon": "即将推出",
+    "sharedAddress": "Java 和基岩版共用 IP",
+    "portLabel": "端口",
+    "javaTutorial": "加入方法 — Java 版",
+    "bedrockTutorial": "加入方法 — 基岩版",
+    "javaInstructions": "打开 Minecraft Java 版 → 多人游戏 → 添加服务器。在服务器地址中输入 {address}，保存后加入。",
+    "bedrockInstructions": "打开 Minecraft 基岩版 → 游戏 → 服务器 → 添加服务器。地址填写 {address}，端口填写 {port}，保存后加入。",
+    "bedrockPortNotice": "请使用当前基岩版端口 {port}。视频中显示的端口不同。"
   },
   "modpacks": {
     "eyebrow": "整合包", "title": "我的世界，全新演绎。", "text": "探索 Zo7al 打造的我的世界项目。",
@@ -67,7 +74,13 @@
     "eyebrow": "社区", "title": "关注这段旅程。", "text": "所有平台，一站直达。", "label": "社交媒体",
     "liveLabel": "与 Linktree 实时同步", "viewOnLinktree": "在 Linktree 上查看",
     "gamesEyebrow": "游戏官方账号",
-    "gamesText": "这些账号用于发布我的堡垒之夜与Roblox地图及游戏项目公告。链接与Linktree同步。"
+    "gamesText": "这些账号用于发布我的堡垒之夜与Roblox地图及游戏项目公告。链接与Linktree同步。",
+    "preview": "账号预览",
+    "previewLoading": "正在加载公开预览…",
+    "previewSource": "来自公开账号页面的预览。",
+    "previewUnavailable": "暂时无法获取实时预览。你仍可通过下方按钮打开账号页面。",
+    "latestVideo": "最新视频",
+    "openProfile": "打开 {platform}"
   },
   "store": {
     "coinsTitle": "金币",

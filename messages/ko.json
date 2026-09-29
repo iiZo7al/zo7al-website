@@ -20,7 +20,14 @@
     "javaLabel": "자바 IP", "bedrockLabel": "베드락 주소", "bedrockNote": "Bedrock: zo7al.play-mc.fun — 포트 25807.",
     "copyJava": "자바 IP 복사", "copyBedrock": "베드락 주소 복사", "checkingStatus": "상태 확인 중…", "readyToPlay": "ZO7AL 네트워크 — 플레이 준비 완료",
     "online": "온라인", "offline": "오프라인", "players": "플레이어", "version": "버전", "address": "주소",
-    "statusUnavailable": "지금은 실시간 상태를 가져올 수 없습니다 — 아래 주소로 접속해 보세요.", "modeLive": "운영 중", "modeSoon": "출시 예정"
+    "statusUnavailable": "지금은 실시간 상태를 가져올 수 없습니다 — 아래 주소로 접속해 보세요.", "modeLive": "운영 중", "modeSoon": "출시 예정",
+    "sharedAddress": "Java 및 Bedrock 공통 IP",
+    "portLabel": "포트",
+    "javaTutorial": "접속 방법 — Java",
+    "bedrockTutorial": "접속 방법 — Bedrock",
+    "javaInstructions": "Minecraft Java → 멀티플레이 → 서버 추가를 여세요. 서버 주소에 {address}를 입력하고 저장한 뒤 접속하세요.",
+    "bedrockInstructions": "Minecraft Bedrock → 플레이 → 서버 → 서버 추가를 여세요. 주소에 {address}, 포트에 {port}를 입력하고 저장한 뒤 접속하세요.",
+    "bedrockPortNotice": "현재 Bedrock 포트 {port}를 사용하세요. 동영상에는 다른 포트가 표시됩니다."
   },
   "modpacks": {
     "eyebrow": "모드팩", "title": "마인크래프트, 새롭게.", "text": "Zo7al이 만든 마인크래프트 프로젝트를 둘러보세요.",
@@ -67,7 +74,13 @@
     "eyebrow": "커뮤니티", "title": "여정을 따라가세요.", "text": "모든 플랫폼을 한곳에서.", "label": "소셜 미디어",
     "liveLabel": "Linktree와 실시간 동기화", "viewOnLinktree": "Linktree에서 보기",
     "gamesEyebrow": "게임 공식 계정",
-    "gamesText": "포트나이트와 Roblox 맵, 게임 프로젝트 소식을 전하는 제 계정들입니다. 링크는 Linktree와 동기화됩니다."
+    "gamesText": "포트나이트와 Roblox 맵, 게임 프로젝트 소식을 전하는 제 계정들입니다. 링크는 Linktree와 동기화됩니다.",
+    "preview": "프로필 미리보기",
+    "previewLoading": "공개 미리보기를 불러오는 중…",
+    "previewSource": "공개 프로필의 미리보기입니다.",
+    "previewUnavailable": "실시간 미리보기를 사용할 수 없습니다. 아래에서 프로필을 열 수 있습니다.",
+    "latestVideo": "최신 동영상",
+    "openProfile": "{platform} 열기"
   },
   "store": {
     "coinsTitle": "코인",

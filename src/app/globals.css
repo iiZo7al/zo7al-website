@@ -294,3 +294,22 @@ html.cursor-ready .checkout-shell button { cursor: pointer; }
 @media (prefers-reduced-motion: reduce) {
   .card-glow::after { transition: none; }
 }
+
+.site-details {
+  margin: auto;
+  width: min(720px, calc(100vw - 24px));
+  max-height: calc(100dvh - 32px);
+  overflow: auto;
+  overscroll-behavior: contain;
+  border: 1px solid var(--border-strong);
+  border-radius: 24px;
+  padding: 0;
+  color: var(--text);
+  background: var(--surface);
+  box-shadow: 0 32px 120px #0009;
+}
+.site-details::backdrop { background: #050609b8; backdrop-filter: blur(10px); }
+@media (hover: none), (pointer: coarse) {
+  /* R3F's inner event wrapper also sets touch-action:none. Only idle art is inert. */
+  .idle-space-canvas, .idle-space-canvas * { pointer-events: none !important; touch-action: pan-y !important; }
+}

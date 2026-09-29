@@ -20,7 +20,14 @@
     "javaLabel": "IP de Java", "bedrockLabel": "Dirección de Bedrock", "bedrockNote": "Bedrock: zo7al.play-mc.fun — puerto 25807.",
     "copyJava": "Copiar IP de Java", "copyBedrock": "Copiar dirección de Bedrock", "checkingStatus": "Comprobando estado…", "readyToPlay": "Red ZO7AL — Lista para jugar",
     "online": "En línea", "offline": "Fuera de línea", "players": "Jugadores", "version": "Versión", "address": "Dirección",
-    "statusUnavailable": "El estado en vivo no está disponible ahora — conéctate con la dirección de abajo.", "modeLive": "Activo", "modeSoon": "Próximamente"
+    "statusUnavailable": "El estado en vivo no está disponible ahora — conéctate con la dirección de abajo.", "modeLive": "Activo", "modeSoon": "Próximamente",
+    "sharedAddress": "Java y Bedrock · IP",
+    "portLabel": "Puerto",
+    "javaTutorial": "Cómo entrar — Java",
+    "bedrockTutorial": "Cómo entrar — Bedrock",
+    "javaInstructions": "Abre Minecraft Java → Multijugador → Añadir servidor. Introduce {address} como dirección del servidor, guarda y entra.",
+    "bedrockInstructions": "Abre Minecraft Bedrock → Jugar → Servidores → Añadir servidor. Introduce {address} como dirección y {port} como puerto, guarda y entra.",
+    "bedrockPortNotice": "Usa el puerto actual de Bedrock: {port}. El vídeo muestra otro puerto."
   },
   "modpacks": {
     "eyebrow": "Modpacks", "title": "MINECRAFT, REIMAGINADO.", "text": "Explora los proyectos de Minecraft creados por Zo7al.",
@@ -67,7 +74,13 @@
     "eyebrow": "Comunidad", "title": "SIGUE EL VIAJE.", "text": "Todas las plataformas, en un solo lugar.", "label": "Redes sociales",
     "liveLabel": "Sincronizado en vivo con Linktree", "viewOnLinktree": "Ver en Linktree",
     "gamesEyebrow": "Nuestras cuentas de juegos",
-    "gamesText": "Mis cuentas de mapas de Fortnite y Roblox y anuncios de proyectos de juegos. Los enlaces se sincronizan con Linktree."
+    "gamesText": "Mis cuentas de mapas de Fortnite y Roblox y anuncios de proyectos de juegos. Los enlaces se sincronizan con Linktree.",
+    "preview": "Vista previa del perfil",
+    "previewLoading": "Cargando la vista previa pública…",
+    "previewSource": "Vista previa del perfil público.",
+    "previewUnavailable": "La vista previa en directo no está disponible. Puedes abrir el perfil a continuación.",
+    "latestVideo": "Último vídeo",
+    "openProfile": "Abrir {platform}"
   },
   "store": {
     "coinsTitle": "Monedas",
