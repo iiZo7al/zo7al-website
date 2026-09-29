@@ -49,7 +49,9 @@ export const BRAND_ICONS: Record<string, SimpleIcon> = {
   patreon: siPatreon,
 };
 
-const DISPLAY_COLORS: Record<string, string> = { fortnite: "#87CEFA", x: "#FFFFFF", twitter: "#FFFFFF", threads: "#FFFFFF", epicgames: "#FFFFFF", tiktok: "#FFFFFF", roblox: "#FFFFFF" };
+const DISPLAY_COLORS: Record<string, string> = { instagram: "#E1306C", fortnite: "#87CEFA", x: "#FFFFFF", twitter: "#FFFFFF", threads: "#FFFFFF", epicgames: "#FFFFFF", tiktok: "#FFFFFF", roblox: "#FFFFFF" };
+
+export const INSTAGRAM_GRADIENT = "linear-gradient(135deg, #833AB4 0%, #C13584 35%, #E1306C 60%, #F77737 82%, #FCAF45 100%)";
 
 /** Keep platform labels and icons in the same readable brand color. */
 export function brandDisplayColor(slug: string): string {

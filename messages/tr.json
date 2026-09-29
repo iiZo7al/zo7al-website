@@ -80,7 +80,30 @@
     "previewSource": "Herkese açık profilden önizleme.",
     "previewUnavailable": "Canlı önizleme kullanılamıyor. Profili aşağıdan açabilirsin.",
     "latestVideo": "Son video",
-    "openProfile": "{platform} profilini aç"
+    "openProfile": "{platform} profilini aç",
+    "latestLongVideo": "Son uzun video",
+    "latestBroadcast": "Son kayıtlı yayın",
+    "latestPost": "Son gönderi",
+    "recentPosts": "Son gönderiler",
+    "recentVideos": "Son videolar",
+    "stories": "Hikâyeler ve Spotlight",
+    "community": "Sunucu topluluğu",
+    "latestProjects": "Yakın zamanda güncellenen projeler",
+    "releases": "Mod paketi sürümleri",
+    "islands": "İçerik üreticisinin adaları",
+    "games": "Oyunlar ve deneyimler",
+    "accountLinks": "Hesap bağlantıları",
+    "accountDescription": "Hesap hakkında",
+    "members": "Üyeler",
+    "online": "Çevrimiçi",
+    "followers": "Takipçiler",
+    "downloads": "İndirmeler",
+    "platformContent": "Platform içeriği",
+    "embedNotice": "Platformun sunduğu herkese açık içerik. Yüklenmezse hesabı doğrudan aç.",
+    "savedContent": "Kaydedilmiş herkese açık içerik; canlı kaynak şu anda kullanılamıyor.",
+    "noContent": "Bu türde herkese açık içerik bulunamadı.",
+    "contentUnavailable": "En yeni içerik alınamadı. Platformda görmek için hesabı aç.",
+    "viewContent": "İçeriği platformda gör"
   },
   "store": {
     "coinsTitle": "Coinler",
@@ -142,7 +165,9 @@
       { "category": "community", "q": "Zo7al'in sosyal medya hesaplarını nerede bulabilirim?", "a": "YouTube kanalım @iiZo7al ve diğer hesaplarım sosyal medya sayfasında. Bağlantılar resmî Linktree hesabımdan eşitlenir." },
       { "category": "community", "q": "Bir sorunu nasıl bildiririm?", "a": "Discord sunucusuna katıl ve destek kanalında bir talep aç — ekibe ulaşmanın en hızlı yolu budur." },
       { "category": "community", "q": "Zo7al ile nasıl iletişime geçerim?", "a": "Reklam ve iş birlikleri için: ads@zo7al.net. Sunucu veya satın alma desteği için sosyal medya sayfasından Discord’a katıl." },
-      { "category": "modpacks", "q": "Zo7al'in modpack'lerini nereden indirebilirim?", "a": "Modrinth ve CurseForge üzerinden — ikisi de Modpack'ler sayfasında doğrudan bağlantılarla listelenir." }
+      { "category": "modpacks", "q": "Zo7al'in modpack'lerini nereden indirebilirim?", "a": "Modrinth ve CurseForge üzerinden — ikisi de Modpack'ler sayfasında doğrudan bağlantılarla listelenir." },
+      {"category": "community", "q": "Zo7al hesaplarının son içeriklerini nasıl görebilirim?", "a": "/socials sayfasında Zo7al Games dâhil herhangi bir hesabın detay simgesine tıkla. Önizleme, hesabın biyografisini ve varsa platforma uygun herkese açık içerikleri gösterir: uzun YouTube videoları, gönderiler, kayıtlı Twitch yayınları veya mod paketi sürümleri."},
+      {"category": "community", "q": "Bazı sosyal medya önizlemeleri neden görünmüyor?", "a": "Bazı platformlar herkese açık önizlemeleri kısıtlar, API bağlantısı gerektirir veya herkese açık içerik barındırmaz. Önizlemedeki bağlantıyla asıl hesabı açabilirsin. Önizlemenin olmaması hesabın silindiği anlamına gelmez."}
     ]
   },
   "footer": {

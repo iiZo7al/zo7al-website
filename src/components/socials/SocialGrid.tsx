@@ -7,7 +7,7 @@ import { SyncedSocial } from "@/lib/sync/socials";
 import SocialDetails from "./SocialDetails";
 import DetailsIcon from "@/components/ui/DetailsIcon";
 import SolidIcon from "@/components/ui/SolidIcon";
-import BrandIcon, { brandDisplayColor } from "@/components/ui/BrandIcon";
+import BrandIcon, { brandDisplayColor, INSTAGRAM_GRADIENT } from "@/components/ui/BrandIcon";
 
 export default function SocialGrid({
   socials, games = false
@@ -22,8 +22,7 @@ export default function SocialGrid({
     <>
     <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
       {socials.map((social, i) => {
-        const modrinth = social.platform === "modrinth";
-        const brandColor = modrinth ? "#00AF5C" : social.color ?? "var(--accent)";
+        const brandColor = brandDisplayColor(social.platform);
         const showHandle = Boolean(social.handle) && !["modrinth", "curseforge"].includes(social.platform);
         const platform = social.platform === "x" && /^https:\/\/(?:www\.)?(?:x|twitter)\.com\/i\/communities\//i.test(social.url)
           ? "x_community"
@@ -42,14 +41,14 @@ export default function SocialGrid({
               <div
                 className="inline-flex h-12 w-12 items-center justify-center rounded-2xl transition-transform duration-300 group-hover:scale-110"
                 style={{
-                  background: modrinth ? "#00AF5C18" : brandColor,
+                  background: social.platform === "instagram" ? INSTAGRAM_GRADIENT : `${brandColor}18`,
                   boxShadow: `0 8px 20px ${brandColor + "40"}`
                 }}
               >
                 <BrandIcon
                   slug={social.platform}
                   size={24}
-                  color={modrinth ? brandColor : "#FFFFFF"}
+                  color={social.platform === "instagram" ? "#FFFFFF" : brandColor}
                 />
               </div>
               <div className="flex items-center gap-2">

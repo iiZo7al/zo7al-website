@@ -80,7 +80,30 @@
     "previewSource": "Aperçu du profil public.",
     "previewUnavailable": "L’aperçu en direct est indisponible. Tu peux ouvrir le profil ci-dessous.",
     "latestVideo": "Dernière vidéo",
-    "openProfile": "Ouvrir {platform}"
+    "openProfile": "Ouvrir {platform}",
+    "latestLongVideo": "Dernière vidéo longue",
+    "latestBroadcast": "Dernier direct enregistré",
+    "latestPost": "Dernière publication",
+    "recentPosts": "Publications récentes",
+    "recentVideos": "Vidéos récentes",
+    "stories": "Stories et Spotlight",
+    "community": "Communauté du serveur",
+    "latestProjects": "Projets récemment mis à jour",
+    "releases": "Versions des modpacks",
+    "islands": "Îles du créateur",
+    "games": "Jeux et expériences",
+    "accountLinks": "Liens du compte",
+    "accountDescription": "À propos de ce compte",
+    "members": "Membres",
+    "online": "En ligne",
+    "followers": "Abonnés",
+    "downloads": "Téléchargements",
+    "platformContent": "Contenu de la plateforme",
+    "embedNotice": "Contenu public fourni par la plateforme. Si rien ne charge, ouvre directement le compte.",
+    "savedContent": "Contenu public sauvegardé ; la source en direct est indisponible.",
+    "noContent": "Aucun contenu public de ce type trouvé.",
+    "contentUnavailable": "Impossible de récupérer le dernier contenu. Ouvre le compte pour le voir sur la plateforme.",
+    "viewContent": "Voir le contenu sur la plateforme"
   },
   "store": {
     "coinsTitle": "Pièces",
@@ -142,7 +165,9 @@
       { "category": "community", "q": "Où trouver les réseaux sociaux de Zo7al ?", "a": "Retrouve ma chaîne YouTube @iiZo7al et mes autres comptes sur la page des réseaux. Les liens sont synchronisés avec mon Linktree officiel." },
       { "category": "community", "q": "Comment signaler un problème ?", "a": "Rejoignez le serveur Discord et ouvrez un ticket dans le canal support — c'est le moyen le plus rapide de joindre l'équipe." },
       { "category": "community", "q": "Comment contacter Zo7al ?", "a": "Publicité et collaborations : ads@zo7al.net. Pour l’assistance serveur ou achats, rejoins Discord depuis la page des réseaux." },
-      { "category": "modpacks", "q": "Où télécharger les modpacks de Zo7al ?", "a": "Sur Modrinth et CurseForge — tous deux listés avec des liens directs sur la page Modpacks." }
+      { "category": "modpacks", "q": "Où télécharger les modpacks de Zo7al ?", "a": "Sur Modrinth et CurseForge — tous deux listés avec des liens directs sur la page Modpacks." },
+      {"category": "community", "q": "Comment voir le contenu récent des comptes de Zo7al ?", "a": "Ouvre /socials et appuie sur l’icône de détails d’un compte, y compris Zo7al Games. L’aperçu affiche sa biographie et le contenu public disponible selon la plateforme : vidéo longue YouTube, publication, direct Twitch enregistré ou version de modpack."},
+      {"category": "community", "q": "Pourquoi un aperçu est-il parfois indisponible ?", "a": "Certaines plateformes limitent les aperçus publics, nécessitent une connexion API ou n’ont aucun contenu public. Utilise le lien pour ouvrir le compte original. Un aperçu manquant ne signifie pas que le compte a été supprimé."}
     ]
   },
   "footer": {

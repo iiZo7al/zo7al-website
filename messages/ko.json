@@ -80,7 +80,30 @@
     "previewSource": "공개 프로필의 미리보기입니다.",
     "previewUnavailable": "실시간 미리보기를 사용할 수 없습니다. 아래에서 프로필을 열 수 있습니다.",
     "latestVideo": "최신 동영상",
-    "openProfile": "{platform} 열기"
+    "openProfile": "{platform} 열기",
+    "latestLongVideo": "최신 일반 동영상",
+    "latestBroadcast": "최근 저장된 방송",
+    "latestPost": "최신 게시물",
+    "recentPosts": "최근 게시물",
+    "recentVideos": "최근 동영상",
+    "stories": "스토리 및 Spotlight",
+    "community": "서버 커뮤니티",
+    "latestProjects": "최근 업데이트된 프로젝트",
+    "releases": "모드팩 릴리스",
+    "islands": "크리에이터의 섬",
+    "games": "게임 및 체험",
+    "accountLinks": "계정 링크",
+    "accountDescription": "계정 소개",
+    "members": "멤버",
+    "online": "온라인",
+    "followers": "팔로워",
+    "downloads": "다운로드",
+    "platformContent": "플랫폼 콘텐츠",
+    "embedNotice": "플랫폼이 제공하는 공개 콘텐츠입니다. 로드되지 않으면 계정을 직접 여세요.",
+    "savedContent": "저장된 공개 콘텐츠입니다. 현재 실시간 소스를 사용할 수 없습니다.",
+    "noContent": "이 유형의 공개 콘텐츠를 찾을 수 없습니다.",
+    "contentUnavailable": "최신 콘텐츠를 가져오지 못했습니다. 플랫폼에서 계정을 열어 확인하세요.",
+    "viewContent": "플랫폼에서 콘텐츠 보기"
   },
   "store": {
     "coinsTitle": "코인",
@@ -142,7 +165,9 @@
       { "category": "community", "q": "Zo7al의 소셜 미디어는 어디서 찾을 수 있나요?", "a": "소셜 페이지에서 YouTube 채널 @iiZo7al과 다른 계정을 확인하세요. 링크는 공식 Linktree와 동기화됩니다." },
       { "category": "community", "q": "문제는 어떻게 신고하나요?", "a": "디스코드 서버에 참여해 지원 채널에서 티켓을 열어주세요 — 팀에 가장 빠르게 연락할 수 있는 방법입니다." },
       { "category": "community", "q": "Zo7al에게 어떻게 연락하나요?", "a": "광고 및 협업 문의: ads@zo7al.net. 서버나 구매 관련 지원은 소셜 페이지의 Discord를 이용하세요." },
-      { "category": "modpacks", "q": "Zo7al의 모드팩은 어디서 다운로드하나요?", "a": "Modrinth와 CurseForge에서 다운로드할 수 있으며, 두 곳 모두 모드팩 페이지에 직접 링크로 연결되어 있습니다." }
+      { "category": "modpacks", "q": "Zo7al의 모드팩은 어디서 다운로드하나요?", "a": "Modrinth와 CurseForge에서 다운로드할 수 있으며, 두 곳 모두 모드팩 페이지에 직접 링크로 연결되어 있습니다." },
+      {"category": "community", "q": "Zo7al 계정의 최신 콘텐츠는 어떻게 보나요?", "a": "/socials에서 Zo7al Games를 포함한 계정의 상세 아이콘을 누르세요. 계정 소개와 플랫폼별 공개 콘텐츠를 확인할 수 있습니다. 가능한 경우 일반 YouTube 동영상, 게시물, 저장된 Twitch 방송, 모드팩 릴리스를 보여 줍니다."},
+      {"category": "community", "q": "일부 소셜 미디어 미리보기가 표시되지 않는 이유는 무엇인가요?", "a": "일부 플랫폼은 공개 미리보기를 제한하거나 API 연결을 요구하며, 공개 콘텐츠가 없을 수도 있습니다. 미리보기의 링크로 원래 계정을 여세요. 미리보기가 없다고 계정이 삭제된 것은 아닙니다."}
     ]
   },
   "footer": {

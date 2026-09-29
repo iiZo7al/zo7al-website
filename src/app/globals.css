@@ -313,3 +313,18 @@ html.cursor-ready .checkout-shell button { cursor: pointer; }
   /* R3F's inner event wrapper also sets touch-action:none. Only idle art is inert. */
   .idle-space-canvas, .idle-space-canvas * { pointer-events: none !important; touch-action: pan-y !important; }
 }
+
+/* A normal z-index cannot paint above native dialogs. Keep cursor in the top layer. */
+.cursor-layer, .cursor-layer:popover-open {
+  position: fixed; inset: 0; width: 100vw; height: 100dvh;
+  margin: 0; padding: 0; border: 0; overflow: visible;
+  background: transparent; pointer-events: none; z-index: 2147483647;
+}
+.cursor-layer::backdrop { display: none; }
+@media (pointer: fine) {
+  html.cursor-top-layer .site-details, html.cursor-top-layer .site-details *,
+  html.cursor-top-layer .checkout-shell, html.cursor-top-layer .checkout-shell * { cursor: none; }
+  html:not(.cursor-top-layer) .site-details, html:not(.cursor-top-layer) .site-details * { cursor: auto; }
+}
+.social-native-embed iframe { max-width: 100% !important; }
+.social-native-embed blockquote { max-width: 100% !important; min-width: 0 !important; }
