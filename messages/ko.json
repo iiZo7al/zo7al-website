@@ -156,7 +156,7 @@
       { "category": "gettingStarted", "q": "지원되는 마인크래프트 버전은 무엇인가요?", "a": "클래식 PvP를 위한 1.8.9, 안정적인 서바이벌을 위한 1.20.x, 최신 버전인 1.21.x를 지원합니다." },
       { "category": "gettingStarted", "q": "어떤 영상을 만드나요?", "a": "포트나이트, 마인크래프트 등 다양한 게임 영상과 Shorts, 도전, 웃긴 순간, 친구들과의 플레이를 올립니다. YouTube 채널은 @iiZo7al입니다." },
       { "category": "storeRanks", "q": "등급은 어떻게 구매하나요?", "a": "/store에서 등급을 선택하고 Minecraft 사용자 이름을 입력한 뒤 Tebex로 안전하게 결제하세요. Booster는 Discord 서버 부스트로 받습니다." },
-      { "category": "storeRanks", "q": "어떤 등급이 있나요?", "a": "VIP, MVP, MVP+, 월간 MVP++, Discord Booster가 있습니다. 최신 가격, 혜택, 조건은 /store에서 확인하세요." },
+      { "category": "storeRanks", "q": "어떤 등급이 있나요?", "a": "유료 등급은 VIP, MVP, MVP+, MVP++입니다. Booster는 Discord 서버를 부스트하면 받을 수 있습니다. YOUTUBE, TWITCH, TIKTOK은 구매가 아닌 지원과 검토를 통해 받는 크리에이터 등급입니다. 최신 정보, 가격 및 지원은 /store에서 확인하세요. Coins는 게임 내 화폐이며 등급이 아닙니다." },
       { "category": "storeRanks", "q": "Zo7al 네트워크 스토어는 어디에 있나요?", "a": "/store에서 스토어를 여세요. 결제는 Tebex로 처리되며 구독 확인 및 취소는 portal.tebex.io에서 가능합니다." },
       {"category": "storeRanks", "q": "Coins는 어떻게 구매하나요? 재구매할 수 있나요?", "a": "/store의 Coins에서 패키지를 선택하고 정확한 Minecraft 사용자 이름을 입력한 뒤 Tebex로 결제하세요. 수량과 보너스는 패키지 상세 정보에 표시됩니다. Coins는 등급과 별개인 게임 내 화폐로 여러 번 구매할 수 있습니다. 지급이 늦어지면 거래 번호와 함께 Discord 지원팀에 문의하세요."},
       { "category": "fortnite", "q": "포트나이트에서 Zo7al 맵에 어떻게 참여하나요?", "a": "포트나이트를 열고 크리에이티브로 이동해 \"코드 입력\"을 선택한 뒤, 포트나이트 페이지에 표시된 아일랜드 코드를 입력하세요." },
@@ -390,6 +390,12 @@
     "rateLimit": "시도 횟수가 너무 많습니다. 15분 후 다시 시도해 주세요.",
     "invalid": "입력 정보와 선택한 플랫폼의 프로필 링크를 확인해 주세요.",
     "unavailable": "현재 지원할 수 없습니다. Discord 지원팀에 문의해 주세요.",
-    "failed": "전달 여부를 확인하지 못했습니다. 나중에 다시 시도해 주세요。"
+    "failed": "전달 여부를 확인하지 못했습니다. 나중에 다시 시도해 주세요。",
+    "description": {
+      "youtube": "YOUTUBE 등급은 YouTube에서 Minecraft 콘텐츠를 만드는 크리에이터를 위한 등급입니다. 튜토리얼, 챌린지, Zo7al Network 체험 등 채널과 영상 스타일을 소개해 주세요. 팀이 콘텐츠를 이해할 수 있도록 시청자층, 구독자 수와 게시 일정을 알려 주세요.",
+      "twitch": "TWITCH 등급은 Twitch에서 Minecraft를 방송하는 스트리머를 위한 등급입니다. 채널, 방송 유형과 시청자 소통 방식을 소개해 주세요. 팔로워 수, 방송 일정과 Zo7al Network에 관해 만들고 싶은 콘텐츠를 적어 주세요.",
+      "tiktok": "TIKTOK 등급은 TikTok에서 Minecraft 콘텐츠를 만드는 크리에이터를 위한 등급입니다. 재미있는 장면, 팁, 챌린지 등 프로필과 짧은 영상 스타일을 소개해 주세요. 팔로워 수, 게시 빈도와 Zo7al Network 경험을 공유할 방법을 알려 주세요."
+    },
+    "applicationDetails": "지원 양식에 연락 가능한 이메일, Minecraft와 Discord 이름, 선택한 플랫폼의 프로필 링크를 입력하세요. 콘텐츠와 지원 이유를 정확하게 설명해 주세요. 동의하면 지원서가 Discord를 통해 Zo7al 팀에 전달됩니다. 전달 확인 후 표시되는 지원 번호를 보관하세요. 지원은 구매나 자동 등급 지급이 아닙니다. 자격과 승인 여부는 팀이 결정하며 검토 기간이나 추가 혜택은 보장되지 않습니다."
   }
 }

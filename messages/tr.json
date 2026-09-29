@@ -156,7 +156,7 @@
       { "category": "gettingStarted", "q": "Hangi Minecraft sürümleri destekleniyor?", "a": "Klasik PvP için 1.8.9, kararlı survival için 1.20.x ve en güncel sürüm için 1.21.x." },
       { "category": "gettingStarted", "q": "Ne tür videolar hazırlıyorsun?", "a": "Oyun videoları ve Shorts: Fortnite, Minecraft ve diğer oyunlar, mücadeleler, komik anlar ve arkadaşlarla oyun. YouTube kanalım: @iiZo7al." },
       { "category": "storeRanks", "q": "Bir rütbeyi nasıl satın alırım?", "a": "/store sayfasını aç, rütbeni seç, Minecraft kullanıcı adını gir ve Tebex üzerinden güvenle öde. Booster, Discord sunucumuzu takviye ederek alınır." },
-      { "category": "storeRanks", "q": "Hangi rütbeler mevcut?", "a": "VIP, MVP, MVP+, aylık MVP++ ve Discord Booster. Güncel fiyatlar, avantajlar ve koşullar için /store sayfasına bak." },
+      { "category": "storeRanks", "q": "Hangi rütbeler mevcut?", "a": "Ücretli rütbeler VIP, MVP, MVP+ ve MVP++ şeklindedir. Booster, Discord sunucusunu takviye ederek alınır. YOUTUBE, TWITCH ve TIKTOK rütbeleri satın alınmaz; başvuru ve incelemeyle verilir. Güncel ayrıntılar, fiyatlar ve başvurular /store sayfasındadır. Coins paketleri oyun içi paradır, rütbe değildir." },
       { "category": "storeRanks", "q": "Zo7al Network mağazası nerede?", "a": "/store adresindeki mağazayı aç. Ödemeler Tebex üzerinden işlenir; aboneliklerini portal.tebex.io adresinden görüntüleyebilir veya iptal edebilirsin." },
       {"category": "storeRanks", "q": "Coins nasıl satın alınır? Tekrar satın alabilir miyim?", "a": "/store sayfasında Coins bölümünden bir paket seçin. Minecraft kullanıcı adınızı doğru girip Tebex üzerinden ödeme yapın. Paket ayrıntılarında miktar ve bonuslar gösterilir. Coins, rütbelerden ayrı oyun içi para birimidir ve tekrar satın alınabilir. Teslimat gecikirse işlem numaranızla Discord desteğine başvurun."},
       { "category": "fortnite", "q": "Fortnite'ta bir Zo7al haritasına nasıl katılırım?", "a": "Fortnite'ı aç, Creative'e git, \"Bir kod gir\" seçeneğini kullan ve Fortnite sayfasındaki herhangi bir haritada görünen ada kodunu yaz." },
@@ -390,6 +390,12 @@
     "rateLimit": "Çok fazla deneme. 15 dakika sonra tekrar dene.",
     "invalid": "Bilgilerini kontrol et ve seçilen platforma ait bir profil bağlantısı kullan.",
     "unavailable": "Başvurular şu anda kullanılamıyor. Discord desteğine ulaş.",
-    "failed": "Teslimat doğrulanamadı. Daha sonra tekrar dene."
+    "failed": "Teslimat doğrulanamadı. Daha sonra tekrar dene.",
+    "description": {
+      "youtube": "YOUTUBE rütbesi, YouTube’da Minecraft içeriği üretenler içindir. Kanalını ve rehber, meydan okuma veya Zo7al Network deneyimleri gibi videolarını tanıt. Ekibin içeriklerini tanıması için hedef kitleni, abone sayını ve yayın takvimini anlat.",
+      "twitch": "TWITCH rütbesi, Twitch’te Minecraft yayını yapanlar içindir. Kanalını, yayın türünü ve izleyicilerle nasıl etkileşim kurduğunu paylaş. Takipçi sayını, yayın programını ve Zo7al Network hakkında üretmek istediğin içerikleri belirt.",
+      "tiktok": "TIKTOK rütbesi, TikTok’ta Minecraft içeriği üretenler içindir. Profilini ve eğlenceli anlar, ipuçları veya meydan okumalar gibi kısa videolarını tanıt. Takipçi sayını, paylaşım sıklığını ve Zo7al Network deneyimini nasıl paylaşacağını anlat."
+    },
+    "applicationDetails": "Başvuru formuna ulaşılabilir bir e-posta, Minecraft ve Discord adlarını ve seçilen platformdaki profil bağlantını yaz. İçerik ve başvuru nedenini doğru bilgilerle açıkla. Onayınla başvuru Discord üzerinden Zo7al ekibine iletilir. Teslimat onaylandıktan sonra gösterilen başvuru numarasını sakla. Başvuru bir satın alma veya otomatik rütbe kazanımı değildir. Uygunluk ve kabul kararını ekip verir; inceleme süresi veya ek avantajlar garanti edilmez."
   }
 }

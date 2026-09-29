@@ -156,7 +156,7 @@
       { "category": "gettingStarted", "q": "Welche Minecraft-Versionen werden unterstützt?", "a": "1.8.9 für klassisches PvP, 1.20.x für stabiles Survival und 1.21.x für die neueste Version." },
       { "category": "gettingStarted", "q": "Welche Videos machst du?", "a": "Gaming-Videos und Shorts: Fortnite, Minecraft und andere Spiele, Challenges, lustige Momente und Spielen mit Freunden. Mein YouTube-Kanal: @iiZo7al." },
       { "category": "storeRanks", "q": "Wie kaufe ich einen Rang?", "a": "Öffne /store, wähle einen Rang, gib deinen Minecraft-Namen ein und bezahle sicher über Tebex. Booster erhältst du durch einen Boost unseres Discord-Servers." },
-      { "category": "storeRanks", "q": "Welche Ränge gibt es?", "a": "VIP, MVP, MVP+, monatliches MVP++ und Discord Booster. Aktuelle Preise, Vorteile und Bedingungen findest du unter /store." },
+      { "category": "storeRanks", "q": "Welche Ränge gibt es?", "a": "Kaufbare Ränge sind VIP, MVP, MVP+ und MVP++. Booster erhältst du durch einen Boost des Discord-Servers. Die Creator-Ränge YOUTUBE, TWITCH und TIKTOK gibt es auf Bewerbung und nach Prüfung, nicht zum Kauf. Aktuelle Details, Preise und Bewerbungen findest du unter /store. Coins sind Spielwährung, keine Ränge." },
       { "category": "storeRanks", "q": "Wo ist der Shop von Zo7al Network?", "a": "Öffne den Shop unter /store. Zahlungen laufen über Tebex; Abonnements kannst du auf portal.tebex.io ansehen oder kündigen." },
       {"category": "storeRanks", "q": "Wie kaufe ich Coins und kann ich sie erneut kaufen?", "a": "Öffne /store und wähle ein Coins-Paket. Gib deinen genauen Minecraft-Namen ein und bezahle über Tebex. Die Paketdetails zeigen Menge und Bonus. Coins sind Spielwährung, unabhängig von Rängen, und mehrfach kaufbar. Bei verzögerter Lieferung kontaktiere den Discord-Support mit deiner Transaktionsnummer."},
       { "category": "fortnite", "q": "Wie trete ich einer Zo7al-Map in Fortnite bei?", "a": "Öffne Fortnite, gehe zu Creative, wähle „Code eingeben“ und gib den Inselcode ein, der bei jeder Map auf der Fortnite-Seite steht." },
@@ -390,6 +390,12 @@
     "rateLimit": "Zu viele Versuche. Versuche es in 15 Minuten erneut.",
     "invalid": "Prüfe deine Angaben und verwende einen Profillink der gewählten Plattform.",
     "unavailable": "Bewerbungen sind derzeit nicht verfügbar. Kontaktiere den Discord-Support.",
-    "failed": "Die Zustellung konnte nicht bestätigt werden. Versuche es später erneut."
+    "failed": "Die Zustellung konnte nicht bestätigt werden. Versuche es später erneut.",
+    "description": {
+      "youtube": "Der YOUTUBE-Rang richtet sich an Minecraft-Creator auf YouTube. Stelle deinen Kanal und deine Videos vor, etwa Tutorials, Challenges oder Erlebnisse auf Zo7al Network. Beschreibe deine Zielgruppe, Abonnentenzahl und deinen Uploadplan, damit das Team deine Inhalte kennenlernen kann.",
+      "twitch": "Der TWITCH-Rang richtet sich an Minecraft-Streamer auf Twitch. Stelle deinen Kanal, deine Streams und den Austausch mit Zuschauern vor. Nenne deine Followerzahl, deinen Streamingplan und die Inhalte, die du über Zo7al Network erstellen möchtest.",
+      "tiktok": "Der TIKTOK-Rang richtet sich an Minecraft-Creator auf TikTok. Beschreibe dein Profil und deine Kurzvideos, etwa lustige Clips, Tipps oder Challenges. Nenne deine Followerzahl, die Veröffentlichungshäufigkeit und wie du deine Erlebnisse auf Zo7al Network teilen möchtest."
+    },
+    "applicationDetails": "Öffne das Bewerbungsformular und gib eine erreichbare E-Mail-Adresse, Minecraft- und Discord-Namen sowie den Profillink der gewählten Plattform an. Beschreibe deine Inhalte und Motivation wahrheitsgemäß. Mit deiner Zustimmung wird die Bewerbung über Discord an das Zo7al-Team gesendet. Bewahre die Referenz nach erfolgreicher Übermittlung auf. Die Bewerbung ist kein Kauf und vergibt keinen Rang automatisch. Das Team entscheidet über Eignung und Annahme; Bearbeitungszeit und zusätzliche Vorteile werden nicht garantiert."
   }
 }

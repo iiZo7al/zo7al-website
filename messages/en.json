@@ -250,7 +250,7 @@
       { "category": "gettingStarted", "q": "What Minecraft versions are supported?", "a": "1.8.9 for classic PvP, 1.20.x for stable survival, and 1.21.x for the latest release line." },
       { "category": "gettingStarted", "q": "What kind of videos do you make?", "a": "Gaming videos and Shorts: Fortnite, Minecraft and other games, challenges, funny moments and playing with friends. Find my channel on YouTube at @iiZo7al." },
       { "category": "storeRanks", "q": "How do I buy a rank?", "a": "Open /store, choose a rank, enter your Minecraft username and complete payment securely through Tebex. Booster is obtained by boosting our Discord server." },
-      { "category": "storeRanks", "q": "What ranks are available?", "a": "VIP, MVP, MVP+, monthly MVP++ and Discord Booster. Check /store for current prices, benefits and conditions." },
+      { "category": "storeRanks", "q": "What ranks are available?", "a": "Paid ranks are VIP, MVP, MVP+ and MVP++. Booster is obtained by boosting the Discord server. Creator ranks YOUTUBE, TWITCH and TIKTOK are available through application and review, not purchase. Visit /store for current details, prices and applications. Coins packages are in-game currency, not ranks." },
       { "category": "storeRanks", "q": "Where is the Zo7al Network store?", "a": "Open the Store page at /store. Payments are processed through Tebex, and subscriptions can be viewed or cancelled at portal.tebex.io." },
       {"category": "storeRanks", "q": "How do I buy Coins, and can I buy them again?", "a": "Open /store and choose a package in Coins. Enter your exact Minecraft username and pay through Tebex. The package details show the amount and any bonus. Coins are in-game currency, separate from ranks, and can be purchased more than once. If delivery is delayed, contact Discord support with your transaction reference."},
       { "category": "fortnite", "q": "How do I join a Zo7al Fortnite map?", "a": "Open Fortnite, go to Creative, select \"Enter a code\", and type in the island code shown on any map on the Fortnite page." },
@@ -487,6 +487,12 @@
     "rateLimit": "Too many attempts. Please try again in 15 minutes.",
     "invalid": "Check your details and use a profile link matching the selected platform.",
     "unavailable": "Applications are currently unavailable. Please contact Discord support.",
-    "failed": "Could not confirm delivery. Please try again later."
+    "failed": "Could not confirm delivery. Please try again later.",
+    "description": {
+      "youtube": "From the first clip to the final challenge, share your story with the Zo7al community. The YOUTUBE rank is for Minecraft creators who turn gameplay into videos worth watching: tutorials, experiments, challenges and memorable moments. Introduce your channel, your style and the stories you want to share with your audience on Zo7al Network.",
+      "twitch": "Bring your audience into the experience, one live moment at a time. The TWITCH rank is for Minecraft streamers who combine gameplay with viewer interaction, from survival adventures and exciting matches to community sessions. Introduce your channel, the personality of your streams and how you want to share Zo7al with your audience.",
+      "tiktok": "One clip can tell a whole adventure. The TIKTOK rank is for Minecraft creators who share entertaining moments and quick ideas in their own style, from standout plays and challenges to tips and creative edits. Introduce your profile and your vision for the content you want to create about Zo7al Network."
+    },
+    "applicationDetails": "To apply, open the application form and provide a reachable email, your Minecraft and Discord usernames, and your profile link on the selected platform. Give accurate content details and explain why you want the rank. With your consent, the application is sent to the Zo7al team through Discord for review. Keep the reference shown after successful delivery. Applying is not a purchase or an automatic rank grant; eligibility and acceptance are decided by the team, with no guaranteed review time or additional benefits."
   }
 }

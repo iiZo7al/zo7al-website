@@ -156,7 +156,7 @@
       { "category": "gettingStarted", "q": "支持哪些我的世界版本？", "a": "经典 PvP 版本 1.8.9、稳定生存版本 1.20.x，以及最新版本 1.21.x。" },
       { "category": "gettingStarted", "q": "你制作哪类视频？", "a": "游戏视频和 Shorts：堡垒之夜、Minecraft 等游戏、挑战、搞笑瞬间和朋友联机。我的 YouTube 频道是 @iiZo7al。" },
       { "category": "storeRanks", "q": "如何购买等级？", "a": "打开 /store，选择等级，输入 Minecraft 用户名并通过 Tebex 安全付款。Booster 通过助力我们的 Discord 服务器获得。" },
-      { "category": "storeRanks", "q": "有哪些等级可供选择？", "a": "VIP、MVP、MVP+、月付 MVP++ 和 Discord Booster。请在 /store 查看当前价格、权益及条件。" },
+      { "category": "storeRanks", "q": "有哪些等级可供选择？", "a": "付费等级包括 VIP、MVP、MVP+ 和 MVP++。Booster 通过助力 Discord 服务器获取。YOUTUBE、TWITCH 和 TIKTOK 创作者等级需申请并审核，不能购买。最新详情、价格和申请请查看 /store。Coins 礼包是游戏内货币，不是等级。" },
       { "category": "storeRanks", "q": "Zo7al 服务器网络的商店在哪里？", "a": "商店位于 /store。付款通过 Tebex 处理，可在 portal.tebex.io 查看或取消订阅。" },
       {"category": "storeRanks", "q": "如何购买 Coins？可以重复购买吗？", "a": "打开 /store，在 Coins 分类中选择礼包，输入准确的 Minecraft 用户名并通过 Tebex 支付。礼包详情显示数量和赠送奖励。Coins 是独立于等级的游戏内货币，可以重复购买。如到账延迟，请提供交易编号并联系 Discord 客服。"},
       { "category": "fortnite", "q": "如何在堡垒之夜中加入 Zo7al 的地图？", "a": "打开堡垒之夜，进入创造模式，选择“输入代码”，输入堡垒之夜页面上任意地图显示的岛屿代码即可。" },
@@ -390,6 +390,12 @@
     "rateLimit": "尝试次数过多，请15分钟后再试。",
     "invalid": "请检查信息，并使用所选平台的个人主页链接。",
     "unavailable": "目前无法申请，请联系 Discord 客服。",
-    "failed": "无法确认是否送达，请稍后再试。"
+    "failed": "无法确认是否送达，请稍后再试。",
+    "description": {
+      "youtube": "YOUTUBE 等级面向在 YouTube 制作 Minecraft 内容的创作者。请介绍频道及视频风格，例如教程、挑战或在 Zo7al Network 的游戏体验。说明受众、订阅人数和更新计划，帮助团队了解你的内容。",
+      "twitch": "TWITCH 等级面向在 Twitch 直播 Minecraft 的创作者。请分享频道、直播类型以及与观众互动的方式。填写粉丝数量、直播时间和希望围绕 Zo7al Network 制作的内容。",
+      "tiktok": "TIKTOK 等级面向在 TikTok 制作 Minecraft 内容的创作者。请介绍账号及短视频风格，例如有趣片段、技巧和挑战。说明粉丝数量、更新频率，以及希望如何与观众分享 Zo7al Network 的体验。"
+    },
+    "applicationDetails": "打开申请表，填写可以联系到的邮箱、Minecraft 和 Discord 用户名，以及所选平台的个人主页链接。请准确介绍内容并说明申请理由。经你同意，申请将通过 Discord 发送给 Zo7al 团队审核。送达确认后请保存申请编号。提交申请不等于购买或自动获得等级；资格和批准由团队决定，不保证审核时间或额外权益。"
   }
 }

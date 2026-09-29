@@ -156,7 +156,7 @@
       { "category": "gettingStarted", "q": "対応しているMinecraftのバージョンは？", "a": "クラシックPvP向けの1.8.9、安定したサバイバル向けの1.20.x、そして最新版の1.21.xに対応しています。" },
       { "category": "gettingStarted", "q": "どんな動画を作っていますか？", "a": "Fortnite、Minecraft などのゲーム動画や Shorts、チャレンジ、笑える瞬間、仲間とのプレイを発信しています。YouTube チャンネルは @iiZo7al です。" },
       { "category": "storeRanks", "q": "ランクの購入方法は？", "a": "/store でランクを選び、Minecraft ユーザー名を入力して Tebex で安全に支払えます。Booster は Discord サーバーのブーストで獲得できます。" },
-      { "category": "storeRanks", "q": "利用できるランクは？", "a": "VIP、MVP、MVP+、月額 MVP++、Discord Booster があります。最新の価格・特典・条件は /store で確認できます。" },
+      { "category": "storeRanks", "q": "利用できるランクは？", "a": "購入できるランクはVIP、MVP、MVP+、MVP++です。BoosterはDiscordサーバーのブーストで取得できます。YOUTUBE、TWITCH、TIKTOKは購入ではなく応募と審査によるクリエイターランクです。最新の詳細、価格、応募は/storeをご覧ください。Coinsはゲーム内通貨であり、ランクではありません。" },
       { "category": "storeRanks", "q": "Zo7al Networkのストアはどこですか？", "a": "ストアは /store です。決済は Tebex 経由で行われ、サブスクリプションの確認・解約は portal.tebex.io でできます。" },
       {"category": "storeRanks", "q": "Coinsの購入方法は？再購入できますか？", "a": "/storeのCoinsからパッケージを選び、正確なMinecraftユーザー名を入力してTebexで支払います。数量とボーナスは詳細に表示されます。Coinsはランクとは別のゲーム内通貨で、何度でも購入できます。受け取りが遅れている場合は取引番号を添えてDiscordサポートに連絡してください。"},
       { "category": "fortnite", "q": "FortniteでZo7alのマップに参加するには？", "a": "Fortniteを開き、クリエイティブに進み、「コードを入力」を選択し、Fortniteページに表示されているアイランドコードを入力してください。" },
@@ -390,6 +390,12 @@
     "rateLimit": "試行回数が多すぎます。15分後にお試しください。",
     "invalid": "入力内容と選択したプラットフォームのプロフィールURLを確認してください。",
     "unavailable": "現在応募できません。Discordサポートにお問い合わせください。",
-    "failed": "送信を確認できませんでした。後でもう一度お試しください。"
+    "failed": "送信を確認できませんでした。後でもう一度お試しください。",
+    "description": {
+      "youtube": "YOUTUBEランクはYouTubeでMinecraftのコンテンツを制作する方向けです。解説、チャレンジ、Zo7al Networkでの体験など、チャンネルと動画のスタイルを紹介してください。視聴者層、登録者数、投稿スケジュールも説明すると、運営が内容を理解しやすくなります。",
+      "twitch": "TWITCHランクはTwitchでMinecraftを配信する方向けです。チャンネル、配信内容、視聴者との交流方法を紹介してください。フォロワー数、配信予定、Zo7al Networkについて制作したい内容を記入してください。",
+      "tiktok": "TIKTOKランクはTikTokでMinecraftの動画を制作する方向けです。面白い場面、ヒント、チャレンジなど、プロフィールと短編動画のスタイルを紹介してください。フォロワー数、投稿頻度、Zo7al Networkでの体験をどう共有したいかも説明してください。"
+    },
+    "applicationDetails": "応募フォームに、連絡可能なメール、MinecraftとDiscordのユーザー名、選択したプラットフォームのプロフィールURLを入力してください。コンテンツと応募理由を正確に説明してください。同意後、応募はDiscord経由でZo7alチームに送られます。送信確認後の応募番号を保管してください。応募は購入やランクの自動付与ではありません。資格と承認は運営が判断し、審査期間や追加特典は保証されません。"
   }
 }

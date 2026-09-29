@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, Check, LoaderCircle } from "lucide-react";
+import DetailsIcon from "@/components/ui/DetailsIcon";
 import DetailsDialog from "@/components/ui/DetailsDialog";
 import "./creator-ranks.css";
 
@@ -11,17 +12,32 @@ const platforms = ["youtube", "twitch", "tiktok"] as const;
 type Platform = typeof platforms[number];
 export default function CreatorRanks() {
   const t = useTranslations("creators");
+  const ui = useTranslations("store");
+  const [details, setDetails] = useState<Platform | null>(null);
   const [selected, setSelected] = useState<Platform | null>(null);
   const reduce = useReducedMotion();
   return <section className="mb-14" aria-labelledby="creator-ranks-title">
     <div className="mb-5 flex items-center gap-4"><Image src="/assets/site/creator-category.webp" alt="" width={140} height={80} className="h-20 w-36 object-contain"/><h2 id="creator-ranks-title" className="text-display text-3xl">{t("title")}</h2></div>
     <p className="mb-6 mt-3 text-[var(--text-secondary)]">{t("intro")}</p>
-    <div className="creator-rank-grid">{platforms.map((platform, index) => <motion.article key={platform} className={`card-glow store-rank creator-${platform}`} initial={reduce ? false : { opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: .6, delay: index * .08 }}>
-      <Image src={`/assets/site/rank-${platform}.png`} width={667} height={375} alt={platform.toUpperCase()} className="creator-rank-image" />
+    <div className="creator-rank-grid">{platforms.map((platform, index) => <motion.div key={platform} className="store-rank-reveal" initial={reduce ? false : { opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.1 }} transition={{ duration: 0.7, delay: Math.min(index * 0.06, 0.3), ease: [0.16, 1, 0.3, 1] }}>
+      <article className={`card-glow store-rank creator-${platform}`}>
+      <div className="store-rank-top"><Image src={`/assets/site/rank-${platform}.png`} width={667} height={375} alt={platform.toUpperCase()} className="store-product-image creator-rank-image" /></div>
       <p className="text-label">{t("title")}</p><h3 className="text-display store-rank-name" dir="ltr">{platform.toUpperCase()}</h3>
+      <p className="store-rank-description">{t(`description.${platform}`)}</p>
       <ul className="store-rank-perks"><li><Check size={15}/><span>{t("review")}</span></li><li><Check size={15}/><span>{t("noPayment")}</span></li></ul>
-      <button className="store-action mt-auto" aria-haspopup="dialog" onClick={() => setSelected(platform)}><span>{t("apply")}</span><ArrowRight size={16}/></button>
-    </motion.article>)}</div>
+      <div className="store-rank-actions"><button type="button" className="store-action" data-cursor="button" aria-haspopup="dialog" onClick={() => setSelected(platform)}><span>{t("apply")}</span><ArrowRight size={16} className="store-direction" aria-hidden="true"/></button>
+      <button type="button" className="store-action store-details-button" data-cursor="button" aria-haspopup="dialog" aria-label={`${ui("details")} — ${platform.toUpperCase()}`} title={ui("details")} onClick={() => setDetails(platform)}><DetailsIcon/></button></div>
+      </article>
+    </motion.div>)}</div>
+    {details && <DetailsDialog title={`${ui("details")} · ${details.toUpperCase()}`} onClose={() => setDetails(null)}>
+      <div className="store-checkout-body store-full-description">
+        <Image src={`/assets/site/rank-${details}.png`} width={667} height={375} alt={details.toUpperCase()} className="store-details-image"/>
+        <p>{t(`description.${details}`)}</p><p>{t("applicationDetails")}</p>
+        <p className="store-detail-perk"><Check size={16} aria-hidden="true"/><span>{t("noPayment")}</span></p>
+        <p className="store-detail-perk"><Check size={16} aria-hidden="true"/><span>{t("review")}</span></p>
+        <button type="button" className="store-action store-action-primary" data-cursor="button" onClick={() => { setDetails(null); setSelected(details); }}><span>{t("apply")}</span><ArrowRight size={16} className="store-direction" aria-hidden="true"/></button>
+      </div>
+    </DetailsDialog>}
     {selected && <ApplicationForm platform={selected} onClose={() => setSelected(null)}/>}
   </section>;
 }
