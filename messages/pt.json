@@ -156,7 +156,7 @@
       { "category": "gettingStarted", "q": "Quais versões do Minecraft são suportadas?", "a": "1.8.9 para PvP clássico, 1.20.x para survival estável e 1.21.x para a versão mais recente." },
       { "category": "gettingStarted", "q": "Que tipo de vídeos você faz?", "a": "Vídeos de jogos e Shorts: Fortnite, Minecraft e outros jogos, desafios, momentos engraçados e partidas com amigos. Meu canal no YouTube é @iiZo7al." },
       { "category": "storeRanks", "q": "Como compro um rank?", "a": "Abra /store, escolha um rank, informe seu nome no Minecraft e pague com segurança pelo Tebex. Booster é obtido ao impulsionar nosso servidor Discord." },
-      { "category": "storeRanks", "q": "Quais ranks estão disponíveis?", "a": "VIP, MVP, MVP+, MVP++ mensal e Booster do Discord. Confira preços, benefícios e condições atuais em /store." },
+      { "category": "storeRanks", "q": "Quais ranks estão disponíveis?", "a": "Os cargos pagos são VIP, MVP, MVP+ e MVP++. Booster é obtido impulsionando o servidor do Discord. YOUTUBE, TWITCH e TIKTOK estão disponíveis por candidatura e análise, não por compra. Consulte /store para detalhes, preços e candidaturas. Coins são moeda do jogo, não cargos." },
       { "category": "storeRanks", "q": "Onde fica a loja da Zo7al Network?", "a": "Abra a loja em /store. Os pagamentos são processados pelo Tebex; consulte ou cancele assinaturas em portal.tebex.io." },
       {"category": "storeRanks", "q": "Como compro Coins? Posso comprar novamente?", "a": "Abra /store e escolha um pacote de Coins. Digite seu nome exato do Minecraft e pague pelo Tebex. Os detalhes mostram a quantidade e os bônus. Coins são a moeda do servidor, separada dos ranks, e podem ser compradas várias vezes. Se a entrega atrasar, contate o suporte no Discord com a referência da transação."},
       { "category": "fortnite", "q": "Como entro em um mapa do Zo7al no Fortnite?", "a": "Abra o Fortnite, vá em Criativo, selecione \"Inserir um código\" e digite o código da ilha exibido em qualquer mapa na página do Fortnite." },
@@ -390,6 +390,12 @@
     "rateLimit": "Muitas tentativas. Tente novamente em 15 minutos.",
     "invalid": "Confira os dados e use um perfil da plataforma selecionada.",
     "unavailable": "As candidaturas estão indisponíveis. Contate o suporte no Discord.",
-    "failed": "Não foi possível confirmar a entrega. Tente mais tarde."
+    "failed": "Não foi possível confirmar a entrega. Tente mais tarde.",
+    "description": {
+      "youtube": "O cargo YOUTUBE é voltado a criadores de Minecraft no YouTube. Apresente seu canal e seus vídeos, como tutoriais, desafios ou experiências na Zo7al Network. Descreva seu público, número de inscritos e calendário para que a equipe conheça seu conteúdo.",
+      "twitch": "O cargo TWITCH é voltado a streamers de Minecraft na Twitch. Compartilhe seu canal, o tipo de transmissão e como interage com os espectadores. Inclua seguidores, horários e o conteúdo que deseja criar sobre a Zo7al Network.",
+      "tiktok": "O cargo TIKTOK é voltado a criadores de Minecraft no TikTok. Apresente seu perfil e estilo de vídeos curtos, como momentos divertidos, dicas e desafios. Inclua seguidores, frequência de postagem e como compartilharia sua experiência na Zo7al Network."
+    },
+    "applicationDetails": "Abra o formulário e informe um e-mail acessível, seus nomes no Minecraft e Discord e o perfil da plataforma escolhida. Descreva seu conteúdo e motivação com dados corretos. Com seu consentimento, a candidatura é enviada à equipe Zo7al pelo Discord. Guarde a referência após a confirmação de entrega. Candidatar-se não é comprar nem receber um cargo automaticamente: a equipe decide a elegibilidade e aprovação, sem prazo ou benefícios adicionais garantidos."
   }
 }
