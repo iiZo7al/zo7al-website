@@ -167,7 +167,9 @@
       { "category": "community", "q": "¿Cómo contacto a Zo7al?", "a": "Para publicidad y colaboraciones: ads@zo7al.net. Para soporte del servidor o compras, entra en Discord desde la página de redes." },
       { "category": "modpacks", "q": "¿Dónde descargo los modpacks de Zo7al?", "a": "En Modrinth y CurseForge — ambos con enlaces directos en la página de Modpacks." },
       {"category": "community", "q": "¿Cómo veo el contenido reciente de las cuentas de Zo7al?", "a": "Abre /socials y pulsa el icono de detalles de cualquier cuenta, incluidas las de Zo7al Games. Verás su biografía y contenido público según la plataforma, cuando esté disponible: vídeos largos de YouTube, publicaciones, transmisiones guardadas de Twitch o versiones de modpacks."},
-      {"category": "community", "q": "¿Por qué a veces no hay vista previa?", "a": "Algunas plataformas limitan las vistas previas públicas, necesitan una conexión API o no tienen contenido público. Abre la cuenta original desde el enlace de la vista previa. Que falte la vista previa no significa que la cuenta se haya eliminado."}
+      {"category": "community", "q": "¿Por qué a veces no hay vista previa?", "a": "Algunas plataformas limitan las vistas previas públicas, necesitan una conexión API o no tienen contenido público. Abre la cuenta original desde el enlace de la vista previa. Que falte la vista previa no significa que la cuenta se haya eliminado."},
+      {"category": "storeRanks", "q": "¿Cómo solicito un rango de creador?", "a": "En /store, debajo de Coins, elige YouTube, Twitch o TikTok. Envía tu correo, usuarios de Minecraft y Discord, enlace y detalles del contenido. El equipo revisará la solicitud; el rango no se concede automáticamente."},
+      {"category": "storeRanks", "q": "¿Los rangos de creador son de pago?", "a": "Solicitarlos no requiere pago. Son independientes de los rangos comprados y Coins. El equipo decide la elegibilidad y aprobación; no se promete una cifra mínima de seguidores ni un plazo fijo."}
     ]
   },
   "footer": {
@@ -365,5 +367,29 @@
     "boostDuration": "Duración: mientras al menos un impulso de Discord siga activo.",
     "boostPrice": "Precio: uno o más impulsos de servidor de Discord.",
     "boostEnd": "Si todos los impulsos caducan o se retiran, también se eliminarán el rango Booster y sus ventajas."
-}
+},
+  "creators": {
+    "title": "Rangos de creadores",
+    "intro": "Solicita un rango de YouTube, Twitch o TikTok. Cuéntanos sobre tu canal y tu contenido de Minecraft.",
+    "review": "El equipo revisa las solicitudes; la aprobación no está garantizada.",
+    "noPayment": "Solo mediante solicitud — no requiere pago.",
+    "apply": "Solicitar",
+    "email": "Correo electrónico",
+    "minecraft": "Nombre de Minecraft",
+    "discord": "Usuario de Discord",
+    "channel": "Enlace del canal o perfil",
+    "followers": "Seguidores / suscriptores",
+    "content": "Tipo de contenido y frecuencia de publicación",
+    "reason": "¿Por qué quieres este rango?",
+    "reasonHint": "Al menos 20 caracteres.",
+    "consent": "Acepto compartir estos datos con el equipo de Zo7al a través de Discord para revisar mi solicitud y contactarme.",
+    "submit": "Enviar solicitud",
+    "sending": "Enviando…",
+    "success": "¡Solicitud recibida!",
+    "reference": "Referencia de solicitud",
+    "rateLimit": "Demasiados intentos. Inténtalo de nuevo en 15 minutos.",
+    "invalid": "Revisa tus datos y usa un enlace de perfil de la plataforma seleccionada.",
+    "unavailable": "Las solicitudes no están disponibles. Contacta con soporte en Discord.",
+    "failed": "No se pudo confirmar la entrega. Inténtalo más tarde."
+  }
 }

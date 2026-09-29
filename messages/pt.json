@@ -167,7 +167,9 @@
       { "category": "community", "q": "Como entro em contato com o Zo7al?", "a": "Para publicidade e parcerias: ads@zo7al.net. Para suporte do servidor ou compras, entre no Discord pela página de redes sociais." },
       { "category": "modpacks", "q": "Onde baixo os modpacks do Zo7al?", "a": "No Modrinth e no CurseForge — ambos com links diretos na página de Modpacks." },
       {"category": "community", "q": "Como vejo o conteúdo recente das contas do Zo7al?", "a": "Abra /socials e selecione o ícone de detalhes de qualquer conta, incluindo Zo7al Games. A prévia mostra a biografia e o conteúdo público disponível de cada plataforma, como vídeos longos do YouTube, publicações, transmissões salvas da Twitch ou versões de modpacks."},
-      {"category": "community", "q": "Por que algumas prévias ficam indisponíveis?", "a": "Algumas plataformas limitam prévias públicas, exigem uma conexão API ou não têm conteúdo público. Abra a conta original pelo link na prévia. Uma prévia indisponível não significa que a conta foi excluída."}
+      {"category": "community", "q": "Por que algumas prévias ficam indisponíveis?", "a": "Algumas plataformas limitam prévias públicas, exigem uma conexão API ou não têm conteúdo público. Abra a conta original pelo link na prévia. Uma prévia indisponível não significa que a conta foi excluída."},
+      {"category": "storeRanks", "q": "Como solicitar um cargo de criador?", "a": "Em /store, abaixo de Coins, escolha YouTube, Twitch ou TikTok. Envie e-mail, nomes do Minecraft e Discord, link e detalhes do conteúdo. A equipe analisa a candidatura; o cargo não é concedido automaticamente."},
+      {"category": "storeRanks", "q": "Os cargos de criadores são pagos?", "a": "A candidatura não exige pagamento e é independente dos cargos comprados e Coins. A equipe decide a elegibilidade e aprovação. Não há promessa de limite de seguidores ou prazo fixo."}
     ]
   },
   "footer": {
@@ -365,5 +367,29 @@
     "boostDuration": "Duração: enquanto pelo menos um impulso do Discord permanecer ativo.",
     "boostPrice": "Preço: um ou mais impulsos de servidor do Discord.",
     "boostEnd": "Se todos os impulsos expirarem ou forem removidos, o rank Booster e seus benefícios também serão removidos."
-}
+},
+  "creators": {
+    "title": "Cargos de criadores",
+    "intro": "Candidate-se a um cargo de YouTube, Twitch ou TikTok. Conte-nos sobre seu canal e conteúdo de Minecraft.",
+    "review": "A equipe analisa as candidaturas; a aprovação não é garantida.",
+    "noPayment": "Somente por candidatura — sem pagamento.",
+    "apply": "Candidatar-se",
+    "email": "E-mail",
+    "minecraft": "Nome no Minecraft",
+    "discord": "Usuário do Discord",
+    "channel": "Link do canal ou perfil",
+    "followers": "Seguidores / inscritos",
+    "content": "Tipo de conteúdo e frequência de publicação",
+    "reason": "Por que deseja este cargo?",
+    "reasonHint": "Pelo menos 20 caracteres.",
+    "consent": "Concordo em compartilhar estes dados com a equipe Zo7al pelo Discord para análise da candidatura e contato.",
+    "submit": "Enviar candidatura",
+    "sending": "Enviando…",
+    "success": "Candidatura recebida!",
+    "reference": "Referência da candidatura",
+    "rateLimit": "Muitas tentativas. Tente novamente em 15 minutos.",
+    "invalid": "Confira os dados e use um perfil da plataforma selecionada.",
+    "unavailable": "As candidaturas estão indisponíveis. Contate o suporte no Discord.",
+    "failed": "Não foi possível confirmar a entrega. Tente mais tarde."
+  }
 }
