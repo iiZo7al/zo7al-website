@@ -158,7 +158,30 @@
     "previewSource": "Preview from the public profile.",
     "previewUnavailable": "The platform’s live preview is unavailable. You can still open the profile below.",
     "latestVideo": "Latest video",
-    "openProfile": "Open {platform}"
+    "openProfile": "Open {platform}",
+    "latestLongVideo": "Latest long-form video",
+    "latestBroadcast": "Latest saved broadcast",
+    "latestPost": "Latest post",
+    "recentPosts": "Recent posts",
+    "recentVideos": "Recent videos",
+    "stories": "Stories & Spotlight",
+    "community": "Server community",
+    "latestProjects": "Recently updated projects",
+    "releases": "Modpack releases",
+    "islands": "Creator islands",
+    "games": "Games & experiences",
+    "accountLinks": "Account links",
+    "accountDescription": "About this account",
+    "members": "Members",
+    "online": "Online",
+    "followers": "Followers",
+    "downloads": "Downloads",
+    "platformContent": "Platform content",
+    "embedNotice": "Public content provided by the platform. If it does not load, open the account directly.",
+    "savedContent": "Saved public content; the live source is currently unavailable.",
+    "noContent": "No public content of this type was found.",
+    "contentUnavailable": "The latest content could not be retrieved. Open the account to view it on the platform.",
+    "viewContent": "View content on the platform"
   },
   "store": {
     "coinsTitle": "Coins",
@@ -236,7 +259,9 @@
       { "category": "community", "q": "Where can I find Zo7al's social media?", "a": "Find my YouTube channel @iiZo7al and my other accounts on the Socials page. The account links sync from my official Linktree." },
       { "category": "community", "q": "How do I report a problem?", "a": "Join the Discord server and open a ticket in the support channel — that's the fastest way to reach the team." },
       { "category": "community", "q": "How do I contact Zo7al?", "a": "For advertising and collaborations, email ads@zo7al.net. For server or purchase support, join our Discord through the Socials page." },
-      { "category": "modpacks", "q": "Where can I download Zo7al modpacks?", "a": "On Modrinth and CurseForge — both are listed with direct links on the Modpacks page." }
+      { "category": "modpacks", "q": "Where can I download Zo7al modpacks?", "a": "On Modrinth and CurseForge — both are listed with direct links on the Modpacks page." },
+      {"category": "community", "q": "How do I preview the latest content from Zo7al’s accounts?", "a": "Open /socials and select the details icon on any account, including Zo7al Games. Each preview shows the account bio and platform-specific public content when available, such as a long YouTube video, a post, a saved Twitch broadcast or a modpack release."},
+      {"category": "community", "q": "Why is a social preview sometimes unavailable?", "a": "Some platforms restrict public previews, require an API connection, or have no public content available. Use the link in the preview to open the original account. A missing preview does not mean the account was deleted."}
     ]
   },
   "footer": {

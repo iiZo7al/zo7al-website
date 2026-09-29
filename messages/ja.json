@@ -80,7 +80,30 @@
     "previewSource": "公開プロフィールからのプレビューです。",
     "previewUnavailable": "ライブプレビューは利用できません。下のボタンからプロフィールを開けます。",
     "latestVideo": "最新の動画",
-    "openProfile": "{platform} を開く"
+    "openProfile": "{platform} を開く",
+    "latestLongVideo": "最新の通常動画",
+    "latestBroadcast": "最新の保存済み配信",
+    "latestPost": "最新の投稿",
+    "recentPosts": "最近の投稿",
+    "recentVideos": "最近の動画",
+    "stories": "ストーリーとSpotlight",
+    "community": "サーバーコミュニティ",
+    "latestProjects": "最近更新されたプロジェクト",
+    "releases": "Modパックのリリース",
+    "islands": "クリエイターの島",
+    "games": "ゲームと体験",
+    "accountLinks": "アカウントのリンク",
+    "accountDescription": "このアカウントについて",
+    "members": "メンバー",
+    "online": "オンライン",
+    "followers": "フォロワー",
+    "downloads": "ダウンロード",
+    "platformContent": "プラットフォームのコンテンツ",
+    "embedNotice": "プラットフォームが提供する公開コンテンツです。読み込めない場合はアカウントを直接開いてください。",
+    "savedContent": "保存済みの公開コンテンツです。現在ライブソースを利用できません。",
+    "noContent": "この種類の公開コンテンツは見つかりませんでした。",
+    "contentUnavailable": "最新のコンテンツを取得できませんでした。アカウントを開いてご確認ください。",
+    "viewContent": "プラットフォームで見る"
   },
   "store": {
     "coinsTitle": "コイン",
@@ -142,7 +165,9 @@
       { "category": "community", "q": "Zo7alのSNSはどこで見られますか？", "a": "YouTube チャンネル @iiZo7al と他のアカウントはSNSページに掲載しています。リンクは公式 Linktree と同期しています。" },
       { "category": "community", "q": "問題を報告するには？", "a": "Discordサーバーに参加し、サポートチャンネルでチケットを開いてください — チームに最も早く連絡できる方法です。" },
       { "category": "community", "q": "Zo7alに連絡するには？", "a": "広告・コラボのご相談は ads@zo7al.net へ。サーバーや購入のサポートはSNSページから Discord に参加してください。" },
-      { "category": "modpacks", "q": "Zo7alのModpackはどこでダウンロードできますか？", "a": "ModrinthとCurseForgeで、どちらもModpackページに直接リンクが掲載されています。" }
+      { "category": "modpacks", "q": "Zo7alのModpackはどこでダウンロードできますか？", "a": "ModrinthとCurseForgeで、どちらもModpackページに直接リンクが掲載されています。" },
+      {"category": "community", "q": "Zo7alのアカウントの最新コンテンツを見るには？", "a": "/socials を開き、Zo7al Gamesを含む各アカウントの詳細アイコンを押してください。紹介文と、取得できたプラットフォーム別の公開コンテンツが表示されます。通常のYouTube動画、投稿、保存されたTwitch配信、Modパックのリリースなどです。"},
+      {"category": "community", "q": "プレビューを表示できないことがあるのはなぜ？", "a": "プラットフォームが公開プレビューを制限していたり、API接続が必要だったり、公開コンテンツがない場合があります。プレビュー内のリンクから元のアカウントを開けます。表示できないことはアカウントの削除を意味しません。"}
     ]
   },
   "footer": {

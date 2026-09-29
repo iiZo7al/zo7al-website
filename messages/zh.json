@@ -80,7 +80,30 @@
     "previewSource": "来自公开账号页面的预览。",
     "previewUnavailable": "暂时无法获取实时预览。你仍可通过下方按钮打开账号页面。",
     "latestVideo": "最新视频",
-    "openProfile": "打开 {platform}"
+    "openProfile": "打开 {platform}",
+    "latestLongVideo": "最新长视频",
+    "latestBroadcast": "最近保存的直播",
+    "latestPost": "最新帖子",
+    "recentPosts": "近期帖子",
+    "recentVideos": "近期视频",
+    "stories": "故事与 Spotlight",
+    "community": "服务器社区",
+    "latestProjects": "最近更新的项目",
+    "releases": "模组包版本",
+    "islands": "创作者岛屿",
+    "games": "游戏与体验",
+    "accountLinks": "账号链接",
+    "accountDescription": "账号简介",
+    "members": "成员",
+    "online": "在线",
+    "followers": "关注者",
+    "downloads": "下载量",
+    "platformContent": "平台内容",
+    "embedNotice": "由平台提供的公开内容。如果无法加载，请直接打开账号。",
+    "savedContent": "已保存的公开内容；实时来源暂不可用。",
+    "noContent": "未找到此类公开内容。",
+    "contentUnavailable": "无法获取最新内容，请打开账号在平台上查看。",
+    "viewContent": "前往平台查看内容"
   },
   "store": {
     "coinsTitle": "金币",
@@ -142,7 +165,9 @@
       { "category": "community", "q": "在哪里可以找到 Zo7al 的社交媒体？", "a": "在社交页面找到我的 YouTube 频道 @iiZo7al 及其他账号。账号链接与我的官方 Linktree 同步。" },
       { "category": "community", "q": "如何报告问题？", "a": "加入 Discord 服务器，在支持频道开设工单——这是联系团队最快的方式。" },
       { "category": "community", "q": "如何联系 Zo7al？", "a": "广告与合作请联系 ads@zo7al.net。服务器或购买相关支持，请通过社交页面加入 Discord。" },
-      { "category": "modpacks", "q": "在哪里可以下载 Zo7al 的整合包？", "a": "Modrinth 和 CurseForge 上均可下载，整合包页面提供了两者的直接链接。" }
+      { "category": "modpacks", "q": "在哪里可以下载 Zo7al 的整合包？", "a": "Modrinth 和 CurseForge 上均可下载，整合包页面提供了两者的直接链接。" },
+      {"category": "community", "q": "如何预览 Zo7al 各账号的最新内容？", "a": "打开 /socials，点击任意账号的详情图标，包括 Zo7al Games。预览会显示账号简介及可获取的平台公开内容，例如 YouTube 长视频、帖子、保存的 Twitch 直播或模组包版本。"},
+      {"category": "community", "q": "为什么有些社交平台预览无法显示？", "a": "部分平台限制公开预览、需要 API 连接，或者没有可用的公开内容。你可以通过预览中的链接打开原账号。无法显示预览不代表账号已被删除。"}
     ]
   },
   "footer": {

@@ -20,12 +20,13 @@ export function safeMediaUrl(value: unknown): string | undefined {
 export function fortniteLocale(locale: string) {
   return ({ en: "en-US", ar: "ar", es: "es-ES", fr: "fr", de: "de", pt: "pt-BR", tr: "tr", ja: "ja", ko: "ko", zh: "zh-CN" } as Record<string, string>)[locale] ?? "en-US";
 }
-export function parseCreatorIslands(html: string) {
+export function parseCreatorIslands(html: string, creator = "zo7al") {
   const found = new Map<string, { code: string; title: string; thumbnail?: string }>();
   for (const match of html.matchAll(/<a\b([^>]*)>([\s\S]*?)<\/a>/gi)) {
     const href = attributes(match[1]).href ?? "";
-    const code = href.match(/\/(?:creative\/island-codes|@zo7al)\/(\d{4}-\d{4}-\d{4})(?:[/?#]|$)/)?.[1];
-    if (!code) continue;
+    const island = href.match(/\/(?:creative\/island-codes|@([\w-]+))\/(\d{4}-\d{4}-\d{4})(?:[/?#]|$)/);
+    const code = island?.[2];
+    if (!code || (island?.[1] && island[1].toLowerCase() !== creator.toLowerCase())) continue;
     const img = attributes(match[2].match(/<img\b[^>]*>/i)?.[0] ?? "");
     const title = img.alt?.trim() || text(match[2]);
     if (!title || title === code) continue;

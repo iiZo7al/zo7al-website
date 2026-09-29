@@ -26,6 +26,7 @@ const RING_SIZE: Record<CursorMode, number> = {
  */
 export default function CustomCursor() {
   const t = useTranslations("ui"), tc = useTranslations("common");
+  const layerRef = useRef<HTMLDivElement>(null);
   const dotRef = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
   const glowRef = useRef<HTMLDivElement>(null);
@@ -40,6 +41,27 @@ export default function CustomCursor() {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (coarse) return;
     document.documentElement.classList.add("cursor-ready");
+    const layer = layerRef.current;
+    let lastDialog: Element | null = null;
+    const raiseLayer = () => {
+      if (!layer?.showPopover) return;
+      try {
+        if (layer.matches(":popover-open")) layer.hidePopover();
+        layer.showPopover();
+        document.documentElement.classList.toggle("cursor-top-layer", layer.matches(":popover-open"));
+      } catch {
+        document.documentElement.classList.remove("cursor-top-layer");
+        layer.removeAttribute("popover");
+      }
+    };
+    if (layer?.showPopover) raiseLayer();
+    else layer?.removeAttribute("popover");
+    const observer = new MutationObserver(() => {
+      const dialogs = document.querySelectorAll("dialog[open]");
+      const topDialog = dialogs.item(dialogs.length - 1);
+      if (topDialog !== lastDialog) { lastDialog = topDialog; raiseLayer(); }
+    });
+    observer.observe(document.body, { attributes: true, attributeFilter: ["open"], childList: true, subtree: true });
 
     const mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
     const ring = { x: mouse.x, y: mouse.y };
@@ -48,6 +70,7 @@ export default function CustomCursor() {
     let visible = false;
 
     const onMove = (e: MouseEvent) => {
+      if ((e.target as Element)?.closest?.("iframe")) { visible = false; document.documentElement.classList.remove("cursor-visible"); return; }
       document.documentElement.classList.add("cursor-visible");
       mouse.x = e.clientX;
       mouse.y = e.clientY;
@@ -96,6 +119,7 @@ export default function CustomCursor() {
     };
 
     const onOver = (e: MouseEvent) => {
+      if ((e.target as Element)?.closest("iframe")) { visible = false; document.documentElement.classList.remove("cursor-visible"); }
       const resolved = resolveMode(e.target as Element);
       setMode(resolved?.mode ?? "default");
       setHoverLabel(resolved?.label ?? null);
@@ -131,6 +155,9 @@ export default function CustomCursor() {
     window.addEventListener("zo7al:cursor-flash", onFlash);
 
     return () => {
+      observer.disconnect();
+      if (layer?.hidePopover && layer.matches(":popover-open")) layer.hidePopover();
+      document.documentElement.classList.remove("cursor-top-layer");
       cancelAnimationFrame(raf);
       hide();
       window.removeEventListener("blur", hide);
@@ -150,7 +177,7 @@ export default function CustomCursor() {
   const active = mode !== "default" || !!flash;
 
   return (
-    <>
+    <div ref={layerRef} popover="manual" className="cursor-layer" aria-hidden="true">
       <div ref={glowRef} className="cursor-glow" style={{ opacity: active ? 0.7 : 0.35 }} />
       <div
         ref={ringRef}
@@ -168,7 +195,7 @@ export default function CustomCursor() {
         </span>
       </div>
       <div ref={dotRef} className="cursor-dot" style={{ opacity: active ? 0 : 1 }} />
-    </>
+    </div>
   );
 }
 
