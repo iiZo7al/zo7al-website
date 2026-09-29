@@ -167,7 +167,9 @@
       { "category": "community", "q": "如何联系 Zo7al？", "a": "广告与合作请联系 ads@zo7al.net。服务器或购买相关支持，请通过社交页面加入 Discord。" },
       { "category": "modpacks", "q": "在哪里可以下载 Zo7al 的整合包？", "a": "Modrinth 和 CurseForge 上均可下载，整合包页面提供了两者的直接链接。" },
       {"category": "community", "q": "如何预览 Zo7al 各账号的最新内容？", "a": "打开 /socials，点击任意账号的详情图标，包括 Zo7al Games。预览会显示账号简介及可获取的平台公开内容，例如 YouTube 长视频、帖子、保存的 Twitch 直播或模组包版本。"},
-      {"category": "community", "q": "为什么有些社交平台预览无法显示？", "a": "部分平台限制公开预览、需要 API 连接，或者没有可用的公开内容。你可以通过预览中的链接打开原账号。无法显示预览不代表账号已被删除。"}
+      {"category": "community", "q": "为什么有些社交平台预览无法显示？", "a": "部分平台限制公开预览、需要 API 连接，或者没有可用的公开内容。你可以通过预览中的链接打开原账号。无法显示预览不代表账号已被删除。"},
+      {"category": "storeRanks", "q": "如何申请创作者等级？", "a": "在 /store 的 Coins 下方选择 YouTube、Twitch 或 TikTok，填写邮箱、Minecraft 和 Discord 用户名、频道链接和内容介绍。团队将审核申请，提交后不会自动获得等级。"},
+      {"category": "storeRanks", "q": "创作者等级需要付费吗？", "a": "申请无需付款，与付费等级和 Coins 独立。资格和审批由团队决定，不承诺固定粉丝门槛或审核时间。"}
     ]
   },
   "footer": {
@@ -365,5 +367,29 @@
     "boostDuration": "等级有效期：至少一个 Discord 服务器助力保持有效期间。",
     "boostPrice": "价格：一个或多个 Discord 服务器助力。",
     "boostEnd": "如果所有助力到期或被移除，Booster 等级及其权益也将被移除。"
-}
+},
+  "creators": {
+    "title": "创作者等级",
+    "intro": "申请 YouTube、Twitch 或 TikTok 等级。请介绍你的频道和 Minecraft 内容。",
+    "review": "团队将审核申请，不保证获批。",
+    "noPayment": "仅通过申请获取，无需付款。",
+    "apply": "申请",
+    "email": "电子邮箱",
+    "minecraft": "Minecraft 用户名",
+    "discord": "Discord 用户名",
+    "channel": "频道或个人主页链接",
+    "followers": "粉丝 / 订阅者数量",
+    "content": "内容类型和发布计划",
+    "reason": "你为什么想申请此等级？",
+    "reasonHint": "至少填写20个字符。",
+    "consent": "我同意通过 Discord 将这些信息分享给 Zo7al 团队，用于审核申请和联系我。",
+    "submit": "提交申请",
+    "sending": "正在发送…",
+    "success": "已收到申请！",
+    "reference": "申请编号",
+    "rateLimit": "尝试次数过多，请15分钟后再试。",
+    "invalid": "请检查信息，并使用所选平台的个人主页链接。",
+    "unavailable": "目前无法申请，请联系 Discord 客服。",
+    "failed": "无法确认是否送达，请稍后再试。"
+  }
 }

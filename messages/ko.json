@@ -167,7 +167,9 @@
       { "category": "community", "q": "Zo7al에게 어떻게 연락하나요?", "a": "광고 및 협업 문의: ads@zo7al.net. 서버나 구매 관련 지원은 소셜 페이지의 Discord를 이용하세요." },
       { "category": "modpacks", "q": "Zo7al의 모드팩은 어디서 다운로드하나요?", "a": "Modrinth와 CurseForge에서 다운로드할 수 있으며, 두 곳 모두 모드팩 페이지에 직접 링크로 연결되어 있습니다." },
       {"category": "community", "q": "Zo7al 계정의 최신 콘텐츠는 어떻게 보나요?", "a": "/socials에서 Zo7al Games를 포함한 계정의 상세 아이콘을 누르세요. 계정 소개와 플랫폼별 공개 콘텐츠를 확인할 수 있습니다. 가능한 경우 일반 YouTube 동영상, 게시물, 저장된 Twitch 방송, 모드팩 릴리스를 보여 줍니다."},
-      {"category": "community", "q": "일부 소셜 미디어 미리보기가 표시되지 않는 이유는 무엇인가요?", "a": "일부 플랫폼은 공개 미리보기를 제한하거나 API 연결을 요구하며, 공개 콘텐츠가 없을 수도 있습니다. 미리보기의 링크로 원래 계정을 여세요. 미리보기가 없다고 계정이 삭제된 것은 아닙니다."}
+      {"category": "community", "q": "일부 소셜 미디어 미리보기가 표시되지 않는 이유는 무엇인가요?", "a": "일부 플랫폼은 공개 미리보기를 제한하거나 API 연결을 요구하며, 공개 콘텐츠가 없을 수도 있습니다. 미리보기의 링크로 원래 계정을 여세요. 미리보기가 없다고 계정이 삭제된 것은 아닙니다."},
+      {"category": "storeRanks", "q": "크리에이터 등급은 어떻게 신청하나요?", "a": "/store의 Coins 아래에서 YouTube, Twitch 또는 TikTok을 선택하세요. 이메일, Minecraft와 Discord 이름, 채널 링크, 콘텐츠 정보를 제출하면 팀에서 검토합니다. 등급은 자동 지급되지 않습니다."},
+      {"category": "storeRanks", "q": "크리에이터 등급은 유료인가요?", "a": "지원은 무료이며 구매 등급 및 Coins와 별개입니다. 자격과 승인 여부는 팀이 결정합니다. 고정된 팔로워 기준이나 검토 기간은 약속하지 않습니다."}
     ]
   },
   "footer": {
@@ -365,5 +367,29 @@
     "boostDuration": "등급 기간: 하나 이상의 Discord 서버 부스트가 활성 상태인 동안.",
     "boostPrice": "가격: 하나 이상의 Discord 서버 부스트.",
     "boostEnd": "모든 부스트가 만료되거나 제거되면 Booster 등급과 혜택도 제거됩니다."
-}
+},
+  "creators": {
+    "title": "크리에이터 등급",
+    "intro": "YouTube, Twitch 또는 TikTok 등급에 지원하세요. 채널과 Minecraft 콘텐츠를 소개해 주세요.",
+    "review": "팀에서 지원서를 검토하며 승인이 보장되지는 않습니다.",
+    "noPayment": "지원으로만 신청 — 결제 불필요.",
+    "apply": "지원하기",
+    "email": "이메일",
+    "minecraft": "Minecraft 사용자 이름",
+    "discord": "Discord 사용자 이름",
+    "channel": "채널 / 프로필 URL",
+    "followers": "팔로워 / 구독자 수",
+    "content": "콘텐츠 유형 및 게시 일정",
+    "reason": "이 등급에 지원하는 이유",
+    "reasonHint": "20자 이상 입력해 주세요.",
+    "consent": "지원서 검토 및 연락을 위해 이 정보를 Discord를 통해 Zo7al 팀과 공유하는 데 동의합니다.",
+    "submit": "지원서 제출",
+    "sending": "전송 중…",
+    "success": "지원서가 접수되었습니다!",
+    "reference": "지원 번호",
+    "rateLimit": "시도 횟수가 너무 많습니다. 15분 후 다시 시도해 주세요.",
+    "invalid": "입력 정보와 선택한 플랫폼의 프로필 링크를 확인해 주세요.",
+    "unavailable": "현재 지원할 수 없습니다. Discord 지원팀에 문의해 주세요.",
+    "failed": "전달 여부를 확인하지 못했습니다. 나중에 다시 시도해 주세요。"
+  }
 }

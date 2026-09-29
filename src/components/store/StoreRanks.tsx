@@ -1,9 +1,10 @@
 "use client";
 import { useLocale, useTranslations } from "next-intl";
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import Script from "next/script";
 import Image from "next/image";
 import "./store.css";
+import CreatorRanks from "./CreatorRanks";
 import { groupStoreProducts } from "@/lib/data/store-groups";
 import { BOOSTER_PRODUCT, isMonthlyRank } from "@/lib/data/store-booster";
 import { DISCORD_LINK } from "@/lib/data/site";
@@ -143,7 +144,7 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
       <h2>{t(paymentStatus === "paid" ? "paymentSuccess" : paymentStatus === "checking" ? "paymentChecking" : "paymentPending")}</h2>
       {paymentStatus === "paid" && <><p>{t("paymentSuccessNote")}</p><p>{subscriptionLink}</p></>}
     </div>}
-    {groups.map(group => <section key={group.id} aria-labelledby={`store-group-${group.id}`} className="mb-14">
+    {groups.map(group => <Fragment key={group.id}><section aria-labelledby={`store-group-${group.id}`} className="mb-14">
       <div className="mb-5 flex items-center gap-4">
         {group.image && <Image unoptimized src={group.image} alt="" width={140} height={80} className="h-20 w-36 object-contain" />}
         <h2 id={`store-group-${group.id}`} dir="auto" className="text-display text-3xl">{categoryLabel(group.name)}</h2>
@@ -171,7 +172,8 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
         </article></motion.div>;
       })}
       </div>
-    </section>)}
+    </section>{(/^(coins?|العملات)$/i.test(group.name.trim()) || group.products.some(p => p.id === 7692129)) && <CreatorRanks/>}</Fragment>)}
+    {!groups.some(group => /^(coins?|العملات)$/i.test(group.name.trim()) || group.products.some(p => p.id === 7692129)) && <CreatorRanks/>}
     <dialog ref={detailsDialog} onCancel={() => setDetails(null)} onClose={() => setDetails(null)} aria-labelledby="rank-details-title" className="checkout-shell store-checkout">
       <header className="store-checkout-header"><h2 id="rank-details-title">{t("details")} · <bdi dir="ltr">{currentDetails?.name}</bdi></h2><button type="button" className="store-close" onClick={() => setDetails(null)} aria-label={t("close")}><X size={20} aria-hidden="true" /></button></header>
       <div className="store-checkout-body store-full-description">{currentDetails?.image && <Image unoptimized src={currentDetails.image} alt={currentDetails.name} width={480} height={320} className="store-details-image" />}{currentDetails?.description ? describe(currentDetails).map((line, index) => line.startsWith("• ") ? <p className="store-detail-perk" key={index}><Check size={16} aria-hidden="true" /><span dir="auto">{line.slice(2)}</span></p> : <p dir="auto" key={index}>{line}</p>) : <p>{t("descriptionUnavailable")}</p>}</div>

@@ -167,7 +167,9 @@
       { "category": "community", "q": "Zo7al ile nasıl iletişime geçerim?", "a": "Reklam ve iş birlikleri için: ads@zo7al.net. Sunucu veya satın alma desteği için sosyal medya sayfasından Discord’a katıl." },
       { "category": "modpacks", "q": "Zo7al'in modpack'lerini nereden indirebilirim?", "a": "Modrinth ve CurseForge üzerinden — ikisi de Modpack'ler sayfasında doğrudan bağlantılarla listelenir." },
       {"category": "community", "q": "Zo7al hesaplarının son içeriklerini nasıl görebilirim?", "a": "/socials sayfasında Zo7al Games dâhil herhangi bir hesabın detay simgesine tıkla. Önizleme, hesabın biyografisini ve varsa platforma uygun herkese açık içerikleri gösterir: uzun YouTube videoları, gönderiler, kayıtlı Twitch yayınları veya mod paketi sürümleri."},
-      {"category": "community", "q": "Bazı sosyal medya önizlemeleri neden görünmüyor?", "a": "Bazı platformlar herkese açık önizlemeleri kısıtlar, API bağlantısı gerektirir veya herkese açık içerik barındırmaz. Önizlemedeki bağlantıyla asıl hesabı açabilirsin. Önizlemenin olmaması hesabın silindiği anlamına gelmez."}
+      {"category": "community", "q": "Bazı sosyal medya önizlemeleri neden görünmüyor?", "a": "Bazı platformlar herkese açık önizlemeleri kısıtlar, API bağlantısı gerektirir veya herkese açık içerik barındırmaz. Önizlemedeki bağlantıyla asıl hesabı açabilirsin. Önizlemenin olmaması hesabın silindiği anlamına gelmez."},
+      {"category": "storeRanks", "q": "İçerik üreticisi rütbesine nasıl başvururum?", "a": "/store sayfasında Coins altından YouTube, Twitch veya TikTok seç. E-posta, Minecraft ve Discord adlarını, kanal bağlantını ve içerik bilgilerini gönder. Ekip başvuruyu inceler; rütbe otomatik verilmez."},
+      {"category": "storeRanks", "q": "İçerik üreticisi rütbeleri ücretli mi?", "a": "Başvuru ücretsizdir; satın alınan rütbelerden ve Coins paketlerinden ayrıdır. Uygunluk ve kabul kararını ekip verir. Sabit takipçi sınırı veya inceleme süresi vaat edilmez."}
     ]
   },
   "footer": {
@@ -365,5 +367,29 @@
     "boostDuration": "Rütbe süresi: en az bir Discord sunucu takviyesi etkin kaldığı sürece.",
     "boostPrice": "Fiyat: bir veya daha fazla Discord sunucu takviyesi.",
     "boostEnd": "Tüm takviyeler sona ererse veya kaldırılırsa Booster rütbesi ve avantajları da kaldırılır."
-}
+},
+  "creators": {
+    "title": "İçerik üreticisi rütbeleri",
+    "intro": "YouTube, Twitch veya TikTok rütbesine başvur. Kanalını ve Minecraft içeriklerini anlat.",
+    "review": "Başvuruları ekip inceler; kabul garantisi yoktur.",
+    "noPayment": "Yalnızca başvuruyla — ödeme gerekmez.",
+    "apply": "Başvur",
+    "email": "E-posta",
+    "minecraft": "Minecraft kullanıcı adı",
+    "discord": "Discord kullanıcı adı",
+    "channel": "Kanal / profil bağlantısı",
+    "followers": "Takipçi / abone sayısı",
+    "content": "İçerik türü ve yayın takvimi",
+    "reason": "Bu rütbeyi neden istiyorsun?",
+    "reasonHint": "En az 20 karakter.",
+    "consent": "Başvurumun incelenmesi ve benimle iletişim kurulması için bu bilgilerin Discord üzerinden Zo7al ekibiyle paylaşılmasını kabul ediyorum.",
+    "submit": "Başvuruyu gönder",
+    "sending": "Gönderiliyor…",
+    "success": "Başvurun alındı!",
+    "reference": "Başvuru numarası",
+    "rateLimit": "Çok fazla deneme. 15 dakika sonra tekrar dene.",
+    "invalid": "Bilgilerini kontrol et ve seçilen platforma ait bir profil bağlantısı kullan.",
+    "unavailable": "Başvurular şu anda kullanılamıyor. Discord desteğine ulaş.",
+    "failed": "Teslimat doğrulanamadı. Daha sonra tekrar dene."
+  }
 }

@@ -167,7 +167,9 @@
       { "category": "community", "q": "Wie kontaktiere ich Zo7al?", "a": "Für Werbung und Kooperationen: ads@zo7al.net. Für Server- oder Kaufsupport tritt Discord über die Socials-Seite bei." },
       { "category": "modpacks", "q": "Wo lade ich Zo7als Modpacks herunter?", "a": "Auf Modrinth und CurseForge — beide mit direkten Links auf der Modpacks-Seite gelistet." },
       {"category": "community", "q": "Wie sehe ich aktuelle Inhalte von Zo7als Konten?", "a": "Öffne /socials und klicke auf das Detailsymbol eines Kontos, auch bei Zo7al Games. Die Vorschau zeigt die Biografie und verfügbare öffentliche Plattforminhalte, etwa ein langes YouTube-Video, einen Beitrag, eine gespeicherte Twitch-Übertragung oder eine Modpack-Version."},
-      {"category": "community", "q": "Warum ist eine Vorschau manchmal nicht verfügbar?", "a": "Manche Plattformen beschränken öffentliche Vorschauen, erfordern eine API-Verbindung oder haben keine öffentlichen Inhalte. Öffne das Originalkonto über den Link. Eine fehlende Vorschau bedeutet nicht, dass das Konto gelöscht wurde."}
+      {"category": "community", "q": "Warum ist eine Vorschau manchmal nicht verfügbar?", "a": "Manche Plattformen beschränken öffentliche Vorschauen, erfordern eine API-Verbindung oder haben keine öffentlichen Inhalte. Öffne das Originalkonto über den Link. Eine fehlende Vorschau bedeutet nicht, dass das Konto gelöscht wurde."},
+      {"category": "storeRanks", "q": "Wie bewerbe ich mich für einen Creator-Rang?", "a": "Öffne /store und wähle unter Coins einen Creator-Rang für YouTube, Twitch oder TikTok. Gib E-Mail, Minecraft- und Discord-Namen, Kanallink und Inhaltsdetails an. Das Team prüft die Bewerbung; der Rang wird nicht automatisch vergeben."},
+      {"category": "storeRanks", "q": "Kosten Creator-Ränge Geld?", "a": "Die Bewerbung ist kostenlos und unabhängig von gekauften Rängen und Coins. Das Team entscheidet über Eignung und Annahme. Es gibt keine zugesicherte Follower-Grenze oder Prüfungsdauer."}
     ]
   },
   "footer": {
@@ -365,5 +367,29 @@
     "boostDuration": "Rangdauer: solange mindestens ein Discord-Server-Boost aktiv bleibt.",
     "boostPrice": "Preis: ein oder mehrere Discord-Server-Boosts.",
     "boostEnd": "Wenn alle Boosts ablaufen oder entfernt werden, entfallen auch der Booster-Rang und seine Vorteile."
-}
+},
+  "creators": {
+    "title": "Creator-Ränge",
+    "intro": "Bewirb dich für einen YouTube-, Twitch- oder TikTok-Rang. Erzähle uns von deinem Kanal und deinen Minecraft-Inhalten.",
+    "review": "Das Team prüft die Bewerbungen; eine Zusage ist nicht garantiert.",
+    "noPayment": "Nur auf Bewerbung — keine Zahlung erforderlich.",
+    "apply": "Bewerben",
+    "email": "E-Mail",
+    "minecraft": "Minecraft-Spielername",
+    "discord": "Discord-Benutzername",
+    "channel": "Kanal- oder Profillink",
+    "followers": "Follower / Abonnenten",
+    "content": "Inhalte und Veröffentlichungsplan",
+    "reason": "Warum möchtest du diesen Rang?",
+    "reasonHint": "Mindestens 20 Zeichen.",
+    "consent": "Ich stimme zu, diese Angaben über Discord mit dem Zo7al-Team zur Prüfung und Kontaktaufnahme zu teilen.",
+    "submit": "Bewerbung senden",
+    "sending": "Wird gesendet…",
+    "success": "Bewerbung eingegangen!",
+    "reference": "Bewerbungsnummer",
+    "rateLimit": "Zu viele Versuche. Versuche es in 15 Minuten erneut.",
+    "invalid": "Prüfe deine Angaben und verwende einen Profillink der gewählten Plattform.",
+    "unavailable": "Bewerbungen sind derzeit nicht verfügbar. Kontaktiere den Discord-Support.",
+    "failed": "Die Zustellung konnte nicht bestätigt werden. Versuche es später erneut."
+  }
 }

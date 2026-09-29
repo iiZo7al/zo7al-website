@@ -261,7 +261,9 @@
       { "category": "community", "q": "How do I contact Zo7al?", "a": "For advertising and collaborations, email ads@zo7al.net. For server or purchase support, join our Discord through the Socials page." },
       { "category": "modpacks", "q": "Where can I download Zo7al modpacks?", "a": "On Modrinth and CurseForge — both are listed with direct links on the Modpacks page." },
       {"category": "community", "q": "How do I preview the latest content from Zo7al’s accounts?", "a": "Open /socials and select the details icon on any account, including Zo7al Games. Each preview shows the account bio and platform-specific public content when available, such as a long YouTube video, a post, a saved Twitch broadcast or a modpack release."},
-      {"category": "community", "q": "Why is a social preview sometimes unavailable?", "a": "Some platforms restrict public previews, require an API connection, or have no public content available. Use the link in the preview to open the original account. A missing preview does not mean the account was deleted."}
+      {"category": "community", "q": "Why is a social preview sometimes unavailable?", "a": "Some platforms restrict public previews, require an API connection, or have no public content available. Use the link in the preview to open the original account. A missing preview does not mean the account was deleted."},
+      {"category": "storeRanks", "q": "How do I apply for a creator rank?", "a": "Open /store and find Creator ranks below Coins. Choose YouTube, Twitch or TikTok, then submit your email, Minecraft and Discord usernames, channel link and content details. The team reviews your application; submission does not grant a rank automatically."},
+      {"category": "storeRanks", "q": "Are creator ranks paid?", "a": "No payment is required to apply. These ranks are separate from purchased ranks and Coins. Approval and eligibility are decided by the team; no fixed follower threshold or review time is promised."}
     ]
   },
   "footer": {
@@ -462,5 +464,29 @@
     "boostDuration": "Rank Duration: Active while at least one Discord Server Boost remains active.",
     "boostPrice": "Price: One or more Discord Server Boosts.",
     "boostEnd": "If all boosts expire or are removed, the Booster Rank and its benefits will also be removed."
-}
+},
+  "creators": {
+    "title": "Creator ranks",
+    "intro": "Apply for a YouTube, Twitch or TikTok rank. Tell us about your channel and Minecraft content.",
+    "review": "Applications are reviewed by the team; approval is not guaranteed.",
+    "noPayment": "Application only — no payment required.",
+    "apply": "Apply",
+    "email": "Email",
+    "minecraft": "Minecraft username",
+    "discord": "Discord username",
+    "channel": "Channel / profile URL",
+    "followers": "Followers / subscribers",
+    "content": "Content type and posting schedule",
+    "reason": "Why would you like this rank?",
+    "reasonHint": "At least 20 characters.",
+    "consent": "I agree to share these details with the Zo7al team through Discord for application review and contact.",
+    "submit": "Submit application",
+    "sending": "Sending…",
+    "success": "Application received!",
+    "reference": "Application reference",
+    "rateLimit": "Too many attempts. Please try again in 15 minutes.",
+    "invalid": "Check your details and use a profile link matching the selected platform.",
+    "unavailable": "Applications are currently unavailable. Please contact Discord support.",
+    "failed": "Could not confirm delivery. Please try again later."
+  }
 }
