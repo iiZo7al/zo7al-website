@@ -4,6 +4,8 @@
   font-family: 'ArabicFont';
   src: url('/fonts/arabic-font.otf') format('opentype');
   font-display: swap;
+  /* Apply this face only to Arabic glyphs, regardless of the page locale. */
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-089F, U+08A0-08FF, U+FB50-FDFF, U+FE70-FEFF;
 }
 
 :root {
@@ -71,7 +73,7 @@
   --color-text: var(--text);
   --color-text-muted: var(--text-muted);
   --color-border: var(--border);
-  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'ArabicFont', var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
 }
 
 * {
@@ -82,10 +84,6 @@ html {
   background: var(--bg);
   color-scheme: dark;
   scroll-behavior: smooth;
-}
-
-html[lang="ar"] {
-  --font-family: 'ArabicFont', var(--font-sans);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -347,3 +345,12 @@ html.cursor-ready .checkout-shell button { cursor: pointer; }
   html.cursor-ready input:is([type="button"], [type="submit"], [type="reset"], [type="checkbox"], [type="radio"], [type="range"]),
   html.cursor-ready select { cursor: none; }
 }
+
+/* Keep all navigation and language choices reachable on short mobile screens. */
+.mobile-nav-panel {
+  max-height: calc(100dvh - 102px - env(safe-area-inset-bottom, 0px));
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior-y: contain;
+}
+.mobile-nav-panel > * { flex-shrink: 0; }

@@ -138,7 +138,7 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -12 }}
             transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-            className="md:hidden fixed left-1/2 -translate-x-1/2 top-[86px] w-[92vw] rounded-2xl border p-3 flex flex-col gap-1"
+            className="mobile-nav-panel md:hidden fixed left-1/2 -translate-x-1/2 top-[86px] w-[92vw] rounded-2xl border p-3 flex flex-col gap-1"
             style={{
               background: "rgba(11,13,18,0.96)",
               borderColor: "var(--border)",
