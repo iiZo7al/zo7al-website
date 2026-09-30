@@ -7,6 +7,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useTranslations } from "next-intl";
 import SolidIcon from "@/components/ui/SolidIcon";
 import { NAV_LINKS, DISCORD_LINK, SITE } from "@/lib/data/site";
+import StoreNavAction from "@/components/store/StoreNavAction";
 import MagneticButton from "@/components/cursor/MagneticButton";
 import BrandIcon from "@/components/ui/BrandIcon";
 import LanguageSwitcher from "@/components/layout/LanguageSwitcher";
@@ -110,14 +111,7 @@ export default function Navbar() {
           </a>
           <LanguageSwitcher />
           <MagneticButton>
-            <Link
-              href="/store"
-              data-cursor="button"
-              className="text-sm font-semibold rounded-full px-5 py-2.5 transition-transform"
-              style={{ background: "var(--accent)", color: "#07080B" }}
-            >
-              {t("store")}
-            </Link>
+            <StoreNavAction />
           </MagneticButton>
         </div>
 
@@ -163,10 +157,7 @@ export default function Navbar() {
               );
             })}
             <div className="h-px my-1" style={{ background: "var(--border)" }} />
-            <Link href="/store" className="flex items-center gap-3 px-4 py-3 rounded-xl text-base font-medium" style={{ color: "var(--text-muted)" }}>
-              <SolidIcon name="shopping-bag" size={18} />
-              {t("store")}
-            </Link>
+            <StoreNavAction mobile onActivate={() => setMobileOpen(false)} />
             <a
               href={DISCORD_LINK}
               target="_blank"

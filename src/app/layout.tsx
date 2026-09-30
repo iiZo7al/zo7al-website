@@ -4,6 +4,7 @@ import { MotionConfig } from "framer-motion";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
 import "./globals.css";
+import CartProvider from "@/components/store/CartProvider";
 import AppShell from "@/components/layout/AppShell";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -37,7 +38,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <html lang={locale} dir={dir} className={`${GeistSans.variable} h-full`}>
       <body className="min-h-full flex flex-col antialiased">
         <NextIntlClientProvider messages={messages}>
-          <MotionConfig reducedMotion="user">
+          <CartProvider><MotionConfig reducedMotion="user">
             <div className="grain" aria-hidden="true" />
             <CustomCursor />
             <AppShell navigation={<Navbar />} footer={<><Footer /><BackToTop /></>}>
@@ -45,7 +46,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               <div className="flex-1">{children}</div>
             </PageTransition>
             </AppShell>
-          </MotionConfig>
+          </MotionConfig></CartProvider>
         </NextIntlClientProvider>
       </body>
     </html>
