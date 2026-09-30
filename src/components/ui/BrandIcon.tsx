@@ -1,3 +1,4 @@
+import { useId, type CSSProperties } from "react";
 import {
   siYoutube,
   siDiscord,
@@ -58,6 +59,16 @@ export function brandDisplayColor(slug: string): string {
   return DISPLAY_COLORS[slug] ?? (BRAND_ICONS[slug] ? `#${BRAND_ICONS[slug].hex}` : "var(--text)");
 }
 
+/** Instagram labels share its multicolor mark; other platforms retain solid colors. */
+export function brandLabelStyle(slug: string): CSSProperties {
+  return slug === "instagram" ? {
+    backgroundImage: INSTAGRAM_GRADIENT,
+    backgroundClip: "text",
+    WebkitBackgroundClip: "text",
+    color: "transparent",
+  } : { color: brandDisplayColor(slug) };
+}
+
 /** Best-effort platform detection from any URL, used by the live-synced link lists. */
 export function detectPlatform(url: string): string | null {
   try {
@@ -106,6 +117,8 @@ export default function BrandIcon({
   color?: string;
   className?: string;
 }) {
+  const gradientId = useId();
+  const gradient = slug === "instagram" && !color;
   const icon = BRAND_ICONS[slug];
   if (!icon) {
     // Graceful fallback for a platform we don't have a brand mark for yet.
@@ -117,10 +130,15 @@ export default function BrandIcon({
       viewBox="0 0 24 24"
       width={size}
       height={size}
-      fill={color ?? brandDisplayColor(slug)}
+      fill={gradient ? `url(#${gradientId})` : color ?? brandDisplayColor(slug)}
       className={className}
       aria-hidden="true"
     >
+      {gradient && <defs><linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stopColor="#833AB4"/><stop offset="35%" stopColor="#C13584"/>
+        <stop offset="60%" stopColor="#E1306C"/><stop offset="82%" stopColor="#F77737"/>
+        <stop offset="100%" stopColor="#FCAF45"/>
+      </linearGradient></defs>}
       <path d={icon.path} />
     </svg>
   );

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { NAV_LINKS, SITE, STORE_LINK } from "@/lib/data/site";
-import BrandIcon, { brandDisplayColor } from "@/components/ui/BrandIcon";
+import BrandIcon, { brandLabelStyle } from "@/components/ui/BrandIcon";
 import SolidIcon from "@/components/ui/SolidIcon";
 import { getSyncedSocials, getSyncedGamesSocials } from "@/lib/sync/socials";
 
@@ -61,7 +61,7 @@ export default async function Footer() {
                   className="flex items-center gap-2 text-sm text-[var(--text-muted)] hover:text-[var(--text)] transition-colors"
                 >
                   <BrandIcon slug={s.platform} size={14} />
-                  <span style={{ color: brandDisplayColor(s.platform) }}>{s.label}</span>
+                  <span style={brandLabelStyle(s.platform)}>{s.label}</span>
                 </a>
               </li>
             ))}
@@ -94,7 +94,7 @@ export default async function Footer() {
                   className="flex items-center gap-2 text-sm text-[var(--text-muted)] hover:text-[var(--text)] transition-colors"
                 >
                   <BrandIcon slug={social.platform} size={14} />
-                  <span style={{ color: brandDisplayColor(social.platform) }}>{social.label}</span>
+                  <span style={brandLabelStyle(social.platform)}>{social.label}</span>
                 </a>
               </li>
             ))}
