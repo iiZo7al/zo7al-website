@@ -11,7 +11,8 @@ function moduleUrl(path, replacements = {}) {
 const data = moduleUrl('src/lib/data/store.ts');
 const backend = moduleUrl('src/lib/server/tebex.ts', {'@/lib/data/store': data, './store-description': moduleUrl('src/lib/server/store-description.ts')});
 const {getStoreCatalog, ownsStorePackage} = await import(backend);
-const {POST} = await import(moduleUrl('src/app/api/store/checkout/route.ts', {'@/lib/server/tebex': backend}));
+const cartRules = moduleUrl('src/lib/data/store-cart.ts');
+const {POST} = await import(moduleUrl('src/app/api/store/checkout/route.ts', {'@/lib/server/tebex': backend, '@/lib/data/store-cart': cartRules}));
 const {GET: paymentStatus} = await import(moduleUrl('src/app/api/store/status/route.ts', {'@/lib/server/tebex': backend}));
 const request = (body, origin = 'https://zo7al.test', ip = '203.0.113.5') => new Request('https://zo7al.test/api/store/checkout', {method:'POST', headers:{origin,'x-forwarded-for':ip},body:JSON.stringify(body)});
 
@@ -165,4 +166,83 @@ test('Coins retain their category and can be bought again; lifetime ranks still 
     for(let i=0;i<2;i++) assert.equal((await POST(request({packageId:88,username:'Player'},undefined,'203.0.113.99'))).status,200);
     assert.equal(added,2);
   } finally { globalThis.fetch=savedFetch; for(const [key,value] of Object.entries(saved)) if(value===undefined) delete process.env[key]; else process.env[key]=value; }
+});
+
+test('multi-product cart validates every item and never returns a partial checkout', async () => {
+  const savedFetch = globalThis.fetch;
+  const saved = Object.fromEntries(['TEBEX_PUBLIC_TOKEN','TEBEX_PRIVATE_KEY','TEBEX_PLUGIN_SECRET'].map(key => [key, process.env[key]]));
+  const calls = [];
+  let failSecond = false, ownedSecond = false;
+  try {
+    process.env.TEBEX_PUBLIC_TOKEN = 'test-cart-token';
+    process.env.TEBEX_PRIVATE_KEY = 'test-private-key';
+    delete process.env.TEBEX_PLUGIN_SECRET;
+    globalThis.fetch = async (url, options) => {
+      const body = options.body ? JSON.parse(options.body) : null;
+      calls.push({url, body});
+      if (url.endsWith('categories?includePackages=1')) return Response.json({data:[{packages:[
+        {id:101,name:'VIP',total_price:8,currency:'USD',type:'single',user_limit:{limit:1}},
+        {id:102,name:'Coins',total_price:3,currency:'USD',type:'single'},
+        {id:103,name:'Unavailable',variables:[{}]},
+        {id:104,name:'MVP++',total_price:14,currency:'USD',type:'subscription'},
+      ]}]});
+      if (url.includes('plugin.tebex.io')) return Response.json(ownedSecond && url.endsWith('package=102') ? [{package:{id:102}}] : []);
+      if (url.endsWith('/baskets')) return Response.json({data:{ident:'cart_basket',username_id:'player_uuid'}});
+      if (url.endsWith('/packages')) {
+        if (failSecond && body.package_id === '102') return Response.json({detail:"The product isn't purchasable"},{status:400});
+        return Response.json({data:{ident:'cart_basket'}});
+      }
+      throw Error('Unexpected upstream request');
+    };
+    for (const packageIds of [[], [101,101], [0], [-1], ['101'], Array.from({length:21},(_,i)=>i+1)]) {
+      assert.equal((await POST(request({packageIds,username:'Player'},undefined,'203.0.113.100'))).status,400);
+    }
+    assert.equal(calls.length,0);
+    for (const packageIds of [[101,999],[101,103]]) {
+      const before = calls.length;
+      assert.equal((await POST(request({packageIds,username:'Player'},undefined,'203.0.113.101'))).status,400);
+      assert.ok(calls.slice(before).every(call=>!call.url.endsWith('/baskets')));
+    }
+    const response = await POST(request({packageIds:[101,102],username:'Player',price:0,quantity:99},undefined,'203.0.113.102'));
+    assert.equal(response.status,200);
+    assert.deepEqual(await response.json(),{ident:'cart_basket'});
+    assert.deepEqual(calls.filter(call=>call.url.endsWith('/packages')).map(call=>call.body),[
+      {package_id:'101',quantity:1},{package_id:'102',quantity:1}
+    ]);
+    const beforeRankConflict = calls.filter(call=>call.url.endsWith('/baskets')).length;
+    const ranks = await POST(request({items:[{packageId:101,quantity:1},{packageId:104,quantity:1}],username:'Player'},undefined,'203.0.113.105'));
+    assert.equal(ranks.status,400);
+    assert.deepEqual(await ranks.json(),{error:'ONE_RANK_ONLY'});
+    assert.equal(calls.filter(call=>call.url.endsWith('/baskets')).length,beforeRankConflict);
+    for (const quantity of [0,-1,1.5,100,'2']) {
+      assert.equal((await POST(request({items:[{packageId:102,quantity}],username:'Player'},undefined,'203.0.113.106'))).status,400);
+    }
+    assert.equal((await POST(request({items:[{packageId:101,quantity:2}],username:'Player'},undefined,'203.0.113.107'))).status,400);
+    const coins = await POST(request({items:[{packageId:101,quantity:1},{packageId:102,quantity:4}],username:'Player',price:0},undefined,'203.0.113.108'));
+    assert.equal(coins.status,200);
+    assert.deepEqual(calls.at(-1).body,{package_id:'102',quantity:4});
+    failSecond = true;
+    const failed = await POST(request({packageIds:[101,102],username:'Player'},undefined,'203.0.113.103'));
+    assert.equal(failed.status,409);
+    const failure = await failed.json();
+    assert.equal(failure.error,'PURCHASE_RESTRICTED');
+    assert.equal(failure.ident,undefined);
+    failSecond = false;
+    // Mark both products as ownership-checked to verify the whole cart before additions.
+    const previousFetch = globalThis.fetch;
+    globalThis.fetch = async (url, options) => {
+      if (url.endsWith('categories?includePackages=1')) return Response.json({data:[{packages:[101,102].map(id=>({id,name:'Special item',type:'subscription'}))}]});
+      return previousFetch(url, options);
+    };
+    process.env.TEBEX_PLUGIN_SECRET = 'test-plugin-secret';
+    ownedSecond = true;
+    const beforeOwned = calls.filter(call=>call.url.endsWith('/packages')).length;
+    const owned = await POST(request({packageIds:[101,102],username:'Player'},undefined,'203.0.113.104'));
+    assert.equal(owned.status,409);
+    assert.deepEqual(await owned.json(),{error:'ALREADY_OWNED',packageId:102});
+    assert.equal(calls.filter(call=>call.url.endsWith('/packages')).length,beforeOwned);
+  } finally {
+    globalThis.fetch = savedFetch;
+    for (const [key,value] of Object.entries(saved)) if (value === undefined) delete process.env[key]; else process.env[key] = value;
+  }
 });
