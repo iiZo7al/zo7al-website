@@ -328,3 +328,22 @@ html.cursor-ready .checkout-shell button { cursor: pointer; }
 }
 .social-native-embed iframe { max-width: 100% !important; }
 .social-native-embed blockquote { max-width: 100% !important; min-width: 0 !important; }
+
+/* Shared entrance for every native details/application/checkout modal. */
+@keyframes modal-enter {
+  from { opacity: 0; transform: translateY(16px) scale(.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes modal-backdrop-enter {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  dialog[open] { animation: modal-enter 240ms cubic-bezier(.16,1,.3,1); transform-origin: center; }
+  dialog[open]::backdrop { animation: modal-backdrop-enter 200ms ease-out; }
+}
+@media (pointer: fine) {
+  html.cursor-ready summary,
+  html.cursor-ready input:is([type="button"], [type="submit"], [type="reset"], [type="checkbox"], [type="radio"], [type="range"]),
+  html.cursor-ready select { cursor: none; }
+}

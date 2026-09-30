@@ -59,7 +59,7 @@ export default function CustomCursor() {
     const observer = new MutationObserver(() => {
       const dialogs = document.querySelectorAll("dialog[open]");
       const topDialog = dialogs.item(dialogs.length - 1);
-      if (topDialog !== lastDialog) { lastDialog = topDialog; raiseLayer(); }
+      if (topDialog !== lastDialog) { lastDialog = topDialog; raiseLayer(); refreshHover(document.elementFromPoint(mouse.x, mouse.y)); }
     });
     observer.observe(document.body, { attributes: true, attributeFilter: ["open"], childList: true, subtree: true });
 
@@ -74,6 +74,7 @@ export default function CustomCursor() {
       document.documentElement.classList.add("cursor-visible");
       mouse.x = e.clientX;
       mouse.y = e.clientY;
+      refreshHover(e.target instanceof Element ? e.target : null);
       if (!visible) {
         visible = true;
         ring.x = mouse.x;
@@ -101,7 +102,7 @@ export default function CustomCursor() {
         glow.y = lerp(glow.y, mouse.y, 0.1);
       }
       if (ringRef.current) {
-        ringRef.current.style.transform = `translate3d(${ring.x}px, ${ring.y}px, 0) translate(-50%, -50%)`;
+        ringRef.current.style.transform = `translate3d(${ring.x}px, ${ring.y}px, 0) translate(-50%, -50%) scale(var(--press, 1))`;
       }
       if (glowRef.current) {
         glowRef.current.style.transform = `translate3d(${glow.x}px, ${glow.y}px, 0) translate(-50%, -50%)`;
@@ -111,28 +112,34 @@ export default function CustomCursor() {
     raf = requestAnimationFrame(tick);
 
     const resolveMode = (el: Element | null): { mode: CursorMode; label?: string } | null => {
-      const target = el?.closest("[data-cursor]");
-      if (!target) return null;
-      const m = (target.getAttribute("data-cursor") as CursorMode) || "default";
-      const label = target.getAttribute("data-cursor-label") || undefined;
-      return { mode: m, label };
+      // Resolve the closest control before a containing card's custom cursor.
+      const target = el?.closest('[data-cursor], button, a[href], [role="button"], summary, select, input[type="button"], input[type="submit"], input[type="reset"], input[type="checkbox"], input[type="radio"], input[type="range"]');
+      if (!target || target.matches(':disabled, [aria-disabled="true"]') || target.closest('[inert]')) return null;
+      const explicit = target.getAttribute("data-cursor");
+      const mode: CursorMode = explicit && Object.hasOwn(RING_SIZE, explicit)
+        ? explicit as CursorMode : target.matches('a[href]') ? "link" : "button";
+      const label = target.getAttribute("data-cursor-label") ?? (explicit ? undefined : "");
+      return { mode, label };
     };
-
-    const onOver = (e: MouseEvent) => {
-      if ((e.target as Element)?.closest("iframe")) { visible = false; document.documentElement.classList.remove("cursor-visible"); }
-      const resolved = resolveMode(e.target as Element);
+    function refreshHover(target: Element | null) {
+      const resolved = resolveMode(target);
       setMode(resolved?.mode ?? "default");
       setHoverLabel(resolved?.label ?? null);
+    }
+    const onOver = (e: MouseEvent) => {
+      if ((e.target as Element)?.closest("iframe")) { visible = false; document.documentElement.classList.remove("cursor-visible"); }
+      refreshHover(e.target instanceof Element ? e.target : null);
     };
-    const hide = () => { visible = false; document.documentElement.classList.remove("cursor-visible"); };
+    const hide = () => {
+      visible = false;
+      document.documentElement.classList.remove("cursor-visible");
+      ringRef.current?.style.removeProperty("--press");
+      refreshHover(null);
+    };
     const onVisibility = () => { if (document.hidden) hide(); };
     const onOut = (e: MouseEvent) => {
       if (!e.relatedTarget) hide();
-      const related = e.relatedTarget as Element | null;
-      if (!related || !related.closest("[data-cursor]")) {
-        setMode("default");
-        setHoverLabel(null);
-      }
+      refreshHover(e.relatedTarget instanceof Element ? e.relatedTarget : null);
     };
 
     const onDown = () => ringRef.current?.style.setProperty("--press", "0.85");

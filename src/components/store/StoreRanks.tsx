@@ -39,7 +39,7 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
     window.addEventListener("focus", refresh);
     return () => { controller.abort(); clearInterval(timer); window.removeEventListener("focus", refresh); };
   }, [initialLive]);
-  const t = useTranslations("store"), ui = useTranslations("ui"), locale = useLocale();
+  const t = useTranslations("store"), locale = useLocale();
   const descriptionT = useTranslations("storeDescription");
   const reduceMotion = useReducedMotion();
   const describe = (product: StoreProduct) => localizedDescription(product.description, descriptionT);
@@ -161,7 +161,7 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
             {featured && <span className="store-rank-badge">{t("mostPopular")}</span>}
             {product.image ? <Image unoptimized src={product.image} alt={product.name} width={160} height={120} className="store-product-image" /> : <span className="store-rank-icon">{booster ? <Zap size={24} strokeWidth={1.5} aria-hidden="true" /> : <ShieldCheck size={24} strokeWidth={1.5} aria-hidden="true" />}</span>}
           </div>
-          <p className="text-label">{booster ? ui("rank") : categoryLabel(product.category?.name)}</p>
+          <p className="text-label">{booster ? t("ranksTitle") : categoryLabel(product.category?.name)}</p>
           <h3 className="text-display store-rank-name"><bdi dir="ltr">{product.name}</bdi></h3>
           <p className={`store-rank-price${product.price === null ? " store-price-pending" : ""}`}>{price(product)}</p>
           {perks.length ? <ul className="store-rank-perks">{perks.map((perk, index) => <li key={index}><Check size={15} aria-hidden="true" /><span dir="auto">{perk}</span></li>)}</ul> : <p dir="auto" className="store-rank-description store-description-preview">{lines.join("\n") || t("descriptionUnavailable")}</p>}
