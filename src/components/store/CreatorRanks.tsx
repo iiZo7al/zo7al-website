@@ -1,11 +1,12 @@
 "use client";
 import { useRef, useState, type FormEvent } from "react";
 import Image from "next/image";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, Check, LoaderCircle } from "lucide-react";
 import DetailsIcon from "@/components/ui/DetailsIcon";
 import DetailsDialog from "@/components/ui/DetailsDialog";
+import { getCreatorRankContent } from "@/lib/data/creator-rank-content";
 import "./creator-ranks.css";
 
 const platforms = ["youtube", "twitch", "tiktok"] as const;
@@ -16,15 +17,16 @@ export default function CreatorRanks() {
   const [details, setDetails] = useState<Platform | null>(null);
   const [selected, setSelected] = useState<Platform | null>(null);
   const reduce = useReducedMotion();
+  const locale = useLocale();
+  const detailContent = details ? getCreatorRankContent(locale, details) : null;
   return <section className="mb-14" aria-labelledby="creator-ranks-title">
     <div className="mb-5 flex items-center gap-4"><Image src="/assets/site/creator-category.webp" alt="" width={140} height={80} className="h-20 w-36 object-contain"/><h2 id="creator-ranks-title" className="text-display text-3xl">{t("title")}</h2></div>
-    <p className="mb-6 mt-3 text-[var(--text-secondary)]">{t("intro")}</p>
-    <div className="creator-rank-grid">{platforms.map((platform, index) => <motion.div key={platform} className="store-rank-reveal" initial={reduce ? false : { opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.1 }} transition={{ duration: 0.7, delay: Math.min(index * 0.06, 0.3), ease: [0.16, 1, 0.3, 1] }}>
+    <div className="store-rank-grid creator-rank-grid">{platforms.map((platform, index) => <motion.div key={platform} className="store-rank-reveal" initial={reduce ? false : { opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.1 }} transition={{ duration: 0.7, delay: Math.min(index * 0.06, 0.3), ease: [0.16, 1, 0.3, 1] }}>
       <article className={`card-glow store-rank creator-${platform}`}>
       <div className="store-rank-top"><Image src={`/assets/site/rank-${platform}.png`} width={667} height={375} alt={platform.toUpperCase()} className="store-product-image creator-rank-image" /></div>
       <p className="text-label">{t("title")}</p><h3 className="text-display store-rank-name" dir="ltr">{platform.toUpperCase()}</h3>
-      <p className="store-rank-description">{t(`description.${platform}`)}</p>
-      <ul className="store-rank-perks"><li><Check size={15}/><span>{t("review")}</span></li><li><Check size={15}/><span>{t("noPayment")}</span></li></ul>
+      <p className="store-rank-price">{getCreatorRankContent(locale, platform).free}</p>
+      <ul className="store-rank-perks">{getCreatorRankContent(locale, platform).preview.map(perk => <li key={perk}><Check size={15} aria-hidden="true"/><span><CreatorText text={perk}/></span></li>)}</ul>
       <div className="store-rank-actions"><button type="button" className="store-action" data-cursor="button" aria-haspopup="dialog" onClick={() => setSelected(platform)}><span>{t("apply")}</span><ArrowRight size={16} className="store-direction" aria-hidden="true"/></button>
       <button type="button" className="store-action store-details-button" data-cursor="button" aria-haspopup="dialog" aria-label={`${ui("details")} — ${platform.toUpperCase()}`} title={ui("details")} onClick={() => setDetails(platform)}><DetailsIcon/></button></div>
       </article>
@@ -32,14 +34,26 @@ export default function CreatorRanks() {
     {details && <DetailsDialog title={`${ui("details")} · ${details.toUpperCase()}`} onClose={() => setDetails(null)}>
       <div className="store-checkout-body store-full-description">
         <Image src={`/assets/site/rank-${details}.png`} width={667} height={375} alt={details.toUpperCase()} className="store-details-image"/>
-        <p>{t(`description.${details}`)}</p><p>{t("applicationDetails")}</p>
-        <p className="store-detail-perk"><Check size={16} aria-hidden="true"/><span>{t("noPayment")}</span></p>
-        <p className="store-detail-perk"><Check size={16} aria-hidden="true"/><span>{t("review")}</span></p>
+        {detailContent && <div className="creator-full-description">
+          <h3>{detailContent.title}</h3>
+          {detailContent.intro.map(paragraph => <p key={paragraph}><CreatorText text={paragraph}/></p>)}
+          {detailContent.sections.map(section => <section key={section.title}>
+            <h4>{section.title}</h4>
+            <ul>{section.items.map(item => <li key={item}><Check size={16} aria-hidden="true"/><span><CreatorText text={item}/></span></li>)}</ul>
+          </section>)}
+          <dl>{detailContent.summary.map(([label, value]) => <div key={label}><dt>{label}:</dt><dd>{value}</dd></div>)}</dl>
+        </div>}
         <button type="button" className="store-action store-action-primary" data-cursor="button" onClick={() => { setDetails(null); setSelected(details); }}><span>{t("apply")}</span><ArrowRight size={16} className="store-direction" aria-hidden="true"/></button>
       </div>
     </DetailsDialog>}
     {selected && <ApplicationForm platform={selected} onClose={() => setSelected(null)}/>}
   </section>;
+}
+function CreatorText({ text }: { text: string }) {
+  return <>{text.split(/(\*\*[^*]+\*\*|`[^`]+`)/g).map((part, index) =>
+    part.startsWith("**") ? <strong key={index}>{part.slice(2, -2)}</strong> :
+    part.startsWith("`") ? <code dir="ltr" key={index}>{part.slice(1, -1)}</code> : part
+  )}</>;
 }
 function ApplicationForm({ platform, onClose }: { platform: Platform; onClose: () => void }) {
   const t = useTranslations("creators");
