@@ -55,7 +55,30 @@ export function createApplicationHandler(getWebhook: () => string | undefined, s
     const a = application;
     const reference = randomUUID();
     try {
-      const response = await send(webhook, { method: "POST", redirect: "error", signal: AbortSignal.timeout(10000), headers: { "Content-Type": "application/json" }, body: JSON.stringify({ allowed_mentions: { parse: [] }, embeds: [{ title: `${a.platform.toUpperCase()} rank application`, color: { youtube: 16711680, twitch: 9520895, tiktok: 2610154 }[a.platform], fields: [ ["Email", a.email], ["Minecraft", a.minecraft], ["Discord", a.discord], ["Channel", a.channel], ["Followers / subscribers", a.followers], ["Content & schedule", a.content], ["Why apply?", a.reason] ].map(([name, value]) => ({ name, value })), footer: { text: `Reference: ${reference} · Consent to review/contact provided` }, timestamp: new Date().toISOString() }] }) });
+      const response = await send(webhook, { method: "POST", redirect: "error", signal: AbortSignal.timeout(10000), headers: { "Content-Type": "application/json" }, body: JSON.stringify({
+        username: "Zo7al Network • Applications",
+        allowed_mentions: { parse: [] },
+        embeds: [{
+          author: { name: "Zo7al Network · Creator Applications", url: "https://zo7al.is-a.dev/store" },
+          title: `${{ youtube: "🎥 YouTube", twitch: "🟣 Twitch", tiktok: "🎵 TikTok" }[a.platform]} Rank Application`,
+          description: "**🕓 Pending review**\nA new creator has applied. Review their channel and application below.",
+          color: { youtube: 0xff4545, twitch: 0xa970ff, tiktok: 0x25f4ee }[a.platform],
+          thumbnail: { url: "https://zo7al.is-a.dev/assets/site/server-logo.png" },
+          image: { url: `https://zo7al.is-a.dev/assets/site/rank-${a.platform}.png` },
+          fields: [
+            { name: "🎮 Minecraft", value: a.minecraft, inline: true },
+            { name: "💬 Discord", value: a.discord, inline: true },
+            { name: "👥 Followers / Subscribers", value: Number(a.followers).toLocaleString("en-US"), inline: true },
+            { name: "✉️ Contact Email", value: a.email },
+            { name: "🔗 Creator Channel", value: a.channel },
+            { name: "🎬 Content & Schedule", value: a.content },
+            { name: "📝 Why They Want to Join", value: a.reason },
+            { name: "📋 Review Information", value: "Free rank · Manual review required\nApplicant consented to review and contact. Acceptance is not guaranteed." },
+          ],
+          footer: { text: `Zo7al Network • Reference: ${reference}` },
+          timestamp: new Date().toISOString(),
+        }],
+      }) });
       if (!response.ok) return reply("DELIVERY_FAILED", 502);
       const receipt = await response.json();
       if (typeof receipt.id !== "string" || !/^\d+$/.test(receipt.id)) return reply("DELIVERY_FAILED", 502);
