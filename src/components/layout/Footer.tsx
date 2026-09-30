@@ -3,19 +3,20 @@ import { getTranslations } from "next-intl/server";
 import { NAV_LINKS, SITE, STORE_LINK } from "@/lib/data/site";
 import BrandIcon, { brandDisplayColor } from "@/components/ui/BrandIcon";
 import SolidIcon from "@/components/ui/SolidIcon";
-import { getSyncedSocials } from "@/lib/sync/socials";
+import { getSyncedSocials, getSyncedGamesSocials } from "@/lib/sync/socials";
 
 const FOOTER_ICONS = { home: "home", minecraft: "cube", modpacks: "box", fortnite: "map", socials: "share", store: "shopping-bag" } as const;
 
 export default async function Footer() {
-  const [t, { items: socials }] = await Promise.all([
+  const [t, { items: socials }, { items: gamesSocials }] = await Promise.all([
     getTranslations(),
     getSyncedSocials(),
+    getSyncedGamesSocials(),
   ]);
 
   return (
     <footer className="relative border-t" style={{ borderColor: "var(--border)" }}>
-      <div className="mx-auto max-w-[1180px] px-6 py-16 grid gap-12 md:grid-cols-[1.4fr_1fr_1fr]">
+      <div className="mx-auto max-w-[1600px] px-6 py-16 grid gap-12 md:grid-cols-2 lg:grid-cols-[1.2fr_.7fr_1fr_1fr]">
         <div>
           <div className="flex items-center gap-2 text-lg font-bold tracking-tight">
             <span
@@ -78,10 +79,31 @@ export default async function Footer() {
             </li>
           </ul>
         </div>
+
+        <div aria-labelledby="footer-games-title">
+          <p id="footer-games-title" className="text-label mb-4">Zo7al Games</p>
+          <ul className="flex flex-wrap gap-x-6 gap-y-3">
+            {gamesSocials.map((social) => (
+              <li key={social.id}>
+                <a
+                  href={social.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-cursor="link"
+                  aria-label={`Zo7al Games · ${social.label}`}
+                  className="flex items-center gap-2 text-sm text-[var(--text-muted)] hover:text-[var(--text)] transition-colors"
+                >
+                  <BrandIcon slug={social.platform} size={14} />
+                  <span style={{ color: brandDisplayColor(social.platform) }}>{social.label}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
 
       <div
-        className="mx-auto max-w-[1180px] px-6 py-6 flex flex-col sm:flex-row items-center justify-between gap-3 border-t text-xs text-[var(--text-muted)]"
+        className="mx-auto max-w-[1600px] px-6 py-6 flex flex-col sm:flex-row items-center justify-between gap-3 border-t text-xs text-[var(--text-muted)]"
         style={{ borderColor: "var(--border)" }}
       >
         <p>© {SITE.year} {t("footer.copyright")}</p>
