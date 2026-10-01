@@ -1,5 +1,9 @@
 # Space Run
 
+## 1.0.7
+- Add shared hover, keyboard-focus and press feedback to game launch and menu buttons, respecting reduced motion and preserving touch joystick geometry.
+- Remove letter spacing so Arabic labels remain connected.
+
 ## 1.0.6
 - Name Safari home-screen installs Zo7al Game and launch the dedicated game, keeping the website favicon.
 - Reserve background orbit dragging for desktop mouse input; let mobile gestures scroll the website without changing in-game touch controls.
