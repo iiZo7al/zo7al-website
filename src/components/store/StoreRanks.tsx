@@ -7,15 +7,18 @@ import "./store.css";
 import { useCart } from "./CartProvider";
 import { isCoinProduct, isRankProduct, parseCartItems, MAX_COIN_QUANTITY, type CartItem } from "@/lib/data/store-cart";
 import { cartCopy } from "@/lib/data/cart-copy";
+import PlayerIdentity, { usePlayerName } from "./PlayerIdentity";
+import RankComparison from "./RankComparison";
+import { storeExperienceCopy } from "@/lib/data/store-experience-copy";
 import CreatorRanks from "./CreatorRanks";
 import { groupStoreProducts } from "@/lib/data/store-groups";
 import { BOOSTER_PRODUCT, isMonthlyRank } from "@/lib/data/store-booster";
 import { DISCORD_LINK } from "@/lib/data/site";
 import { localizedDescription } from "@/lib/data/store-localization";
-import { motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import CommerceIcon from "@/components/ui/CommerceIcon";
 import DetailsIcon from "@/components/ui/DetailsIcon";
-import { Check, ShieldCheck, X, ArrowRight, LoaderCircle, AlertCircle, Zap, Minus, Plus } from "lucide-react";
+import { Check, ShieldCheck, X, ArrowRight, LoaderCircle, AlertCircle, Zap, Minus, Plus, Search, Columns3 } from "lucide-react";
 import type { StoreProduct } from "@/lib/server/tebex";
 
 type CheckoutSdk = { on: (event: "payment:complete", handler: () => void) => void; init: (options: { ident: string; theme: string; locale: string; colors: {name: string; color: string}[] }) => void; render: (element: HTMLElement, width: number, height: number, newTab: boolean) => void; };
@@ -44,6 +47,7 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
     return () => { controller.abort(); clearInterval(timer); window.removeEventListener("focus", refresh); };
   }, [initialLive]);
   const t = useTranslations("store"), locale = useLocale();
+  const creatorT = useTranslations("creators");
   const descriptionT = useTranslations("storeDescription");
   const reduceMotion = useReducedMotion();
   const describe = (product: StoreProduct) => localizedDescription(product.description, descriptionT);
@@ -53,7 +57,17 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
   const rankIds = products.filter(isRankProduct).map(product => product.id);
   const hasRank = cartIds.some(id => rankIds.includes(id));
   const copy = cartCopy(locale);
-  const [username, setUsername] = useState("");
+  const { username, setUsername } = usePlayerName();
+  const experience = storeExperienceCopy(locale);
+  const [query, setQuery] = useState("");
+  const [filter, setFilter] = useState<"all" | "ranks" | "coins" | "creators">("all");
+  const [comparing, setComparing] = useState(false);
+  const [toast, setToast] = useState<{ product: StoreProduct; key: number } | null>(null);
+  useEffect(() => {
+    if (!toast) return;
+    const timer = setTimeout(() => setToast(null), 7000);
+    return () => clearTimeout(timer);
+  }, [toast]);
   const purchasedItems = useRef<CartItem[]>([]);
   const [details, setDetails] = useState<StoreProduct | null>(null);
   const detailsDialog = useRef<HTMLDialogElement>(null);
@@ -153,6 +167,12 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
     ? t("pricePending")
     : <span className="store-price-value" dir="ltr"><bdi>{new Intl.NumberFormat("en-US", { style: "currency", currency: product.currency, currencyDisplay: "narrowSymbol" }).format(product.price)}</bdi>{isMonthlyRank(product) && <span className="store-price-period">/<bdi dir="auto">{t("monthly")}</bdi></span>}</span>;
   const groups = groupStoreProducts(products, BOOSTER_PRODUCT);
+  const search = query.trim().toLocaleLowerCase();
+  const visibleGroups = groups.map(group => ({ ...group, products: group.products.filter(product =>
+    (filter === "all" || (filter === "ranks" && (isRankProduct(product) || product.id === BOOSTER_PRODUCT.id)) || (filter === "coins" && isCoinProduct(product))) &&
+    (!search || [product.name, group.name, ...describe(product)].join(" ").toLocaleLowerCase().includes(search))
+  ) })).filter(group => group.products.length);
+  const showCreators = filter === "all" || filter === "creators";
   const categoryLabel = (name?: string) => /^(ranks?|الرتب)$/i.test(name?.trim() ?? "") ? t("ranksTitle") : /^(coins?|العملات)$/i.test(name?.trim() ?? "") ? t("coinsTitle") : name || t("productsTitle");
   const cartProducts = cartIds.map(id => products.find(product => product.id === id));
   const cartUnavailable = !live || cartProducts.some(product => !product?.available);
@@ -168,7 +188,16 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
       {paymentStatus === "paid" && <><p>{t("paymentSuccessNote")}</p><p>{subscriptionLink}</p></>}
     </div>}
     {hasRank && <p className="store-notice">{copy.oneRank}</p>}
-    {groups.map(group => <Fragment key={group.id}><section aria-labelledby={`store-group-${group.id}`} className="mb-14">
+    <div className="store-tools">
+      <PlayerIdentity username={username} onChange={setUsername}/>
+      <div className="store-search-row">
+        <label className="store-search"><Search size={18} aria-hidden="true"/><span className="sr-only">{experience.search}</span><input type="search" value={query} onChange={event => setQuery(event.target.value)} placeholder={experience.search}/></label>
+        <button type="button" className="store-action" onClick={() => setComparing(true)} disabled={products.filter(isRankProduct).length < 2} aria-haspopup="dialog"><Columns3 size={18} aria-hidden="true"/>{experience.compare}</button>
+      </div>
+      <div className="store-filters" role="group" aria-label={t("productsTitle")}>{(["all", "ranks", "coins", "creators"] as const).map(value => <button type="button" key={value} aria-pressed={filter === value} onClick={() => setFilter(value)}>{value === "all" ? experience.all : value === "ranks" ? t("ranksTitle") : value === "coins" ? t("coinsTitle") : creatorT("title")}</button>)}</div>
+    </div>
+    {!visibleGroups.length && !showCreators && <p role="status" className="store-notice">{experience.noResults}</p>}
+    {visibleGroups.map(group => <Fragment key={group.id}><section aria-labelledby={`store-group-${group.id}`} className="mb-14">
       <div className="mb-5 flex items-center gap-4">
         {group.image && <Image unoptimized src={group.image} alt="" width={140} height={80} className="h-20 w-36 object-contain" />}
         <h2 id={`store-group-${group.id}`} dir="auto" className="text-display text-3xl">{categoryLabel(group.name)}</h2>
@@ -191,15 +220,21 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
           <h3 className="text-display store-rank-name"><bdi dir="ltr">{product.name}</bdi></h3>
           <p className={`store-rank-price${product.price === null ? " store-price-pending" : ""}`}>{price(product)}</p>
           {perks.length ? <ul className="store-rank-perks">{perks.map((perk, index) => <li key={index}><Check size={15} aria-hidden="true" /><span dir="auto">{perk}</span></li>)}</ul> : <p dir="auto" className="store-rank-description store-description-preview">{lines.join("\n") || t("descriptionUnavailable")}</p>}
-          <div className="store-rank-actions">{booster ? <a href={DISCORD_LINK} target="_blank" rel="noopener noreferrer" data-cursor="button" className="store-action"><span>{t("getRank")} <bdi dir="ltr">Booster</bdi></span><ArrowRight size={16} className="store-direction" aria-hidden="true" /></a> : isCoinProduct(product) && quantity > 0 ? <QuantityControl name={product.name} quantity={quantity} disabled={!live || !product.available || !cartReady} decrease={copy.decrease} increase={copy.increase} onChange={delta => changeQuantity(product.id, delta)} removeLabel={copy.remove} onRemove={() => remove(product.id)}/> : <button title={rankBlocked ? copy.oneRank : undefined} disabled={rankBlocked || !live || !product.available || !cartReady || (cartIds.length >= 20 && !cartIds.includes(product.id))} onClick={() => { if (cartIds.includes(product.id)) setCartOpen(true); else add(product.id, isRankProduct(product) ? rankIds : []); }} data-cursor="button" className={`store-action${featured ? " store-action-primary" : ""}`}>
+          <div className="store-rank-actions">{booster ? <a href={DISCORD_LINK} target="_blank" rel="noopener noreferrer" data-cursor="button" className="store-action"><span>{t("getRank")} <bdi dir="ltr">Booster</bdi></span><ArrowRight size={16} className="store-direction" aria-hidden="true" /></a> : isCoinProduct(product) && quantity > 0 ? <QuantityControl name={product.name} quantity={quantity} disabled={!live || !product.available || !cartReady} decrease={copy.decrease} increase={copy.increase} onChange={delta => changeQuantity(product.id, delta)} removeLabel={copy.remove} onRemove={() => remove(product.id)}/> : <button title={rankBlocked ? copy.oneRank : undefined} disabled={rankBlocked || !live || !product.available || !cartReady || (cartIds.length >= 20 && !cartIds.includes(product.id))} onClick={() => { if (cartIds.includes(product.id)) setCartOpen(true); else { add(product.id, isRankProduct(product) ? rankIds : []); setToast({ product, key: Date.now() }); } }} data-cursor="button" className={`store-action${featured ? " store-action-primary" : ""}`}>
             <span>{cartIds.includes(product.id) ? copy.added : <>{copy.add.split("{name}")[0]}<bdi dir="ltr">{product.name}</bdi>{copy.add.split("{name}")[1]}</>}</span>{cartIds.includes(product.id) ? <Check size={16} aria-hidden="true"/> : <CommerceIcon name="shopping-cart" size={16} aria-hidden="true"/>}
           </button>}
           <button type="button" className="store-action store-details-button" onClick={() => setDetails(product)} data-cursor="button" aria-haspopup="dialog" aria-label={`${t("details")} — ${product.name}`} title={t("details")}><DetailsIcon /></button></div>
         </article></motion.div>;
       })}
       </div>
-    </section>{(/^(coins?|العملات)$/i.test(group.name.trim()) || group.products.some(p => p.id === 7692129)) && <CreatorRanks/>}</Fragment>)}
-    {!groups.some(group => /^(coins?|العملات)$/i.test(group.name.trim()) || group.products.some(p => p.id === 7692129)) && <CreatorRanks/>}
+    </section></Fragment>)}
+    {showCreators && <CreatorRanks query={query} showEmpty={!visibleGroups.length}/>}
+    {comparing && <RankComparison products={products.filter(isRankProduct)} price={price} describe={describe} onClose={() => setComparing(false)}/>}
+    <AnimatePresence>{toast && !cartOpen && <motion.aside key={toast.key} className="store-cart-toast" initial={reduceMotion ? false : { opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: reduceMotion ? 0 : 12 }} role="status" aria-live="polite" aria-atomic="true">
+      {toast.product.image && <Image unoptimized src={toast.product.image} alt="" width={64} height={52}/>}
+      <div><p>{experience.added}</p><strong dir="auto">{toast.product.name}</strong><button type="button" onClick={() => { setCartOpen(true); setToast(null); }}>{experience.viewCart}<ArrowRight size={15} aria-hidden="true"/></button></div>
+      <button type="button" className="store-close" aria-label={t("close")} onClick={() => setToast(null)}><X size={18} aria-hidden="true"/></button>
+    </motion.aside>}</AnimatePresence>
     <dialog ref={detailsDialog} onCancel={() => setDetails(null)} onClose={() => setDetails(null)} aria-labelledby="rank-details-title" className="checkout-shell store-checkout">
       <header className="store-checkout-header"><h2 id="rank-details-title">{t("details")} · <bdi dir="ltr">{currentDetails?.name}</bdi></h2><button type="button" className="store-close" onClick={() => setDetails(null)} aria-label={t("close")}><X size={20} aria-hidden="true" /></button></header>
       <div className="store-checkout-body store-full-description">{currentDetails?.image && <Image unoptimized src={currentDetails.image} alt={currentDetails.name} width={480} height={320} className="store-details-image" />}{currentDetails?.description ? describe(currentDetails).map((line, index) => line.startsWith("• ") ? <p className="store-detail-perk" key={index}><Check size={16} aria-hidden="true" /><span dir="auto">{line.slice(2)}</span></p> : <p dir="auto" key={index}>{line}</p>) : <p>{t("descriptionUnavailable")}</p>}</div>
@@ -231,9 +266,8 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
         </>}
         <p id="checkout-description" className="store-checkout-description">{copy.note}</p>
         {!ident && !!cartIds.length ? <form onSubmit={pay} className="store-checkout-form">
-          <label htmlFor="store-username">{t("username")}</label>
-          <input id="store-username" required autoComplete="username" autoCapitalize="none" spellCheck={false} dir="ltr" aria-describedby="store-username-help" minLength={3} maxLength={32} pattern="[.a-zA-Z0-9_ ]{3,32}" value={username} onChange={e => { setUsername(e.target.value); setError(null); }} />
-          <p id="store-username-help">{t("usernameHelp")}</p>
+          <PlayerIdentity id="store-username" username={username} onChange={value => { setUsername(value); setError(null); }} required/>
+          <p>{t("usernameHelp")}</p>
           <button disabled={busy || !sdkReady || sdkError || cartUnavailable || !cartReady} className="store-action store-action-primary store-pay" aria-busy={busy}>
             <span>{t(busy || !sdkReady ? "preparing" : "continuePayment")}</span>
             {busy || !sdkReady ? <LoaderCircle size={18} className="store-spinner" aria-hidden="true" /> : <ArrowRight size={18} className="store-direction" aria-hidden="true" />}
