@@ -3,7 +3,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { ShoppingBag, ShoppingCart } from "lucide-react";
+import CommerceIcon from "@/components/ui/CommerceIcon";
 import { useCart } from "./CartProvider";
 import { cartCopy } from "@/lib/data/cart-copy";
 
@@ -14,7 +14,7 @@ export default function StoreNavAction({ mobile = false, onActivate }: { mobile?
   const copy = cartCopy(useLocale());
   const reduced = useReducedMotion();
   const content = <span className="flex items-center justify-center gap-2">
-    {inStore ? <ShoppingCart size={18} aria-hidden="true"/> : <ShoppingBag size={18} aria-hidden="true"/>}
+    {inStore ? <CommerceIcon name="shopping-cart" size={18} aria-hidden="true"/> : <CommerceIcon name="shopping-bag" size={18} aria-hidden="true"/>}
     <span>{inStore ? copy.title : t("store")}</span>
     {inStore && <span aria-live="polite" className="rounded-full bg-black/15 px-1.5 text-xs tabular-nums">{cart.items.reduce((count, item) => count + item.quantity, 0)}</span>}
   </span>;

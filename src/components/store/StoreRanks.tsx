@@ -13,8 +13,9 @@ import { BOOSTER_PRODUCT, isMonthlyRank } from "@/lib/data/store-booster";
 import { DISCORD_LINK } from "@/lib/data/site";
 import { localizedDescription } from "@/lib/data/store-localization";
 import { motion, useReducedMotion } from "framer-motion";
+import CommerceIcon from "@/components/ui/CommerceIcon";
 import DetailsIcon from "@/components/ui/DetailsIcon";
-import { Check, ShieldCheck, X, ArrowRight, LoaderCircle, AlertCircle, Zap, ShoppingCart, Trash2, Minus, Plus } from "lucide-react";
+import { Check, ShieldCheck, X, ArrowRight, LoaderCircle, AlertCircle, Zap, Minus, Plus } from "lucide-react";
 import type { StoreProduct } from "@/lib/server/tebex";
 
 type CheckoutSdk = { on: (event: "payment:complete", handler: () => void) => void; init: (options: { ident: string; theme: string; locale: string; colors: {name: string; color: string}[] }) => void; render: (element: HTMLElement, width: number, height: number, newTab: boolean) => void; };
@@ -190,8 +191,8 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
           <h3 className="text-display store-rank-name"><bdi dir="ltr">{product.name}</bdi></h3>
           <p className={`store-rank-price${product.price === null ? " store-price-pending" : ""}`}>{price(product)}</p>
           {perks.length ? <ul className="store-rank-perks">{perks.map((perk, index) => <li key={index}><Check size={15} aria-hidden="true" /><span dir="auto">{perk}</span></li>)}</ul> : <p dir="auto" className="store-rank-description store-description-preview">{lines.join("\n") || t("descriptionUnavailable")}</p>}
-          <div className="store-rank-actions">{booster ? <a href={DISCORD_LINK} target="_blank" rel="noopener noreferrer" data-cursor="button" className="store-action"><span>{t("getRank")} <bdi dir="ltr">Booster</bdi></span><ArrowRight size={16} className="store-direction" aria-hidden="true" /></a> : isCoinProduct(product) && quantity > 0 ? <QuantityControl name={product.name} quantity={quantity} disabled={!live || !product.available || !cartReady} decrease={copy.decrease} increase={copy.increase} onChange={delta => changeQuantity(product.id, delta)}/> : <button title={rankBlocked ? copy.oneRank : undefined} disabled={rankBlocked || !live || !product.available || !cartReady || (cartIds.length >= 20 && !cartIds.includes(product.id))} onClick={() => { if (cartIds.includes(product.id)) setCartOpen(true); else add(product.id, isRankProduct(product) ? rankIds : []); }} data-cursor="button" className={`store-action${featured ? " store-action-primary" : ""}`}>
-            <span>{cartIds.includes(product.id) ? copy.added : <>{copy.add.split("{name}")[0]}<bdi dir="ltr">{product.name}</bdi>{copy.add.split("{name}")[1]}</>}</span>{cartIds.includes(product.id) ? <Check size={16} aria-hidden="true"/> : <ShoppingCart size={16} aria-hidden="true"/>}
+          <div className="store-rank-actions">{booster ? <a href={DISCORD_LINK} target="_blank" rel="noopener noreferrer" data-cursor="button" className="store-action"><span>{t("getRank")} <bdi dir="ltr">Booster</bdi></span><ArrowRight size={16} className="store-direction" aria-hidden="true" /></a> : isCoinProduct(product) && quantity > 0 ? <QuantityControl name={product.name} quantity={quantity} disabled={!live || !product.available || !cartReady} decrease={copy.decrease} increase={copy.increase} onChange={delta => changeQuantity(product.id, delta)} removeLabel={copy.remove} onRemove={() => remove(product.id)}/> : <button title={rankBlocked ? copy.oneRank : undefined} disabled={rankBlocked || !live || !product.available || !cartReady || (cartIds.length >= 20 && !cartIds.includes(product.id))} onClick={() => { if (cartIds.includes(product.id)) setCartOpen(true); else add(product.id, isRankProduct(product) ? rankIds : []); }} data-cursor="button" className={`store-action${featured ? " store-action-primary" : ""}`}>
+            <span>{cartIds.includes(product.id) ? copy.added : <>{copy.add.split("{name}")[0]}<bdi dir="ltr">{product.name}</bdi>{copy.add.split("{name}")[1]}</>}</span>{cartIds.includes(product.id) ? <Check size={16} aria-hidden="true"/> : <CommerceIcon name="shopping-cart" size={16} aria-hidden="true"/>}
           </button>}
           <button type="button" className="store-action store-details-button" onClick={() => setDetails(product)} data-cursor="button" aria-haspopup="dialog" aria-label={`${t("details")} — ${product.name}`} title={t("details")}><DetailsIcon /></button></div>
         </article></motion.div>;
@@ -213,14 +214,14 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
         <button type="button" onClick={close} aria-label={t("close")} className="store-close"><X size={20} aria-hidden="true" /></button>
       </header>
       <div className="store-checkout-body">
-        <div className="store-cart-heading"><ShoppingCart size={26} aria-hidden="true"/><h2 id="checkout-title">{copy.title} <span>({cartIds.length})</span></h2></div>
+        <div className="store-cart-heading"><CommerceIcon name="shopping-cart" size={26} aria-hidden="true"/><h2 id="checkout-title">{copy.title} <span>({cartIds.length})</span></h2></div>
         {!ident && <>
-          {!cartIds.length ? <div className="store-cart-empty"><ShoppingCart size={44} aria-hidden="true"/><p>{copy.empty}</p></div> : <ul className="store-cart-items">{cartIds.map((id, index) => {
+          {!cartIds.length ? <div className="store-cart-empty"><CommerceIcon name="shopping-cart" size={44} aria-hidden="true"/><p>{copy.empty}</p></div> : <ul className="store-cart-items">{cartIds.map((id, index) => {
             const product = cartProducts[index];
             return <li key={id}>
-              {product?.image ? <Image unoptimized src={product.image} alt="" width={80} height={64}/> : <ShoppingCart size={30} aria-hidden="true"/>}
+              {product?.image ? <Image unoptimized src={product.image} alt="" width={80} height={64}/> : <CommerceIcon name="shopping-cart" size={30} aria-hidden="true"/>}
               <div><h3 dir="auto">{product?.name ?? `#${id}`}</h3><p>{product ? <>{price(product)} <span>× {cartItems[index].quantity}</span></> : t("checkoutUnavailable")}</p>{product && isCoinProduct(product) && <QuantityControl name={product.name} quantity={cartItems[index].quantity} disabled={busy} decrease={copy.decrease} increase={copy.increase} onChange={delta => { changeQuantity(id, delta); setError(null); }}/>}{product && !product.available && <small>{t("checkoutUnavailable")}</small>}</div>
-              <button type="button" disabled={busy} className="store-close" aria-label={`${copy.remove} — ${product?.name ?? id}`} title={copy.remove} onClick={() => { remove(id); setError(null); }}><Trash2 size={18} aria-hidden="true"/></button>
+              <button type="button" disabled={busy} className="store-close" aria-label={`${copy.remove} — ${product?.name ?? id}`} title={copy.remove} onClick={() => { remove(id); setError(null); }}><CommerceIcon name="trash" size={18} aria-hidden="true"/></button>
             </li>;
           })}</ul>}
           {!!cartIds.length && <div className="store-cart-total"><span>{copy.subtotal}</span><strong dir="ltr">{totalsKnown ? [...totals].map(([currency, amount]) => new Intl.NumberFormat("en-US", { style: "currency", currency, currencyDisplay: "narrowSymbol" }).format(amount)).join(" + ") : t("pricePending")}</strong></div>}
@@ -247,10 +248,11 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
   </>;
 }
 
-function QuantityControl({ name, quantity, disabled, decrease, increase, onChange }: { name: string; quantity: number; disabled: boolean; decrease: string; increase: string; onChange: (delta: number) => void }) {
+function QuantityControl({ name, quantity, disabled, decrease, increase, onChange, removeLabel, onRemove }: { name: string; quantity: number; disabled: boolean; decrease: string; increase: string; onChange: (delta: number) => void; removeLabel?: string; onRemove?: () => void }) {
   return <div className="store-quantity" dir="ltr" role="group" aria-label={name}>
     <button type="button" disabled={disabled} aria-label={`${decrease} — ${name}`} onClick={() => onChange(-1)} data-cursor="button"><Minus size={17} aria-hidden="true"/></button>
     <output aria-live="polite">{quantity}</output>
     <button type="button" disabled={disabled || quantity >= MAX_COIN_QUANTITY} aria-label={`${increase} — ${name}`} onClick={() => onChange(1)} data-cursor="button"><Plus size={17} aria-hidden="true"/></button>
+    {onRemove && <button type="button" disabled={disabled} className="store-quantity-remove" aria-label={`${removeLabel} — ${name}`} title={removeLabel} onClick={onRemove} data-cursor="button"><CommerceIcon name="trash" size={17}/></button>}
   </div>;
 }
