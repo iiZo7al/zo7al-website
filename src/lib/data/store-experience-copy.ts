@@ -11,7 +11,13 @@ const copy = {
     "billing": "Billing",
     "benefits": "Benefits",
     "permanent": "Permanent · one-time",
-    "terms": "See package details"
+    "terms": "See package details",
+    "viewCharacter": "View character",
+    "currentRank": "Current rank",
+    "rankUnavailable": "Rank unavailable",
+    "rotateHint": "Drag to rotate · scroll to zoom",
+    "skinError": "Unable to load the skin",
+    "skinLoading": "Loading character…"
   },
   "ar": {
     "added": "تمت الإضافة للسلة",
@@ -25,7 +31,13 @@ const copy = {
     "billing": "نوع الدفع",
     "benefits": "المميزات",
     "permanent": "دائمة · دفعة واحدة",
-    "terms": "راجع تفاصيل الباقة"
+    "terms": "راجع تفاصيل الباقة",
+    "viewCharacter": "عرض الشخصية",
+    "currentRank": "الرتبة الحالية",
+    "rankUnavailable": "الرتبة غير متاحة",
+    "rotateHint": "اسحب لتدوير الشخصية · مرّر للتقريب",
+    "skinError": "تعذر تحميل السكن",
+    "skinLoading": "جاري تحميل الشخصية…"
   },
   "es": {
     "added": "Añadido al carrito",
@@ -39,7 +51,13 @@ const copy = {
     "billing": "Facturación",
     "benefits": "Ventajas",
     "permanent": "Permanente · pago único",
-    "terms": "Ver detalles del paquete"
+    "terms": "Ver detalles del paquete",
+    "viewCharacter": "Ver personaje",
+    "currentRank": "Rango actual",
+    "rankUnavailable": "Rango no disponible",
+    "rotateHint": "Arrastra para girar · desplaza para acercar",
+    "skinError": "No se pudo cargar la skin",
+    "skinLoading": "Cargando personaje…"
   },
   "fr": {
     "added": "Ajouté au panier",
@@ -53,7 +71,13 @@ const copy = {
     "billing": "Paiement",
     "benefits": "Avantages",
     "permanent": "Permanent · paiement unique",
-    "terms": "Voir les détails"
+    "terms": "Voir les détails",
+    "viewCharacter": "Voir le personnage",
+    "currentRank": "Rang actuel",
+    "rankUnavailable": "Rang indisponible",
+    "rotateHint": "Glisser pour tourner · défiler pour zoomer",
+    "skinError": "Impossible de charger le skin",
+    "skinLoading": "Chargement du personnage…"
   },
   "de": {
     "added": "Zum Warenkorb hinzugefügt",
@@ -67,7 +91,13 @@ const copy = {
     "billing": "Abrechnung",
     "benefits": "Vorteile",
     "permanent": "Dauerhaft · einmalig",
-    "terms": "Paketdetails ansehen"
+    "terms": "Paketdetails ansehen",
+    "viewCharacter": "Charakter ansehen",
+    "currentRank": "Aktueller Rang",
+    "rankUnavailable": "Rang nicht verfügbar",
+    "rotateHint": "Ziehen zum Drehen · scrollen zum Zoomen",
+    "skinError": "Skin konnte nicht geladen werden",
+    "skinLoading": "Charakter wird geladen…"
   },
   "pt": {
     "added": "Adicionado ao carrinho",
@@ -81,7 +111,13 @@ const copy = {
     "billing": "Pagamento",
     "benefits": "Benefícios",
     "permanent": "Permanente · pagamento único",
-    "terms": "Ver detalhes do pacote"
+    "terms": "Ver detalhes do pacote",
+    "viewCharacter": "Ver personagem",
+    "currentRank": "Cargo atual",
+    "rankUnavailable": "Cargo indisponível",
+    "rotateHint": "Arraste para girar · role para ampliar",
+    "skinError": "Não foi possível carregar a skin",
+    "skinLoading": "Carregando personagem…"
   },
   "tr": {
     "added": "Sepete eklendi",
@@ -95,7 +131,13 @@ const copy = {
     "billing": "Ödeme türü",
     "benefits": "Avantajlar",
     "permanent": "Kalıcı · tek ödeme",
-    "terms": "Paket ayrıntılarına bak"
+    "terms": "Paket ayrıntılarına bak",
+    "viewCharacter": "Karakteri göster",
+    "currentRank": "Mevcut rütbe",
+    "rankUnavailable": "Rütbe kullanılamıyor",
+    "rotateHint": "Döndürmek için sürükle · yakınlaştırmak için kaydır",
+    "skinError": "Görünüm yüklenemedi",
+    "skinLoading": "Karakter yükleniyor…"
   },
   "ja": {
     "added": "カートに追加しました",
@@ -109,7 +151,13 @@ const copy = {
     "billing": "支払い",
     "benefits": "特典",
     "permanent": "永久・買い切り",
-    "terms": "パッケージ詳細を確認"
+    "terms": "パッケージ詳細を確認",
+    "viewCharacter": "キャラクターを表示",
+    "currentRank": "現在のランク",
+    "rankUnavailable": "ランクを取得できません",
+    "rotateHint": "ドラッグで回転・スクロールで拡大",
+    "skinError": "スキンを読み込めませんでした",
+    "skinLoading": "キャラクターを読み込み中…"
   },
   "ko": {
     "added": "장바구니에 추가됨",
@@ -123,7 +171,13 @@ const copy = {
     "billing": "결제 유형",
     "benefits": "혜택",
     "permanent": "영구 · 일회 결제",
-    "terms": "패키지 상세 확인"
+    "terms": "패키지 상세 확인",
+    "viewCharacter": "캐릭터 보기",
+    "currentRank": "현재 등급",
+    "rankUnavailable": "등급을 확인할 수 없습니다",
+    "rotateHint": "드래그하여 회전 · 스크롤하여 확대",
+    "skinError": "스킨을 불러올 수 없습니다",
+    "skinLoading": "캐릭터 로딩 중…"
   },
   "zh": {
     "added": "已加入购物车",
@@ -137,7 +191,13 @@ const copy = {
     "billing": "付款方式",
     "benefits": "权益",
     "permanent": "永久 · 一次性付款",
-    "terms": "查看礼包详情"
+    "terms": "查看礼包详情",
+    "viewCharacter": "查看角色",
+    "currentRank": "当前等级",
+    "rankUnavailable": "等级不可用",
+    "rotateHint": "拖动旋转 · 滚动缩放",
+    "skinError": "无法加载皮肤",
+    "skinLoading": "正在加载角色…"
   }
 };
 export function storeExperienceCopy(locale: string) { return copy[locale as keyof typeof copy] ?? copy.en; }

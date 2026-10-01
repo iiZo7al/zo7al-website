@@ -189,7 +189,6 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
     </div>}
     {hasRank && <p className="store-notice">{copy.oneRank}</p>}
     <div className="store-tools">
-      <PlayerIdentity username={username} onChange={setUsername}/>
       <div className="store-search-row">
         <label className="store-search"><Search size={18} aria-hidden="true"/><span className="sr-only">{experience.search}</span><input type="search" value={query} onChange={event => setQuery(event.target.value)} placeholder={experience.search}/></label>
         <button type="button" className="store-action" onClick={() => setComparing(true)} disabled={products.filter(isRankProduct).length < 2} aria-haspopup="dialog"><Columns3 size={18} aria-hidden="true"/>{experience.compare}</button>
@@ -265,10 +264,10 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
           <button type="button" className="store-action store-cart-browse" onClick={close}>{copy.browse}</button>
         </>}
         <p id="checkout-description" className="store-checkout-description">{copy.note}</p>
-        {!ident && !!cartIds.length ? <form onSubmit={pay} className="store-checkout-form">
-          <PlayerIdentity id="store-username" username={username} onChange={value => { setUsername(value); setError(null); }} required/>
+        {!ident ? <form onSubmit={pay} className="store-checkout-form">
+          <PlayerIdentity id="store-username" username={username} onChange={value => { setUsername(value); setError(null); }} required active={cartOpen}/>
           <p>{t("usernameHelp")}</p>
-          <button disabled={busy || !sdkReady || sdkError || cartUnavailable || !cartReady} className="store-action store-action-primary store-pay" aria-busy={busy}>
+          <button disabled={!cartIds.length || busy || !sdkReady || sdkError || cartUnavailable || !cartReady} className="store-action store-action-primary store-pay" aria-busy={busy}>
             <span>{t(busy || !sdkReady ? "preparing" : "continuePayment")}</span>
             {busy || !sdkReady ? <LoaderCircle size={18} className="store-spinner" aria-hidden="true" /> : <ArrowRight size={18} className="store-direction" aria-hidden="true" />}
           </button>
