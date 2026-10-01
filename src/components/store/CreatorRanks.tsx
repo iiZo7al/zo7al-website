@@ -7,11 +7,12 @@ import { ArrowRight, Check, LoaderCircle } from "lucide-react";
 import DetailsIcon from "@/components/ui/DetailsIcon";
 import DetailsDialog from "@/components/ui/DetailsDialog";
 import { getCreatorRankContent } from "@/lib/data/creator-rank-content";
+import { storeExperienceCopy } from "@/lib/data/store-experience-copy";
 import "./creator-ranks.css";
 
 const platforms = ["youtube", "twitch", "tiktok"] as const;
 type Platform = typeof platforms[number];
-export default function CreatorRanks() {
+export default function CreatorRanks({ query = "", showEmpty = false }: { query?: string; showEmpty?: boolean }) {
   const t = useTranslations("creators");
   const ui = useTranslations("store");
   const [details, setDetails] = useState<Platform | null>(null);
@@ -19,9 +20,15 @@ export default function CreatorRanks() {
   const reduce = useReducedMotion();
   const locale = useLocale();
   const detailContent = details ? getCreatorRankContent(locale, details) : null;
+  const search = query.trim().toLocaleLowerCase();
+  const visiblePlatforms = platforms.filter(platform => {
+    const content = getCreatorRankContent(locale, platform);
+    return !search || [platform, content.title, t("title"), ...content.preview].join(" ").toLocaleLowerCase().includes(search);
+  });
+  if (!visiblePlatforms.length) return showEmpty ? <p role="status" className="store-notice">{storeExperienceCopy(locale).noResults}</p> : null;
   return <section className="mb-14" aria-labelledby="creator-ranks-title">
     <div className="mb-5 flex items-center gap-4"><Image src="/assets/site/creator-category.webp" alt="" width={140} height={80} className="h-20 w-36 object-contain"/><h2 id="creator-ranks-title" className="text-display text-3xl">{t("title")}</h2></div>
-    <div className="store-rank-grid creator-rank-grid">{platforms.map((platform, index) => <motion.div key={platform} className="store-rank-reveal" initial={reduce ? false : { opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.1 }} transition={{ duration: 0.7, delay: Math.min(index * 0.06, 0.3), ease: [0.16, 1, 0.3, 1] }}>
+    <div className="store-rank-grid creator-rank-grid">{visiblePlatforms.map((platform, index) => <motion.div key={platform} className="store-rank-reveal" initial={reduce ? false : { opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.1 }} transition={{ duration: 0.7, delay: Math.min(index * 0.06, 0.3), ease: [0.16, 1, 0.3, 1] }}>
       <article className={`card-glow store-rank creator-${platform}`}>
       <div className="store-rank-top"><Image src={`/assets/site/rank-${platform}.png`} width={667} height={375} alt={platform.toUpperCase()} className="store-product-image creator-rank-image" /></div>
       <p className="text-label">{t("title")}</p><h3 className="text-display store-rank-name" dir="ltr">{platform.toUpperCase()}</h3>
