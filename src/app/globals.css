@@ -354,3 +354,30 @@ html.cursor-ready .checkout-shell button { cursor: pointer; }
   overscroll-behavior-y: contain;
 }
 .mobile-nav-panel > * { flex-shrink: 0; }
+
+/* Keep connected scripts readable, including Arabic inside other locales. */
+body, body * {
+  letter-spacing: normal !important;
+}
+
+/* Shared feedback for native controls and links used as buttons.
+   Use scale independently so positioned controls keep their translate/transform. */
+@media (prefers-reduced-motion: no-preference) {
+  html body :is(button, a[href], [role="button"], summary, input[type="button"], input[type="submit"], input[type="reset"]):not(.joystick) {
+    transition: scale 180ms cubic-bezier(.16,1,.3,1), background-color 200ms ease,
+      border-color 200ms ease, color 200ms ease, box-shadow 200ms ease, opacity 200ms ease;
+  }
+  html body :is(button, a[href], [role="button"], summary, input[type="button"], input[type="submit"], input[type="reset"]):not(.joystick):not(:disabled):not([aria-disabled="true"]):focus-visible {
+    scale: 1.025;
+  }
+}
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  html body :is(button, a[href], [role="button"], summary, input[type="button"], input[type="submit"], input[type="reset"]):not(.joystick):not(:disabled):not([aria-disabled="true"]):hover {
+    scale: 1.035;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  html body :is(button, a[href], [role="button"], summary, input[type="button"], input[type="submit"], input[type="reset"]):not(.joystick):not(:disabled):not([aria-disabled="true"]):active {
+    scale: .96;
+  }
+}

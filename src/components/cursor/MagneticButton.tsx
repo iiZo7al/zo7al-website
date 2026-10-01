@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useMotionValue, useSpring } from "framer-motion";
+import { motion, useMotionValue, useSpring, useReducedMotion } from "framer-motion";
 import { useRef, type ReactNode } from "react";
 
 export default function MagneticButton({
@@ -14,6 +14,7 @@ export default function MagneticButton({
   strength?: number;
   as?: "div" | "span";
 }) {
+  const reducedMotion = useReducedMotion();
   const ref = useRef<HTMLDivElement>(null);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -21,7 +22,7 @@ export default function MagneticButton({
   const springY = useSpring(y, { stiffness: 260, damping: 20, mass: 0.4 });
 
   const handleMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (window.matchMedia("(pointer: coarse)").matches) return;
+    if (reducedMotion || window.matchMedia("(pointer: coarse)").matches) return;
     const rect = ref.current?.getBoundingClientRect();
     if (!rect) return;
     const relX = e.clientX - (rect.left + rect.width / 2);
@@ -43,7 +44,7 @@ export default function MagneticButton({
       ref={ref}
       onMouseMove={handleMove}
       onMouseLeave={reset}
-      style={{ x: springX, y: springY }}
+      style={{ x: reducedMotion ? 0 : springX, y: reducedMotion ? 0 : springY }}
       className={className}
     >
       {children}
