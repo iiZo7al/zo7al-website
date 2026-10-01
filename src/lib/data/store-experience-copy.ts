@@ -17,7 +17,11 @@ const copy = {
     "rankUnavailable": "Rank unavailable",
     "rotateHint": "Drag to rotate · scroll to zoom",
     "skinError": "Unable to load the skin",
-    "skinLoading": "Loading character…"
+    "skinLoading": "Loading character…",
+    "preview": "Preview",
+    "rankPreview": "Rank preview",
+    "previewName": "Enter your Minecraft username to preview",
+    "previewOnly": "Preview before purchase"
   },
   "ar": {
     "added": "تمت الإضافة للسلة",
@@ -37,7 +41,11 @@ const copy = {
     "rankUnavailable": "الرتبة غير متاحة",
     "rotateHint": "اسحب لتدوير الشخصية · مرّر للتقريب",
     "skinError": "تعذر تحميل السكن",
-    "skinLoading": "جاري تحميل الشخصية…"
+    "skinLoading": "جاري تحميل الشخصية…",
+    "preview": "معاينة",
+    "rankPreview": "معاينة الرتبة",
+    "previewName": "أدخل اسم ماينكرافت لمعاينة شخصيتك",
+    "previewOnly": "معاينة الشكل قبل الشراء"
   },
   "es": {
     "added": "Añadido al carrito",
@@ -57,7 +65,11 @@ const copy = {
     "rankUnavailable": "Rango no disponible",
     "rotateHint": "Arrastra para girar · desplaza para acercar",
     "skinError": "No se pudo cargar la skin",
-    "skinLoading": "Cargando personaje…"
+    "skinLoading": "Cargando personaje…",
+    "preview": "Vista previa",
+    "rankPreview": "Vista previa del rango",
+    "previewName": "Introduce tu nombre de Minecraft",
+    "previewOnly": "Vista previa antes de comprar"
   },
   "fr": {
     "added": "Ajouté au panier",
@@ -77,7 +89,11 @@ const copy = {
     "rankUnavailable": "Rang indisponible",
     "rotateHint": "Glisser pour tourner · défiler pour zoomer",
     "skinError": "Impossible de charger le skin",
-    "skinLoading": "Chargement du personnage…"
+    "skinLoading": "Chargement du personnage…",
+    "preview": "Aperçu",
+    "rankPreview": "Aperçu du rang",
+    "previewName": "Saisissez votre pseudo Minecraft",
+    "previewOnly": "Aperçu avant achat"
   },
   "de": {
     "added": "Zum Warenkorb hinzugefügt",
@@ -97,7 +113,11 @@ const copy = {
     "rankUnavailable": "Rang nicht verfügbar",
     "rotateHint": "Ziehen zum Drehen · scrollen zum Zoomen",
     "skinError": "Skin konnte nicht geladen werden",
-    "skinLoading": "Charakter wird geladen…"
+    "skinLoading": "Charakter wird geladen…",
+    "preview": "Vorschau",
+    "rankPreview": "Rangvorschau",
+    "previewName": "Minecraft-Namen für die Vorschau eingeben",
+    "previewOnly": "Vorschau vor dem Kauf"
   },
   "pt": {
     "added": "Adicionado ao carrinho",
@@ -117,7 +137,11 @@ const copy = {
     "rankUnavailable": "Cargo indisponível",
     "rotateHint": "Arraste para girar · role para ampliar",
     "skinError": "Não foi possível carregar a skin",
-    "skinLoading": "Carregando personagem…"
+    "skinLoading": "Carregando personagem…",
+    "preview": "Prévia",
+    "rankPreview": "Prévia do cargo",
+    "previewName": "Digite seu nome do Minecraft",
+    "previewOnly": "Prévia antes da compra"
   },
   "tr": {
     "added": "Sepete eklendi",
@@ -137,7 +161,11 @@ const copy = {
     "rankUnavailable": "Rütbe kullanılamıyor",
     "rotateHint": "Döndürmek için sürükle · yakınlaştırmak için kaydır",
     "skinError": "Görünüm yüklenemedi",
-    "skinLoading": "Karakter yükleniyor…"
+    "skinLoading": "Karakter yükleniyor…",
+    "preview": "Önizleme",
+    "rankPreview": "Rütbe önizlemesi",
+    "previewName": "Minecraft kullanıcı adını gir",
+    "previewOnly": "Satın almadan önce önizleme"
   },
   "ja": {
     "added": "カートに追加しました",
@@ -157,7 +185,11 @@ const copy = {
     "rankUnavailable": "ランクを取得できません",
     "rotateHint": "ドラッグで回転・スクロールで拡大",
     "skinError": "スキンを読み込めませんでした",
-    "skinLoading": "キャラクターを読み込み中…"
+    "skinLoading": "キャラクターを読み込み中…",
+    "preview": "プレビュー",
+    "rankPreview": "ランクのプレビュー",
+    "previewName": "Minecraftのユーザー名を入力",
+    "previewOnly": "購入前のプレビュー"
   },
   "ko": {
     "added": "장바구니에 추가됨",
@@ -177,7 +209,11 @@ const copy = {
     "rankUnavailable": "등급을 확인할 수 없습니다",
     "rotateHint": "드래그하여 회전 · 스크롤하여 확대",
     "skinError": "스킨을 불러올 수 없습니다",
-    "skinLoading": "캐릭터 로딩 중…"
+    "skinLoading": "캐릭터 로딩 중…",
+    "preview": "미리보기",
+    "rankPreview": "등급 미리보기",
+    "previewName": "마인크래프트 사용자 이름을 입력하세요",
+    "previewOnly": "구매 전 미리보기"
   },
   "zh": {
     "added": "已加入购物车",
@@ -197,7 +233,11 @@ const copy = {
     "rankUnavailable": "等级不可用",
     "rotateHint": "拖动旋转 · 滚动缩放",
     "skinError": "无法加载皮肤",
-    "skinLoading": "正在加载角色…"
+    "skinLoading": "正在加载角色…",
+    "preview": "预览",
+    "rankPreview": "等级预览",
+    "previewName": "输入你的 Minecraft 用户名",
+    "previewOnly": "购买前预览"
   }
 };
 export function storeExperienceCopy(locale: string) { return copy[locale as keyof typeof copy] ?? copy.en; }

@@ -9,6 +9,7 @@ import { isCoinProduct, isRankProduct, parseCartItems, MAX_COIN_QUANTITY, type C
 import { cartCopy } from "@/lib/data/cart-copy";
 import PlayerIdentity, { usePlayerName } from "./PlayerIdentity";
 import RankComparison from "./RankComparison";
+import CharacterPreview from "./CharacterPreview";
 import { storeExperienceCopy } from "@/lib/data/store-experience-copy";
 import CreatorRanks from "./CreatorRanks";
 import { groupStoreProducts } from "@/lib/data/store-groups";
@@ -61,6 +62,7 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
   const experience = storeExperienceCopy(locale);
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState<"all" | "ranks" | "coins" | "creators">("all");
+  const [previewRankId, setPreviewRankId] = useState<number | null>(null);
   const [comparing, setComparing] = useState(false);
   const [toast, setToast] = useState<{ product: StoreProduct; key: number } | null>(null);
   useEffect(() => {
@@ -141,7 +143,7 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
     } catch { queueMicrotask(() => setError("paymentError")); }
     return () => { active = false; element.replaceChildren(); };
   }, [ident, sdkReady, locale]);
-  const close = () => { abort.current?.abort(); abort.current = null; setCartOpen(false); setIdent(""); setError(null); setErrorPackage(null); setBusy(false); };
+  const close = () => { setPreviewRankId(null); abort.current?.abort(); abort.current = null; setCartOpen(false); setIdent(""); setError(null); setErrorPackage(null); setBusy(false); };
   const pay = async (event: React.FormEvent) => {
     event.preventDefault(); if (!cartOpen || busy || abort.current || !cartIds.length || cartIds.some(id => !products.some(p => p.id === id && p.available))) return;
     const controller = new AbortController(); abort.current = controller; setBusy(true); setError(null); setErrorPackage(null);
@@ -175,6 +177,8 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
   const showCreators = filter === "all" || filter === "creators";
   const categoryLabel = (name?: string) => /^(ranks?|الرتب)$/i.test(name?.trim() ?? "") ? t("ranksTitle") : /^(coins?|العملات)$/i.test(name?.trim() ?? "") ? t("coinsTitle") : name || t("productsTitle");
   const cartProducts = cartIds.map(id => products.find(product => product.id === id));
+  const previewRank = cartProducts.find(product => product && product.id === previewRankId && isRankProduct(product));
+  const validPreviewName = /^[.a-zA-Z0-9_ ]{3,32}$/.test(username.trim());
   const cartUnavailable = !live || cartProducts.some(product => !product?.available);
   const totals = new Map<string, number>();
   for (const product of cartProducts) if (product?.price != null) totals.set(product.currency, (totals.get(product.currency) ?? 0) + product.price * (cartItems.find(item => item.packageId === product.id)?.quantity ?? 1));
@@ -254,10 +258,14 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
             const product = cartProducts[index];
             return <li key={id}>
               {product?.image ? <Image unoptimized src={product.image} alt="" width={80} height={64}/> : <CommerceIcon name="shopping-cart" size={30} aria-hidden="true"/>}
-              <div><h3 dir="auto">{product?.name ?? `#${id}`}</h3><p>{product ? <>{price(product)} <span>× {cartItems[index].quantity}</span></> : t("checkoutUnavailable")}</p>{product && isCoinProduct(product) && <QuantityControl name={product.name} quantity={cartItems[index].quantity} disabled={busy} decrease={copy.decrease} increase={copy.increase} onChange={delta => { changeQuantity(id, delta); setError(null); }}/>}{product && !product.available && <small>{t("checkoutUnavailable")}</small>}</div>
+              <div><h3 dir="auto">{product?.name ?? `#${id}`}</h3><p>{product ? <>{price(product)} <span>× {cartItems[index].quantity}</span></> : t("checkoutUnavailable")}</p>{product && isCoinProduct(product) && <QuantityControl name={product.name} quantity={cartItems[index].quantity} disabled={busy} decrease={copy.decrease} increase={copy.increase} onChange={delta => { changeQuantity(id, delta); setError(null); }}/>}{product && isRankProduct(product) && <button type="button" className="store-rank-preview-button" aria-expanded={previewRankId === product.id} aria-controls="cart-rank-preview" onClick={() => setPreviewRankId(current => current === product.id ? null : product.id)}>{experience.preview}</button>}{product && !product.available && <small>{t("checkoutUnavailable")}</small>}</div>
               <button type="button" disabled={busy} className="store-close" aria-label={`${copy.remove} — ${product?.name ?? id}`} title={copy.remove} onClick={() => { remove(id); setError(null); }}><CommerceIcon name="trash" size={18} aria-hidden="true"/></button>
             </li>;
           })}</ul>}
+          {cartOpen && previewRank && <div id="cart-rank-preview" className="store-cart-rank-preview">
+            <div className="store-preview-heading"><strong>{experience.rankPreview}</strong><button type="button" className="store-close" aria-label={t("close")} onClick={() => setPreviewRankId(null)}><X size={18} aria-hidden="true"/></button></div>
+            {validPreviewName ? <CharacterPreview key={`${previewRank.id}:${username.trim()}`} id="cart-rank-character" username={username.trim()} previewRank={previewRank.name}/> : <button type="button" className="store-action" onClick={() => document.getElementById("store-username")?.focus()}>{experience.previewName}</button>}
+          </div>}
           {!!cartIds.length && <div className="store-cart-total"><span>{copy.subtotal}</span><strong dir="ltr">{totalsKnown ? [...totals].map(([currency, amount]) => new Intl.NumberFormat("en-US", { style: "currency", currency, currencyDisplay: "narrowSymbol" }).format(amount)).join(" + ") : t("pricePending")}</strong></div>}
           {cartIds.length >= 20 && <p className="store-checkout-description">{copy.limit}</p>}
           {cartUnavailable && !!cartIds.length && <p role="status" className="store-notice">{live ? copy.unavailable : t("checkoutUnavailable")}</p>}

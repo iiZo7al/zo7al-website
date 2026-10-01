@@ -192,3 +192,11 @@
 .store-character-hint { margin-top:12px; color:var(--text-muted); font-size:12px; }
 @keyframes character-reveal { from { opacity:0; transform:translateY(-8px); } to { opacity:1; transform:translateY(0); } }
 @media(prefers-reduced-motion:no-preference) { .store-character { animation:character-reveal 240ms ease-out; } }
+
+.store-rank-preview-button { display:inline-flex; align-items:center; justify-content:center; min-height:40px; margin-top:8px; padding:7px 14px; border:1px solid var(--border-strong); border-radius:10px; font-size:13px; color:var(--text); }
+.store-rank-preview-button[aria-expanded=true] { border-color:var(--accent); color:var(--accent); }
+.store-cart-rank-preview { margin:16px 0; min-width:0; }
+.store-preview-heading { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:10px; }
+.store-preview-nametag { display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:8px; width:fit-content; max-width:100%; margin:12px auto 0; padding:6px 10px; background:#111a; font-family:ui-monospace,monospace; font-size:clamp(15px,4vw,22px); line-height:1.4; color:#fff; text-shadow:2px 2px 0 #0009; overflow-wrap:anywhere; }
+.store-preview-nametag > * { min-width:0; }
+.store-preview-nametag strong { font-weight:900; }

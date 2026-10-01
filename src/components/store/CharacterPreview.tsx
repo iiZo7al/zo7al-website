@@ -4,7 +4,7 @@ import { useLocale } from "next-intl";
 import type { SkinViewer } from "skinview3d";
 import { storeExperienceCopy } from "@/lib/data/store-experience-copy";
 
-export default function CharacterPreview({ username, id }: { username: string; id: string }) {
+export default function CharacterPreview({ username, id, previewRank }: { username: string; id: string; previewRank?: string }) {
   const copy = storeExperienceCopy(useLocale());
   const canvas = useRef<HTMLCanvasElement>(null);
   const host = useRef<HTMLDivElement>(null);
@@ -16,7 +16,7 @@ export default function CharacterPreview({ username, id }: { username: string; i
     let observer: ResizeObserver | undefined;
     let disposed = false;
     const timer = setTimeout(() => {
-      fetch(`/api/minecraft/profile?username=${encodeURIComponent(username)}`, { signal: controller.signal })
+      if (!previewRank) fetch(`/api/minecraft/profile?username=${encodeURIComponent(username)}`, { signal: controller.signal })
         .then(response => response.ok ? response.json() : null)
         .then(data => { if (!disposed) setRank(typeof data?.rank === "string" ? data.rank : null); })
         .catch(() => { /* Rank remains unknown when the server is unavailable. */ });
@@ -40,14 +40,18 @@ export default function CharacterPreview({ username, id }: { username: string; i
       })();
     }, 500);
     return () => { disposed = true; clearTimeout(timer); controller.abort(); observer?.disconnect(); viewer?.dispose(); };
-  }, [username]);
+  }, [username, previewRank]);
+  const rankName = previewRank?.trim();
+  const rankColor = rankName ? ({ VIP: "#ffdf55", MVP: "#55cc77", "MVP+": "#33d4e9", "MVP++": "#ffaa33", BOOSTER: "#ff77bb", YOUTUBE: "#ff5555", TWITCH: "#b88aff", TIKTOK: "#55eeee" } as Record<string, string>)[rankName.toUpperCase()] ?? "var(--accent)" : undefined;
   return <section id={id} className="store-character" aria-label={copy.viewCharacter}>
+    {rankName && <div className="store-preview-nametag" dir="ltr"><strong style={{ color: rankColor }}>{rankName}</strong><span style={{ color: rankColor }} aria-hidden="true">✦</span><span>{username}</span></div>}
     <div ref={host} className="store-character-stage">
       <canvas ref={canvas} aria-label={`${copy.viewCharacter}: ${username}`} style={{ visibility: state === "ready" ? "visible" : "hidden" }}/>
       {state !== "ready" && <p role="status">{state === "error" ? copy.skinError : copy.skinLoading}</p>}
     </div>
-    <strong className="store-character-name" dir="ltr">{username}</strong>
-    <p className="store-character-rank"><span>{copy.currentRank}</span><bdi>{rank ?? copy.rankUnavailable}</bdi></p>
+    {!rankName && <><strong className="store-character-name" dir="ltr">{username}</strong>
+    <p className="store-character-rank"><span>{copy.currentRank}</span><bdi>{rank ?? copy.rankUnavailable}</bdi></p></>}
+    {rankName && <p className="store-character-hint">{copy.previewOnly}</p>}
     {state === "ready" && <p className="store-character-hint">{copy.rotateHint}</p>}
   </section>;
 }
