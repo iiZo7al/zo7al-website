@@ -40,8 +40,8 @@ export default function CreatorRanks({ query = "", showEmpty = false, username =
       <p className="store-rank-price">{getCreatorRankContent(locale, platform).free}</p>
       <ul className="store-rank-perks">{getCreatorRankContent(locale, platform).preview.map(perk => <li key={perk}><Check size={15} aria-hidden="true"/><span><CreatorText text={perk}/></span></li>)}</ul>
       <div className="store-rank-actions"><button type="button" className="store-action" data-cursor="button" aria-haspopup="dialog" onClick={() => setSelected(platform)}><span>{t("apply")}</span><ArrowRight size={16} className="store-direction" aria-hidden="true"/></button>
-      <button type="button" className="store-action store-details-button" data-cursor="button" aria-haspopup="dialog" aria-label={`${ui("details")} — ${platform.toUpperCase()}`} title={ui("details")} onClick={() => { setDetails(platform); setPreview(null); }}><DetailsIcon/></button>
-      <button type="button" className="store-action store-details-button" aria-haspopup="dialog" aria-label={`${experience.preview} — ${platform.toUpperCase()}`} title={experience.preview} onClick={() => { setDetails(platform); setPreview(platform); }}><Eye size={18} aria-hidden="true"/></button></div>
+      <div className="store-rank-tools"><button type="button" className="store-action store-details-button" data-cursor="button" aria-haspopup="dialog" aria-label={`${ui("details")} — ${platform.toUpperCase()}`} title={ui("details")} onClick={() => { setDetails(platform); setPreview(null); }}><DetailsIcon/></button>
+      <button type="button" className="store-action store-details-button" aria-haspopup="dialog" aria-label={`${experience.preview} — ${platform.toUpperCase()}`} title={experience.preview} onClick={() => { setDetails(platform); setPreview(platform); }}><Eye size={18} aria-hidden="true"/></button></div></div>
       </article>
     </motion.div>)}</div>
     {details && <DetailsDialog title={`${ui("details")} · ${details.toUpperCase()}`} onClose={() => { setDetails(null); setPreview(null); }}>
