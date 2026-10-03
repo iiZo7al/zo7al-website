@@ -236,9 +236,9 @@
 }
 
 .store-rank-actions { justify-content:center; }
-.store-details-preview { margin-bottom:24px; }
-.store-details-preview > .store-action { margin-bottom:12px; }
-.store-details-preview .store-character { color:var(--text); }
 
 /* Keep preview and details together when the main action wraps. */
 .store-rank-tools { display:inline-flex; flex:0 0 auto; flex-wrap:nowrap; align-items:stretch; gap:10px; }
+
+.store-rank-preview-dialog-body { padding:24px; min-width:0; overflow-x:hidden; }
+@media(max-width:480px) { .store-rank-preview-dialog-body { padding:16px; } }
