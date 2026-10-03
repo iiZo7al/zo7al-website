@@ -2,10 +2,11 @@
 import { useRef, useState, type FormEvent } from "react";
 import Image from "next/image";
 import RankName from "./RankName";
-import CharacterPreview from "./CharacterPreview";
+import RankPreviewDialog from "./RankPreviewDialog";
+import EyeIcon from "@/components/ui/EyeIcon";
 import { useLocale, useTranslations } from "next-intl";
 import { motion, useReducedMotion } from "framer-motion";
-import { ArrowRight, Check, LoaderCircle, Eye } from "lucide-react";
+import { ArrowRight, Check, LoaderCircle } from "lucide-react";
 import DetailsIcon from "@/components/ui/DetailsIcon";
 import DetailsDialog from "@/components/ui/DetailsDialog";
 import { getCreatorRankContent } from "@/lib/data/creator-rank-content";
@@ -14,7 +15,7 @@ import "./creator-ranks.css";
 
 const platforms = ["youtube", "twitch", "tiktok"] as const;
 type Platform = typeof platforms[number];
-export default function CreatorRanks({ query = "", showEmpty = false, username = "", onEnterName }: { query?: string; showEmpty?: boolean; username?: string; onEnterName?: () => void }) {
+export default function CreatorRanks({ query = "", showEmpty = false, username = "", onNameChange }: { query?: string; showEmpty?: boolean; username?: string; onNameChange: (name: string) => void }) {
   const t = useTranslations("creators");
   const ui = useTranslations("store");
   const [preview, setPreview] = useState<Platform | null>(null);
@@ -23,7 +24,6 @@ export default function CreatorRanks({ query = "", showEmpty = false, username =
   const reduce = useReducedMotion();
   const locale = useLocale();
   const experience = storeExperienceCopy(locale);
-  const validName = /^[.a-zA-Z0-9_ ]{3,32}$/.test(username.trim());
   const detailContent = details ? getCreatorRankContent(locale, details) : null;
   const search = query.trim().toLocaleLowerCase();
   const visiblePlatforms = platforms.filter(platform => {
@@ -40,15 +40,13 @@ export default function CreatorRanks({ query = "", showEmpty = false, username =
       <p className="store-rank-price">{getCreatorRankContent(locale, platform).free}</p>
       <ul className="store-rank-perks">{getCreatorRankContent(locale, platform).preview.map(perk => <li key={perk}><Check size={15} aria-hidden="true"/><span><CreatorText text={perk}/></span></li>)}</ul>
       <div className="store-rank-actions"><button type="button" className="store-action" data-cursor="button" aria-haspopup="dialog" onClick={() => setSelected(platform)}><span>{t("apply")}</span><ArrowRight size={16} className="store-direction" aria-hidden="true"/></button>
-      <button type="button" className="store-action store-details-button" data-cursor="button" aria-haspopup="dialog" aria-label={`${ui("details")} — ${platform.toUpperCase()}`} title={ui("details")} onClick={() => { setDetails(platform); setPreview(null); }}><DetailsIcon/></button>
-      <button type="button" className="store-action store-details-button" aria-haspopup="dialog" aria-label={`${experience.preview} — ${platform.toUpperCase()}`} title={experience.preview} onClick={() => { setDetails(platform); setPreview(platform); }}><Eye size={18} aria-hidden="true"/></button></div>
+      <div className="store-rank-tools"><button type="button" className="store-action store-details-button" data-cursor="button" aria-haspopup="dialog" aria-label={`${ui("details")} — ${platform.toUpperCase()}`} title={ui("details")} onClick={() => setDetails(platform)}><DetailsIcon/></button>
+      <button type="button" className="store-action store-details-button" aria-haspopup="dialog" aria-label={`${experience.preview} — ${platform.toUpperCase()}`} title={experience.preview} onClick={() => setPreview(platform)}><EyeIcon/></button></div></div>
       </article>
     </motion.div>)}</div>
-    {details && <DetailsDialog title={`${ui("details")} · ${details.toUpperCase()}`} onClose={() => { setDetails(null); setPreview(null); }}>
+    {preview && <RankPreviewDialog rankName={preview.toUpperCase()} username={username} onNameChange={onNameChange} onClose={() => setPreview(null)}/>}
+    {details && <DetailsDialog title={`${ui("details")} · ${details.toUpperCase()}`} onClose={() => setDetails(null)}>
       <div className="store-checkout-body store-full-description">
-        <div className="store-details-preview"><button type="button" className="store-action" aria-expanded={preview === details} aria-controls="creator-rank-preview" onClick={() => setPreview(current => current === details ? null : details)}><Eye size={18} aria-hidden="true"/>{experience.preview}</button>
-          {preview === details && <div id="creator-rank-preview">{validName ? <CharacterPreview key={`${details}:${username.trim()}`} id="creator-rank-character" username={username.trim()} previewRank={details.toUpperCase()}/> : <button type="button" className="store-action" onClick={() => { setDetails(null); setPreview(null); onEnterName?.(); }}>{experience.previewName}</button>}</div>}
-        </div>
         <Image src={`/assets/site/rank-${details}.png`} width={667} height={375} alt={details.toUpperCase()} className="store-details-image"/>
         {detailContent && <div className="creator-full-description">
           <h3>{detailContent.title}</h3>
