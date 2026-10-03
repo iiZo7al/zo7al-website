@@ -11,8 +11,8 @@ const gradients: Record<string, readonly [string, string]> = {
   TIKTOK: ["#7df3ef", "#ff9bc2"],
   OWNER: ["#78ffda", "#68bbff"],
 };
-export default function RankName({ name, text, className = "" }: { name: string; text?: string; className?: string }) {
+export default function RankName({ name, text, className = "", variant = "rank" }: { name: string; text?: string; className?: string; variant?: "rank" | "coins" }) {
   const key = name.trim().toUpperCase().replace(/\s+(?:RANK|UPGRADE)\b.*$/, "");
-  const [start, end] = gradients[key] ?? ["#c5b8ff", "#85e6ff"];
+  const [start, end] = variant === "coins" ? ["#fff2a8", "#e9a62b"] : gradients[key] ?? ["#c5b8ff", "#85e6ff"];
   return <span className={`store-rank-gradient ${className}`} style={{ "--rank-start": start, "--rank-end": end } as CSSProperties}>{text ?? name}</span>;
 }
