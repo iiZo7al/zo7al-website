@@ -193,10 +193,15 @@
 @keyframes character-reveal { from { opacity:0; transform:translateY(-8px); } to { opacity:1; transform:translateY(0); } }
 @media(prefers-reduced-motion:no-preference) { .store-character { animation:character-reveal 240ms ease-out; } }
 
-.store-rank-preview-button { display:inline-flex; align-items:center; justify-content:center; min-height:40px; margin-top:8px; padding:7px 14px; border:1px solid var(--border-strong); border-radius:10px; font-size:13px; color:var(--text); }
-.store-rank-preview-button[aria-expanded=true] { border-color:var(--accent); color:var(--accent); }
-.store-cart-rank-preview { margin:16px 0; min-width:0; }
+.store-cart-rank-tools { display:flex; flex-wrap:nowrap; align-items:center; gap:8px; margin-top:8px; }
+.store-cart-rank-tool { display:inline-flex; align-items:center; justify-content:center; flex:0 0 44px; width:44px; height:44px; padding:0; border:1px solid var(--border-strong); border-radius:10px; color:var(--text); }
+.store-cart-rank-tool:hover { background:var(--surface-elevated); border-color:var(--accent); }
+.store-cart-rank-tool[aria-expanded=true] { border-color:var(--accent); color:var(--accent); }
+.store-cart-rank-tool:focus-visible { outline:2px solid var(--accent); outline-offset:4px; }
+.store-cart-rank-panel { margin:16px 0; min-width:0; padding:14px; border:1px solid var(--border); border-radius:16px; background:var(--surface); }
 .store-preview-heading { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:10px; }
+.store-preview-heading h3 { min-width:0; font-size:14px; line-height:1.7; overflow-wrap:anywhere; }
+@media(prefers-reduced-motion:no-preference) { .store-cart-rank-panel { animation:character-reveal 240ms ease-out; } }
 .store-preview-nametag { display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:8px; width:fit-content; max-width:100%; margin:12px auto 0; padding:6px 10px; background:#111a; font-family:"Monocraft",var(--font-sans),monospace; font-variant-ligatures:none; font-synthesis:none; font-size:clamp(15px,4vw,22px); line-height:1.4; color:#fff; text-shadow:2px 2px 0 #0009; overflow-wrap:anywhere; }
 .store-preview-nametag > * { min-width:0; }
 .store-preview-nametag strong { font-weight:400; }

@@ -65,7 +65,10 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
   const experience = storeExperienceCopy(locale);
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState<"all" | "ranks" | "coins" | "creators">("all");
-  const [previewRankId, setPreviewRankId] = useState<number | null>(null);
+  const [cartRankView, setCartRankView] = useState<{ packageId: number; mode: "preview" | "details" } | null>(null);
+  const toggleCartRankView = (packageId: number, mode: "preview" | "details") => {
+    setCartRankView(current => current?.packageId === packageId && current.mode === mode ? null : { packageId, mode });
+  };
   const [comparing, setComparing] = useState(false);
   const [toast, setToast] = useState<{ product: StoreProduct; key: number } | null>(null);
   useEffect(() => {
@@ -147,7 +150,7 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
     } catch { queueMicrotask(() => setError("paymentError")); }
     return () => { active = false; element.replaceChildren(); };
   }, [ident, sdkReady, locale]);
-  const close = () => { setPreviewRankId(null); abort.current?.abort(); abort.current = null; setCartOpen(false); setIdent(""); setError(null); setErrorPackage(null); setBusy(false); };
+  const close = () => { setCartRankView(null); abort.current?.abort(); abort.current = null; setCartOpen(false); setIdent(""); setError(null); setErrorPackage(null); setBusy(false); };
   const pay = async (event: React.FormEvent) => {
     event.preventDefault(); if (!cartOpen || busy || abort.current || !cartIds.length || cartIds.some(id => !products.some(p => p.id === id && p.available))) return;
     const controller = new AbortController(); abort.current = controller; setBusy(true); setError(null); setErrorPackage(null);
@@ -181,7 +184,7 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
   const showCreators = filter === "all" || filter === "creators";
   const categoryLabel = (name?: string) => /^(ranks?|الرتب)$/i.test(name?.trim() ?? "") ? t("ranksTitle") : /^(coins?|العملات)$/i.test(name?.trim() ?? "") ? t("coinsTitle") : name || t("productsTitle");
   const cartProducts = cartIds.map(id => products.find(product => product.id === id));
-  const previewRank = cartProducts.find(product => product && product.id === previewRankId && isRankProduct(product));
+  const cartRank = cartProducts.find(product => product && product.id === cartRankView?.packageId && isRankProduct(product));
   const validPreviewName = /^[.a-zA-Z0-9_ ]{3,32}$/.test(username.trim());
   const cartUnavailable = !live || cartProducts.some(product => !product?.available);
   const totals = new Map<string, number>();
@@ -264,14 +267,22 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
             const product = cartProducts[index];
             return <li key={id}>
               {product?.image ? <Image unoptimized src={product.image} alt="" width={80} height={64}/> : <CommerceIcon name="shopping-cart" size={30} aria-hidden="true"/>}
-              <div><h3 dir="auto">{product && isCoinProduct(product) ? <RankName name={product.name} variant="coins"/> : product && isRankProduct(product) ? <RankName name={product.name}/> : product?.name ?? `#${id}`}</h3><p>{product ? <>{price(product)} <span>× {cartItems[index].quantity}</span></> : t("checkoutUnavailable")}</p>{product && isCoinProduct(product) && <QuantityControl name={product.name} quantity={cartItems[index].quantity} disabled={busy} decrease={copy.decrease} increase={copy.increase} onChange={delta => { changeQuantity(id, delta); setError(null); }}/>}{product && isRankProduct(product) && <button type="button" className="store-rank-preview-button" aria-expanded={previewRankId === product.id} aria-controls="cart-rank-preview" onClick={() => setPreviewRankId(current => current === product.id ? null : product.id)}>{experience.preview}</button>}{product && !product.available && <small>{t("checkoutUnavailable")}</small>}</div>
-              <button type="button" disabled={busy} className="store-close" aria-label={`${copy.remove} — ${product?.name ?? id}`} title={copy.remove} onClick={() => { remove(id); setError(null); }}><CommerceIcon name="trash" size={18} aria-hidden="true"/></button>
+              <div><h3 dir="auto">{product && isCoinProduct(product) ? <RankName name={product.name} variant="coins"/> : product && isRankProduct(product) ? <RankName name={product.name}/> : product?.name ?? `#${id}`}</h3><p>{product ? <>{price(product)} <span>× {cartItems[index].quantity}</span></> : t("checkoutUnavailable")}</p>{product && isCoinProduct(product) && <QuantityControl name={product.name} quantity={cartItems[index].quantity} disabled={busy} decrease={copy.decrease} increase={copy.increase} onChange={delta => { changeQuantity(id, delta); setError(null); }}/>}{product && isRankProduct(product) && <div className="store-cart-rank-tools">
+                <button type="button" className="store-cart-rank-tool" aria-label={`${experience.preview} — ${product.name}`} title={experience.preview} aria-expanded={cartRankView?.packageId === product.id && cartRankView.mode === "preview"} aria-controls={`cart-rank-panel-${product.id}`} onClick={() => toggleCartRankView(product.id, "preview")}><EyeIcon/></button>
+                <button type="button" className="store-cart-rank-tool" aria-label={`${t("details")} — ${product.name}`} title={t("details")} aria-expanded={cartRankView?.packageId === product.id && cartRankView.mode === "details"} aria-controls={`cart-rank-panel-${product.id}`} onClick={() => toggleCartRankView(product.id, "details")}><DetailsIcon/></button>
+              </div>}{product && !product.available && <small>{t("checkoutUnavailable")}</small>}</div>
+              <button type="button" disabled={busy} className="store-close" aria-label={`${copy.remove} — ${product?.name ?? id}`} title={copy.remove} onClick={() => { remove(id); setCartRankView(current => current?.packageId === id ? null : current); setError(null); }}><CommerceIcon name="trash" size={18} aria-hidden="true"/></button>
             </li>;
           })}</ul>}
-          {cartOpen && previewRank && <div id="cart-rank-preview" className="store-cart-rank-preview">
-            <div className="store-preview-heading"><strong>{experience.rankPreview}</strong><button type="button" className="store-close" aria-label={t("close")} onClick={() => setPreviewRankId(null)}><X size={18} aria-hidden="true"/></button></div>
-            {validPreviewName ? <CharacterPreview key={`${previewRank.id}:${username.trim()}`} id="cart-rank-character" username={username.trim()} previewRank={previewRank.name}/> : <button type="button" className="store-action" onClick={() => document.getElementById("store-username")?.focus()}>{experience.previewName}</button>}
-          </div>}
+          {cartOpen && cartRank && cartRankView && <section key={`${cartRank.id}:${cartRankView.mode}`} id={`cart-rank-panel-${cartRank.id}`} aria-labelledby="cart-rank-panel-title" className="store-cart-rank-panel">
+            <div className="store-preview-heading"><h3 id="cart-rank-panel-title">{cartRankView.mode === "preview" ? experience.rankPreview : t("details")} · <bdi dir="ltr"><RankName name={cartRank.name}/></bdi></h3><button type="button" className="store-close" aria-label={t("close")} onClick={() => setCartRankView(null)}><X size={18} aria-hidden="true"/></button></div>
+            {cartRankView.mode === "preview" ? (
+              validPreviewName ? <CharacterPreview key={`${cartRank.id}:${username.trim()}`} id="cart-rank-character" username={username.trim()} previewRank={cartRank.name}/> : <button type="button" className="store-action" onClick={() => document.getElementById("store-username")?.focus()}>{experience.previewName}</button>
+            ) : <div className="store-full-description">
+              {cartRank.image && <Image unoptimized src={cartRank.image} alt={cartRank.name} width={480} height={320} className="store-details-image"/>}
+              {cartRank.description ? describe(cartRank).map((line, index) => line.startsWith("• ") ? <p className="store-detail-perk" key={index}><Check size={16} aria-hidden="true"/><span dir="auto">{line.slice(2)}</span></p> : <p dir="auto" key={index}>{line}</p>) : <p>{t("descriptionUnavailable")}</p>}
+            </div>}
+          </section>}
           {!!cartIds.length && <div className="store-cart-total"><span>{copy.subtotal}</span><strong dir="ltr">{totalsKnown ? [...totals].map(([currency, amount]) => new Intl.NumberFormat("en-US", { style: "currency", currency, currencyDisplay: "narrowSymbol" }).format(amount)).join(" + ") : t("pricePending")}</strong></div>}
           {cartIds.length >= 20 && <p className="store-checkout-description">{copy.limit}</p>}
           {cartUnavailable && !!cartIds.length && <p role="status" className="store-notice">{live ? copy.unavailable : t("checkoutUnavailable")}</p>}
