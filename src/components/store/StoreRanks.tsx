@@ -9,6 +9,7 @@ import { isCoinProduct, isRankProduct, parseCartItems, MAX_COIN_QUANTITY, type C
 import { cartCopy } from "@/lib/data/cart-copy";
 import PlayerIdentity, { usePlayerName } from "./PlayerIdentity";
 import RankComparison from "./RankComparison";
+import RankName from "./RankName";
 import CharacterPreview from "./CharacterPreview";
 import { storeExperienceCopy } from "@/lib/data/store-experience-copy";
 import CreatorRanks from "./CreatorRanks";
@@ -19,7 +20,7 @@ import { localizedDescription } from "@/lib/data/store-localization";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import CommerceIcon from "@/components/ui/CommerceIcon";
 import DetailsIcon from "@/components/ui/DetailsIcon";
-import { Check, ShieldCheck, X, ArrowRight, LoaderCircle, AlertCircle, Zap, Minus, Plus, Search, Columns3 } from "lucide-react";
+import { Check, ShieldCheck, X, ArrowRight, LoaderCircle, AlertCircle, Zap, Minus, Plus, Search, Columns3, Eye } from "lucide-react";
 import type { StoreProduct } from "@/lib/server/tebex";
 
 type CheckoutSdk = { on: (event: "payment:complete", handler: () => void) => void; init: (options: { ident: string; theme: string; locale: string; colors: {name: string; color: string}[] }) => void; render: (element: HTMLElement, width: number, height: number, newTab: boolean) => void; };
@@ -71,6 +72,7 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
     return () => clearTimeout(timer);
   }, [toast]);
   const purchasedItems = useRef<CartItem[]>([]);
+  const [detailsPreviewId, setDetailsPreviewId] = useState<number | null>(null);
   const [details, setDetails] = useState<StoreProduct | null>(null);
   const detailsDialog = useRef<HTMLDialogElement>(null);
   useEffect(() => { if (details) detailsDialog.current?.showModal(); else detailsDialog.current?.close(); }, [details]);
@@ -220,27 +222,31 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
             {product.image ? <Image unoptimized src={product.image} alt={product.name} width={160} height={120} className="store-product-image" /> : <span className="store-rank-icon">{booster ? <Zap size={24} strokeWidth={1.5} aria-hidden="true" /> : <ShieldCheck size={24} strokeWidth={1.5} aria-hidden="true" />}</span>}
           </div>
           <p className="text-label">{booster ? t("ranksTitle") : categoryLabel(product.category?.name)}</p>
-          <h3 className="text-display store-rank-name"><bdi dir="ltr">{product.name}</bdi></h3>
+          <h3 className="text-display store-rank-name"><bdi dir="ltr">{isRankProduct(product) || booster ? <RankName name={product.name}/> : product.name}</bdi></h3>
           <p className={`store-rank-price${product.price === null ? " store-price-pending" : ""}`}>{price(product)}</p>
           {perks.length ? <ul className="store-rank-perks">{perks.map((perk, index) => <li key={index}><Check size={15} aria-hidden="true" /><span dir="auto">{perk}</span></li>)}</ul> : <p dir="auto" className="store-rank-description store-description-preview">{lines.join("\n") || t("descriptionUnavailable")}</p>}
           <div className="store-rank-actions">{booster ? <a href={DISCORD_LINK} target="_blank" rel="noopener noreferrer" data-cursor="button" className="store-action"><span>{t("getRank")} <bdi dir="ltr">Booster</bdi></span><ArrowRight size={16} className="store-direction" aria-hidden="true" /></a> : isCoinProduct(product) && quantity > 0 ? <QuantityControl name={product.name} quantity={quantity} disabled={!live || !product.available || !cartReady} decrease={copy.decrease} increase={copy.increase} onChange={delta => changeQuantity(product.id, delta)} removeLabel={copy.remove} onRemove={() => remove(product.id)}/> : <button title={rankBlocked ? copy.oneRank : undefined} disabled={rankBlocked || !live || !product.available || !cartReady || (cartIds.length >= 20 && !cartIds.includes(product.id))} onClick={() => { if (cartIds.includes(product.id)) setCartOpen(true); else { add(product.id, isRankProduct(product) ? rankIds : []); setToast({ product, key: Date.now() }); } }} data-cursor="button" className={`store-action${featured ? " store-action-primary" : ""}`}>
             <span>{cartIds.includes(product.id) ? copy.added : <>{copy.add.split("{name}")[0]}<bdi dir="ltr">{product.name}</bdi>{copy.add.split("{name}")[1]}</>}</span>{cartIds.includes(product.id) ? <Check size={16} aria-hidden="true"/> : <CommerceIcon name="shopping-cart" size={16} aria-hidden="true"/>}
           </button>}
-          <button type="button" className="store-action store-details-button" onClick={() => setDetails(product)} data-cursor="button" aria-haspopup="dialog" aria-label={`${t("details")} — ${product.name}`} title={t("details")}><DetailsIcon /></button></div>
+          <button type="button" className="store-action store-details-button" onClick={() => { setDetailsPreviewId(null); setDetails(product); }} data-cursor="button" aria-haspopup="dialog" aria-label={`${t("details")} — ${product.name}`} title={t("details")}><DetailsIcon /></button>
+          {(isRankProduct(product) || booster) && <button type="button" className="store-action store-details-button" aria-haspopup="dialog" aria-label={`${experience.preview} — ${product.name}`} title={experience.preview} onClick={() => { setDetails(product); setDetailsPreviewId(product.id); }}><Eye size={18} aria-hidden="true"/></button>}</div>
         </article></motion.div>;
       })}
       </div>
     </section></Fragment>)}
-    {showCreators && <CreatorRanks query={query} showEmpty={!visibleGroups.length}/>}
+    {showCreators && <CreatorRanks query={query} showEmpty={!visibleGroups.length} username={username} onEnterName={() => setCartOpen(true)}/>}
     {comparing && <RankComparison products={products.filter(isRankProduct)} price={price} describe={describe} onClose={() => setComparing(false)}/>}
     <AnimatePresence>{toast && !cartOpen && <motion.aside key={toast.key} className="store-cart-toast" initial={reduceMotion ? false : { opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: reduceMotion ? 0 : 12 }} role="status" aria-live="polite" aria-atomic="true">
       {toast.product.image && <Image unoptimized src={toast.product.image} alt="" width={64} height={52}/>}
       <div><p>{experience.added}</p><strong dir="auto">{toast.product.name}</strong><button type="button" onClick={() => { setCartOpen(true); setToast(null); }}>{experience.viewCart}<ArrowRight size={15} aria-hidden="true"/></button></div>
       <button type="button" className="store-close" aria-label={t("close")} onClick={() => setToast(null)}><X size={18} aria-hidden="true"/></button>
     </motion.aside>}</AnimatePresence>
-    <dialog ref={detailsDialog} onCancel={() => setDetails(null)} onClose={() => setDetails(null)} aria-labelledby="rank-details-title" className="checkout-shell store-checkout">
+    <dialog ref={detailsDialog} onCancel={() => { setDetails(null); setDetailsPreviewId(null); }} onClose={() => { setDetails(null); setDetailsPreviewId(null); }} aria-labelledby="rank-details-title" className="checkout-shell store-checkout">
       <header className="store-checkout-header"><h2 id="rank-details-title">{t("details")} · <bdi dir="ltr">{currentDetails?.name}</bdi></h2><button type="button" className="store-close" onClick={() => setDetails(null)} aria-label={t("close")}><X size={20} aria-hidden="true" /></button></header>
-      <div className="store-checkout-body store-full-description">{currentDetails?.image && <Image unoptimized src={currentDetails.image} alt={currentDetails.name} width={480} height={320} className="store-details-image" />}{currentDetails?.description ? describe(currentDetails).map((line, index) => line.startsWith("• ") ? <p className="store-detail-perk" key={index}><Check size={16} aria-hidden="true" /><span dir="auto">{line.slice(2)}</span></p> : <p dir="auto" key={index}>{line}</p>) : <p>{t("descriptionUnavailable")}</p>}</div>
+      <div className="store-checkout-body store-full-description">{currentDetails && (isRankProduct(currentDetails) || currentDetails.id === BOOSTER_PRODUCT.id) && <div className="store-details-preview">
+          <button type="button" className="store-action" aria-expanded={detailsPreviewId === currentDetails.id} aria-controls="rank-details-preview" onClick={() => setDetailsPreviewId(current => current === currentDetails.id ? null : currentDetails.id)}><Eye size={18} aria-hidden="true"/>{experience.preview}</button>
+          {details && detailsPreviewId === currentDetails.id && <div id="rank-details-preview">{validPreviewName ? <CharacterPreview key={`${currentDetails.id}:${username.trim()}`} id="rank-details-character" username={username.trim()} previewRank={currentDetails.name}/> : <button type="button" className="store-action" onClick={() => { setDetails(null); setDetailsPreviewId(null); setCartOpen(true); }}>{experience.previewName}</button>}</div>}
+        </div>}{currentDetails?.image && <Image unoptimized src={currentDetails.image} alt={currentDetails.name} width={480} height={320} className="store-details-image" />}{currentDetails?.description ? describe(currentDetails).map((line, index) => line.startsWith("• ") ? <p className="store-detail-perk" key={index}><Check size={16} aria-hidden="true" /><span dir="auto">{line.slice(2)}</span></p> : <p dir="auto" key={index}>{line}</p>) : <p>{t("descriptionUnavailable")}</p>}</div>
     </dialog>
     <dialog ref={dialog} onCancel={close} onClose={close} aria-labelledby="checkout-title" aria-describedby="checkout-description" className="checkout-shell store-checkout store-cart-dialog" onClick={event => {
       if (event.target !== event.currentTarget) return;
@@ -258,7 +264,7 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
             const product = cartProducts[index];
             return <li key={id}>
               {product?.image ? <Image unoptimized src={product.image} alt="" width={80} height={64}/> : <CommerceIcon name="shopping-cart" size={30} aria-hidden="true"/>}
-              <div><h3 dir="auto">{product?.name ?? `#${id}`}</h3><p>{product ? <>{price(product)} <span>× {cartItems[index].quantity}</span></> : t("checkoutUnavailable")}</p>{product && isCoinProduct(product) && <QuantityControl name={product.name} quantity={cartItems[index].quantity} disabled={busy} decrease={copy.decrease} increase={copy.increase} onChange={delta => { changeQuantity(id, delta); setError(null); }}/>}{product && isRankProduct(product) && <button type="button" className="store-rank-preview-button" aria-expanded={previewRankId === product.id} aria-controls="cart-rank-preview" onClick={() => setPreviewRankId(current => current === product.id ? null : product.id)}>{experience.preview}</button>}{product && !product.available && <small>{t("checkoutUnavailable")}</small>}</div>
+              <div><h3 dir="auto">{product && isRankProduct(product) ? <RankName name={product.name}/> : product?.name ?? `#${id}`}</h3><p>{product ? <>{price(product)} <span>× {cartItems[index].quantity}</span></> : t("checkoutUnavailable")}</p>{product && isCoinProduct(product) && <QuantityControl name={product.name} quantity={cartItems[index].quantity} disabled={busy} decrease={copy.decrease} increase={copy.increase} onChange={delta => { changeQuantity(id, delta); setError(null); }}/>}{product && isRankProduct(product) && <button type="button" className="store-rank-preview-button" aria-expanded={previewRankId === product.id} aria-controls="cart-rank-preview" onClick={() => setPreviewRankId(current => current === product.id ? null : product.id)}>{experience.preview}</button>}{product && !product.available && <small>{t("checkoutUnavailable")}</small>}</div>
               <button type="button" disabled={busy} className="store-close" aria-label={`${copy.remove} — ${product?.name ?? id}`} title={copy.remove} onClick={() => { remove(id); setError(null); }}><CommerceIcon name="trash" size={18} aria-hidden="true"/></button>
             </li>;
           })}</ul>}

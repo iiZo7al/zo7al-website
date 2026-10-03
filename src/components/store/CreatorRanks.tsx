@@ -1,9 +1,11 @@
 "use client";
 import { useRef, useState, type FormEvent } from "react";
 import Image from "next/image";
+import RankName from "./RankName";
+import CharacterPreview from "./CharacterPreview";
 import { useLocale, useTranslations } from "next-intl";
 import { motion, useReducedMotion } from "framer-motion";
-import { ArrowRight, Check, LoaderCircle } from "lucide-react";
+import { ArrowRight, Check, LoaderCircle, Eye } from "lucide-react";
 import DetailsIcon from "@/components/ui/DetailsIcon";
 import DetailsDialog from "@/components/ui/DetailsDialog";
 import { getCreatorRankContent } from "@/lib/data/creator-rank-content";
@@ -12,13 +14,16 @@ import "./creator-ranks.css";
 
 const platforms = ["youtube", "twitch", "tiktok"] as const;
 type Platform = typeof platforms[number];
-export default function CreatorRanks({ query = "", showEmpty = false }: { query?: string; showEmpty?: boolean }) {
+export default function CreatorRanks({ query = "", showEmpty = false, username = "", onEnterName }: { query?: string; showEmpty?: boolean; username?: string; onEnterName?: () => void }) {
   const t = useTranslations("creators");
   const ui = useTranslations("store");
+  const [preview, setPreview] = useState<Platform | null>(null);
   const [details, setDetails] = useState<Platform | null>(null);
   const [selected, setSelected] = useState<Platform | null>(null);
   const reduce = useReducedMotion();
   const locale = useLocale();
+  const experience = storeExperienceCopy(locale);
+  const validName = /^[.a-zA-Z0-9_ ]{3,32}$/.test(username.trim());
   const detailContent = details ? getCreatorRankContent(locale, details) : null;
   const search = query.trim().toLocaleLowerCase();
   const visiblePlatforms = platforms.filter(platform => {
@@ -31,15 +36,19 @@ export default function CreatorRanks({ query = "", showEmpty = false }: { query?
     <div className="store-rank-grid creator-rank-grid">{visiblePlatforms.map((platform, index) => <motion.div key={platform} className="store-rank-reveal" initial={reduce ? false : { opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.1 }} transition={{ duration: 0.7, delay: Math.min(index * 0.06, 0.3), ease: [0.16, 1, 0.3, 1] }}>
       <article className={`card-glow store-rank creator-${platform}`}>
       <div className="store-rank-top"><Image src={`/assets/site/rank-${platform}.png`} width={667} height={375} alt={platform.toUpperCase()} className="store-product-image creator-rank-image" /></div>
-      <p className="text-label">{t("title")}</p><h3 className="text-display store-rank-name" dir="ltr">{platform.toUpperCase()}</h3>
+      <p className="text-label">{t("title")}</p><h3 className="text-display store-rank-name" dir="ltr"><RankName name={platform.toUpperCase()}/></h3>
       <p className="store-rank-price">{getCreatorRankContent(locale, platform).free}</p>
       <ul className="store-rank-perks">{getCreatorRankContent(locale, platform).preview.map(perk => <li key={perk}><Check size={15} aria-hidden="true"/><span><CreatorText text={perk}/></span></li>)}</ul>
       <div className="store-rank-actions"><button type="button" className="store-action" data-cursor="button" aria-haspopup="dialog" onClick={() => setSelected(platform)}><span>{t("apply")}</span><ArrowRight size={16} className="store-direction" aria-hidden="true"/></button>
-      <button type="button" className="store-action store-details-button" data-cursor="button" aria-haspopup="dialog" aria-label={`${ui("details")} — ${platform.toUpperCase()}`} title={ui("details")} onClick={() => setDetails(platform)}><DetailsIcon/></button></div>
+      <button type="button" className="store-action store-details-button" data-cursor="button" aria-haspopup="dialog" aria-label={`${ui("details")} — ${platform.toUpperCase()}`} title={ui("details")} onClick={() => { setDetails(platform); setPreview(null); }}><DetailsIcon/></button>
+      <button type="button" className="store-action store-details-button" aria-haspopup="dialog" aria-label={`${experience.preview} — ${platform.toUpperCase()}`} title={experience.preview} onClick={() => { setDetails(platform); setPreview(platform); }}><Eye size={18} aria-hidden="true"/></button></div>
       </article>
     </motion.div>)}</div>
-    {details && <DetailsDialog title={`${ui("details")} · ${details.toUpperCase()}`} onClose={() => setDetails(null)}>
+    {details && <DetailsDialog title={`${ui("details")} · ${details.toUpperCase()}`} onClose={() => { setDetails(null); setPreview(null); }}>
       <div className="store-checkout-body store-full-description">
+        <div className="store-details-preview"><button type="button" className="store-action" aria-expanded={preview === details} aria-controls="creator-rank-preview" onClick={() => setPreview(current => current === details ? null : details)}><Eye size={18} aria-hidden="true"/>{experience.preview}</button>
+          {preview === details && <div id="creator-rank-preview">{validName ? <CharacterPreview key={`${details}:${username.trim()}`} id="creator-rank-character" username={username.trim()} previewRank={details.toUpperCase()}/> : <button type="button" className="store-action" onClick={() => { setDetails(null); setPreview(null); onEnterName?.(); }}>{experience.previewName}</button>}</div>}
+        </div>
         <Image src={`/assets/site/rank-${details}.png`} width={667} height={375} alt={details.toUpperCase()} className="store-details-image"/>
         {detailContent && <div className="creator-full-description">
           <h3>{detailContent.title}</h3>
