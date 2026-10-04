@@ -5,7 +5,7 @@ import BrandIcon, { brandLabelStyle } from "@/components/ui/BrandIcon";
 import SolidIcon from "@/components/ui/SolidIcon";
 import { getSyncedSocials, getSyncedGamesSocials } from "@/lib/sync/socials";
 
-const FOOTER_ICONS = { home: "home", minecraft: "cube", modpacks: "box", fortnite: "map", socials: "share", store: "shopping-bag" } as const;
+const FOOTER_ICONS = { home: "home", minecraft: "cube", modpacks: "box", fortnite: "map", socials: "share", support: "headset", store: "shopping-bag" } as const;
 
 export default async function Footer() {
   const [t, { items: socials }, { items: gamesSocials }] = await Promise.all([

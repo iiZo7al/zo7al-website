@@ -76,33 +76,6 @@ export default async function MinecraftPage() {
         </div>
       </section>
 
-      <section className="relative border-t py-24 sm:py-32" style={{ borderColor: "var(--border)" }}>
-        <div className="mx-auto max-w-[1180px] px-6">
-          <Reveal className="text-center" y={20}>
-            <div style={{ background: "var(--surface)", borderColor: "var(--border)" }} className="card-glow rounded-3xl border p-10 sm:p-16">
-              <p className="text-label mb-4" style={{ color: "var(--accent)" }}>
-                {t("supportEyebrow")}
-              </p>
-              <h2 className="text-display text-4xl sm:text-5xl">{t("supportTitle")}</h2>
-              <p className="mt-5 mx-auto max-w-md text-lg text-[var(--text-muted)]">
-                {t("supportText")}
-              </p>
-              <div className="mt-8">
-                <MagneticButton>
-                  <Link
-                    href="/store"
-                    data-cursor="button"
-                    className="inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-sm font-semibold"
-                    style={{ background: "var(--accent)", color: "#07080B" }}
-                  >
-                    {t("openStore")} →
-                  </Link>
-                </MagneticButton>
-              </div>
-            </div>
-          </Reveal>
-        </div>
-      </section>
       <CommonErrors />
       <MinecraftCommunity />
     </main>
