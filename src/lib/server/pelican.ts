@@ -2,44 +2,77 @@ import "server-only";
 import { lookup } from "node:dns/promises";
 import { request as httpsRequest } from "node:https";
 import { isIP } from "node:net";
-import { publicPanelOrigin, type ConnectionInput } from "../data/dashboard";
+import { publicPanelOrigin, validServerId, type ConnectionInput } from "../data/dashboard";
 import { parsePelicanServer, parsePelicanStats, publicIPv4, type PelicanServer } from "../data/pelican";
+import { allowedPelicanEndpoint, object, type PelicanOperation } from "../data/pelican-management";
 
 async function publicAddress(hostname: string): Promise<string> {
   if (isIP(hostname)) throw Error("INVALID_HOST");
-  const addresses = await lookup(hostname,{ family:4, all:true });
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  const addresses = await Promise.race([
+    lookup(hostname,{ family:4, all:true }),
+    new Promise<never>((_resolve,reject) => { timer=setTimeout(()=>reject(Error("UPSTREAM_TIMEOUT")),5000); }),
+  ]).finally(()=>clearTimeout(timer));
   if (!addresses.length || addresses.some(({address}) => !publicIPv4(address))) throw Error("INVALID_HOST");
   return addresses[0].address;
 }
 
 // The hostname is validated, resolved, and pinned to a public address. Redirects
 // are never followed, so a saved panel URL cannot reach internal infrastructure.
-export async function pelicanRequest(connection: ConnectionInput, suffix = "", body?: Record<string,string>): Promise<unknown> {
+export class PelicanError extends Error {
+  constructor(public status: number) { super("PELICAN_UNAVAILABLE"); }
+}
+export async function pelicanRequest(connection: ConnectionInput, suffix = "", body?: Record<string,unknown> | string, options: Partial<PelicanOperation> = {}): Promise<unknown> {
   const origin = publicPanelOrigin(connection.panelUrl);
-  if (connection.provider !== "pelican" || !origin || !["","/resources","/websocket","/command","/power"].includes(suffix)) throw Error("INVALID");
-  const url = new URL(origin + "/api/client/servers/" + encodeURIComponent(connection.account) + suffix);
+  const method=options.method ?? (body === undefined ? "GET" : "POST");
+  if (connection.provider !== "pelican" || !origin || !validServerId(connection.account) || !allowedPelicanEndpoint(suffix,method,options.client)) throw Error("INVALID");
+  const url = new URL(origin + (options.client ? "/api/client" : "/api/client/servers/" + encodeURIComponent(connection.account)) + suffix);
+  for (const [key,value] of Object.entries(options.query ?? {})) url.searchParams.set(key,value);
   const address = await publicAddress(url.hostname);
-  const payload = body ? JSON.stringify(body) : undefined;
+  const payload = typeof body === "string" ? body : body === undefined ? undefined : JSON.stringify(body);
   return new Promise((resolve,reject) => {
-    const req = httpsRequest(url, { method: payload ? "POST" : "GET", family:4,
+    const req = httpsRequest(url, { method, family:4,
       lookup: (_hostname,_options,callback) => callback(null,address,4),
       headers: { Accept:"application/json", Authorization:"Bearer " + connection.apiKey,
-        "User-Agent":"Zo7alProjects/1.0 (zo7al.is-a.dev)", ...(payload ? { "Content-Type":"application/json", "Content-Length":Buffer.byteLength(payload) } : {}) },
+        "User-Agent":"Zo7alProjects/1.0 (zo7al.is-a.dev)", ...(payload !== undefined ? { "Content-Type":typeof body === "string" ? "text/plain; charset=utf-8" : "application/json", "Content-Length":Buffer.byteLength(payload) } : {}) },
     }, response => {
-      if (!response.statusCode || response.statusCode < 200 || response.statusCode >= 300) { response.resume(); reject(Error("PELICAN_UNAVAILABLE")); return; }
+      if (!response.statusCode || response.statusCode < 200 || response.statusCode >= 300) { response.resume(); reject(new PelicanError(response.statusCode ?? 502)); return; }
       const chunks: Buffer[] = []; let length = 0;
       response.on("data", chunk => { length += chunk.length; if (length > 2000000) { req.destroy(Error("UPSTREAM_LIMIT")); return; } chunks.push(chunk); });
       response.on("error",reject);
       response.on("end",() => {
-        try { resolve(response.statusCode === 204 ? null : JSON.parse(Buffer.concat(chunks).toString("utf8"))); }
+        try {
+          const content=Buffer.concat(chunks).toString("utf8");
+          resolve(options.response === "text" ? content : response.statusCode === 204 || !content ? null : JSON.parse(content));
+        }
         catch { reject(Error("INVALID_UPSTREAM")); }
       });
     });
-    const timer = setTimeout(() => req.destroy(Error("UPSTREAM_TIMEOUT")),7000);
+    const timer = setTimeout(() => req.destroy(Error("UPSTREAM_TIMEOUT")),30000);
     req.on("close",() => clearTimeout(timer));
     req.on("error",reject);
     req.end(payload);
   });
+}
+export async function pelicanOperation(connection: ConnectionInput, operation: PelicanOperation): Promise<unknown> {
+  if (operation.endpoint === "/files/pull") {
+    const source=new URL(String(object(operation.body).url));
+    await publicAddress(source.hostname);
+  }
+  const result=await pelicanRequest(connection,operation.endpoint,operation.body,operation);
+  if(operation.method==="GET"&&!operation.signed&&operation.response!=="text") {
+    const list=["/files/list","/backups","/schedules","/databases","/users","/network/allocations","/startup","/activity","/account/api-keys","/account/ssh-keys","/account/activity"];
+    if((list.includes(operation.endpoint)||(operation.client&&operation.endpoint===""))&&!Array.isArray(object(result).data))throw Error("INVALID_UPSTREAM");
+  }
+  if (operation.signed) {
+    const raw=object(object(result).attributes).url;
+    if (typeof raw !== "string" || raw.length > 32768) throw Error("INVALID_UPSTREAM");
+    const url=new URL(raw);
+    if (url.protocol !== "https:" || url.username || url.password || url.hash || (operation.signed === "upload" && url.pathname !== "/upload/file")) throw Error("INVALID_UPSTREAM");
+    await publicAddress(url.hostname);
+    return {url:url.href};
+  }
+  return result;
 }
 export async function pelicanServer(connection: ConnectionInput): Promise<PelicanServer> {
   const [server,stats] = await Promise.all([pelicanRequest(connection),pelicanRequest(connection,"/resources")]);

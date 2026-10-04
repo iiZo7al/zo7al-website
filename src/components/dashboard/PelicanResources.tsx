@@ -1,0 +1,43 @@
+"use client";
+import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
+import { Database, Archive, Network, Plus, Pencil, Lock, Unlock, Download, RotateCcw, Trash2, Star, Eye, EyeOff, KeyRound, ChevronLeft, ChevronRight } from "lucide-react";
+import { attributes, collection, object, string } from "@/lib/data/pelican-management";
+import { PelicanContent, PelicanEmpty, PelicanFeedback, PelicanForm, openPelicanDownload, usePelicanActions, usePelicanFormat, usePelicanResource, type OperationForm, type PelicanContext } from "./pelican-ui";
+
+export default function PelicanResources({resource,context}:{resource:"backups"|"databases"|"network";context:PelicanContext}) {
+  const p=useTranslations("pelican"),format=usePelicanFormat();
+  const [form,setForm]=useState<OperationForm|null>(null),[page,setPage]=useState(1),[passwordFor,setPasswordFor]=useState<number|null>(null),[reveal,setReveal]=useState(false);
+  const state=usePelicanResource(resource,context,{page:String(page),...(passwordFor!==null?{password:"true"}:{})}),actions=usePelicanActions(context,state.reload);
+  const rows=collection(state.data),pagination=object(object(object(state.data).meta).pagination),lastPage=typeof pagination.total_pages==="number"?pagination.total_pages:1;
+  const pending=resource==="backups"&&rows.some(row=>!row.completed_at);
+  const reload=state.reload;
+  useEffect(()=>{if(!pending)return;const interval=setInterval(()=>{if(document.visibilityState==="visible")void reload();},15000);return()=>clearInterval(interval);},[pending,reload]);
+  const openCreate=()=>setForm(resource==="backups"?{title:"createBackup",action:"backupCreate",fields:[{name:"name"},{name:"ignored",type:"textarea"},{name:"is_locked",label:"locked",type:"checkbox"}]}:resource==="databases"?{title:"createDatabase",action:"databaseCreate",fields:[{name:"database",required:true,min:3,max:48,dir:"ltr"},{name:"remote",required:true,dir:"ltr"}],initial:{remote:"%"}}:{title:"createAllocation",action:"networkCreate",fields:[],detail:p("allocationHint")});
+  return <PelicanContent resource={resource} context={context} state={state} actions={<button className="dash-button dash-button-primary" type="button" disabled={actions.busy||state.loading} onClick={openCreate}><Plus size={17}/>{p(resource==="backups"?"createBackup":resource==="databases"?"createDatabase":"createAllocation")}</button>}>
+    <PelicanFeedback message={actions.message}/><div className="pelican-resource-grid">{rows.map(row=>{
+      const id=resource==="backups"?row.uuid:row.id,name=string(row.name),host=object(row.host),password=attributes(object(row.relationships).password).password;
+      return <article className="dash-panel card-glow pelican-resource-card" key={String(id)}><div className="dash-section-heading"><span className="dash-item-icon">{resource==="backups"?<Archive size={22}/>:resource==="databases"?<Database size={22}/>:<Network size={22}/>}</span><span className="dash-tag">{resource==="backups"?p(row.is_successful?"completed":!row.completed_at?"pending":"failed"):resource==="network"&&row.is_default?p("primary"):"Pelican"}</span></div><h2 dir="auto">{resource==="network"?String(row.ip_alias||row.ip)+":"+String(row.port):name}</h2>
+      {resource==="backups"?<><p className="dash-help">{format.date(row.created_at)} · {format.bytes(row.bytes)}</p><p className="dash-help">{p("locked")}: {p(row.is_locked?"yes":"no")}</p>{Array.isArray(row.ignored_files)&&row.ignored_files.length>0&&<details className="pelican-info-details"><summary>{p("ignored")}</summary><pre>{row.ignored_files.map(String).join("\n")}</pre></details>}</>:resource==="databases"?<dl className="pelican-info-list"><div><dt>{p("host")}</dt><dd dir="ltr">{String(host.address??"—")}:{String(host.port??"—")}</dd></div><div><dt>{p("username")}</dt><dd dir="ltr">{string(row.username)}</dd></div><div><dt>{p("remote")}</dt><dd dir="ltr">{String(row.connections_from??"—")}</dd></div></dl>:<p className="dash-help" dir="auto">{string(row.notes)||p("noNotes")}</p>}
+      {resource==="databases"&&passwordFor===id&&<div className="pelican-password"><label>{p("password")}<input type={reveal?"text":"password"} value={string(password)} readOnly dir="ltr" aria-label={p("password")} autoComplete="off"/></label><button className="dash-icon-button" type="button" aria-label={p(reveal?"hide":"reveal")} onClick={()=>setReveal(current=>!current)}>{reveal?<EyeOff size={17}/>:<Eye size={17}/>}</button>{!password&&<span className="dash-help">{p("passwordUnavailable")}</span>}</div>}
+      <div className="dash-actions pelican-card-actions">
+      {resource==="backups"?<>
+        <button className="dash-icon-button" type="button" disabled={actions.busy||!row.is_successful} aria-label={p("download")} title={p("download")} onClick={async()=>{const result=await actions.run("backupDownload",{id});if(result)openPelicanDownload(result.data);}}><Download size={17}/></button>
+        <button className="dash-icon-button" type="button" disabled={actions.busy} aria-label={p("rename")} title={p("rename")} onClick={()=>setForm({title:"rename",action:"backupRename",initial:{id,name},fields:[{name:"name",required:true}]})}><Pencil size={17}/></button>
+        <button className="dash-icon-button" type="button" disabled={actions.busy} aria-label={p(row.is_locked?"unlock":"lock")} title={p(row.is_locked?"unlock":"lock")} onClick={()=>void actions.run("backupLock",{id})}>{row.is_locked?<Unlock size={17}/>:<Lock size={17}/>}</button>
+        <button className="dash-button" type="button" disabled={actions.busy||!row.is_successful} onClick={()=>setForm({title:"restore",action:"backupRestore",initial:{id,truncate:false},fields:[{name:"truncate",type:"checkbox"}],danger:"restoreWarning",detail:name})}><RotateCcw size={16}/>{p("restore")}</button>
+        <button className="dash-icon-button dash-danger" type="button" disabled={actions.busy||row.is_locked===true} aria-label={p("delete")} title={p("delete")} onClick={()=>setForm({title:"delete",action:"backupDelete",initial:{id},fields:[],danger:"deleteWarning",detail:name})}><Trash2 size={17}/></button>
+      </>:resource==="databases"?<>
+        <button className="dash-button" type="button" disabled={actions.busy} onClick={()=>{setPasswordFor(passwordFor===id?null:Number(id));setReveal(false);}}><KeyRound size={16}/>{p(passwordFor===id?"hidePassword":"viewPassword")}</button>
+        <button className="dash-icon-button" type="button" disabled={actions.busy} aria-label={p("rotatePassword")} title={p("rotatePassword")} onClick={()=>setForm({title:"rotatePassword",action:"databaseRotate",initial:{id},fields:[],danger:"rotateWarning",detail:name})}><RotateCcw size={17}/></button>
+        <button className="dash-icon-button dash-danger" type="button" disabled={actions.busy} aria-label={p("delete")} title={p("delete")} onClick={()=>setForm({title:"delete",action:"databaseDelete",initial:{id},fields:[],danger:"deleteDatabaseWarning",detail:name})}><Trash2 size={17}/></button>
+      </>:<>
+        <button className="dash-button" type="button" disabled={actions.busy||row.is_default===true} onClick={()=>setForm({title:"setPrimary",action:"networkPrimary",initial:{id},fields:[],danger:"primaryWarning",detail:String(row.ip)+":"+String(row.port)})}><Star size={16}/>{p("setPrimary")}</button>
+        <button className="dash-icon-button" type="button" disabled={actions.busy} aria-label={p("notes")} title={p("notes")} onClick={()=>setForm({title:"notes",action:"networkNotes",initial:{id,notes:row.notes},fields:[{name:"notes",type:"textarea",max:1000}]})}><Pencil size={17}/></button>
+        <button className="dash-icon-button dash-danger" type="button" disabled={actions.busy||row.is_default===true} aria-label={p("delete")} title={p("delete")} onClick={()=>setForm({title:"delete",action:"networkDelete",initial:{id},fields:[],danger:"allocationWarning",detail:String(row.ip)+":"+String(row.port)})}><Trash2 size={17}/></button>
+      </>}
+      </div></article>;
+    })}</div>{!rows.length&&<PelicanEmpty/>}{resource==="backups"&&lastPage>1&&<div className="dash-actions pelican-pagination"><button className="dash-button" disabled={page<=1||state.loading} onClick={()=>setPage(current=>current-1)}><ChevronLeft size={17}/>{p("previous")}</button><span>{page} / {lastPage}</span><button className="dash-button" disabled={page>=lastPage||state.loading} onClick={()=>setPage(current=>current+1)}>{p("next")}<ChevronRight size={17}/></button></div>}
+    {form&&<PelicanForm form={form} busy={actions.busy} run={actions.run} onClose={()=>setForm(null)}/>}
+  </PelicanContent>;
+}
