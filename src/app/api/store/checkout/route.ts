@@ -1,3 +1,4 @@
+import { createOrderReceipt } from "@/lib/server/site-content";
 import { isIP } from "node:net";
 import { getStoreCatalog, ownsStorePackage, tebexRequest, tebexToken, tebexPrivateKey, TebexConfigurationError, TebexRequestError } from "@/lib/server/tebex";
 import { parseCartItems, isCoinProduct, isRankProduct } from "@/lib/data/store-cart";
@@ -48,7 +49,8 @@ export async function POST(request: Request) {
       activePackageId = product!.id;
       await tebexRequest(`baskets/${encodeURIComponent(ident)}/packages`, { package_id: String(product!.id), quantity: items.find(item => item.packageId === product!.id)!.quantity });
     }
-    return Response.json({ ident }, { headers: { "Cache-Control": "no-store" } });
+    const tracking = await createOrderReceipt(ident, body.username.trim(), items, products.map(product=>({id:product!.id,name:product!.name}))).catch(() => null);
+    return Response.json({ ident, ...(tracking ? {tracking} : {}) }, { headers: { "Cache-Control": "no-store" } });
   } catch (error) {
     // Never expose upstream responses, usernames, basket identifiers or credentials.
     if (error instanceof TebexConfigurationError) return Response.json({ error: "CONFIGURATION" }, { status: 503 });

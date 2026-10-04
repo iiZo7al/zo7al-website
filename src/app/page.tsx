@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { HomeUpdates } from "@/components/hub/ContentFeed";
 import Hero from "@/components/home/Hero";
 import UniverseShowcase from "@/components/home/UniverseShowcase";
 import FaqSection from "@/components/faq/FaqSection";
@@ -14,6 +15,7 @@ export default function HomePage() {
     <main data-accent="home">
       <Hero />
       <UniverseShowcase />
+      <HomeUpdates />
       <FaqSection />
     </main>
   );

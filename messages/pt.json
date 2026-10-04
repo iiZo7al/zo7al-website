@@ -1,26 +1,84 @@
 {
-  "nav": { "home": "Início", "minecraft": "Minecraft", "modpacks": "Modpacks", "fortnite": "Fortnite", "socials": "Redes", "store": "Loja", "discord": "Discord" },
-  "common": { "viewProject": "Ver projeto", "viewProfile": "Ver perfil", "openStore": "Abrir loja", "copy": "Copiar", "copied": "Copiado", "all": "Todos", "downloads": "downloads" },
+  "nav": {
+    "home": "Início",
+    "minecraft": "Minecraft",
+    "modpacks": "Modpacks",
+    "fortnite": "Fortnite",
+    "socials": "Redes",
+    "store": "Loja",
+    "discord": "Discord"
+  },
+  "common": {
+    "viewProject": "Ver projeto",
+    "viewProfile": "Ver perfil",
+    "openStore": "Abrir loja",
+    "copy": "Copiar",
+    "copied": "Copiado",
+    "all": "Todos",
+    "downloads": "downloads"
+  },
   "home": {
-    "eyebrow": "@iiZo7al — Universo Gamer", "headline1": "CONSTRUA.", "headline2": "JOGUE.", "headline3": "CRIE.",
-    "subtitle": "Servidores de Minecraft, mapas de Fortnite, modpacks e projetos gamer de Zo7al.", "ctaExplore": "Explorar ZO7AL", "ctaViewProjects": "Ver projetos", "scroll": "Rolar",
-    "universeEyebrow": "Os projetos", "universeTitle": "O universo ZO7AL", "universeText": "Explore os mundos, projetos e experiências criados por Zo7al.",
-    "minecraftMeta1": "MINECRAFT", "minecraftMeta2": "JAVA + BEDROCK", "minecraftTitle": "REDE ZO7AL", "minecraftText": "Uma rede de Minecraft feita para jogadores.", "minecraftCta": "Explorar rede",
-    "modpacksMeta1": "MODPACKS", "modpacksMeta2": "MODRINTH + CURSEFORGE", "modpacksTitle": "MODPACKS DE MINECRAFT", "modpacksText": "Experiências de Minecraft criadas e selecionadas por Zo7al.", "modpacksCta": "Ver modpacks",
-    "fortniteMeta1": "FORTNITE", "fortniteMeta2": "CRIATIVO", "fortniteTitle": "FORTNITE CRIATIVO", "fortniteText": "Mapas e experiências criados por Zo7al.", "fortniteCta": "Explorar mapas",
-    "aboutEyebrow": "Quem é Zo7al?", "aboutText": "Khaled, conhecido como Zo7al, é youtuber e criador de conteúdo de Fortnite, Minecraft e outros jogos, com desafios e momentos engraçados com amigos."
+    "eyebrow": "@iiZo7al — Universo Gamer",
+    "headline1": "CONSTRUA.",
+    "headline2": "JOGUE.",
+    "headline3": "CRIE.",
+    "subtitle": "Servidores de Minecraft, mapas de Fortnite, modpacks e projetos gamer de Zo7al.",
+    "ctaExplore": "Explorar ZO7AL",
+    "ctaViewProjects": "Ver projetos",
+    "scroll": "Rolar",
+    "universeEyebrow": "Os projetos",
+    "universeTitle": "O universo ZO7AL",
+    "universeText": "Explore os mundos, projetos e experiências criados por Zo7al.",
+    "minecraftMeta1": "MINECRAFT",
+    "minecraftMeta2": "JAVA + BEDROCK",
+    "minecraftTitle": "REDE ZO7AL",
+    "minecraftText": "Uma rede de Minecraft feita para jogadores.",
+    "minecraftCta": "Explorar rede",
+    "modpacksMeta1": "MODPACKS",
+    "modpacksMeta2": "MODRINTH + CURSEFORGE",
+    "modpacksTitle": "MODPACKS DE MINECRAFT",
+    "modpacksText": "Experiências de Minecraft criadas e selecionadas por Zo7al.",
+    "modpacksCta": "Ver modpacks",
+    "fortniteMeta1": "FORTNITE",
+    "fortniteMeta2": "CRIATIVO",
+    "fortniteTitle": "FORTNITE CRIATIVO",
+    "fortniteText": "Mapas e experiências criados por Zo7al.",
+    "fortniteCta": "Explorar mapas",
+    "aboutEyebrow": "Quem é Zo7al?",
+    "aboutText": "Khaled, conhecido como Zo7al, é youtuber e criador de conteúdo de Fortnite, Minecraft e outros jogos, com desafios e momentos engraçados com amigos."
   },
   "minecraft": {
     "copyPort": "Copiar porta",
     "bedrockPort": "Porta Bedrock",
-    "eyebrow": "Minecraft", "title": "REDE ZO7AL", "text": "Sua próxima aventura no Minecraft começa aqui.", "openStore": "Abrir loja",
-    "connectEyebrow": "Conexão", "connectTitle": "Entre em segundos", "connectText": "Java e Bedrock, uma só rede.",
-    "compatEyebrow": "Compatibilidade", "compatTitle": "Versões suportadas", "gameplayEyebrow": "Modos de jogo", "gameplayTitle": "Modos",
-    "supportEyebrow": "Apoie a rede", "supportTitle": "APOIE O ZO7AL", "supportText": "Apoie a rede e conheça a loja oficial do Zo7al.",
-    "javaLabel": "IP de Java", "bedrockLabel": "Endereço Bedrock", "bedrockNote": "Bedrock: zo7al.play-mc.fun — porta 25807.",
-    "copyJava": "Copiar IP de Java", "copyBedrock": "Copiar endereço Bedrock", "checkingStatus": "Verificando status…", "readyToPlay": "Rede ZO7AL — Pronta para jogar",
-    "online": "Online", "offline": "Offline", "players": "Jogadores", "version": "Versão", "address": "Endereço",
-    "statusUnavailable": "O status ao vivo não está disponível agora — conecte-se usando o endereço abaixo.", "modeLive": "Ativo", "modeSoon": "Em breve",
+    "eyebrow": "Minecraft",
+    "title": "REDE ZO7AL",
+    "text": "Sua próxima aventura no Minecraft começa aqui.",
+    "openStore": "Abrir loja",
+    "connectEyebrow": "Conexão",
+    "connectTitle": "Entre em segundos",
+    "connectText": "Java e Bedrock, uma só rede.",
+    "compatEyebrow": "Compatibilidade",
+    "compatTitle": "Versões suportadas",
+    "gameplayEyebrow": "Modos de jogo",
+    "gameplayTitle": "Modos",
+    "supportEyebrow": "Apoie a rede",
+    "supportTitle": "APOIE O ZO7AL",
+    "supportText": "Apoie a rede e conheça a loja oficial do Zo7al.",
+    "javaLabel": "IP de Java",
+    "bedrockLabel": "Endereço Bedrock",
+    "bedrockNote": "Bedrock: zo7al.play-mc.fun — porta 25807.",
+    "copyJava": "Copiar IP de Java",
+    "copyBedrock": "Copiar endereço Bedrock",
+    "checkingStatus": "Verificando status…",
+    "readyToPlay": "Rede ZO7AL — Pronta para jogar",
+    "online": "Online",
+    "offline": "Offline",
+    "players": "Jogadores",
+    "version": "Versão",
+    "address": "Endereço",
+    "statusUnavailable": "O status ao vivo não está disponível agora — conecte-se usando o endereço abaixo.",
+    "modeLive": "Ativo",
+    "modeSoon": "Em breve",
     "sharedAddress": "Java e Bedrock · IP",
     "portLabel": "Porta",
     "javaTutorial": "Como entrar — Java",
@@ -30,9 +88,17 @@
     "bedrockPortNotice": "Use a porta atual do Bedrock: {port}. O vídeo mostra outra porta."
   },
   "modpacks": {
-    "eyebrow": "Modpacks", "title": "MINECRAFT, REINVENTADO.", "text": "Explore os projetos de Minecraft criados por Zo7al.",
-    "modrinthEyebrow": "Modrinth", "modrinthTitle": "Lançamentos no Modrinth", "modrinthLabel": "Modrinth", "modrinthLiveLabel": "Ao vivo do Modrinth",
-    "curseforgeEyebrow": "CurseForge", "curseforgeTitle": "Lançamentos no CurseForge", "curseforgeLabel": "Ao vivo do CURSEFORGE", "curseforgeLiveLabel": "Ao vivo do CURSEFORGE",
+    "eyebrow": "Modpacks",
+    "title": "MINECRAFT, REINVENTADO.",
+    "text": "Explore os projetos de Minecraft criados por Zo7al.",
+    "modrinthEyebrow": "Modrinth",
+    "modrinthTitle": "Lançamentos no Modrinth",
+    "modrinthLabel": "Modrinth",
+    "modrinthLiveLabel": "Ao vivo do Modrinth",
+    "curseforgeEyebrow": "CurseForge",
+    "curseforgeTitle": "Lançamentos no CurseForge",
+    "curseforgeLabel": "Ao vivo do CURSEFORGE",
+    "curseforgeLiveLabel": "Ao vivo do CURSEFORGE",
     "gameVersions": "Versões do Minecraft",
     "loaders": "Carregadores de mods",
     "updated": "Última atualização",
@@ -52,10 +118,17 @@
     "tags": "Tags",
     "detailsUnavailable": "Não foi possível carregar os detalhes do mapa. Veja-os no Fortnite.",
     "viewOnFortnite": "Ver no Fortnite",
-
-    "eyebrow": "Fortnite Criativo", "title": "FORTNITE CRIATIVO", "text": "Mapas e experiências criados por Zo7al.", "creatorPage": "Página de criador",
-    "islandsEyebrow": "Ilhas", "islandsTitle": "Todos os mapas, em um só lugar", "islandsLabel": "Ilhas", "islandsLiveLabel": "Sincronizado ao vivo com Fortnite.com",
-    "copyCode": "Copiar código", "copied": "Copiado", "byZo7al": "por Zo7al",
+    "eyebrow": "Fortnite Criativo",
+    "title": "FORTNITE CRIATIVO",
+    "text": "Mapas e experiências criados por Zo7al.",
+    "creatorPage": "Página de criador",
+    "islandsEyebrow": "Ilhas",
+    "islandsTitle": "Todos os mapas, em um só lugar",
+    "islandsLabel": "Ilhas",
+    "islandsLiveLabel": "Sincronizado ao vivo com Fortnite.com",
+    "copyCode": "Copiar código",
+    "copied": "Copiado",
+    "byZo7al": "por Zo7al",
     "descriptions": {
       "0633-4212-9611": "🧡🌹 Deixe um like e adicione aos favoritos para me apoiar\n🔫 Todos os rifles de precisão\n💥 Ação rápida\n🎮 Primeira pessoa\n✨ Sistema de ranques\n😎 Criado no UEFN",
       "3325-4001-0926": "🧡🌹 Deixe um like e adicione aos favoritos para me apoiar\n🏆 Zone Wars PvP para 16 jogadores\n🔫 Escolha suas armas favoritas\n🎁 Gire a roda da fortuna\n✏️ Melhore suas construções\n📝 Pratique e treine\n✨ Sistema de ranques\n⭐ Nomes dos jogadores visíveis\n🤩 Diversão e itens sem fim\n💪 Treine sua mira\n💥 Ação rápida\n😎 Criado no UEFN",
@@ -71,8 +144,12 @@
     }
   },
   "socials": {
-    "eyebrow": "Comunidade", "title": "SIGA A JORNADA.", "text": "Todas as plataformas, em um só lugar.", "label": "Redes sociais",
-    "liveLabel": "Sincronizado ao vivo com Linktree", "viewOnLinktree": "Ver no Linktree",
+    "eyebrow": "Comunidade",
+    "title": "SIGA A JORNADA.",
+    "text": "Todas as plataformas, em um só lugar.",
+    "label": "Redes sociais",
+    "liveLabel": "Sincronizado ao vivo com Linktree",
+    "viewOnLinktree": "Ver no Linktree",
     "gamesEyebrow": "Nossas contas de jogos",
     "gamesText": "Minhas contas de mapas de Fortnite e Roblox e anúncios de projetos de jogos. Os links são sincronizados com o Linktree.",
     "preview": "Prévia do perfil",
@@ -110,15 +187,21 @@
     "productsTitle": "Produtos",
     "catalogTitle": "Catálogo da loja",
     "browseProducts": "Ver produtos",
-
     "manageSubscriptions": "Você pode consultar ou cancelar suas assinaturas aqui.",
     "monthly": "mês",
     "boosterPrice": "A partir de 4.99+",
     "details": "Detalhes",
     "descriptionUnavailable": "A descrição está indisponível. Tente novamente mais tarde.",
-    "eyebrow": "Minecraft", "title": "Loja Zo7al Network", "text": "Apoie a rede e conheça a loja oficial do Zo7al.",
-    "ranksEyebrow": "Ranks", "ranksTitle": "Ranks do servidor", "ranksText": "Preços e benefícios conforme listados na loja oficial da Tebex.",
-    "getRank": "Obter", "mostPopular": "Mais popular", "allPurchases": "Todas as compras são processadas com segurança pela Tebex, a loja oficial do Zo7al.", "visitStore": "Visitar zo7al.tebex.io",
+    "eyebrow": "Minecraft",
+    "title": "Loja Zo7al Network",
+    "text": "Apoie a rede e conheça a loja oficial do Zo7al.",
+    "ranksEyebrow": "Ranks",
+    "ranksTitle": "Ranks do servidor",
+    "ranksText": "Preços e benefícios conforme listados na loja oficial da Tebex.",
+    "getRank": "Obter",
+    "mostPopular": "Mais popular",
+    "allPurchases": "Todas as compras são processadas com segurança pela Tebex, a loja oficial do Zo7al.",
+    "visitStore": "Visitar zo7al.tebex.io",
     "checkoutUnavailable": "O pagamento está temporariamente indisponível. Tente novamente mais tarde.",
     "pricePending": "Preço disponível quando o pagamento estiver ativo",
     "checkoutTitle": "Finalizar compra",
@@ -145,38 +228,136 @@
     "checkoutNote": "Os impostos finais, a moeda e as formas de pagamento são mostrados na finalização."
   },
   "faq": {
-    "eyebrow": "Precisa de ajuda?", "title": "Perguntas frequentes", "text": "Conheça Zo7al, seus vídeos e redes sociais, além do servidor, da loja e dos projetos de jogos.",
-    "searchPlaceholder": "Buscar uma pergunta…", "noResults": "Nenhuma pergunta corresponde à sua busca.",
-    "categories": { "gettingStarted": "Primeiros passos", "storeRanks": "Loja e ranks", "fortnite": "Fortnite", "community": "Comunidade", "modpacks": "Modpacks" },
+    "eyebrow": "Precisa de ajuda?",
+    "title": "Perguntas frequentes",
+    "text": "Conheça Zo7al, seus vídeos e redes sociais, além do servidor, da loja e dos projetos de jogos.",
+    "searchPlaceholder": "Buscar uma pergunta…",
+    "noResults": "Nenhuma pergunta corresponde à sua busca.",
+    "categories": {
+      "gettingStarted": "Primeiros passos",
+      "storeRanks": "Loja e ranks",
+      "fortnite": "Fortnite",
+      "community": "Comunidade",
+      "modpacks": "Modpacks"
+    },
     "items": [
-      { "category": "gettingStarted", "q": "O que é a ZO7AL Network?", "a": "Um servidor de Minecraft e universo gamer criado por Zo7al, com survival, PvP, modpacks e mapas de Fortnite Criativo." },
-      { "category": "gettingStarted", "q": "Como entro na Zo7al Network no Java?", "a": "Copie o endereço Java, zo7al.play-mc.fun, na página do Minecraft e adicione-o como servidor no menu multiplayer do Minecraft Java." },
-      { "category": "gettingStarted", "q": "Como entro na Zo7al Network no Bedrock?", "a": "Adicione um servidor no Minecraft Bedrock com o endereço zo7al.play-mc.fun e a porta 25807." },
-      { "category": "gettingStarted", "q": "O Bedrock é suportado?", "a": "Sim. Bedrock: zo7al.play-mc.fun — porta 25807." },
-      { "category": "gettingStarted", "q": "Quais versões do Minecraft são suportadas?", "a": "1.8.9 para PvP clássico, 1.20.x para survival estável e 1.21.x para a versão mais recente." },
-      { "category": "gettingStarted", "q": "Que tipo de vídeos você faz?", "a": "Vídeos de jogos e Shorts: Fortnite, Minecraft e outros jogos, desafios, momentos engraçados e partidas com amigos. Meu canal no YouTube é @iiZo7al." },
-      { "category": "storeRanks", "q": "Como compro um rank?", "a": "Abra /store, escolha um rank, informe seu nome no Minecraft e pague com segurança pelo Tebex. Booster é obtido ao impulsionar nosso servidor Discord." },
-      { "category": "storeRanks", "q": "Quais ranks estão disponíveis?", "a": "Os cargos pagos são VIP, MVP, MVP+ e MVP++. Booster é obtido impulsionando o servidor do Discord. YOUTUBE, TWITCH e TIKTOK estão disponíveis por candidatura e análise, não por compra. Consulte /store para detalhes, preços e candidaturas. Coins são moeda do jogo, não cargos." },
-      { "category": "storeRanks", "q": "Onde fica a loja da Zo7al Network?", "a": "Abra a loja em /store. Os pagamentos são processados pelo Tebex; consulte ou cancele assinaturas em portal.tebex.io." },
-      {"category": "storeRanks", "q": "Como compro Coins? Posso comprar novamente?", "a": "Abra /store e escolha um pacote de Coins. Digite seu nome exato do Minecraft e pague pelo Tebex. Os detalhes mostram a quantidade e os bônus. Coins são a moeda do servidor, separada dos ranks, e podem ser compradas várias vezes. Se a entrega atrasar, contate o suporte no Discord com a referência da transação."},
-      { "category": "fortnite", "q": "Como entro em um mapa do Zo7al no Fortnite?", "a": "Abra o Fortnite, vá em Criativo, selecione \"Inserir um código\" e digite o código da ilha exibido em qualquer mapa na página do Fortnite." },
-      { "category": "fortnite", "q": "Onde encontro todos os mapas do Zo7al?", "a": "A página do Fortnite lista todas as ilhas publicadas com seus códigos, sincronizada com a página oficial de criador." },
-      { "category": "community", "q": "Qual é o servidor oficial do Discord do Zo7al?", "a": "discord.gg/nxScVYrSXq — o ponto de encontro para eventos, suporte e novidades da comunidade." },
-      { "category": "community", "q": "Onde encontro as redes sociais do Zo7al?", "a": "Encontre meu canal no YouTube @iiZo7al e minhas outras contas na página de redes sociais. Os links são sincronizados com meu Linktree oficial." },
-      { "category": "community", "q": "Como reporto um problema?", "a": "Entre no servidor do Discord e abra um ticket no canal de suporte — é a forma mais rápida de falar com a equipe." },
-      { "category": "community", "q": "Como entro em contato com o Zo7al?", "a": "Para publicidade e parcerias: ads@zo7al.net. Para suporte do servidor ou compras, entre no Discord pela página de redes sociais." },
-      { "category": "modpacks", "q": "Onde baixo os modpacks do Zo7al?", "a": "No Modrinth e no CurseForge — ambos com links diretos na página de Modpacks." },
-      {"category": "community", "q": "Como vejo o conteúdo recente das contas do Zo7al?", "a": "Abra /socials e selecione o ícone de detalhes de qualquer conta, incluindo Zo7al Games. A prévia mostra a biografia e o conteúdo público disponível de cada plataforma, como vídeos longos do YouTube, publicações, transmissões salvas da Twitch ou versões de modpacks."},
-      {"category": "community", "q": "Por que algumas prévias ficam indisponíveis?", "a": "Algumas plataformas limitam prévias públicas, exigem uma conexão API ou não têm conteúdo público. Abra a conta original pelo link na prévia. Uma prévia indisponível não significa que a conta foi excluída."},
-      {"category": "storeRanks", "q": "Como solicitar um cargo de criador?", "a": "Em /store, abaixo de Coins, escolha YouTube, Twitch ou TikTok. Envie e-mail, nomes do Minecraft e Discord, link e detalhes do conteúdo. A equipe analisa a candidatura; o cargo não é concedido automaticamente."},
-      {"category": "storeRanks", "q": "Os cargos de criadores são pagos?", "a": "A candidatura não exige pagamento e é independente dos cargos comprados e Coins. A equipe decide a elegibilidade e aprovação. Não há promessa de limite de seguidores ou prazo fixo."}
+      {
+        "category": "gettingStarted",
+        "q": "O que é a ZO7AL Network?",
+        "a": "Um servidor de Minecraft e universo gamer criado por Zo7al, com survival, PvP, modpacks e mapas de Fortnite Criativo."
+      },
+      {
+        "category": "gettingStarted",
+        "q": "Como entro na Zo7al Network no Java?",
+        "a": "Copie o endereço Java, zo7al.play-mc.fun, na página do Minecraft e adicione-o como servidor no menu multiplayer do Minecraft Java."
+      },
+      {
+        "category": "gettingStarted",
+        "q": "Como entro na Zo7al Network no Bedrock?",
+        "a": "Adicione um servidor no Minecraft Bedrock com o endereço zo7al.play-mc.fun e a porta 25807."
+      },
+      {
+        "category": "gettingStarted",
+        "q": "O Bedrock é suportado?",
+        "a": "Sim. Bedrock: zo7al.play-mc.fun — porta 25807."
+      },
+      {
+        "category": "gettingStarted",
+        "q": "Quais versões do Minecraft são suportadas?",
+        "a": "1.8.9 para PvP clássico, 1.20.x para survival estável e 1.21.x para a versão mais recente."
+      },
+      {
+        "category": "gettingStarted",
+        "q": "Que tipo de vídeos você faz?",
+        "a": "Vídeos de jogos e Shorts: Fortnite, Minecraft e outros jogos, desafios, momentos engraçados e partidas com amigos. Meu canal no YouTube é @iiZo7al."
+      },
+      {
+        "category": "storeRanks",
+        "q": "Como compro um rank?",
+        "a": "Abra /store, escolha um rank, informe seu nome no Minecraft e pague com segurança pelo Tebex. Booster é obtido ao impulsionar nosso servidor Discord."
+      },
+      {
+        "category": "storeRanks",
+        "q": "Quais ranks estão disponíveis?",
+        "a": "Os cargos pagos são VIP, MVP, MVP+ e MVP++. Booster é obtido impulsionando o servidor do Discord. YOUTUBE, TWITCH e TIKTOK estão disponíveis por candidatura e análise, não por compra. Consulte /store para detalhes, preços e candidaturas. Coins são moeda do jogo, não cargos."
+      },
+      {
+        "category": "storeRanks",
+        "q": "Onde fica a loja da Zo7al Network?",
+        "a": "Abra a loja em /store. Os pagamentos são processados pelo Tebex; consulte ou cancele assinaturas em portal.tebex.io."
+      },
+      {
+        "category": "storeRanks",
+        "q": "Como compro Coins? Posso comprar novamente?",
+        "a": "Abra /store e escolha um pacote de Coins. Digite seu nome exato do Minecraft e pague pelo Tebex. Os detalhes mostram a quantidade e os bônus. Coins são a moeda do servidor, separada dos ranks, e podem ser compradas várias vezes. Se a entrega atrasar, contate o suporte no Discord com a referência da transação."
+      },
+      {
+        "category": "fortnite",
+        "q": "Como entro em um mapa do Zo7al no Fortnite?",
+        "a": "Abra o Fortnite, vá em Criativo, selecione \"Inserir um código\" e digite o código da ilha exibido em qualquer mapa na página do Fortnite."
+      },
+      {
+        "category": "fortnite",
+        "q": "Onde encontro todos os mapas do Zo7al?",
+        "a": "A página do Fortnite lista todas as ilhas publicadas com seus códigos, sincronizada com a página oficial de criador."
+      },
+      {
+        "category": "community",
+        "q": "Qual é o servidor oficial do Discord do Zo7al?",
+        "a": "discord.gg/nxScVYrSXq — o ponto de encontro para eventos, suporte e novidades da comunidade."
+      },
+      {
+        "category": "community",
+        "q": "Onde encontro as redes sociais do Zo7al?",
+        "a": "Encontre meu canal no YouTube @iiZo7al e minhas outras contas na página de redes sociais. Os links são sincronizados com meu Linktree oficial."
+      },
+      {
+        "category": "community",
+        "q": "Como reporto um problema?",
+        "a": "Entre no servidor do Discord e abra um ticket no canal de suporte — é a forma mais rápida de falar com a equipe."
+      },
+      {
+        "category": "community",
+        "q": "Como entro em contato com o Zo7al?",
+        "a": "Para publicidade e parcerias: ads@zo7al.net. Para suporte do servidor ou compras, entre no Discord pela página de redes sociais."
+      },
+      {
+        "category": "modpacks",
+        "q": "Onde baixo os modpacks do Zo7al?",
+        "a": "No Modrinth e no CurseForge — ambos com links diretos na página de Modpacks."
+      },
+      {
+        "category": "community",
+        "q": "Como vejo o conteúdo recente das contas do Zo7al?",
+        "a": "Abra /socials e selecione o ícone de detalhes de qualquer conta, incluindo Zo7al Games. A prévia mostra a biografia e o conteúdo público disponível de cada plataforma, como vídeos longos do YouTube, publicações, transmissões salvas da Twitch ou versões de modpacks."
+      },
+      {
+        "category": "community",
+        "q": "Por que algumas prévias ficam indisponíveis?",
+        "a": "Algumas plataformas limitam prévias públicas, exigem uma conexão API ou não têm conteúdo público. Abra a conta original pelo link na prévia. Uma prévia indisponível não significa que a conta foi excluída."
+      },
+      {
+        "category": "storeRanks",
+        "q": "Como solicitar um cargo de criador?",
+        "a": "Em /store, abaixo de Coins, escolha YouTube, Twitch ou TikTok. Envie e-mail, nomes do Minecraft e Discord, link e detalhes do conteúdo. A equipe analisa a candidatura; o cargo não é concedido automaticamente."
+      },
+      {
+        "category": "storeRanks",
+        "q": "Os cargos de criadores são pagos?",
+        "a": "A candidatura não exige pagamento e é independente dos cargos comprados e Coins. A equipe decide a elegibilidade e aprovação. Não há promessa de limite de seguidores ou prazo fixo."
+      }
     ]
   },
   "footer": {
-    "tagline": "Criador gamer. Construtor de redes de Minecraft. Criador de Fortnite.", "siteLabel": "Site", "platformsLabel": "Plataformas",
-    "copyright": "Zo7al. Todos os direitos reservados.", "disclaimer": "Não é um serviço oficial da Minecraft, Epic Games ou Fortnite."
+    "tagline": "Criador gamer. Construtor de redes de Minecraft. Criador de Fortnite.",
+    "siteLabel": "Site",
+    "platformsLabel": "Plataformas",
+    "copyright": "Zo7al. Todos os direitos reservados.",
+    "disclaimer": "Não é um serviço oficial da Minecraft, Epic Games ou Fortnite."
   },
-  "language": { "label": "Idioma" },
+  "language": {
+    "label": "Idioma"
+  },
   "game": {
     "version": "Versão {version}",
     "pointerHelp": "WASD / setas · mova o mouse para pilotar",
@@ -227,7 +408,19 @@
     "refresh": "Atualizar",
     "globalUnavailable": "Este voo não pode entrar na classificação enquanto o serviço estiver indisponível.",
     "audioHelp": "Ative ou desative música e efeitos separadamente.",
-    "enter": "Entrar"
+    "enter": "Entrar",
+    "dailyChallenge": "Desafio diário",
+    "challengeScore": "Alcance {count} pontos",
+    "challengeStars": "Colete {count} estrelas",
+    "achievements": "Conquistas",
+    "achievement_firstFlight": "Primeiro voo verificado",
+    "achievement_score10000": "10.000 pontos",
+    "achievement_stars10": "10 estrelas",
+    "achievement_score100000": "100.000 pontos",
+    "achievementHelp": "As medalhas são salvas neste dispositivo após uma partida verificada. O progresso diário é do voo atual.",
+    "allTime": "Geral",
+    "weekly": "Esta semana",
+    "weeklyPeriod": "Segunda–domingo, horário de Riade"
   },
   "ui": {
     "social_epicgames": "Novidades dos meus mapas de Fortnite, além de suas sugestões e relatos de bugs.",
@@ -306,8 +499,7 @@
     "home": "Ir ao início",
     "explore": "Explorar",
     "direction": "ltr"
-  }
-,
+  },
   "storeDescription": {
     "coinsHeading": "🪙 {count} moedas – Zo7al Network",
     "coinsIntro": "Ao comprar este pacote, você recebe {count} moedas diretamente na sua conta de Minecraft.",
@@ -323,7 +515,6 @@
     "coinsLinked": "As moedas ficam vinculadas ao nome de Minecraft informado no pagamento",
     "coinsDelivery": "As moedas são entregues automaticamente em 1–5 minutos após o pagamento.",
     "coinsDeliveryHelp": "Se suas moedas não chegarem em 10–15 minutos, entre novamente ou contate o suporte com o número do pedido.",
-
     "vipAndMvp": "VIP e MVP",
     "title": "Rank {rank} – Zo7al Network",
     "upgrade": "Upgrade {rank} – Zo7al Network",
@@ -367,7 +558,7 @@
     "boostDuration": "Duração: enquanto pelo menos um impulso do Discord permanecer ativo.",
     "boostPrice": "Preço: um ou mais impulsos de servidor do Discord.",
     "boostEnd": "Se todos os impulsos expirarem ou forem removidos, o rank Booster e seus benefícios também serão removidos."
-},
+  },
   "creators": {
     "title": "Cargos de criadores",
     "intro": "Candidate-se a um cargo de YouTube, Twitch ou TikTok. Conte-nos sobre seu canal e conteúdo de Minecraft.",
@@ -397,5 +588,160 @@
       "tiktok": "O cargo TIKTOK é voltado a criadores de Minecraft no TikTok. Apresente seu perfil e estilo de vídeos curtos, como momentos divertidos, dicas e desafios. Inclua seguidores, frequência de postagem e como compartilharia sua experiência na Zo7al Network."
     },
     "applicationDetails": "Abra o formulário e informe um e-mail acessível, seus nomes no Minecraft e Discord e o perfil da plataforma escolhida. Descreva seu conteúdo e motivação com dados corretos. Com seu consentimento, a candidatura é enviada à equipe Zo7al pelo Discord. Guarde a referência após a confirmação de entrega. Candidatar-se não é comprar nem receber um cargo automaticamente: a equipe decide a elegibilidade e aprovação, sem prazo ou benefícios adicionais garantidos."
+  },
+  "hub": {
+    "latest": "Novidades do Zo7al",
+    "news": "Notícias",
+    "events": "Eventos",
+    "player": "Perfil do jogador",
+    "orders": "Meus pedidos",
+    "applications": "Inscrições de criadores",
+    "support": "Central de ajuda",
+    "rules": "Regras da rede",
+    "registrations": "Inscrições em eventos",
+    "newsIntro": "Notícias da rede, atualizações de mapas e lançamentos de modpacks.",
+    "eventsIntro": "Próximos eventos e torneios da comunidade.",
+    "playerIntro": "Seu personagem do Minecraft, rank atual e estatísticas do servidor.",
+    "ordersIntro": "Acompanhe o pagamento e a entrega com o comprovante privado do pedido.",
+    "applicationsIntro": "Acompanhe sua inscrição de criador e a análise da equipe.",
+    "supportIntro": "Encontre respostas ou envie um relato à equipe do Zo7al Network.",
+    "newsEmpty": "Ainda não há notícias publicadas.",
+    "eventsEmpty": "Ainda não há eventos agendados. Volte para conferir o próximo anúncio.",
+    "rulesEmpty": "A equipe ainda não publicou as regras da rede aqui.",
+    "latestVideo": "Vídeo mais recente",
+    "watch": "Assistir ao vídeo",
+    "search": "Busca rápida",
+    "searchPlaceholder": "Busque páginas, mapas, modpacks e perguntas…",
+    "noResults": "Nenhum resultado encontrado.",
+    "commonErrorsTitle": "Erros comuns",
+    "connection": "Conexão",
+    "store": "Loja",
+    "modpacks": "Modpacks",
+    "riyadhTime": "Horário de Riade",
+    "eventStarted": "O evento começou.",
+    "countdown": "{days} d · {hours} h · {minutes} min · {seconds} s",
+    "register": "Inscrever-se",
+    "eventLink": "Link do evento",
+    "received": "Recebemos sua solicitação",
+    "receiptHelp": "Guarde a referência e o código de acesso privado. Eles ficam salvos neste navegador para acompanhar sua solicitação.",
+    "reference": "Referência",
+    "accessCode": "Código de acesso privado",
+    "track": "Acompanhar solicitação",
+    "trackingHelp": "Digite sua referência e seu código de acesso privado ou escolha uma solicitação salva.",
+    "savedRequests": "Salvas neste dispositivo",
+    "noSavedRequests": "Não há solicitações salvas neste navegador.",
+    "notFound": "Solicitação não encontrada. Confira a referência e o código de acesso.",
+    "consent": "Concordo em compartilhar estas informações com a equipe do Zo7al Network pelo Discord.",
+    "webhookNote": "Sua solicitação é enviada à equipe no Discord.",
+    "loading": "Carregando…",
+    "sending": "Enviando…",
+    "unavailable": "Este serviço está temporariamente indisponível. Tente novamente mais tarde.",
+    "rateLimit": "Muitas tentativas. Tente novamente em 15 minutos.",
+    "status": "Status",
+    "status_pending": "Em análise",
+    "status_accepted": "Aceita",
+    "status_rejected": "Recusada",
+    "status_open": "Aberta",
+    "status_reviewing": "Em atendimento",
+    "status_closed": "Encerrada",
+    "status_unknown": "Não confirmado",
+    "status_paid": "Pagamento confirmado",
+    "status_awaitingPayment": "Aguardando pagamento",
+    "delivery": "Entrega no jogo",
+    "delivery_unknown": "O servidor ainda não confirmou a entrega.",
+    "delivery_pending": "Aguardando entrega",
+    "delivery_delivered": "Entregue",
+    "paymentDeliveryNote": "A confirmação do pagamento e a entrega no jogo são acompanhadas separadamente.",
+    "orderSupport": "Obter ajuda com este pedido",
+    "subscriptions": "Gerenciar assinaturas",
+    "profileHelp": "Digite um nome de usuário do Minecraft para ver seu perfil público no servidor.",
+    "viewProfile": "Ver perfil",
+    "online": "Online",
+    "offline": "Offline",
+    "profileUnknown": "Os dados atuais do perfil no servidor não estão disponíveis.",
+    "lastSeen": "Visto por último",
+    "stat_kills": "Eliminações",
+    "stat_deaths": "Mortes",
+    "stat_wins": "Vitórias",
+    "stat_playtimeSeconds": "Horas jogadas",
+    "report": "Enviar relato",
+    "reportType": "Tipo de relato",
+    "report_technical": "Problema técnico",
+    "report_player": "Denunciar jogador",
+    "report_order": "Problema com pedido",
+    "orderReference": "Referência do pedido, se aplicável",
+    "subject": "Assunto",
+    "message": "Detalhes",
+    "send": "Enviar",
+    "admin": "Administração do Zo7al",
+    "password": "Senha",
+    "login": "Entrar",
+    "logout": "Sair",
+    "adminUnavailable": "A administração ainda não foi ativada.",
+    "invalidPassword": "A senha está incorreta.",
+    "sessionExpired": "Sua sessão expirou. Entre novamente.",
+    "refresh": "Atualizar",
+    "saved": "Salvo",
+    "save": "Salvar",
+    "edit": "Editar",
+    "delete": "Excluir",
+    "create": "Criar novo",
+    "title": "Título",
+    "body": "Conteúdo",
+    "language": "Idioma",
+    "published": "Publicado",
+    "draft": "Rascunho",
+    "startsAt": "Data e hora de início",
+    "publicNote": "Observação visível ao solicitante",
+    "discordDelivered": "Recebido no Discord",
+    "discordPending": "Notificação do Discord pendente",
+    "retryDiscord": "Reenviar notificação ao Discord",
+    "empty": "Ainda não há registros.",
+    "favoritesOnly": "Somente favoritos",
+    "favoritesEmpty": "Você ainda não salvou favoritos aqui.",
+    "addFavorite": "Adicionar aos favoritos",
+    "removeFavorite": "Remover dos favoritos",
+    "share": "Copiar link para compartilhar",
+    "players": "Jogadores",
+    "installation": "Guia de instalação",
+    "installLauncher": "Instale um launcher compatível com projetos do {source}.",
+    "installProject": "Abra a página oficial do projeto e escolha uma versão publicada.",
+    "installVersion": "Use a versão do Minecraft e o carregador indicados nos detalhes. Siga os requisitos de RAM publicados pelo autor.",
+    "installLaunch": "Importe ou instale o projeto no launcher, espere o download dos arquivos terminar e inicie o jogo.",
+    "launcher": "Launcher do {source}",
+    "projectPage": "Página do projeto",
+    "changelog": "Mudanças da versão",
+    "commonErrors": [
+      {
+        "q": "Não consigo conectar ao servidor",
+        "a": "Confira o endereço e a porta Bedrock nas instruções de conexão. Use uma versão compatível, adicione o servidor novamente e tente outra vez.",
+        "category": "connection"
+      },
+      {
+        "q": "Outdated client / Outdated server",
+        "a": "Compare sua versão do Minecraft com as versões compatíveis nesta página. Selecione uma versão compatível no launcher antes de reconectar.",
+        "category": "connection"
+      },
+      {
+        "q": "Invalid session / Failed to verify username",
+        "a": "Feche o Minecraft, saia da conta no launcher e entre novamente. Reinicie o jogo. Se o erro continuar, envie a mensagem exata ao suporte.",
+        "category": "connection"
+      },
+      {
+        "q": "Connection timed out / Disconnected",
+        "a": "Verifique sua conexão com a Internet, reinicie o jogo e tente novamente. Se continuar, informe o erro, a versão do jogo e o horário ao suporte.",
+        "category": "connection"
+      },
+      {
+        "q": "Meu rank ou minhas moedas não chegaram",
+        "a": "Confirme que o pagamento foi concluído e entre novamente no servidor. Se a entrega demorar mais que o prazo informado nos detalhes do pacote, contate o suporte com a referência do pedido.",
+        "category": "store"
+      },
+      {
+        "q": "O modpack trava ou não inicia",
+        "a": "Use a versão e o carregador dos detalhes do projeto. Confira os requisitos de RAM publicados e remova os mods extras que adicionou. Inclua o registro de falha no relato ao suporte.",
+        "category": "modpacks"
+      }
+    ]
   }
 }

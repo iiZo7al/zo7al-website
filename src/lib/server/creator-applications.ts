@@ -1,7 +1,7 @@
 import { isIP } from "node:net";
 import { randomUUID } from "node:crypto";
 
-type Application = { platform: string; email: string; minecraft: string; discord: string; channel: string; followers: string; content: string; reason: string; consent: boolean; website?: string };
+export type Application = { platform: string; email: string; minecraft: string; discord: string; channel: string; followers: string; content: string; reason: string; consent: boolean; website?: string };
 export function validateApplication(value: unknown): Application | null {
   if (!value || typeof value !== "object") return null;
   const a = value as Application;
@@ -28,7 +28,8 @@ export function webhookUrl(raw: string | undefined): URL | null {
   } catch { return null; }
 }
 /** Per-instance abuse guard; configure a host/WAF rate limit for distributed deployments. */
-export function createApplicationHandler(getWebhook: () => string | undefined, send: typeof fetch = fetch) {
+export type ApplicationStore = { save: (application: Application, reference: string) => Promise<{ token: string }>; delivered: (reference: string, receipt: string) => Promise<void>; discard: (reference: string) => Promise<void> };
+export function createApplicationHandler(getWebhook: () => string | undefined, send: typeof fetch = fetch, storage?: ApplicationStore) {
   const attempts = new Map<string, { count: number; expires: number }>();
   return async (request: Request) => {
     const reply = (error: string, status: number) => Response.json({ error }, { status, headers: { "Cache-Control": "no-store" } });
@@ -54,7 +55,9 @@ export function createApplicationHandler(getWebhook: () => string | undefined, s
     if (!application) return reply("INVALID", 400);
     const a = application;
     const reference = randomUUID();
+    let token: string | undefined;
     try {
+      if (storage) token = (await storage.save(a, reference)).token;
       const response = await send(webhook, { method: "POST", redirect: "error", signal: AbortSignal.timeout(10000), headers: { "Content-Type": "application/json" }, body: JSON.stringify({
         username: "Zo7al Network • Applications",
         allowed_mentions: { parse: [] },
@@ -79,10 +82,11 @@ export function createApplicationHandler(getWebhook: () => string | undefined, s
           timestamp: new Date().toISOString(),
         }],
       }) });
-      if (!response.ok) return reply("DELIVERY_FAILED", 502);
+      if (!response.ok) throw new Error("DELIVERY_FAILED");
       const receipt = await response.json();
-      if (typeof receipt.id !== "string" || !/^\d+$/.test(receipt.id)) return reply("DELIVERY_FAILED", 502);
-      return Response.json({ ok: true, reference }, { headers: { "Cache-Control": "no-store" } });
-    } catch { return reply("DELIVERY_FAILED", 502); }
+      if (typeof receipt.id !== "string" || !/^\d+$/.test(receipt.id)) throw new Error("DELIVERY_FAILED");
+      if (storage) await storage.delivered(reference, receipt.id).catch(() => {});
+      return Response.json({ ok: true, reference, ...(token ? { token } : {}) }, { headers: { "Cache-Control": "no-store" } });
+    } catch { if (storage) await storage.discard(reference).catch(() => {}); return reply("DELIVERY_FAILED", 502); }
   };
 }

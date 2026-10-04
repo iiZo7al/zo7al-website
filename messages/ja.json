@@ -1,26 +1,84 @@
 {
-  "nav": { "home": "ホーム", "minecraft": "Minecraft", "modpacks": "Modpack", "fortnite": "Fortnite", "socials": "SNS", "store": "ストア", "discord": "Discord" },
-  "common": { "viewProject": "プロジェクトを見る", "viewProfile": "プロフィールを見る", "openStore": "ストアを開く", "copy": "コピー", "copied": "コピーしました", "all": "すべて", "downloads": "ダウンロード" },
+  "nav": {
+    "home": "ホーム",
+    "minecraft": "Minecraft",
+    "modpacks": "Modpack",
+    "fortnite": "Fortnite",
+    "socials": "SNS",
+    "store": "ストア",
+    "discord": "Discord"
+  },
+  "common": {
+    "viewProject": "プロジェクトを見る",
+    "viewProfile": "プロフィールを見る",
+    "openStore": "ストアを開く",
+    "copy": "コピー",
+    "copied": "コピーしました",
+    "all": "すべて",
+    "downloads": "ダウンロード"
+  },
   "home": {
-    "eyebrow": "@iiZo7al — ゲーミングユニバース", "headline1": "BUILD.", "headline2": "PLAY.", "headline3": "CREATE.",
-    "subtitle": "Zo7alによるMinecraftサーバー、Fortniteマップ、Modpack、ゲームプロジェクト。", "ctaExplore": "ZO7ALを探索", "ctaViewProjects": "プロジェクトを見る", "scroll": "スクロール",
-    "universeEyebrow": "プロジェクト", "universeTitle": "ZO7ALの世界", "universeText": "Zo7alが作り上げた世界、プロジェクト、体験を探索しよう。",
-    "minecraftMeta1": "MINECRAFT", "minecraftMeta2": "JAVA + BEDROCK", "minecraftTitle": "ZO7AL NETWORK", "minecraftText": "プレイヤーのために作られたMinecraftネットワーク。", "minecraftCta": "ネットワークを見る",
-    "modpacksMeta1": "MODPACK", "modpacksMeta2": "MODRINTH + CURSEFORGE", "modpacksTitle": "MINECRAFT MODPACK", "modpacksText": "Zo7alが制作・厳選したMinecraft体験。", "modpacksCta": "Modpackを見る",
-    "fortniteMeta1": "FORTNITE", "fortniteMeta2": "クリエイティブ", "fortniteTitle": "FORTNITE クリエイティブ", "fortniteText": "Zo7alが作成したマップと体験。", "fortniteCta": "マップを見る",
-    "aboutEyebrow": "Zo7alとは？", "aboutText": "Zo7al こと Khaled は、Fortnite や Minecraft などのゲーム、チャレンジ、仲間との笑える瞬間を発信する YouTuber・ゲームクリエイターです。"
+    "eyebrow": "@iiZo7al — ゲーミングユニバース",
+    "headline1": "BUILD.",
+    "headline2": "PLAY.",
+    "headline3": "CREATE.",
+    "subtitle": "Zo7alによるMinecraftサーバー、Fortniteマップ、Modpack、ゲームプロジェクト。",
+    "ctaExplore": "ZO7ALを探索",
+    "ctaViewProjects": "プロジェクトを見る",
+    "scroll": "スクロール",
+    "universeEyebrow": "プロジェクト",
+    "universeTitle": "ZO7ALの世界",
+    "universeText": "Zo7alが作り上げた世界、プロジェクト、体験を探索しよう。",
+    "minecraftMeta1": "MINECRAFT",
+    "minecraftMeta2": "JAVA + BEDROCK",
+    "minecraftTitle": "ZO7AL NETWORK",
+    "minecraftText": "プレイヤーのために作られたMinecraftネットワーク。",
+    "minecraftCta": "ネットワークを見る",
+    "modpacksMeta1": "MODPACK",
+    "modpacksMeta2": "MODRINTH + CURSEFORGE",
+    "modpacksTitle": "MINECRAFT MODPACK",
+    "modpacksText": "Zo7alが制作・厳選したMinecraft体験。",
+    "modpacksCta": "Modpackを見る",
+    "fortniteMeta1": "FORTNITE",
+    "fortniteMeta2": "クリエイティブ",
+    "fortniteTitle": "FORTNITE クリエイティブ",
+    "fortniteText": "Zo7alが作成したマップと体験。",
+    "fortniteCta": "マップを見る",
+    "aboutEyebrow": "Zo7alとは？",
+    "aboutText": "Zo7al こと Khaled は、Fortnite や Minecraft などのゲーム、チャレンジ、仲間との笑える瞬間を発信する YouTuber・ゲームクリエイターです。"
   },
   "minecraft": {
     "copyPort": "ポートをコピー",
     "bedrockPort": "Bedrock ポート",
-    "eyebrow": "Minecraft", "title": "ZO7AL NETWORK", "text": "次のMinecraftの冒険はここから始まる。", "openStore": "ストアを開く",
-    "connectEyebrow": "接続", "connectTitle": "数秒で参加", "connectText": "JavaとBedrock、ひとつのネットワーク。",
-    "compatEyebrow": "対応状況", "compatTitle": "対応バージョン", "gameplayEyebrow": "ゲームプレイ", "gameplayTitle": "モード",
-    "supportEyebrow": "ネットワークを応援", "supportTitle": "ZO7ALを応援しよう", "supportText": "ネットワークを応援し、Zo7al公式ストアをチェックしよう。",
-    "javaLabel": "Java IP", "bedrockLabel": "Bedrockアドレス", "bedrockNote": "Bedrock：zo7al.play-mc.fun — ポート 25807。",
-    "copyJava": "Java IPをコピー", "copyBedrock": "Bedrockアドレスをコピー", "checkingStatus": "ステータスを確認中…", "readyToPlay": "ZO7AL Network — プレイ準備完了",
-    "online": "オンライン", "offline": "オフライン", "players": "プレイヤー", "version": "バージョン", "address": "アドレス",
-    "statusUnavailable": "現在ライブステータスは取得できません — 下記のアドレスで接続してください。", "modeLive": "稼働中", "modeSoon": "近日公開",
+    "eyebrow": "Minecraft",
+    "title": "ZO7AL NETWORK",
+    "text": "次のMinecraftの冒険はここから始まる。",
+    "openStore": "ストアを開く",
+    "connectEyebrow": "接続",
+    "connectTitle": "数秒で参加",
+    "connectText": "JavaとBedrock、ひとつのネットワーク。",
+    "compatEyebrow": "対応状況",
+    "compatTitle": "対応バージョン",
+    "gameplayEyebrow": "ゲームプレイ",
+    "gameplayTitle": "モード",
+    "supportEyebrow": "ネットワークを応援",
+    "supportTitle": "ZO7ALを応援しよう",
+    "supportText": "ネットワークを応援し、Zo7al公式ストアをチェックしよう。",
+    "javaLabel": "Java IP",
+    "bedrockLabel": "Bedrockアドレス",
+    "bedrockNote": "Bedrock：zo7al.play-mc.fun — ポート 25807。",
+    "copyJava": "Java IPをコピー",
+    "copyBedrock": "Bedrockアドレスをコピー",
+    "checkingStatus": "ステータスを確認中…",
+    "readyToPlay": "ZO7AL Network — プレイ準備完了",
+    "online": "オンライン",
+    "offline": "オフライン",
+    "players": "プレイヤー",
+    "version": "バージョン",
+    "address": "アドレス",
+    "statusUnavailable": "現在ライブステータスは取得できません — 下記のアドレスで接続してください。",
+    "modeLive": "稼働中",
+    "modeSoon": "近日公開",
     "sharedAddress": "Java・Bedrock 共通IP",
     "portLabel": "ポート",
     "javaTutorial": "参加方法 — Java",
@@ -30,9 +88,17 @@
     "bedrockPortNotice": "現在の Bedrock ポート {port} を使用してください。動画では別のポートが表示されています。"
   },
   "modpacks": {
-    "eyebrow": "Modpack", "title": "MINECRAFT、再構築。", "text": "Zo7alが手がけたMinecraftプロジェクトを探索しよう。",
-    "modrinthEyebrow": "Modrinth", "modrinthTitle": "Modrinthのリリース", "modrinthLabel": "Modrinth", "modrinthLiveLabel": "Modrinthからライブ取得",
-    "curseforgeEyebrow": "CurseForge", "curseforgeTitle": "CurseForge リリース", "curseforgeLabel": "CURSEFORGE からライブ取得", "curseforgeLiveLabel": "CURSEFORGE からライブ取得",
+    "eyebrow": "Modpack",
+    "title": "MINECRAFT、再構築。",
+    "text": "Zo7alが手がけたMinecraftプロジェクトを探索しよう。",
+    "modrinthEyebrow": "Modrinth",
+    "modrinthTitle": "Modrinthのリリース",
+    "modrinthLabel": "Modrinth",
+    "modrinthLiveLabel": "Modrinthからライブ取得",
+    "curseforgeEyebrow": "CurseForge",
+    "curseforgeTitle": "CurseForge リリース",
+    "curseforgeLabel": "CURSEFORGE からライブ取得",
+    "curseforgeLiveLabel": "CURSEFORGE からライブ取得",
     "gameVersions": "Minecraftのバージョン",
     "loaders": "Modローダー",
     "updated": "最終更新",
@@ -52,10 +118,17 @@
     "tags": "タグ",
     "detailsUnavailable": "マップの詳細を読み込めませんでした。Fortniteで確認できます。",
     "viewOnFortnite": "Fortniteで見る",
-
-    "eyebrow": "Fortnite クリエイティブ", "title": "FORTNITE クリエイティブ", "text": "Zo7alが作成したマップと体験。", "creatorPage": "クリエイターページ",
-    "islandsEyebrow": "アイランド", "islandsTitle": "すべてのマップを一か所に", "islandsLabel": "アイランド", "islandsLiveLabel": "Fortnite.comとライブ同期中",
-    "copyCode": "コードをコピー", "copied": "コピーしました", "byZo7al": "Zo7al作成",
+    "eyebrow": "Fortnite クリエイティブ",
+    "title": "FORTNITE クリエイティブ",
+    "text": "Zo7alが作成したマップと体験。",
+    "creatorPage": "クリエイターページ",
+    "islandsEyebrow": "アイランド",
+    "islandsTitle": "すべてのマップを一か所に",
+    "islandsLabel": "アイランド",
+    "islandsLiveLabel": "Fortnite.comとライブ同期中",
+    "copyCode": "コードをコピー",
+    "copied": "コピーしました",
+    "byZo7al": "Zo7al作成",
     "descriptions": {
       "0633-4212-9611": "🧡🌹 「いいね」とお気に入り登録で応援してね\n🔫 すべてのスナイパーライフル\n💥 スピーディーなバトル\n🎮 一人称視点\n✨ ランクシステム\n😎 UEFNで制作",
       "3325-4001-0926": "🧡🌹 「いいね」とお気に入り登録で応援してね\n🏆 16人で戦うPvPゾーンウォーズ\n🔫 お気に入りの武器を選ぼう\n🎁 運命のルーレットを回そう\n✏️ 建築スキルを磨こう\n📝 練習して上達しよう\n✨ ランクシステム\n⭐ プレイヤー名を表示\n🤩 尽きない楽しさとアイテム\n💪 エイムを鍛えよう\n💥 スピーディーなバトル\n😎 UEFNで制作",
@@ -71,8 +144,12 @@
     }
   },
   "socials": {
-    "eyebrow": "コミュニティ", "title": "旅を追いかけよう。", "text": "すべてのプラットフォームを一か所に。", "label": "SNS",
-    "liveLabel": "Linktreeとライブ同期中", "viewOnLinktree": "Linktreeで見る",
+    "eyebrow": "コミュニティ",
+    "title": "旅を追いかけよう。",
+    "text": "すべてのプラットフォームを一か所に。",
+    "label": "SNS",
+    "liveLabel": "Linktreeとライブ同期中",
+    "viewOnLinktree": "Linktreeで見る",
     "gamesEyebrow": "ゲーム公式アカウント",
     "gamesText": "フォートナイトとRobloxのマップやゲームプロジェクトの告知用アカウント。リンクはLinktreeと同期されます。",
     "preview": "プロフィールのプレビュー",
@@ -110,15 +187,21 @@
     "productsTitle": "商品",
     "catalogTitle": "ストアの商品",
     "browseProducts": "商品を見る",
-
     "manageSubscriptions": "サブスクリプションの確認・解約はこちら。",
     "monthly": "月",
     "boosterPrice": "4.99+ から",
     "details": "詳細",
     "descriptionUnavailable": "説明は現在表示できません。後でもう一度お試しください。",
-    "eyebrow": "マインクラフト", "title": "Zo7al Network ストア", "text": "ネットワークを応援し、Zo7al公式ストアをチェックしよう。",
-    "ranksEyebrow": "ランク", "ranksTitle": "サーバーランク", "ranksText": "価格と特典は公式Tebexストアの表示に基づきます。",
-    "getRank": "購入", "mostPopular": "人気No.1", "allPurchases": "すべての購入はZo7al公式ストアであるTebexを通じて安全に処理されます。", "visitStore": "zo7al.tebex.io を見る",
+    "eyebrow": "マインクラフト",
+    "title": "Zo7al Network ストア",
+    "text": "ネットワークを応援し、Zo7al公式ストアをチェックしよう。",
+    "ranksEyebrow": "ランク",
+    "ranksTitle": "サーバーランク",
+    "ranksText": "価格と特典は公式Tebexストアの表示に基づきます。",
+    "getRank": "購入",
+    "mostPopular": "人気No.1",
+    "allPurchases": "すべての購入はZo7al公式ストアであるTebexを通じて安全に処理されます。",
+    "visitStore": "zo7al.tebex.io を見る",
     "checkoutUnavailable": "現在お支払いをご利用いただけません。後でもう一度お試しください。",
     "pricePending": "お支払いが利用可能になると価格が表示されます",
     "checkoutTitle": "購入手続き",
@@ -145,38 +228,136 @@
     "checkoutNote": "最終的な税金、通貨、お支払い方法は購入手続きで表示されます。"
   },
   "faq": {
-    "eyebrow": "お困りですか？", "title": "よくある質問", "text": "Zo7al の動画やSNS、サーバー、ストア、ゲームプロジェクトについてご案内します。",
-    "searchPlaceholder": "質問を検索…", "noResults": "検索条件に一致する質問はありません。",
-    "categories": { "gettingStarted": "はじめに", "storeRanks": "ストアとランク", "fortnite": "Fortnite", "community": "コミュニティ", "modpacks": "Modpack" },
+    "eyebrow": "お困りですか？",
+    "title": "よくある質問",
+    "text": "Zo7al の動画やSNS、サーバー、ストア、ゲームプロジェクトについてご案内します。",
+    "searchPlaceholder": "質問を検索…",
+    "noResults": "検索条件に一致する質問はありません。",
+    "categories": {
+      "gettingStarted": "はじめに",
+      "storeRanks": "ストアとランク",
+      "fortnite": "Fortnite",
+      "community": "コミュニティ",
+      "modpacks": "Modpack"
+    },
     "items": [
-      { "category": "gettingStarted", "q": "ZO7AL Networkとは何ですか？", "a": "Zo7alが構築したMinecraftサーバー兵ゲーミングユニバースで、サバイバル、PvP、Modpack、Fortniteクリエイティブマップを含みます。" },
-      { "category": "gettingStarted", "q": "Javaで Zo7al Network に参加するには？", "a": "MinecraftページからJavaアドレス zo7al.play-mc.fun をコピーし、Minecraft Java Editionのマルチプレイメニューにサーバーとして追加してください。" },
-      { "category": "gettingStarted", "q": "BedrockでZo7al Networkに参加するには？", "a": "Minecraft Bedrock でアドレス zo7al.play-mc.fun、ポート 25807 のサーバーを追加してください。" },
-      { "category": "gettingStarted", "q": "Bedrockに対応していますか？", "a": "はい。Bedrock：zo7al.play-mc.fun — ポート 25807。" },
-      { "category": "gettingStarted", "q": "対応しているMinecraftのバージョンは？", "a": "クラシックPvP向けの1.8.9、安定したサバイバル向けの1.20.x、そして最新版の1.21.xに対応しています。" },
-      { "category": "gettingStarted", "q": "どんな動画を作っていますか？", "a": "Fortnite、Minecraft などのゲーム動画や Shorts、チャレンジ、笑える瞬間、仲間とのプレイを発信しています。YouTube チャンネルは @iiZo7al です。" },
-      { "category": "storeRanks", "q": "ランクの購入方法は？", "a": "/store でランクを選び、Minecraft ユーザー名を入力して Tebex で安全に支払えます。Booster は Discord サーバーのブーストで獲得できます。" },
-      { "category": "storeRanks", "q": "利用できるランクは？", "a": "購入できるランクはVIP、MVP、MVP+、MVP++です。BoosterはDiscordサーバーのブーストで取得できます。YOUTUBE、TWITCH、TIKTOKは購入ではなく応募と審査によるクリエイターランクです。最新の詳細、価格、応募は/storeをご覧ください。Coinsはゲーム内通貨であり、ランクではありません。" },
-      { "category": "storeRanks", "q": "Zo7al Networkのストアはどこですか？", "a": "ストアは /store です。決済は Tebex 経由で行われ、サブスクリプションの確認・解約は portal.tebex.io でできます。" },
-      {"category": "storeRanks", "q": "Coinsの購入方法は？再購入できますか？", "a": "/storeのCoinsからパッケージを選び、正確なMinecraftユーザー名を入力してTebexで支払います。数量とボーナスは詳細に表示されます。Coinsはランクとは別のゲーム内通貨で、何度でも購入できます。受け取りが遅れている場合は取引番号を添えてDiscordサポートに連絡してください。"},
-      { "category": "fortnite", "q": "FortniteでZo7alのマップに参加するには？", "a": "Fortniteを開き、クリエイティブに進み、「コードを入力」を選択し、Fortniteページに表示されているアイランドコードを入力してください。" },
-      { "category": "fortnite", "q": "Zo7alのすべてのマップはどこで見られますか？", "a": "Fortniteページには公開済みのすべてのアイランドがコード付きで一覧表示され、公式クリエイターページと同期しています。" },
-      { "category": "community", "q": "Zo7alの公式Discordサーバーは？", "a": "discord.gg/nxScVYrSXq — イベント、サポート、コミュニティ更新情報の拠点です。" },
-      { "category": "community", "q": "Zo7alのSNSはどこで見られますか？", "a": "YouTube チャンネル @iiZo7al と他のアカウントはSNSページに掲載しています。リンクは公式 Linktree と同期しています。" },
-      { "category": "community", "q": "問題を報告するには？", "a": "Discordサーバーに参加し、サポートチャンネルでチケットを開いてください — チームに最も早く連絡できる方法です。" },
-      { "category": "community", "q": "Zo7alに連絡するには？", "a": "広告・コラボのご相談は ads@zo7al.net へ。サーバーや購入のサポートはSNSページから Discord に参加してください。" },
-      { "category": "modpacks", "q": "Zo7alのModpackはどこでダウンロードできますか？", "a": "ModrinthとCurseForgeで、どちらもModpackページに直接リンクが掲載されています。" },
-      {"category": "community", "q": "Zo7alのアカウントの最新コンテンツを見るには？", "a": "/socials を開き、Zo7al Gamesを含む各アカウントの詳細アイコンを押してください。紹介文と、取得できたプラットフォーム別の公開コンテンツが表示されます。通常のYouTube動画、投稿、保存されたTwitch配信、Modパックのリリースなどです。"},
-      {"category": "community", "q": "プレビューを表示できないことがあるのはなぜ？", "a": "プラットフォームが公開プレビューを制限していたり、API接続が必要だったり、公開コンテンツがない場合があります。プレビュー内のリンクから元のアカウントを開けます。表示できないことはアカウントの削除を意味しません。"},
-      {"category": "storeRanks", "q": "クリエイターランクにはどう応募しますか？", "a": "/store の Coins の下で YouTube、Twitch、TikTok を選び、メール、Minecraft と Discord のユーザー名、チャンネルURL、内容の詳細を送信してください。運営が審査し、ランクは自動付与されません。"},
-      {"category": "storeRanks", "q": "クリエイターランクは有料ですか？", "a": "応募は無料で、購入ランクや Coins とは別です。資格と承認は運営が判断します。登録者数の条件や審査期間は確約していません。"}
+      {
+        "category": "gettingStarted",
+        "q": "ZO7AL Networkとは何ですか？",
+        "a": "Zo7alが構築したMinecraftサーバー兵ゲーミングユニバースで、サバイバル、PvP、Modpack、Fortniteクリエイティブマップを含みます。"
+      },
+      {
+        "category": "gettingStarted",
+        "q": "Javaで Zo7al Network に参加するには？",
+        "a": "MinecraftページからJavaアドレス zo7al.play-mc.fun をコピーし、Minecraft Java Editionのマルチプレイメニューにサーバーとして追加してください。"
+      },
+      {
+        "category": "gettingStarted",
+        "q": "BedrockでZo7al Networkに参加するには？",
+        "a": "Minecraft Bedrock でアドレス zo7al.play-mc.fun、ポート 25807 のサーバーを追加してください。"
+      },
+      {
+        "category": "gettingStarted",
+        "q": "Bedrockに対応していますか？",
+        "a": "はい。Bedrock：zo7al.play-mc.fun — ポート 25807。"
+      },
+      {
+        "category": "gettingStarted",
+        "q": "対応しているMinecraftのバージョンは？",
+        "a": "クラシックPvP向けの1.8.9、安定したサバイバル向けの1.20.x、そして最新版の1.21.xに対応しています。"
+      },
+      {
+        "category": "gettingStarted",
+        "q": "どんな動画を作っていますか？",
+        "a": "Fortnite、Minecraft などのゲーム動画や Shorts、チャレンジ、笑える瞬間、仲間とのプレイを発信しています。YouTube チャンネルは @iiZo7al です。"
+      },
+      {
+        "category": "storeRanks",
+        "q": "ランクの購入方法は？",
+        "a": "/store でランクを選び、Minecraft ユーザー名を入力して Tebex で安全に支払えます。Booster は Discord サーバーのブーストで獲得できます。"
+      },
+      {
+        "category": "storeRanks",
+        "q": "利用できるランクは？",
+        "a": "購入できるランクはVIP、MVP、MVP+、MVP++です。BoosterはDiscordサーバーのブーストで取得できます。YOUTUBE、TWITCH、TIKTOKは購入ではなく応募と審査によるクリエイターランクです。最新の詳細、価格、応募は/storeをご覧ください。Coinsはゲーム内通貨であり、ランクではありません。"
+      },
+      {
+        "category": "storeRanks",
+        "q": "Zo7al Networkのストアはどこですか？",
+        "a": "ストアは /store です。決済は Tebex 経由で行われ、サブスクリプションの確認・解約は portal.tebex.io でできます。"
+      },
+      {
+        "category": "storeRanks",
+        "q": "Coinsの購入方法は？再購入できますか？",
+        "a": "/storeのCoinsからパッケージを選び、正確なMinecraftユーザー名を入力してTebexで支払います。数量とボーナスは詳細に表示されます。Coinsはランクとは別のゲーム内通貨で、何度でも購入できます。受け取りが遅れている場合は取引番号を添えてDiscordサポートに連絡してください。"
+      },
+      {
+        "category": "fortnite",
+        "q": "FortniteでZo7alのマップに参加するには？",
+        "a": "Fortniteを開き、クリエイティブに進み、「コードを入力」を選択し、Fortniteページに表示されているアイランドコードを入力してください。"
+      },
+      {
+        "category": "fortnite",
+        "q": "Zo7alのすべてのマップはどこで見られますか？",
+        "a": "Fortniteページには公開済みのすべてのアイランドがコード付きで一覧表示され、公式クリエイターページと同期しています。"
+      },
+      {
+        "category": "community",
+        "q": "Zo7alの公式Discordサーバーは？",
+        "a": "discord.gg/nxScVYrSXq — イベント、サポート、コミュニティ更新情報の拠点です。"
+      },
+      {
+        "category": "community",
+        "q": "Zo7alのSNSはどこで見られますか？",
+        "a": "YouTube チャンネル @iiZo7al と他のアカウントはSNSページに掲載しています。リンクは公式 Linktree と同期しています。"
+      },
+      {
+        "category": "community",
+        "q": "問題を報告するには？",
+        "a": "Discordサーバーに参加し、サポートチャンネルでチケットを開いてください — チームに最も早く連絡できる方法です。"
+      },
+      {
+        "category": "community",
+        "q": "Zo7alに連絡するには？",
+        "a": "広告・コラボのご相談は ads@zo7al.net へ。サーバーや購入のサポートはSNSページから Discord に参加してください。"
+      },
+      {
+        "category": "modpacks",
+        "q": "Zo7alのModpackはどこでダウンロードできますか？",
+        "a": "ModrinthとCurseForgeで、どちらもModpackページに直接リンクが掲載されています。"
+      },
+      {
+        "category": "community",
+        "q": "Zo7alのアカウントの最新コンテンツを見るには？",
+        "a": "/socials を開き、Zo7al Gamesを含む各アカウントの詳細アイコンを押してください。紹介文と、取得できたプラットフォーム別の公開コンテンツが表示されます。通常のYouTube動画、投稿、保存されたTwitch配信、Modパックのリリースなどです。"
+      },
+      {
+        "category": "community",
+        "q": "プレビューを表示できないことがあるのはなぜ？",
+        "a": "プラットフォームが公開プレビューを制限していたり、API接続が必要だったり、公開コンテンツがない場合があります。プレビュー内のリンクから元のアカウントを開けます。表示できないことはアカウントの削除を意味しません。"
+      },
+      {
+        "category": "storeRanks",
+        "q": "クリエイターランクにはどう応募しますか？",
+        "a": "/store の Coins の下で YouTube、Twitch、TikTok を選び、メール、Minecraft と Discord のユーザー名、チャンネルURL、内容の詳細を送信してください。運営が審査し、ランクは自動付与されません。"
+      },
+      {
+        "category": "storeRanks",
+        "q": "クリエイターランクは有料ですか？",
+        "a": "応募は無料で、購入ランクや Coins とは別です。資格と承認は運営が判断します。登録者数の条件や審査期間は確約していません。"
+      }
     ]
   },
   "footer": {
-    "tagline": "ゲーミングクリエイター。Minecraftネットワーク構築者。Fortniteクリエイター。", "siteLabel": "サイト", "platformsLabel": "プラットフォーム",
-    "copyright": "Zo7al. All rights reserved.", "disclaimer": "Minecraft、Epic Games、Fortniteの公式サービスではありません。"
+    "tagline": "ゲーミングクリエイター。Minecraftネットワーク構築者。Fortniteクリエイター。",
+    "siteLabel": "サイト",
+    "platformsLabel": "プラットフォーム",
+    "copyright": "Zo7al. All rights reserved.",
+    "disclaimer": "Minecraft、Epic Games、Fortniteの公式サービスではありません。"
   },
-  "language": { "label": "言語" },
+  "language": {
+    "label": "言語"
+  },
   "game": {
     "version": "バージョン {version}",
     "pointerHelp": "WASD / 矢印キー · マウスを動かして操縦",
@@ -227,7 +408,19 @@
     "refresh": "更新",
     "globalUnavailable": "サービスが利用できない間、このフライトは世界ランキングに参加できません。",
     "audioHelp": "音楽と効果音を個別に切り替えます。",
-    "enter": "入る"
+    "enter": "入る",
+    "dailyChallenge": "デイリーチャレンジ",
+    "challengeScore": "{count}ポイントに到達",
+    "challengeStars": "スターを{count}個集める",
+    "achievements": "実績",
+    "achievement_firstFlight": "初めての認証済みフライト",
+    "achievement_score10000": "10,000ポイント",
+    "achievement_stars10": "スター10個",
+    "achievement_score100000": "100,000ポイント",
+    "achievementHelp": "バッジは認証済みのプレイ後にこの端末に保存されます。デイリーの進行状況は現在のフライトに対するものです。",
+    "allTime": "全期間",
+    "weekly": "今週",
+    "weeklyPeriod": "月曜日～日曜日（リヤド時間）"
   },
   "ui": {
     "social_epicgames": "自作のフォートナイトマップの最新情報や更新、ご提案と不具合報告はこちら。",
@@ -306,8 +499,7 @@
     "home": "ホームに戻る",
     "explore": "探索する",
     "direction": "ltr"
-  }
-,
+  },
   "storeDescription": {
     "coinsHeading": "🪙 {count}コイン – Zo7al Network",
     "coinsIntro": "このパッケージを購入すると、Minecraftアカウントに{count}コインが直接追加されます。",
@@ -323,7 +515,6 @@
     "coinsLinked": "コインは支払い時に入力したMinecraftユーザー名に紐づけられます",
     "coinsDelivery": "コインは支払い後1～5分以内に自動で届きます。",
     "coinsDeliveryHelp": "10～15分経ってもコインが届かない場合は、再ログインするか注文番号を添えてサポートへご連絡ください。",
-
     "vipAndMvp": "VIP と MVP",
     "title": "{rank} ランク – Zo7al Network",
     "upgrade": "{rank} アップグレード – Zo7al Network",
@@ -367,7 +558,7 @@
     "boostDuration": "ランクの有効期間：Discord サーバーブーストが1つ以上有効な間。",
     "boostPrice": "価格：Discord サーバーブースト1つ以上。",
     "boostEnd": "すべてのブーストが期限切れまたは解除された場合、Booster ランクと特典も失われます。"
-},
+  },
   "creators": {
     "title": "クリエイターランク",
     "intro": "YouTube、Twitch、TikTokのランクに応募できます。チャンネルとMinecraftのコンテンツについて教えてください。",
@@ -397,5 +588,160 @@
       "tiktok": "TIKTOKランクはTikTokでMinecraftの動画を制作する方向けです。面白い場面、ヒント、チャレンジなど、プロフィールと短編動画のスタイルを紹介してください。フォロワー数、投稿頻度、Zo7al Networkでの体験をどう共有したいかも説明してください。"
     },
     "applicationDetails": "応募フォームに、連絡可能なメール、MinecraftとDiscordのユーザー名、選択したプラットフォームのプロフィールURLを入力してください。コンテンツと応募理由を正確に説明してください。同意後、応募はDiscord経由でZo7alチームに送られます。送信確認後の応募番号を保管してください。応募は購入やランクの自動付与ではありません。資格と承認は運営が判断し、審査期間や追加特典は保証されません。"
+  },
+  "hub": {
+    "latest": "Zo7alの新着情報",
+    "news": "ニュース",
+    "events": "イベント",
+    "player": "プレイヤープロフィール",
+    "orders": "注文履歴",
+    "applications": "クリエイター申請",
+    "support": "サポートセンター",
+    "rules": "ネットワークのルール",
+    "registrations": "イベント参加申請",
+    "newsIntro": "ネットワークのニュース、マップの更新、モッドパックの新バージョン。",
+    "eventsIntro": "開催予定のコミュニティイベントや大会。",
+    "playerIntro": "Minecraftのキャラクター、現在のランク、サーバーの統計を確認できます。",
+    "ordersIntro": "注文の専用控えを使って支払いと受け取り状況を確認できます。",
+    "applicationsIntro": "クリエイター申請とチームの審査状況を確認できます。",
+    "supportIntro": "回答を探したり、Zo7al Networkチームに問題を報告したりできます。",
+    "newsEmpty": "まだニュースは公開されていません。",
+    "eventsEmpty": "現在予定されているイベントはありません。次のお知らせをお待ちください。",
+    "rulesEmpty": "ネットワークのルールはまだここに公開されていません。",
+    "latestVideo": "最新動画",
+    "watch": "動画を見る",
+    "search": "クイック検索",
+    "searchPlaceholder": "ページ、マップ、モッドパック、質問を検索…",
+    "noResults": "一致する結果はありません。",
+    "commonErrorsTitle": "よくあるエラー",
+    "connection": "接続",
+    "store": "ストア",
+    "modpacks": "モッドパック",
+    "riyadhTime": "リヤド時間",
+    "eventStarted": "イベントは開始しました。",
+    "countdown": "{days}日 · {hours}時間 · {minutes}分 · {seconds}秒",
+    "register": "参加を申し込む",
+    "eventLink": "イベントのリンク",
+    "received": "送信を受け付けました",
+    "receiptHelp": "受付番号と専用アクセスコードを保管してください。このブラウザーにも保存され、状況の確認に使用できます。",
+    "reference": "受付番号",
+    "accessCode": "専用アクセスコード",
+    "track": "状況を確認",
+    "trackingHelp": "受付番号と専用アクセスコードを入力するか、保存済みの申請を選択してください。",
+    "savedRequests": "この端末に保存済み",
+    "noSavedRequests": "このブラウザーには申請が保存されていません。",
+    "notFound": "該当する申請が見つかりません。受付番号とアクセスコードを確認してください。",
+    "consent": "この情報をDiscord経由でZo7al Networkチームに共有することに同意します。",
+    "webhookNote": "送信内容はDiscordでチームに届きます。",
+    "loading": "読み込み中…",
+    "sending": "送信中…",
+    "unavailable": "現在このサービスを利用できません。しばらくしてから再試行してください。",
+    "rateLimit": "試行回数が多すぎます。15分後に再試行してください。",
+    "status": "状況",
+    "status_pending": "審査中",
+    "status_accepted": "承認済み",
+    "status_rejected": "不承認",
+    "status_open": "受付済み",
+    "status_reviewing": "対応中",
+    "status_closed": "対応終了",
+    "status_unknown": "未確認",
+    "status_paid": "支払い確認済み",
+    "status_awaitingPayment": "支払い待ち",
+    "delivery": "ゲーム内での受け取り",
+    "delivery_unknown": "サーバーから受け取りの確認が取れていません。",
+    "delivery_pending": "受け取り待ち",
+    "delivery_delivered": "受け取り確認済み",
+    "paymentDeliveryNote": "支払い確認とゲーム内での受け取り状況は別々に確認します。",
+    "orderSupport": "この注文について問い合わせる",
+    "subscriptions": "サブスクリプションを管理",
+    "profileHelp": "Minecraftのユーザー名を入力して、公開サーバープロフィールを確認できます。",
+    "viewProfile": "プロフィールを見る",
+    "online": "オンライン",
+    "offline": "オフライン",
+    "profileUnknown": "現在のサーバープロフィールデータを取得できません。",
+    "lastSeen": "最終接続",
+    "stat_kills": "キル数",
+    "stat_deaths": "死亡数",
+    "stat_wins": "勝利数",
+    "stat_playtimeSeconds": "プレイ時間",
+    "report": "問題を報告",
+    "reportType": "報告の種類",
+    "report_technical": "技術的な問題",
+    "report_player": "プレイヤーの通報",
+    "report_order": "注文の問題",
+    "orderReference": "注文の受付番号（該当する場合）",
+    "subject": "件名",
+    "message": "詳細",
+    "send": "送信",
+    "admin": "Zo7al管理",
+    "password": "パスワード",
+    "login": "ログイン",
+    "logout": "ログアウト",
+    "adminUnavailable": "管理機能はまだ有効になっていません。",
+    "invalidPassword": "パスワードが正しくありません。",
+    "sessionExpired": "セッションが切れました。再度ログインしてください。",
+    "refresh": "更新",
+    "saved": "保存しました",
+    "save": "保存",
+    "edit": "編集",
+    "delete": "削除",
+    "create": "新規作成",
+    "title": "タイトル",
+    "body": "内容",
+    "language": "言語",
+    "published": "公開済み",
+    "draft": "下書き",
+    "startsAt": "開始日時",
+    "publicNote": "申請者に表示するメモ",
+    "discordDelivered": "Discordで受信済み",
+    "discordPending": "Discord通知待ち",
+    "retryDiscord": "Discord通知を再送信",
+    "empty": "まだ登録されていません。",
+    "favoritesOnly": "お気に入りのみ",
+    "favoritesEmpty": "ここにはまだお気に入りがありません。",
+    "addFavorite": "お気に入りに追加",
+    "removeFavorite": "お気に入りから削除",
+    "share": "共有リンクをコピー",
+    "players": "プレイヤー数",
+    "installation": "インストールガイド",
+    "installLauncher": "{source}のプロジェクトに対応したランチャーをインストールしてください。",
+    "installProject": "プロジェクトの公式ページを開き、公開済みのバージョンを選択してください。",
+    "installVersion": "詳細に記載されたMinecraftのバージョンとローダーを使用してください。作者が公開しているRAM要件に従ってください。",
+    "installLaunch": "ランチャーでプロジェクトを読み込むかインストールし、ファイルのダウンロードが完了したら起動してください。",
+    "launcher": "{source}ランチャー",
+    "projectPage": "プロジェクトのページ",
+    "changelog": "バージョンの変更内容",
+    "commonErrors": [
+      {
+        "q": "サーバーに接続できない",
+        "a": "接続カードに記載されたアドレスとBedrockのポートを確認してください。対応するゲームバージョンを使い、サーバーを追加し直して再試行してください。",
+        "category": "connection"
+      },
+      {
+        "q": "Outdated client / Outdated server",
+        "a": "Minecraftのバージョンをこのページの対応バージョンと比較してください。ランチャーで対応バージョンを選択してから再接続してください。",
+        "category": "connection"
+      },
+      {
+        "q": "Invalid session / Failed to verify username",
+        "a": "Minecraftを終了し、ランチャーからログアウトして再ログインした後、ゲームを起動してください。解決しない場合はエラーメッセージ全文をサポートに送ってください。",
+        "category": "connection"
+      },
+      {
+        "q": "Connection timed out / Disconnected",
+        "a": "インターネット接続を確認し、ゲームを再起動して再試行してください。問題が続く場合は、エラー、ゲームバージョン、発生時刻をサポートに報告してください。",
+        "category": "connection"
+      },
+      {
+        "q": "ランクやコインが届かない",
+        "a": "支払いが完了したことを確認し、サーバーに入り直してください。商品詳細に記載された受け取り期間を超えた場合は、注文の受付番号を添えてサポートに連絡してください。",
+        "category": "store"
+      },
+      {
+        "q": "モッドパックがクラッシュする、または起動しない",
+        "a": "プロジェクト詳細に記載されたバージョンとローダーを使用してください。公開されたRAM要件を確認し、追加したMODを外してください。サポートへの報告にはクラッシュログを添付してください。",
+        "category": "modpacks"
+      }
+    ]
   }
 }

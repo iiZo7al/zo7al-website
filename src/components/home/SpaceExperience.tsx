@@ -1,4 +1,5 @@
 "use client";
+import GameProgress from "./GameProgress";
 import LanguageSwitcher from "@/components/layout/LanguageSwitcher";
 import { playerKey } from "./player-identity";
 import { spaceApi } from "./space-api";
@@ -171,6 +172,7 @@ export default function SpaceExperience({ onGameStateChange, gameOnly = false }:
     </>}
     {gameState === "GAME" && paused && !curtain && <div className="absolute inset-0 flex items-center justify-center overflow-y-auto bg-[var(--bg)]/90 p-6 text-center backdrop-blur-md"><div className="my-auto max-w-md py-6">
       {gameOnly && <div className="mb-4 flex justify-center"><LanguageSwitcher /></div>}<p className="mb-3 text-xs text-[var(--accent)]">{t("hold")}</p><h2 className="text-4xl font-bold">{t("takeBreath")}</h2><p className="mt-4 text-sm text-[var(--text-muted)]">{t("resumeText")}</p>
+      <GameProgress score={score} stars={stars}/>
       <div className="mt-5">{audioControls}</div><button onClick={() => { audio.unlock(); setPaused(false); }} className="mt-6 rounded-full bg-[var(--accent)] px-8 py-3 font-bold text-[var(--bg)]">{t("resume")}</button>
       <button onClick={() => handleGameOver(score, stars)} className="mx-auto mt-3 block rounded-full border border-[var(--border)] px-6 py-3 text-sm text-[var(--accent)]">{t("endRun")}</button>{!gameOnly && <button onClick={exitGame} className="mx-auto mt-3 block p-3 text-sm text-[var(--text-muted)]">{t("exit")}</button>}
     </div></div>}

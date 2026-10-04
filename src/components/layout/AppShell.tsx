@@ -9,6 +9,6 @@ export default function AppShell({ children, navigation, footer }: { children: R
       (navigator as Navigator & { standalone?: boolean }).standalone === true;
     if (standalone && pathname !== "/game") window.location.replace("/game");
   }, [pathname]);
-  if (pathname === "/game") return children;
+  if (pathname === "/game" || pathname === "/admin") return children;
   return <div className="website-shell flex min-h-screen flex-col">{navigation}{children}{footer}</div>;
 }

@@ -1,3 +1,5 @@
+import CommonErrors from "@/components/hub/CommonErrors";
+import LinkHub from "@/components/hub/MinecraftHubLinks";
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import PageHero from "@/components/ui/PageHero";
@@ -45,6 +47,7 @@ export default async function MinecraftPage() {
         </div>
       </section>
 
+      <LinkHub />
       <section className="relative border-t py-24 sm:py-32" style={{ borderColor: "var(--border)" }}>
         <div className="mx-auto max-w-[1180px] px-6">
           <SectionHeader eyebrow={t("connectEyebrow")} title={t("connectTitle")} text={t("connectText")} />
@@ -99,6 +102,7 @@ export default async function MinecraftPage() {
           </Reveal>
         </div>
       </section>
+      <CommonErrors />
     </main>
   );
 }

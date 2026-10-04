@@ -1,5 +1,9 @@
 # Space Run
 
+## 1.0.8
+- Add daily score/star challenges, locally saved achievements from verified runs, and a weekly leaderboard using Riyadh week boundaries.
+- Keep existing desktop controls, touch joystick and all-time ranking.
+
 ## 1.0.7
 - Add shared hover, keyboard-focus and press feedback to game launch and menu buttons, respecting reduced motion and preserving touch joystick geometry.
 - Remove letter spacing so Arabic labels remain connected.

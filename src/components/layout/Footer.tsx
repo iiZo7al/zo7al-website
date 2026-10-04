@@ -46,6 +46,7 @@ export default async function Footer() {
               </li>
             ))}
           </ul>
+          <ul className="mt-5 flex flex-col gap-3">{(["news","events","player","orders","applications","support"] as const).map(key=><li key={key}><Link href={"/"+key} className="text-sm text-[var(--text-muted)] hover:text-[var(--text)]">{t("hub."+key)}</Link></li>)}</ul>
         </div>
 
         <div>

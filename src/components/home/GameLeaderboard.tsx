@@ -1,7 +1,9 @@
 "use client";
+import GameProgress,{saveMilestones} from "./GameProgress";
+import { runMilestones } from "@/lib/data/space-progress";
 import { spaceApi } from "./space-api";
 
-import { useCallback, useEffect, useState, type FormEvent } from "react";
+import { useCallback, useEffect, useRef, useState, type FormEvent } from "react";
 import { useLocale, useTranslations } from "next-intl";
 
 export interface RunTicket { id: string; token: string }
@@ -10,6 +12,8 @@ interface RankedRun { id: string; name: string; score: number; stars: number }
 export default function GameLeaderboard({ score, stars, ticket }: { score: number; stars: number; ticket: RunTicket | null }) {
   const t = useTranslations("game");
   const locale = useLocale();
+  const [period,setPeriod]=useState<"all"|"weekly">("all");
+  const currentPeriod=useRef<"all"|"weekly">("all"),latestRequest=useRef(0);
   const [records, setRecords] = useState<RankedRun[]>([]);
   const [name, setName] = useState("");
   const [saved, setSaved] = useState(false);
@@ -19,15 +23,19 @@ export default function GameLeaderboard({ score, stars, ticket }: { score: numbe
   const [loadError, setLoadError] = useState(false);
 
   const refresh = useCallback(async (signal?: AbortSignal) => {
+    if(currentPeriod.current!==period)return;
+    const sequence=++latestRequest.current;
+    const current=()=>!signal?.aborted&&sequence===latestRequest.current&&currentPeriod.current===period;
     try {
-      const response = await fetch(spaceApi("leaderboard"), { cache: "no-store", signal });
+      const response = await fetch(spaceApi("leaderboard")+"?period="+period, { cache: "no-store", signal });
       if (!response.ok) throw new Error("UNAVAILABLE");
       const data = await response.json();
+      if (period === "weekly" && data.period !== "weekly") throw new Error("UNAVAILABLE");
       if (!Array.isArray(data.records)) throw new Error("INVALID_RESPONSE");
-      setRecords(data.records); setLoadError(false);
-    } catch { if (!signal?.aborted) setLoadError(true); }
-    finally { if (!signal?.aborted) setLoading(false); }
-  }, []);
+      if(current()){setRecords(data.records); setLoadError(false);}
+    } catch { if (current()) setLoadError(true); }
+    finally { if (current()) setLoading(false); }
+  }, [period]);
   useEffect(() => {
     const controller = new AbortController();
     queueMicrotask(() => { if (!controller.signal.aborted) void refresh(controller.signal); });
@@ -45,6 +53,8 @@ export default function GameLeaderboard({ score, stars, ticket }: { score: numbe
         body: JSON.stringify({ ...ticket, name: name.trim(), score, stars }),
       });
       if (!response.ok) { setError(response.status === 429 ? "rateLimit" : response.status === 400 ? "invalidRun" : "unavailable"); return; }
+      const result=await response.json();if(result.saved!==true)throw new Error("UNAVAILABLE");
+      saveMilestones(runMilestones(score,stars));
       setSaved(true); await refresh();
     } catch { setError("unavailable"); } finally { setBusy(false); }
   };
@@ -55,6 +65,9 @@ export default function GameLeaderboard({ score, stars, ticket }: { score: numbe
         <div><h3 id="leaderboard-title" className="text-sm font-semibold">{t("lgTitle")}</h3><p className="mt-1 text-xs text-[var(--text-muted)]">{t("lgSubtitle")}</p></div>
         <button type="button" onClick={() => void refresh()} className="rounded-full border border-[var(--border)] px-3 py-2 text-xs text-[var(--accent)]">{t("refresh")}</button>
       </div>
+      <GameProgress score={score} stars={stars}/>
+      <div className="mb-4 flex gap-2" role="group" aria-label={t("lgTitle")}>{(["all","weekly"] as const).map(value=><button key={value} type="button" aria-pressed={period===value} onClick={()=>{if(value===period)return;currentPeriod.current=value;setPeriod(value);setRecords([]);setLoading(true);}} className={"rounded-full border px-3 py-2 text-xs "+(period===value?"border-[var(--accent)] text-[var(--accent)]":"border-[var(--border)]")}>{t(value==="all"?"allTime":"weekly")}</button>)}</div>
+      {period==="weekly"&&<p className="mb-3 text-xs text-[var(--text-muted)]">{t("weeklyPeriod")}</p>}
       {!ticket && <p className="mb-3 text-xs text-[var(--text-muted)]">{t("globalUnavailable")}</p>}
       <form onSubmit={save} className="mb-4 flex flex-wrap gap-2">
         <label htmlFor="pilot-name" className="sr-only">{t("pilotName")}</label>

@@ -12,7 +12,8 @@ const data = moduleUrl('src/lib/data/store.ts');
 const backend = moduleUrl('src/lib/server/tebex.ts', {'@/lib/data/store': data, './store-description': moduleUrl('src/lib/server/store-description.ts')});
 const {getStoreCatalog, ownsStorePackage} = await import(backend);
 const cartRules = moduleUrl('src/lib/data/store-cart.ts');
-const {POST} = await import(moduleUrl('src/app/api/store/checkout/route.ts', {'@/lib/server/tebex': backend, '@/lib/data/store-cart': cartRules}));
+const trackingStub = 'data:text/javascript;base64,' + Buffer.from('export async function createOrderReceipt(){return null;}').toString('base64');
+const {POST} = await import(moduleUrl('src/app/api/store/checkout/route.ts', {'@/lib/server/tebex': backend, '@/lib/data/store-cart': cartRules, '@/lib/server/site-content': trackingStub}));
 const {GET: paymentStatus} = await import(moduleUrl('src/app/api/store/status/route.ts', {'@/lib/server/tebex': backend}));
 const request = (body, origin = 'https://zo7al.test', ip = '203.0.113.5') => new Request('https://zo7al.test/api/store/checkout', {method:'POST', headers:{origin,'x-forwarded-for':ip},body:JSON.stringify(body)});
 

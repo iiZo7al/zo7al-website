@@ -1,26 +1,84 @@
 {
-  "nav": { "home": "홈", "minecraft": "마인크래프트", "modpacks": "모드팩", "fortnite": "포트나이트", "socials": "소셜", "store": "스토어", "discord": "디스코드" },
-  "common": { "viewProject": "프로젝트 보기", "viewProfile": "프로필 보기", "openStore": "스토어 열기", "copy": "복사", "copied": "복사됨", "all": "전체", "downloads": "다운로드" },
+  "nav": {
+    "home": "홈",
+    "minecraft": "마인크래프트",
+    "modpacks": "모드팩",
+    "fortnite": "포트나이트",
+    "socials": "소셜",
+    "store": "스토어",
+    "discord": "디스코드"
+  },
+  "common": {
+    "viewProject": "프로젝트 보기",
+    "viewProfile": "프로필 보기",
+    "openStore": "스토어 열기",
+    "copy": "복사",
+    "copied": "복사됨",
+    "all": "전체",
+    "downloads": "다운로드"
+  },
   "home": {
-    "eyebrow": "@iiZo7al — 게이밍 유니버스", "headline1": "BUILD.", "headline2": "PLAY.", "headline3": "CREATE.",
-    "subtitle": "Zo7al의 마인크래프트 서버, 포트나이트 맵, 모드팩과 게이밍 프로젝트.", "ctaExplore": "ZO7AL 둘러보기", "ctaViewProjects": "프로젝트 보기", "scroll": "스크롤",
-    "universeEyebrow": "프로젝트", "universeTitle": "ZO7AL 유니버스", "universeText": "Zo7al이 만든 세계와 프로젝트, 경험을 둘러보세요.",
-    "minecraftMeta1": "마인크래프트", "minecraftMeta2": "자바 + 베드락", "minecraftTitle": "ZO7AL 네트워크", "minecraftText": "플레이어를 위해 만들어진 마인크래프트 네트워크.", "minecraftCta": "네트워크 둘러보기",
-    "modpacksMeta1": "모드팩", "modpacksMeta2": "MODRINTH + CURSEFORGE", "modpacksTitle": "마인크래프트 모드팩", "modpacksText": "Zo7al이 제작하고 엄선한 마인크래프트 경험.", "modpacksCta": "모드팩 보기",
-    "fortniteMeta1": "포트나이트", "fortniteMeta2": "크리에이티브", "fortniteTitle": "포트나이트 크리에이티브", "fortniteText": "Zo7al이 만든 맵과 경험.", "fortniteCta": "맵 둘러보기",
-    "aboutEyebrow": "Zo7al은 누구인가요?", "aboutText": "Zo7al로 알려진 Khaled는 포트나이트, 마인크래프트 등 다양한 게임과 도전, 친구들과의 웃긴 순간을 공유하는 유튜버이자 게임 크리에이터입니다."
+    "eyebrow": "@iiZo7al — 게이밍 유니버스",
+    "headline1": "BUILD.",
+    "headline2": "PLAY.",
+    "headline3": "CREATE.",
+    "subtitle": "Zo7al의 마인크래프트 서버, 포트나이트 맵, 모드팩과 게이밍 프로젝트.",
+    "ctaExplore": "ZO7AL 둘러보기",
+    "ctaViewProjects": "프로젝트 보기",
+    "scroll": "스크롤",
+    "universeEyebrow": "프로젝트",
+    "universeTitle": "ZO7AL 유니버스",
+    "universeText": "Zo7al이 만든 세계와 프로젝트, 경험을 둘러보세요.",
+    "minecraftMeta1": "마인크래프트",
+    "minecraftMeta2": "자바 + 베드락",
+    "minecraftTitle": "ZO7AL 네트워크",
+    "minecraftText": "플레이어를 위해 만들어진 마인크래프트 네트워크.",
+    "minecraftCta": "네트워크 둘러보기",
+    "modpacksMeta1": "모드팩",
+    "modpacksMeta2": "MODRINTH + CURSEFORGE",
+    "modpacksTitle": "마인크래프트 모드팩",
+    "modpacksText": "Zo7al이 제작하고 엄선한 마인크래프트 경험.",
+    "modpacksCta": "모드팩 보기",
+    "fortniteMeta1": "포트나이트",
+    "fortniteMeta2": "크리에이티브",
+    "fortniteTitle": "포트나이트 크리에이티브",
+    "fortniteText": "Zo7al이 만든 맵과 경험.",
+    "fortniteCta": "맵 둘러보기",
+    "aboutEyebrow": "Zo7al은 누구인가요?",
+    "aboutText": "Zo7al로 알려진 Khaled는 포트나이트, 마인크래프트 등 다양한 게임과 도전, 친구들과의 웃긴 순간을 공유하는 유튜버이자 게임 크리에이터입니다."
   },
   "minecraft": {
     "copyPort": "포트 복사",
     "bedrockPort": "Bedrock 포트",
-    "eyebrow": "마인크래프트", "title": "ZO7AL 네트워크", "text": "다음 마인크래프트 모험이 여기서 시작됩니다.", "openStore": "스토어 열기",
-    "connectEyebrow": "접속", "connectTitle": "몇 초 만에 참여하기", "connectText": "자바와 베드락, 하나의 네트워크.",
-    "compatEyebrow": "호환성", "compatTitle": "지원 버전", "gameplayEyebrow": "게임플레이", "gameplayTitle": "모드",
-    "supportEyebrow": "네트워크 후원하기", "supportTitle": "ZO7AL 후원하기", "supportText": "네트워크를 후원하고 Zo7al 공식 스토어를 둘러보세요.",
-    "javaLabel": "자바 IP", "bedrockLabel": "베드락 주소", "bedrockNote": "Bedrock: zo7al.play-mc.fun — 포트 25807.",
-    "copyJava": "자바 IP 복사", "copyBedrock": "베드락 주소 복사", "checkingStatus": "상태 확인 중…", "readyToPlay": "ZO7AL 네트워크 — 플레이 준비 완료",
-    "online": "온라인", "offline": "오프라인", "players": "플레이어", "version": "버전", "address": "주소",
-    "statusUnavailable": "지금은 실시간 상태를 가져올 수 없습니다 — 아래 주소로 접속해 보세요.", "modeLive": "운영 중", "modeSoon": "출시 예정",
+    "eyebrow": "마인크래프트",
+    "title": "ZO7AL 네트워크",
+    "text": "다음 마인크래프트 모험이 여기서 시작됩니다.",
+    "openStore": "스토어 열기",
+    "connectEyebrow": "접속",
+    "connectTitle": "몇 초 만에 참여하기",
+    "connectText": "자바와 베드락, 하나의 네트워크.",
+    "compatEyebrow": "호환성",
+    "compatTitle": "지원 버전",
+    "gameplayEyebrow": "게임플레이",
+    "gameplayTitle": "모드",
+    "supportEyebrow": "네트워크 후원하기",
+    "supportTitle": "ZO7AL 후원하기",
+    "supportText": "네트워크를 후원하고 Zo7al 공식 스토어를 둘러보세요.",
+    "javaLabel": "자바 IP",
+    "bedrockLabel": "베드락 주소",
+    "bedrockNote": "Bedrock: zo7al.play-mc.fun — 포트 25807.",
+    "copyJava": "자바 IP 복사",
+    "copyBedrock": "베드락 주소 복사",
+    "checkingStatus": "상태 확인 중…",
+    "readyToPlay": "ZO7AL 네트워크 — 플레이 준비 완료",
+    "online": "온라인",
+    "offline": "오프라인",
+    "players": "플레이어",
+    "version": "버전",
+    "address": "주소",
+    "statusUnavailable": "지금은 실시간 상태를 가져올 수 없습니다 — 아래 주소로 접속해 보세요.",
+    "modeLive": "운영 중",
+    "modeSoon": "출시 예정",
     "sharedAddress": "Java 및 Bedrock 공통 IP",
     "portLabel": "포트",
     "javaTutorial": "접속 방법 — Java",
@@ -30,9 +88,17 @@
     "bedrockPortNotice": "현재 Bedrock 포트 {port}를 사용하세요. 동영상에는 다른 포트가 표시됩니다."
   },
   "modpacks": {
-    "eyebrow": "모드팩", "title": "마인크래프트, 새롭게.", "text": "Zo7al이 만든 마인크래프트 프로젝트를 둘러보세요.",
-    "modrinthEyebrow": "Modrinth", "modrinthTitle": "Modrinth 릴리스", "modrinthLabel": "Modrinth", "modrinthLiveLabel": "Modrinth에서 실시간 연동",
-    "curseforgeEyebrow": "CurseForge", "curseforgeTitle": "CurseForge 릴리스", "curseforgeLabel": "CURSEFORGE에서 실시간 동기화", "curseforgeLiveLabel": "CURSEFORGE에서 실시간 동기화",
+    "eyebrow": "모드팩",
+    "title": "마인크래프트, 새롭게.",
+    "text": "Zo7al이 만든 마인크래프트 프로젝트를 둘러보세요.",
+    "modrinthEyebrow": "Modrinth",
+    "modrinthTitle": "Modrinth 릴리스",
+    "modrinthLabel": "Modrinth",
+    "modrinthLiveLabel": "Modrinth에서 실시간 연동",
+    "curseforgeEyebrow": "CurseForge",
+    "curseforgeTitle": "CurseForge 릴리스",
+    "curseforgeLabel": "CURSEFORGE에서 실시간 동기화",
+    "curseforgeLiveLabel": "CURSEFORGE에서 실시간 동기화",
     "gameVersions": "Minecraft 버전",
     "loaders": "모드 로더",
     "updated": "마지막 업데이트",
@@ -52,10 +118,17 @@
     "tags": "태그",
     "detailsUnavailable": "맵 정보를 불러오지 못했습니다. Fortnite에서 확인할 수 있습니다.",
     "viewOnFortnite": "Fortnite에서 보기",
-
-    "eyebrow": "포트나이트 크리에이티브", "title": "포트나이트 크리에이티브", "text": "Zo7al이 만든 맵과 경험.", "creatorPage": "크리에이터 페이지",
-    "islandsEyebrow": "아일랜드", "islandsTitle": "모든 맵을 한곳에서", "islandsLabel": "아일랜드", "islandsLiveLabel": "Fortnite.com과 실시간 동기화",
-    "copyCode": "코드 복사", "copied": "복사됨", "byZo7al": "Zo7al 제작",
+    "eyebrow": "포트나이트 크리에이티브",
+    "title": "포트나이트 크리에이티브",
+    "text": "Zo7al이 만든 맵과 경험.",
+    "creatorPage": "크리에이터 페이지",
+    "islandsEyebrow": "아일랜드",
+    "islandsTitle": "모든 맵을 한곳에서",
+    "islandsLabel": "아일랜드",
+    "islandsLiveLabel": "Fortnite.com과 실시간 동기화",
+    "copyCode": "코드 복사",
+    "copied": "복사됨",
+    "byZo7al": "Zo7al 제작",
     "descriptions": {
       "0633-4212-9611": "🧡🌹 좋아요와 즐겨찾기로 응원해 주세요\n🔫 모든 저격소총\n💥 빠른 액션\n🎮 1인칭 시점\n✨ 랭크 시스템\n😎 UEFN으로 제작",
       "3325-4001-0926": "🧡🌹 좋아요와 즐겨찾기로 응원해 주세요\n🏆 16인 PvP 존 워즈\n🔫 좋아하는 무기를 선택하세요\n🎁 행운의 룰렛을 돌려 보세요\n✏️ 건설 실력을 키우세요\n📝 연습하고 훈련하세요\n✨ 랭크 시스템\n⭐ 플레이어 이름 표시\n🤩 끝없는 재미와 아이템\n💪 조준 실력을 키우세요\n💥 빠른 액션\n😎 UEFN으로 제작",
@@ -71,8 +144,12 @@
     }
   },
   "socials": {
-    "eyebrow": "커뮤니티", "title": "여정을 따라가세요.", "text": "모든 플랫폼을 한곳에서.", "label": "소셜 미디어",
-    "liveLabel": "Linktree와 실시간 동기화", "viewOnLinktree": "Linktree에서 보기",
+    "eyebrow": "커뮤니티",
+    "title": "여정을 따라가세요.",
+    "text": "모든 플랫폼을 한곳에서.",
+    "label": "소셜 미디어",
+    "liveLabel": "Linktree와 실시간 동기화",
+    "viewOnLinktree": "Linktree에서 보기",
     "gamesEyebrow": "게임 공식 계정",
     "gamesText": "포트나이트와 Roblox 맵, 게임 프로젝트 소식을 전하는 제 계정들입니다. 링크는 Linktree와 동기화됩니다.",
     "preview": "프로필 미리보기",
@@ -110,15 +187,21 @@
     "productsTitle": "상품",
     "catalogTitle": "스토어 상품",
     "browseProducts": "상품 둘러보기",
-
     "manageSubscriptions": "여기에서 구독을 확인하거나 취소할 수 있습니다.",
     "monthly": "월",
     "boosterPrice": "4.99+부터",
     "details": "상세 정보",
     "descriptionUnavailable": "현재 설명을 불러올 수 없습니다. 나중에 다시 시도해 주세요.",
-    "eyebrow": "마인크래프트", "title": "Zo7al Network 스토어", "text": "네트워크를 후원하고 Zo7al 공식 스토어를 둘러보세요.",
-    "ranksEyebrow": "등급", "ranksTitle": "서버 등급", "ranksText": "가격과 혜택은 공식 Tebex 스토어에 표시된 대로입니다.",
-    "getRank": "구매하기", "mostPopular": "인기 등급", "allPurchases": "모든 결제는 Zo7al 공식 스토어인 Tebex를 통해 안전하게 처리됩니다.", "visitStore": "zo7al.tebex.io 방문하기",
+    "eyebrow": "마인크래프트",
+    "title": "Zo7al Network 스토어",
+    "text": "네트워크를 후원하고 Zo7al 공식 스토어를 둘러보세요.",
+    "ranksEyebrow": "등급",
+    "ranksTitle": "서버 등급",
+    "ranksText": "가격과 혜택은 공식 Tebex 스토어에 표시된 대로입니다.",
+    "getRank": "구매하기",
+    "mostPopular": "인기 등급",
+    "allPurchases": "모든 결제는 Zo7al 공식 스토어인 Tebex를 통해 안전하게 처리됩니다.",
+    "visitStore": "zo7al.tebex.io 방문하기",
     "checkoutUnavailable": "현재 결제를 이용할 수 없습니다. 나중에 다시 시도해 주세요.",
     "pricePending": "결제가 활성화되면 가격이 표시됩니다",
     "checkoutTitle": "구매하기",
@@ -145,38 +228,136 @@
     "checkoutNote": "최종 세금, 통화 및 결제 수단은 결제 시 표시됩니다."
   },
   "faq": {
-    "eyebrow": "도움이 필요하신가요?", "title": "자주 묻는 질문", "text": "Zo7al의 영상과 소셜 계정, 서버, 스토어, 게임 프로젝트에 대해 알아보세요.",
-    "searchPlaceholder": "질문 검색…", "noResults": "검색과 일치하는 질문이 없습니다.",
-    "categories": { "gettingStarted": "시작하기", "storeRanks": "스토어 및 등급", "fortnite": "포트나이트", "community": "커뮤니티", "modpacks": "모드팩" },
+    "eyebrow": "도움이 필요하신가요?",
+    "title": "자주 묻는 질문",
+    "text": "Zo7al의 영상과 소셜 계정, 서버, 스토어, 게임 프로젝트에 대해 알아보세요.",
+    "searchPlaceholder": "질문 검색…",
+    "noResults": "검색과 일치하는 질문이 없습니다.",
+    "categories": {
+      "gettingStarted": "시작하기",
+      "storeRanks": "스토어 및 등급",
+      "fortnite": "포트나이트",
+      "community": "커뮤니티",
+      "modpacks": "모드팩"
+    },
     "items": [
-      { "category": "gettingStarted", "q": "ZO7AL 네트워크란 무엇인가요?", "a": "Zo7al이 만든 마인크래프트 서버이자 게이밍 유니버스로, 서바이벌, PvP, 모드팩, 포트나이트 크리에이티브 맵을 아우릅니다." },
-      { "category": "gettingStarted", "q": "자바로 Zo7al 네트워크에 어떻게 참여하나요?", "a": "마인크래프트 페이지에서 자바 주소 zo7al.play-mc.fun을 복사해 마인크래프트 자바 에디션의 멀티플레이어 메뉴에 서버로 추가하세요." },
-      { "category": "gettingStarted", "q": "베드락으로 Zo7al 네트워크에 어떻게 참여하나요?", "a": "Minecraft Bedrock에서 주소 zo7al.play-mc.fun, 포트 25807로 서버를 추가하세요." },
-      { "category": "gettingStarted", "q": "베드락을 지원하나요?", "a": "네. Bedrock: zo7al.play-mc.fun — 포트 25807." },
-      { "category": "gettingStarted", "q": "지원되는 마인크래프트 버전은 무엇인가요?", "a": "클래식 PvP를 위한 1.8.9, 안정적인 서바이벌을 위한 1.20.x, 최신 버전인 1.21.x를 지원합니다." },
-      { "category": "gettingStarted", "q": "어떤 영상을 만드나요?", "a": "포트나이트, 마인크래프트 등 다양한 게임 영상과 Shorts, 도전, 웃긴 순간, 친구들과의 플레이를 올립니다. YouTube 채널은 @iiZo7al입니다." },
-      { "category": "storeRanks", "q": "등급은 어떻게 구매하나요?", "a": "/store에서 등급을 선택하고 Minecraft 사용자 이름을 입력한 뒤 Tebex로 안전하게 결제하세요. Booster는 Discord 서버 부스트로 받습니다." },
-      { "category": "storeRanks", "q": "어떤 등급이 있나요?", "a": "유료 등급은 VIP, MVP, MVP+, MVP++입니다. Booster는 Discord 서버를 부스트하면 받을 수 있습니다. YOUTUBE, TWITCH, TIKTOK은 구매가 아닌 지원과 검토를 통해 받는 크리에이터 등급입니다. 최신 정보, 가격 및 지원은 /store에서 확인하세요. Coins는 게임 내 화폐이며 등급이 아닙니다." },
-      { "category": "storeRanks", "q": "Zo7al 네트워크 스토어는 어디에 있나요?", "a": "/store에서 스토어를 여세요. 결제는 Tebex로 처리되며 구독 확인 및 취소는 portal.tebex.io에서 가능합니다." },
-      {"category": "storeRanks", "q": "Coins는 어떻게 구매하나요? 재구매할 수 있나요?", "a": "/store의 Coins에서 패키지를 선택하고 정확한 Minecraft 사용자 이름을 입력한 뒤 Tebex로 결제하세요. 수량과 보너스는 패키지 상세 정보에 표시됩니다. Coins는 등급과 별개인 게임 내 화폐로 여러 번 구매할 수 있습니다. 지급이 늦어지면 거래 번호와 함께 Discord 지원팀에 문의하세요."},
-      { "category": "fortnite", "q": "포트나이트에서 Zo7al 맵에 어떻게 참여하나요?", "a": "포트나이트를 열고 크리에이티브로 이동해 \"코드 입력\"을 선택한 뒤, 포트나이트 페이지에 표시된 아일랜드 코드를 입력하세요." },
-      { "category": "fortnite", "q": "Zo7al의 모든 맵은 어디서 찾을 수 있나요?", "a": "포트나이트 페이지에는 공식 크리에이터 페이지와 동기화된 모든 아일랜드가 코드와 함께 나열됩니다." },
-      { "category": "community", "q": "Zo7al의 공식 디스코드 서버는 무엇인가요?", "a": "discord.gg/nxScVYrSXq — 이벤트, 지원, 커뮤니티 소식의 허브입니다." },
-      { "category": "community", "q": "Zo7al의 소셜 미디어는 어디서 찾을 수 있나요?", "a": "소셜 페이지에서 YouTube 채널 @iiZo7al과 다른 계정을 확인하세요. 링크는 공식 Linktree와 동기화됩니다." },
-      { "category": "community", "q": "문제는 어떻게 신고하나요?", "a": "디스코드 서버에 참여해 지원 채널에서 티켓을 열어주세요 — 팀에 가장 빠르게 연락할 수 있는 방법입니다." },
-      { "category": "community", "q": "Zo7al에게 어떻게 연락하나요?", "a": "광고 및 협업 문의: ads@zo7al.net. 서버나 구매 관련 지원은 소셜 페이지의 Discord를 이용하세요." },
-      { "category": "modpacks", "q": "Zo7al의 모드팩은 어디서 다운로드하나요?", "a": "Modrinth와 CurseForge에서 다운로드할 수 있으며, 두 곳 모두 모드팩 페이지에 직접 링크로 연결되어 있습니다." },
-      {"category": "community", "q": "Zo7al 계정의 최신 콘텐츠는 어떻게 보나요?", "a": "/socials에서 Zo7al Games를 포함한 계정의 상세 아이콘을 누르세요. 계정 소개와 플랫폼별 공개 콘텐츠를 확인할 수 있습니다. 가능한 경우 일반 YouTube 동영상, 게시물, 저장된 Twitch 방송, 모드팩 릴리스를 보여 줍니다."},
-      {"category": "community", "q": "일부 소셜 미디어 미리보기가 표시되지 않는 이유는 무엇인가요?", "a": "일부 플랫폼은 공개 미리보기를 제한하거나 API 연결을 요구하며, 공개 콘텐츠가 없을 수도 있습니다. 미리보기의 링크로 원래 계정을 여세요. 미리보기가 없다고 계정이 삭제된 것은 아닙니다."},
-      {"category": "storeRanks", "q": "크리에이터 등급은 어떻게 신청하나요?", "a": "/store의 Coins 아래에서 YouTube, Twitch 또는 TikTok을 선택하세요. 이메일, Minecraft와 Discord 이름, 채널 링크, 콘텐츠 정보를 제출하면 팀에서 검토합니다. 등급은 자동 지급되지 않습니다."},
-      {"category": "storeRanks", "q": "크리에이터 등급은 유료인가요?", "a": "지원은 무료이며 구매 등급 및 Coins와 별개입니다. 자격과 승인 여부는 팀이 결정합니다. 고정된 팔로워 기준이나 검토 기간은 약속하지 않습니다."}
+      {
+        "category": "gettingStarted",
+        "q": "ZO7AL 네트워크란 무엇인가요?",
+        "a": "Zo7al이 만든 마인크래프트 서버이자 게이밍 유니버스로, 서바이벌, PvP, 모드팩, 포트나이트 크리에이티브 맵을 아우릅니다."
+      },
+      {
+        "category": "gettingStarted",
+        "q": "자바로 Zo7al 네트워크에 어떻게 참여하나요?",
+        "a": "마인크래프트 페이지에서 자바 주소 zo7al.play-mc.fun을 복사해 마인크래프트 자바 에디션의 멀티플레이어 메뉴에 서버로 추가하세요."
+      },
+      {
+        "category": "gettingStarted",
+        "q": "베드락으로 Zo7al 네트워크에 어떻게 참여하나요?",
+        "a": "Minecraft Bedrock에서 주소 zo7al.play-mc.fun, 포트 25807로 서버를 추가하세요."
+      },
+      {
+        "category": "gettingStarted",
+        "q": "베드락을 지원하나요?",
+        "a": "네. Bedrock: zo7al.play-mc.fun — 포트 25807."
+      },
+      {
+        "category": "gettingStarted",
+        "q": "지원되는 마인크래프트 버전은 무엇인가요?",
+        "a": "클래식 PvP를 위한 1.8.9, 안정적인 서바이벌을 위한 1.20.x, 최신 버전인 1.21.x를 지원합니다."
+      },
+      {
+        "category": "gettingStarted",
+        "q": "어떤 영상을 만드나요?",
+        "a": "포트나이트, 마인크래프트 등 다양한 게임 영상과 Shorts, 도전, 웃긴 순간, 친구들과의 플레이를 올립니다. YouTube 채널은 @iiZo7al입니다."
+      },
+      {
+        "category": "storeRanks",
+        "q": "등급은 어떻게 구매하나요?",
+        "a": "/store에서 등급을 선택하고 Minecraft 사용자 이름을 입력한 뒤 Tebex로 안전하게 결제하세요. Booster는 Discord 서버 부스트로 받습니다."
+      },
+      {
+        "category": "storeRanks",
+        "q": "어떤 등급이 있나요?",
+        "a": "유료 등급은 VIP, MVP, MVP+, MVP++입니다. Booster는 Discord 서버를 부스트하면 받을 수 있습니다. YOUTUBE, TWITCH, TIKTOK은 구매가 아닌 지원과 검토를 통해 받는 크리에이터 등급입니다. 최신 정보, 가격 및 지원은 /store에서 확인하세요. Coins는 게임 내 화폐이며 등급이 아닙니다."
+      },
+      {
+        "category": "storeRanks",
+        "q": "Zo7al 네트워크 스토어는 어디에 있나요?",
+        "a": "/store에서 스토어를 여세요. 결제는 Tebex로 처리되며 구독 확인 및 취소는 portal.tebex.io에서 가능합니다."
+      },
+      {
+        "category": "storeRanks",
+        "q": "Coins는 어떻게 구매하나요? 재구매할 수 있나요?",
+        "a": "/store의 Coins에서 패키지를 선택하고 정확한 Minecraft 사용자 이름을 입력한 뒤 Tebex로 결제하세요. 수량과 보너스는 패키지 상세 정보에 표시됩니다. Coins는 등급과 별개인 게임 내 화폐로 여러 번 구매할 수 있습니다. 지급이 늦어지면 거래 번호와 함께 Discord 지원팀에 문의하세요."
+      },
+      {
+        "category": "fortnite",
+        "q": "포트나이트에서 Zo7al 맵에 어떻게 참여하나요?",
+        "a": "포트나이트를 열고 크리에이티브로 이동해 \"코드 입력\"을 선택한 뒤, 포트나이트 페이지에 표시된 아일랜드 코드를 입력하세요."
+      },
+      {
+        "category": "fortnite",
+        "q": "Zo7al의 모든 맵은 어디서 찾을 수 있나요?",
+        "a": "포트나이트 페이지에는 공식 크리에이터 페이지와 동기화된 모든 아일랜드가 코드와 함께 나열됩니다."
+      },
+      {
+        "category": "community",
+        "q": "Zo7al의 공식 디스코드 서버는 무엇인가요?",
+        "a": "discord.gg/nxScVYrSXq — 이벤트, 지원, 커뮤니티 소식의 허브입니다."
+      },
+      {
+        "category": "community",
+        "q": "Zo7al의 소셜 미디어는 어디서 찾을 수 있나요?",
+        "a": "소셜 페이지에서 YouTube 채널 @iiZo7al과 다른 계정을 확인하세요. 링크는 공식 Linktree와 동기화됩니다."
+      },
+      {
+        "category": "community",
+        "q": "문제는 어떻게 신고하나요?",
+        "a": "디스코드 서버에 참여해 지원 채널에서 티켓을 열어주세요 — 팀에 가장 빠르게 연락할 수 있는 방법입니다."
+      },
+      {
+        "category": "community",
+        "q": "Zo7al에게 어떻게 연락하나요?",
+        "a": "광고 및 협업 문의: ads@zo7al.net. 서버나 구매 관련 지원은 소셜 페이지의 Discord를 이용하세요."
+      },
+      {
+        "category": "modpacks",
+        "q": "Zo7al의 모드팩은 어디서 다운로드하나요?",
+        "a": "Modrinth와 CurseForge에서 다운로드할 수 있으며, 두 곳 모두 모드팩 페이지에 직접 링크로 연결되어 있습니다."
+      },
+      {
+        "category": "community",
+        "q": "Zo7al 계정의 최신 콘텐츠는 어떻게 보나요?",
+        "a": "/socials에서 Zo7al Games를 포함한 계정의 상세 아이콘을 누르세요. 계정 소개와 플랫폼별 공개 콘텐츠를 확인할 수 있습니다. 가능한 경우 일반 YouTube 동영상, 게시물, 저장된 Twitch 방송, 모드팩 릴리스를 보여 줍니다."
+      },
+      {
+        "category": "community",
+        "q": "일부 소셜 미디어 미리보기가 표시되지 않는 이유는 무엇인가요?",
+        "a": "일부 플랫폼은 공개 미리보기를 제한하거나 API 연결을 요구하며, 공개 콘텐츠가 없을 수도 있습니다. 미리보기의 링크로 원래 계정을 여세요. 미리보기가 없다고 계정이 삭제된 것은 아닙니다."
+      },
+      {
+        "category": "storeRanks",
+        "q": "크리에이터 등급은 어떻게 신청하나요?",
+        "a": "/store의 Coins 아래에서 YouTube, Twitch 또는 TikTok을 선택하세요. 이메일, Minecraft와 Discord 이름, 채널 링크, 콘텐츠 정보를 제출하면 팀에서 검토합니다. 등급은 자동 지급되지 않습니다."
+      },
+      {
+        "category": "storeRanks",
+        "q": "크리에이터 등급은 유료인가요?",
+        "a": "지원은 무료이며 구매 등급 및 Coins와 별개입니다. 자격과 승인 여부는 팀이 결정합니다. 고정된 팔로워 기준이나 검토 기간은 약속하지 않습니다."
+      }
     ]
   },
   "footer": {
-    "tagline": "게이밍 크리에이터. 마인크래프트 네트워크 빌더. 포트나이트 크리에이터.", "siteLabel": "사이트", "platformsLabel": "플랫폼",
-    "copyright": "Zo7al. All rights reserved.", "disclaimer": "공식 마인크래프트, Epic Games 또는 포트나이트 서비스가 아닙니다."
+    "tagline": "게이밍 크리에이터. 마인크래프트 네트워크 빌더. 포트나이트 크리에이터.",
+    "siteLabel": "사이트",
+    "platformsLabel": "플랫폼",
+    "copyright": "Zo7al. All rights reserved.",
+    "disclaimer": "공식 마인크래프트, Epic Games 또는 포트나이트 서비스가 아닙니다."
   },
-  "language": { "label": "언어" },
+  "language": {
+    "label": "언어"
+  },
   "game": {
     "version": "버전 {version}",
     "pointerHelp": "WASD / 방향키 · 마우스를 움직여 조종",
@@ -227,7 +408,19 @@
     "refresh": "새로고침",
     "globalUnavailable": "서비스를 사용할 수 없는 동안 이 비행은 세계 순위에 등록할 수 없습니다.",
     "audioHelp": "음악과 효과음을 따로 켜거나 끕니다.",
-    "enter": "입장"
+    "enter": "입장",
+    "dailyChallenge": "일일 도전",
+    "challengeScore": "{count}점 달성하기",
+    "challengeStars": "별 {count}개 모으기",
+    "achievements": "업적",
+    "achievement_firstFlight": "첫 검증된 비행",
+    "achievement_score10000": "10,000점",
+    "achievement_stars10": "별 10개",
+    "achievement_score100000": "100,000점",
+    "achievementHelp": "배지는 검증된 플레이 후 이 기기에 저장됩니다. 일일 진행 상황은 현재 비행에 해당합니다.",
+    "allTime": "전체 기간",
+    "weekly": "이번 주",
+    "weeklyPeriod": "월요일~일요일, 리야드 시간"
   },
   "ui": {
     "social_epicgames": "제 포트나이트 맵 소식과 업데이트, 여러분의 제안과 버그 제보를 위한 공간.",
@@ -306,8 +499,7 @@
     "home": "홈으로",
     "explore": "둘러보기",
     "direction": "ltr"
-  }
-,
+  },
   "storeDescription": {
     "coinsHeading": "🪙 {count} 코인 – Zo7al Network",
     "coinsIntro": "이 패키지를 구매하면 Minecraft 계정에 {count} 코인이 바로 추가됩니다.",
@@ -323,7 +515,6 @@
     "coinsLinked": "코인은 결제 시 입력한 Minecraft 사용자 이름에 연결됩니다",
     "coinsDelivery": "결제 후 1–5분 이내에 코인이 자동 지급됩니다.",
     "coinsDeliveryHelp": "10–15분 내에 코인을 받지 못하면 다시 접속하거나 주문 번호와 함께 지원팀에 문의하세요.",
-
     "vipAndMvp": "VIP 및 MVP",
     "title": "{rank} 등급 – Zo7al Network",
     "upgrade": "{rank} 업그레이드 – Zo7al Network",
@@ -367,7 +558,7 @@
     "boostDuration": "등급 기간: 하나 이상의 Discord 서버 부스트가 활성 상태인 동안.",
     "boostPrice": "가격: 하나 이상의 Discord 서버 부스트.",
     "boostEnd": "모든 부스트가 만료되거나 제거되면 Booster 등급과 혜택도 제거됩니다."
-},
+  },
   "creators": {
     "title": "크리에이터 등급",
     "intro": "YouTube, Twitch 또는 TikTok 등급에 지원하세요. 채널과 Minecraft 콘텐츠를 소개해 주세요.",
@@ -397,5 +588,160 @@
       "tiktok": "TIKTOK 등급은 TikTok에서 Minecraft 콘텐츠를 만드는 크리에이터를 위한 등급입니다. 재미있는 장면, 팁, 챌린지 등 프로필과 짧은 영상 스타일을 소개해 주세요. 팔로워 수, 게시 빈도와 Zo7al Network 경험을 공유할 방법을 알려 주세요."
     },
     "applicationDetails": "지원 양식에 연락 가능한 이메일, Minecraft와 Discord 이름, 선택한 플랫폼의 프로필 링크를 입력하세요. 콘텐츠와 지원 이유를 정확하게 설명해 주세요. 동의하면 지원서가 Discord를 통해 Zo7al 팀에 전달됩니다. 전달 확인 후 표시되는 지원 번호를 보관하세요. 지원은 구매나 자동 등급 지급이 아닙니다. 자격과 승인 여부는 팀이 결정하며 검토 기간이나 추가 혜택은 보장되지 않습니다."
+  },
+  "hub": {
+    "latest": "Zo7al 새 소식",
+    "news": "소식",
+    "events": "이벤트",
+    "player": "플레이어 프로필",
+    "orders": "내 주문",
+    "applications": "크리에이터 신청",
+    "support": "고객지원",
+    "rules": "네트워크 규칙",
+    "registrations": "이벤트 참가 신청",
+    "newsIntro": "네트워크 소식, 맵 업데이트, 모드팩 출시 정보입니다.",
+    "eventsIntro": "예정된 커뮤니티 이벤트와 대회를 확인하세요.",
+    "playerIntro": "마인크래프트 캐릭터, 현재 등급, 서버 통계를 확인하세요.",
+    "ordersIntro": "개인 주문 확인 정보를 사용해 결제와 지급 상태를 확인하세요.",
+    "applicationsIntro": "크리에이터 신청과 팀의 검토 상태를 확인하세요.",
+    "supportIntro": "답변을 찾거나 Zo7al Network 팀에 문제를 알려 주세요.",
+    "newsEmpty": "아직 게시된 소식이 없습니다.",
+    "eventsEmpty": "아직 예정된 이벤트가 없습니다. 다음 공지를 기다려 주세요.",
+    "rulesEmpty": "아직 이곳에 네트워크 규칙이 게시되지 않았습니다.",
+    "latestVideo": "최신 영상",
+    "watch": "영상 보기",
+    "search": "빠른 검색",
+    "searchPlaceholder": "페이지, 맵, 모드팩, 질문 검색…",
+    "noResults": "일치하는 결과가 없습니다.",
+    "commonErrorsTitle": "자주 발생하는 오류",
+    "connection": "접속",
+    "store": "상점",
+    "modpacks": "모드팩",
+    "riyadhTime": "리야드 시간",
+    "eventStarted": "이벤트가 시작되었습니다.",
+    "countdown": "{days}일 · {hours}시간 · {minutes}분 · {seconds}초",
+    "register": "참가 신청",
+    "eventLink": "이벤트 링크",
+    "received": "신청이 접수되었습니다",
+    "receiptHelp": "접수 번호와 개인 접근 코드를 보관하세요. 이 브라우저에도 저장되어 신청 상태를 확인할 수 있습니다.",
+    "reference": "접수 번호",
+    "accessCode": "개인 접근 코드",
+    "track": "신청 상태 확인",
+    "trackingHelp": "접수 번호와 개인 접근 코드를 입력하거나 저장된 신청을 선택하세요.",
+    "savedRequests": "이 기기에 저장됨",
+    "noSavedRequests": "이 브라우저에 저장된 신청이 없습니다.",
+    "notFound": "해당 신청을 찾을 수 없습니다. 접수 번호와 접근 코드를 확인하세요.",
+    "consent": "이 정보를 Discord를 통해 Zo7al Network 팀과 공유하는 데 동의합니다.",
+    "webhookNote": "신청 내용은 Discord의 담당 팀에 전송됩니다.",
+    "loading": "불러오는 중…",
+    "sending": "전송 중…",
+    "unavailable": "이 서비스를 일시적으로 이용할 수 없습니다. 나중에 다시 시도하세요.",
+    "rateLimit": "시도 횟수가 너무 많습니다. 15분 후에 다시 시도하세요.",
+    "status": "상태",
+    "status_pending": "검토 중",
+    "status_accepted": "승인됨",
+    "status_rejected": "거절됨",
+    "status_open": "접수됨",
+    "status_reviewing": "처리 중",
+    "status_closed": "종료됨",
+    "status_unknown": "확인되지 않음",
+    "status_paid": "결제 확인됨",
+    "status_awaitingPayment": "결제 대기 중",
+    "delivery": "게임 내 지급",
+    "delivery_unknown": "서버에서 지급을 확인하지 않았습니다.",
+    "delivery_pending": "지급 대기 중",
+    "delivery_delivered": "지급 완료",
+    "paymentDeliveryNote": "결제 확인과 게임 내 지급 상태는 별도로 확인됩니다.",
+    "orderSupport": "이 주문에 대한 도움 받기",
+    "subscriptions": "구독 관리",
+    "profileHelp": "마인크래프트 사용자 이름을 입력해 공개 서버 프로필을 확인하세요.",
+    "viewProfile": "프로필 보기",
+    "online": "온라인",
+    "offline": "오프라인",
+    "profileUnknown": "현재 서버 프로필 데이터를 이용할 수 없습니다.",
+    "lastSeen": "마지막 접속",
+    "stat_kills": "처치 수",
+    "stat_deaths": "사망 수",
+    "stat_wins": "승리 수",
+    "stat_playtimeSeconds": "플레이 시간",
+    "report": "문제 신고",
+    "reportType": "신고 유형",
+    "report_technical": "기술적 문제",
+    "report_player": "플레이어 신고",
+    "report_order": "주문 문제",
+    "orderReference": "주문 접수 번호(해당하는 경우)",
+    "subject": "제목",
+    "message": "상세 내용",
+    "send": "전송",
+    "admin": "Zo7al 관리",
+    "password": "비밀번호",
+    "login": "로그인",
+    "logout": "로그아웃",
+    "adminUnavailable": "관리 기능이 아직 활성화되지 않았습니다.",
+    "invalidPassword": "비밀번호가 올바르지 않습니다.",
+    "sessionExpired": "세션이 만료되었습니다. 다시 로그인하세요.",
+    "refresh": "새로고침",
+    "saved": "저장됨",
+    "save": "저장",
+    "edit": "수정",
+    "delete": "삭제",
+    "create": "새로 만들기",
+    "title": "제목",
+    "body": "내용",
+    "language": "언어",
+    "published": "게시됨",
+    "draft": "초안",
+    "startsAt": "시작 날짜 및 시간",
+    "publicNote": "신청자에게 표시되는 메모",
+    "discordDelivered": "Discord에서 수신됨",
+    "discordPending": "Discord 알림 대기 중",
+    "retryDiscord": "Discord 알림 다시 보내기",
+    "empty": "아직 항목이 없습니다.",
+    "favoritesOnly": "즐겨찾기만",
+    "favoritesEmpty": "아직 이곳에 저장한 즐겨찾기가 없습니다.",
+    "addFavorite": "즐겨찾기에 추가",
+    "removeFavorite": "즐겨찾기에서 삭제",
+    "share": "공유 링크 복사",
+    "players": "플레이어 수",
+    "installation": "설치 안내",
+    "installLauncher": "{source} 프로젝트를 지원하는 런처를 설치하세요.",
+    "installProject": "프로젝트 공식 페이지를 열고 출시된 버전을 선택하세요.",
+    "installVersion": "상세 정보에 기재된 마인크래프트 버전과 로더를 사용하세요. 제작자가 공개한 RAM 요구 사항을 따르세요.",
+    "installLaunch": "런처에서 프로젝트를 가져오거나 설치한 후 파일 다운로드가 완료되면 실행하세요.",
+    "launcher": "{source} 런처",
+    "projectPage": "프로젝트 페이지",
+    "changelog": "버전 변경 사항",
+    "commonErrors": [
+      {
+        "q": "서버에 접속할 수 없어요",
+        "a": "접속 카드에 표시된 주소와 Bedrock 포트를 확인하세요. 지원되는 게임 버전을 사용하고 서버를 다시 추가한 뒤 접속해 보세요.",
+        "category": "connection"
+      },
+      {
+        "q": "Outdated client / Outdated server",
+        "a": "마인크래프트 버전을 이 페이지의 지원 버전과 비교하세요. 런처에서 지원되는 버전을 선택한 뒤 다시 접속하세요.",
+        "category": "connection"
+      },
+      {
+        "q": "Invalid session / Failed to verify username",
+        "a": "마인크래프트를 종료하고 런처에서 로그아웃한 뒤 다시 로그인하세요. 게임을 다시 실행하세요. 오류가 계속되면 정확한 오류 메시지를 고객지원에 보내 주세요.",
+        "category": "connection"
+      },
+      {
+        "q": "Connection timed out / Disconnected",
+        "a": "인터넷 연결을 확인하고 게임을 다시 실행해 보세요. 계속 발생하면 오류 메시지, 게임 버전, 발생 시간을 고객지원에 알려 주세요.",
+        "category": "connection"
+      },
+      {
+        "q": "등급이나 코인이 지급되지 않았어요",
+        "a": "결제가 완료되었는지 확인하고 서버에 다시 접속하세요. 상품 상세 정보의 지급 시간을 초과했다면 주문 접수 번호와 함께 고객지원에 문의하세요.",
+        "category": "store"
+      },
+      {
+        "q": "모드팩이 충돌하거나 실행되지 않아요",
+        "a": "프로젝트 상세 정보의 버전과 로더를 사용하세요. 공개된 RAM 요구 사항을 확인하고 추가로 설치한 모드를 제거하세요. 고객지원 신고에 충돌 로그를 포함하세요.",
+        "category": "modpacks"
+      }
+    ]
   }
 }
