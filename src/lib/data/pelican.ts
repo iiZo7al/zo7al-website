@@ -1,7 +1,7 @@
 import { metricNumber, validServerId } from "./dashboard";
 
 export type PelicanState = "running" | "starting" | "stopping" | "offline" | "stopped";
-export type PelicanStats = { state: PelicanState | null; cpu: number | null; memory: number | null; disk: number | null; uptime: number | null };
+export type PelicanStats = { state: PelicanState | null; cpu: number | null; memory: number | null; disk: number | null; uptime: number | null; networkRx:number|null; networkTx:number|null };
 export type PelicanServer = { name: string; uuid: string; limits: { cpu: number | null; memory: number | null; disk: number | null }; stats: PelicanStats; updatedAt: string };
 export const pelicanState = (v: unknown): PelicanState | null => typeof v === "string" && ["running","starting","stopping","offline","stopped"].includes(v) ? v as PelicanState : null;
 const record = (v: unknown): Record<string,unknown> => v && typeof v === "object" && !Array.isArray(v) ? v as Record<string,unknown> : {};
@@ -11,7 +11,9 @@ export function parsePelicanStats(value: unknown, websocket = false): PelicanSta
   const state = pelicanState(websocket ? root.state : attributes.current_state);
   if (!websocket && !state) throw Error("INVALID_UPSTREAM");
   return { state, cpu: metricNumber(resources.cpu_absolute), memory: metricNumber(resources.memory_bytes),
-    disk: metricNumber(resources.disk_bytes), uptime: metricNumber(resources.uptime) };
+    disk: metricNumber(resources.disk_bytes), uptime: metricNumber(resources.uptime),
+    networkRx:metricNumber(websocket?record(resources.network).rx_bytes:resources.network_rx_bytes),
+    networkTx:metricNumber(websocket?record(resources.network).tx_bytes:resources.network_tx_bytes) };
 }
 export function parsePelicanServer(value: unknown): Pick<PelicanServer,"name"|"uuid"|"limits"> {
   const attributes = record(record(value).attributes), limits = record(attributes.limits);
