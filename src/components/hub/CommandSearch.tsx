@@ -3,12 +3,12 @@ import { useEffect,useRef,useState } from "react";
 import { usePathname,useRouter } from "next/navigation";
 import { useLocale,useTranslations } from "next-intl";
 import DetailsDialog from "@/components/ui/DetailsDialog";
-import { Search } from "lucide-react";
+import SearchIcon from "@/components/ui/SearchIcon";
 type Entry={title:string;href:string;keywords?:string;category?:string};
 const normalize=(s:string)=>s.normalize("NFKD").replace(/[\u0300-\u036f\u064b-\u065f]/g,"").toLocaleLowerCase();
 export function SearchTrigger() {
   const t=useTranslations("hub");
-  return <button type="button" className="hub-button hub-icon-button" aria-label={t("search")} title={t("search")+" · Ctrl + K"} onClick={()=>window.dispatchEvent(new Event("zo7al-search"))}><Search size={18} aria-hidden="true"/></button>;
+  return <button type="button" className="nav-search-trigger" data-cursor="link" aria-label={t("search")} title={t("search")+" · Ctrl + K"} onClick={()=>window.dispatchEvent(new Event("zo7al-search"))}><SearchIcon size={15}/><span>{t("search")}</span></button>;
 }
 export default function CommandSearch() {
   const t=useTranslations("hub"),nav=useTranslations("nav"),faq=useTranslations("faq"),locale=useLocale(),path=usePathname(),router=useRouter();
@@ -32,10 +32,10 @@ export default function CommandSearch() {
   useEffect(()=>{if(open)document.getElementById(`search-result-${active}`)?.scrollIntoView({block:"nearest"});},[open,active]);
   const entries:Entry[]=[
     ...(["home","minecraft","modpacks","fortnite","socials","store"] as const).map(key=>({title:nav(key),href:key==="home"?"/":"/"+key,keywords:key})),
-    ...(["news","events","player","orders","applications","support"] as const).map(key=>({title:t(key),href:key==="player"?"/player":"/"+key,keywords:key})),
+    ...([{key:"news",href:"/#news"},{key:"events",href:"/minecraft#events"},{key:"player",href:"/minecraft#player"},{key:"activity",href:"/store?activity=orders"},{key:"applications",href:"/store?activity=applications"},{key:"support",href:"/minecraft#support"}]).map(({key,href})=>({title:t(key),href,keywords:key})),
     {title:"Space Run",href:"/game",keywords:"game rocket"},
     {title:t("commonErrorsTitle"),href:"/minecraft#common-errors",keywords:"errors حلول مشاكل"},
-    ...(faq.raw("items") as {q:string;a:string}[]).map(item=>({title:item.q,href:"/support#faq",keywords:item.a,category:faq("title")})),
+    ...(faq.raw("items") as {q:string;a:string}[]).map(item=>({title:item.q,href:"/minecraft#support",keywords:item.a,category:faq("title")})),
     ...remote
   ];
   const search=normalize(query.trim());

@@ -68,6 +68,7 @@ export default function Navbar() {
         </Link>
 
         <ul className="hidden xl:flex items-center gap-1">
+          <li><SearchTrigger/></li>
           {NAV_LINKS.map((link) => {
             const active = pathname === link.href;
             return (
@@ -99,7 +100,7 @@ export default function Navbar() {
           })}
         </ul>
 
-        <div className="ms-auto me-2 xl:ms-0"><SearchTrigger/></div>
+        <div className="ms-auto me-2 xl:hidden"><SearchTrigger/></div>
         <div className="hidden xl:flex items-center gap-2">
           <a
             href={DISCORD_LINK}

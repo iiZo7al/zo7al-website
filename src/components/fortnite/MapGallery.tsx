@@ -6,7 +6,7 @@ import Reveal from "@/components/ui/Reveal";
 import { FortniteMap, islandCodeUrl } from "@/lib/data/fortnite";
 import { flashCursor } from "@/components/cursor/CustomCursor";
 
-import { FavoriteButton,ShareButton,useFavorites } from "@/components/hub/Favorites";
+import ShareButton from "@/components/ui/ShareButton";
 import { mapPlayerCount } from "@/lib/data/map-filters";
 import QueryObserver from "@/components/hub/QueryObserver";
 import DetailsIcon from "@/components/ui/DetailsIcon";
@@ -17,8 +17,6 @@ import "@/components/store/store.css";
 export default function MapGallery({ maps: providedMaps }: { maps: FortniteMap[] }) {
   const locale = useLocale();
   const hub = useTranslations("hub");
-  const {ids:favoriteIds}=useFavorites();
-  const [favoritesOnly,setFavoritesOnly]=useState(false);
   const [players,setPlayers]=useState("");
   const store = useTranslations("store");
   const t = useTranslations("fortnite"), tc = useTranslations("common"), ui = useTranslations("ui");
@@ -41,7 +39,7 @@ export default function MapGallery({ maps: providedMaps }: { maps: FortniteMap[]
   const [active, setActive] = useState("All");
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
-  const filteredMaps = maps.filter(m => (active === "All" || m.category === active) && (!favoritesOnly || favoriteIds.includes("map:"+m.code)) && (!players || mapPlayerCount(m) === Number(players)));
+  const filteredMaps = maps.filter(m => (active === "All" || m.category === active) && (!players || mapPlayerCount(m) === Number(players)));
   const playerCounts=[...new Set(maps.map(mapPlayerCount).filter((count):count is number=>count!==null))].sort((a,b)=>a-b);
   const closeDetails=()=>{setDetails(null);const url=new URL(window.location.href);url.searchParams.delete("map");window.history.replaceState(null,"",url);};
   const queryChanged=useCallback((code:string|null)=>setDetails(maps.find(map=>map.code===code)??null),[maps]);
@@ -79,7 +77,7 @@ export default function MapGallery({ maps: providedMaps }: { maps: FortniteMap[]
         ))}
       </div>
 
-      <div className="hub-actions mb-7"><button type="button" className="hub-button" aria-pressed={favoritesOnly} onClick={()=>setFavoritesOnly(value=>!value)}>{hub("favoritesOnly")}</button><label className="hub-muted">{hub("players")} <select className="hub-button" value={players} onChange={e=>setPlayers(e.target.value)}><option value="">{tc("all")}</option>{playerCounts.map(count=><option key={count} value={count}>{count}</option>)}</select></label></div>
+      <div className="hub-actions mb-7"><label className="hub-muted">{hub("players")} <select className="hub-button" value={players} onChange={e=>setPlayers(e.target.value)}><option value="">{tc("all")}</option>{playerCounts.map(count=><option key={count} value={count}>{count}</option>)}</select></label></div>
       {!filteredMaps.length && <p className="hub-muted mb-6">{hub("noResults")}</p>}
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {filteredMaps.map((map, i) => (
@@ -131,7 +129,7 @@ export default function MapGallery({ maps: providedMaps }: { maps: FortniteMap[]
                     {t(copiedId === map.id ? "copied" : "copyCode")}
                   </button>
                   <button type="button" className="store-action store-details-button" onClick={() => { setDetails(map);const url=new URL(window.location.href);url.searchParams.set("map",map.code);window.history.replaceState(null,"",url); }} aria-haspopup="dialog" aria-label={`${store("details")} — ${map.title}`} title={store("details")} data-cursor="button"><DetailsIcon /></button>
-                  <FavoriteButton id={"map:"+map.code}/><ShareButton path={"/fortnite?map="+map.code}/>
+                  <ShareButton path={"/fortnite?map="+map.code}/>
                   </div>
                 </div>
               </div>
@@ -156,7 +154,7 @@ export default function MapGallery({ maps: providedMaps }: { maps: FortniteMap[]
               <button type="button" className="store-action" onClick={() => copyCode(details.id, details.code)}>{t(copiedId === details.id ? "copied" : "copyCode")}</button>
             </div>
             <p dir="auto" className="whitespace-pre-line text-sm leading-7 text-[var(--text-muted)]">{t.has(`descriptions.${details.code}`) ? t(`descriptions.${details.code}`) : details.description || t("detailsUnavailable")}</p>
-            <div className="hub-actions"><FavoriteButton id={"map:"+details.code}/><ShareButton path={"/fortnite?map="+details.code}/>{mapPlayerCount(details)&&<span className="hub-muted">{hub("players")}: {mapPlayerCount(details)}</span>}</div>
+            <div className="hub-actions"><ShareButton path={"/fortnite?map="+details.code}/>{mapPlayerCount(details)&&<span className="hub-muted">{hub("players")}: {mapPlayerCount(details)}</span>}</div>
             {!!details.tags?.length && <ul aria-label={t("tags")} className="flex flex-wrap gap-2">{details.tags.map(tag => <li key={tag} dir="auto" className="rounded-full border border-[var(--border)] px-3 py-1.5 text-xs font-semibold">{tag}</li>)}</ul>}
             <a href={islandCodeUrl(details.code, locale)} target="_blank" rel="noopener noreferrer" className="store-action">{t("viewOnFortnite")}<SolidIcon name="arrow-up-right" size={16} /></a>
           </div>

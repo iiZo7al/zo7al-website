@@ -742,6 +742,11 @@
         "a": "Utilisez la version et le chargeur indiqués dans les détails du projet. Vérifiez les besoins en RAM publiés et retirez les mods supplémentaires. Joignez le journal du plantage à votre signalement.",
         "category": "modpacks"
       }
-    ]
+    ],
+    "activity": "Mes commandes et candidatures",
+    "activityIntro": "Suivez vos achats, candidatures de créateur, demandes d’assistance et inscriptions aux événements au même endroit.",
+    "commonErrorsIntro": "Des solutions rapides aux problèmes courants de connexion, de boutique et de modpacks.",
+    "viewMore": "Voir plus",
+    "copyLink": "Copiez ce lien"
   }
 }

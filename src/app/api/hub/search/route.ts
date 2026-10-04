@@ -13,7 +13,7 @@ export async function GET(request: Request) {
     ...MODRINTH_FALLBACK.map(p=>({title:p.title,href:"/modpacks?project=modrinth:"+p.slug,keywords:p.description,category:"Modrinth"})),
     ...CURSEFORGE_PROJECTS.map(p=>({title:p.title,href:"/modpacks?project=curseforge:"+p.id,keywords:p.description,category:"CurseForge"})),
     ...catalog.products.map(p=>({title:p.name,href:"/store",keywords:p.category?.name,category:"Zo7al Network"})),
-    ...news.items.map(n=>({title:n.title,href:"/news#"+n.id,keywords:n.body})),
+    ...news.items.map(n=>({title:n.title,href:"/?news="+encodeURIComponent(n.id)+"#news",keywords:n.body})),
     ...events.items.map(n=>({title:n.title,href:"/events#"+n.id,keywords:n.body}))
   ]},{headers:{"Cache-Control":"public,max-age=60"}});
 }

@@ -1,5 +1,4 @@
 import { getTranslations } from "next-intl/server";
-import FavoriteCollection from "@/components/hub/FavoriteCollection";
 import ModpackDetailsButton from "./ModpackDetailsButton";
 import SolidIcon from "@/components/ui/SolidIcon";
 import Reveal from "@/components/ui/Reveal";
@@ -29,7 +28,7 @@ export default async function CurseForgeGallery({
         </a>
       </div>
 
-      <FavoriteCollection ids={projects.map(project=>"curseforge:"+project.id)} className="grid gap-5 sm:grid-cols-2">
+      <div className="grid gap-5 sm:grid-cols-2">
         {projects.map((project, i) => (
           <Reveal key={project.id} delay={i * 0.05}>
             <article
@@ -75,7 +74,7 @@ export default async function CurseForgeGallery({
             </article>
           </Reveal>
         ))}
-      </FavoriteCollection>
+      </div>
     </div>
   );
 }

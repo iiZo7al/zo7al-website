@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { useFormatter, useTranslations } from "next-intl";
 import { Check } from "lucide-react";
-import { FavoriteButton,ShareButton } from "@/components/hub/Favorites";
+import ShareButton from "@/components/ui/ShareButton";
 import QueryObserver from "@/components/hub/QueryObserver";
 import InstallationGuide from "@/components/hub/InstallationGuide";
 import DetailsIcon from "@/components/ui/DetailsIcon";
@@ -66,7 +66,7 @@ export default function ModpackDetailsButton({ project, source }: { project: Pro
             {project.iconUrl && <img src={project.iconUrl} alt="" width={88} height={88} className="h-22 w-22 rounded-2xl object-cover" />}
             <div><p className="text-label">{source}</p><p className="mt-2 text-sm text-[var(--text-muted)]">{format.number(project.downloads)} {common("downloads")}</p></div>
           </div>
-          <div className="hub-actions"><FavoriteButton id={projectKey}/><ShareButton path={"/modpacks?project="+encodeURIComponent(projectKey)}/></div>
+          <div className="hub-actions"><ShareButton path={"/modpacks?project="+encodeURIComponent(projectKey)}/></div>
           {project.projectType!=="server" && <InstallationGuide source={source} url={project.url}/>}
           <p role="status" className="text-xs text-[var(--text-muted)]">{t(status === "loading" ? "detailsLoading" : status === "live" ? "detailsLive" : status === "error" ? "detailsFallback" : "detailsSnapshot")}</p>
           <dl className="card-glow grid grid-cols-1 gap-4 rounded-xl border border-[var(--border)] p-4 sm:grid-cols-2">

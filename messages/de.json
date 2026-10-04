@@ -742,6 +742,11 @@
         "a": "Verwende die Version und den Modloader aus den Projektdetails. Prüfe die veröffentlichten RAM-Anforderungen und entferne zusätzlich installierte Mods. Füge deiner Meldung das Absturzprotokoll bei.",
         "category": "modpacks"
       }
-    ]
+    ],
+    "activity": "Meine Bestellungen und Bewerbungen",
+    "activityIntro": "Verfolge Einkäufe, Creator-Bewerbungen, Support-Anfragen und Veranstaltungsanmeldungen an einem Ort.",
+    "commonErrorsIntro": "Schnelle Lösungen für häufige Verbindungs-, Shop- und Modpack-Probleme.",
+    "viewMore": "Mehr anzeigen",
+    "copyLink": "Diesen Link kopieren"
   }
 }
