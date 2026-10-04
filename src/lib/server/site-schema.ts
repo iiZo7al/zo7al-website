@@ -22,4 +22,8 @@ ALTER TABLE site_orders ADD COLUMN IF NOT EXISTS discord_payload jsonb;
 CREATE TABLE IF NOT EXISTS site_rate_limits (
  key char(64) PRIMARY KEY, attempts integer NOT NULL, expires_at timestamptz NOT NULL
 );
+CREATE TABLE IF NOT EXISTS dashboard_connections (
+ provider text PRIMARY KEY CHECK (provider IN ('youtube','curseforge','pelican')),
+ sealed text NOT NULL, updated_at timestamptz NOT NULL DEFAULT now()
+);
 `;
