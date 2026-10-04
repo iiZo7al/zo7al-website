@@ -2,6 +2,8 @@
 import { useLocale, useTranslations } from "next-intl";
 import { Fragment, useEffect, useRef, useState } from "react";
 import Script from "next/script";
+import Link from "next/link";
+import { saveReceipt } from "@/lib/data/hub-receipts";
 import Image from "next/image";
 import "./store.css";
 import { useCart } from "./CartProvider";
@@ -51,6 +53,7 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
     return () => { controller.abort(); clearInterval(timer); window.removeEventListener("focus", refresh); };
   }, [initialLive]);
   const t = useTranslations("store"), locale = useLocale();
+  const hub = useTranslations("hub");
   const creatorT = useTranslations("creators");
   const descriptionT = useTranslations("storeDescription");
   const reduceMotion = useReducedMotion();
@@ -164,6 +167,7 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
       }
       if (!response.ok || !data.ident) throw Error();
       if (!controller.signal.aborted) {
+        if (data.tracking) saveReceipt("order", data.tracking);
         purchasedItems.current = cartItems.map(item => ({ ...item }));
         try { sessionStorage.setItem("zo7al-checkout", data.ident); sessionStorage.setItem("zo7al-checkout-items", JSON.stringify(cartItems)); } catch { /* Optional return-page recovery. */ }
         setPaymentStatus("idle"); setVerificationIdent(""); setIdent(data.ident);
@@ -198,6 +202,7 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
       <h2>{t(paymentStatus === "paid" ? "paymentSuccess" : paymentStatus === "checking" ? "paymentChecking" : "paymentPending")}</h2>
       {paymentStatus === "paid" && <><p>{t("paymentSuccessNote")}</p><p>{subscriptionLink}</p></>}
     </div>}
+    <div className="mb-6 flex flex-wrap gap-3"><Link className="store-action" href="/orders">{hub("orders")}</Link><Link className="store-action" href="/applications">{hub("applications")}</Link></div>
     {hasRank && <p className="store-notice">{copy.oneRank}</p>}
     <div className="store-tools">
       <div className="store-search-row">
@@ -233,7 +238,7 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
           <div className="store-rank-actions">{booster ? <a href={DISCORD_LINK} target="_blank" rel="noopener noreferrer" data-cursor="button" className="store-action"><span>{t("getRank")} <bdi dir="ltr">Booster</bdi></span><ArrowRight size={16} className="store-direction" aria-hidden="true" /></a> : isCoinProduct(product) && quantity > 0 ? <QuantityControl name={product.name} quantity={quantity} disabled={!live || !product.available || !cartReady} decrease={copy.decrease} increase={copy.increase} onChange={delta => changeQuantity(product.id, delta)} removeLabel={copy.remove} onRemove={() => remove(product.id)}/> : <button title={rankBlocked ? copy.oneRank : undefined} disabled={rankBlocked || !live || !product.available || !cartReady || (cartIds.length >= 20 && !cartIds.includes(product.id))} onClick={() => { if (cartIds.includes(product.id)) setCartOpen(true); else { add(product.id, isRankProduct(product) ? rankIds : []); setToast({ product, key: Date.now() }); } }} data-cursor="button" className={`store-action${featured ? " store-action-primary" : ""}`}>
             <span>{cartIds.includes(product.id) ? copy.added : <>{copy.add.split("{name}")[0]}<bdi dir="ltr">{product.name}</bdi>{copy.add.split("{name}")[1]}</>}</span>{cartIds.includes(product.id) ? <Check size={16} aria-hidden="true"/> : <CommerceIcon name="shopping-cart" size={16} aria-hidden="true"/>}
           </button>}
-          <div className="store-rank-tools"><button type="button" className="store-action store-details-button" onClick={() => setDetails(product)} data-cursor="button" aria-haspopup="dialog" aria-label={`${t("details")} — ${product.name}`} title={t("details")}><DetailsIcon /></button>
+          <div className="store-rank-tools">{isRankProduct(product) && quantity > 0 && <button type="button" className="store-action store-details-button" disabled={busy} aria-label={`${copy.remove} — ${product.name}`} title={copy.remove} onClick={() => { remove(product.id); setCartRankView(current => current?.packageId === product.id ? null : current); setToast(null); setError(null); }}><CommerceIcon name="trash" size={18}/></button>}<button type="button" className="store-action store-details-button" onClick={() => setDetails(product)} data-cursor="button" aria-haspopup="dialog" aria-label={`${t("details")} — ${product.name}`} title={t("details")}><DetailsIcon /></button>
           {(isRankProduct(product) || booster) && <button type="button" className="store-action store-details-button" aria-haspopup="dialog" aria-label={`${experience.preview} — ${product.name}`} title={experience.preview} onClick={() => setRankPreview(product)}><EyeIcon/></button>}</div></div>
         </article></motion.div>;
       })}

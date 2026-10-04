@@ -11,6 +11,7 @@ export type FortniteMap = {
   category: string;
   thumbnail: string;
   featured?: boolean;
+  maxPlayers?: number;
   description?: string;
   tags?: string[];
   videoUrl?: string;

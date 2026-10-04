@@ -5,6 +5,7 @@ export type ModpackRelease = {
   published?: string;
   url: string;
   size?: number;
+  changelog?: string;
 };
 
 export type ModpackDetails = {
@@ -32,7 +33,7 @@ export function readableDescription(body: string): string {
     .replace(/\n{3,}/g, "\n\n").trim();
 }
 
-type ModrinthVersion = { id: string; name: string; version_number: string; version_type: string; date_published: string; files?: { primary: boolean; size: number }[] };
+type ModrinthVersion = { changelog?: string; id: string; name: string; version_number: string; version_type: string; date_published: string; files?: { primary: boolean; size: number }[] };
 export function modrinthDetails(project: { body?: string; game_versions?: string[]; loaders?: string[]; updated?: string; license?: { name?: string; id?: string } }, versions: ModrinthVersion[], slug: string): ModpackDetails {
   return {
     body: project.body,
@@ -40,7 +41,7 @@ export function modrinthDetails(project: { body?: string; game_versions?: string
     updated: project.updated, license: project.license?.name || project.license?.id,
     releases: [...versions].sort((a, b) => Date.parse(b.date_published) - Date.parse(a.date_published)).map(version => ({
       name: version.name, version: version.version_number, type: version.version_type,
-      published: version.date_published,
+      published: version.date_published, ...(typeof version.changelog === "string" ? {changelog:version.changelog} : {}),
       url: `https://modrinth.com/modpack/${encodeURIComponent(slug)}/version/${encodeURIComponent(version.id)}`,
       size: version.files?.find(file => file.primary)?.size,
     })),

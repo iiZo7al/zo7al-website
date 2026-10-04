@@ -1,0 +1,66 @@
+import "server-only";
+import { createHash, randomBytes, randomUUID } from "node:crypto";
+import { siteDatabase } from "./site-db";
+import { notifyDiscord } from "./discord-notifications";
+import { tokenHash } from "./site-security";
+import { validateContent } from "../data/hub-validation";
+export async function limitAttempt(key: string, limit: number, seconds: number) {
+  const db = await siteDatabase();
+  const hash = createHash("sha256").update(key).digest("hex");
+  const result = await db.query("INSERT INTO site_rate_limits(key,attempts,expires_at) VALUES($1,1,now()+$2*interval '1 second') ON CONFLICT(key) DO UPDATE SET attempts=CASE WHEN site_rate_limits.expires_at<=now() THEN 1 ELSE site_rate_limits.attempts+1 END, expires_at=CASE WHEN site_rate_limits.expires_at<=now() THEN excluded.expires_at ELSE site_rate_limits.expires_at END RETURNING attempts", [hash, seconds]);
+  return result.rows[0].attempts <= limit;
+}
+export async function publicContent(kind: "news" | "event" | "rule", locale: string) {
+  try {
+    const result = await (await siteDatabase()).query("SELECT id,kind,locale,title,body,starts_at AS \"startsAt\",registration_url AS \"registrationUrl\",created_at AS \"createdAt\" FROM site_content WHERE kind=$1 AND published AND locale=$2 ORDER BY COALESCE(starts_at,created_at) DESC LIMIT 40", [kind,locale]);
+    return { items: result.rows, available: true };
+  } catch { return { items: [], available: false }; }
+}
+export async function saveContent(value: unknown) {
+  const content = validateContent(value); if (!content) throw new Error("INVALID");
+  const id = content.id ?? randomUUID();
+  await (await siteDatabase()).query("INSERT INTO site_content(id,kind,locale,title,body,published,starts_at,registration_url) VALUES($1,$2,$3,$4,$5,$6,$7,$8) ON CONFLICT(id) DO UPDATE SET kind=excluded.kind,locale=excluded.locale,title=excluded.title,body=excluded.body,published=excluded.published,starts_at=excluded.starts_at,registration_url=excluded.registration_url,updated_at=now()", [id,content.kind,content.locale,content.title,content.body,content.published,content.startsAt,content.registrationUrl]);
+  return id;
+}
+export async function createTrackedRequest(kind: "application" | "support" | "event", payload: unknown, id: string = randomUUID()) {
+  const token = randomBytes(32).toString("hex");
+  await (await siteDatabase()).query("INSERT INTO site_requests(id,kind,token_hash,payload,status) VALUES($1,$2,$3,$4,$5)", [id,kind,tokenHash(token),JSON.stringify(payload),kind === "support" ? "open" : "pending"]);
+  return { reference: id, token };
+}
+export async function createOrderReceipt(ident: string, username: string, items: {packageId:number;quantity:number}[], products: {id:number;name:string}[] = []) {
+  const reference = randomUUID(), token = randomBytes(32).toString("hex");
+  const fields = { "Status": "Checkout created · Awaiting payment. This notification does not confirm payment or in-game delivery.", "Minecraft": username,
+    "Items": items.map(item => (products.find(product => product.id === item.packageId)?.name?.slice(0,160) ?? ("Package #" + item.packageId)) + " × " + item.quantity).join("\n") };
+  let stored = false;
+  if (process.env.DATABASE_URL) {
+    try {
+      await (await siteDatabase()).query("INSERT INTO site_orders(id,token_hash,basket_ident,username,items,discord_payload) VALUES($1,$2,$3,$4,$5,$6)", [reference,tokenHash(token),ident,username,JSON.stringify(items),JSON.stringify(fields)]);
+      stored = true;
+    } catch {}
+  }
+  // Keep checkout usable during a notification outage. A stored notification can
+  // be retried by the administrator; its access code never goes to Discord.
+  try {
+    const receipt = await notifyDiscord("order", reference, fields);
+    if (stored) await (await siteDatabase()).query("UPDATE site_orders SET discord_receipt=$2 WHERE id=$1", [reference,receipt]).catch(()=>{});
+  } catch {}
+  return stored ? { reference, token } : null;
+}
+export async function retryOrderNotification(id: string) {
+  const db = await siteDatabase();
+  // Lock the row so concurrent admin clicks do not send duplicate messages.
+  const client = await db.connect();
+  try {
+    await client.query("BEGIN");
+    const order = (await client.query("SELECT discord_receipt,discord_payload FROM site_orders WHERE id=$1 FOR UPDATE", [id])).rows[0];
+    if (!order || !order.discord_payload) throw new Error("INVALID");
+    if (!order.discord_receipt) {
+      const receipt = await notifyDiscord("order", id, order.discord_payload);
+      await client.query("UPDATE site_orders SET discord_receipt=$2 WHERE id=$1", [id,receipt]);
+    }
+    await client.query("COMMIT");
+  } catch(error) {
+    await client.query("ROLLBACK").catch(()=>{});
+    throw error;
+  } finally { client.release(); }
+}

@@ -118,7 +118,6 @@
     "tags": "Tags",
     "detailsUnavailable": "Map details could not be loaded. You can view them on Fortnite.",
     "viewOnFortnite": "View on Fortnite",
-
     "eyebrow": "Fortnite Creative",
     "title": "FORTNITE CREATIVE",
     "text": "Maps and experiences built by Zo7al.",
@@ -188,7 +187,6 @@
     "productsTitle": "Products",
     "catalogTitle": "Store catalog",
     "browseProducts": "Browse products",
-
     "manageSubscriptions": "You can view or cancel your subscriptions here.",
     "monthly": "month",
     "boosterPrice": "From 4.99+",
@@ -243,27 +241,111 @@
       "modpacks": "Modpacks"
     },
     "items": [
-      { "category": "gettingStarted", "q": "What is ZO7AL Network?", "a": "A Minecraft server and gaming universe built by Zo7al, spanning survival, PvP, modpacks and Fortnite Creative maps." },
-      { "category": "gettingStarted", "q": "How do I join Zo7al Network on Java?", "a": "Copy the Java address, zo7al.play-mc.fun, from the Minecraft page and add it as a server in Minecraft Java Edition's multiplayer menu." },
-      { "category": "gettingStarted", "q": "How do I join Zo7al Network on Bedrock?", "a": "Add a server in Minecraft Bedrock with address zo7al.play-mc.fun and port 25807." },
-      { "category": "gettingStarted", "q": "Is Bedrock supported?", "a": "Yes. Bedrock: zo7al.play-mc.fun — port 25807." },
-      { "category": "gettingStarted", "q": "What Minecraft versions are supported?", "a": "1.8.9 for classic PvP, 1.20.x for stable survival, and 1.21.x for the latest release line." },
-      { "category": "gettingStarted", "q": "What kind of videos do you make?", "a": "Gaming videos and Shorts: Fortnite, Minecraft and other games, challenges, funny moments and playing with friends. Find my channel on YouTube at @iiZo7al." },
-      { "category": "storeRanks", "q": "How do I buy a rank?", "a": "Open /store, choose a rank, enter your Minecraft username and complete payment securely through Tebex. Booster is obtained by boosting our Discord server." },
-      { "category": "storeRanks", "q": "What ranks are available?", "a": "Paid ranks are VIP, MVP, MVP+ and MVP++. Booster is obtained by boosting the Discord server. Creator ranks YOUTUBE, TWITCH and TIKTOK are available through application and review, not purchase. Visit /store for current details, prices and applications. Coins packages are in-game currency, not ranks." },
-      { "category": "storeRanks", "q": "Where is the Zo7al Network store?", "a": "Open the Store page at /store. Payments are processed through Tebex, and subscriptions can be viewed or cancelled at portal.tebex.io." },
-      {"category": "storeRanks", "q": "How do I buy Coins, and can I buy them again?", "a": "Open /store and choose a package in Coins. Enter your exact Minecraft username and pay through Tebex. The package details show the amount and any bonus. Coins are in-game currency, separate from ranks, and can be purchased more than once. If delivery is delayed, contact Discord support with your transaction reference."},
-      { "category": "fortnite", "q": "How do I join a Zo7al Fortnite map?", "a": "Open Fortnite, go to Creative, select \"Enter a code\", and type in the island code shown on any map on the Fortnite page." },
-      { "category": "fortnite", "q": "Where can I find all Zo7al maps?", "a": "The Fortnite page lists every published island with its code, kept in sync with the official creator page." },
-      { "category": "community", "q": "What is the official Zo7al Discord server?", "a": "discord.gg/nxScVYrSXq — the hub for events, support and community updates." },
-      { "category": "community", "q": "Where can I find Zo7al's social media?", "a": "Find my YouTube channel @iiZo7al and my other accounts on the Socials page. The account links sync from my official Linktree." },
-      { "category": "community", "q": "How do I report a problem?", "a": "Join the Discord server and open a ticket in the support channel — that's the fastest way to reach the team." },
-      { "category": "community", "q": "How do I contact Zo7al?", "a": "For advertising and collaborations, email ads@zo7al.net. For server or purchase support, join our Discord through the Socials page." },
-      { "category": "modpacks", "q": "Where can I download Zo7al modpacks?", "a": "On Modrinth and CurseForge — both are listed with direct links on the Modpacks page." },
-      {"category": "community", "q": "How do I preview the latest content from Zo7al’s accounts?", "a": "Open /socials and select the details icon on any account, including Zo7al Games. Each preview shows the account bio and platform-specific public content when available, such as a long YouTube video, a post, a saved Twitch broadcast or a modpack release."},
-      {"category": "community", "q": "Why is a social preview sometimes unavailable?", "a": "Some platforms restrict public previews, require an API connection, or have no public content available. Use the link in the preview to open the original account. A missing preview does not mean the account was deleted."},
-      {"category": "storeRanks", "q": "How do I apply for a creator rank?", "a": "Open /store and find Creator ranks below Coins. Choose YouTube, Twitch or TikTok, then submit your email, Minecraft and Discord usernames, channel link and content details. The team reviews your application; submission does not grant a rank automatically."},
-      {"category": "storeRanks", "q": "Are creator ranks paid?", "a": "No payment is required to apply. These ranks are separate from purchased ranks and Coins. Approval and eligibility are decided by the team; no fixed follower threshold or review time is promised."}
+      {
+        "category": "gettingStarted",
+        "q": "What is ZO7AL Network?",
+        "a": "A Minecraft server and gaming universe built by Zo7al, spanning survival, PvP, modpacks and Fortnite Creative maps."
+      },
+      {
+        "category": "gettingStarted",
+        "q": "How do I join Zo7al Network on Java?",
+        "a": "Copy the Java address, zo7al.play-mc.fun, from the Minecraft page and add it as a server in Minecraft Java Edition's multiplayer menu."
+      },
+      {
+        "category": "gettingStarted",
+        "q": "How do I join Zo7al Network on Bedrock?",
+        "a": "Add a server in Minecraft Bedrock with address zo7al.play-mc.fun and port 25807."
+      },
+      {
+        "category": "gettingStarted",
+        "q": "Is Bedrock supported?",
+        "a": "Yes. Bedrock: zo7al.play-mc.fun — port 25807."
+      },
+      {
+        "category": "gettingStarted",
+        "q": "What Minecraft versions are supported?",
+        "a": "1.8.9 for classic PvP, 1.20.x for stable survival, and 1.21.x for the latest release line."
+      },
+      {
+        "category": "gettingStarted",
+        "q": "What kind of videos do you make?",
+        "a": "Gaming videos and Shorts: Fortnite, Minecraft and other games, challenges, funny moments and playing with friends. Find my channel on YouTube at @iiZo7al."
+      },
+      {
+        "category": "storeRanks",
+        "q": "How do I buy a rank?",
+        "a": "Open /store, choose a rank, enter your Minecraft username and complete payment securely through Tebex. Booster is obtained by boosting our Discord server."
+      },
+      {
+        "category": "storeRanks",
+        "q": "What ranks are available?",
+        "a": "Paid ranks are VIP, MVP, MVP+ and MVP++. Booster is obtained by boosting the Discord server. Creator ranks YOUTUBE, TWITCH and TIKTOK are available through application and review, not purchase. Visit /store for current details, prices and applications. Coins packages are in-game currency, not ranks."
+      },
+      {
+        "category": "storeRanks",
+        "q": "Where is the Zo7al Network store?",
+        "a": "Open the Store page at /store. Payments are processed through Tebex, and subscriptions can be viewed or cancelled at portal.tebex.io."
+      },
+      {
+        "category": "storeRanks",
+        "q": "How do I buy Coins, and can I buy them again?",
+        "a": "Open /store and choose a package in Coins. Enter your exact Minecraft username and pay through Tebex. The package details show the amount and any bonus. Coins are in-game currency, separate from ranks, and can be purchased more than once. If delivery is delayed, contact Discord support with your transaction reference."
+      },
+      {
+        "category": "fortnite",
+        "q": "How do I join a Zo7al Fortnite map?",
+        "a": "Open Fortnite, go to Creative, select \"Enter a code\", and type in the island code shown on any map on the Fortnite page."
+      },
+      {
+        "category": "fortnite",
+        "q": "Where can I find all Zo7al maps?",
+        "a": "The Fortnite page lists every published island with its code, kept in sync with the official creator page."
+      },
+      {
+        "category": "community",
+        "q": "What is the official Zo7al Discord server?",
+        "a": "discord.gg/nxScVYrSXq — the hub for events, support and community updates."
+      },
+      {
+        "category": "community",
+        "q": "Where can I find Zo7al's social media?",
+        "a": "Find my YouTube channel @iiZo7al and my other accounts on the Socials page. The account links sync from my official Linktree."
+      },
+      {
+        "category": "community",
+        "q": "How do I report a problem?",
+        "a": "Join the Discord server and open a ticket in the support channel — that's the fastest way to reach the team."
+      },
+      {
+        "category": "community",
+        "q": "How do I contact Zo7al?",
+        "a": "For advertising and collaborations, email ads@zo7al.net. For server or purchase support, join our Discord through the Socials page."
+      },
+      {
+        "category": "modpacks",
+        "q": "Where can I download Zo7al modpacks?",
+        "a": "On Modrinth and CurseForge — both are listed with direct links on the Modpacks page."
+      },
+      {
+        "category": "community",
+        "q": "How do I preview the latest content from Zo7al’s accounts?",
+        "a": "Open /socials and select the details icon on any account, including Zo7al Games. Each preview shows the account bio and platform-specific public content when available, such as a long YouTube video, a post, a saved Twitch broadcast or a modpack release."
+      },
+      {
+        "category": "community",
+        "q": "Why is a social preview sometimes unavailable?",
+        "a": "Some platforms restrict public previews, require an API connection, or have no public content available. Use the link in the preview to open the original account. A missing preview does not mean the account was deleted."
+      },
+      {
+        "category": "storeRanks",
+        "q": "How do I apply for a creator rank?",
+        "a": "Open /store and find Creator ranks below Coins. Choose YouTube, Twitch or TikTok, then submit your email, Minecraft and Discord usernames, channel link and content details. The team reviews your application; submission does not grant a rank automatically."
+      },
+      {
+        "category": "storeRanks",
+        "q": "Are creator ranks paid?",
+        "a": "No payment is required to apply. These ranks are separate from purchased ranks and Coins. Approval and eligibility are decided by the team; no fixed follower threshold or review time is promised."
+      }
     ]
   },
   "footer": {
@@ -273,7 +355,9 @@
     "copyright": "Zo7al. All rights reserved.",
     "disclaimer": "Not an official Minecraft, Epic Games or Fortnite service."
   },
-  "language": { "label": "Language" },
+  "language": {
+    "label": "Language"
+  },
   "game": {
     "version": "Version {version}",
     "pointerHelp": "WASD / arrows · move mouse to steer",
@@ -324,7 +408,19 @@
     "refresh": "Refresh",
     "globalUnavailable": "This flight cannot enter the world rankings while the service is unavailable.",
     "audioHelp": "Toggle music and sound effects independently.",
-    "enter": "Enter"
+    "enter": "Enter",
+    "dailyChallenge": "Daily challenge",
+    "challengeScore": "Reach {count} points",
+    "challengeStars": "Collect {count} stars",
+    "achievements": "Achievements",
+    "achievement_firstFlight": "First verified flight",
+    "achievement_score10000": "10,000 points",
+    "achievement_stars10": "10 stars",
+    "achievement_score100000": "100,000 points",
+    "achievementHelp": "Badges are saved on this device after a verified run. Daily progress is for the current flight.",
+    "allTime": "All time",
+    "weekly": "This week",
+    "weeklyPeriod": "Monday–Sunday, Riyadh time"
   },
   "ui": {
     "social_epicgames": "News and updates for my Fortnite maps, plus your suggestions and bug reports.",
@@ -403,8 +499,7 @@
     "home": "Go home",
     "explore": "Explore",
     "direction": "ltr"
-  }
-,
+  },
   "storeDescription": {
     "coinsHeading": "🪙 {count} Coins – Zo7al Network",
     "coinsIntro": "By purchasing this package, you will receive {count} Coins added directly to your Minecraft account.",
@@ -420,7 +515,6 @@
     "coinsLinked": "Coins are linked to the Minecraft username entered at checkout",
     "coinsDelivery": "Coins are delivered automatically within 1–5 minutes after payment.",
     "coinsDeliveryHelp": "If your Coins are not received within 10–15 minutes, please relog or contact support with your order ID.",
-
     "vipAndMvp": "VIP and MVP",
     "title": "{rank} Rank – Zo7al Network",
     "upgrade": "{rank} Upgrade – Zo7al Network",
@@ -464,7 +558,7 @@
     "boostDuration": "Rank Duration: Active while at least one Discord Server Boost remains active.",
     "boostPrice": "Price: One or more Discord Server Boosts.",
     "boostEnd": "If all boosts expire or are removed, the Booster Rank and its benefits will also be removed."
-},
+  },
   "creators": {
     "title": "Creator ranks",
     "intro": "Apply for a YouTube, Twitch or TikTok rank. Tell us about your channel and Minecraft content.",
@@ -494,5 +588,160 @@
       "tiktok": "One clip can tell a whole adventure. The TIKTOK rank is for Minecraft creators who share entertaining moments and quick ideas in their own style, from standout plays and challenges to tips and creative edits. Introduce your profile and your vision for the content you want to create about Zo7al Network."
     },
     "applicationDetails": "To apply, open the application form and provide a reachable email, your Minecraft and Discord usernames, and your profile link on the selected platform. Give accurate content details and explain why you want the rank. With your consent, the application is sent to the Zo7al team through Discord for review. Keep the reference shown after successful delivery. Applying is not a purchase or an automatic rank grant; eligibility and acceptance are decided by the team, with no guaranteed review time or additional benefits."
+  },
+  "hub": {
+    "latest": "New at Zo7al",
+    "news": "News",
+    "events": "Events",
+    "player": "Player profile",
+    "orders": "My orders",
+    "applications": "Creator applications",
+    "support": "Support center",
+    "rules": "Network rules",
+    "registrations": "Event registrations",
+    "newsIntro": "Network news, map updates and modpack releases.",
+    "eventsIntro": "Upcoming community events and tournaments.",
+    "playerIntro": "Your Minecraft character, current rank and server statistics.",
+    "ordersIntro": "Follow payment and delivery using your private order receipt.",
+    "applicationsIntro": "Follow your creator application and the team's review.",
+    "supportIntro": "Find answers or send a report to the Zo7al Network team.",
+    "newsEmpty": "No news has been published yet.",
+    "eventsEmpty": "There are no scheduled events yet. Check back for the next announcement.",
+    "rulesEmpty": "The team has not published the network rules here yet.",
+    "latestVideo": "Latest video",
+    "watch": "Watch video",
+    "search": "Quick search",
+    "searchPlaceholder": "Search pages, maps, modpacks and questions…",
+    "noResults": "No matching results.",
+    "commonErrorsTitle": "Common errors",
+    "connection": "Connection",
+    "store": "Store",
+    "modpacks": "Modpacks",
+    "riyadhTime": "Riyadh time",
+    "eventStarted": "The event has started.",
+    "countdown": "{days}d · {hours}h · {minutes}m · {seconds}s",
+    "register": "Register",
+    "eventLink": "Event link",
+    "received": "Your submission was received",
+    "receiptHelp": "Keep the reference and private access code. They are saved in this browser so you can follow your request.",
+    "reference": "Reference",
+    "accessCode": "Private access code",
+    "track": "Track request",
+    "trackingHelp": "Enter your reference and private access code, or choose a saved request.",
+    "savedRequests": "Saved on this device",
+    "noSavedRequests": "No requests are saved in this browser.",
+    "notFound": "No matching request was found. Check the reference and access code.",
+    "consent": "I agree to share this information with the Zo7al Network team through Discord.",
+    "webhookNote": "Your submission is sent to the team on Discord.",
+    "loading": "Loading…",
+    "sending": "Sending…",
+    "unavailable": "This service is temporarily unavailable. Please try again later.",
+    "rateLimit": "Too many attempts. Please try again in 15 minutes.",
+    "status": "Status",
+    "status_pending": "Under review",
+    "status_accepted": "Accepted",
+    "status_rejected": "Rejected",
+    "status_open": "Open",
+    "status_reviewing": "Being handled",
+    "status_closed": "Closed",
+    "status_unknown": "Not confirmed",
+    "status_paid": "Payment confirmed",
+    "status_awaitingPayment": "Awaiting payment",
+    "delivery": "In-game delivery",
+    "delivery_unknown": "Delivery has not been confirmed by the server.",
+    "delivery_pending": "Waiting for delivery",
+    "delivery_delivered": "Delivered",
+    "paymentDeliveryNote": "Payment confirmation and in-game delivery are tracked separately.",
+    "orderSupport": "Get help with this order",
+    "subscriptions": "Manage subscriptions",
+    "profileHelp": "Enter a Minecraft username to view its public server profile.",
+    "viewProfile": "View profile",
+    "online": "Online",
+    "offline": "Offline",
+    "profileUnknown": "Current server profile data is not available.",
+    "lastSeen": "Last seen",
+    "stat_kills": "Kills",
+    "stat_deaths": "Deaths",
+    "stat_wins": "Wins",
+    "stat_playtimeSeconds": "Hours played",
+    "report": "Send a report",
+    "reportType": "Report type",
+    "report_technical": "Technical issue",
+    "report_player": "Player report",
+    "report_order": "Order issue",
+    "orderReference": "Order reference, if applicable",
+    "subject": "Subject",
+    "message": "Details",
+    "send": "Send",
+    "admin": "Zo7al administration",
+    "password": "Password",
+    "login": "Sign in",
+    "logout": "Sign out",
+    "adminUnavailable": "Administration has not been activated yet.",
+    "invalidPassword": "The password is incorrect.",
+    "sessionExpired": "Your session expired. Please sign in again.",
+    "refresh": "Refresh",
+    "saved": "Saved",
+    "save": "Save",
+    "edit": "Edit",
+    "delete": "Delete",
+    "create": "Create new",
+    "title": "Title",
+    "body": "Content",
+    "language": "Language",
+    "published": "Published",
+    "draft": "Draft",
+    "startsAt": "Start date and time",
+    "publicNote": "Note visible to the applicant",
+    "discordDelivered": "Received by Discord",
+    "discordPending": "Discord notification pending",
+    "empty": "No entries yet.",
+    "favoritesOnly": "Favorites only",
+    "favoritesEmpty": "You have not saved any favorites here yet.",
+    "addFavorite": "Add to favorites",
+    "removeFavorite": "Remove from favorites",
+    "share": "Copy share link",
+    "players": "Players",
+    "installation": "Installation guide",
+    "installLauncher": "Install a launcher that supports {source} projects.",
+    "installProject": "Open this project's official page and choose a published release.",
+    "installVersion": "Use the Minecraft version and loader listed in the details. Follow any RAM requirements published by the author.",
+    "installLaunch": "Import or install the project in your launcher, wait for the files to finish, then launch.",
+    "launcher": "{source} launcher",
+    "projectPage": "Project page",
+    "changelog": "Release changes",
+    "retryDiscord": "Retry Discord notification",
+    "commonErrors": [
+      {
+        "q": "Can't connect to the server",
+        "a": "Check the address and Bedrock port shown in the connection cards. Use a supported game version, re-add the server and try again.",
+        "category": "connection"
+      },
+      {
+        "q": "Outdated client / Outdated server",
+        "a": "Compare your Minecraft version with the supported versions on this page. Select a supported version in the launcher before reconnecting.",
+        "category": "connection"
+      },
+      {
+        "q": "Invalid session / Failed to verify username",
+        "a": "Close Minecraft, sign out of the launcher and sign in again. Restart the game. If the error persists, send the exact message to support.",
+        "category": "connection"
+      },
+      {
+        "q": "Connection timed out / Disconnected",
+        "a": "Check your internet connection, restart the game and retry. If it continues, report the error, game version and time to support.",
+        "category": "connection"
+      },
+      {
+        "q": "My rank or coins have not arrived",
+        "a": "Confirm that payment succeeded and rejoin the server. If the delivery delay exceeds the period listed in the package details, contact support with your order reference.",
+        "category": "store"
+      },
+      {
+        "q": "The modpack crashes or will not start",
+        "a": "Use the version and loader in the project details. Check its published RAM requirements and remove extra mods you added. Include the crash log in your support report.",
+        "category": "modpacks"
+      }
+    ]
   }
 }

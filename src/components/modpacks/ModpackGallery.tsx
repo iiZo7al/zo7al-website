@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
+import FavoriteCollection from "@/components/hub/FavoriteCollection";
 import ModpackDetailsButton from "./ModpackDetailsButton";
 import SolidIcon from "@/components/ui/SolidIcon";
 import Reveal from "@/components/ui/Reveal";
@@ -96,7 +97,7 @@ export default function ModpackGallery() {
         </a>
       </div>
 
-      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <FavoriteCollection ids={list.map(project=>"modrinth:"+project.slug)} className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {list.map((project, i) => (
           <Reveal key={project.id} delay={i * 0.05}>
             <article
@@ -157,7 +158,7 @@ export default function ModpackGallery() {
             </article>
           </Reveal>
         ))}
-      </div>
+      </FavoriteCollection>
     </div>
   );
 }

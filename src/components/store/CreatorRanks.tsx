@@ -1,6 +1,8 @@
 "use client";
 import { useRef, useState, type FormEvent } from "react";
 import Image from "next/image";
+import Receipt from "@/components/hub/Receipt";
+import { saveReceipt } from "@/lib/data/hub-receipts";
 import RankName from "./RankName";
 import RankPreviewDialog from "./RankPreviewDialog";
 import EyeIcon from "@/components/ui/EyeIcon";
@@ -75,6 +77,7 @@ function ApplicationForm({ platform, onClose }: { platform: Platform; onClose: (
   const lock = useRef(false);
   const [status, setStatus] = useState("");
   const [reference, setReference] = useState("");
+  const [token,setToken]=useState("");
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault(); if (lock.current) return;
     lock.current = true; setBusy(true); setStatus("");
@@ -82,7 +85,7 @@ function ApplicationForm({ platform, onClose }: { platform: Platform; onClose: (
     try {
       const response = await fetch("/api/creator-applications", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...Object.fromEntries(data), platform, consent: data.get("consent") === "on" }) });
       const result = await response.json();
-      if (response.ok && result.ok === true) { setReference(result.reference); setStatus("success"); }
+      if (response.ok && result.ok === true) { setReference(result.reference);if(result.token){saveReceipt("application",result);setToken(result.token);} setStatus("success"); }
       else setStatus(result.error === "RATE_LIMIT" ? "rateLimit" : result.error === "INVALID" ? "invalid" : result.error === "UNAVAILABLE" ? "unavailable" : "failed");
     } catch { setStatus("failed"); }
     finally { lock.current = false; setBusy(false); }
@@ -90,7 +93,7 @@ function ApplicationForm({ platform, onClose }: { platform: Platform; onClose: (
   return <DetailsDialog title={`${t("apply")} · ${platform.toUpperCase()}`} onClose={onClose}>
     <div className="creator-form-body">
       <Image src={`/assets/site/rank-${platform}.png`} width={667} height={375} alt={platform.toUpperCase()} className="creator-modal-image"/>
-      {status === "success" ? <div role="status" className="creator-success"><Check size={30}/><h3>{t("success")}</h3><p>{t("review")}</p><p>{t("reference")}: <bdi>{reference}</bdi></p></div> : <form onSubmit={submit} className="creator-form">
+      {status === "success" ? <div role="status" className="creator-success"><Check size={30}/><h3>{t("success")}</h3><p>{t("review")}</p><p>{t("reference")}: <bdi>{reference}</bdi></p>{token&&<Receipt kind="application" reference={reference} token={token}/>}</div> : <form onSubmit={submit} className="creator-form">
         <p>{t("intro")}</p>
         <div className="creator-fields">{([ ["email", "email", 254], ["minecraft", "text", 32], ["discord", "text", 40], ["channel", "url", 500], ["followers", "number", 10] ] as const).map(([name, type, max]) => <label key={name} htmlFor={`creator-${name}`}>{t(name)}<input id={`creator-${name}`} name={name} type={type} required maxLength={max} min={type === "number" ? 0 : undefined} max={type === "number" ? 1000000000 : undefined} step={type === "number" ? 1 : undefined} autoComplete={name === "email" ? "email" : "off"} dir="ltr" placeholder={name === "channel" ? { youtube: "https://www.youtube.com/@yourchannel", twitch: "https://www.twitch.tv/yourchannel", tiktok: "https://www.tiktok.com/@yourchannel" }[platform] : undefined}/></label>)}</div>
         <label htmlFor="creator-content">{t("content")}<input id="creator-content" name="content" required maxLength={500}/></label>

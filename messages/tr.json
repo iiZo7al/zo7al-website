@@ -1,26 +1,84 @@
 {
-  "nav": { "home": "Ana Sayfa", "minecraft": "Minecraft", "modpacks": "Modpack'ler", "fortnite": "Fortnite", "socials": "Sosyal Medya", "store": "Mağaza", "discord": "Discord" },
-  "common": { "viewProject": "Projeyi Gör", "viewProfile": "Profili Gör", "openStore": "Mağazayı Aç", "copy": "Kopyala", "copied": "Kopyalandı", "all": "Tümü", "downloads": "indirme" },
+  "nav": {
+    "home": "Ana Sayfa",
+    "minecraft": "Minecraft",
+    "modpacks": "Modpack'ler",
+    "fortnite": "Fortnite",
+    "socials": "Sosyal Medya",
+    "store": "Mağaza",
+    "discord": "Discord"
+  },
+  "common": {
+    "viewProject": "Projeyi Gör",
+    "viewProfile": "Profili Gör",
+    "openStore": "Mağazayı Aç",
+    "copy": "Kopyala",
+    "copied": "Kopyalandı",
+    "all": "Tümü",
+    "downloads": "indirme"
+  },
   "home": {
-    "eyebrow": "@iiZo7al — Oyun Evreni", "headline1": "İNŞA ET.", "headline2": "OYNA.", "headline3": "YARAT.",
-    "subtitle": "Zo7al'in Minecraft sunucuları, Fortnite haritaları, modpack'leri ve oyun projeleri.", "ctaExplore": "ZO7AL'i Keşfet", "ctaViewProjects": "Projeleri Gör", "scroll": "Kaydır",
-    "universeEyebrow": "Projeler", "universeTitle": "ZO7AL evreni", "universeText": "Zo7al'in yarattığı dünyaları, projeleri ve deneyimleri keşfet.",
-    "minecraftMeta1": "MINECRAFT", "minecraftMeta2": "JAVA + BEDROCK", "minecraftTitle": "ZO7AL NETWORK", "minecraftText": "Oyuncular için kurulmuş bir Minecraft ağı.", "minecraftCta": "Ağı Keşfet",
-    "modpacksMeta1": "MODPACK'LER", "modpacksMeta2": "MODRINTH + CURSEFORGE", "modpacksTitle": "MINECRAFT MODPACK'LERİ", "modpacksText": "Zo7al tarafından oluşturulan ve derlenen Minecraft deneyimleri.", "modpacksCta": "Modpack'leri Gör",
-    "fortniteMeta1": "FORTNITE", "fortniteMeta2": "CREATIVE", "fortniteTitle": "FORTNITE CREATIVE", "fortniteText": "Zo7al tarafından oluşturulan haritalar ve deneyimler.", "fortniteCta": "Haritaları Keşfet",
-    "aboutEyebrow": "Zo7al kimdir?", "aboutText": "Zo7al olarak tanınan Khaled; Fortnite, Minecraft ve diğer oyunları, mücadeleleri ve arkadaşlarıyla eğlenceli anlarını paylaşan bir YouTuber ve oyun içerik üreticisidir."
+    "eyebrow": "@iiZo7al — Oyun Evreni",
+    "headline1": "İNŞA ET.",
+    "headline2": "OYNA.",
+    "headline3": "YARAT.",
+    "subtitle": "Zo7al'in Minecraft sunucuları, Fortnite haritaları, modpack'leri ve oyun projeleri.",
+    "ctaExplore": "ZO7AL'i Keşfet",
+    "ctaViewProjects": "Projeleri Gör",
+    "scroll": "Kaydır",
+    "universeEyebrow": "Projeler",
+    "universeTitle": "ZO7AL evreni",
+    "universeText": "Zo7al'in yarattığı dünyaları, projeleri ve deneyimleri keşfet.",
+    "minecraftMeta1": "MINECRAFT",
+    "minecraftMeta2": "JAVA + BEDROCK",
+    "minecraftTitle": "ZO7AL NETWORK",
+    "minecraftText": "Oyuncular için kurulmuş bir Minecraft ağı.",
+    "minecraftCta": "Ağı Keşfet",
+    "modpacksMeta1": "MODPACK'LER",
+    "modpacksMeta2": "MODRINTH + CURSEFORGE",
+    "modpacksTitle": "MINECRAFT MODPACK'LERİ",
+    "modpacksText": "Zo7al tarafından oluşturulan ve derlenen Minecraft deneyimleri.",
+    "modpacksCta": "Modpack'leri Gör",
+    "fortniteMeta1": "FORTNITE",
+    "fortniteMeta2": "CREATIVE",
+    "fortniteTitle": "FORTNITE CREATIVE",
+    "fortniteText": "Zo7al tarafından oluşturulan haritalar ve deneyimler.",
+    "fortniteCta": "Haritaları Keşfet",
+    "aboutEyebrow": "Zo7al kimdir?",
+    "aboutText": "Zo7al olarak tanınan Khaled; Fortnite, Minecraft ve diğer oyunları, mücadeleleri ve arkadaşlarıyla eğlenceli anlarını paylaşan bir YouTuber ve oyun içerik üreticisidir."
   },
   "minecraft": {
     "copyPort": "Bağlantı noktasını kopyala",
     "bedrockPort": "Bedrock Bağlantı Noktası",
-    "eyebrow": "Minecraft", "title": "ZO7AL NETWORK", "text": "Bir sonraki Minecraft macerana burada başla.", "openStore": "Mağazayı Aç",
-    "connectEyebrow": "Bağlan", "connectTitle": "Saniyeler içinde katıl", "connectText": "Java ve Bedrock, tek ağda.",
-    "compatEyebrow": "Uyumluluk", "compatTitle": "Desteklenen sürümler", "gameplayEyebrow": "Oyunanış", "gameplayTitle": "Modlar",
-    "supportEyebrow": "Ağı destekle", "supportTitle": "ZO7AL'İ DESTEKLE", "supportText": "Ağı destekle ve Zo7al'in resmi mağazasını keşfet.",
-    "javaLabel": "Java IP", "bedrockLabel": "Bedrock Adresi", "bedrockNote": "Bedrock: zo7al.play-mc.fun — bağlantı noktası 25807.",
-    "copyJava": "Java IP'sini Kopyala", "copyBedrock": "Bedrock Adresini Kopyala", "checkingStatus": "Durum kontrol ediliyor…", "readyToPlay": "ZO7AL Network — Oynamaya hazır",
-    "online": "Çevrimiçi", "offline": "Çevrimdışı", "players": "Oyuncular", "version": "Sürüm", "address": "Adres",
-    "statusUnavailable": "Canlı durum şu anda kullanılamıyor — aşağıdaki adresle bağlan.", "modeLive": "Aktif", "modeSoon": "Yakında",
+    "eyebrow": "Minecraft",
+    "title": "ZO7AL NETWORK",
+    "text": "Bir sonraki Minecraft macerana burada başla.",
+    "openStore": "Mağazayı Aç",
+    "connectEyebrow": "Bağlan",
+    "connectTitle": "Saniyeler içinde katıl",
+    "connectText": "Java ve Bedrock, tek ağda.",
+    "compatEyebrow": "Uyumluluk",
+    "compatTitle": "Desteklenen sürümler",
+    "gameplayEyebrow": "Oyunanış",
+    "gameplayTitle": "Modlar",
+    "supportEyebrow": "Ağı destekle",
+    "supportTitle": "ZO7AL'İ DESTEKLE",
+    "supportText": "Ağı destekle ve Zo7al'in resmi mağazasını keşfet.",
+    "javaLabel": "Java IP",
+    "bedrockLabel": "Bedrock Adresi",
+    "bedrockNote": "Bedrock: zo7al.play-mc.fun — bağlantı noktası 25807.",
+    "copyJava": "Java IP'sini Kopyala",
+    "copyBedrock": "Bedrock Adresini Kopyala",
+    "checkingStatus": "Durum kontrol ediliyor…",
+    "readyToPlay": "ZO7AL Network — Oynamaya hazır",
+    "online": "Çevrimiçi",
+    "offline": "Çevrimdışı",
+    "players": "Oyuncular",
+    "version": "Sürüm",
+    "address": "Adres",
+    "statusUnavailable": "Canlı durum şu anda kullanılamıyor — aşağıdaki adresle bağlan.",
+    "modeLive": "Aktif",
+    "modeSoon": "Yakında",
     "sharedAddress": "Java ve Bedrock · IP",
     "portLabel": "Port",
     "javaTutorial": "Nasıl katılınır — Java",
@@ -30,9 +88,17 @@
     "bedrockPortNotice": "Güncel Bedrock portunu kullan: {port}. Videoda farklı bir port gösteriliyor."
   },
   "modpacks": {
-    "eyebrow": "Modpack'ler", "title": "MINECRAFT, YENİDEN TASARLANDI.", "text": "Zo7al'in oluşturduğu Minecraft projelerini keşfet.",
-    "modrinthEyebrow": "Modrinth", "modrinthTitle": "Modrinth sürümleri", "modrinthLabel": "Modrinth", "modrinthLiveLabel": "Modrinth'ten canlı",
-    "curseforgeEyebrow": "CurseForge", "curseforgeTitle": "CurseForge sürümleri", "curseforgeLabel": "CURSEFORGE’dan canlı", "curseforgeLiveLabel": "CURSEFORGE’dan canlı",
+    "eyebrow": "Modpack'ler",
+    "title": "MINECRAFT, YENİDEN TASARLANDI.",
+    "text": "Zo7al'in oluşturduğu Minecraft projelerini keşfet.",
+    "modrinthEyebrow": "Modrinth",
+    "modrinthTitle": "Modrinth sürümleri",
+    "modrinthLabel": "Modrinth",
+    "modrinthLiveLabel": "Modrinth'ten canlı",
+    "curseforgeEyebrow": "CurseForge",
+    "curseforgeTitle": "CurseForge sürümleri",
+    "curseforgeLabel": "CURSEFORGE’dan canlı",
+    "curseforgeLiveLabel": "CURSEFORGE’dan canlı",
     "gameVersions": "Minecraft sürümleri",
     "loaders": "Mod yükleyicileri",
     "updated": "Son güncelleme",
@@ -52,10 +118,17 @@
     "tags": "Etiketler",
     "detailsUnavailable": "Harita ayrıntıları yüklenemedi. Fortnite üzerinden görüntüleyebilirsin.",
     "viewOnFortnite": "Fortnite üzerinde görüntüle",
-
-    "eyebrow": "Fortnite Creative", "title": "FORTNITE CREATIVE", "text": "Zo7al tarafından oluşturulan haritalar ve deneyimler.", "creatorPage": "İçerik Üreticisi Sayfası",
-    "islandsEyebrow": "Adalar", "islandsTitle": "Tüm haritalar tek yerde", "islandsLabel": "Adalar", "islandsLiveLabel": "Fortnite.com ile canlı senkronize",
-    "copyCode": "Kodu Kopyala", "copied": "Kopyalandı", "byZo7al": "Zo7al tarafından",
+    "eyebrow": "Fortnite Creative",
+    "title": "FORTNITE CREATIVE",
+    "text": "Zo7al tarafından oluşturulan haritalar ve deneyimler.",
+    "creatorPage": "İçerik Üreticisi Sayfası",
+    "islandsEyebrow": "Adalar",
+    "islandsTitle": "Tüm haritalar tek yerde",
+    "islandsLabel": "Adalar",
+    "islandsLiveLabel": "Fortnite.com ile canlı senkronize",
+    "copyCode": "Kodu Kopyala",
+    "copied": "Kopyalandı",
+    "byZo7al": "Zo7al tarafından",
     "descriptions": {
       "0633-4212-9611": "🧡🌹 Beni desteklemek için beğen ve favorilerine ekle\n🔫 Tüm keskin nişancı tüfekleri\n💥 Hızlı aksiyon\n🎮 Birinci şahıs bakış açısı\n✨ Rütbe sistemi\n😎 UEFN ile yapıldı",
       "3325-4001-0926": "🧡🌹 Beni desteklemek için beğen ve favorilerine ekle\n🏆 16 oyunculu PvP Zone Wars\n🔫 Favori silahlarını seç\n🎁 Şans çarkını çevir\n✏️ İnşa becerilerini geliştir\n📝 Pratik yap ve antrenman yap\n✨ Rütbe sistemi\n⭐ Oyuncu adları görünür\n🤩 Sınırsız eğlence ve eşyalar\n💪 Nişanını geliştir\n💥 Hızlı aksiyon\n😎 UEFN ile yapıldı",
@@ -71,8 +144,12 @@
     }
   },
   "socials": {
-    "eyebrow": "Topluluk", "title": "YOLCULUĞU TAKİP ET.", "text": "Her platform, tek bir yerde.", "label": "Sosyal medya",
-    "liveLabel": "Linktree ile canlı senkronize", "viewOnLinktree": "Linktree'de Gör",
+    "eyebrow": "Topluluk",
+    "title": "YOLCULUĞU TAKİP ET.",
+    "text": "Her platform, tek bir yerde.",
+    "label": "Sosyal medya",
+    "liveLabel": "Linktree ile canlı senkronize",
+    "viewOnLinktree": "Linktree'de Gör",
     "gamesEyebrow": "Oyun hesaplarımız",
     "gamesText": "Fortnite ve Roblox haritalarım ile oyun projelerimin duyuruları için hesaplarım. Bağlantılar Linktree ile eşitlenir.",
     "preview": "Profil önizlemesi",
@@ -110,15 +187,21 @@
     "productsTitle": "Ürünler",
     "catalogTitle": "Mağaza kataloğu",
     "browseProducts": "Ürünlere göz at",
-
     "manageSubscriptions": "Aboneliklerinizi buradan görüntüleyebilir veya iptal edebilirsiniz.",
     "monthly": "ay",
     "boosterPrice": "4.99+ başlangıç fiyatıyla",
     "details": "Ayrıntılar",
     "descriptionUnavailable": "Açıklama şu anda kullanılamıyor. Lütfen daha sonra tekrar deneyin.",
-    "eyebrow": "Minecraft", "title": "Zo7al Network Mağazası", "text": "Ağı destekle ve Zo7al'in resmi mağazasını keşfet.",
-    "ranksEyebrow": "Rütbeler", "ranksTitle": "Sunucu rütbeleri", "ranksText": "Fiyatlar ve ayrıcalıklar resmi Tebex mağazasında listelendiği gibidir.",
-    "getRank": "Al", "mostPopular": "En popüler", "allPurchases": "Tüm satın alımlar, Zo7al'in resmi mağazası Tebex üzerinden güvenle işlenir.", "visitStore": "zo7al.tebex.io'yu Ziyaret Et",
+    "eyebrow": "Minecraft",
+    "title": "Zo7al Network Mağazası",
+    "text": "Ağı destekle ve Zo7al'in resmi mağazasını keşfet.",
+    "ranksEyebrow": "Rütbeler",
+    "ranksTitle": "Sunucu rütbeleri",
+    "ranksText": "Fiyatlar ve ayrıcalıklar resmi Tebex mağazasında listelendiği gibidir.",
+    "getRank": "Al",
+    "mostPopular": "En popüler",
+    "allPurchases": "Tüm satın alımlar, Zo7al'in resmi mağazası Tebex üzerinden güvenle işlenir.",
+    "visitStore": "zo7al.tebex.io'yu Ziyaret Et",
     "checkoutUnavailable": "Ödeme geçici olarak kullanılamıyor. Lütfen daha sonra tekrar deneyin.",
     "pricePending": "Ödeme açıldığında fiyat gösterilir",
     "checkoutTitle": "Ödeme",
@@ -145,38 +228,136 @@
     "checkoutNote": "Son vergiler, para birimi ve ödeme seçenekleri ödeme sırasında gösterilir."
   },
   "faq": {
-    "eyebrow": "Yardıma mı ihtiyacın var?", "title": "Sıkça sorulan sorular", "text": "Zo7al’ı, videolarını ve sosyal hesaplarını tanı; sunucu, mağaza ve oyun projeleri hakkında bilgi edin.",
-    "searchPlaceholder": "Bir soru ara…", "noResults": "Aramanızla eşleşen soru bulunamadı.",
-    "categories": { "gettingStarted": "Başlarken", "storeRanks": "Mağaza ve Rütbeler", "fortnite": "Fortnite", "community": "Topluluk", "modpacks": "Modpack'ler" },
+    "eyebrow": "Yardıma mı ihtiyacın var?",
+    "title": "Sıkça sorulan sorular",
+    "text": "Zo7al’ı, videolarını ve sosyal hesaplarını tanı; sunucu, mağaza ve oyun projeleri hakkında bilgi edin.",
+    "searchPlaceholder": "Bir soru ara…",
+    "noResults": "Aramanızla eşleşen soru bulunamadı.",
+    "categories": {
+      "gettingStarted": "Başlarken",
+      "storeRanks": "Mağaza ve Rütbeler",
+      "fortnite": "Fortnite",
+      "community": "Topluluk",
+      "modpacks": "Modpack'ler"
+    },
     "items": [
-      { "category": "gettingStarted", "q": "ZO7AL Network nedir?", "a": "Zo7al tarafından kurulmuş; survival, PvP, modpack'ler ve Fortnite Creative haritalarını kapsayan bir Minecraft sunucusu ve oyun evreni." },
-      { "category": "gettingStarted", "q": "Zo7al Network'e Java ile nasıl katılırım?", "a": "Minecraft sayfasından Java adresini, zo7al.play-mc.fun, kopyala ve Minecraft Java Edition'ın çok oyunculu menüsüne sunucu olarak ekle." },
-      { "category": "gettingStarted", "q": "Zo7al Network'e Bedrock ile nasıl katılırım?", "a": "Minecraft Bedrock’ta zo7al.play-mc.fun adresi ve 25807 bağlantı noktasıyla bir sunucu ekleyin." },
-      { "category": "gettingStarted", "q": "Bedrock destekleniyor mu?", "a": "Evet. Bedrock: zo7al.play-mc.fun — bağlantı noktası 25807." },
-      { "category": "gettingStarted", "q": "Hangi Minecraft sürümleri destekleniyor?", "a": "Klasik PvP için 1.8.9, kararlı survival için 1.20.x ve en güncel sürüm için 1.21.x." },
-      { "category": "gettingStarted", "q": "Ne tür videolar hazırlıyorsun?", "a": "Oyun videoları ve Shorts: Fortnite, Minecraft ve diğer oyunlar, mücadeleler, komik anlar ve arkadaşlarla oyun. YouTube kanalım: @iiZo7al." },
-      { "category": "storeRanks", "q": "Bir rütbeyi nasıl satın alırım?", "a": "/store sayfasını aç, rütbeni seç, Minecraft kullanıcı adını gir ve Tebex üzerinden güvenle öde. Booster, Discord sunucumuzu takviye ederek alınır." },
-      { "category": "storeRanks", "q": "Hangi rütbeler mevcut?", "a": "Ücretli rütbeler VIP, MVP, MVP+ ve MVP++ şeklindedir. Booster, Discord sunucusunu takviye ederek alınır. YOUTUBE, TWITCH ve TIKTOK rütbeleri satın alınmaz; başvuru ve incelemeyle verilir. Güncel ayrıntılar, fiyatlar ve başvurular /store sayfasındadır. Coins paketleri oyun içi paradır, rütbe değildir." },
-      { "category": "storeRanks", "q": "Zo7al Network mağazası nerede?", "a": "/store adresindeki mağazayı aç. Ödemeler Tebex üzerinden işlenir; aboneliklerini portal.tebex.io adresinden görüntüleyebilir veya iptal edebilirsin." },
-      {"category": "storeRanks", "q": "Coins nasıl satın alınır? Tekrar satın alabilir miyim?", "a": "/store sayfasında Coins bölümünden bir paket seçin. Minecraft kullanıcı adınızı doğru girip Tebex üzerinden ödeme yapın. Paket ayrıntılarında miktar ve bonuslar gösterilir. Coins, rütbelerden ayrı oyun içi para birimidir ve tekrar satın alınabilir. Teslimat gecikirse işlem numaranızla Discord desteğine başvurun."},
-      { "category": "fortnite", "q": "Fortnite'ta bir Zo7al haritasına nasıl katılırım?", "a": "Fortnite'ı aç, Creative'e git, \"Bir kod gir\" seçeneğini kullan ve Fortnite sayfasındaki herhangi bir haritada görünen ada kodunu yaz." },
-      { "category": "fortnite", "q": "Zo7al'in tüm haritalarını nerede bulabilirim?", "a": "Fortnite sayfası, resmi içerik üreticisi sayfasıyla senkronize olarak yayınlanan her adayı koduyla birlikte listeler." },
-      { "category": "community", "q": "Zo7al'in resmi Discord sunucusu nedir?", "a": "discord.gg/nxScVYrSXq — etkinlikler, destek ve topluluk güncellemeleri için merkez." },
-      { "category": "community", "q": "Zo7al'in sosyal medya hesaplarını nerede bulabilirim?", "a": "YouTube kanalım @iiZo7al ve diğer hesaplarım sosyal medya sayfasında. Bağlantılar resmî Linktree hesabımdan eşitlenir." },
-      { "category": "community", "q": "Bir sorunu nasıl bildiririm?", "a": "Discord sunucusuna katıl ve destek kanalında bir talep aç — ekibe ulaşmanın en hızlı yolu budur." },
-      { "category": "community", "q": "Zo7al ile nasıl iletişime geçerim?", "a": "Reklam ve iş birlikleri için: ads@zo7al.net. Sunucu veya satın alma desteği için sosyal medya sayfasından Discord’a katıl." },
-      { "category": "modpacks", "q": "Zo7al'in modpack'lerini nereden indirebilirim?", "a": "Modrinth ve CurseForge üzerinden — ikisi de Modpack'ler sayfasında doğrudan bağlantılarla listelenir." },
-      {"category": "community", "q": "Zo7al hesaplarının son içeriklerini nasıl görebilirim?", "a": "/socials sayfasında Zo7al Games dâhil herhangi bir hesabın detay simgesine tıkla. Önizleme, hesabın biyografisini ve varsa platforma uygun herkese açık içerikleri gösterir: uzun YouTube videoları, gönderiler, kayıtlı Twitch yayınları veya mod paketi sürümleri."},
-      {"category": "community", "q": "Bazı sosyal medya önizlemeleri neden görünmüyor?", "a": "Bazı platformlar herkese açık önizlemeleri kısıtlar, API bağlantısı gerektirir veya herkese açık içerik barındırmaz. Önizlemedeki bağlantıyla asıl hesabı açabilirsin. Önizlemenin olmaması hesabın silindiği anlamına gelmez."},
-      {"category": "storeRanks", "q": "İçerik üreticisi rütbesine nasıl başvururum?", "a": "/store sayfasında Coins altından YouTube, Twitch veya TikTok seç. E-posta, Minecraft ve Discord adlarını, kanal bağlantını ve içerik bilgilerini gönder. Ekip başvuruyu inceler; rütbe otomatik verilmez."},
-      {"category": "storeRanks", "q": "İçerik üreticisi rütbeleri ücretli mi?", "a": "Başvuru ücretsizdir; satın alınan rütbelerden ve Coins paketlerinden ayrıdır. Uygunluk ve kabul kararını ekip verir. Sabit takipçi sınırı veya inceleme süresi vaat edilmez."}
+      {
+        "category": "gettingStarted",
+        "q": "ZO7AL Network nedir?",
+        "a": "Zo7al tarafından kurulmuş; survival, PvP, modpack'ler ve Fortnite Creative haritalarını kapsayan bir Minecraft sunucusu ve oyun evreni."
+      },
+      {
+        "category": "gettingStarted",
+        "q": "Zo7al Network'e Java ile nasıl katılırım?",
+        "a": "Minecraft sayfasından Java adresini, zo7al.play-mc.fun, kopyala ve Minecraft Java Edition'ın çok oyunculu menüsüne sunucu olarak ekle."
+      },
+      {
+        "category": "gettingStarted",
+        "q": "Zo7al Network'e Bedrock ile nasıl katılırım?",
+        "a": "Minecraft Bedrock’ta zo7al.play-mc.fun adresi ve 25807 bağlantı noktasıyla bir sunucu ekleyin."
+      },
+      {
+        "category": "gettingStarted",
+        "q": "Bedrock destekleniyor mu?",
+        "a": "Evet. Bedrock: zo7al.play-mc.fun — bağlantı noktası 25807."
+      },
+      {
+        "category": "gettingStarted",
+        "q": "Hangi Minecraft sürümleri destekleniyor?",
+        "a": "Klasik PvP için 1.8.9, kararlı survival için 1.20.x ve en güncel sürüm için 1.21.x."
+      },
+      {
+        "category": "gettingStarted",
+        "q": "Ne tür videolar hazırlıyorsun?",
+        "a": "Oyun videoları ve Shorts: Fortnite, Minecraft ve diğer oyunlar, mücadeleler, komik anlar ve arkadaşlarla oyun. YouTube kanalım: @iiZo7al."
+      },
+      {
+        "category": "storeRanks",
+        "q": "Bir rütbeyi nasıl satın alırım?",
+        "a": "/store sayfasını aç, rütbeni seç, Minecraft kullanıcı adını gir ve Tebex üzerinden güvenle öde. Booster, Discord sunucumuzu takviye ederek alınır."
+      },
+      {
+        "category": "storeRanks",
+        "q": "Hangi rütbeler mevcut?",
+        "a": "Ücretli rütbeler VIP, MVP, MVP+ ve MVP++ şeklindedir. Booster, Discord sunucusunu takviye ederek alınır. YOUTUBE, TWITCH ve TIKTOK rütbeleri satın alınmaz; başvuru ve incelemeyle verilir. Güncel ayrıntılar, fiyatlar ve başvurular /store sayfasındadır. Coins paketleri oyun içi paradır, rütbe değildir."
+      },
+      {
+        "category": "storeRanks",
+        "q": "Zo7al Network mağazası nerede?",
+        "a": "/store adresindeki mağazayı aç. Ödemeler Tebex üzerinden işlenir; aboneliklerini portal.tebex.io adresinden görüntüleyebilir veya iptal edebilirsin."
+      },
+      {
+        "category": "storeRanks",
+        "q": "Coins nasıl satın alınır? Tekrar satın alabilir miyim?",
+        "a": "/store sayfasında Coins bölümünden bir paket seçin. Minecraft kullanıcı adınızı doğru girip Tebex üzerinden ödeme yapın. Paket ayrıntılarında miktar ve bonuslar gösterilir. Coins, rütbelerden ayrı oyun içi para birimidir ve tekrar satın alınabilir. Teslimat gecikirse işlem numaranızla Discord desteğine başvurun."
+      },
+      {
+        "category": "fortnite",
+        "q": "Fortnite'ta bir Zo7al haritasına nasıl katılırım?",
+        "a": "Fortnite'ı aç, Creative'e git, \"Bir kod gir\" seçeneğini kullan ve Fortnite sayfasındaki herhangi bir haritada görünen ada kodunu yaz."
+      },
+      {
+        "category": "fortnite",
+        "q": "Zo7al'in tüm haritalarını nerede bulabilirim?",
+        "a": "Fortnite sayfası, resmi içerik üreticisi sayfasıyla senkronize olarak yayınlanan her adayı koduyla birlikte listeler."
+      },
+      {
+        "category": "community",
+        "q": "Zo7al'in resmi Discord sunucusu nedir?",
+        "a": "discord.gg/nxScVYrSXq — etkinlikler, destek ve topluluk güncellemeleri için merkez."
+      },
+      {
+        "category": "community",
+        "q": "Zo7al'in sosyal medya hesaplarını nerede bulabilirim?",
+        "a": "YouTube kanalım @iiZo7al ve diğer hesaplarım sosyal medya sayfasında. Bağlantılar resmî Linktree hesabımdan eşitlenir."
+      },
+      {
+        "category": "community",
+        "q": "Bir sorunu nasıl bildiririm?",
+        "a": "Discord sunucusuna katıl ve destek kanalında bir talep aç — ekibe ulaşmanın en hızlı yolu budur."
+      },
+      {
+        "category": "community",
+        "q": "Zo7al ile nasıl iletişime geçerim?",
+        "a": "Reklam ve iş birlikleri için: ads@zo7al.net. Sunucu veya satın alma desteği için sosyal medya sayfasından Discord’a katıl."
+      },
+      {
+        "category": "modpacks",
+        "q": "Zo7al'in modpack'lerini nereden indirebilirim?",
+        "a": "Modrinth ve CurseForge üzerinden — ikisi de Modpack'ler sayfasında doğrudan bağlantılarla listelenir."
+      },
+      {
+        "category": "community",
+        "q": "Zo7al hesaplarının son içeriklerini nasıl görebilirim?",
+        "a": "/socials sayfasında Zo7al Games dâhil herhangi bir hesabın detay simgesine tıkla. Önizleme, hesabın biyografisini ve varsa platforma uygun herkese açık içerikleri gösterir: uzun YouTube videoları, gönderiler, kayıtlı Twitch yayınları veya mod paketi sürümleri."
+      },
+      {
+        "category": "community",
+        "q": "Bazı sosyal medya önizlemeleri neden görünmüyor?",
+        "a": "Bazı platformlar herkese açık önizlemeleri kısıtlar, API bağlantısı gerektirir veya herkese açık içerik barındırmaz. Önizlemedeki bağlantıyla asıl hesabı açabilirsin. Önizlemenin olmaması hesabın silindiği anlamına gelmez."
+      },
+      {
+        "category": "storeRanks",
+        "q": "İçerik üreticisi rütbesine nasıl başvururum?",
+        "a": "/store sayfasında Coins altından YouTube, Twitch veya TikTok seç. E-posta, Minecraft ve Discord adlarını, kanal bağlantını ve içerik bilgilerini gönder. Ekip başvuruyu inceler; rütbe otomatik verilmez."
+      },
+      {
+        "category": "storeRanks",
+        "q": "İçerik üreticisi rütbeleri ücretli mi?",
+        "a": "Başvuru ücretsizdir; satın alınan rütbelerden ve Coins paketlerinden ayrıdır. Uygunluk ve kabul kararını ekip verir. Sabit takipçi sınırı veya inceleme süresi vaat edilmez."
+      }
     ]
   },
   "footer": {
-    "tagline": "Oyun içerik üreticisi. Minecraft ağı kurucusu. Fortnite içerik üreticisi.", "siteLabel": "Site", "platformsLabel": "Platformlar",
-    "copyright": "Zo7al. Tüm hakları saklıdır.", "disclaimer": "Resmi bir Minecraft, Epic Games veya Fortnite hizmeti değildir."
+    "tagline": "Oyun içerik üreticisi. Minecraft ağı kurucusu. Fortnite içerik üreticisi.",
+    "siteLabel": "Site",
+    "platformsLabel": "Platformlar",
+    "copyright": "Zo7al. Tüm hakları saklıdır.",
+    "disclaimer": "Resmi bir Minecraft, Epic Games veya Fortnite hizmeti değildir."
   },
-  "language": { "label": "Dil" },
+  "language": {
+    "label": "Dil"
+  },
   "game": {
     "version": "Sürüm {version}",
     "pointerHelp": "WASD / oklar · yön vermek için fareyi hareket ettir",
@@ -227,7 +408,19 @@
     "refresh": "Yenile",
     "globalUnavailable": "Hizmet kullanılamazken bu uçuş dünya sıralamasına giremez.",
     "audioHelp": "Müzik ve ses efektlerini ayrı ayrı açıp kapat.",
-    "enter": "Gir"
+    "enter": "Gir",
+    "dailyChallenge": "Günlük görev",
+    "challengeScore": "{count} puana ulaş",
+    "challengeStars": "{count} yıldız topla",
+    "achievements": "Başarımlar",
+    "achievement_firstFlight": "İlk doğrulanmış uçuş",
+    "achievement_score10000": "10.000 puan",
+    "achievement_stars10": "10 yıldız",
+    "achievement_score100000": "100.000 puan",
+    "achievementHelp": "Rozetler doğrulanmış bir oyun sonrası bu cihazda saklanır. Günlük ilerleme mevcut uçuş içindir.",
+    "allTime": "Tüm zamanlar",
+    "weekly": "Bu hafta",
+    "weeklyPeriod": "Pazartesi–Pazar, Riyad saati"
   },
   "ui": {
     "social_epicgames": "Fortnite haritalarımdan haberler, güncellemeler, önerileriniz ve hata bildirimleriniz.",
@@ -306,8 +499,7 @@
     "home": "Ana sayfa",
     "explore": "Keşfet",
     "direction": "ltr"
-  }
-,
+  },
   "storeDescription": {
     "coinsHeading": "🪙 {count} Coin – Zo7al Network",
     "coinsIntro": "Bu paketi satın aldığında Minecraft hesabına doğrudan {count} Coin eklenir.",
@@ -323,7 +515,6 @@
     "coinsLinked": "Coinler ödeme sırasında girilen Minecraft kullanıcı adına bağlanır",
     "coinsDelivery": "Coinler ödeme sonrasında 1–5 dakika içinde otomatik olarak teslim edilir.",
     "coinsDeliveryHelp": "Coinlerin 10–15 dakika içinde gelmezse yeniden giriş yap veya sipariş numaranla destek ekibine ulaş.",
-
     "vipAndMvp": "VIP ve MVP",
     "title": "{rank} Rütbesi – Zo7al Network",
     "upgrade": "{rank} Yükseltmesi – Zo7al Network",
@@ -367,7 +558,7 @@
     "boostDuration": "Rütbe süresi: en az bir Discord sunucu takviyesi etkin kaldığı sürece.",
     "boostPrice": "Fiyat: bir veya daha fazla Discord sunucu takviyesi.",
     "boostEnd": "Tüm takviyeler sona ererse veya kaldırılırsa Booster rütbesi ve avantajları da kaldırılır."
-},
+  },
   "creators": {
     "title": "İçerik üreticisi rütbeleri",
     "intro": "YouTube, Twitch veya TikTok rütbesine başvur. Kanalını ve Minecraft içeriklerini anlat.",
@@ -397,5 +588,160 @@
       "tiktok": "TIKTOK rütbesi, TikTok’ta Minecraft içeriği üretenler içindir. Profilini ve eğlenceli anlar, ipuçları veya meydan okumalar gibi kısa videolarını tanıt. Takipçi sayını, paylaşım sıklığını ve Zo7al Network deneyimini nasıl paylaşacağını anlat."
     },
     "applicationDetails": "Başvuru formuna ulaşılabilir bir e-posta, Minecraft ve Discord adlarını ve seçilen platformdaki profil bağlantını yaz. İçerik ve başvuru nedenini doğru bilgilerle açıkla. Onayınla başvuru Discord üzerinden Zo7al ekibine iletilir. Teslimat onaylandıktan sonra gösterilen başvuru numarasını sakla. Başvuru bir satın alma veya otomatik rütbe kazanımı değildir. Uygunluk ve kabul kararını ekip verir; inceleme süresi veya ek avantajlar garanti edilmez."
+  },
+  "hub": {
+    "latest": "Zo7al'dan yenilikler",
+    "news": "Haberler",
+    "events": "Etkinlikler",
+    "player": "Oyuncu profili",
+    "orders": "Siparişlerim",
+    "applications": "İçerik üreticisi başvuruları",
+    "support": "Destek merkezi",
+    "rules": "Ağ kuralları",
+    "registrations": "Etkinlik kayıtları",
+    "newsIntro": "Ağ haberleri, harita güncellemeleri ve modpack sürümleri.",
+    "eventsIntro": "Yaklaşan topluluk etkinlikleri ve turnuvaları.",
+    "playerIntro": "Minecraft karakterin, mevcut rütben ve sunucu istatistiklerin.",
+    "ordersIntro": "Özel sipariş belgenle ödeme ve teslimatı takip et.",
+    "applicationsIntro": "İçerik üreticisi başvurunu ve ekibin değerlendirmesini takip et.",
+    "supportIntro": "Yanıt bul veya Zo7al Network ekibine bildirim gönder.",
+    "newsEmpty": "Henüz haber yayımlanmadı.",
+    "eventsEmpty": "Henüz planlanmış etkinlik yok. Sonraki duyuru için tekrar bak.",
+    "rulesEmpty": "Ekip ağ kurallarını henüz burada yayımlamadı.",
+    "latestVideo": "Son video",
+    "watch": "Videoyu izle",
+    "search": "Hızlı arama",
+    "searchPlaceholder": "Sayfa, harita, modpack ve sorularda ara…",
+    "noResults": "Eşleşen sonuç yok.",
+    "commonErrorsTitle": "Yaygın hatalar",
+    "connection": "Bağlantı",
+    "store": "Mağaza",
+    "modpacks": "Modpack'ler",
+    "riyadhTime": "Riyad saati",
+    "eventStarted": "Etkinlik başladı.",
+    "countdown": "{days} gün · {hours} sa · {minutes} dk · {seconds} sn",
+    "register": "Kaydol",
+    "eventLink": "Etkinlik bağlantısı",
+    "received": "Başvurun alındı",
+    "receiptHelp": "Referansı ve özel erişim kodunu sakla. Talebini takip edebilmen için bu tarayıcıda kaydedilirler.",
+    "reference": "Referans",
+    "accessCode": "Özel erişim kodu",
+    "track": "Talebi takip et",
+    "trackingHelp": "Referansını ve özel erişim kodunu gir veya kayıtlı bir talep seç.",
+    "savedRequests": "Bu cihazda kayıtlı",
+    "noSavedRequests": "Bu tarayıcıda kayıtlı talep yok.",
+    "notFound": "Eşleşen talep bulunamadı. Referansı ve erişim kodunu kontrol et.",
+    "consent": "Bu bilgileri Discord üzerinden Zo7al Network ekibiyle paylaşmayı kabul ediyorum.",
+    "webhookNote": "Talebin Discord'daki ekibe gönderilir.",
+    "loading": "Yükleniyor…",
+    "sending": "Gönderiliyor…",
+    "unavailable": "Bu hizmet şu anda kullanılamıyor. Daha sonra tekrar dene.",
+    "rateLimit": "Çok fazla deneme yapıldı. 15 dakika sonra tekrar dene.",
+    "status": "Durum",
+    "status_pending": "Değerlendiriliyor",
+    "status_accepted": "Kabul edildi",
+    "status_rejected": "Reddedildi",
+    "status_open": "Açık",
+    "status_reviewing": "İşleme alındı",
+    "status_closed": "Kapandı",
+    "status_unknown": "Doğrulanmadı",
+    "status_paid": "Ödeme doğrulandı",
+    "status_awaitingPayment": "Ödeme bekleniyor",
+    "delivery": "Oyun içi teslimat",
+    "delivery_unknown": "Teslimat sunucu tarafından doğrulanmadı.",
+    "delivery_pending": "Teslimat bekleniyor",
+    "delivery_delivered": "Teslim edildi",
+    "paymentDeliveryNote": "Ödeme doğrulaması ve oyun içi teslimat ayrı takip edilir.",
+    "orderSupport": "Bu sipariş için yardım al",
+    "subscriptions": "Abonelikleri yönet",
+    "profileHelp": "Herkese açık sunucu profilini görmek için bir Minecraft kullanıcı adı gir.",
+    "viewProfile": "Profili görüntüle",
+    "online": "Çevrim içi",
+    "offline": "Çevrim dışı",
+    "profileUnknown": "Güncel sunucu profil verileri kullanılamıyor.",
+    "lastSeen": "Son görülme",
+    "stat_kills": "Öldürmeler",
+    "stat_deaths": "Ölümler",
+    "stat_wins": "Galibiyetler",
+    "stat_playtimeSeconds": "Oynanan saat",
+    "report": "Bildirim gönder",
+    "reportType": "Bildirim türü",
+    "report_technical": "Teknik sorun",
+    "report_player": "Oyuncu şikâyeti",
+    "report_order": "Sipariş sorunu",
+    "orderReference": "Varsa sipariş referansı",
+    "subject": "Konu",
+    "message": "Ayrıntılar",
+    "send": "Gönder",
+    "admin": "Zo7al yönetimi",
+    "password": "Parola",
+    "login": "Giriş yap",
+    "logout": "Çıkış yap",
+    "adminUnavailable": "Yönetim henüz etkinleştirilmedi.",
+    "invalidPassword": "Parola yanlış.",
+    "sessionExpired": "Oturumun sona erdi. Tekrar giriş yap.",
+    "refresh": "Yenile",
+    "saved": "Kaydedildi",
+    "save": "Kaydet",
+    "edit": "Düzenle",
+    "delete": "Sil",
+    "create": "Yeni oluştur",
+    "title": "Başlık",
+    "body": "İçerik",
+    "language": "Dil",
+    "published": "Yayımlandı",
+    "draft": "Taslak",
+    "startsAt": "Başlangıç tarihi ve saati",
+    "publicNote": "Başvuru sahibinin göreceği not",
+    "discordDelivered": "Discord'a ulaştı",
+    "discordPending": "Discord bildirimi bekliyor",
+    "retryDiscord": "Discord bildirimini yeniden gönder",
+    "empty": "Henüz kayıt yok.",
+    "favoritesOnly": "Yalnızca favoriler",
+    "favoritesEmpty": "Burada henüz favori kaydetmedin.",
+    "addFavorite": "Favorilere ekle",
+    "removeFavorite": "Favorilerden çıkar",
+    "share": "Paylaşım bağlantısını kopyala",
+    "players": "Oyuncular",
+    "installation": "Kurulum rehberi",
+    "installLauncher": "{source} projelerini destekleyen bir başlatıcı kur.",
+    "installProject": "Projenin resmî sayfasını aç ve yayımlanmış bir sürüm seç.",
+    "installVersion": "Ayrıntılarda belirtilen Minecraft sürümünü ve mod yükleyicisini kullan. Yazarın yayımladığı RAM gereksinimlerine uy.",
+    "installLaunch": "Projeyi başlatıcıya aktar veya kur, dosyaların indirilmesini bekle ve ardından başlat.",
+    "launcher": "{source} başlatıcısı",
+    "projectPage": "Proje sayfası",
+    "changelog": "Sürüm değişiklikleri",
+    "commonErrors": [
+      {
+        "q": "Sunucuya bağlanamıyorum",
+        "a": "Bağlantı kartlarında gösterilen adresi ve Bedrock portunu kontrol et. Desteklenen bir oyun sürümü kullan, sunucuyu yeniden ekle ve tekrar dene.",
+        "category": "connection"
+      },
+      {
+        "q": "Outdated client / Outdated server",
+        "a": "Minecraft sürümünü bu sayfadaki desteklenen sürümlerle karşılaştır. Yeniden bağlanmadan önce başlatıcıda desteklenen bir sürüm seç.",
+        "category": "connection"
+      },
+      {
+        "q": "Invalid session / Failed to verify username",
+        "a": "Minecraft'ı kapat, başlatıcıdaki hesabından çık ve tekrar giriş yap. Oyunu yeniden başlat. Hata devam ederse tam hata mesajını desteğe gönder.",
+        "category": "connection"
+      },
+      {
+        "q": "Connection timed out / Disconnected",
+        "a": "İnternet bağlantını kontrol et, oyunu yeniden başlat ve tekrar dene. Devam ederse hatayı, oyun sürümünü ve zamanı desteğe bildir.",
+        "category": "connection"
+      },
+      {
+        "q": "Rütbem veya coin'lerim gelmedi",
+        "a": "Ödemenin başarılı olduğunu kontrol et ve sunucuya yeniden gir. Teslimat paket ayrıntılarında belirtilen süreyi aşarsa sipariş referansınla desteğe başvur.",
+        "category": "store"
+      },
+      {
+        "q": "Modpack çöküyor veya başlamıyor",
+        "a": "Proje ayrıntılarındaki sürümü ve mod yükleyicisini kullan. Yayımlanan RAM gereksinimlerini kontrol et ve eklediğin ekstra modları kaldır. Destek bildirimine çökme günlüğünü ekle.",
+        "category": "modpacks"
+      }
+    ]
   }
 }

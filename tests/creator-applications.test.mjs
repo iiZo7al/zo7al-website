@@ -8,3 +8,14 @@ test('validate platform, consent and multiline application',()=>{assert.ok(valid
 test('success requires Discord receipt; mentions disabled',async()=>{let sent;const handle=createApplicationHandler(()=>hook,async(url,options)=>{assert.equal(new URL(url).search,'?wait=true');sent=JSON.parse(options.body);return Response.json({id:'12345'});});const result=await handle(req());assert.equal(result.status,200);assert.equal((await result.json()).ok,true);assert.deepEqual(sent.allowed_mentions,{parse:[]});});
 test('missing webhook and failed delivery do not report success',async()=>{assert.equal((await createApplicationHandler(()=>undefined)(req())).status,503);assert.equal((await createApplicationHandler(()=>hook,async()=>new Response('',{status:500}))(req())).status,502);assert.equal((await createApplicationHandler(()=>hook,async()=>Response.json({}))(req())).status,502);});
 test('cross-origin and repeated submissions are blocked',async()=>{const handle=createApplicationHandler(()=>hook,async()=>Response.json({id:'12'}));const cross=req();cross.headers.set('origin','https://evil.test');assert.equal((await handle(cross)).status,403);for(let i=0;i<3;i++) assert.equal((await handle(req())).status,200);assert.equal((await handle(req())).status,429);});
+
+test('tracked applications reserve before webhook delivery and return a private code only after confirmation',async()=>{
+ const steps=[];
+ const storage={save:async()=>{steps.push('save');return {token:'a'.repeat(64)};},delivered:async()=>{steps.push('delivered');},discard:async()=>{steps.push('discard');}};
+ const handle=createApplicationHandler(()=>hook,async()=>{steps.push('webhook');return Response.json({id:'12345'});},storage);
+ const result=await handle(req());assert.equal(result.status,200);assert.equal((await result.json()).token,'a'.repeat(64));assert.deepEqual(steps,['save','webhook','delivered']);
+ const failed=createApplicationHandler(()=>hook,async()=>Response.json({}),storage);
+ assert.equal((await failed(req())).status,502);assert.equal(steps.at(-1),'discard');
+ const confirmed=createApplicationHandler(()=>hook,async()=>Response.json({id:'12345'}),{...storage,delivered:async()=>{throw Error('DB outage after confirmation');}});
+ assert.equal((await confirmed(req())).status,200);
+});

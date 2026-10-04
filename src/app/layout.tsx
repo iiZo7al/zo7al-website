@@ -4,6 +4,8 @@ import { MotionConfig } from "framer-motion";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
 import "./globals.css";
+import "@/components/hub/hub.css";
+import CommandSearch from "@/components/hub/CommandSearch";
 import CartProvider from "@/components/store/CartProvider";
 import AppShell from "@/components/layout/AppShell";
 import Navbar from "@/components/layout/Navbar";
@@ -41,6 +43,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <CartProvider><MotionConfig reducedMotion="user">
             <div className="grain" aria-hidden="true" />
             <CustomCursor />
+            <CommandSearch />
             <AppShell navigation={<Navbar />} footer={<><Footer /><BackToTop /></>}>
             <PageTransition>
               <div className="flex-1">{children}</div>

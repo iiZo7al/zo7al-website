@@ -7,6 +7,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useTranslations } from "next-intl";
 import SolidIcon from "@/components/ui/SolidIcon";
 import { NAV_LINKS, DISCORD_LINK, SITE } from "@/lib/data/site";
+import { SearchTrigger } from "@/components/hub/CommandSearch";
 import StoreNavAction from "@/components/store/StoreNavAction";
 import MagneticButton from "@/components/cursor/MagneticButton";
 import BrandIcon from "@/components/ui/BrandIcon";
@@ -66,7 +67,7 @@ export default function Navbar() {
           {SITE.name}
         </Link>
 
-        <ul className="hidden md:flex items-center gap-1">
+        <ul className="hidden xl:flex items-center gap-1">
           {NAV_LINKS.map((link) => {
             const active = pathname === link.href;
             return (
@@ -98,7 +99,8 @@ export default function Navbar() {
           })}
         </ul>
 
-        <div className="hidden md:flex items-center gap-2">
+        <div className="ms-auto me-2 xl:ms-0"><SearchTrigger/></div>
+        <div className="hidden xl:flex items-center gap-2">
           <a
             href={DISCORD_LINK}
             target="_blank"
@@ -116,7 +118,7 @@ export default function Navbar() {
         </div>
 
         <button
-          className="md:hidden flex items-center justify-center p-2"
+          className="xl:hidden flex items-center justify-center p-2"
           aria-label={ui(mobileOpen ? "closeMenu" : "openMenu")}
           aria-expanded={mobileOpen}
           onClick={() => setMobileOpen((v) => !v)}
@@ -132,7 +134,7 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -12 }}
             transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-            className="mobile-nav-panel md:hidden fixed left-1/2 -translate-x-1/2 top-[86px] w-[92vw] rounded-2xl border p-3 flex flex-col gap-1"
+            className="mobile-nav-panel xl:hidden fixed left-1/2 -translate-x-1/2 top-[86px] w-[92vw] rounded-2xl border p-3 flex flex-col gap-1"
             style={{
               background: "rgba(11,13,18,0.96)",
               borderColor: "var(--border)",

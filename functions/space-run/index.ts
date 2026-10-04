@@ -10,7 +10,7 @@ const handler = {
     if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: cors });
     const path = new URL(request.url).pathname.replace(/\/$/, "");
     let response: Response;
-    if (request.method === "GET" && path === "/leaderboard") response = await leaderboard();
+    if (request.method === "GET" && path === "/leaderboard") response = await leaderboard(request);
     else if (request.method === "POST" && (path === "/start" || path === "/finish")) {
       const headers = new Headers(request.headers);
       // The shared handlers are also used same-origin by Next.js. This endpoint
