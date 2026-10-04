@@ -1,4 +1,3 @@
-npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import PageHero from "@/components/ui/PageHero";
