@@ -13,7 +13,7 @@ import MagneticButton from "@/components/cursor/MagneticButton";
 import BrandIcon from "@/components/ui/BrandIcon";
 import LanguageSwitcher from "@/components/layout/LanguageSwitcher";
 
-const ICON_MAP = { home: "home", minecraft: "cube", modpacks: "box", fortnite: "map", socials: "share" } as const;
+const ICON_MAP = { home: "home", minecraft: "cube", modpacks: "box", fortnite: "map", socials: "share", support: "headset" } as const;
 
 export default function Navbar() {
 

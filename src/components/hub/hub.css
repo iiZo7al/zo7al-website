@@ -40,7 +40,7 @@
 .hub-countdown { font-variant-numeric:tabular-nums; color:var(--accent) !important; }
 .hub-install ol { list-style:decimal; padding-inline-start:22px; }
 .hub-install li { margin-top:12px; line-height:1.8; color:var(--text-muted); }
-.nav-search-trigger { display:inline-flex; align-items:center; gap:8px; min-height:40px; padding:8px 14px; border-radius:999px; color:var(--text-muted); font-size:14px; font-weight:500; white-space:nowrap; }
+.nav-search-trigger { display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; width:44px; height:44px; padding:0; border-radius:50%; color:var(--text-muted); }
 .nav-search-trigger:hover,.nav-search-trigger:focus-visible { color:var(--text); background:var(--surface-elevated); }
 .nav-search-trigger:focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
 .hub-share { display:inline-flex; align-items:center; gap:10px; flex-wrap:wrap; min-width:0; max-width:100%; }
@@ -50,5 +50,5 @@
 @keyframes hub-enter { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
 @media(prefers-reduced-motion:no-preference) { .hub-card,.hub-receipt { animation:hub-enter 240ms ease-out; } }
 @media(min-width:640px) { .hub-section { padding-block:128px; } }
-@media(max-width:680px) { .hub-admin-editor { grid-template-columns:1fr; } .hub-card { padding:22px; } .hub-command { padding:20px; } .nav-search-trigger { padding-inline:10px; font-size:13px; } }
+@media(max-width:680px) { .hub-admin-editor { grid-template-columns:1fr; } .hub-card { padding:22px; } .hub-command { padding:20px; } }
 @media(prefers-reduced-motion:reduce) { .hub-card::after { transition:none; } }

@@ -18,6 +18,7 @@ export const NAV_LINKS = [
   { key: "modpacks", label: "Modpacks", href: "/modpacks", icon: "package" },
   { key: "fortnite", label: "Fortnite", href: "/fortnite", icon: "map" },
   { key: "socials", label: "Socials", href: "/socials", icon: "share-2" },
+  { key: "support", label: "Support", href: "/support", icon: "headset" },
 ] as const;
 
 export const STORE_LINK = "https://zo7al.tebex.io/";

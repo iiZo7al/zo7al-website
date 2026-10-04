@@ -3,7 +3,6 @@ import { createPortal } from "react-dom";
 import { useLocale, useTranslations } from "next-intl";
 import { Fragment, useEffect, useRef, useState } from "react";
 import Script from "next/script";
-import Link from "next/link";
 import { saveReceipt } from "@/lib/data/hub-receipts";
 import Image from "next/image";
 import "./store.css";
@@ -54,7 +53,6 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
     return () => { controller.abort(); clearInterval(timer); window.removeEventListener("focus", refresh); };
   }, [initialLive]);
   const t = useTranslations("store"), locale = useLocale();
-  const hub = useTranslations("hub");
   const creatorT = useTranslations("creators");
   const descriptionT = useTranslations("storeDescription");
   const reduceMotion = useReducedMotion();
@@ -203,7 +201,6 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
       <h2>{t(paymentStatus === "paid" ? "paymentSuccess" : paymentStatus === "checking" ? "paymentChecking" : "paymentPending")}</h2>
       {paymentStatus === "paid" && <><p>{t("paymentSuccessNote")}</p><p>{subscriptionLink}</p></>}
     </div>}
-    <div className="mb-6 flex flex-wrap gap-3"><Link className="store-action" href="/orders">{hub("orders")}</Link><Link className="store-action" href="/applications">{hub("applications")}</Link></div>
     {hasRank && <p className="store-notice">{copy.oneRank}</p>}
     <div className="store-tools">
       <div className="store-search-row">
