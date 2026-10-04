@@ -5,7 +5,7 @@ import SupportCenter from "@/components/hub/SupportCenter";
 
 export const metadata: Metadata = {
   title: "Support — ZO7AL Projects",
-  description: "Find answers or contact the Zo7al Network support team.",
+  description: "Find answers or contact the Zo7al Projects support team.",
 };
 
 export default async function SupportPage() {
