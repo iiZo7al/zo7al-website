@@ -1,4 +1,2 @@
-import SupportCenter from "@/components/hub/SupportCenter";
-import { getTranslations } from "next-intl/server";
-import PageHero from "@/components/ui/PageHero";
-export default async function Page(){const t=await getTranslations("hub");return <main data-accent="minecraft"><PageHero eyebrow="ZO7AL NETWORK" title={t("support")} text={t("supportIntro")}/><div className="hub-page-inner"><SupportCenter/></div></main>;}
+import { redirect } from "next/navigation";
+export default async function Page({searchParams}:{searchParams:Promise<{order?:string}>}){const {order}=await searchParams;redirect("/minecraft"+(order?"?order="+encodeURIComponent(order.slice(0,128)):"")+"#support");}

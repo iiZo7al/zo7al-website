@@ -1,4 +1,5 @@
 "use client";
+import { createPortal } from "react-dom";
 import { useLocale, useTranslations } from "next-intl";
 import { Fragment, useEffect, useRef, useState } from "react";
 import Script from "next/script";
@@ -247,11 +248,11 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
     {showCreators && <CreatorRanks query={query} showEmpty={!visibleGroups.length} username={username} onNameChange={setUsername}/>}
     {rankPreview && <RankPreviewDialog rankName={rankPreview.name} username={username} onNameChange={setUsername} onClose={() => setRankPreview(null)}/>}
     {comparing && <RankComparison products={products.filter(isRankProduct)} price={price} describe={describe} onClose={() => setComparing(false)}/>}
-    <AnimatePresence>{toast && !cartOpen && <motion.aside key={toast.key} className="store-cart-toast" initial={reduceMotion ? false : { opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: reduceMotion ? 0 : 12 }} role="status" aria-live="polite" aria-atomic="true">
+    {cartReady && createPortal(<AnimatePresence>{toast && !cartOpen && <motion.aside key={toast.key} className="store-cart-toast" initial={reduceMotion ? false : { opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: reduceMotion ? 0 : 12 }} role="status" aria-live="polite" aria-atomic="true" data-accent="store">
       {toast.product.image && <Image unoptimized src={toast.product.image} alt="" width={64} height={52}/>}
       <div><p>{experience.added}</p><strong dir="auto">{toast.product.name}</strong><button type="button" onClick={() => { setCartOpen(true); setToast(null); }}>{experience.viewCart}<ArrowRight size={15} aria-hidden="true"/></button></div>
       <button type="button" className="store-close" aria-label={t("close")} onClick={() => setToast(null)}><X size={18} aria-hidden="true"/></button>
-    </motion.aside>}</AnimatePresence>
+    </motion.aside>}</AnimatePresence>, document.body)}
     <dialog ref={detailsDialog} onCancel={() => setDetails(null)} onClose={() => setDetails(null)} aria-labelledby="rank-details-title" className="checkout-shell store-checkout">
       <header className="store-checkout-header"><h2 id="rank-details-title">{t("details")} · <bdi dir="ltr">{currentDetails?.name}</bdi></h2><button type="button" className="store-close" onClick={() => setDetails(null)} aria-label={t("close")}><X size={20} aria-hidden="true" /></button></header>
       <div className="store-checkout-body store-full-description">{currentDetails?.image && <Image unoptimized src={currentDetails.image} alt={currentDetails.name} width={480} height={320} className="store-details-image" />}{currentDetails?.description ? describe(currentDetails).map((line, index) => line.startsWith("• ") ? <p className="store-detail-perk" key={index}><Check size={16} aria-hidden="true" /><span dir="auto">{line.slice(2)}</span></p> : <p dir="auto" key={index}>{line}</p>) : <p>{t("descriptionUnavailable")}</p>}</div>

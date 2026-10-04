@@ -742,6 +742,11 @@
         "a": "Use a versão e o carregador dos detalhes do projeto. Confira os requisitos de RAM publicados e remova os mods extras que adicionou. Inclua o registro de falha no relato ao suporte.",
         "category": "modpacks"
       }
-    ]
+    ],
+    "activity": "Meus pedidos e candidaturas",
+    "activityIntro": "Acompanhe compras, candidaturas de criadores, pedidos de suporte e inscrições em eventos num só lugar.",
+    "commonErrorsIntro": "Soluções rápidas para problemas comuns de conexão, loja e modpacks.",
+    "viewMore": "Ver mais",
+    "copyLink": "Copie este link"
   }
 }

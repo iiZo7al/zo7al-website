@@ -742,6 +742,11 @@
         "a": "Proje ayrıntılarındaki sürümü ve mod yükleyicisini kullan. Yayımlanan RAM gereksinimlerini kontrol et ve eklediğin ekstra modları kaldır. Destek bildirimine çökme günlüğünü ekle.",
         "category": "modpacks"
       }
-    ]
+    ],
+    "activity": "Siparişlerim ve başvurularım",
+    "activityIntro": "Satın alımlarını, içerik üretici başvurularını, destek taleplerini ve etkinlik kayıtlarını tek yerde takip et.",
+    "commonErrorsIntro": "Bağlantı, mağaza ve mod paketlerinde sık görülen sorunlara hızlı çözümler.",
+    "viewMore": "Daha fazla göster",
+    "copyLink": "Bu bağlantıyı kopyala"
   }
 }

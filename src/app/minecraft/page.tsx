@@ -1,4 +1,5 @@
 import CommonErrors from "@/components/hub/CommonErrors";
+import MinecraftCommunity from "@/components/hub/MinecraftCommunity";
 import LinkHub from "@/components/hub/MinecraftHubLinks";
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
@@ -103,6 +104,7 @@ export default async function MinecraftPage() {
         </div>
       </section>
       <CommonErrors />
+      <MinecraftCommunity />
     </main>
   );
 }

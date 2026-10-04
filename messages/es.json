@@ -742,6 +742,11 @@
         "a": "Usa la versión y el cargador de los detalles del proyecto. Comprueba los requisitos de RAM publicados y quita los mods extra que añadiste. Incluye el registro de errores en tu informe.",
         "category": "modpacks"
       }
-    ]
+    ],
+    "activity": "Mis pedidos y solicitudes",
+    "activityIntro": "Consulta tus compras, solicitudes de creador, incidencias y registros de eventos en un solo lugar.",
+    "commonErrorsIntro": "Soluciones rápidas a problemas comunes de conexión, tienda y modpacks.",
+    "viewMore": "Ver más",
+    "copyLink": "Copia este enlace"
   }
 }

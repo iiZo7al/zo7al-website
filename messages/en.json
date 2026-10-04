@@ -742,6 +742,11 @@
         "a": "Use the version and loader in the project details. Check its published RAM requirements and remove extra mods you added. Include the crash log in your support report.",
         "category": "modpacks"
       }
-    ]
+    ],
+    "activity": "My orders & applications",
+    "activityIntro": "Track your purchases, creator applications, support reports and event registrations in one place.",
+    "commonErrorsIntro": "Quick solutions to common connection, store and modpack problems.",
+    "viewMore": "View more",
+    "copyLink": "Copy this link"
   }
 }
