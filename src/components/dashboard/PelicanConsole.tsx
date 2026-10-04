@@ -20,14 +20,14 @@ export default function PelicanConsole({onConnections,onExpired}:{onConnections:
       try {
         const response=await fetch("/api/admin/pelican",{cache:"no-store",signal:controller.signal});if(response.status===401){onExpired();return;}if(!response.ok)throw Error("unavailable");const result=await response.json();if(tornDown)return;
         if(result.status==="setup"){setSetup(true);setState("setup");return;}setSetup(false);setServer(result.server);setState("connecting");
-        const value=await postToken();if(tornDown)return;socket=new WebSocket(value.socket);
+        const value=await postToken();if(tornDown)return;socket=new WebSocket(value.socket);let receivedLogs=false;
         const authTimer=setTimeout(()=>{if(socket?.readyState!==WebSocket.CLOSED)socket?.close();},15000);
         socket.onopen=()=>socket?.send(JSON.stringify({event:"auth",args:[value.token]}));
         socket.onmessage=event=>{
           if(tornDown||typeof event.data!=="string"||event.data.length>200000)return;
           try {
             const frame=JSON.parse(event.data);if(!Array.isArray(frame.args))return;const arg=frame.args[0];
-            if(frame.event==="auth success"){clearTimeout(authTimer);setState("connected");attempts=0;socket?.send(JSON.stringify({event:"send logs",args:[null]}));}
+            if(frame.event==="auth success"){clearTimeout(authTimer);setState("connected");attempts=0;if(!receivedLogs){receivedLogs=true;socket?.send(JSON.stringify({event:"send logs",args:[null]}));}}
             else if(frame.event==="console output"||frame.event==="install output"){if(typeof arg==="string")setLogs(current=>[...current,...cleanConsoleLine(arg).split(/\r?\n/).map(line=>line.slice(0,4000))].slice(-300));}
             else if(frame.event==="stats"){const stats=parsePelicanStats(typeof arg==="string"?JSON.parse(arg):arg,true);setServer(current=>current?{...current,stats:{...stats,state:stats.state??current.stats.state},updatedAt:new Date().toISOString()}:current);if(stats.cpu!==null||stats.memory!==null)setSamples(current=>[...current,{cpu:stats.cpu,memory:stats.memory}].slice(-60));}
             else if(frame.event==="status"){const status=pelicanState(arg);if(status)setServer(current=>current?{...current,stats:{...current.stats,state:status}}:current);}

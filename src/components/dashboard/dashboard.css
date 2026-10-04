@@ -198,7 +198,7 @@
 .dash-console-toolbar { padding:12px 16px; display:flex; align-items:center; justify-content:space-between; gap:10px; border-bottom:1px solid #2d3544; background:#1e2430; }
 .dash-console-toolbar>span { display:flex; align-items:center; gap:10px; font-size:12px; }
 .dash-console-toolbar .dash-icon-actions { display:flex; }
-.dash-console-output { height:440px; overflow-y:auto; overflow-x:hidden; padding:18px; background:#0a0f17; font-family:var(--font-geist-sans),ui-monospace,monospace; font-size:11px; line-height:1.9; color:#b5c2d4; scrollbar-width:thin; white-space:pre-wrap; overflow-wrap:anywhere; }
+.dash-console-output { height:440px; overflow-y:auto; overflow-x:hidden; padding:18px; background:#0a0f17; font-family:ArabicFont,ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:11px; line-height:1.9; color:#b5c2d4; scrollbar-width:thin; white-space:pre-wrap; overflow-wrap:anywhere; }
 .dash-console-warning { color:#e9b467; }
 .dash-console-command { display:flex; align-items:center; gap:14px; padding:12px 18px; background:#121924; border-top:1px solid #2a3446; }
 .dash-console-command>span { color:var(--accent); }
