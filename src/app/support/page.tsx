@@ -1,3 +1,4 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import PageHero from "@/components/ui/PageHero";
@@ -12,7 +13,7 @@ export default async function SupportPage() {
   const t = await getTranslations("hub");
   return (
     <main data-accent="minecraft">
-      <PageHero eyebrow="ZO7AL NETWORK" title={t("support")} text={t("supportIntro")} />
+      <PageHero eyebrow="ZO7AL PROJECTS" title={t("support")} text={t("supportIntro")} />
       <section id="support" className="relative pb-20 sm:pb-28 scroll-mt-24">
         <div className="mx-auto max-w-[1180px] px-6">
           <SupportCenter />
