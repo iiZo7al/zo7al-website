@@ -748,7 +748,19 @@
     "activityIntro": "구매, 크리에이터 신청, 지원 요청, 이벤트 등록을 한곳에서 확인하세요.",
     "commonErrorsIntro": "연결, 상점, 모드팩에서 자주 발생하는 문제의 빠른 해결 방법.",
     "viewMore": "더 보기",
-    "copyLink": "이 링크 복사"
+    "copyLink": "이 링크 복사",
+    "coverImage": "커버 이미지",
+    "uploadImage": "이미지 업로드",
+    "imagePreview": "이미지 미리보기",
+    "imageHint": "16:9, 정사각형 또는 세로형. 최대 20 MB의 PNG, JPG, WebP, AVIF, GIF. 원본 비율을 유지하며 GIF는 첫 프레임을 사용합니다.",
+    "uploadingImage": "이미지 업로드 중…",
+    "replaceImage": "이미지 변경",
+    "removeImage": "이미지 제거",
+    "imageTooLarge": "최적화할 수 있는 20 MB 미만의 이미지를 선택하세요.",
+    "imageInvalid": "올바른 PNG, JPG, WebP, AVIF 또는 GIF 이미지를 선택하세요.",
+    "imageUploadFailed": "업로드에 실패했습니다. 다시 시도하세요.",
+    "profileServer": "서버",
+    "profileUpdated": "마지막 업데이트"
   },
   "dashboard": {
     "dashboard": "대시보드",
@@ -1099,5 +1111,30 @@
     "kill": "Force stop",
     "killWarning": "Force stop immediately kills the server container. Unsaved data may be lost.",
     "panelHint": "These tools follow your Pelican Client API permissions. Host administration, nodes, eggs, mounts, server icons and two-factor setup are managed in the Pelican panel."
+  },
+  "minecraftBridge": {
+    "title": "Minecraft 플레이어 프로필",
+    "description": "Zo7al Player Bridge로 각 서버를 연결하여 실제 등급, 통계 및 플레이어 활동을 동기화합니다.",
+    "create": "서버 추가",
+    "empty": "연결된 서버가 없습니다.",
+    "enabled": "활성화",
+    "disabled": "비활성화",
+    "players": "플레이어 {count}명",
+    "lastSync": "마지막 동기화",
+    "waiting": "플러그인 연결 대기 중",
+    "setup": "플러그인의 config.yml에 키를 입력하고 Paper 서버에서 /zo7albridge reload를 실행하세요.",
+    "rotate": "키 변경",
+    "revoke": "연결 비활성화",
+    "newKey": "새 연결 키",
+    "oneTime": "이 키는 한 번만 표시됩니다. 플러그인 설정에 복사하고 비공개로 보관하세요.",
+    "show": "키 표시",
+    "hide": "키 숨기기",
+    "copy": "키 복사",
+    "copied": "복사됨",
+    "done": "완료",
+    "serverName": "서버 이름",
+    "revokeWarning": "이 서버의 동기화를 중지하고 저장된 프로필을 사이트에서 숨깁니다.",
+    "rotateWarning": "이전 키는 더 이상 작동하지 않습니다. 플러그인 설정을 업데이트하세요.",
+    "keyWarning": "이 키는 프로필 업데이트를 허용합니다. 비공개로 보관하세요."
   }
 }

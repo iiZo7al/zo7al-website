@@ -1,9 +1,17 @@
 import { parsePlayerRank,parsePlayerStats } from "@/lib/server/player-profile";
+import { readSyncedProfile } from "@/lib/server/minecraft-bridge";
+import { bridgeId } from "@/lib/data/minecraft-bridge";
 export const runtime = "nodejs";
 export async function GET(request: Request) {
-  const username = new URL(request.url).searchParams.get("username")?.trim() ?? "";
-  if (!/^[.a-zA-Z0-9_ ]{3,32}$/.test(username)) return Response.json({ error: "INVALID" }, { status: 400 });
-  const unknown = () => Response.json({ rank: null,stats:null,online:null,lastSeen:null }, { headers: { "Cache-Control": "no-store" } });
+  const params = new URL(request.url).searchParams;
+  const username = params.get("username")?.trim() ?? "", server = params.get("server")?.toLowerCase();
+  if (!/^[.a-zA-Z0-9_ ]{3,32}$/.test(username) || server !== undefined && !bridgeId(server)) return Response.json({ error: "INVALID" }, { status: 400 });
+  const unknown = () => Response.json({ rank: null,stats:null,online:null,lastSeen:null, ...(server ? { serverId: server } : {}) }, { headers: { "Cache-Control": "no-store" } });
+  try {
+    const synced = await readSyncedProfile(username, Date.now(), server);
+    if (synced) return Response.json(synced, { headers: { "Cache-Control": "private, no-store" } });
+  } catch {}
+  if (server) return unknown();
   // Only a deployment-configured trusted bridge can supply a current in-game rank.
   // No caller-supplied URL, raw purchase records or credentials are exposed.
   const endpoint = process.env.MINECRAFT_PROFILE_URL;

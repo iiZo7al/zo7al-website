@@ -5,7 +5,7 @@ import type { SkinViewer } from "skinview3d";
 import RankName from "./RankName";
 import { storeExperienceCopy } from "@/lib/data/store-experience-copy";
 
-export default function CharacterPreview({ username, id, previewRank }: { username: string; id: string; previewRank?: string }) {
+export default function CharacterPreview({ username, id, previewRank, profileServer }: { username: string; id: string; previewRank?: string; profileServer?: string }) {
   const copy = storeExperienceCopy(useLocale());
   const canvas = useRef<HTMLCanvasElement>(null);
   const host = useRef<HTMLDivElement>(null);
@@ -17,7 +17,7 @@ export default function CharacterPreview({ username, id, previewRank }: { userna
     let observer: ResizeObserver | undefined;
     let disposed = false;
     const timer = setTimeout(() => {
-      if (!previewRank) fetch(`/api/minecraft/profile?username=${encodeURIComponent(username)}`, { signal: controller.signal })
+      if (!previewRank) fetch(`/api/minecraft/profile?username=${encodeURIComponent(username)}${profileServer ? "&server=" + encodeURIComponent(profileServer) : ""}`, { signal: controller.signal })
         .then(response => response.ok ? response.json() : null)
         .then(data => { if (!disposed) setRank(typeof data?.rank === "string" ? data.rank : null); })
         .catch(() => { /* Rank remains unknown when the server is unavailable. */ });
@@ -41,7 +41,7 @@ export default function CharacterPreview({ username, id, previewRank }: { userna
       })();
     }, 500);
     return () => { disposed = true; clearTimeout(timer); controller.abort(); observer?.disconnect(); viewer?.dispose(); };
-  }, [username, previewRank]);
+  }, [username, previewRank, profileServer]);
   const rankName = previewRank?.trim();
 
   return <section id={id} className="store-character" aria-label={copy.viewCharacter}>

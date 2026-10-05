@@ -6,9 +6,11 @@ export function validateContent(value: unknown) {
   const v = value as Record<string, unknown>;
   if (!["news","event","rule"].includes(String(v.kind)) || !hubLocales.includes(String(v.locale)) || !clean(v.title,1,160) || !clean(v.body,1,10000) || typeof v.published !== "boolean" || (v.id != null && (typeof v.id !== "string" || !uuid.test(v.id)))) return null;
   if (v.kind === "event" && (typeof v.startsAt !== "string" || !Number.isFinite(Date.parse(v.startsAt)))) return null;
+  const imageId = v.imageId === undefined || v.imageId === null || v.imageId === "" ? null : v.imageId;
+  if (imageId !== null && (v.kind === "rule" || typeof imageId !== "string" || !uuid.test(imageId))) return null;
   let registrationUrl: string | null = null;
   if (v.registrationUrl) { try { const u = new URL(String(v.registrationUrl)); if (u.protocol !== "https:" || u.username || u.password || u.href.length > 1000) return null; registrationUrl = u.href; } catch { return null; } }
-  return { id: v.id as string | undefined, kind: v.kind as "news" | "event" | "rule", locale: String(v.locale), title: v.title.trim(), body: v.body.trim(), published: v.published, startsAt: v.kind === "event" ? new Date(String(v.startsAt)).toISOString() : null, registrationUrl };
+  return { id: v.id as string | undefined, kind: v.kind as "news" | "event" | "rule", locale: String(v.locale), title: v.title.trim(), body: v.body.trim(), published: v.published, startsAt: v.kind === "event" ? new Date(String(v.startsAt)).toISOString() : null, registrationUrl, imageId };
 }
 export function validateSupport(value: unknown) {
   if (!value || typeof value !== "object") return null;

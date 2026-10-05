@@ -748,7 +748,19 @@
     "activityIntro": "Track your purchases, creator applications, support reports and event registrations in one place.",
     "commonErrorsIntro": "Quick solutions to common connection, store and modpack problems.",
     "viewMore": "View more",
-    "copyLink": "Copy this link"
+    "copyLink": "Copy this link",
+    "coverImage": "Cover image",
+    "uploadImage": "Upload image",
+    "imagePreview": "Image preview",
+    "imageHint": "16:9, square or portrait. PNG, JPG, WebP, AVIF or GIF up to 20 MB. Images keep their aspect ratio; GIF uses its first frame.",
+    "uploadingImage": "Uploading image…",
+    "replaceImage": "Replace image",
+    "removeImage": "Remove image",
+    "imageTooLarge": "Choose an image under 20 MB that can be optimized for upload.",
+    "imageInvalid": "Choose a valid PNG, JPG, WebP, AVIF or GIF image.",
+    "imageUploadFailed": "Image upload failed. Try again.",
+    "profileServer": "Server",
+    "profileUpdated": "Last updated"
   },
   "dashboard": {
     "dashboard": "Dashboard",
@@ -1099,5 +1111,30 @@
     "kill": "Force stop",
     "killWarning": "Force stop immediately kills the server container. Unsaved data may be lost.",
     "panelHint": "These tools follow your Pelican Client API permissions. Host administration, nodes, eggs, mounts, server icons and two-factor setup are managed in the Pelican panel."
+  },
+  "minecraftBridge": {
+    "title": "Minecraft player profiles",
+    "description": "Connect each server through Zo7al Player Bridge to sync real ranks, statistics and player activity.",
+    "create": "Add server",
+    "empty": "No servers connected yet.",
+    "enabled": "Enabled",
+    "disabled": "Disabled",
+    "players": "{count} players",
+    "lastSync": "Last sync",
+    "waiting": "Waiting for the plugin",
+    "setup": "Put the key in the plugin’s config.yml, then run /zo7albridge reload on your Paper server.",
+    "rotate": "Replace key",
+    "revoke": "Disable connection",
+    "newKey": "New connection key",
+    "oneTime": "This key appears only once. Copy it into the plugin configuration and keep it private.",
+    "show": "Show key",
+    "hide": "Hide key",
+    "copy": "Copy key",
+    "copied": "Copied",
+    "done": "Done",
+    "serverName": "Server name",
+    "revokeWarning": "Disable this server’s profile sync and hide its saved profiles from the website.",
+    "rotateWarning": "Replace the key. The old key will stop working; update the plugin configuration.",
+    "keyWarning": "This key allows the plugin to update player profiles. Keep it private."
   }
 }

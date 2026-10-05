@@ -9,7 +9,7 @@ export async function GET(request: Request) {
   try {
     const db = await siteDatabase();
     const [content,requests,orders] = await Promise.all([
-      db.query('SELECT id,kind,locale,title,body,published,created_at AS "createdAt",starts_at AS "startsAt",registration_url AS "registrationUrl" FROM site_content ORDER BY created_at DESC LIMIT 100'),
+      db.query('SELECT c.id,c.kind,c.locale,c.title,c.body,c.published,c.created_at AS "createdAt",c.starts_at AS "startsAt",c.registration_url AS "registrationUrl",CASE WHEN i.id IS NOT NULL THEN json_build_object(\'id\',i.id,\'width\',i.width,\'height\',i.height) ELSE NULL END AS image FROM site_content c LEFT JOIN site_content_images i ON i.id=c.image_id ORDER BY c.created_at DESC LIMIT 100'),
       db.query('SELECT id,kind,payload,status,public_note AS "note",created_at AS "createdAt",discord_receipt AS "discordReceipt" FROM site_requests ORDER BY created_at DESC LIMIT 100'),
       db.query('SELECT id,username,items,discord_receipt AS "discordReceipt",created_at AS "createdAt" FROM site_orders ORDER BY created_at DESC LIMIT 100')
     ]);

@@ -748,7 +748,19 @@
     "activityIntro": "Verfolge Einkäufe, Creator-Bewerbungen, Support-Anfragen und Veranstaltungsanmeldungen an einem Ort.",
     "commonErrorsIntro": "Schnelle Lösungen für häufige Verbindungs-, Shop- und Modpack-Probleme.",
     "viewMore": "Mehr anzeigen",
-    "copyLink": "Diesen Link kopieren"
+    "copyLink": "Diesen Link kopieren",
+    "coverImage": "Titelbild",
+    "uploadImage": "Bild hochladen",
+    "imagePreview": "Bildvorschau",
+    "imageHint": "16:9, quadratisch oder hochkant. PNG, JPG, WebP, AVIF oder GIF bis 20 MB. Das Seitenverhältnis bleibt erhalten; GIF nutzt das erste Bild.",
+    "uploadingImage": "Bild wird hochgeladen…",
+    "replaceImage": "Bild ersetzen",
+    "removeImage": "Bild entfernen",
+    "imageTooLarge": "Wähle ein optimierbares Bild unter 20 MB.",
+    "imageInvalid": "Wähle ein gültiges PNG-, JPG-, WebP-, AVIF- oder GIF-Bild.",
+    "imageUploadFailed": "Upload fehlgeschlagen. Versuche es erneut.",
+    "profileServer": "Server",
+    "profileUpdated": "Zuletzt aktualisiert"
   },
   "dashboard": {
     "dashboard": "Dashboard",
@@ -1099,5 +1111,30 @@
     "kill": "Force stop",
     "killWarning": "Force stop immediately kills the server container. Unsaved data may be lost.",
     "panelHint": "These tools follow your Pelican Client API permissions. Host administration, nodes, eggs, mounts, server icons and two-factor setup are managed in the Pelican panel."
+  },
+  "minecraftBridge": {
+    "title": "Minecraft-Spielerprofile",
+    "description": "Verbinde jeden Server über Zo7al Player Bridge, um echte Ränge, Statistiken und Spieleraktivität zu synchronisieren.",
+    "create": "Server hinzufügen",
+    "empty": "Noch keine Server verbunden.",
+    "enabled": "Aktiv",
+    "disabled": "Deaktiviert",
+    "players": "{count} Spieler",
+    "lastSync": "Letzte Synchronisierung",
+    "waiting": "Wartet auf das Plugin",
+    "setup": "Trage den Schlüssel in config.yml ein und führe /zo7albridge reload auf deinem Paper-Server aus.",
+    "rotate": "Schlüssel ersetzen",
+    "revoke": "Verbindung deaktivieren",
+    "newKey": "Neuer Schlüssel",
+    "oneTime": "Dieser Schlüssel wird nur einmal angezeigt. Kopiere ihn in die Plugin-Konfiguration und halte ihn geheim.",
+    "show": "Schlüssel anzeigen",
+    "hide": "Schlüssel verbergen",
+    "copy": "Schlüssel kopieren",
+    "copied": "Kopiert",
+    "done": "Fertig",
+    "serverName": "Servername",
+    "revokeWarning": "Synchronisierung deaktivieren und gespeicherte Profile dieses Servers auf der Website ausblenden.",
+    "rotateWarning": "Der alte Schlüssel wird ungültig. Aktualisiere die Plugin-Konfiguration.",
+    "keyWarning": "Dieser Schlüssel erlaubt Profilaktualisierungen. Halte ihn geheim."
   }
 }

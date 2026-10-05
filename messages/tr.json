@@ -748,7 +748,19 @@
     "activityIntro": "Satın alımlarını, içerik üretici başvurularını, destek taleplerini ve etkinlik kayıtlarını tek yerde takip et.",
     "commonErrorsIntro": "Bağlantı, mağaza ve mod paketlerinde sık görülen sorunlara hızlı çözümler.",
     "viewMore": "Daha fazla göster",
-    "copyLink": "Bu bağlantıyı kopyala"
+    "copyLink": "Bu bağlantıyı kopyala",
+    "coverImage": "Kapak görseli",
+    "uploadImage": "Görsel yükle",
+    "imagePreview": "Görsel önizlemesi",
+    "imageHint": "16:9, kare veya dikey. En fazla 20 MB PNG, JPG, WebP, AVIF veya GIF. En boy oranı korunur; GIF için ilk kare kullanılır.",
+    "uploadingImage": "Görsel yükleniyor…",
+    "replaceImage": "Görseli değiştir",
+    "removeImage": "Görseli kaldır",
+    "imageTooLarge": "Optimize edilebilecek 20 MB altı bir görsel seçin.",
+    "imageInvalid": "Geçerli bir PNG, JPG, WebP, AVIF veya GIF seçin.",
+    "imageUploadFailed": "Yükleme başarısız. Tekrar deneyin.",
+    "profileServer": "Sunucu",
+    "profileUpdated": "Son güncelleme"
   },
   "dashboard": {
     "dashboard": "Kontrol paneli",
@@ -1099,5 +1111,30 @@
     "kill": "Force stop",
     "killWarning": "Force stop immediately kills the server container. Unsaved data may be lost.",
     "panelHint": "These tools follow your Pelican Client API permissions. Host administration, nodes, eggs, mounts, server icons and two-factor setup are managed in the Pelican panel."
+  },
+  "minecraftBridge": {
+    "title": "Minecraft oyuncu profilleri",
+    "description": "Gerçek rütbeleri, istatistikleri ve oyuncu etkinliğini senkronize etmek için her sunucuyu Zo7al Player Bridge ile bağlayın.",
+    "create": "Sunucu ekle",
+    "empty": "Henüz bağlı sunucu yok.",
+    "enabled": "Etkin",
+    "disabled": "Devre dışı",
+    "players": "{count} oyuncu",
+    "lastSync": "Son senkronizasyon",
+    "waiting": "Eklenti bekleniyor",
+    "setup": "Anahtarı eklentinin config.yml dosyasına yazın ve Paper sunucusunda /zo7albridge reload çalıştırın.",
+    "rotate": "Anahtarı değiştir",
+    "revoke": "Bağlantıyı devre dışı bırak",
+    "newKey": "Yeni anahtar",
+    "oneTime": "Bu anahtar yalnızca bir kez gösterilir. Eklenti yapılandırmasına kopyalayın ve gizli tutun.",
+    "show": "Anahtarı göster",
+    "hide": "Anahtarı gizle",
+    "copy": "Anahtarı kopyala",
+    "copied": "Kopyalandı",
+    "done": "Bitti",
+    "serverName": "Sunucu adı",
+    "revokeWarning": "Bu sunucunun senkronizasyonunu durdur ve kayıtlı profillerini sitede gizle.",
+    "rotateWarning": "Eski anahtar çalışmayı durduracak. Eklenti yapılandırmasını güncelleyin.",
+    "keyWarning": "Bu anahtar profil güncellemelerine izin verir. Gizli tutun."
   }
 }

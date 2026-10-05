@@ -748,7 +748,19 @@
     "activityIntro": "在同一处查看购买记录、创作者申请、支持请求和活动报名。",
     "commonErrorsIntro": "快速解决常见的连接、商店和整合包问题。",
     "viewMore": "查看更多",
-    "copyLink": "复制此链接"
+    "copyLink": "复制此链接",
+    "coverImage": "封面图片",
+    "uploadImage": "上传图片",
+    "imagePreview": "图片预览",
+    "imageHint": "支持16:9、方形或竖图。PNG、JPG、WebP、AVIF或GIF，最大20 MB。保留原始比例；GIF使用第一帧。",
+    "uploadingImage": "正在上传图片…",
+    "replaceImage": "更换图片",
+    "removeImage": "移除图片",
+    "imageTooLarge": "请选择可优化且小于20 MB的图片。",
+    "imageInvalid": "请选择有效的PNG、JPG、WebP、AVIF或GIF图片。",
+    "imageUploadFailed": "图片上传失败，请重试。",
+    "profileServer": "服务器",
+    "profileUpdated": "最后更新"
   },
   "dashboard": {
     "dashboard": "控制面板",
@@ -1099,5 +1111,30 @@
     "kill": "Force stop",
     "killWarning": "Force stop immediately kills the server container. Unsaved data may be lost.",
     "panelHint": "These tools follow your Pelican Client API permissions. Host administration, nodes, eggs, mounts, server icons and two-factor setup are managed in the Pelican panel."
+  },
+  "minecraftBridge": {
+    "title": "Minecraft玩家档案",
+    "description": "通过Zo7al Player Bridge连接各服务器，同步真实等级、统计数据和玩家活动。",
+    "create": "添加服务器",
+    "empty": "尚未连接服务器。",
+    "enabled": "已启用",
+    "disabled": "已停用",
+    "players": "{count}名玩家",
+    "lastSync": "最后同步",
+    "waiting": "等待插件连接",
+    "setup": "将密钥填入插件的config.yml，然后在Paper服务器运行 /zo7albridge reload。",
+    "rotate": "更换密钥",
+    "revoke": "停用连接",
+    "newKey": "新连接密钥",
+    "oneTime": "此密钥仅显示一次。请复制到插件配置并妥善保密。",
+    "show": "显示密钥",
+    "hide": "隐藏密钥",
+    "copy": "复制密钥",
+    "copied": "已复制",
+    "done": "完成",
+    "serverName": "服务器名称",
+    "revokeWarning": "停止此服务器的同步，并在网站隐藏其已保存的档案。",
+    "rotateWarning": "旧密钥将失效。请更新插件配置。",
+    "keyWarning": "此密钥允许更新玩家档案。请妥善保密。"
   }
 }
