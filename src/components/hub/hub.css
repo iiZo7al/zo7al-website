@@ -10,6 +10,9 @@
 .hub-card h3 { font-weight:650; font-size:19px; }
 .hub-card p { margin-top:12px; line-height:1.85; color:var(--text-muted); }
 .hub-card img { max-width:100%; border-radius:12px; }
+.hub-content-image { margin:0 0 24px; min-width:0; display:flex; align-items:center; justify-content:center; border-radius:16px; overflow:hidden; background:var(--bg-secondary); }
+.hub-content-image img { display:block; width:100%; height:auto; max-height:420px; object-fit:contain; border-radius:0; }
+.hub-command .hub-content-image img { max-height:65dvh; }
 .hub-actions { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-top:18px; }
 .hub-button { display:inline-flex; align-items:center; justify-content:center; gap:8px; min-height:44px; border:1px solid var(--border-strong); border-radius:999px; padding:11px 20px; color:var(--text); font-size:14px; font-weight:600; }
 .hub-button:hover { border-color:var(--accent); background:var(--surface-elevated); }

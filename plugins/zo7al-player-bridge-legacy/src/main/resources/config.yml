@@ -1,0 +1,60 @@
+# Create a key in /dashboard > Connections > Minecraft player profiles.
+# The bridge only sends profile data; it does not accept console commands.
+endpoint: 'https://zo7al.is-a.dev/api/minecraft/bridge'
+token: ''
+
+# Java 8 / Minecraft 1.8 classic server. HTTPS requests run asynchronously.
+sync-interval-seconds: 60
+batch-size: 100
+queue-limit: 5000
+
+# Import players who played on this server before the plugin was installed.
+# This reads a small number of offline profiles each second.
+sync-offline-on-start: true
+offline-players-per-second: 5
+excluded-players: []
+
+# LuckPerms primary groups -> the plain rank names shown on the website.
+# No color codes, MiniMessage tags or chat prefixes are sent.
+rank-names:
+  default: DEFAULT
+  owner: OWNER
+  admin: ADMIN
+  moderator: MODERATOR
+  helper: HELPER
+  vip: VIP
+  mvp: MVP
+  'mvp+': 'MVP+'
+  'mvp++': 'MVP++'
+  mvpplus: 'MVP+'
+  mvpplusplus: 'MVP++'
+  booster: BOOSTER
+  youtube: YOUTUBE
+  twitch: TWITCH
+  tiktok: TIKTOK
+
+# Optional PlaceholderAPI overrides. Empty values use Bukkit's real counters.
+# Set wins to the actual wins placeholder supplied by your practice plugin.
+# Unknown/missing wins stay unknown; the bridge does not invent zero wins.
+statistics:
+  kills-placeholder: ''
+  deaths-placeholder: ''
+  wins-placeholder: ''
+  playtime-seconds-placeholder: ''
+
+messages:
+  prefix: '&8[&6Zo7al&8] &r'
+  no-permission: '&cYou do not have permission to manage the Zo7al bridge.'
+  usage: '&7Use &f/zo7albridge status&7, &f/zo7albridge reload &7or &f/zo7albridge sync [player]&7.'
+  reloaded: '&aZo7al player bridge configuration reloaded.'
+  configured: '&aConfigured'
+  unconfigured: '&eWaiting for a valid HTTPS endpoint and bridge key'
+  status: '&7Connection: &f{state}&7. Queued: &f{queued}&7. Last sync: &f{last-sync}&7.'
+  never: 'Not synchronized yet'
+  queued: '&aProfile synchronization queued for {count} player(s).'
+  unknown-player: '&cThis player has not played on this server.'
+  invalid-config: 'Add the bridge key from the Zo7al dashboard to config.yml, then run /zo7albridge reload.'
+  enabled: 'Zo7al player profile bridge Legacy enabled. Profile reads are read-only; HTTPS uploads run asynchronously.'
+  missing-luckperms: 'LuckPerms is unavailable. Player statistics will sync, but ranks will remain unknown.'
+  failed: 'Website synchronization failed (HTTP {status}). Retrying in {seconds}s. Check the endpoint and dashboard bridge key.'
+  queue-full: 'The profile queue is full. Offline importing is paused until website synchronization resumes.'

@@ -5,6 +5,7 @@ import { ArrowUpRight, KeyRound, ShieldCheck, Plug, Server, AlertCircle, Termina
 import type { DashboardConnection, PlatformData, PlatformId, ConnectionProvider, MetricKey } from "@/lib/data/dashboard";
 import { connectionProviders } from "@/lib/data/dashboard";
 import { PlatformMark, platformNames, type DashboardView } from "./DashboardOverview";
+import MinecraftBridgeSettings from "./MinecraftBridgeSettings";
 
 const portals:Record<PlatformId,string>={minecraft:"/minecraft",fortnite:"https://create.fortnite.com/",youtube:"https://studio.youtube.com/",modrinth:"https://modrinth.com/user/iiZo7al",curseforge:"https://www.curseforge.com/minecraft"};
 const metrics:Record<PlatformId,MetricKey[]>={minecraft:["players","capacity"],fortnite:["plays","minutesPlayed","projects"],youtube:["subscribers","views","videos"],modrinth:["downloads","followers","projects"],curseforge:["downloads","projects"]};
@@ -21,7 +22,7 @@ export function DashboardPlatform({id,platform,onView}:{id:PlatformId;platform?:
 }
 export function DashboardConnections({connections,onSaved,onExpired}:{connections:DashboardConnection[];onSaved:(connections:DashboardConnection[])=>void;onExpired:()=>void}) {
   const d=useTranslations("dashboard");
-  return <section><div className="dash-section-heading"><div><p className="dash-eyebrow">ZO7AL PROJECTS</p><h1>{d("connections")}</h1></div><ShieldCheck size={24}/></div><p className="dash-help dash-platform-description">{d("connectionHint")}</p><div className="dash-connections-grid">{connectionProviders.map(provider=><ConnectionForm key={provider} provider={provider} connection={connections.find(c=>c.provider===provider)} onSaved={onSaved} onExpired={onExpired}/>)}</div><div className="dash-panel card-glow dash-public-connections"><h2>{d("publicConnections")}</h2>{(["minecraft","fortnite","modrinth"] as const).map(id=><div key={id}><PlatformMark id={id}/><strong>{platformNames[id]}</strong><span className="dash-tag dash-tag-green">{d("publicAPI")}</span></div>)}</div></section>;
+  return <section><div className="dash-section-heading"><div><p className="dash-eyebrow">ZO7AL PROJECTS</p><h1>{d("connections")}</h1></div><ShieldCheck size={24}/></div><p className="dash-help dash-platform-description">{d("connectionHint")}</p><div className="dash-connections-grid">{connectionProviders.map(provider=><ConnectionForm key={provider} provider={provider} connection={connections.find(c=>c.provider===provider)} onSaved={onSaved} onExpired={onExpired}/>)}</div><MinecraftBridgeSettings onExpired={onExpired}/><div className="dash-panel card-glow dash-public-connections"><h2>{d("publicConnections")}</h2>{(["minecraft","fortnite","modrinth"] as const).map(id=><div key={id}><PlatformMark id={id}/><strong>{platformNames[id]}</strong><span className="dash-tag dash-tag-green">{d("publicAPI")}</span></div>)}</div></section>;
 }
 function ConnectionForm({provider,connection,onSaved,onExpired}:{provider:ConnectionProvider;connection?:DashboardConnection;onSaved:(connections:DashboardConnection[])=>void;onExpired:()=>void}) {
   const d=useTranslations("dashboard"),h=useTranslations("hub");

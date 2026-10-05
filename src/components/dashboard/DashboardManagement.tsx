@@ -6,38 +6,43 @@ import DetailsDialog from "@/components/ui/DetailsDialog";
 import type { HubContent } from "@/components/hub/ContentFeed";
 import { hubLocales } from "@/lib/data/hub-validation";
 import type { DashboardData, ManagementTab, Mutate, RequestRow } from "./types";
+import ContentImageField from "./ContentImageField";
+import ContentImage from "@/components/hub/ContentImage";
 
 export default function DashboardManagement({ data,tab,busy,mutate }: { data:DashboardData; tab:ManagementTab; busy:boolean; mutate:Mutate }) {
   const t = useTranslations("hub"), d = useTranslations("dashboard"), locale = useLocale();
   const [editing,setEditing] = useState<HubContent|null>(null);
   const [deleting,setDeleting] = useState<HubContent|null>(null);
   const [query,setQuery] = useState("");
+  const [uploading,setUploading] = useState(false);
+  const [editorVersion,setEditorVersion] = useState(0);
   const label = tab === "event" ? "events" : tab === "rule" ? "rules" : tab === "application" ? "applications" : tab;
   const matches = (text:string) => text.toLocaleLowerCase().includes(query.trim().toLocaleLowerCase());
   if (tab === "news" || tab === "event" || tab === "rule") {
     const content = data.content.filter(item => item.kind === tab && matches(item.title));
     return <section className="dash-management">
-      <div className="dash-section-heading"><div><p className="dash-eyebrow">{d("manage")}</p><h2>{t(label)}</h2></div><button className="dash-button" type="button" onClick={() => setEditing(null)}><Plus size={16}/>{t("create")}</button></div>
+      <div className="dash-section-heading"><div><p className="dash-eyebrow">{d("manage")}</p><h2>{t(label)}</h2></div><button className="dash-button" type="button" disabled={busy||uploading} onClick={() => {setEditing(null);setEditorVersion(value=>value+1);}}><Plus size={16}/>{t("create")}</button></div>
       <div className="dash-editor-grid">
         <div className="dash-panel card-glow dash-content-list">
           <input className="dash-search" aria-label={d("filter")} placeholder={d("filter")} value={query} onChange={e => setQuery(e.target.value)}/>
           {content.length ? content.map(item => <article className="dash-content-item" key={item.id}>
-            <span className="dash-item-icon"><FileText size={20}/></span><div className="dash-item-copy"><h3 dir="auto">{item.title}</h3><p><span>{item.locale.toUpperCase()}</span><span className={"dash-tag "+(item.published?"dash-tag-green":"")}>{t(item.published?"published":"draft")}</span></p><p dir="auto" className="dash-excerpt">{item.body}</p></div>
-            <div className="dash-icon-actions"><button className="dash-icon-button" type="button" aria-label={t("edit")} disabled={busy} onClick={() => setEditing(item)}><Pencil size={16}/></button><button className="dash-icon-button dash-danger" type="button" aria-label={t("delete")} disabled={busy} onClick={() => setDeleting(item)}><Trash2 size={16}/></button></div>
+            <span className="dash-item-icon"><FileText size={20}/></span><div className="dash-item-copy"><ContentImage image={item.image} title={item.title} className="dash-content-thumbnail"/><h3 dir="auto">{item.title}</h3><p><span>{item.locale.toUpperCase()}</span><span className={"dash-tag "+(item.published?"dash-tag-green":"")}>{t(item.published?"published":"draft")}</span></p><p dir="auto" className="dash-excerpt">{item.body}</p></div>
+            <div className="dash-icon-actions"><button className="dash-icon-button" type="button" aria-label={t("edit")} disabled={busy||uploading} onClick={() => setEditing(item)}><Pencil size={16}/></button><button className="dash-icon-button dash-danger" type="button" aria-label={t("delete")} disabled={busy||uploading} onClick={() => setDeleting(item)}><Trash2 size={16}/></button></div>
           </article>) : <Empty icon={<FileText size={30}/>} text={t("empty")}/>}
         </div>
-        <form key={editing?.id??tab} className="dash-panel card-glow hub-form dash-editor" onSubmit={async e => {
-          e.preventDefault(); const element = e.currentTarget; const form = new FormData(element); const date = String(form.get("startsAt")??"");
+        <form key={(editing?.id??tab)+":"+editorVersion} className="dash-panel card-glow hub-form dash-editor" onSubmit={async e => {
+          e.preventDefault(); if(busy||uploading)return; const element = e.currentTarget; const form = new FormData(element); const date = String(form.get("startsAt")??"");
           if (await mutate("content",{ id:editing?.id,kind:tab,locale:form.get("locale"),title:form.get("title"),body:form.get("body"),
-            published:form.get("published")==="on",startsAt:date?new Date(date+":00+03:00").toISOString():null,registrationUrl:form.get("registrationUrl") })) { setEditing(null); if (!editing) element.reset(); }
+            published:form.get("published")==="on",startsAt:date?new Date(date+":00+03:00").toISOString():null,registrationUrl:form.get("registrationUrl"),imageId:form.get("imageId") })) { setEditing(null); setEditorVersion(value=>value+1); if (!editing) element.reset(); }
         }}>
           <div className="dash-section-heading"><h3>{t(editing?"edit":"create")}</h3><span className="dash-tag">CMS</span></div>
           <label>{t("language")}<select name="locale" defaultValue={editing?.locale??locale}>{hubLocales.map(l => <option key={l} value={l}>{l.toUpperCase()}</option>)}</select></label>
           <label>{t("title")}<input name="title" required maxLength={160} defaultValue={editing?.title??""}/></label>
           <label>{t("body")}<textarea name="body" required maxLength={10000} rows={8} defaultValue={editing?.body??""}/></label>
+          {tab!=="rule"&&<ContentImageField key={editing?.id??tab} initial={editing?.image} disabled={busy} onBusy={setUploading}/>}
           {tab==="event" && <><label>{t("startsAt")} · {t("riyadhTime")}<input name="startsAt" type="datetime-local" required defaultValue={editing?.startsAt?new Date(Date.parse(editing.startsAt)+3*3600000).toISOString().slice(0,16):""}/></label><label>{t("eventLink")}<input type="url" name="registrationUrl" defaultValue={editing?.registrationUrl??""} maxLength={1000} placeholder="https://" dir="ltr"/></label></>}
           <label className="hub-consent"><input type="checkbox" name="published" defaultChecked={editing?.published??false}/>{t("published")}</label>
-          <button className="dash-button dash-button-primary" disabled={busy} type="submit">{t(busy?"loading":"save")}</button>
+          <button className="dash-button dash-button-primary" disabled={busy||uploading} type="submit">{t(busy?"loading":uploading?"uploadingImage":"save")}</button>
         </form>
       </div>
       {deleting && <DetailsDialog title={t("delete")} onClose={() => setDeleting(null)}><div className="dash-delete-dialog"><p dir="auto">{deleting.title}</p><div className="dash-actions"><button className="dash-button dash-danger" type="button" disabled={busy} onClick={async () => { if (await mutate("delete",deleting.id)) setDeleting(null); }}><Trash2 size={16}/>{t("delete")}</button><button className="dash-button" type="button" onClick={() => setDeleting(null)}>{d("cancel")}</button></div></div></DetailsDialog>}

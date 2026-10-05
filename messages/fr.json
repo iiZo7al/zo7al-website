@@ -748,7 +748,19 @@
     "activityIntro": "Suivez vos achats, candidatures de créateur, demandes d’assistance et inscriptions aux événements au même endroit.",
     "commonErrorsIntro": "Des solutions rapides aux problèmes courants de connexion, de boutique et de modpacks.",
     "viewMore": "Voir plus",
-    "copyLink": "Copiez ce lien"
+    "copyLink": "Copiez ce lien",
+    "coverImage": "Image de couverture",
+    "uploadImage": "Importer une image",
+    "imagePreview": "Aperçu",
+    "imageHint": "16:9, carrée ou verticale. PNG, JPG, WebP, AVIF ou GIF jusqu’à 20 Mo. Les proportions sont conservées ; GIF utilise la première image.",
+    "uploadingImage": "Importation…",
+    "replaceImage": "Remplacer l’image",
+    "removeImage": "Retirer l’image",
+    "imageTooLarge": "Choisissez une image de moins de 20 Mo pouvant être optimisée.",
+    "imageInvalid": "Choisissez une image PNG, JPG, WebP, AVIF ou GIF valide.",
+    "imageUploadFailed": "Échec de l’importation. Réessayez.",
+    "profileServer": "Serveur",
+    "profileUpdated": "Dernière mise à jour"
   },
   "dashboard": {
     "dashboard": "Tableau de bord",
@@ -1099,5 +1111,30 @@
     "kill": "Force stop",
     "killWarning": "Force stop immediately kills the server container. Unsaved data may be lost.",
     "panelHint": "These tools follow your Pelican Client API permissions. Host administration, nodes, eggs, mounts, server icons and two-factor setup are managed in the Pelican panel."
+  },
+  "minecraftBridge": {
+    "title": "Profils des joueurs Minecraft",
+    "description": "Connectez chaque serveur avec Zo7al Player Bridge pour synchroniser les rangs, statistiques et activités réels.",
+    "create": "Ajouter un serveur",
+    "empty": "Aucun serveur connecté.",
+    "enabled": "Activé",
+    "disabled": "Désactivé",
+    "players": "{count} joueurs",
+    "lastSync": "Dernière synchronisation",
+    "waiting": "En attente du plugin",
+    "setup": "Placez la clé dans config.yml du plugin, puis lancez /zo7albridge reload sur votre serveur Paper.",
+    "rotate": "Changer la clé",
+    "revoke": "Désactiver la connexion",
+    "newKey": "Nouvelle clé",
+    "oneTime": "Cette clé n’apparaît qu’une fois. Copiez-la dans la configuration du plugin et gardez-la privée.",
+    "show": "Afficher la clé",
+    "hide": "Masquer la clé",
+    "copy": "Copier la clé",
+    "copied": "Copiée",
+    "done": "Terminé",
+    "serverName": "Nom du serveur",
+    "revokeWarning": "Désactiver la synchronisation et masquer les profils enregistrés de ce serveur.",
+    "rotateWarning": "Changer la clé invalide l’ancienne. Mettez à jour la configuration du plugin.",
+    "keyWarning": "Cette clé autorise la mise à jour des profils. Gardez-la privée."
   }
 }

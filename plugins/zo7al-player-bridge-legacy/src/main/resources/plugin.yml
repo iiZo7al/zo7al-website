@@ -1,0 +1,17 @@
+name: Zo7alPlayerBridgeLegacy
+version: 1.0.0
+main: dev.zo7al.bridge.legacy.Zo7alPlayerBridgeLegacy
+description: Read-only player profile sync for the Zo7al classic PvP server.
+authors: [Zo7al]
+website: https://zo7al.is-a.dev
+softdepend: [LuckPerms, PlaceholderAPI]
+commands:
+  zo7albridge:
+    description: Manage the Zo7al profile bridge.
+    usage: /zo7albridge <status|reload|sync [player]>
+    permission: zo7al.bridge.admin
+    permission-message: '&8[&6Zo7al&8] &cYou do not have permission to use this command.'
+permissions:
+  zo7al.bridge.admin:
+    description: Manage the Zo7al player profile bridge.
+    default: op

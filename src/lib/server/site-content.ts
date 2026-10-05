@@ -12,14 +12,16 @@ export async function limitAttempt(key: string, limit: number, seconds: number) 
 }
 export async function publicContent(kind: "news" | "event" | "rule", locale: string) {
   try {
-    const result = await (await siteDatabase()).query("SELECT id,kind,locale,title,body,starts_at AS \"startsAt\",registration_url AS \"registrationUrl\",created_at AS \"createdAt\" FROM site_content WHERE kind=$1 AND published AND locale=$2 ORDER BY COALESCE(starts_at,created_at) DESC LIMIT 40", [kind,locale]);
+    const result = await (await siteDatabase()).query("SELECT c.id,c.kind,c.locale,c.title,c.body,c.starts_at AS \"startsAt\",c.registration_url AS \"registrationUrl\",c.created_at AS \"createdAt\",CASE WHEN i.id IS NOT NULL THEN json_build_object('id',i.id,'width',i.width,'height',i.height) ELSE NULL END AS image FROM site_content c LEFT JOIN site_content_images i ON i.id=c.image_id WHERE c.kind=$1 AND c.published AND c.locale=$2 ORDER BY COALESCE(c.starts_at,c.created_at) DESC LIMIT 40", [kind,locale]);
     return { items: result.rows, available: true };
   } catch { return { items: [], available: false }; }
 }
 export async function saveContent(value: unknown) {
   const content = validateContent(value); if (!content) throw new Error("INVALID");
   const id = content.id ?? randomUUID();
-  await (await siteDatabase()).query("INSERT INTO site_content(id,kind,locale,title,body,published,starts_at,registration_url) VALUES($1,$2,$3,$4,$5,$6,$7,$8) ON CONFLICT(id) DO UPDATE SET kind=excluded.kind,locale=excluded.locale,title=excluded.title,body=excluded.body,published=excluded.published,starts_at=excluded.starts_at,registration_url=excluded.registration_url,updated_at=now()", [id,content.kind,content.locale,content.title,content.body,content.published,content.startsAt,content.registrationUrl]);
+  const db = await siteDatabase();
+  if (content.imageId && !(await db.query("SELECT id FROM site_content_images WHERE id=$1", [content.imageId])).rowCount) throw Error("INVALID");
+  await db.query("INSERT INTO site_content(id,kind,locale,title,body,published,starts_at,registration_url,image_id) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9) ON CONFLICT(id) DO UPDATE SET kind=excluded.kind,locale=excluded.locale,title=excluded.title,body=excluded.body,published=excluded.published,starts_at=excluded.starts_at,registration_url=excluded.registration_url,image_id=excluded.image_id,updated_at=now()", [id,content.kind,content.locale,content.title,content.body,content.published,content.startsAt,content.registrationUrl,content.imageId]);
   return id;
 }
 export async function createTrackedRequest(kind: "application" | "support" | "event", payload: unknown, id: string = randomUUID()) {

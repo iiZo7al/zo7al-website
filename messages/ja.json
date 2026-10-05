@@ -748,7 +748,19 @@
     "activityIntro": "購入、クリエイター申請、サポート依頼、イベント登録をまとめて確認できます。",
     "commonErrorsIntro": "接続、ストア、Modパックでよくある問題の解決方法。",
     "viewMore": "もっと見る",
-    "copyLink": "このリンクをコピー"
+    "copyLink": "このリンクをコピー",
+    "coverImage": "カバー画像",
+    "uploadImage": "画像をアップロード",
+    "imagePreview": "画像プレビュー",
+    "imageHint": "16:9、正方形、縦長に対応。PNG、JPG、WebP、AVIF、GIF（20 MBまで）。縦横比を維持し、GIFは最初のフレームを使用します。",
+    "uploadingImage": "画像をアップロード中…",
+    "replaceImage": "画像を変更",
+    "removeImage": "画像を削除",
+    "imageTooLarge": "最適化できる20 MB未満の画像を選んでください。",
+    "imageInvalid": "有効なPNG、JPG、WebP、AVIF、GIF画像を選んでください。",
+    "imageUploadFailed": "アップロードに失敗しました。再試行してください。",
+    "profileServer": "サーバー",
+    "profileUpdated": "最終更新"
   },
   "dashboard": {
     "dashboard": "ダッシュボード",
@@ -1099,5 +1111,30 @@
     "kill": "Force stop",
     "killWarning": "Force stop immediately kills the server container. Unsaved data may be lost.",
     "panelHint": "These tools follow your Pelican Client API permissions. Host administration, nodes, eggs, mounts, server icons and two-factor setup are managed in the Pelican panel."
+  },
+  "minecraftBridge": {
+    "title": "Minecraftプレイヤープロフィール",
+    "description": "Zo7al Player Bridgeで各サーバーを接続し、実際のランク、統計、活動状況を同期します。",
+    "create": "サーバーを追加",
+    "empty": "接続済みサーバーはありません。",
+    "enabled": "有効",
+    "disabled": "無効",
+    "players": "{count}人のプレイヤー",
+    "lastSync": "最終同期",
+    "waiting": "プラグインの接続待ち",
+    "setup": "プラグインのconfig.ymlにキーを設定し、Paperサーバーで /zo7albridge reload を実行してください。",
+    "rotate": "キーを更新",
+    "revoke": "接続を無効化",
+    "newKey": "新しい接続キー",
+    "oneTime": "このキーは一度だけ表示されます。プラグイン設定にコピーし、秘密にしてください。",
+    "show": "キーを表示",
+    "hide": "キーを隠す",
+    "copy": "キーをコピー",
+    "copied": "コピー済み",
+    "done": "完了",
+    "serverName": "サーバー名",
+    "revokeWarning": "このサーバーの同期を停止し、保存されたプロフィールをサイトで非表示にします。",
+    "rotateWarning": "古いキーは無効になります。プラグイン設定を更新してください。",
+    "keyWarning": "このキーでプロフィールを更新できます。秘密にしてください。"
   }
 }

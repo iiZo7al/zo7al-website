@@ -402,6 +402,16 @@ html[dir=rtl] .dash-eyebrow,html[dir=rtl] .dash-navigation>p,html[dir=rtl] .dash
 .pelican-activity-search { display:flex; gap:12px; width:100%; max-width:650px; }
 .pelican-activity-search label { flex:1; }
 .pelican-panel-hint { margin-top:32px; font-size:12px; }
+.dash-image-field { min-width:0; display:grid; gap:14px; border:1px solid var(--border); border-radius:16px; padding:18px; background:var(--bg-secondary); }
+.dash-image-field legend { color:var(--text); font-size:14px; padding:0 6px; }
+.dash-image-field .hub-content-image { margin:0; border:1px solid var(--border); }
+.dash-image-field .hub-content-image img { max-height:300px; }
+.dash-content-thumbnail { margin:0 0 12px; }
+.dash-content-thumbnail img { max-height:110px; }
+.dash-bridge-settings { margin-top:24px; }
+.dash-bridge-list { margin-block:20px; display:grid; gap:16px; }
+.dash-bridge-row { display:flex; align-items:center; gap:16px; flex-wrap:wrap; padding-block:16px; border-top:1px solid var(--border); }
+.dash-bridge-row .dash-item-copy { flex:1; min-width:170px; }
 .dash-console-panel.is-expanded .dash-console-output { height:70dvh; }
 @media(max-width:1250px) { .dash-main { margin-inline-start:260px; }.dash-sidebar { width:220px; }.dash-topbar { margin:0 20px; }.dash-stats { grid-template-columns:repeat(2,minmax(0,1fr)); }.pelican-file-heading { grid-template-columns:minmax(0,1fr) 86px 96px; }.pelican-file-row { grid-template-columns:17px minmax(0,1fr) 86px 96px; }.pelican-file-date,.pelican-file-heading>span:nth-child(3) { display:none; } }
 @media(max-width:920px) { .dash-sidebar { display:none; }.dash-main { margin-inline-start:0; }.dash-topbar { top:16px; margin:0 16px; }.dash-content { padding:32px 24px; }.dash-mobile-menu { display:inline-flex; }.dash-chart-grid,.dash-bottom-grid { grid-template-columns:1fr; }.dash-connections-grid { grid-template-columns:1fr; }.dash-connection-form:last-child { grid-column:auto; } }
