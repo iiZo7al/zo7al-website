@@ -55,7 +55,7 @@ export function validConnection(value: unknown): ConnectionInput | null {
   if (v.provider === "pelican") {
     const account = typeof v.account === "string" ? v.account.trim() : "";
     const panelUrl = publicPanelOrigin(v.panelUrl);
-    return validServerId(account) && panelUrl ? { provider: "pelican", apiKey: v.apiKey, account, panelUrl } : null;
+    return (!account || validServerId(account)) && panelUrl ? { provider: "pelican", apiKey: v.apiKey, account, panelUrl } : null;
   }
   const account = v.provider === "youtube" ? String(v.account ?? "iiZo7al").trim().replace(/^@/, "") : "iiZo7al";
   if (!/^[a-zA-Z0-9_.-]{3,60}$/.test(account)) return null;
@@ -101,6 +101,7 @@ export function parseYoutubeChannel(value: unknown, account: string): PlatformIt
 export function parseFortniteMetrics(value: unknown): Partial<Record<MetricKey,number|null>> {
   if (!value || typeof value !== "object") throw Error("INVALID_UPSTREAM");
   const v = value as Record<string,unknown>;
+  if (!["plays", "minutesPlayed", "peakCCU"].some(key => Array.isArray(v[key]))) throw Error("INVALID_UPSTREAM");
   const read = (key: string, maximum = false) => {
     const rows = v[key];
     if (!Array.isArray(rows) || !rows.length) return null;

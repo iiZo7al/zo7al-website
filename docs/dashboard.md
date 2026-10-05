@@ -18,10 +18,10 @@ Use **Connections** to verify and save credentials for:
 
 - **YouTube:** YouTube Data API key and channel handle. This loads public
   subscribers, channel views, and video counts. Private revenue and watch-time
-  analytics remain in YouTube Studio; this integration does not request OAuth.
+  analytics are available through the separate Google OAuth Studio connection below.
 - **CurseForge:** authorized API key for the published modpack download counts.
-- **Pelican:** HTTPS panel origin, server UUID (or legacy short identifier), and
-  a Client API key belonging to a user with access to the selected server.
+- **Pelican:** HTTPS panel origin and a Client API key. Server UUIDs are discovered
+  automatically; a previously configured UUID remains optional.
 
 Saved keys are encrypted using AES-256-GCM and the existing server-side session
 secret. Keys never appear in connection metadata or browser URLs. Rotating that
@@ -33,9 +33,82 @@ Optional environment-managed connections:
 | --- | --- |
 | YouTube | `YOUTUBE_API_KEY`, `YOUTUBE_CHANNEL_HANDLE` |
 | CurseForge | `CURSEFORGE_API_KEY` |
-| Pelican | `PELICAN_PANEL_URL`, `PELICAN_SERVER_ID`, `PELICAN_CLIENT_API_KEY` |
+| Pelican | `PELICAN_PANEL_URL`, `PELICAN_CLIENT_API_KEY`; optional `PELICAN_SERVER_ID` |
 
 Environment-managed credentials cannot be replaced through the dashboard.
+
+## YouTube Studio connection
+
+In **YouTube → Connection** or **Connections → YouTube connection**, configure
+an OAuth **Web application** client from your own Google Cloud project:
+
+1. Enable **YouTube Data API v3** and **YouTube Analytics API**.
+2. Copy the exact authorized redirect URI displayed by the dashboard into the
+   Google OAuth client, including scheme, host and `/api/admin/youtube/oauth/callback`.
+3. Configure the OAuth consent screen. Add the channel owner's account as a test
+   user while the app is in testing; complete Google's verification when needed.
+4. Save the Client ID and Client Secret, then select **Connect with Google** and
+   choose the Google/Brand channel you want to manage.
+
+Optional hosting variables `YOUTUBE_OAUTH_CLIENT_ID` and
+`YOUTUBE_OAUTH_CLIENT_SECRET` take precedence over database configuration.
+The website does not create or approve a Google Cloud application for the owner.
+A public YouTube API key cannot authorize private Studio operations. With no
+public key, the overview also loads real channel totals from the OAuth connection.
+
+The requested scopes are `youtube.force-ssl`, `yt-analytics.readonly`, and
+`yt-analytics-monetary.readonly`. Google/YouTube still enforce channel eligibility
+and permissions; analytics revenue is unavailable without the appropriate access.
+Tokens and client secrets are encrypted in Postgres with AES-256-GCM, using
+separate authenticated purposes. Access tokens refresh on the server. No Google
+tokens appear in browser storage, redirect URLs, status JSON or upload tickets.
+OAuth uses PKCE and a one-use state bound to an HttpOnly browser nonce. Disconnecting
+or changing app credentials cancels even an OAuth callback already in flight.
+
+| Tab | Tools |
+| --- | --- |
+| Overview | Real channel totals and recent owned videos |
+| Content | Uploads/search/pagination, title/description/tags, visibility, publication schedule, audience and synthetic-content disclosures, thumbnails, confirmed permanent deletion |
+| Analytics | 7/28/90/365-day reports, real daily chart, watch time, subscribers, likes, top videos, countries, traffic sources, revenue when permitted, CSV export |
+| Comments | Published/review/spam queues, replies, approve/hold/reject with confirmation |
+| Playlists | Create/edit/delete, paginate, add videos and remove playlist entries |
+| Live | List and schedule broadcasts, bind existing streams, test/start/end/delete with confirmation and state checks |
+| Subtitles | Choose an owned video, list tracks, upload timed UTF-8 SRT/VTT, download SRT, delete |
+| Channel | Description, keywords and trailer; preserved branding fields |
+| Studio tools | Links to official copyright, monetization, customization, audio library, editor and settings |
+
+YouTube's public APIs do **not** expose the entire Studio application. Copyright
+management, the video editor, monetization onboarding, stream-key setup and some
+channel settings remain in the linked official Studio. This dashboard does not
+pretend those features have been replicated or bypass Google's restrictions.
+
+Video uploads use a server-authorized Google resumable session and 2 MiB chunks,
+with progress based on Google's confirmed byte ranges. Pause/resume works while
+the window is open; tickets stay only in memory and expire after six hours. The
+local video selection is capped at 32 GiB, and actual YouTube limits still apply.
+Unverified API projects may be restricted to private uploads. Choosing audience
+and visibility is explicit, and future publication requires private visibility.
+Custom thumbnails accept decoded JPEG/PNG/WebP up to 2 MiB. Timed captions accept
+UTF-8 SRT/VTT up to 1 MiB. Google may require custom-thumbnail eligibility.
+Ownership is checked before every video, caption, playlist or broadcast mutation.
+
+## Minecraft player-profile server names
+
+Under **Connections → Minecraft player bridge**, the pencil action renames a
+server connection. This changes the displayed server label without rotating its
+plugin key, changing its UUID, merging player records or changing synced stats.
+Existing plugins keep working without an updated configuration file.
+
+## Fortnite API
+
+The dashboard calls Epic's public `/islands/{code}/metrics/day` endpoint using its
+default window and response, without undocumented date or metric filter encodings.
+Valid empty/privacy-suppressed arrays mean the API connection is working and
+metrics are unavailable. Errors and malformed responses stay unavailable;
+known zero values remain zero. Missing intervals are never silently counted as
+zero or presented as complete totals. Tests cover real zeroes, nulls, empty
+arrays, malformed bodies and provider failures with mocked responses. A live
+Epic response was not verified from the restricted development workspace.
 
 ## Pelican console
 
@@ -51,6 +124,13 @@ Logs and live usage samples are kept only in memory while the console is open.
 Failed commands are not queued or retried automatically.
 
 ## Pelican server and account tools
+
+The Pelican workspace displays a searchable server card grid with My/Other/All
+filters, status, uptime and CPU/RAM/disk meters. It refreshes every 30 seconds
+while visible; newly created servers appear without manual registration. Root
+admin keys use Pelican `admin-all`, while ordinary keys retain only directly
+accessible servers. Resources unavailable from one node remain unknown without
+hiding the other servers. Click a card to open all its tools.
 
 The Pelican workspace lists servers accessible to the connected Client API key.
 Changing the selected server applies to every tab, console command and power
@@ -121,3 +201,8 @@ Official references:
 - [YouTube channel statistics](https://developers.google.com/youtube/v3/docs/channels/list)
 - [Modrinth user projects](https://docs.modrinth.com/api/operations/getuserprojects/)
 - [CurseForge REST API](https://docs.curseforge.com/rest-api/)
+
+- [Google server-side OAuth](https://developers.google.com/youtube/v3/guides/auth/server-side-web-apps)
+- [YouTube resumable uploads](https://developers.google.com/youtube/v3/guides/using_resumable_upload_protocol)
+- [YouTube video updates](https://developers.google.com/youtube/v3/docs/videos/update)
+- [YouTube Analytics channel reports](https://developers.google.com/youtube/analytics/channel_reports)
