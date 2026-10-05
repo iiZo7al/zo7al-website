@@ -22,10 +22,10 @@ async function publicAddress(hostname: string): Promise<string> {
 export class PelicanError extends Error {
   constructor(public status: number) { super("PELICAN_UNAVAILABLE"); }
 }
-export async function pelicanRequest(connection: ConnectionInput, suffix = "", body?: Record<string,unknown> | string, options: Partial<PelicanOperation> = {}): Promise<unknown> {
+export async function pelicanRequest(connection: ConnectionInput, suffix = "", body?: Record<string,unknown> | string, options: Partial<PelicanOperation> & { timeoutMs?: number } = {}): Promise<unknown> {
   const origin = publicPanelOrigin(connection.panelUrl);
   const method=options.method ?? (body === undefined ? "GET" : "POST");
-  if (connection.provider !== "pelican" || !origin || !validServerId(connection.account) || !allowedPelicanEndpoint(suffix,method,options.client)) throw Error("INVALID");
+  if (connection.provider !== "pelican" || !origin || (!options.client && !validServerId(connection.account)) || !allowedPelicanEndpoint(suffix,method,options.client)) throw Error("INVALID");
   const url = new URL(origin + (options.client ? "/api/client" : "/api/client/servers/" + encodeURIComponent(connection.account)) + suffix);
   for (const [key,value] of Object.entries(options.query ?? {})) url.searchParams.set(key,value);
   const address = await publicAddress(url.hostname);
@@ -48,7 +48,7 @@ export async function pelicanRequest(connection: ConnectionInput, suffix = "", b
         catch { reject(Error("INVALID_UPSTREAM")); }
       });
     });
-    const timer = setTimeout(() => req.destroy(Error("UPSTREAM_TIMEOUT")),30000);
+    const timer = setTimeout(() => req.destroy(Error("UPSTREAM_TIMEOUT")),options.timeoutMs ?? 30000);
     req.on("close",() => clearTimeout(timer));
     req.on("error",reject);
     req.end(payload);

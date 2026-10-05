@@ -23,6 +23,7 @@ const database = {
     if (state.fail) throw Error('database unavailable');
     if (sql.startsWith('SELECT id FROM minecraft_profile_bridges')) return { rows: state.bridge ? [{ id }] : [], rowCount: state.bridge ? 1 : 0 };
     if (sql.startsWith('INSERT INTO minecraft_profile_bridges')) return { rows: [{ id: args[0], name: args[1] }], rowCount: 1 };
+    if (sql.startsWith('UPDATE minecraft_profile_bridges SET name=')) return { rows: state.bridge ? [{ id, name: args[1] }] : [], rowCount: state.bridge ? 1 : 0 };
     if (sql.startsWith('UPDATE minecraft_profile_bridges') && sql.includes('RETURNING')) return { rows: [{ id, name: 'Zo7al SMP' }], rowCount: 1 };
     if (sql.startsWith('SELECT b.id,b.name')) return { rows: [{ id, name: 'Zo7al SMP', enabled: true, players: 1, lastSync: null }], rowCount: 1 };
     if (sql.startsWith('SELECT p.uuid')) return { rows: Array.isArray(state.profile) ? state.profile : state.profile ? [state.profile] : [], rowCount: state.profile ? 1 : 0 };
@@ -212,3 +213,11 @@ test('legacy offline imports cannot move a player last-seen time backwards', asy
   reset(); await bridge.receiveProfiles(id, tokenHash(key), [validPlayer]);
   assert.match(state.queries.find(q => q.sql.startsWith('INSERT INTO minecraft_player_profiles')).sql, /GREATEST\(minecraft_player_profiles.last_seen,excluded.last_seen\)/);
 });
+
+ test('renaming a player-profile server changes only its label and preserves key and profiles', async () => {
+ reset(); const response = await admin.POST(post('/api/admin/minecraft-bridge', { action: 'rename', id, name: 'Zo7al Lobby', confirm: true }));
+ assert.equal(response.status, 200); const result = await response.json(); assert.equal(result.bridge.name, 'Zo7al Lobby'); assert.equal('token' in result, false);
+ const updates = state.queries.filter(q => q.sql.startsWith('UPDATE')); assert.equal(updates.length, 1); assert.deepEqual(updates[0].args, [id, 'Zo7al Lobby']); assert.doesNotMatch(updates[0].sql, /token_hash|enabled|minecraft_player_profiles/);
+ reset(); assert.equal((await admin.POST(post('/api/admin/minecraft-bridge', { action: 'rename', id, name: '', confirm: true }))).status, 400); assert.equal(state.queries.length, 0);
+ state.bridge = false; assert.equal((await admin.POST(post('/api/admin/minecraft-bridge', { action: 'rename', id, name: 'Missing', confirm: true }))).status, 400);
+ });

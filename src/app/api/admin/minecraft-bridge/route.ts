@@ -17,10 +17,15 @@ export async function POST(request: Request) {
   if (!sameOrigin(request)) return Response.json({ error: "INVALID" }, { status: 403, headers: privateHeaders });
   try {
     const v = await readJSON(request, 4000) as { action?: string; id?: unknown; name?: unknown; confirm?: unknown };
-    if (v?.confirm !== true || !["create", "rotate", "revoke"].includes(v.action ?? "")) throw Error("INVALID");
-    if ((v.action !== "create" && !bridgeId(v.id)) || (v.action === "create" && !bridgeName(v.name))) throw Error("INVALID");
+    if (v?.confirm !== true || !["create", "rotate", "revoke", "rename"].includes(v.action ?? "")) throw Error("INVALID");
+    if ((v.action !== "create" && !bridgeId(v.id)) || (["create", "rename"].includes(v.action!) && !bridgeName(v.name))) throw Error("INVALID");
     if (!(await limitAttempt("admin:mc-bridge", 10, 60))) return Response.json({ error: "RATE_LIMIT" }, { status: 429, headers: privateHeaders });
     const db = await siteDatabase();
+    if (v.action === "rename") {
+      const bridge = (await db.query("UPDATE minecraft_profile_bridges SET name=$2 WHERE id=$1 RETURNING id,name", [v.id, bridgeName(v.name)])).rows[0];
+      if (!bridge) throw Error("INVALID");
+      return Response.json({ ok: true, bridge }, { headers: privateHeaders });
+    }
     if (v.action === "revoke") {
       const result = await db.query("UPDATE minecraft_profile_bridges SET enabled=false,token_hash=NULL WHERE id=$1 RETURNING id", [v.id]);
       if (!result.rowCount) throw Error("INVALID");
