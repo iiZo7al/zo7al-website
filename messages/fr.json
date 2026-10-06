@@ -588,7 +588,8 @@
       "twitch": "Le rang TWITCH s’adresse aux streamers Minecraft sur Twitch. Présentez votre chaîne, vos émissions et vos interactions avec les spectateurs. Indiquez vos abonnés, vos horaires et le contenu que vous souhaitez créer autour de Zo7al Network.",
       "tiktok": "Le rang TIKTOK s’adresse aux créateurs Minecraft sur TikTok. Présentez votre profil et vos vidéos courtes : moments amusants, conseils ou défis. Précisez vos abonnés, votre fréquence de publication et comment vous partageriez votre expérience sur Zo7al Network."
     },
-    "applicationDetails": "Ouvrez le formulaire et indiquez un e-mail accessible, vos pseudos Minecraft et Discord et le profil de la plateforme choisie. Décrivez précisément votre contenu et votre motivation. Avec votre consentement, la candidature est transmise à l’équipe Zo7al via Discord. Conservez la référence après confirmation de réception. La candidature n’est ni un achat ni une attribution automatique : l’équipe décide de l’éligibilité et de l’acceptation, sans délai ni avantages supplémentaires garantis."
+    "applicationDetails": "Ouvrez le formulaire et indiquez un e-mail accessible, vos pseudos Minecraft et Discord et le profil de la plateforme choisie. Décrivez précisément votre contenu et votre motivation. Avec votre consentement, la candidature est transmise à l’équipe Zo7al via Discord. Conservez la référence après confirmation de réception. La candidature n’est ni un achat ni une attribution automatique : l’équipe décide de l’éligibilité et de l’acceptation, sans délai ni avantages supplémentaires garantis.",
+    "notificationPending": "Votre candidature est enregistrée. La notification Discord est en attente et l’équipe peut la renvoyer."
   },
   "hub": {
     "latest": "Nouveautés de Zo7al",
@@ -774,8 +775,11 @@
     "stat_damageDealt": "Dégâts infligés",
     "stat_damageTaken": "Dégâts reçus",
     "stat_distanceMeters": "Distance (m)",
-    "profileNetworkHint": "Statistiques disponibles du réseau. Les séries utilisent le maximum ; le rang vient du dernier profil.",
-    "statCoverage": "Données de {available} serveurs sur {total}"
+    "profileNetworkHint": "Seules les statistiques sélectionnées de chaque serveur contribuent au réseau. Les séries utilisent le maximum sélectionné ; le rang vient du dernier profil.",
+    "statCoverage": "Données de {available} serveurs sur {total}",
+    "allStatuses": "Tous les états",
+    "allPlatforms": "Toutes les plateformes",
+    "platform": "Plateforme"
   },
   "dashboard": {
     "dashboard": "Tableau de bord",
@@ -1168,9 +1172,9 @@
     "visibleCount": "{count} statistiques sélectionnées",
     "selectAll": "Tout sélectionner",
     "selectNone": "Effacer la sélection",
-    "networkDescription": "Regroupe automatiquement tous les serveurs. Les compteurs sont additionnés et la série la plus élevée est conservée.",
+    "networkDescription": "Seules les statistiques sélectionnées de chaque serveur contribuent au réseau. Les séries utilisent le maximum sélectionné ; le rang vient du dernier profil.",
     "networkServers": "{count} serveurs actifs",
-    "statisticsHint": "Choisissez les statistiques de ce serveur. Zo7al Network additionne toujours toutes ses statistiques synchronisées.",
+    "statisticsHint": "Choisissez les statistiques affichées pour ce serveur et incluses dans Zo7al Network. Les autres sont exclues des deux.",
     "statisticsMissing": "Les statistiques cochées apparaissent dès leur envoi. Configurez PlaceholderAPI pour les victoires, défaites et séries du jeu."
   },
   "youtubeStudio": {
@@ -1319,5 +1323,29 @@
     "YT_PERMISSION": "Google denied this action. Check channel permissions, API scopes and eligibility.",
     "YT_NOT_FOUND": "This item was not found in your channel.",
     "YT_UNAVAILABLE": "YouTube could not be reached. Your data was not marked as saved."
+  },
+  "oauth": {
+    "appSettings": "Paramètres de l’application",
+    "connectModrinth": "Se connecter avec Modrinth",
+    "reconnect": "Reconnecter",
+    "disconnect": "Déconnecter",
+    "copy": "Copier l’URL de retour",
+    "clientId": "ID client",
+    "clientSecret": "Secret client",
+    "redirectUri": "URI de redirection",
+    "modrinthTitle": "Connexion Modrinth",
+    "modrinthHint": "Connectez votre compte Modrinth pour charger vos projets et leurs statistiques réelles.",
+    "modrinthSetup": "Enregistrez une application OAuth Modrinth avec USER_READ et PROJECT_READ, ajoutez cette URI exacte et enregistrez les identifiants une fois.",
+    "registerApp": "Enregistrer l’application",
+    "setupRequired": "Configurez l’application avant de vous connecter.",
+    "reconnectHint": "Votre autorisation a expiré. Reconnectez-vous.",
+    "disconnectHint": "Déconnecter ce compte du site ? Vous pourrez le reconnecter.",
+    "result_connected": "Compte connecté avec succès.",
+    "result_cancelled": "Autorisation annulée. La connexion existante a été conservée.",
+    "result_failed": "Impossible de terminer l’autorisation. Vérifiez les paramètres et réessayez.",
+    "curseforgeHint": "Connectez les statistiques de vos modpacks publiés avec l’API officielle de CurseForge. La clé reste chiffrée sur le serveur.",
+    "connectCurseforge": "Connecter CurseForge",
+    "requestKey": "Demander une clé API",
+    "apiAccess": "Accès à l’API officielle"
   }
 }

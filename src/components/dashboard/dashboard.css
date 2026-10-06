@@ -500,3 +500,27 @@ html[dir=rtl] .dash-eyebrow,html[dir=rtl] .dash-navigation>p,html[dir=rtl] .dash
 @media(max-width:1200px) { .yt-video-grid,.yt-tools-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
 @media(max-width:700px) { .pelican-fleet-grid,.yt-video-grid,.yt-report-grid,.yt-tools-grid { grid-template-columns:1fr; }.pelican-fleet-resources { gap:10px; }.pelican-fleet-card { padding:22px; }.pelican-fleet-toolbar { align-items:stretch; }.pelican-fleet-search { width:100%; }.yt-channel-summary { align-items:flex-start; flex-wrap:wrap; }.yt-channel-summary>.yt-thumbnail { width:64px; height:64px; }.yt-tabs { gap:8px; }.yt-tabs button { padding:10px 12px; font-size:12px; }.yt-search { flex-wrap:wrap; }.yt-search input { flex-basis:70%; }.yt-workspace>.dash-section-heading { align-items:flex-start; }.yt-workspace>.dash-section-heading>.dash-actions { width:100%; }.yt-section .dash-section-heading { gap:16px; } }
 @media(prefers-reduced-motion:reduce) { .pelican-fleet-card:hover,.yt-tool:hover { transform:none; }.pelican-fleet-meter i { transition:none; } }
+
+.dash-application-summary { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; margin-bottom:22px; }
+.dash-application-summary button { display:flex; justify-content:space-between; align-items:center; gap:12px; padding:18px 22px; color:var(--text); text-align:start; }
+.dash-application-summary button[aria-pressed=true] { border-color:var(--accent); background:color-mix(in srgb,var(--accent) 8%,var(--surface)); }
+.dash-application-summary strong { font-size:28px; }
+.dash-application-summary span { font-size:13px; color:var(--text-muted); }
+.dash-review-filters { display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin-bottom:22px; }
+.dash-review-filters .dash-search { flex:1 1 220px; margin:0; }
+.dash-review-filters select { max-width:100%; min-height:44px; padding:10px 14px; border:1px solid var(--border-strong); border-radius:14px; background:var(--surface); color:var(--text); font:inherit; }
+.dash-application-banner { position:relative; display:grid; place-items:center; min-height:130px; border-radius:16px; overflow:hidden; background:radial-gradient(ellipse at center,color-mix(in srgb,var(--accent) 10%,transparent),transparent 75%); }
+.dash-application-banner img { width:210px; max-width:75%; height:118px; object-fit:contain; }
+.dash-application-banner .dash-tag { position:absolute; inset-inline-end:12px; top:12px; }
+.dash-review-fields dd a { display:inline-flex; align-items:center; gap:7px; max-width:100%; color:var(--accent); overflow-wrap:anywhere; }
+.dash-review-fields dd { white-space:pre-wrap; }
+@media(max-width:600px) { .dash-application-summary { gap:8px; } .dash-application-summary button { flex-direction:column; align-items:flex-start; padding:14px; } .dash-review-filters select { flex:1 1 140px; } }
+
+.oauth-connection { margin-bottom:24px; }
+.oauth-provider { display:flex; align-items:center; gap:14px; min-width:0; }
+.oauth-provider h2 { font-size:20px; }
+.oauth-account { display:flex; align-items:center; gap:12px; margin:18px 0; padding:14px 18px; border:1px solid var(--border); border-radius:16px; background:var(--surface); color:var(--accent); }
+.oauth-account > div { min-width:0; }
+.oauth-account strong { display:block; color:var(--text); overflow-wrap:anywhere; }
+.oauth-account .dash-reference { display:block; margin-top:5px; }
+.oauth-actions { margin:18px 0; }

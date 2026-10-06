@@ -51,7 +51,7 @@ const mediaRoute = await import(moduleUrl('src/app/api/hub/media/[id]/route.ts',
 const admin = await import(moduleUrl('src/app/api/admin/minecraft-bridge/route.ts', replacements));
 const ingress = await import(moduleUrl('src/app/api/minecraft/bridge/route.ts', replacements));
 const profileRoute = await import(moduleUrl('src/app/api/minecraft/profile/route.ts', replacements));
-const content = await import(moduleUrl('src/lib/server/site-content.ts', { './site-db': db, './site-security': security, '../data/hub-validation': moduleUrl('src/lib/data/hub-validation.ts'), './discord-notifications': stub('export async function notifyDiscord(){}') }));
+const content = await import(moduleUrl('src/lib/server/site-content.ts', { './site-db': db, './site-security': security, '../data/hub-validation': moduleUrl('src/lib/data/hub-validation.ts'), './creator-applications': moduleUrl('src/lib/server/creator-applications.ts'), './discord-notifications': stub('export async function notifyDiscord(){}') }));
 const envKeys = ['DATABASE_URL', 'ZO7AL_ADMIN_PASSWORD_HASH', 'ZO7AL_ADMIN_SESSION_SECRET', 'MINECRAFT_PROFILE_URL', 'MINECRAFT_PROFILE_TOKEN'];
 const saved = Object.fromEntries(envKeys.map(k => [k, process.env[k]]));
 process.env.DATABASE_URL = 'postgresql://dummy-test'; process.env.ZO7AL_ADMIN_PASSWORD_HASH = hash; process.env.ZO7AL_ADMIN_SESSION_SECRET = secret;
@@ -272,8 +272,8 @@ test('Zo7al Network sums one UUID, keeps unknown stats partial and uses maximum 
   const response = await profileRoute.GET(new Request('https://zo7al.test/api/minecraft/profile?username=Player&server=network'));
   assert.equal(response.status, 200); const value = await response.json();
   assert.equal(value.serverName, 'Zo7al Network'); assert.equal(value.serverId, 'network'); assert.equal(value.rank, 'MVP++');
-  assert.deepEqual(value.stats, { streak: 7, bestStreak: 9, playtimeSeconds: 150, kills: 13, deaths: 4, wins: 0 });
-  assert.deepEqual(value.statCoverage.wins, { available: 1, total: 2 }); assert.equal('losses' in value.stats, false);
+  assert.deepEqual(value.stats, { streak: 7, bestStreak: 5, playtimeSeconds: 150, kills: 10, deaths: 4, wins: 0 });
+  assert.deepEqual(value.statCoverage.wins, { available: 1, total: 1 }); assert.equal('losses' in value.stats, false);
   assert.equal(value.online, true); assert.equal(value.servers.length, 3);
   assert.match(state.queries[0].sql, /WHERE p.uuid=\(SELECT candidate.uuid/); assert.match(state.queries[0].sql, /source.enabled/);
   assert.equal((await bridge.readSyncedProfile('Player', now + 181000, 'network')).online, null);
@@ -285,4 +285,22 @@ test('all supported statistics, coverage hints and settings have translations in
     for (const key of statistics.PLAYER_STAT_KEYS) assert.ok(catalog.hub['stat_' + key].trim(), locale + ':' + key);
     for (const key of ['profileNetworkHint', 'statCoverage']) assert.ok(catalog.hub[key].trim());
   }
+});
+
+test('network excludes unchecked backend counters and measures coverage only among selected sources', async () => {
+ reset();
+ state.profile = [
+  { ...validPlayer, serverId: id, serverName: 'SMP', visibleStats: ['blocksBroken', 'wins'], stats: { blocksBroken: 15, kills: 20 }, lastSync: capturedAt },
+  { ...validPlayer, serverId: playerId, serverName: 'PvP', visibleStats: ['kills'], stats: { blocksBroken: 999, kills: 3, wins: 6 }, lastSync: capturedAt },
+ ];
+ let value = await bridge.readSyncedProfile('Player', now, 'network');
+ assert.deepEqual(value.stats, { kills: 3, blocksBroken: 15 });
+ assert.deepEqual(value.statCoverage.blocksBroken, { available: 1, total: 1 });
+ assert.equal('wins' in value.stats, false);
+ state.profile[1].visibleStats.push('blocksBroken'); delete state.profile[1].stats.blocksBroken;
+ value = await bridge.readSyncedProfile('Player', now, 'network');
+ assert.deepEqual(value.statCoverage.blocksBroken, { available: 1, total: 2 });
+ state.profile[0].visibleStats = []; state.profile[1].visibleStats = [];
+ value = await bridge.readSyncedProfile('Player', now, 'network');
+ assert.equal(value.stats, null); assert.deepEqual(value.statCoverage, {});
 });

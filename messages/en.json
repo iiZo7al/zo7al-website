@@ -588,7 +588,8 @@
       "twitch": "Bring your audience into the experience, one live moment at a time. The TWITCH rank is for Minecraft streamers who combine gameplay with viewer interaction, from survival adventures and exciting matches to community sessions. Introduce your channel, the personality of your streams and how you want to share Zo7al with your audience.",
       "tiktok": "One clip can tell a whole adventure. The TIKTOK rank is for Minecraft creators who share entertaining moments and quick ideas in their own style, from standout plays and challenges to tips and creative edits. Introduce your profile and your vision for the content you want to create about Zo7al Network."
     },
-    "applicationDetails": "To apply, open the application form and provide a reachable email, your Minecraft and Discord usernames, and your profile link on the selected platform. Give accurate content details and explain why you want the rank. With your consent, the application is sent to the Zo7al team through Discord for review. Keep the reference shown after successful delivery. Applying is not a purchase or an automatic rank grant; eligibility and acceptance are decided by the team, with no guaranteed review time or additional benefits."
+    "applicationDetails": "To apply, open the application form and provide a reachable email, your Minecraft and Discord usernames, and your profile link on the selected platform. Give accurate content details and explain why you want the rank. With your consent, the application is sent to the Zo7al team through Discord for review. Keep the reference shown after successful delivery. Applying is not a purchase or an automatic rank grant; eligibility and acceptance are decided by the team, with no guaranteed review time or additional benefits.",
+    "notificationPending": "Your application is saved. The Discord notification is pending and the team can retry it."
   },
   "hub": {
     "latest": "New at Zo7al",
@@ -774,8 +775,11 @@
     "stat_damageDealt": "Damage dealt",
     "stat_damageTaken": "Damage taken",
     "stat_distanceMeters": "Distance (m)",
-    "profileNetworkHint": "Available statistics across the network. Streaks use the highest value; rank comes from the latest profile.",
-    "statCoverage": "Data from {available} of {total} servers"
+    "profileNetworkHint": "Only selected statistics from each server contribute to the network. Streaks use the highest selected value; rank comes from the latest profile.",
+    "statCoverage": "Data from {available} of {total} servers",
+    "allStatuses": "All statuses",
+    "allPlatforms": "All platforms",
+    "platform": "Platform"
   },
   "dashboard": {
     "dashboard": "Dashboard",
@@ -1168,9 +1172,9 @@
     "visibleCount": "{count} selected statistics",
     "selectAll": "Select all",
     "selectNone": "Clear selection",
-    "networkDescription": "Automatically combines every connected server’s player statistics. Counters are added; streaks use the highest value.",
+    "networkDescription": "Only selected statistics from each server contribute to the network. Streaks use the highest selected value; rank comes from the latest profile.",
     "networkServers": "{count} enabled servers",
-    "statisticsHint": "Choose what appears for this server. Zo7al Network still totals all its synced statistics.",
+    "statisticsHint": "Choose statistics to show for this server and include in Zo7al Network. Unchecked statistics are excluded from both.",
     "statisticsMissing": "Checked statistics appear when the plugin supplies them. Configure PlaceholderAPI for game-specific wins, losses or streaks."
   },
   "youtubeStudio": {
@@ -1319,5 +1323,29 @@
     "YT_PERMISSION": "Google denied this action. Check channel permissions, API scopes and eligibility.",
     "YT_NOT_FOUND": "This item was not found in your channel.",
     "YT_UNAVAILABLE": "YouTube could not be reached. Your data was not marked as saved."
+  },
+  "oauth": {
+    "appSettings": "Application settings",
+    "connectModrinth": "Connect with Modrinth",
+    "reconnect": "Reconnect",
+    "disconnect": "Disconnect",
+    "copy": "Copy callback URL",
+    "clientId": "Client ID",
+    "clientSecret": "Client Secret",
+    "redirectUri": "Redirect URI",
+    "modrinthTitle": "Modrinth connection",
+    "modrinthHint": "Connect your Modrinth account to load your projects and their real statistics.",
+    "modrinthSetup": "Register a Modrinth OAuth application with USER_READ and PROJECT_READ, add this exact redirect URI, and save its credentials once.",
+    "registerApp": "Register application",
+    "setupRequired": "Configure the application before connecting.",
+    "reconnectHint": "Your authorization expired. Reconnect to continue.",
+    "disconnectHint": "Disconnect this account from the website? You can reconnect later.",
+    "result_connected": "Account connected successfully.",
+    "result_cancelled": "Authorization cancelled. Your existing connection was kept.",
+    "result_failed": "Could not complete authorization. Check the app settings and try again.",
+    "curseforgeHint": "Connect your published modpack statistics through the official CurseForge API. The API key stays encrypted on the server.",
+    "connectCurseforge": "Connect CurseForge",
+    "requestKey": "Request an API key",
+    "apiAccess": "Official API access"
   }
 }

@@ -588,7 +588,8 @@
       "twitch": "TWITCHランクはTwitchでMinecraftを配信する方向けです。チャンネル、配信内容、視聴者との交流方法を紹介してください。フォロワー数、配信予定、Zo7al Networkについて制作したい内容を記入してください。",
       "tiktok": "TIKTOKランクはTikTokでMinecraftの動画を制作する方向けです。面白い場面、ヒント、チャレンジなど、プロフィールと短編動画のスタイルを紹介してください。フォロワー数、投稿頻度、Zo7al Networkでの体験をどう共有したいかも説明してください。"
     },
-    "applicationDetails": "応募フォームに、連絡可能なメール、MinecraftとDiscordのユーザー名、選択したプラットフォームのプロフィールURLを入力してください。コンテンツと応募理由を正確に説明してください。同意後、応募はDiscord経由でZo7alチームに送られます。送信確認後の応募番号を保管してください。応募は購入やランクの自動付与ではありません。資格と承認は運営が判断し、審査期間や追加特典は保証されません。"
+    "applicationDetails": "応募フォームに、連絡可能なメール、MinecraftとDiscordのユーザー名、選択したプラットフォームのプロフィールURLを入力してください。コンテンツと応募理由を正確に説明してください。同意後、応募はDiscord経由でZo7alチームに送られます。送信確認後の応募番号を保管してください。応募は購入やランクの自動付与ではありません。資格と承認は運営が判断し、審査期間や追加特典は保証されません。",
+    "notificationPending": "申請を保存しました。Discord通知は保留中で、チームが再送できます。"
   },
   "hub": {
     "latest": "Zo7alの新着情報",
@@ -774,8 +775,11 @@
     "stat_damageDealt": "与えたダメージ",
     "stat_damageTaken": "受けたダメージ",
     "stat_distanceMeters": "移動距離 (m)",
-    "profileNetworkHint": "ネットワークで利用可能な統計です。連続記録は最大値、ランクは最新プロフィールを使います。",
-    "statCoverage": "{total} 台中 {available} 台のデータ"
+    "profileNetworkHint": "各サーバーで選択した統計のみを集計します。連続記録は選択された最大値、ランクは最新プロフィールを使います。",
+    "statCoverage": "{total} 台中 {available} 台のデータ",
+    "allStatuses": "すべての状態",
+    "allPlatforms": "すべてのプラットフォーム",
+    "platform": "プラットフォーム"
   },
   "dashboard": {
     "dashboard": "ダッシュボード",
@@ -1168,9 +1172,9 @@
     "visibleCount": "{count} 個の統計を選択",
     "selectAll": "すべて選択",
     "selectNone": "選択を解除",
-    "networkDescription": "すべてのサーバーの統計を自動集計します。カウンターは合計し、連続記録は最大値を使います。",
+    "networkDescription": "各サーバーで選択した統計のみを集計します。連続記録は選択された最大値、ランクは最新プロフィールを使います。",
     "networkServers": "有効なサーバー {count} 台",
-    "statisticsHint": "このサーバーに表示する統計を選びます。Zo7al Network は同期されたすべての統計を集計します。",
+    "statisticsHint": "このサーバーに表示し、Zo7al Networkにも含める統計を選択します。未選択の統計は両方から除外します。",
     "statisticsMissing": "選択した統計はプラグインから届くと表示されます。ゲームの勝敗や連続記録は PlaceholderAPI で設定できます。"
   },
   "youtubeStudio": {
@@ -1319,5 +1323,29 @@
     "YT_PERMISSION": "Google denied this action. Check channel permissions, API scopes and eligibility.",
     "YT_NOT_FOUND": "This item was not found in your channel.",
     "YT_UNAVAILABLE": "YouTube could not be reached. Your data was not marked as saved."
+  },
+  "oauth": {
+    "appSettings": "アプリの設定",
+    "connectModrinth": "Modrinthと接続",
+    "reconnect": "再接続",
+    "disconnect": "接続解除",
+    "copy": "コールバックURLをコピー",
+    "clientId": "クライアントID",
+    "clientSecret": "クライアントシークレット",
+    "redirectUri": "リダイレクトURI",
+    "modrinthTitle": "Modrinth接続",
+    "modrinthHint": "Modrinthアカウントを接続して、プロジェクトと実際の統計を読み込みます。",
+    "modrinthSetup": "USER_READとPROJECT_READを指定してModrinth OAuthアプリを登録し、このURIを正確に追加して認証情報を一度保存してください。",
+    "registerApp": "アプリを登録",
+    "setupRequired": "接続前にアプリを設定してください。",
+    "reconnectHint": "認可の期限が切れました。再接続してください。",
+    "disconnectHint": "このアカウントをサイトから切断しますか？後で再接続できます。",
+    "result_connected": "アカウントを接続しました。",
+    "result_cancelled": "認可をキャンセルしました。既存の接続は保持されました。",
+    "result_failed": "認可を完了できませんでした。設定を確認して再試行してください。",
+    "curseforgeHint": "CurseForge公式APIで公開済みモッドパックの統計を連携します。APIキーはサーバー上で暗号化して保存されます。",
+    "connectCurseforge": "CurseForgeに接続",
+    "requestKey": "APIキーを申請",
+    "apiAccess": "公式APIアクセス"
   }
 }

@@ -588,7 +588,8 @@
       "twitch": "O cargo TWITCH é voltado a streamers de Minecraft na Twitch. Compartilhe seu canal, o tipo de transmissão e como interage com os espectadores. Inclua seguidores, horários e o conteúdo que deseja criar sobre a Zo7al Network.",
       "tiktok": "O cargo TIKTOK é voltado a criadores de Minecraft no TikTok. Apresente seu perfil e estilo de vídeos curtos, como momentos divertidos, dicas e desafios. Inclua seguidores, frequência de postagem e como compartilharia sua experiência na Zo7al Network."
     },
-    "applicationDetails": "Abra o formulário e informe um e-mail acessível, seus nomes no Minecraft e Discord e o perfil da plataforma escolhida. Descreva seu conteúdo e motivação com dados corretos. Com seu consentimento, a candidatura é enviada à equipe Zo7al pelo Discord. Guarde a referência após a confirmação de entrega. Candidatar-se não é comprar nem receber um cargo automaticamente: a equipe decide a elegibilidade e aprovação, sem prazo ou benefícios adicionais garantidos."
+    "applicationDetails": "Abra o formulário e informe um e-mail acessível, seus nomes no Minecraft e Discord e o perfil da plataforma escolhida. Descreva seu conteúdo e motivação com dados corretos. Com seu consentimento, a candidatura é enviada à equipe Zo7al pelo Discord. Guarde a referência após a confirmação de entrega. Candidatar-se não é comprar nem receber um cargo automaticamente: a equipe decide a elegibilidade e aprovação, sem prazo ou benefícios adicionais garantidos.",
+    "notificationPending": "Sua candidatura foi salva. A notificação do Discord está pendente e a equipe pode reenviá-la."
   },
   "hub": {
     "latest": "Novidades do Zo7al",
@@ -774,8 +775,11 @@
     "stat_damageDealt": "Dano causado",
     "stat_damageTaken": "Dano recebido",
     "stat_distanceMeters": "Distância (m)",
-    "profileNetworkHint": "Estatísticas disponíveis da rede. Sequências usam o máximo; o cargo vem do perfil mais recente.",
-    "statCoverage": "Dados de {available} de {total} servidores"
+    "profileNetworkHint": "Só as estatísticas selecionadas de cada servidor entram na rede. Sequências usam o maior valor selecionado; o cargo vem do perfil mais recente.",
+    "statCoverage": "Dados de {available} de {total} servidores",
+    "allStatuses": "Todos os estados",
+    "allPlatforms": "Todas as plataformas",
+    "platform": "Plataforma"
   },
   "dashboard": {
     "dashboard": "Painel",
@@ -1168,9 +1172,9 @@
     "visibleCount": "{count} estatísticas selecionadas",
     "selectAll": "Selecionar tudo",
     "selectNone": "Limpar seleção",
-    "networkDescription": "Combina automaticamente todos os servidores. Soma os contadores e usa a maior sequência.",
+    "networkDescription": "Só as estatísticas selecionadas de cada servidor entram na rede. Sequências usam o maior valor selecionado; o cargo vem do perfil mais recente.",
     "networkServers": "{count} servidores ativos",
-    "statisticsHint": "Escolha o que aparece neste servidor. Zo7al Network continua somando todas as estatísticas sincronizadas.",
+    "statisticsHint": "Escolha as estatísticas exibidas neste servidor e incluídas na Zo7al Network. As não selecionadas ficam fora de ambos.",
     "statisticsMissing": "As estatísticas marcadas aparecem quando o plugin as envia. Configure PlaceholderAPI para vitórias, derrotas ou sequências do jogo."
   },
   "youtubeStudio": {
@@ -1319,5 +1323,29 @@
     "YT_PERMISSION": "Google denied this action. Check channel permissions, API scopes and eligibility.",
     "YT_NOT_FOUND": "This item was not found in your channel.",
     "YT_UNAVAILABLE": "YouTube could not be reached. Your data was not marked as saved."
+  },
+  "oauth": {
+    "appSettings": "Configurações do aplicativo",
+    "connectModrinth": "Conectar com Modrinth",
+    "reconnect": "Reconectar",
+    "disconnect": "Desconectar",
+    "copy": "Copiar URL de retorno",
+    "clientId": "ID do cliente",
+    "clientSecret": "Segredo do cliente",
+    "redirectUri": "URI de redirecionamento",
+    "modrinthTitle": "Conexão Modrinth",
+    "modrinthHint": "Conecte sua conta Modrinth para carregar seus projetos e estatísticas reais.",
+    "modrinthSetup": "Registre um aplicativo OAuth Modrinth com USER_READ e PROJECT_READ, adicione esta URI exata e salve as credenciais uma vez.",
+    "registerApp": "Registrar aplicativo",
+    "setupRequired": "Configure o aplicativo antes de conectar.",
+    "reconnectHint": "Sua autorização expirou. Reconecte para continuar.",
+    "disconnectHint": "Desconectar esta conta do site? Você pode reconectar depois.",
+    "result_connected": "Conta conectada com sucesso.",
+    "result_cancelled": "Autorização cancelada. A conexão existente foi mantida.",
+    "result_failed": "Não foi possível concluir a autorização. Confira as configurações e tente novamente.",
+    "curseforgeHint": "Conecte as estatísticas dos seus modpacks publicados pela API oficial do CurseForge. A chave permanece criptografada no servidor.",
+    "connectCurseforge": "Conectar CurseForge",
+    "requestKey": "Solicitar uma chave API",
+    "apiAccess": "Acesso à API oficial"
   }
 }

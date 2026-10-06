@@ -4,6 +4,7 @@ import { siteDatabase } from "./site-db";
 import { notifyDiscord } from "./discord-notifications";
 import { tokenHash } from "./site-security";
 import { validateContent } from "../data/hub-validation";
+import { validateApplication, sendApplicationNotification } from "./creator-applications";
 export async function limitAttempt(key: string, limit: number, seconds: number) {
   const db = await siteDatabase();
   const hash = createHash("sha256").update(key).digest("hex");
@@ -65,4 +66,19 @@ export async function retryOrderNotification(id: string) {
     await client.query("ROLLBACK").catch(()=>{});
     throw error;
   } finally { client.release(); }
+}
+export async function retryApplicationNotification(id: string) {
+  const client = await (await siteDatabase()).connect();
+  try {
+    await client.query("BEGIN");
+    const row = (await client.query("SELECT payload,discord_receipt FROM site_requests WHERE id=$1 AND kind='application' FOR UPDATE", [id])).rows[0];
+    const application = validateApplication(row?.payload);
+    if (!row || !application) throw Error("INVALID");
+    if (!row.discord_receipt) {
+      const receipt = await sendApplicationNotification(application, id, process.env.DISCORD_APPLICATION_WEBHOOK_URL);
+      await client.query("UPDATE site_requests SET discord_receipt=$2,updated_at=now() WHERE id=$1 AND kind='application'", [id, receipt]);
+    }
+    await client.query("COMMIT");
+  } catch (error) { await client.query("ROLLBACK").catch(() => {}); throw error; }
+  finally { client.release(); }
 }

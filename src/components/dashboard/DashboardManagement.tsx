@@ -1,7 +1,8 @@
 "use client";
 import { useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
-import { FileText, Pencil, Plus, Trash2, Send, Inbox, ShoppingBag, CalendarDays } from "lucide-react";
+import Image from "next/image";
+import { FileText, Pencil, Plus, Trash2, Send, Inbox, ShoppingBag, CalendarDays, ExternalLink } from "lucide-react";
 import DetailsDialog from "@/components/ui/DetailsDialog";
 import type { HubContent } from "@/components/hub/ContentFeed";
 import { hubLocales } from "@/lib/data/hub-validation";
@@ -14,6 +15,8 @@ export default function DashboardManagement({ data,tab,busy,mutate }: { data:Das
   const [editing,setEditing] = useState<HubContent|null>(null);
   const [deleting,setDeleting] = useState<HubContent|null>(null);
   const [query,setQuery] = useState("");
+  const [statusFilter, setStatusFilter] = useState("");
+  const [platformFilter, setPlatformFilter] = useState("");
   const [uploading,setUploading] = useState(false);
   const [editorVersion,setEditorVersion] = useState(0);
   const label = tab === "event" ? "events" : tab === "rule" ? "rules" : tab === "application" ? "applications" : tab;
@@ -57,23 +60,36 @@ export default function DashboardManagement({ data,tab,busy,mutate }: { data:Das
     </div>
   </section>;
   const kind = tab === "registrations" ? "event" : tab;
-  const rows = data.requests.filter(row => row.kind === kind && matches(JSON.stringify(row.payload)+" "+row.id));
+  const requests = data.requests.filter(row => row.kind === kind);
+  const rows = requests.filter(row => matches(JSON.stringify(row.payload)+" "+row.id) && (!statusFilter || row.status === statusFilter) && (!platformFilter || row.payload.platform === platformFilter));
   return <section><div className="dash-section-heading"><div><p className="dash-eyebrow">{d("manage")}</p><h2>{t(label)}</h2></div><span className="dash-tag">{rows.length}</span></div>
-    <input className="dash-search" aria-label={d("filter")} placeholder={d("filter")} value={query} onChange={e => setQuery(e.target.value)}/>
-    <div className="dash-review-grid">{rows.map(row => <ReviewCard key={row.id} row={row} busy={busy} onSave={value => mutate("review",value)}/>)}</div>
+    {tab === "application" && <div className="dash-application-summary">{["pending", "accepted", "rejected"].map(status => <button key={status} type="button" className="dash-panel card-glow" aria-pressed={statusFilter === status} onClick={() => setStatusFilter(value => value === status ? "" : status)}><span>{t("status_" + status)}</span><strong>{requests.filter(row => row.status === status).length}</strong></button>)}</div>}
+    <div className="dash-review-filters"><input className="dash-search" aria-label={d("filter")} placeholder={d("filter")} value={query} onChange={e => setQuery(e.target.value)}/>
+      <select aria-label={t("status")} value={statusFilter} onChange={event => setStatusFilter(event.target.value)}><option value="">{t("allStatuses")}</option>{(tab === "support" ? ["open", "reviewing", "closed"] : ["pending", "accepted", "rejected"]).map(status => <option key={status} value={status}>{t("status_" + status)}</option>)}</select>
+      {tab === "application" && <select aria-label={t("platform")} value={platformFilter} onChange={event => setPlatformFilter(event.target.value)}><option value="">{t("allPlatforms")}</option>{["youtube", "twitch", "tiktok"].map(platform => <option key={platform} value={platform}>{platform.toUpperCase()}</option>)}</select>}
+    </div>
+    <div className="dash-review-grid">{rows.map(row => <ReviewCard key={row.id + ":" + row.status + ":" + row.note} row={row} busy={busy} onSave={value => mutate("review",value)} onRetry={() => mutate("retryApplication", row.id)}/>)}</div>
     {!rows.length && <div className="dash-panel card-glow"><Empty icon={tab==="registrations"?<CalendarDays size={30}/>:<Inbox size={30}/>} text={t("empty")}/></div>}
   </section>;
 }
 function Empty({ icon,text }: { icon:React.ReactNode; text:string }) { return <div className="dash-empty"><span>{icon}</span><p>{text}</p></div>; }
-function ReviewCard({ row,busy,onSave }: { row:RequestRow; busy:boolean; onSave:(value:unknown)=>Promise<boolean> }) {
+function ReviewCard({ row,busy,onSave,onRetry }: { row:RequestRow; busy:boolean; onSave:(value:unknown)=>Promise<boolean>; onRetry:()=>Promise<boolean> }) {
   const t = useTranslations("hub"), locale = useLocale();
   const [status,setStatus] = useState(row.status), [note,setNote] = useState(row.note);
   const statuses = row.kind==="support"?["open","reviewing","closed"]:["pending","accepted","rejected"];
+  const platform = row.kind === "application" && ["youtube", "twitch", "tiktok"].includes(String(row.payload.platform)) ? String(row.payload.platform) : null;
+  const link = (key: string, value: unknown) => {
+    if (key === "email" && typeof value === "string" && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return "mailto:" + encodeURIComponent(value);
+    if (key !== "channel" || typeof value !== "string") return null;
+    try { const url = new URL(value); return url.protocol === "https:" && !url.username && !url.password && !url.port && ["youtube.com", "twitch.tv", "tiktok.com"].includes(url.hostname.replace(/^www\./, "")) ? url.href : null; } catch { return null; }
+  };
   return <form className="dash-panel card-glow hub-form dash-review" onSubmit={e => { e.preventDefault(); void onSave({id:row.id,kind:row.kind,status,note}); }}>
+    {platform && <div className={"dash-application-banner dash-application-" + platform}><Image src={`/assets/site/rank-${platform}.png`} width={667} height={375} alt={platform.toUpperCase()} /><span className="dash-tag">{platform.toUpperCase()}</span></div>}
     <div className="dash-section-heading"><h3 dir="auto">{String(row.payload.minecraft??row.payload.subject??row.payload.eventTitle??row.id)}</h3><span className="dash-tag">{t("status_"+row.status)}</span></div>
     <p className="dash-help"><time dateTime={row.createdAt}>{new Intl.DateTimeFormat(locale,{dateStyle:"medium",timeStyle:"short",timeZone:"Asia/Riyadh"}).format(new Date(row.createdAt))}</time></p><bdi className="dash-reference">{row.id}</bdi>
-    <dl className="dash-review-fields">{Object.entries(row.payload).filter(([key]) => !["consent","website"].includes(key)).map(([key,value]) => <div key={key}><dt>{t.has(key)?t(key):key}</dt><dd dir="auto">{String(value)}</dd></div>)}</dl>
+    <dl className="dash-review-fields">{Object.entries(row.payload).filter(([key]) => !["consent","website","platform"].includes(key)).map(([key,value]) => { const href = link(key, value); return <div key={key}><dt>{t.has(key)?t(key):key}</dt><dd dir="auto">{href ? <a href={href} target={key === "channel" ? "_blank" : undefined} rel="noopener noreferrer">{String(value)}<ExternalLink size={13} aria-hidden="true" /></a> : String(value)}</dd></div>; })}</dl>
     <span className={"dash-tag "+(row.discordReceipt?"dash-tag-green":"")}>{t(row.discordReceipt?"discordDelivered":"discordPending")}</span>
+    {row.kind === "application" && !row.discordReceipt && <button className="dash-button" type="button" disabled={busy} onClick={() => void onRetry()}><Send size={14}/>{t("retryDiscord")}</button>}
     <label>{t("status")}<select value={status} onChange={e => setStatus(e.target.value)}>{statuses.map(s => <option key={s} value={s}>{t("status_"+s)}</option>)}</select></label>
     <label>{t("publicNote")}<textarea value={note} onChange={e => setNote(e.target.value)} maxLength={2000} rows={3}/></label>
     <button className="dash-button dash-button-primary" type="submit" disabled={busy}>{t(busy?"loading":"save")}</button>
