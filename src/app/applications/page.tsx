@@ -1,2 +1,2 @@
 import { redirect } from "next/navigation";
-export default function Page(){redirect("/store?activity=applications");}
+export default function Page(){redirect("/requests?tab=applications");}

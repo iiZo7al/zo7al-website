@@ -32,7 +32,7 @@ export default function PlayerProfile() {
       <PlayerIdentity id="profile-username" username={username} onChange={setUsername} required allowCharacterPreview={false} />
       <p className="hub-muted">{t("profileHelp")}</p>
       <button className="hub-button" disabled={busy}>{t(busy ? "loading" : "viewProfile")}</button>
-      <div className="hub-actions"><Link href="/store?activity=orders" className="hub-button">{t("activity")}</Link></div>
+      <div className="hub-actions"><Link href="/requests?tab=orders" className="hub-button">{t("activity")}</Link></div>
       {error && <p className="hub-error" role="alert">{t("unavailable")}</p>}
     </form>
     {name && <div className="hub-card">
