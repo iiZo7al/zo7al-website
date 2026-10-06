@@ -5,6 +5,7 @@ import { CURSEFORGE_PROJECTS } from "../data/curseforge";
 import { MODRINTH_API_URL } from "../data/modrinth";
 import { metricNumber, parseMinecraftStatus, parseModrinthProjects, parseYoutubeChannel, parseFortniteMetrics, sumMetric, safeDate, type ConnectionInput, type PlatformData, type PlatformId, type PlatformItem } from "../data/dashboard";
 import { youtubeAuth } from "./youtube-auth";
+import { modrinthAuth, modrinthJSON } from "./modrinth-auth";
 
 async function json(url: string, headers: Record<string,string> = {}): Promise<unknown> {
   const response = await fetch(url, { cache: "no-store", redirect: "error", signal: AbortSignal.timeout(10000),
@@ -41,8 +42,9 @@ export async function fetchPlatform(id: PlatformId, connection?: ConnectionInput
     return { ...base(id,"public"), ...status, address: MINECRAFT_SERVER.javaAddress };
   }
   if (id === "modrinth") {
-    const items = parseModrinthProjects(await json(MODRINTH_API_URL));
-    return { ...base(id,"public"), items, metrics: { projects: items.length, downloads: sumMetric(items,"downloads"), followers: sumMetric(items,"followers") } };
+    const auth = process.env.DATABASE_URL ? await modrinthAuth() : null;
+    const items = parseModrinthProjects(auth ? await modrinthJSON("/v2/user/" + auth.userId + "/projects", auth.accessToken) : await json(MODRINTH_API_URL));
+    return { ...base(id,auth ? "api" : "public"), items, metrics: { projects: items.length, downloads: sumMetric(items,"downloads"), followers: sumMetric(items,"followers") } };
   }
   if (id === "youtube") {
     const params = new URLSearchParams({ part: "snippet,statistics", forHandle: connection!.account });

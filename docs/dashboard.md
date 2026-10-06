@@ -230,9 +230,9 @@ Existing connections default to all supported statistics. The additive database
 migration stores visible_stats; saving changes no credential or player data.
 
 The public profile page initially selects **Zo7al Network**. It totals all known
-counters for the same UUID across enabled backends, including statistics hidden in
-individual server views; current/best streaks use maxima. Each stat reports its
-available-source coverage. Missing counters remain unknown, and stale online
+selected counters for the same UUID across enabled backends. Each server
+contributes only the statistics selected in its settings; current/best streaks use maxima. Each stat reports its
+available-source coverage among the servers that enabled that statistic. Missing counters remain unknown, and stale online
 states remain unknown. The network rank is the latest profile’s rank. Resolving
 a name selects one UUID before reading other backend records, including its old
 names. Namesakes with different UUIDs are never combined. Disabled bridges are
@@ -241,3 +241,73 @@ excluded. The existing default rank lookup used in cart previews stays per-serve
 Replace each old JAR with its matching 1.1.0 build after stopping the backend; keep
 the plugin directory, token and counter file. GitHub Actions tests and packages
 both variants on plugin pull requests and publishes versioned build artifacts.
+
+## Creator applications
+
+The review screen includes platform/status filters, status counts, rank artwork,
+clickable channel/contact links and an explicit Discord-notification retry.
+Submitted Minecraft usernames are prefilled from the store and application fields
+are normalized before storage. The private tracking token never enters Discord.
+If storage succeeds but Discord delivery fails, the API returns `202` with a
+saved reference and tracking token, clearly marks the notification as pending,
+and retains the application for review and a manual retry. Without durable
+storage, failed delivery still returns an error. A storage failure does not send
+an untracked application. Admin retries lock the request to prevent overlapping
+clicks from producing duplicate deliveries. A confirmed webhook delivery followed
+by a database outage can still require manual receipt reconciliation.
+
+## Modrinth OAuth connection
+
+Use **Modrinth → Connection** or **Connections → Modrinth connection**.
+The main account card contains **Connect with Modrinth**; the settings button
+opens application configuration in a dialog. YouTube uses the same layout with
+**Connect with Google**. Returning from either authorization flow reports success,
+cancellation or failure without showing provider codes or credentials.
+
+1. Register a Modrinth OAuth application at
+   <https://modrinth.com/settings/applications> with `USER_READ` and `PROJECT_READ`.
+2. Add the exact website callback URI displayed in settings:
+   `https://zo7al.is-a.dev/api/admin/modrinth/oauth/callback` for that domain.
+3. Save the application Client ID/Secret once and connect the account.
+
+Optional `MODRINTH_OAUTH_CLIENT_ID` and `MODRINTH_OAUTH_CLIENT_SECRET` override the
+saved application. Register separate exact callback URLs for any approved preview
+or local development host. OAuth clients must belong to the website owner;
+installing a ChatGPT plugin alone does not register a Google or Modrinth client.
+
+OAuth redirects to `https://modrinth.com/auth/authorize` and exchanges a one-time
+code at `https://api.modrinth.com/_internal/oauth/token`. These follow the URL table
+in the official guide; its prose authorization URL currently disagrees with that
+table. The browser nonce is HttpOnly, pending state expires after ten minutes,
+and client secrets/access tokens are purpose-bound encrypted values in Postgres.
+Disconnecting or replacing the app cancels pending and in-flight callbacks.
+The dashboard fetches the connected user's actual projects using a server-only
+Authorization header. Unconnected dashboards retain the existing public project
+feed; expired or rejected authorizations report unavailable data and require
+reconnection. Modrinth does not document a refresh-token grant in this guide, so
+this integration does not invent one. Disconnect removes local access; revoke
+the application in Modrinth settings when provider-side revocation is desired.
+
+Official references:
+
+- <https://docs.modrinth.com/guide/oauth/>
+- <https://docs.modrinth.com/api/operations/getuserfromauth/>
+- <https://developers.google.com/identity/protocols/oauth2/web-server>
+
+## CurseForge connection
+
+CurseForge has a matching connection card in its platform page and in
+**Connections**, with API-key settings in a dialog. Saving verifies the key
+against the official API before encrypted storage and refreshes dashboard
+statistics. Environment-managed keys remain read-only. The card links to the
+official application instructions for API access.
+
+The public Minecraft statistics API documents `x-api-key` authentication, not a
+general account OAuth flow. The separately documented author upload API uses
+an `X-Api-Token`; that token is not interchangeable with the statistics API key.
+This card uses the supported statistics API and does not claim an OAuth grant
+or access to private author-management features.
+
+- <https://docs.curseforge.com/rest-api/>
+- <https://support.curseforge.com/support/solutions/articles/9000208346-about-the-curseforge-api-and-how-to-apply-for-a-key>
+- <https://support.curseforge.com/support/solutions/articles/9000197321-curseforge-api>

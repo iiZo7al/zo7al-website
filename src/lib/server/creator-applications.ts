@@ -18,7 +18,10 @@ export function validateApplication(value: unknown): Application | null {
     const valid = a.platform === "youtube" ? host === "youtube.com" && /^\/(?:@[^/]+|(?:channel|c|user)\/[^/]+)\/?$/.test(u.pathname) : a.platform === "twitch" ? host === "twitch.tv" && /^\/[a-zA-Z0-9_]+\/?$/.test(u.pathname) : a.platform === "tiktok" && host === "tiktok.com" && /^\/@[^/]+\/?$/.test(u.pathname);
     if (!valid) return null;
   } catch { return null; }
-  return a;
+  return {
+    platform: a.platform, email: a.email.trim(), minecraft: a.minecraft.trim(), discord: a.discord.trim(),
+    channel: a.channel.trim(), followers: a.followers, content: a.content.trim(), reason: a.reason.trim(), consent: true,
+  };
 }
 export function webhookUrl(raw: string | undefined): URL | null {
   try {
@@ -29,6 +32,34 @@ export function webhookUrl(raw: string | undefined): URL | null {
 }
 /** Per-instance abuse guard; configure a host/WAF rate limit for distributed deployments. */
 export type ApplicationStore = { save: (application: Application, reference: string) => Promise<{ token: string }>; delivered: (reference: string, receipt: string) => Promise<void>; discard: (reference: string) => Promise<void> };
+export async function sendApplicationNotification(a: Application, reference: string, rawWebhook: string | undefined, send: typeof fetch = fetch): Promise<string> {
+  const webhook = webhookUrl(rawWebhook);
+  if (!webhook) throw Error("UNAVAILABLE");
+  const response = await send(webhook, { method: "POST", redirect: "error", signal: AbortSignal.timeout(10000), headers: { "Content-Type": "application/json" }, body: JSON.stringify({
+    username: "Zo7al Network • Applications", allowed_mentions: { parse: [] },
+    embeds: [{
+      author: { name: "Zo7al Network · Creator Applications", url: "https://zo7al.is-a.dev/store" },
+      title: `${{ youtube: "🎥 YouTube", twitch: "🟣 Twitch", tiktok: "🎵 TikTok" }[a.platform]} Rank Application`,
+      description: "**🕓 Pending review**\nA new creator has applied. Review their channel and application below.",
+      color: { youtube: 0xff4545, twitch: 0xa970ff, tiktok: 0x25f4ee }[a.platform],
+      thumbnail: { url: "https://zo7al.is-a.dev/assets/site/server-logo.png" },
+      image: { url: `https://zo7al.is-a.dev/assets/site/rank-${a.platform}.png` },
+      fields: [
+        { name: "🎮 Minecraft", value: a.minecraft, inline: true },
+        { name: "💬 Discord", value: a.discord, inline: true },
+        { name: "👥 Followers / Subscribers", value: Number(a.followers).toLocaleString("en-US"), inline: true },
+        { name: "✉️ Contact Email", value: a.email }, { name: "🔗 Creator Channel", value: a.channel },
+        { name: "🎬 Content & Schedule", value: a.content }, { name: "📝 Why They Want to Join", value: a.reason },
+        { name: "📋 Review Information", value: "Free rank · Manual review required\nApplicant consented to review and contact. Acceptance is not guaranteed." },
+      ],
+      footer: { text: `Zo7al Network • Reference: ${reference}` }, timestamp: new Date().toISOString(),
+    }],
+  }) });
+  if (!response.ok) throw Error("DELIVERY_FAILED");
+  const receipt = await response.json();
+  if (typeof receipt.id !== "string" || !/^\d{1,30}$/.test(receipt.id)) throw Error("DELIVERY_FAILED");
+  return receipt.id;
+}
 export function createApplicationHandler(getWebhook: () => string | undefined, send: typeof fetch = fetch, storage?: ApplicationStore) {
   const attempts = new Map<string, { count: number; expires: number }>();
   return async (request: Request) => {
@@ -56,37 +87,19 @@ export function createApplicationHandler(getWebhook: () => string | undefined, s
     const a = application;
     const reference = randomUUID();
     let token: string | undefined;
+    if (storage) {
+      try { token = (await storage.save(a, reference)).token; }
+      catch { return reply("UNAVAILABLE", 503); }
+    }
     try {
-      if (storage) token = (await storage.save(a, reference)).token;
-      const response = await send(webhook, { method: "POST", redirect: "error", signal: AbortSignal.timeout(10000), headers: { "Content-Type": "application/json" }, body: JSON.stringify({
-        username: "Zo7al Network • Applications",
-        allowed_mentions: { parse: [] },
-        embeds: [{
-          author: { name: "Zo7al Network · Creator Applications", url: "https://zo7al.is-a.dev/store" },
-          title: `${{ youtube: "🎥 YouTube", twitch: "🟣 Twitch", tiktok: "🎵 TikTok" }[a.platform]} Rank Application`,
-          description: "**🕓 Pending review**\nA new creator has applied. Review their channel and application below.",
-          color: { youtube: 0xff4545, twitch: 0xa970ff, tiktok: 0x25f4ee }[a.platform],
-          thumbnail: { url: "https://zo7al.is-a.dev/assets/site/server-logo.png" },
-          image: { url: `https://zo7al.is-a.dev/assets/site/rank-${a.platform}.png` },
-          fields: [
-            { name: "🎮 Minecraft", value: a.minecraft, inline: true },
-            { name: "💬 Discord", value: a.discord, inline: true },
-            { name: "👥 Followers / Subscribers", value: Number(a.followers).toLocaleString("en-US"), inline: true },
-            { name: "✉️ Contact Email", value: a.email },
-            { name: "🔗 Creator Channel", value: a.channel },
-            { name: "🎬 Content & Schedule", value: a.content },
-            { name: "📝 Why They Want to Join", value: a.reason },
-            { name: "📋 Review Information", value: "Free rank · Manual review required\nApplicant consented to review and contact. Acceptance is not guaranteed." },
-          ],
-          footer: { text: `Zo7al Network • Reference: ${reference}` },
-          timestamp: new Date().toISOString(),
-        }],
-      }) });
-      if (!response.ok) throw new Error("DELIVERY_FAILED");
-      const receipt = await response.json();
-      if (typeof receipt.id !== "string" || !/^\d+$/.test(receipt.id)) throw new Error("DELIVERY_FAILED");
-      if (storage) await storage.delivered(reference, receipt.id).catch(() => {});
+      const receipt = await sendApplicationNotification(a, reference, getWebhook(), send);
+      if (storage) await storage.delivered(reference, receipt).catch(() => {});
       return Response.json({ ok: true, reference, ...(token ? { token } : {}) }, { headers: { "Cache-Control": "no-store" } });
-    } catch { if (storage) await storage.discard(reference).catch(() => {}); return reply("DELIVERY_FAILED", 502); }
+    } catch {
+      // A saved application keeps its private receipt and can be retried by an
+      // administrator. A failed webhook must never delete an applicant's work.
+      if (storage && token) return Response.json({ ok: true, reference, token, discordPending: true }, { status: 202, headers: { "Cache-Control": "no-store" } });
+      return reply("DELIVERY_FAILED", 502);
+    }
   };
 }

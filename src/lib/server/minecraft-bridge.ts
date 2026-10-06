@@ -42,13 +42,15 @@ export async function readSyncedProfile(username: string, now = Date.now(), serv
   };
   const rank = parsePlayerRank({ ...row, username }, username);
   if (server === NETWORK_PROFILE_ID) {
-    const profiles = playerRows.map(read), totals: Partial<Record<PlayerStatKey, number>> = {};
+    const profiles = playerRows.map(read), selections = playerRows.map(entry => new Set(visiblePlayerStats(entry.visibleStats)));
+    const totals: Partial<Record<PlayerStatKey, number>> = {};
     const statCoverage: Partial<Record<PlayerStatKey, { available: number; total: number }>> = {};
     for (const key of PLAYER_STAT_KEYS) {
-      const values = profiles.flatMap(value => typeof value.stats?.[key] === "number" ? [value.stats[key]!] : []);
+      const eligible = profiles.filter((_, index) => selections[index].has(key));
+      const values = eligible.flatMap(value => typeof value.stats?.[key] === "number" ? [value.stats[key]!] : []);
       if (!values.length) continue;
       totals[key] = key === "streak" || key === "bestStreak" ? Math.max(...values) : values.reduce((sum, value) => sum + value, 0);
-      statCoverage[key] = { available: values.length, total: playerRows.length };
+      statCoverage[key] = { available: values.length, total: eligible.length };
     }
     const latest = (values: (string | null)[]) => values.filter((value): value is string => value !== null).sort((a, b) => Date.parse(b) - Date.parse(a))[0] ?? null;
     return { uuid: row.uuid, rank, stats: Object.keys(totals).length ? totals : null, statCoverage,

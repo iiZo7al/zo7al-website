@@ -1,6 +1,6 @@
 import { hasAdminSession, privateHeaders, readJSON, sameOrigin } from "@/lib/server/site-security";
 import { siteDatabase } from "@/lib/server/site-db";
-import { saveContent, retryOrderNotification } from "@/lib/server/site-content";
+import { saveContent, retryOrderNotification, retryApplicationNotification, limitAttempt } from "@/lib/server/site-content";
 import { validReview } from "@/lib/data/hub-validation";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -23,6 +23,10 @@ export async function POST(request: Request) {
     const body = await readJSON(request,64000) as {action?:string;value?:unknown;id?:unknown};
     if (body?.action === "content") { const id = await saveContent(body.value); return Response.json({ok:true,id},{headers:privateHeaders}); }
     if (body?.action === "retryDiscord" && typeof body.id === "string" && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(body.id)) { await retryOrderNotification(body.id); return Response.json({ok:true},{headers:privateHeaders}); }
+    if (body?.action === "retryApplication" && typeof body.id === "string" && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(body.id)) {
+      if (!await limitAttempt("admin-application-notification", 10, 60)) return Response.json({error:"RATE_LIMIT"},{status:429,headers:privateHeaders});
+      await retryApplicationNotification(body.id); return Response.json({ok:true},{headers:privateHeaders});
+    }
     if (body?.action === "review") {
       const review = validReview(body.value); if (!review) throw new Error("INVALID");
       const result = await (await siteDatabase()).query("UPDATE site_requests SET status=$3,public_note=$4,updated_at=now() WHERE id=$1 AND kind=$2 RETURNING id",[review.id,review.kind,review.status,review.note]);

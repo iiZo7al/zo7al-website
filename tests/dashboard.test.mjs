@@ -27,7 +27,7 @@ const https=stub(`import {EventEmitter} from "node:events";export function reque
 const actualPelican=await import(moduleUrl("src/lib/server/pelican.ts",{"node:dns/promises":dns,"node:https":https,"../data/dashboard":data,"../data/pelican":pelicanData,"../data/pelican-management":managementData}));
 const limits=stub('export async function limitAttempt(){return globalThis.__dashboardTest.limits;}');
 const pelican=await import(moduleUrl("src/app/api/admin/pelican/route.ts",{"@/lib/server/site-security":security,"@/lib/server/dashboard-connections":connectionModule,"@/lib/server/pelican":server,"@/lib/data/pelican":pelicanData,"@/lib/data/dashboard":data,"@/lib/server/site-content":limits}));
-const connectionRoute=await import(moduleUrl("src/app/api/admin/connections/route.ts",{"@/lib/data/pelican-management":managementData,"@/lib/server/site-security":security,"@/lib/server/dashboard-connections":connectionModule,"@/lib/server/pelican":server,"@/lib/data/dashboard":data,"@/lib/server/site-content":limits,"@/lib/server/dashboard-platforms":stub('export function clearPlatformCache(){} export async function fetchPlatform(){return {status:"connected"};}')}));
+const connectionRoute=await import(moduleUrl("src/app/api/admin/connections/route.ts",{"@/lib/data/pelican-management":managementData,"@/lib/server/site-security":security,"@/lib/server/dashboard-connections":connectionModule,"@/lib/server/pelican":server,"@/lib/data/dashboard":data,"@/lib/server/site-content":limits,"@/lib/server/dashboard-platforms":stub('export function clearPlatformCache(){} export async function fetchPlatform(){if(globalThis.__dashboardTest.upstreamError)throw Error("UPSTREAM");return {status:"connected"};}')}));
 const management=await import(managementData);
 const manageRoute=await import(moduleUrl("src/app/api/admin/pelican/manage/route.ts",{"@/lib/server/site-security":security,"@/lib/server/dashboard-connections":connectionModule,"@/lib/server/pelican":server,"@/lib/data/pelican-management":managementData,"@/lib/data/dashboard":data,"@/lib/server/site-content":limits}));
 const saved=Object.fromEntries(["ZO7AL_ADMIN_PASSWORD_HASH","ZO7AL_ADMIN_SESSION_SECRET","PELICAN_CLIENT_API_KEY","PELICAN_PANEL_URL","PELICAN_SERVER_ID","YOUTUBE_API_KEY","CURSEFORGE_API_KEY"].map(key=>[key,process.env[key]]));
@@ -111,6 +111,13 @@ test("saving a connection requires owner authentication and persists only encryp
  const insert=state.queries.find(q=>q.sql.startsWith("INSERT"));assert.ok(insert);assert.equal(insert.args[1].includes(credential.apiKey),false);assert.deepEqual(connections.openConnection(insert.args[1],"pelican",secret),credential);
  assert.equal(JSON.stringify(await result.json()).includes(credential.apiKey),false);
  reset();assert.equal((await connectionRoute.POST(request({...credential,panelUrl:"https://127.0.0.1"}))).status,400);assert.equal(state.calls.length,0);
+});
+test("CurseForge only saves a key after provider verification and never returns its credentials",async()=>{
+ const input={provider:"curseforge",apiKey:"test-not-a-real-curseforge-key",account:"iiZo7al"};
+ reset();state.upstreamError=403;assert.equal((await connectionRoute.POST(request(input))).status,400);assert.equal(state.queries.length,0);
+ reset();const response=await connectionRoute.POST(request(input));assert.equal(response.status,200);
+ const insert=state.queries.find(q=>q.sql.startsWith("INSERT"));assert.ok(insert);assert.deepEqual(connections.openConnection(insert.args[1],"curseforge",secret),input);
+ assert.equal(insert.args[1].includes(input.apiKey),false);assert.equal(JSON.stringify(await response.json()).includes(input.apiKey),false);
 });
 test("all dashboard locales retain the same keys and interpolation parameters",()=>{
  const baseline=JSON.parse(readFileSync(new URL("../messages/en.json",import.meta.url))).dashboard;

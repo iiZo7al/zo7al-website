@@ -588,7 +588,8 @@
       "twitch": "TWITCH 등급은 Twitch에서 Minecraft를 방송하는 스트리머를 위한 등급입니다. 채널, 방송 유형과 시청자 소통 방식을 소개해 주세요. 팔로워 수, 방송 일정과 Zo7al Network에 관해 만들고 싶은 콘텐츠를 적어 주세요.",
       "tiktok": "TIKTOK 등급은 TikTok에서 Minecraft 콘텐츠를 만드는 크리에이터를 위한 등급입니다. 재미있는 장면, 팁, 챌린지 등 프로필과 짧은 영상 스타일을 소개해 주세요. 팔로워 수, 게시 빈도와 Zo7al Network 경험을 공유할 방법을 알려 주세요."
     },
-    "applicationDetails": "지원 양식에 연락 가능한 이메일, Minecraft와 Discord 이름, 선택한 플랫폼의 프로필 링크를 입력하세요. 콘텐츠와 지원 이유를 정확하게 설명해 주세요. 동의하면 지원서가 Discord를 통해 Zo7al 팀에 전달됩니다. 전달 확인 후 표시되는 지원 번호를 보관하세요. 지원은 구매나 자동 등급 지급이 아닙니다. 자격과 승인 여부는 팀이 결정하며 검토 기간이나 추가 혜택은 보장되지 않습니다."
+    "applicationDetails": "지원 양식에 연락 가능한 이메일, Minecraft와 Discord 이름, 선택한 플랫폼의 프로필 링크를 입력하세요. 콘텐츠와 지원 이유를 정확하게 설명해 주세요. 동의하면 지원서가 Discord를 통해 Zo7al 팀에 전달됩니다. 전달 확인 후 표시되는 지원 번호를 보관하세요. 지원은 구매나 자동 등급 지급이 아닙니다. 자격과 승인 여부는 팀이 결정하며 검토 기간이나 추가 혜택은 보장되지 않습니다.",
+    "notificationPending": "신청이 저장되었습니다. Discord 알림은 대기 중이며 팀이 다시 보낼 수 있습니다."
   },
   "hub": {
     "latest": "Zo7al 새 소식",
@@ -774,8 +775,11 @@
     "stat_damageDealt": "입힌 피해",
     "stat_damageTaken": "받은 피해",
     "stat_distanceMeters": "이동 거리 (m)",
-    "profileNetworkHint": "네트워크에서 제공된 통계입니다. 연속 기록은 최댓값, 등급은 최신 프로필을 사용합니다.",
-    "statCoverage": "서버 {total}개 중 {available}개의 데이터"
+    "profileNetworkHint": "각 서버에서 선택한 통계만 합산합니다. 연속 기록은 선택한 최댓값, 등급은 최신 프로필을 사용합니다.",
+    "statCoverage": "서버 {total}개 중 {available}개의 데이터",
+    "allStatuses": "모든 상태",
+    "allPlatforms": "모든 플랫폼",
+    "platform": "플랫폼"
   },
   "dashboard": {
     "dashboard": "대시보드",
@@ -1168,9 +1172,9 @@
     "visibleCount": "통계 {count}개 선택",
     "selectAll": "모두 선택",
     "selectNone": "선택 해제",
-    "networkDescription": "모든 서버의 통계를 자동으로 합칩니다. 카운터는 합산하고 연속 기록은 최댓값을 사용합니다.",
+    "networkDescription": "각 서버에서 선택한 통계만 합산합니다. 연속 기록은 선택한 최댓값, 등급은 최신 프로필을 사용합니다.",
     "networkServers": "활성 서버 {count}개",
-    "statisticsHint": "이 서버에 표시할 통계를 선택하세요. Zo7al Network는 동기화된 모든 통계를 계속 합산합니다.",
+    "statisticsHint": "이 서버에 표시하고 Zo7al Network에 포함할 통계를 선택하세요. 선택하지 않은 통계는 둘 다 제외됩니다.",
     "statisticsMissing": "선택한 통계는 플러그인이 보내면 표시됩니다. 게임별 승리, 패배, 연속 기록은 PlaceholderAPI로 설정하세요."
   },
   "youtubeStudio": {
@@ -1319,5 +1323,29 @@
     "YT_PERMISSION": "Google denied this action. Check channel permissions, API scopes and eligibility.",
     "YT_NOT_FOUND": "This item was not found in your channel.",
     "YT_UNAVAILABLE": "YouTube could not be reached. Your data was not marked as saved."
+  },
+  "oauth": {
+    "appSettings": "앱 설정",
+    "connectModrinth": "Modrinth 연결",
+    "reconnect": "다시 연결",
+    "disconnect": "연결 해제",
+    "copy": "콜백 URL 복사",
+    "clientId": "클라이언트 ID",
+    "clientSecret": "클라이언트 비밀 키",
+    "redirectUri": "리디렉션 URI",
+    "modrinthTitle": "Modrinth 연결",
+    "modrinthHint": "Modrinth 계정을 연결하여 프로젝트와 실제 통계를 불러오세요.",
+    "modrinthSetup": "USER_READ와 PROJECT_READ 권한으로 Modrinth OAuth 앱을 등록하고 이 URI를 정확히 추가한 뒤 인증 정보를 한 번 저장하세요.",
+    "registerApp": "앱 등록",
+    "setupRequired": "연결하기 전에 앱을 설정하세요.",
+    "reconnectHint": "인증이 만료되었습니다. 다시 연결하세요.",
+    "disconnectHint": "이 계정을 사이트에서 연결 해제할까요? 나중에 다시 연결할 수 있습니다.",
+    "result_connected": "계정이 연결되었습니다.",
+    "result_cancelled": "인증을 취소했습니다. 기존 연결은 유지됩니다.",
+    "result_failed": "인증을 완료하지 못했습니다. 설정을 확인하고 다시 시도하세요.",
+    "curseforgeHint": "CurseForge 공식 API로 게시한 모드팩의 통계를 연결하세요. API 키는 서버에 암호화되어 저장됩니다.",
+    "connectCurseforge": "CurseForge 연결",
+    "requestKey": "API 키 신청",
+    "apiAccess": "공식 API 연결"
   }
 }

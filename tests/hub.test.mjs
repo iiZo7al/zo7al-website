@@ -29,7 +29,7 @@ globalThis.__zo7alHubTest={state,database};
 const db=stub('export async function siteDatabase(){return globalThis.__zo7alHubTest.database;}');
 const security=moduleUrl("src/lib/server/site-security.ts");
 const validation=moduleUrl("src/lib/data/hub-validation.ts");
-const content=stub(`const s=globalThis.__zo7alHubTest;export async function limitAttempt(){return s.state.limits;}export async function createTrackedRequest(kind,payload){s.state.queries.push({sql:"reserve",kind,payload});return {reference:"a1234567-1234-1234-1234-123456789abc",token:"a".repeat(64)};}export async function saveContent(){}export async function retryOrderNotification(){}`);
+const content=stub(`const s=globalThis.__zo7alHubTest;export async function limitAttempt(){return s.state.limits;}export async function createTrackedRequest(kind,payload){s.state.queries.push({sql:"reserve",kind,payload});return {reference:"a1234567-1234-1234-1234-123456789abc",token:"a".repeat(64)};}export async function saveContent(){}export async function retryApplicationNotification(){} export async function retryOrderNotification(){}`);
 const discord=stub(`export async function notifyDiscord(...args){const s=globalThis.__zo7alHubTest.state;s.notify.push(args);if(s.notificationFails)throw Error("Delivery failed");return "12345";}`);
 const replacements={"@/lib/server/site-db":db,"@/lib/server/site-content":content,"@/lib/server/site-security":security,"@/lib/data/hub-validation":validation,"@/lib/server/discord-notifications":discord};
 const support=await import(moduleUrl("src/app/api/support/route.ts",replacements));
@@ -197,7 +197,7 @@ test("admin login rate limits and rejects cross-origin requests before password 
  }finally{restoreEnv(saved);reset();}
 });
 test("order notifications persist for retry and exclude private basket identifiers and access codes",async()=>{
- const actualContent=await import(moduleUrl("src/lib/server/site-content.ts",{"./site-db":db,"./site-security":security,"../data/hub-validation":validation,"./discord-notifications":discord}));
+ const actualContent=await import(moduleUrl("src/lib/server/site-content.ts",{"./site-db":db,"./site-security":security,"../data/hub-validation":validation,"./creator-applications":moduleUrl("src/lib/server/creator-applications.ts"),"./discord-notifications":discord}));
  const saved=saveEnv(["DATABASE_URL"]);
  try {
  process.env.DATABASE_URL="postgresql://test";

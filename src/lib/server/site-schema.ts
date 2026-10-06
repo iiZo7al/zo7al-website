@@ -56,4 +56,15 @@ CREATE TABLE IF NOT EXISTS youtube_studio_oauth (
  state_hash char(64) PRIMARY KEY, browser_hash char(64) NOT NULL, sealed text NOT NULL,
  expires_at timestamptz NOT NULL, claimed boolean NOT NULL DEFAULT false
 );
+CREATE TABLE IF NOT EXISTS modrinth_oauth_app (
+ id boolean PRIMARY KEY DEFAULT true CHECK(id), sealed text NOT NULL, updated_at timestamptz NOT NULL DEFAULT now()
+);
+CREATE TABLE IF NOT EXISTS modrinth_oauth_auth (
+ id boolean PRIMARY KEY DEFAULT true CHECK(id), sealed text NOT NULL, user_id varchar(128) NOT NULL,
+ username varchar(64) NOT NULL, expires_at timestamptz NOT NULL, updated_at timestamptz NOT NULL DEFAULT now()
+);
+CREATE TABLE IF NOT EXISTS modrinth_oauth_pending (
+ state_hash char(64) PRIMARY KEY, browser_hash char(64) NOT NULL, sealed text NOT NULL,
+ expires_at timestamptz NOT NULL, claimed boolean NOT NULL DEFAULT false
+);
 `;

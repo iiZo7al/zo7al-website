@@ -37,7 +37,7 @@ export default function PlayerProfile() {
     </form>
     {name && <div className="hub-card">
       {profile?.servers && profile.servers.length > 1 && <div className="hub-form"><label htmlFor="profile-server">{t("profileServer")}<select id="profile-server" value={profile.serverId} disabled={busy} onChange={event => void lookup(name, event.target.value)}>{profile.servers.map(server => <option key={server.id} value={server.id}>{server.name}</option>)}</select></label></div>}
-      <CharacterPreview key={name + ":" + (profile?.serverId ?? "")} id="profile-character" username={name} profileServer={profile?.serverId} />
+      <CharacterPreview key={name + ":" + (profile?.serverId ?? "")} id="profile-character" username={name} profileServer={profile?.serverId} currentRank={profile?.rank ?? null} />
       {profile && <>
         {profile.serverName && <p className="hub-muted">{t("profileServer")}: <span dir="auto">{profile.serverName}</span></p>}
         {profile.serverId === NETWORK_PROFILE_ID && <p className="hub-muted">{t("profileNetworkHint")}</p>}

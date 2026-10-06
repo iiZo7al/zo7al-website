@@ -588,7 +588,8 @@
       "twitch": "TWITCH rütbesi, Twitch’te Minecraft yayını yapanlar içindir. Kanalını, yayın türünü ve izleyicilerle nasıl etkileşim kurduğunu paylaş. Takipçi sayını, yayın programını ve Zo7al Network hakkında üretmek istediğin içerikleri belirt.",
       "tiktok": "TIKTOK rütbesi, TikTok’ta Minecraft içeriği üretenler içindir. Profilini ve eğlenceli anlar, ipuçları veya meydan okumalar gibi kısa videolarını tanıt. Takipçi sayını, paylaşım sıklığını ve Zo7al Network deneyimini nasıl paylaşacağını anlat."
     },
-    "applicationDetails": "Başvuru formuna ulaşılabilir bir e-posta, Minecraft ve Discord adlarını ve seçilen platformdaki profil bağlantını yaz. İçerik ve başvuru nedenini doğru bilgilerle açıkla. Onayınla başvuru Discord üzerinden Zo7al ekibine iletilir. Teslimat onaylandıktan sonra gösterilen başvuru numarasını sakla. Başvuru bir satın alma veya otomatik rütbe kazanımı değildir. Uygunluk ve kabul kararını ekip verir; inceleme süresi veya ek avantajlar garanti edilmez."
+    "applicationDetails": "Başvuru formuna ulaşılabilir bir e-posta, Minecraft ve Discord adlarını ve seçilen platformdaki profil bağlantını yaz. İçerik ve başvuru nedenini doğru bilgilerle açıkla. Onayınla başvuru Discord üzerinden Zo7al ekibine iletilir. Teslimat onaylandıktan sonra gösterilen başvuru numarasını sakla. Başvuru bir satın alma veya otomatik rütbe kazanımı değildir. Uygunluk ve kabul kararını ekip verir; inceleme süresi veya ek avantajlar garanti edilmez.",
+    "notificationPending": "Başvurun kaydedildi. Discord bildirimi bekliyor ve ekip yeniden gönderebilir."
   },
   "hub": {
     "latest": "Zo7al'dan yenilikler",
@@ -774,8 +775,11 @@
     "stat_damageDealt": "Verilen hasar",
     "stat_damageTaken": "Alınan hasar",
     "stat_distanceMeters": "Mesafe (m)",
-    "profileNetworkHint": "Ağın mevcut istatistikleri. Serilerde en yüksek değer, rütbede en güncel profil kullanılır.",
-    "statCoverage": "{total} sunucudan {available} tanesinin verisi"
+    "profileNetworkHint": "Yalnızca seçilen sunucu istatistikleri ağa eklenir. Seriler seçilen en yüksek değeri, rütbe en güncel profili kullanır.",
+    "statCoverage": "{total} sunucudan {available} tanesinin verisi",
+    "allStatuses": "Tüm durumlar",
+    "allPlatforms": "Tüm platformlar",
+    "platform": "Platform"
   },
   "dashboard": {
     "dashboard": "Kontrol paneli",
@@ -1168,9 +1172,9 @@
     "visibleCount": "{count} istatistik seçildi",
     "selectAll": "Tümünü seç",
     "selectNone": "Seçimi temizle",
-    "networkDescription": "Tüm sunucuları otomatik birleştirir. Sayaçlar toplanır, serilerde en yüksek değer kullanılır.",
+    "networkDescription": "Yalnızca seçilen sunucu istatistikleri ağa eklenir. Seriler seçilen en yüksek değeri, rütbe en güncel profili kullanır.",
     "networkServers": "{count} etkin sunucu",
-    "statisticsHint": "Bu sunucuda gösterilecekleri seç. Zo7al Network eşitlenen tüm istatistikleri toplamaya devam eder.",
+    "statisticsHint": "Bu sunucuda gösterilecek ve Zo7al Network’e eklenecek istatistikleri seç. Seçilmeyenler ikisinden de çıkarılır.",
     "statisticsMissing": "Seçili istatistikler eklenti gönderdiğinde görünür. Oyuna özel galibiyet, yenilgi ve seriler için PlaceholderAPI yapılandır."
   },
   "youtubeStudio": {
@@ -1319,5 +1323,29 @@
     "YT_PERMISSION": "Google denied this action. Check channel permissions, API scopes and eligibility.",
     "YT_NOT_FOUND": "This item was not found in your channel.",
     "YT_UNAVAILABLE": "YouTube could not be reached. Your data was not marked as saved."
+  },
+  "oauth": {
+    "appSettings": "Uygulama ayarları",
+    "connectModrinth": "Modrinth ile bağlan",
+    "reconnect": "Yeniden bağlan",
+    "disconnect": "Bağlantıyı kes",
+    "copy": "Dönüş URL’sini kopyala",
+    "clientId": "İstemci kimliği",
+    "clientSecret": "İstemci sırrı",
+    "redirectUri": "Yönlendirme URI’si",
+    "modrinthTitle": "Modrinth bağlantısı",
+    "modrinthHint": "Projelerini ve gerçek istatistiklerini yüklemek için Modrinth hesabını bağla.",
+    "modrinthSetup": "USER_READ ve PROJECT_READ ile bir Modrinth OAuth uygulaması kaydet, bu URI’yi aynen ekle ve kimlik bilgilerini bir kez kaydet.",
+    "registerApp": "Uygulama kaydet",
+    "setupRequired": "Bağlanmadan önce uygulamayı yapılandır.",
+    "reconnectHint": "Yetkilendirmenin süresi doldu. Devam etmek için yeniden bağlan.",
+    "disconnectHint": "Bu hesabın siteyle bağlantısı kesilsin mi? Daha sonra yeniden bağlayabilirsin.",
+    "result_connected": "Hesap başarıyla bağlandı.",
+    "result_cancelled": "Yetkilendirme iptal edildi. Mevcut bağlantı korundu.",
+    "result_failed": "Yetkilendirme tamamlanamadı. Ayarları kontrol edip tekrar dene.",
+    "curseforgeHint": "Yayınladığınız mod paketlerinin istatistiklerini resmi CurseForge API’siyle bağlayın. API anahtarı sunucuda şifreli olarak saklanır.",
+    "connectCurseforge": "CurseForge’u bağla",
+    "requestKey": "API anahtarı iste",
+    "apiAccess": "Resmi API erişimi"
   }
 }

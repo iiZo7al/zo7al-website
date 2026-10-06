@@ -49,7 +49,7 @@ test('fleet route authenticates and validates before contacting Pelican', async 
  state.limits = false; assert.equal((await fleetRoute.GET(new Request(url, { headers }))).status, 429); state.limits = true;
 });
 const platform = await import(moduleUrl('src/lib/server/dashboard-platforms.ts', {
- './youtube-auth': stub('export async function youtubeAuth(){throw Error("YT_SETUP");}'), '../data/dashboard': data, '../data/minecraft': stub('export const MINECRAFT_SERVER={javaAddress:"example.com"};'), '../data/fortnite': stub('export const FORTNITE_MAPS=[{code:"1234-1234-1234",title:"One"},{code:"5678-5678-5678",title:"Two"}];'), '../data/curseforge': stub('export const CURSEFORGE_PROJECTS=[];'), '../data/modrinth': stub('export const MODRINTH_API_URL="https://api.modrinth.com/test";')
+ './modrinth-auth': stub('export async function modrinthAuth(){return null;} export async function modrinthJSON(){return [];}'), './youtube-auth': stub('export async function youtubeAuth(){throw Error("YT_SETUP");}'), '../data/dashboard': data, '../data/minecraft': stub('export const MINECRAFT_SERVER={javaAddress:"example.com"};'), '../data/fortnite': stub('export const FORTNITE_MAPS=[{code:"1234-1234-1234",title:"One"},{code:"5678-5678-5678",title:"Two"}];'), '../data/curseforge': stub('export const CURSEFORGE_PROJECTS=[{title:"Zo7al Modpack",url:"https://www.curseforge.com/minecraft/modpacks/zo7al-modpack"}];'), '../data/modrinth': stub('export const MODRINTH_API_URL="https://api.modrinth.com/test";')
 }));
 test('Fortnite daily requests avoid invalid filters and privacy-hidden data remains a connected API', async () => {
  const original = globalThis.fetch, calls = []; try {
@@ -64,5 +64,17 @@ test('Fortnite real zeroes stay zero, malformed/error responses do not report a 
   let result = await platform.fetchPlatform('fortnite'); assert.equal(result.metrics.plays, 0); assert.equal(result.coverage.available, 2);
   globalThis.fetch = async () => Response.json({ error: 'bad gateway' }); result = await platform.fetchPlatform('fortnite'); assert.equal(result.status, 'unavailable'); assert.equal(result.metrics.plays, null);
   globalThis.fetch = async () => new Response('offline', { status: 503 }); result = await platform.fetchPlatform('fortnite'); assert.equal(result.status, 'unavailable');
+ } finally { globalThis.fetch = original; }
+});
+test('CurseForge verifies official API access without exposing its key or inventing account OAuth', async () => {
+ const original = globalThis.fetch, calls = [], key = 'test-not-a-real-curseforge-key';
+ try {
+  globalThis.fetch = async (url, options) => { calls.push({ url: String(url), options }); return Response.json({ data: [{ id: 42, slug: 'zo7al-modpack', name: 'Zo7al Modpack', downloadCount: 0 }] }); };
+  const result = await platform.fetchPlatform('curseforge', { provider: 'curseforge', apiKey: key, account: 'iiZo7al' });
+  assert.equal(result.status, 'connected'); assert.equal(result.source, 'api'); assert.equal(result.metrics.downloads, 0);
+  assert.equal(calls.length, 1); assert.equal(new URL(calls[0].url).origin, 'https://api.curseforge.com'); assert.equal(calls[0].options.headers['x-api-key'], key); assert.equal(calls[0].options.redirect, 'error');
+  assert.equal(calls[0].url.includes(key), false); assert.equal(JSON.stringify(result).includes(key), false);
+  globalThis.fetch = async () => new Response('', { status: 403 }); await assert.rejects(platform.fetchPlatform('curseforge', { provider: 'curseforge', apiKey: key, account: 'iiZo7al' }));
+  globalThis.fetch = async () => Response.json({ data: [{ slug: 'another-project', id: 42 }] }); await assert.rejects(platform.fetchPlatform('curseforge', { provider: 'curseforge', apiKey: key, account: 'iiZo7al' }));
  } finally { globalThis.fetch = original; }
 });

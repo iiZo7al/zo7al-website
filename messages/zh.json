@@ -588,7 +588,8 @@
       "twitch": "TWITCH 等级面向在 Twitch 直播 Minecraft 的创作者。请分享频道、直播类型以及与观众互动的方式。填写粉丝数量、直播时间和希望围绕 Zo7al Network 制作的内容。",
       "tiktok": "TIKTOK 等级面向在 TikTok 制作 Minecraft 内容的创作者。请介绍账号及短视频风格，例如有趣片段、技巧和挑战。说明粉丝数量、更新频率，以及希望如何与观众分享 Zo7al Network 的体验。"
     },
-    "applicationDetails": "打开申请表，填写可以联系到的邮箱、Minecraft 和 Discord 用户名，以及所选平台的个人主页链接。请准确介绍内容并说明申请理由。经你同意，申请将通过 Discord 发送给 Zo7al 团队审核。送达确认后请保存申请编号。提交申请不等于购买或自动获得等级；资格和批准由团队决定，不保证审核时间或额外权益。"
+    "applicationDetails": "打开申请表，填写可以联系到的邮箱、Minecraft 和 Discord 用户名，以及所选平台的个人主页链接。请准确介绍内容并说明申请理由。经你同意，申请将通过 Discord 发送给 Zo7al 团队审核。送达确认后请保存申请编号。提交申请不等于购买或自动获得等级；资格和批准由团队决定，不保证审核时间或额外权益。",
+    "notificationPending": "申请已保存。Discord 通知等待发送，团队可以重试。"
   },
   "hub": {
     "latest": "Zo7al最新动态",
@@ -774,8 +775,11 @@
     "stat_damageDealt": "造成伤害",
     "stat_damageTaken": "受到伤害",
     "stat_distanceMeters": "距离（米）",
-    "profileNetworkHint": "网络中可用的统计。连续纪录取最大值，等级来自最新档案。",
-    "statCoverage": "来自 {total} 个服务器中的 {available} 个"
+    "profileNetworkHint": "只汇总各服务器选中的统计。连续纪录取选中的最大值，等级来自最新档案。",
+    "statCoverage": "来自 {total} 个服务器中的 {available} 个",
+    "allStatuses": "所有状态",
+    "allPlatforms": "所有平台",
+    "platform": "平台"
   },
   "dashboard": {
     "dashboard": "控制面板",
@@ -1168,9 +1172,9 @@
     "visibleCount": "已选择 {count} 项统计",
     "selectAll": "全选",
     "selectNone": "清空选择",
-    "networkDescription": "自动汇总所有服务器的统计。计数器相加，连续纪录取最大值。",
+    "networkDescription": "只汇总各服务器选中的统计。连续纪录取选中的最大值，等级来自最新档案。",
     "networkServers": "{count} 个启用的服务器",
-    "statisticsHint": "选择此服务器显示的统计。Zo7al Network 仍汇总所有已同步的统计。",
+    "statisticsHint": "选择在此服务器显示并计入 Zo7al Network 的统计。未选中的统计在两处都会排除。",
     "statisticsMissing": "勾选的统计在插件发送后显示。游戏胜利、失败和连续纪录可配置 PlaceholderAPI。"
   },
   "youtubeStudio": {
@@ -1319,5 +1323,29 @@
     "YT_PERMISSION": "Google denied this action. Check channel permissions, API scopes and eligibility.",
     "YT_NOT_FOUND": "This item was not found in your channel.",
     "YT_UNAVAILABLE": "YouTube could not be reached. Your data was not marked as saved."
+  },
+  "oauth": {
+    "appSettings": "应用设置",
+    "connectModrinth": "连接 Modrinth",
+    "reconnect": "重新连接",
+    "disconnect": "断开连接",
+    "copy": "复制回调网址",
+    "clientId": "客户端 ID",
+    "clientSecret": "客户端密钥",
+    "redirectUri": "重定向 URI",
+    "modrinthTitle": "Modrinth 连接",
+    "modrinthHint": "连接你的 Modrinth 账户，加载项目及其真实统计。",
+    "modrinthSetup": "注册具有 USER_READ 和 PROJECT_READ 权限的 Modrinth OAuth 应用，添加此完整 URI，并保存一次凭据。",
+    "registerApp": "注册应用",
+    "setupRequired": "请先配置应用再连接。",
+    "reconnectHint": "授权已过期。请重新连接。",
+    "disconnectHint": "要断开此账户与网站的连接吗？之后可以重新连接。",
+    "result_connected": "账户连接成功。",
+    "result_cancelled": "授权已取消，现有连接已保留。",
+    "result_failed": "无法完成授权。请检查应用设置后重试。",
+    "curseforgeHint": "通过 CurseForge 官方 API 同步已发布整合包的统计数据。API 密钥以加密方式保存在服务器上。",
+    "connectCurseforge": "连接 CurseForge",
+    "requestKey": "申请 API 密钥",
+    "apiAccess": "官方 API 连接"
   }
 }
