@@ -760,7 +760,22 @@
     "imageInvalid": "올바른 PNG, JPG, WebP, AVIF 또는 GIF 이미지를 선택하세요.",
     "imageUploadFailed": "업로드에 실패했습니다. 다시 시도하세요.",
     "profileServer": "서버",
-    "profileUpdated": "마지막 업데이트"
+    "profileUpdated": "마지막 업데이트",
+    "stat_streak": "연속 기록",
+    "stat_bestStreak": "최고 연속 기록",
+    "stat_losses": "패배",
+    "stat_mobKills": "몹 처치",
+    "stat_blocksBroken": "채굴한 블록",
+    "stat_blocksPlaced": "설치한 블록",
+    "stat_jumps": "점프",
+    "stat_fishCaught": "잡은 물고기",
+    "stat_animalsBred": "번식한 동물",
+    "stat_itemsEnchanted": "마법 부여 아이템",
+    "stat_damageDealt": "입힌 피해",
+    "stat_damageTaken": "받은 피해",
+    "stat_distanceMeters": "이동 거리 (m)",
+    "profileNetworkHint": "네트워크에서 제공된 통계입니다. 연속 기록은 최댓값, 등급은 최신 프로필을 사용합니다.",
+    "statCoverage": "서버 {total}개 중 {available}개의 데이터"
   },
   "dashboard": {
     "dashboard": "대시보드",
@@ -1148,7 +1163,15 @@
     "rotateWarning": "이전 키는 더 이상 작동하지 않습니다. 플러그인 설정을 업데이트하세요.",
     "keyWarning": "이 키는 프로필 업데이트를 허용합니다. 비공개로 보관하세요.",
     "rename": "서버 이름 변경",
-    "renameHint": "서버 키와 저장된 플레이어 프로필은 유지됩니다."
+    "renameHint": "서버 키와 저장된 플레이어 프로필은 유지됩니다.",
+    "settings": "통계 설정",
+    "visibleCount": "통계 {count}개 선택",
+    "selectAll": "모두 선택",
+    "selectNone": "선택 해제",
+    "networkDescription": "모든 서버의 통계를 자동으로 합칩니다. 카운터는 합산하고 연속 기록은 최댓값을 사용합니다.",
+    "networkServers": "활성 서버 {count}개",
+    "statisticsHint": "이 서버에 표시할 통계를 선택하세요. Zo7al Network는 동기화된 모든 통계를 계속 합산합니다.",
+    "statisticsMissing": "선택한 통계는 플러그인이 보내면 표시됩니다. 게임별 승리, 패배, 연속 기록은 PlaceholderAPI로 설정하세요."
   },
   "youtubeStudio": {
     "overview": "개요",

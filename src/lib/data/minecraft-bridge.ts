@@ -1,3 +1,4 @@
+import { PLAYER_STAT_KEYS } from "./player-statistics";
 export const BRIDGE_TOKEN_PATTERN = /^[A-Za-z0-9_-]{43}$/;
 export const PLAYER_NAME_PATTERN = /^[.a-zA-Z0-9_ ]{3,32}$/;
 export const BRIDGE_BATCH_LIMIT = 100;
@@ -23,7 +24,7 @@ export function validateProfileBatch(value: unknown, now = Date.now()): SyncedPl
     if (p.rank !== null && p.rank !== undefined && (typeof p.rank !== "string" || !p.rank.trim() || p.rank.length > 64 || /[\x00-\x1f\x7f§<>]/.test(p.rank))) return null;
     const stats: Record<string, number> = {};
     if (p.stats !== undefined && (p.stats === null || typeof p.stats !== "object" || Array.isArray(p.stats))) return null;
-    for (const key of ["kills", "deaths", "wins", "playtimeSeconds"]) {
+    for (const key of PLAYER_STAT_KEYS) {
       const n = (p.stats as Record<string, unknown> | undefined)?.[key];
       if (n === undefined || n === null) continue;
       if (typeof n !== "number" || !Number.isFinite(n) || n < 0 || n > 1e12) return null;

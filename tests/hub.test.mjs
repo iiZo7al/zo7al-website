@@ -8,7 +8,8 @@ import {validateContent,validateSupport,validReview} from "../src/lib/data/hub-v
 import {parseReceipts} from "../src/lib/data/hub-receipts.ts";
 import {parseFavorites} from "../src/lib/data/favorites.ts";
 import {runMilestones,dailyChallenge} from "../src/lib/data/space-progress.ts";
-import {parsePlayerStats} from "../src/lib/server/player-profile.ts";
+import { playerParser } from './profile-modules.mjs';
+const { parsePlayerStats } = playerParser;
 
 function moduleUrl(path,replacements={}) {
  let source=readFileSync(new URL("../"+path,import.meta.url),"utf8").replace('import "server-only";',"");

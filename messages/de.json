@@ -760,7 +760,22 @@
     "imageInvalid": "Wähle ein gültiges PNG-, JPG-, WebP-, AVIF- oder GIF-Bild.",
     "imageUploadFailed": "Upload fehlgeschlagen. Versuche es erneut.",
     "profileServer": "Server",
-    "profileUpdated": "Zuletzt aktualisiert"
+    "profileUpdated": "Zuletzt aktualisiert",
+    "stat_streak": "Serie",
+    "stat_bestStreak": "Beste Serie",
+    "stat_losses": "Niederlagen",
+    "stat_mobKills": "Getötete Kreaturen",
+    "stat_blocksBroken": "Abgebaute Blöcke",
+    "stat_blocksPlaced": "Platzierte Blöcke",
+    "stat_jumps": "Sprünge",
+    "stat_fishCaught": "Gefangene Fische",
+    "stat_animalsBred": "Gezüchtete Tiere",
+    "stat_itemsEnchanted": "Verzauberte Gegenstände",
+    "stat_damageDealt": "Verursachter Schaden",
+    "stat_damageTaken": "Erlittener Schaden",
+    "stat_distanceMeters": "Entfernung (m)",
+    "profileNetworkHint": "Verfügbare Netzwerkstatistiken. Serien verwenden den Höchstwert; der Rang stammt aus dem neuesten Profil.",
+    "statCoverage": "Daten von {available} von {total} Servern"
   },
   "dashboard": {
     "dashboard": "Dashboard",
@@ -1148,7 +1163,15 @@
     "rotateWarning": "Der alte Schlüssel wird ungültig. Aktualisiere die Plugin-Konfiguration.",
     "keyWarning": "Dieser Schlüssel erlaubt Profilaktualisierungen. Halte ihn geheim.",
     "rename": "Server umbenennen",
-    "renameHint": "Der Schlüssel und die gespeicherten Spielerprofile bleiben erhalten."
+    "renameHint": "Der Schlüssel und die gespeicherten Spielerprofile bleiben erhalten.",
+    "settings": "Statistik-Einstellungen",
+    "visibleCount": "{count} ausgewählte Statistiken",
+    "selectAll": "Alle auswählen",
+    "selectNone": "Auswahl aufheben",
+    "networkDescription": "Kombiniert automatisch alle Server. Zähler werden addiert; Serien verwenden den höchsten Wert.",
+    "networkServers": "{count} aktive Server",
+    "statisticsHint": "Wähle die Anzeige für diesen Server. Zo7al Network berücksichtigt weiterhin alle synchronisierten Statistiken.",
+    "statisticsMissing": "Ausgewählte Statistiken erscheinen, sobald das Plugin sie liefert. Richte PlaceholderAPI für Siege, Niederlagen und Spielserien ein."
   },
   "youtubeStudio": {
     "overview": "Übersicht",

@@ -760,7 +760,22 @@
     "imageInvalid": "Choisissez une image PNG, JPG, WebP, AVIF ou GIF valide.",
     "imageUploadFailed": "Échec de l’importation. Réessayez.",
     "profileServer": "Serveur",
-    "profileUpdated": "Dernière mise à jour"
+    "profileUpdated": "Dernière mise à jour",
+    "stat_streak": "Série",
+    "stat_bestStreak": "Meilleure série",
+    "stat_losses": "Défaites",
+    "stat_mobKills": "Créatures éliminées",
+    "stat_blocksBroken": "Blocs minés",
+    "stat_blocksPlaced": "Blocs placés",
+    "stat_jumps": "Sauts",
+    "stat_fishCaught": "Poissons pêchés",
+    "stat_animalsBred": "Animaux élevés",
+    "stat_itemsEnchanted": "Objets enchantés",
+    "stat_damageDealt": "Dégâts infligés",
+    "stat_damageTaken": "Dégâts reçus",
+    "stat_distanceMeters": "Distance (m)",
+    "profileNetworkHint": "Statistiques disponibles du réseau. Les séries utilisent le maximum ; le rang vient du dernier profil.",
+    "statCoverage": "Données de {available} serveurs sur {total}"
   },
   "dashboard": {
     "dashboard": "Tableau de bord",
@@ -1148,7 +1163,15 @@
     "rotateWarning": "Changer la clé invalide l’ancienne. Mettez à jour la configuration du plugin.",
     "keyWarning": "Cette clé autorise la mise à jour des profils. Gardez-la privée.",
     "rename": "Renommer le serveur",
-    "renameHint": "La clé et les profils des joueurs restent conservés."
+    "renameHint": "La clé et les profils des joueurs restent conservés.",
+    "settings": "Paramètres des statistiques",
+    "visibleCount": "{count} statistiques sélectionnées",
+    "selectAll": "Tout sélectionner",
+    "selectNone": "Effacer la sélection",
+    "networkDescription": "Regroupe automatiquement tous les serveurs. Les compteurs sont additionnés et la série la plus élevée est conservée.",
+    "networkServers": "{count} serveurs actifs",
+    "statisticsHint": "Choisissez les statistiques de ce serveur. Zo7al Network additionne toujours toutes ses statistiques synchronisées.",
+    "statisticsMissing": "Les statistiques cochées apparaissent dès leur envoi. Configurez PlaceholderAPI pour les victoires, défaites et séries du jeu."
   },
   "youtubeStudio": {
     "overview": "Vue d’ensemble",

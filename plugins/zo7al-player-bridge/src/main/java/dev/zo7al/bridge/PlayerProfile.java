@@ -9,6 +9,7 @@ record PlayerProfile(UUID uuid, String username, String rank, boolean online,
                      Instant lastSeen, Instant capturedAt, Map<String, Double> stats) {
     PlayerProfile { stats = Map.copyOf(stats); }
     PlayerProfile withRank(String value) { return new PlayerProfile(uuid, username, value, online, lastSeen, capturedAt, stats); }
+    PlayerProfile withStats(Map<String, Double> values) { return new PlayerProfile(uuid, username, rank, online, lastSeen, capturedAt, values); }
     JsonObject json() {
         JsonObject value = new JsonObject();
         value.addProperty("uuid", uuid.toString()); value.addProperty("username", username);

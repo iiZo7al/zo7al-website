@@ -760,7 +760,22 @@
     "imageInvalid": "Geçerli bir PNG, JPG, WebP, AVIF veya GIF seçin.",
     "imageUploadFailed": "Yükleme başarısız. Tekrar deneyin.",
     "profileServer": "Sunucu",
-    "profileUpdated": "Son güncelleme"
+    "profileUpdated": "Son güncelleme",
+    "stat_streak": "Seri",
+    "stat_bestStreak": "En iyi seri",
+    "stat_losses": "Yenilgiler",
+    "stat_mobKills": "Öldürülen yaratıklar",
+    "stat_blocksBroken": "Kazılan bloklar",
+    "stat_blocksPlaced": "Yerleştirilen bloklar",
+    "stat_jumps": "Zıplamalar",
+    "stat_fishCaught": "Tutulan balıklar",
+    "stat_animalsBred": "Üretilen hayvanlar",
+    "stat_itemsEnchanted": "Büyülenen eşyalar",
+    "stat_damageDealt": "Verilen hasar",
+    "stat_damageTaken": "Alınan hasar",
+    "stat_distanceMeters": "Mesafe (m)",
+    "profileNetworkHint": "Ağın mevcut istatistikleri. Serilerde en yüksek değer, rütbede en güncel profil kullanılır.",
+    "statCoverage": "{total} sunucudan {available} tanesinin verisi"
   },
   "dashboard": {
     "dashboard": "Kontrol paneli",
@@ -1148,7 +1163,15 @@
     "rotateWarning": "Eski anahtar çalışmayı durduracak. Eklenti yapılandırmasını güncelleyin.",
     "keyWarning": "Bu anahtar profil güncellemelerine izin verir. Gizli tutun.",
     "rename": "Sunucuyu yeniden adlandır",
-    "renameHint": "Sunucunun anahtarı ve kayıtlı oyuncu profilleri korunur."
+    "renameHint": "Sunucunun anahtarı ve kayıtlı oyuncu profilleri korunur.",
+    "settings": "İstatistik ayarları",
+    "visibleCount": "{count} istatistik seçildi",
+    "selectAll": "Tümünü seç",
+    "selectNone": "Seçimi temizle",
+    "networkDescription": "Tüm sunucuları otomatik birleştirir. Sayaçlar toplanır, serilerde en yüksek değer kullanılır.",
+    "networkServers": "{count} etkin sunucu",
+    "statisticsHint": "Bu sunucuda gösterilecekleri seç. Zo7al Network eşitlenen tüm istatistikleri toplamaya devam eder.",
+    "statisticsMissing": "Seçili istatistikler eklenti gönderdiğinde görünür. Oyuna özel galibiyet, yenilgi ve seriler için PlaceholderAPI yapılandır."
   },
   "youtubeStudio": {
     "overview": "Genel bakış",

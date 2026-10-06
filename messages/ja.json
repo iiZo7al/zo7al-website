@@ -760,7 +760,22 @@
     "imageInvalid": "有効なPNG、JPG、WebP、AVIF、GIF画像を選んでください。",
     "imageUploadFailed": "アップロードに失敗しました。再試行してください。",
     "profileServer": "サーバー",
-    "profileUpdated": "最終更新"
+    "profileUpdated": "最終更新",
+    "stat_streak": "連続記録",
+    "stat_bestStreak": "最高連続記録",
+    "stat_losses": "敗北",
+    "stat_mobKills": "モブ討伐",
+    "stat_blocksBroken": "採掘ブロック",
+    "stat_blocksPlaced": "設置ブロック",
+    "stat_jumps": "ジャンプ",
+    "stat_fishCaught": "釣った魚",
+    "stat_animalsBred": "繁殖した動物",
+    "stat_itemsEnchanted": "エンチャントしたアイテム",
+    "stat_damageDealt": "与えたダメージ",
+    "stat_damageTaken": "受けたダメージ",
+    "stat_distanceMeters": "移動距離 (m)",
+    "profileNetworkHint": "ネットワークで利用可能な統計です。連続記録は最大値、ランクは最新プロフィールを使います。",
+    "statCoverage": "{total} 台中 {available} 台のデータ"
   },
   "dashboard": {
     "dashboard": "ダッシュボード",
@@ -1148,7 +1163,15 @@
     "rotateWarning": "古いキーは無効になります。プラグイン設定を更新してください。",
     "keyWarning": "このキーでプロフィールを更新できます。秘密にしてください。",
     "rename": "サーバー名を変更",
-    "renameHint": "キーと保存済みのプレイヤープロフィールは保持されます。"
+    "renameHint": "キーと保存済みのプレイヤープロフィールは保持されます。",
+    "settings": "統計設定",
+    "visibleCount": "{count} 個の統計を選択",
+    "selectAll": "すべて選択",
+    "selectNone": "選択を解除",
+    "networkDescription": "すべてのサーバーの統計を自動集計します。カウンターは合計し、連続記録は最大値を使います。",
+    "networkServers": "有効なサーバー {count} 台",
+    "statisticsHint": "このサーバーに表示する統計を選びます。Zo7al Network は同期されたすべての統計を集計します。",
+    "statisticsMissing": "選択した統計はプラグインから届くと表示されます。ゲームの勝敗や連続記録は PlaceholderAPI で設定できます。"
   },
   "youtubeStudio": {
     "overview": "概要",

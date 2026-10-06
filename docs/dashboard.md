@@ -206,3 +206,38 @@ Official references:
 - [YouTube resumable uploads](https://developers.google.com/youtube/v3/guides/using_resumable_upload_protocol)
 - [YouTube video updates](https://developers.google.com/youtube/v3/docs/videos/update)
 - [YouTube Analytics channel reports](https://developers.google.com/youtube/analytics/channel_reports)
+
+## Player statistics and Zo7al Network
+
+Both Player Bridge 1.1.0 plugins send 17 supported numeric statistics: current/best
+streak, playtime, player/mob kills, deaths, wins/losses, mined/placed blocks, jumps,
+fish caught, animals bred, enchanted items, damage dealt/taken and distance.
+Native Minecraft counters are imported from statistics JSON for offline players
+and read through Bukkit for online players. Every counter has an optional numeric
+PlaceholderAPI override. Wins and losses require the actual game plugin’s
+placeholders. An invalid configured placeholder stays unknown.
+
+Native streaks count player kills until death. Best streak and placed-block counts
+are local measurements since this version was installed, persisted atomically in
+player-counters.json every minute and on shutdown; they do not invent history.
+Changing/reloading the website credential does not reset local counters. Both game
+streak and best-streak placeholders can override these measurements.
+
+Each connection has **Statistics settings**, also reachable in the one-time key
+dialog. Selecting streak and playtime for Lobby hides all other statistics in that
+server’s public API response and UI. An empty selection hides all its stats.
+Existing connections default to all supported statistics. The additive database
+migration stores visible_stats; saving changes no credential or player data.
+
+The public profile page initially selects **Zo7al Network**. It totals all known
+counters for the same UUID across enabled backends, including statistics hidden in
+individual server views; current/best streaks use maxima. Each stat reports its
+available-source coverage. Missing counters remain unknown, and stale online
+states remain unknown. The network rank is the latest profile’s rank. Resolving
+a name selects one UUID before reading other backend records, including its old
+names. Namesakes with different UUIDs are never combined. Disabled bridges are
+excluded. The existing default rank lookup used in cart previews stays per-server.
+
+Replace each old JAR with its matching 1.1.0 build after stopping the backend; keep
+the plugin directory, token and counter file. GitHub Actions tests and packages
+both variants on plugin pull requests and publishes versioned build artifacts.

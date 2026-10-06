@@ -760,7 +760,22 @@
     "imageInvalid": "اختر صورة صالحة بصيغة PNG أو JPG أو WebP أو AVIF أو GIF.",
     "imageUploadFailed": "تعذر رفع الصورة. حاول مرة أخرى.",
     "profileServer": "السيرفر",
-    "profileUpdated": "آخر تحديث"
+    "profileUpdated": "آخر تحديث",
+    "stat_streak": "الستريك",
+    "stat_bestStreak": "أفضل ستريك",
+    "stat_losses": "الخسائر",
+    "stat_mobKills": "قتل الوحوش",
+    "stat_blocksBroken": "البلوكات المكسورة",
+    "stat_blocksPlaced": "البلوكات الموضوعة",
+    "stat_jumps": "القفزات",
+    "stat_fishCaught": "الأسماك المصطادة",
+    "stat_animalsBred": "الحيوانات المتكاثرة",
+    "stat_itemsEnchanted": "الأدوات المطورة",
+    "stat_damageDealt": "الضرر المسبب",
+    "stat_damageTaken": "الضرر المستلم",
+    "stat_distanceMeters": "المسافة بالمتر",
+    "profileNetworkHint": "إجمالي الإحصائيات المتاحة في الشبكة. الستريك أعلى قيمة بين السيرفرات، والرتبة من أحدث ملف.",
+    "statCoverage": "بيانات {available} من {total} سيرفرات"
   },
   "dashboard": {
     "dashboard": "لوحة التحكم",
@@ -1148,7 +1163,15 @@
     "rotateWarning": "تغيير المفتاح يُوقف المفتاح القديم؛ يجب تحديث إعدادات البلوقن.",
     "keyWarning": "هذا المفتاح يسمح للبلوقن بتحديث ملفات اللاعبين. احتفظ به بشكل خاص.",
     "rename": "إعادة تسمية السيرفر",
-    "renameHint": "تغيير الاسم يحافظ على مفتاح السيرفر وملفات لاعبيه المحفوظة."
+    "renameHint": "تغيير الاسم يحافظ على مفتاح السيرفر وملفات لاعبيه المحفوظة.",
+    "settings": "إعدادات الإحصائيات",
+    "visibleCount": "{count} إحصائيات مختارة",
+    "selectAll": "تحديد الكل",
+    "selectNone": "إلغاء التحديد",
+    "networkDescription": "يجمع تلقائيًا إحصائيات اللاعب من جميع السيرفرات المرتبطة. يجمع العدادات ويأخذ أعلى قيمة للستريك.",
+    "networkServers": "{count} سيرفرات مفعلة",
+    "statisticsHint": "حط صح على الإحصائيات التي تظهر لهذا السيرفر. Zo7al Network يجمع جميع إحصائياته المتزامنة.",
+    "statisticsMissing": "تظهر الإحصائية المختارة عندما يرسلها البلوغن. اضبط PlaceholderAPI لانتصارات وخسائر وستريك بلوغن الألعاب."
   },
   "youtubeStudio": {
     "overview": "نظرة عامة",

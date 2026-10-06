@@ -760,7 +760,22 @@
     "imageInvalid": "Escolha uma imagem PNG, JPG, WebP, AVIF ou GIF válida.",
     "imageUploadFailed": "Falha no envio. Tente novamente.",
     "profileServer": "Servidor",
-    "profileUpdated": "Última atualização"
+    "profileUpdated": "Última atualização",
+    "stat_streak": "Sequência",
+    "stat_bestStreak": "Melhor sequência",
+    "stat_losses": "Derrotas",
+    "stat_mobKills": "Criaturas eliminadas",
+    "stat_blocksBroken": "Blocos minerados",
+    "stat_blocksPlaced": "Blocos colocados",
+    "stat_jumps": "Saltos",
+    "stat_fishCaught": "Peixes pescados",
+    "stat_animalsBred": "Animais criados",
+    "stat_itemsEnchanted": "Itens encantados",
+    "stat_damageDealt": "Dano causado",
+    "stat_damageTaken": "Dano recebido",
+    "stat_distanceMeters": "Distância (m)",
+    "profileNetworkHint": "Estatísticas disponíveis da rede. Sequências usam o máximo; o cargo vem do perfil mais recente.",
+    "statCoverage": "Dados de {available} de {total} servidores"
   },
   "dashboard": {
     "dashboard": "Painel",
@@ -1148,7 +1163,15 @@
     "rotateWarning": "A chave antiga deixará de funcionar. Atualize a configuração do plugin.",
     "keyWarning": "Esta chave permite atualizar perfis. Mantenha-a privada.",
     "rename": "Renomear servidor",
-    "renameHint": "A chave e os perfis salvos dos jogadores são mantidos."
+    "renameHint": "A chave e os perfis salvos dos jogadores são mantidos.",
+    "settings": "Configurações de estatísticas",
+    "visibleCount": "{count} estatísticas selecionadas",
+    "selectAll": "Selecionar tudo",
+    "selectNone": "Limpar seleção",
+    "networkDescription": "Combina automaticamente todos os servidores. Soma os contadores e usa a maior sequência.",
+    "networkServers": "{count} servidores ativos",
+    "statisticsHint": "Escolha o que aparece neste servidor. Zo7al Network continua somando todas as estatísticas sincronizadas.",
+    "statisticsMissing": "As estatísticas marcadas aparecem quando o plugin as envia. Configure PlaceholderAPI para vitórias, derrotas ou sequências do jogo."
   },
   "youtubeStudio": {
     "overview": "Visão geral",

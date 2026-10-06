@@ -760,7 +760,22 @@
     "imageInvalid": "Choose a valid PNG, JPG, WebP, AVIF or GIF image.",
     "imageUploadFailed": "Image upload failed. Try again.",
     "profileServer": "Server",
-    "profileUpdated": "Last updated"
+    "profileUpdated": "Last updated",
+    "stat_streak": "Streak",
+    "stat_bestStreak": "Best streak",
+    "stat_losses": "Losses",
+    "stat_mobKills": "Mob kills",
+    "stat_blocksBroken": "Blocks mined",
+    "stat_blocksPlaced": "Blocks placed",
+    "stat_jumps": "Jumps",
+    "stat_fishCaught": "Fish caught",
+    "stat_animalsBred": "Animals bred",
+    "stat_itemsEnchanted": "Items enchanted",
+    "stat_damageDealt": "Damage dealt",
+    "stat_damageTaken": "Damage taken",
+    "stat_distanceMeters": "Distance (m)",
+    "profileNetworkHint": "Available statistics across the network. Streaks use the highest value; rank comes from the latest profile.",
+    "statCoverage": "Data from {available} of {total} servers"
   },
   "dashboard": {
     "dashboard": "Dashboard",
@@ -1148,7 +1163,15 @@
     "rotateWarning": "Replace the key. The old key will stop working; update the plugin configuration.",
     "keyWarning": "This key allows the plugin to update player profiles. Keep it private.",
     "rename": "Rename server",
-    "renameHint": "Changing the name keeps this server’s key and saved player profiles."
+    "renameHint": "Changing the name keeps this server’s key and saved player profiles.",
+    "settings": "Statistics settings",
+    "visibleCount": "{count} selected statistics",
+    "selectAll": "Select all",
+    "selectNone": "Clear selection",
+    "networkDescription": "Automatically combines every connected server’s player statistics. Counters are added; streaks use the highest value.",
+    "networkServers": "{count} enabled servers",
+    "statisticsHint": "Choose what appears for this server. Zo7al Network still totals all its synced statistics.",
+    "statisticsMissing": "Checked statistics appear when the plugin supplies them. Configure PlaceholderAPI for game-specific wins, losses or streaks."
   },
   "youtubeStudio": {
     "overview": "Overview",

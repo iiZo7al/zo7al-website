@@ -4,7 +4,8 @@ import { readFileSync } from 'node:fs';
 import ts from 'typescript';
 import sharp from 'sharp';
 import { validateContent } from '../src/lib/data/hub-validation.ts';
-import { validateProfileBatch, bridgeName } from '../src/lib/data/minecraft-bridge.ts';
+import { validation, statDataUrl, bridgeDataUrl, parserUrl, statistics } from './profile-modules.mjs';
+const { validateProfileBatch, bridgeName } = validation;
 import { CONTENT_IMAGE_UPLOAD_BYTES } from '../src/lib/data/content-media.ts';
 import { ADMIN_COOKIE, signAdminSession, tokenHash } from '../src/lib/server/site-security.ts';
 
@@ -24,6 +25,7 @@ const database = {
     if (sql.startsWith('SELECT id FROM minecraft_profile_bridges')) return { rows: state.bridge ? [{ id }] : [], rowCount: state.bridge ? 1 : 0 };
     if (sql.startsWith('INSERT INTO minecraft_profile_bridges')) return { rows: [{ id: args[0], name: args[1] }], rowCount: 1 };
     if (sql.startsWith('UPDATE minecraft_profile_bridges SET name=')) return { rows: state.bridge ? [{ id, name: args[1] }] : [], rowCount: state.bridge ? 1 : 0 };
+    if (sql.startsWith('UPDATE minecraft_profile_bridges SET visible_stats=')) return { rows: state.bridge ? [{ id, name: 'Zo7al Lobby', visibleStats: JSON.parse(args[1]) }] : [], rowCount: state.bridge ? 1 : 0 };
     if (sql.startsWith('UPDATE minecraft_profile_bridges') && sql.includes('RETURNING')) return { rows: [{ id, name: 'Zo7al SMP' }], rowCount: 1 };
     if (sql.startsWith('SELECT b.id,b.name')) return { rows: [{ id, name: 'Zo7al SMP', enabled: true, players: 1, lastSync: null }], rowCount: 1 };
     if (sql.startsWith('SELECT p.uuid')) return { rows: Array.isArray(state.profile) ? state.profile : state.profile ? [state.profile] : [], rowCount: state.profile ? 1 : 0 };
@@ -37,13 +39,13 @@ globalThis.__contentBridgeTests = { state, database };
 const db = stub('export async function siteDatabase(){return globalThis.__contentBridgeTests.database;}');
 const security = moduleUrl('src/lib/server/site-security.ts');
 const mediaData = moduleUrl('src/lib/data/content-media.ts');
-const bridgeData = moduleUrl('src/lib/data/minecraft-bridge.ts');
-const parser = moduleUrl('src/lib/server/player-profile.ts');
+const bridgeData = bridgeDataUrl;
+const parser = parserUrl;
 const limits = stub('export async function limitAttempt(){return globalThis.__contentBridgeTests.state.limits;}');
 const mediaModule = moduleUrl('src/lib/server/content-media.ts', { './site-db': db, '../data/content-media': mediaData, '"sharp"': JSON.stringify(import.meta.resolve('sharp')) });
-const bridgeModule = moduleUrl('src/lib/server/minecraft-bridge.ts', { './site-db': db, './player-profile': parser });
+const bridgeModule = moduleUrl('src/lib/server/minecraft-bridge.ts', { './site-db': db, './player-profile': parser, '../data/player-statistics': statDataUrl });
 const media = await import(mediaModule), bridge = await import(bridgeModule);
-const replacements = { '@/lib/server/site-db': db, '@/lib/server/site-security': security, '@/lib/server/site-content': limits, '@/lib/data/content-media': mediaData, '@/lib/data/minecraft-bridge': bridgeData, '@/lib/server/content-media': mediaModule, '@/lib/server/minecraft-bridge': bridgeModule, '@/lib/server/player-profile': parser };
+const replacements = { '@/lib/server/site-db': db, '@/lib/server/site-security': security, '@/lib/server/site-content': limits, '@/lib/data/content-media': mediaData, '@/lib/data/minecraft-bridge': bridgeData, '@/lib/server/content-media': mediaModule, '@/lib/server/minecraft-bridge': bridgeModule, '@/lib/server/player-profile': parser, '@/lib/data/player-statistics': statDataUrl };
 const upload = await import(moduleUrl('src/app/api/admin/hub/media/route.ts', replacements));
 const mediaRoute = await import(moduleUrl('src/app/api/hub/media/[id]/route.ts', replacements));
 const admin = await import(moduleUrl('src/app/api/admin/minecraft-bridge/route.ts', replacements));
@@ -199,7 +201,7 @@ test('four backends keep their ranks and counters separate and can be selected e
     const result = await bridge.readSyncedProfile('Player', now, server.serverId);
     assert.equal(result.serverId, server.serverId); assert.equal(result.serverName, server.serverName);
     assert.equal(result.stats.kills, server.stats.kills); assert.equal(result.rank, server.rank);
-    assert.deepEqual(result.servers.map(item => item.name), names);
+    assert.deepEqual(result.servers.map(item => item.name), ['Zo7al Network', ...names]);
   }
   const classic = servers[3], response = await profileRoute.GET(new Request('https://zo7al.test/api/minecraft/profile?username=Player&server=' + classic.serverId.toUpperCase()));
   assert.equal((await response.json()).rank, 'MVP');
@@ -221,3 +223,66 @@ test('legacy offline imports cannot move a player last-seen time backwards', asy
  reset(); assert.equal((await admin.POST(post('/api/admin/minecraft-bridge', { action: 'rename', id, name: '', confirm: true }))).status, 400); assert.equal(state.queries.length, 0);
  state.bridge = false; assert.equal((await admin.POST(post('/api/admin/minecraft-bridge', { action: 'rename', id, name: 'Missing', confirm: true }))).status, 400);
  });
+
+test('extended player counters preserve streaks, fractional playtime and real zeroes', () => {
+  const stats = Object.fromEntries(statistics.PLAYER_STAT_KEYS.map(key => [key, 0]));
+  stats.streak = 12; stats.bestStreak = 30; stats.playtimeSeconds = 3600.5;
+  assert.deepEqual(validateProfileBatch(batch([{ ...validPlayer, stats }]))[0].stats, stats);
+  for (const key of statistics.PLAYER_STAT_KEYS) {
+    for (const value of [-1, 1e12 + 1, '10', Infinity]) assert.equal(validateProfileBatch(batch([{ ...validPlayer, stats: { [key]: value } }])), null, key);
+  }
+});
+test('statistics settings authenticate, validate and change only the selected connection view', async () => {
+  reset(); const body = { action: 'settings', id, confirm: true, visibleStats: ['streak', 'playtimeSeconds'] };
+  assert.equal((await admin.POST(post('/api/admin/minecraft-bridge', body, false))).status, 401);
+  assert.equal((await admin.POST(post('/api/admin/minecraft-bridge', body, true, 'https://other.test'))).status, 403);
+  assert.equal(state.queries.length, 0);
+  for (const visibleStats of [null, 'kills', ['token'], ['kills', 'kills'], Array(50).fill('kills')]) {
+    assert.equal((await admin.POST(post('/api/admin/minecraft-bridge', { ...body, visibleStats }))).status, 400);
+  }
+  assert.equal(state.queries.length, 0);
+  const response = await admin.POST(post('/api/admin/minecraft-bridge', body)); assert.equal(response.status, 200);
+  assert.deepEqual((await response.json()).bridge.visibleStats, body.visibleStats);
+  const writes = state.queries.filter(query => query.sql.startsWith('UPDATE')); assert.equal(writes.length, 1);
+  assert.deepEqual(writes[0].args, [id, JSON.stringify(body.visibleStats)]);
+  assert.doesNotMatch(writes[0].sql, /token_hash|enabled|minecraft_player_profiles/);
+  assert.equal('token' in await (await admin.POST(post('/api/admin/minecraft-bridge', { ...body, visibleStats: [] }))).json(), false);
+  state.bridge = false; assert.equal((await admin.POST(post('/api/admin/minecraft-bridge', body))).status, 400);
+  reset(); state.limits = false; assert.equal((await admin.POST(post('/api/admin/minecraft-bridge', body))).status, 429); assert.equal(state.queries.length, 0);
+});
+test('existing connections default to all statistics and lobby can expose just streak and playtime', async () => {
+  reset(); const listed = await (await admin.GET(new Request('https://zo7al.test/api/admin/minecraft-bridge', { headers: authHeaders() }))).json();
+  assert.deepEqual(listed.bridges[0].visibleStats, statistics.PLAYER_STAT_KEYS);
+  state.profile = { ...validPlayer, username: 'Player', serverId: id, serverName: 'Zo7al Lobby', visibleStats: ['streak', 'playtimeSeconds'],
+    stats: { streak: 7, playtimeSeconds: 3600.5, kills: 10, bestStreak: 20 }, lastSync: capturedAt };
+  const request = new Request('https://zo7al.test/api/minecraft/profile?username=Player&server=' + id);
+  const result = await (await profileRoute.GET(request)).json(); assert.deepEqual(result.stats, { streak: 7, playtimeSeconds: 3600.5 });
+  state.profile.visibleStats = []; assert.equal((await bridge.readSyncedProfile('Player', now, id)).stats, null);
+  delete state.profile.visibleStats; assert.equal((await bridge.readSyncedProfile('Player', now, id)).stats.kills, 10);
+});
+test('Zo7al Network sums one UUID, keeps unknown stats partial and uses maximum streaks', async () => {
+  reset();
+  state.profile = [
+    { ...validPlayer, username: 'Player', serverId: id, serverName: 'Lobby', visibleStats: ['streak', 'playtimeSeconds'],
+      stats: { kills: 3, deaths: 0, streak: 2, bestStreak: 9, playtimeSeconds: 60 }, lastSync: capturedAt, updatedAt: capturedAt },
+    { ...validPlayer, username: 'PreviousName', serverId: 'c1234567-1234-1234-1234-123456789abc', serverName: 'PvP', online: false,
+      stats: { kills: 10, deaths: 4, streak: 7, bestStreak: 5, playtimeSeconds: 90, wins: 0 }, lastSync: capturedAt, updatedAt: capturedAt },
+    { ...validPlayer, uuid: 'd1234567-1234-1234-1234-123456789abc', username: 'Player', serverId: playerId, stats: { kills: 900, playtimeSeconds: 8000 }, lastSync: capturedAt },
+  ];
+  const response = await profileRoute.GET(new Request('https://zo7al.test/api/minecraft/profile?username=Player&server=network'));
+  assert.equal(response.status, 200); const value = await response.json();
+  assert.equal(value.serverName, 'Zo7al Network'); assert.equal(value.serverId, 'network'); assert.equal(value.rank, 'MVP++');
+  assert.deepEqual(value.stats, { streak: 7, bestStreak: 9, playtimeSeconds: 150, kills: 13, deaths: 4, wins: 0 });
+  assert.deepEqual(value.statCoverage.wins, { available: 1, total: 2 }); assert.equal('losses' in value.stats, false);
+  assert.equal(value.online, true); assert.equal(value.servers.length, 3);
+  assert.match(state.queries[0].sql, /WHERE p.uuid=\(SELECT candidate.uuid/); assert.match(state.queries[0].sql, /source.enabled/);
+  assert.equal((await bridge.readSyncedProfile('Player', now + 181000, 'network')).online, null);
+  state.profile[0].online = false; assert.equal((await bridge.readSyncedProfile('Player', now, 'network')).online, false);
+});
+test('all supported statistics, coverage hints and settings have translations in every locale', () => {
+  for (const locale of ['en', 'ar', 'es', 'fr', 'de', 'pt', 'tr', 'ja', 'ko', 'zh']) {
+    const catalog = JSON.parse(readFileSync(new URL('../messages/' + locale + '.json', import.meta.url)));
+    for (const key of statistics.PLAYER_STAT_KEYS) assert.ok(catalog.hub['stat_' + key].trim(), locale + ':' + key);
+    for (const key of ['profileNetworkHint', 'statCoverage']) assert.ok(catalog.hub[key].trim());
+  }
+});

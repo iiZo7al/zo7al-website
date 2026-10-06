@@ -3,18 +3,20 @@ package dev.zo7al.bridge.legacy;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.time.Instant;
 import java.util.Arrays;
@@ -36,6 +38,10 @@ public final class Zo7alPlayerBridgeLegacy extends JavaPlugin implements Listene
     private ProfileQueue queue;
     private BridgeTransport transport;
     private ExecutorService network;
+    private ExecutorService persistence;
+    private PlayerCounters counters;
+    private int saveElapsed;
+    private volatile long queuedSave = -1;
     private ScheduledExecutorService timer;
     private LuckPermsRanks ranks;
     private Method placeholders;
@@ -52,12 +58,17 @@ public final class Zo7alPlayerBridgeLegacy extends JavaPlugin implements Listene
 
     @Override public void onEnable() {
         saveDefaultConfig();
+        persistence = Executors.newSingleThreadExecutor(runnable -> { Thread thread = new Thread(runnable, "Zo7al-Legacy-Local-Statistics"); thread.setDaemon(true); return thread; });
+        try { counters = new PlayerCounters(new File(getDataFolder(), "player-counters.json")); }
+        catch (IOException error) { log("stats-storage-failed", Collections.emptyMap()); }
         network = Executors.newFixedThreadPool(2, runnable -> { Thread thread = new Thread(runnable, "Zo7al-Legacy-HTTPS"); thread.setDaemon(true); return thread; });
         timer = Executors.newSingleThreadScheduledExecutor(runnable -> { Thread thread = new Thread(runnable, "Zo7al-Legacy-Rank-Timeout"); thread.setDaemon(true); return thread; });
         getServer().getPluginManager().registerEvents(this, this); configure();
         Bukkit.getScheduler().runTaskTimer(this, this::tick, 20L, 20L); log("enabled", Collections.emptyMap());
     }
     @Override public void onDisable() {
+        if (counters != null) { try { counters.save(counters.revision(), counters.snapshot()); } catch (IOException error) { log("stats-storage-failed", Collections.emptyMap()); } }
+        if (persistence != null) persistence.shutdown();
         generation++; if (activeRequest != null) activeRequest.cancel(true);
         Bukkit.getScheduler().cancelTasks(this); if (network != null) network.shutdownNow(); if (timer != null) timer.shutdownNow();
     }
@@ -92,6 +103,7 @@ public final class Zo7alPlayerBridgeLegacy extends JavaPlugin implements Listene
         offline = transport != null && getConfig().getBoolean("sync-offline-on-start", true) ? known : new OfflinePlayer[0]; offlineCursor = 0;
     }
     private void tick() {
+        if (++saveElapsed >= 60) { saveElapsed = 0; saveCounters(); }
         if (transport == null) return;
         if (++elapsed >= interval) { elapsed = 0; for (Player player : Bukkit.getOnlinePlayers()) capture(player, true); }
         for (int n = 0; n < offlineBatch && offlineCursor < offline.length && room(); n++) {
@@ -103,22 +115,36 @@ public final class Zo7alPlayerBridgeLegacy extends JavaPlugin implements Listene
     }
     private boolean room() { return pending < 100 && queue.size() + pending < queueLimit; }
     @EventHandler(priority = EventPriority.MONITOR) public void onJoin(PlayerJoinEvent event) {
+        if (counters != null) counters.observe(event.getPlayer().getUniqueId());
         Bukkit.getScheduler().runTaskLater(this, () -> { if (event.getPlayer().isOnline()) capture(event.getPlayer(), true); }, 20L);
     }
     @EventHandler(priority = EventPriority.MONITOR) public void onQuit(PlayerQuitEvent event) { capture(event.getPlayer(), false); }
+    @EventHandler(priority = EventPriority.MONITOR) public void onDeath(PlayerDeathEvent event) {
+        final Player victim = event.getEntity(), killer = victim.getKiller();
+        if (counters != null) { counters.died(victim.getUniqueId()); if (killer != null && !killer.getUniqueId().equals(victim.getUniqueId())) counters.kill(killer.getUniqueId()); }
+        Bukkit.getScheduler().runTaskLater(this, () -> { if (victim.isOnline()) capture(victim, true); if (killer != null && killer.isOnline()) capture(killer, true); }, 1L);
+    }
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true) public void onPlace(BlockPlaceEvent event) {
+        if (counters != null) counters.placed(event.getPlayer().getUniqueId());
+    }
+    private void saveCounters() {
+        if (counters == null || counters.revision() == queuedSave) return;
+        final long revision = counters.revision(); final String snapshot = counters.snapshot(); queuedSave = revision;
+        persistence.execute(() -> { try { counters.save(revision, snapshot); } catch (IOException error) { queuedSave = -1; log("stats-storage-failed", Collections.emptyMap()); } });
+    }
     private void capture(final OfflinePlayer player, final boolean online) {
         final String name = player.getName(); final UUID uuid = player.getUniqueId();
         if (transport == null || name == null || !name.matches("[.a-zA-Z0-9_ ]{3,32}") || excluded.contains(name.toLowerCase(Locale.ROOT)) || !online && !player.hasPlayedBefore()) return;
         knownPlayers.put(name.toLowerCase(Locale.ROOT), uuid);
         if (!room()) { warnQueue(); return; }
-        final Map<String, Double> counters = new HashMap<String, Double>(); final Player active = player.getPlayer();
-        if (active != null) {
-            try { counters.put("kills", (double) active.getStatistic(Statistic.PLAYER_KILLS)); } catch (RuntimeException ignored) { }
-            try { counters.put("deaths", (double) active.getStatistic(Statistic.DEATHS)); } catch (RuntimeException ignored) { }
-            try { counters.put("playtimeSeconds", active.getStatistic(Statistic.PLAY_ONE_TICK) / 20.0); } catch (RuntimeException ignored) { }
+        final Player active = player.getPlayer();
+        final Map<String, Double> counters = active == null ? new HashMap<String, Double>() : VanillaStatistics.read(active);
+        if (this.counters != null) { if (active != null) this.counters.observe(uuid); counters.putAll(this.counters.stats(uuid)); }
+        final Set<String> overridden = new HashSet<String>();
+        for (Map.Entry<String, String> setting : VanillaStatistics.SETTINGS.entrySet()) {
+            if (!getConfig().getString("statistics." + setting.getValue(), "").trim().isEmpty()) overridden.add(setting.getKey());
+            override(counters, setting.getKey(), player, setting.getValue());
         }
-        override(counters, "kills", player, "kills-placeholder"); override(counters, "deaths", player, "deaths-placeholder");
-        override(counters, "wins", player, "wins-placeholder"); override(counters, "playtimeSeconds", player, "playtime-seconds-placeholder");
         counters.values().removeIf(value -> !Double.isFinite(value) || value < 0 || value > 1e12);
         long seen = online || active != null ? System.currentTimeMillis() : player.getLastPlayed();
         final Instant lastSeen = seen > 0 ? Instant.ofEpochMilli(seen) : null;
@@ -128,7 +154,7 @@ public final class Zo7alPlayerBridgeLegacy extends JavaPlugin implements Listene
         final File stats = statisticsDirectory == null ? null : new File(statisticsDirectory, uuid.toString() + ".json");
         CompletableFuture<Map<String, Double>> offlineStats = active != null || stats == null ? CompletableFuture.completedFuture(new HashMap<String, Double>())
             : CompletableFuture.supplyAsync(() -> OfflineStats.read(stats), network);
-        rank.thenCombine(offlineStats, (value, values) -> { values.putAll(counters); return new PlayerProfile(uuid, name, value, online, lastSeen, capturedAt, values); })
+        rank.handle((value, error) -> value).thenCombine(offlineStats, (value, values) -> { values.keySet().removeAll(overridden); values.putAll(counters); return new PlayerProfile(uuid, name, value, online, lastSeen, capturedAt, values); })
             .whenComplete((snapshot, error) -> {
                 if (!isEnabled() || epoch != generation) return;
                 try { Bukkit.getScheduler().runTask(this, () -> {
@@ -139,7 +165,9 @@ public final class Zo7alPlayerBridgeLegacy extends JavaPlugin implements Listene
     }
     private void override(Map<String, Double> stats, String key, OfflinePlayer player, String setting) {
         String pattern = getConfig().getString("statistics." + setting, "");
-        if (placeholders == null || pattern.trim().isEmpty() || playerPlaceholders && player.getPlayer() == null) return;
+        if (pattern.trim().isEmpty()) return;
+        stats.remove(key);
+        if (placeholders == null || playerPlaceholders && player.getPlayer() == null) return;
         try {
             Object subject = playerPlaceholders ? player.getPlayer() : player;
             String value = String.valueOf(placeholders.invoke(null, subject, pattern)).replace(",", "").trim();
