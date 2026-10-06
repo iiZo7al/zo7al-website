@@ -32,7 +32,7 @@ export default function CommandSearch() {
   useEffect(()=>{if(open)document.getElementById(`search-result-${active}`)?.scrollIntoView({block:"nearest"});},[open,active]);
   const entries:Entry[]=[
     ...(["home","minecraft","modpacks","fortnite","socials","support","store"] as const).map(key=>({title:nav(key),href:key==="home"?"/":"/"+key,keywords:key})),
-    ...([{key:"news",href:"/#news"},{key:"events",href:"/minecraft#events"},{key:"player",href:"/minecraft#player"},{key:"activity",href:"/store?activity=orders"},{key:"applications",href:"/store?activity=applications"}]).map(({key,href})=>({title:t(key),href,keywords:key})),
+    ...([{key:"news",href:"/#news"},{key:"events",href:"/minecraft#events"},{key:"player",href:"/minecraft#player"},{key:"activity",href:"/requests?tab=orders"},{key:"applications",href:"/requests?tab=applications"}]).map(({key,href})=>({title:t(key),href,keywords:key})),
     {title:"Space Run",href:"/game",keywords:"game rocket"},
     {title:t("commonErrorsTitle"),href:"/minecraft#common-errors",keywords:"errors حلول مشاكل"},
     ...(faq.raw("items") as {q:string;a:string}[]).map(item=>({title:item.q,href:"/support#faq",keywords:item.a,category:faq("title")})),

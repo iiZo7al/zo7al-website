@@ -1,0 +1,26 @@
+
+.mega-toggle,.mega-close{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;color:var(--text-muted);transition:background .2s,color .2s,transform .2s;cursor:pointer;flex-shrink:0}
+.mega-toggle:hover,.mega-close:hover{background:var(--surface-elevated);color:var(--text)}
+.mega-toggle[aria-expanded="true"]{color:var(--accent);transform:rotate(180deg)}
+.mega-panel{position:absolute;top:calc(100% + 12px);inset-inline:0;padding:26px;border:1px solid var(--border-strong);border-radius:24px;background:rgba(17,20,27,.98);box-shadow:0 24px 80px #0008;max-height:calc(100dvh - 130px);overflow-y:auto;overscroll-behavior:contain}
+.mega-panel::before{content:"";position:absolute;top:-14px;inset-inline:0;height:14px}
+.mega-heading{display:flex;align-items:center;gap:10px;padding:0 2px 20px;color:var(--accent)}
+.mega-heading h2{font-size:17px;font-weight:700;color:var(--text)}
+.mega-close{margin-inline-start:auto}
+.mega-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.mega-panel-socials .mega-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+.mega-card{display:flex;align-items:center;gap:14px;min-width:0;padding:20px;border:1px solid var(--border);border-radius:16px;background:var(--surface);transition:background .2s,border-color .2s,transform .2s}
+.mega-card:hover{background:var(--surface-elevated);border-color:var(--accent);transform:translateY(-2px)}
+.mega-card[aria-current="page"]{border-color:var(--accent)}
+.mega-icon{display:grid;place-items:center;flex-shrink:0;width:46px;height:46px;border-radius:13px;background:var(--surface-elevated);color:var(--accent)}
+.mega-card-copy{display:flex;flex-direction:column;gap:4px;min-width:0;flex:1;color:var(--text);font-size:15px;overflow-wrap:anywhere}
+.mega-card-copy span{color:var(--text-muted);font-size:12px;text-align:start}
+.mega-card>svg{color:var(--text-muted);flex-shrink:0}
+.mega-backdrop{position:fixed;inset:0;background:#0007;backdrop-filter:blur(4px);z-index:-1}
+.mega-mobile{max-height:calc(100dvh - 110px);overflow-y:auto;overscroll-behavior:contain}
+.mobile-toggle{width:40px;height:40px;margin-inline-end:8px}
+.mega-mobile-items{display:grid;gap:8px;padding:6px 8px 14px}
+.mega-mobile-items .mega-card{padding:12px;font-size:14px}
+.mega-mobile-items .mega-icon{height:36px;width:36px}
+.mega-toggle:focus-visible,.mega-close:focus-visible,.mega-card:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+@media(prefers-reduced-motion:reduce){.mega-card,.mega-toggle,.mega-close{transition:none}.mega-card:hover{transform:none}}
