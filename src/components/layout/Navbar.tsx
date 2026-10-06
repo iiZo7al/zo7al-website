@@ -2,181 +2,186 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { useCallback, useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
+import { AnimatePresence, motion, useIsPresent, useReducedMotion } from "framer-motion";
 import { useTranslations } from "next-intl";
+import { ChevronDown } from "lucide-react";
 import SolidIcon from "@/components/ui/SolidIcon";
+import BrandIcon from "@/components/ui/BrandIcon";
 import { NAV_LINKS, DISCORD_LINK, SITE } from "@/lib/data/site";
 import { SearchTrigger } from "@/components/hub/CommandSearch";
 import StoreNavAction from "@/components/store/StoreNavAction";
 import MagneticButton from "@/components/cursor/MagneticButton";
-import BrandIcon from "@/components/ui/BrandIcon";
-import LanguageSwitcher from "@/components/layout/LanguageSwitcher";
+import LanguageSwitcher from "./LanguageSwitcher";
+import NavigationMenu, { hasSubmenu, type MenuKey } from "./NavigationMenu";
+import "./navigation.css";
 
-const ICON_MAP = { home: "home", minecraft: "cube", modpacks: "box", fortnite: "map", socials: "share", support: "headset" } as const;
+const TOP_LINKS = NAV_LINKS.filter(link => link.key !== "modpacks");
+const ICONS = { home: "home", minecraft: "cube", fortnite: "map", socials: "share", support: "headset", modpacks: "box" } as const;
+const FOCUSABLE = 'a[href], button:not([disabled])';
+const EASE = [0.16, 1, 0.3, 1] as const;
+
+function MenuSurface({ children, mobile = false }: { children: ReactNode; mobile?: boolean }) {
+  const present = useIsPresent();
+  const reduced = useReducedMotion();
+  return <motion.div className={mobile ? "navigation-mobile" : "navigation-menu-shell"} inert={!present} aria-hidden={!present || undefined}
+    initial={{ opacity: 0, y: reduced ? 0 : -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: reduced ? 0 : -4 }} transition={{ duration: reduced ? 0 : .18, ease: EASE }}>
+    {children}
+  </motion.div>;
+}
+
+function activeSection(key: string, href: string, pathname: string) {
+  return pathname === href || (key === "minecraft" && pathname === "/modpacks") || (key === "support" && pathname === "/requests");
+}
 
 export default function Navbar() {
-
-  const ui = useTranslations("ui");
   const pathname = usePathname();
-  const t = useTranslations("nav");
+  const nav = useTranslations("nav");
+  const ui = useTranslations("ui");
+  const reduced = useReducedMotion();
   const [scrolled, setScrolled] = useState(false);
+  const [desktopMenu, setDesktopMenu] = useState<MenuKey | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [prevPathname, setPrevPathname] = useState(pathname);
+  const [mobileGroup, setMobileGroup] = useState<MenuKey | null>(null);
+  const [previousPath, setPreviousPath] = useState(pathname);
+  const header = useRef<HTMLElement>(null);
+  const mobileTrigger = useRef<HTMLButtonElement>(null);
+  const desktopTriggers = useRef<Partial<Record<MenuKey, HTMLButtonElement | null>>>({});
+  const mobileTriggers = useRef<Partial<Record<MenuKey, HTMLButtonElement | null>>>({});
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const focusIntent = useRef<"first" | "last" | null>(null);
 
-  // Reset the mobile menu when the route changes — adjusted during render
-  // (React's documented pattern) rather than in an effect, so it doesn't
-  // trigger an extra cascading render.
-  if (pathname !== prevPathname) {
-    setPrevPathname(pathname);
+  // Close navigation before rendering a different route.
+  if (pathname !== previousPath) {
+    setPreviousPath(pathname);
+    setDesktopMenu(null);
     setMobileOpen(false);
+    setMobileGroup(null);
   }
+
+  const cancelClose = useCallback(() => {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+    closeTimer.current = null;
+  }, []);
+  const closeAll = useCallback(() => {
+    cancelClose();
+    focusIntent.current = null;
+    setDesktopMenu(null);
+    setMobileOpen(false);
+    setMobileGroup(null);
+  }, [cancelClose]);
+  const focusMenu = useCallback((menu: MenuKey, position: "first" | "last") => {
+    const items = header.current?.querySelector(`#navigation-desktop-${menu}`)?.querySelectorAll<HTMLElement>(FOCUSABLE);
+    if (items?.length) items[position === "first" ? 0 : items.length - 1].focus();
+    focusIntent.current = null;
+  }, []);
+  const openDesktop = (menu: MenuKey, focus?: "first" | "last") => {
+    cancelClose();
+    focusIntent.current = focus ?? null;
+    setDesktopMenu(menu);
+    // The menu may already be open from a pointer hover.
+    if (focus && desktopMenu === menu) focusMenu(menu, focus);
+  };
+  const scheduleClose = (menu: MenuKey) => {
+    cancelClose();
+    closeTimer.current = setTimeout(() => {
+      // Moving the pointer does not dismiss a menu being used by keyboard.
+      const group = header.current?.querySelector(`[data-navigation-group="${menu}"]`);
+      if (!group?.contains(document.activeElement)) setDesktopMenu(null);
+    }, 180);
+  };
+  const menuKeyDown = (event: KeyboardEvent<HTMLElement>, menu: MenuKey) => {
+    if (event.key !== "ArrowDown" && event.key !== "ArrowUp") return;
+    event.preventDefault();
+    openDesktop(menu, event.key === "ArrowDown" ? "first" : "last");
+  };
+
+  useEffect(() => {
+    if (desktopMenu && focusIntent.current) focusMenu(desktopMenu, focusIntent.current);
+  }, [desktopMenu, focusMenu]);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
+    const onViewportChange = () => closeAll();
+    const desktop = window.matchMedia("(min-width: 1280px)");
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+    desktop.addEventListener("change", onViewportChange);
+    return () => {
+      cancelClose();
+      window.removeEventListener("scroll", onScroll);
+      desktop.removeEventListener("change", onViewportChange);
+    };
+  }, [cancelClose, closeAll]);
 
-  return (
-    <header
-      className="fixed top-0 left-0 right-0 z-50 flex justify-center transition-[padding] duration-500"
-      style={{ paddingTop: scrolled ? 10 : 20 }}
-    >
-      <nav
-        className="w-[min(1180px,94vw)] flex items-center justify-between rounded-2xl border transition-all duration-500"
-        style={{
-          height: scrolled ? 58 : 72,
-          padding: "0 18px",
-          background: scrolled ? "rgba(11,13,18,0.78)" : "rgba(11,13,18,0.32)",
-          borderColor: "var(--border)",
-          backdropFilter: "blur(18px)",
-          WebkitBackdropFilter: "blur(18px)",
-        }}
-      >
-        <Link
-          href="/"
-          data-cursor="link"
-          className="text-[15px] font-bold tracking-tight flex items-center gap-2"
-        >
-          <span
-            className="inline-block h-2 w-2 rounded-full"
-            style={{ background: "var(--accent)", boxShadow: "0 0 12px var(--glow)" }}
-          />
-          {SITE.name}
-        </Link>
-
-        <ul className="hidden xl:flex items-center gap-1">
+  return <header ref={header} className={`site-navigation${scrolled ? " site-navigation-scrolled" : ""}`}
+    onFocus={event => {
+      const group = (event.target as Element).closest("[data-navigation-group]");
+      if (desktopMenu && group?.getAttribute("data-navigation-group") !== desktopMenu) { cancelClose(); setDesktopMenu(null); }
+    }}
+    onBlur={event => { if (!event.currentTarget.contains(event.relatedTarget as Node | null)) closeAll(); }}
+    onKeyDown={event => {
+      if (event.key !== "Escape") return;
+      event.preventDefault();
+      cancelClose();
+      if (mobileOpen && mobileGroup) {
+        setMobileGroup(null);
+        mobileTriggers.current[mobileGroup]?.focus();
+      } else if (mobileOpen) {
+        closeAll();
+        mobileTrigger.current?.focus();
+      } else if (desktopMenu) {
+        setDesktopMenu(null);
+        desktopTriggers.current[desktopMenu]?.focus();
+      }
+    }}>
+    <div className="site-navigation-bar">
+      <nav className="site-navigation-inner" aria-label={SITE.name}>
+        <Link href="/" onClick={closeAll} className="site-navigation-brand" data-cursor="link"><span aria-hidden="true"/>{SITE.name}</Link>
+        <ul className="site-navigation-links">
           <li><SearchTrigger/></li>
-          {NAV_LINKS.map((link) => {
-            const active = pathname === link.href;
-            return (
-              <li key={link.href}>
-                <Link
-                  href={link.href}
-                  data-cursor="link"
-                  className="relative px-4 py-2 text-sm font-medium rounded-full transition-colors duration-300 flex items-center gap-2"
-                  style={{ color: active ? "var(--text)" : "var(--text-muted)" }}
-                >
-                  {active && (
-                    <motion.span
-                      layoutId="nav-active"
-                      className="absolute inset-0 rounded-full"
-                      style={{ background: "var(--surface-elevated)" }}
-                      transition={{ type: "spring", stiffness: 400, damping: 32 }}
-                    />
-                  )}
-                  <span className="relative flex items-center gap-2">
-                    {(() => {
-                      const Icon = ICON_MAP[link.key];
-                      return Icon ? <SolidIcon name={Icon} size={14} /> : null;
-                    })()}
-                    {t(link.key)}
-                  </span>
+          {TOP_LINKS.map(link => {
+            const menu = hasSubmenu(link.key) ? link.key : null;
+            const active = activeSection(link.key, link.href, pathname);
+            return <li key={link.key} className="site-navigation-group" data-navigation-group={link.key}
+              onMouseEnter={() => { if (menu) openDesktop(menu); else { cancelClose(); setDesktopMenu(null); } }}
+              onMouseLeave={() => { if (menu) scheduleClose(menu); }}>
+              <div className={`site-navigation-item${active ? " is-active" : ""}${desktopMenu === menu && menu ? " is-expanded" : ""}`}>
+                <Link href={link.href} aria-current={pathname === link.href ? "page" : undefined} onClick={closeAll} onKeyDown={event => { if (menu) menuKeyDown(event, menu); }} data-cursor="link">
+                  <SolidIcon name={ICONS[link.key]} size={14}/><span>{nav(link.key)}</span>
                 </Link>
-              </li>
-            );
+                {menu && <button type="button" className="navigation-disclosure" ref={node => { desktopTriggers.current[menu] = node; }}
+                  aria-label={`${ui(desktopMenu === menu ? "closeMenu" : "openMenu")}: ${nav(menu)}`} aria-expanded={desktopMenu === menu} aria-controls={`navigation-desktop-${menu}`} data-cursor="button"
+                  onKeyDown={event => menuKeyDown(event, menu)} onClick={event => { if (desktopMenu === menu) { cancelClose(); setDesktopMenu(null); } else openDesktop(menu, event.detail === 0 ? "first" : undefined); }}><ChevronDown size={13} aria-hidden="true"/></button>}
+              </div>
+              <AnimatePresence initial={false}>{menu && desktopMenu === menu && <MenuSurface><NavigationMenu id={`navigation-desktop-${menu}`} menu={menu} pathname={pathname} onNavigate={closeAll}/></MenuSurface>}</AnimatePresence>
+            </li>;
           })}
         </ul>
-
-        <div className="ms-auto me-2 xl:hidden"><SearchTrigger/></div>
-        <div className="hidden xl:flex items-center gap-2">
-          <a
-            href={DISCORD_LINK}
-            target="_blank"
-            rel="noopener noreferrer"
-            data-cursor="link"
-            className="flex items-center gap-1.5 px-2 text-sm font-medium text-[var(--text-muted)] hover:text-[var(--text)] transition-colors"
-          >
-            <BrandIcon slug="discord" size={15} />
-            {t("discord")}
-          </a>
-          <LanguageSwitcher />
-          <MagneticButton>
-            <StoreNavAction />
-          </MagneticButton>
+        <div className="site-navigation-tools">
+          <a href={DISCORD_LINK} onClick={closeAll} target="_blank" rel="noopener noreferrer" className="navigation-discord" aria-label={nav("discord")} data-cursor="link"><BrandIcon slug="discord" size={19}/></a>
+          <div onFocus={() => { cancelClose(); setDesktopMenu(null); }} onMouseEnter={() => { cancelClose(); setDesktopMenu(null); }}><LanguageSwitcher/></div>
+          <MagneticButton><StoreNavAction onActivate={closeAll}/></MagneticButton>
         </div>
-
-        <button
-          className="xl:hidden flex items-center justify-center p-2"
-          aria-label={ui(mobileOpen ? "closeMenu" : "openMenu")}
-          aria-expanded={mobileOpen}
-          onClick={() => setMobileOpen((v) => !v)}
-        >
-          <SolidIcon name={mobileOpen ? "cross" : "menu-burger"} size={20} />
-        </button>
+        <div className="site-navigation-mobile-tools"><SearchTrigger/><button ref={mobileTrigger} type="button" className="navigation-mobile-trigger" aria-label={ui(mobileOpen ? "closeMenu" : "openMenu")} aria-expanded={mobileOpen} aria-controls="navigation-mobile-panel" data-cursor="button" onClick={() => { cancelClose(); setDesktopMenu(null); setMobileGroup(null); setMobileOpen(!mobileOpen); }}><SolidIcon name={mobileOpen ? "cross" : "menu-burger"} size={20}/></button></div>
       </nav>
-
-      <AnimatePresence>
-        {mobileOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -12 }}
-            transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-            className="mobile-nav-panel xl:hidden fixed left-1/2 -translate-x-1/2 top-[86px] w-[92vw] rounded-2xl border p-3 flex flex-col gap-1"
-            style={{
-              background: "rgba(11,13,18,0.96)",
-              borderColor: "var(--border)",
-              backdropFilter: "blur(18px)",
-            }}
-          >
-            {NAV_LINKS.map((link) => {
-              const Icon = ICON_MAP[link.key];
-              return (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="flex items-center gap-3 px-4 py-3 rounded-xl text-base font-medium"
-                  style={{
-                    color: pathname === link.href ? "var(--text)" : "var(--text-muted)",
-                    background: pathname === link.href ? "var(--surface-elevated)" : "transparent",
-                  }}
-                >
-                  {Icon && <SolidIcon name={Icon} size={18} />}
-                  {t(link.key)}
-                </Link>
-              );
-            })}
-            <div className="h-px my-1" style={{ background: "var(--border)" }} />
-            <StoreNavAction mobile onActivate={() => setMobileOpen(false)} />
-            <a
-              href={DISCORD_LINK}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 px-4 py-3 rounded-xl text-base font-medium"
-              style={{ color: "var(--text-muted)" }}
-            >
-              <BrandIcon slug="discord" size={16} />
-              {t("discord")}
-            </a>
-            <div className="h-px my-1" style={{ background: "var(--border)" }} />
-            <LanguageSwitcher variant="mobile" />
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </header>
-  );
+      <AnimatePresence initial={false}>{mobileOpen && <MenuSurface mobile>
+        <nav id="navigation-mobile-panel" aria-label={SITE.name}>
+          <ul className="navigation-mobile-links">{TOP_LINKS.map(link => {
+            const menu = hasSubmenu(link.key) ? link.key : null;
+            return <li key={link.key}>
+              <div className={`navigation-mobile-row${activeSection(link.key, link.href, pathname) ? " is-active" : ""}`}>
+                <Link href={link.href} onClick={closeAll} aria-current={pathname === link.href ? "page" : undefined} data-cursor="link"><SolidIcon name={ICONS[link.key]} size={18}/>{nav(link.key)}</Link>
+                {menu && <button ref={node => { mobileTriggers.current[menu] = node; }} type="button" className="navigation-disclosure" aria-label={`${ui(mobileGroup === menu ? "closeMenu" : "openMenu")}: ${nav(menu)}`} aria-expanded={mobileGroup === menu} aria-controls={`navigation-mobile-${menu}`} data-cursor="button" onClick={() => setMobileGroup(mobileGroup === menu ? null : menu)}><ChevronDown size={18} aria-hidden="true"/></button>}
+              </div>
+              {menu && mobileGroup === menu && <NavigationMenu compact id={`navigation-mobile-${menu}`} menu={menu} pathname={pathname} onNavigate={closeAll}/>}
+            </li>;
+          })}</ul>
+          <div className="navigation-mobile-actions"><StoreNavAction mobile onActivate={closeAll}/><a href={DISCORD_LINK} target="_blank" rel="noopener noreferrer" onClick={closeAll} className="navigation-mobile-discord" data-cursor="link"><BrandIcon slug="discord" size={18}/>{nav("discord")}</a></div>
+          <LanguageSwitcher variant="mobile"/>
+        </nav>
+      </MenuSurface>}</AnimatePresence>
+    </div>
+    <AnimatePresence initial={false}>{(desktopMenu || mobileOpen) && <motion.div className="navigation-backdrop" aria-hidden="true" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: reduced ? 0 : .18 }} onMouseDown={event => event.preventDefault()} onClick={closeAll}/>}</AnimatePresence>
+  </header>;
 }
-
