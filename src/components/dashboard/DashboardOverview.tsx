@@ -6,7 +6,7 @@ import BrandIcon from "@/components/ui/BrandIcon";
 import type { DashboardInsights, PlatformId } from "@/lib/data/dashboard";
 import type { DashboardData, ManagementTab } from "./types";
 
-export type DashboardView = "overview" | "connections" | "console" | PlatformId | ManagementTab;
+export type DashboardView = "overview" | "connections" | "console" | "community" | PlatformId | ManagementTab;
 export const platformNames: Record<PlatformId,string> = {minecraft:"Minecraft",fortnite:"Fortnite",youtube:"YouTube",modrinth:"Modrinth",curseforge:"CurseForge"};
 export function PlatformMark({id,size=20}:{id:PlatformId;size?:number}) { return id==="minecraft"?<Server size={size}/>:<BrandIcon slug={id} size={size}/>; }
 export default function DashboardOverview({ insights,data,onView }: { insights:DashboardInsights|null;data:DashboardData;onView:(view:DashboardView)=>void }) {

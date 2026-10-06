@@ -21,6 +21,6 @@ export async function saveContentImage(bytes: Buffer) {
   const image = await normalizeContentImage(bytes), id = randomUUID(), db = await siteDatabase();
   await db.query("INSERT INTO site_content_images(id,mime_type,width,height,bytes) VALUES($1,'image/webp',$2,$3,$4)", [id, image.width, image.height, image.data]);
   // Abandoned editor uploads expire, while images attached to any draft stay intact.
-  await db.query("DELETE FROM site_content_images i WHERE i.created_at < now()-interval '30 days' AND NOT EXISTS(SELECT 1 FROM site_content c WHERE c.image_id=i.id)").catch(() => {});
+  await db.query("DELETE FROM site_content_images i WHERE i.created_at < now()-interval '30 days' AND NOT EXISTS(SELECT 1 FROM site_content c WHERE c.image_id=i.id) AND NOT EXISTS(SELECT 1 FROM community_entries e WHERE e.image_id=i.id)").catch(() => {});
   return { id, width: image.width, height: image.height };
 }

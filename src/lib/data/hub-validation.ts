@@ -18,7 +18,8 @@ export function validateSupport(value: unknown) {
   if (!["technical","player","order"].includes(String(v.type)) || !clean(v.email,3,254) || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.email) || !clean(v.subject,3,160) || !clean(v.message,20,3000) || v.consent !== true || v.website) return null;
   if (v.username && (typeof v.username !== "string" || !/^[.a-zA-Z0-9_ ]{3,32}$/.test(v.username))) return null;
   if (v.order && !clean(v.order,1,128)) return null;
-  return { type: String(v.type), email: v.email.trim(), subject: v.subject.trim(), message: v.message.trim(), username: String(v.username ?? "").trim(), order: String(v.order ?? "").trim() };
+  if (v.project && !clean(v.project,1,200) || v.projectTitle && !clean(v.projectTitle,1,160) || v.version && !clean(v.version,1,64)) return null;
+  return { type: String(v.type), email: v.email.trim(), subject: v.subject.trim(), message: v.message.trim(), username: String(v.username ?? "").trim(), order: String(v.order ?? "").trim(), ...(v.project?{project:String(v.project).trim()}:{}), ...(v.projectTitle?{projectTitle:String(v.projectTitle).trim()}:{}), ...(v.version?{version:String(v.version).trim()}: {}) };
 }
 export function validReview(value: unknown) {
   if (!value || typeof value !== "object") return null;

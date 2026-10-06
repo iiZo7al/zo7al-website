@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import ModpackDetailsButton from "./ModpackDetailsButton";
+import { ProjectStatus } from "@/components/community/ProjectExtras";
 import SolidIcon from "@/components/ui/SolidIcon";
 import Reveal from "@/components/ui/Reveal";
 import {
@@ -122,6 +123,7 @@ export default function ModpackGallery() {
                 )}
                 <div>
                   <p className="font-semibold">{project.title}</p>
+                  <ProjectStatus projectKey={'modrinth:'+project.slug}/>
                   <p className="text-xs uppercase tracking-wide text-[var(--text-muted)]">
                     {project.projectType}
                   </p>
@@ -161,4 +163,3 @@ export default function ModpackGallery() {
     </div>
   );
 }
-
