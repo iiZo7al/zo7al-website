@@ -760,7 +760,22 @@
     "imageInvalid": "Elige una imagen PNG, JPG, WebP, AVIF o GIF válida.",
     "imageUploadFailed": "No se pudo subir la imagen. Inténtalo de nuevo.",
     "profileServer": "Servidor",
-    "profileUpdated": "Última actualización"
+    "profileUpdated": "Última actualización",
+    "stat_streak": "Racha",
+    "stat_bestStreak": "Mejor racha",
+    "stat_losses": "Derrotas",
+    "stat_mobKills": "Criaturas eliminadas",
+    "stat_blocksBroken": "Bloques minados",
+    "stat_blocksPlaced": "Bloques colocados",
+    "stat_jumps": "Saltos",
+    "stat_fishCaught": "Peces capturados",
+    "stat_animalsBred": "Animales criados",
+    "stat_itemsEnchanted": "Objetos encantados",
+    "stat_damageDealt": "Daño causado",
+    "stat_damageTaken": "Daño recibido",
+    "stat_distanceMeters": "Distancia (m)",
+    "profileNetworkHint": "Estadísticas disponibles de la red. Las rachas usan el máximo; el rango viene del perfil más reciente.",
+    "statCoverage": "Datos de {available} de {total} servidores"
   },
   "dashboard": {
     "dashboard": "Panel",
@@ -1148,7 +1163,15 @@
     "rotateWarning": "Cambiar la clave invalida la anterior. Actualiza la configuración del plugin.",
     "keyWarning": "Esta clave permite actualizar los perfiles. Mantenla privada.",
     "rename": "Renombrar servidor",
-    "renameHint": "Cambiar el nombre conserva la clave y los perfiles guardados."
+    "renameHint": "Cambiar el nombre conserva la clave y los perfiles guardados.",
+    "settings": "Ajustes de estadísticas",
+    "visibleCount": "{count} estadísticas seleccionadas",
+    "selectAll": "Seleccionar todo",
+    "selectNone": "Borrar selección",
+    "networkDescription": "Combina automáticamente las estadísticas de todos los servidores. Suma los contadores y usa la racha más alta.",
+    "networkServers": "{count} servidores activos",
+    "statisticsHint": "Elige lo que aparece en este servidor. Zo7al Network sigue sumando todas sus estadísticas sincronizadas.",
+    "statisticsMissing": "Las estadísticas seleccionadas aparecen cuando el plugin las envía. Configura PlaceholderAPI para victorias, derrotas o rachas del juego."
   },
   "youtubeStudio": {
     "overview": "Resumen",

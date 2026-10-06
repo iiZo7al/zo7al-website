@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { parsePlayerRank } from '../src/lib/server/player-profile.ts';
+import { playerParser } from './profile-modules.mjs';
+const { parsePlayerRank } = playerParser;
 test('current rank is accepted only for the requested player', () => {
   assert.equal(parsePlayerRank({ username: 'iiZo7al', rank: 'OWNER' }, 'iizo7al'), 'OWNER');
   assert.equal(parsePlayerRank({ username: 'someone', rank: 'OWNER' }, 'iiZo7al'), null);

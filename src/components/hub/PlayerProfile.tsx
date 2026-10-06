@@ -4,9 +4,12 @@ import { useTranslations, useLocale } from "next-intl";
 import PlayerIdentity, { usePlayerName } from "@/components/store/PlayerIdentity";
 import CharacterPreview from "@/components/store/CharacterPreview";
 import Link from "next/link";
+import PlayerStatIcon from "./PlayerStatIcon";
+import { isPlayerStatKey, NETWORK_PROFILE_ID, type PlayerStatKey } from "@/lib/data/player-statistics";
 type Profile = {
   rank: string | null; online: boolean | null; stats: Record<string, number> | null; lastSeen: string | null;
   serverId?: string; serverName?: string; updatedAt?: string | null; servers?: { id: string; name: string }[];
+  statCoverage?: Record<string, { available: number; total: number }>;
 };
 export default function PlayerProfile() {
   const { username, setUsername } = usePlayerName(), t = useTranslations("hub"), locale = useLocale();
@@ -17,7 +20,7 @@ export default function PlayerProfile() {
     if (lock.current) return; lock.current = true; setBusy(true); setError(false); request.current = new AbortController();
     if (!server) { setName(nextName); setProfile(null); }
     try {
-      const response = await fetch("/api/minecraft/profile?username=" + encodeURIComponent(nextName) + (server ? "&server=" + encodeURIComponent(server) : ""), { cache: "no-store", signal: request.current.signal });
+      const response = await fetch("/api/minecraft/profile?username=" + encodeURIComponent(nextName) + "&server=" + encodeURIComponent(server ?? NETWORK_PROFILE_ID), { cache: "no-store", signal: request.current.signal });
       if (!response.ok) throw Error();
       const value = await response.json(); if (mounted.current) setProfile(value);
     } catch { if (mounted.current && !request.current.signal.aborted) setError(true); }
@@ -37,8 +40,12 @@ export default function PlayerProfile() {
       <CharacterPreview key={name + ":" + (profile?.serverId ?? "")} id="profile-character" username={name} profileServer={profile?.serverId} />
       {profile && <>
         {profile.serverName && <p className="hub-muted">{t("profileServer")}: <span dir="auto">{profile.serverName}</span></p>}
+        {profile.serverId === NETWORK_PROFILE_ID && <p className="hub-muted">{t("profileNetworkHint")}</p>}
         <p className="hub-muted">{profile.online === true ? t("online") : profile.online === false ? t("offline") : t("profileUnknown")}</p>
-        {profile.stats && <dl className="mt-5 grid grid-cols-2 gap-4">{Object.entries(profile.stats).map(([key, value]) => <div key={key}><dt className="hub-muted">{t("stat_" + key)}</dt><dd>{new Intl.NumberFormat(locale, { maximumFractionDigits: 0 }).format(key === "playtimeSeconds" ? value / 3600 : value)}</dd></div>)}</dl>}
+        {profile.stats && <dl className="hub-player-stats">{Object.entries(profile.stats).filter(([key]) => isPlayerStatKey(key)).map(([key, value]) => {
+          const coverage = profile.statCoverage?.[key];
+          return <div key={key} className="hub-player-stat"><dt><span className="hub-player-stat-icon"><PlayerStatIcon stat={key as PlayerStatKey} /></span><span>{t("stat_" + key)}</span></dt><dd>{new Intl.NumberFormat(locale, { maximumFractionDigits: key === "playtimeSeconds" || key === "distanceMeters" ? 1 : 0 }).format(key === "playtimeSeconds" ? value / 3600 : value)}</dd>{coverage && coverage.available < coverage.total && <small>{t("statCoverage", coverage)}</small>}</div>;
+        })}</dl>}
         {profile.lastSeen && <p>{t("lastSeen")}: {date(profile.lastSeen)}</p>}
         {profile.updatedAt && <p className="hub-muted">{t("profileUpdated")}: {date(profile.updatedAt)}</p>}
       </>}

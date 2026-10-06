@@ -760,7 +760,22 @@
     "imageInvalid": "请选择有效的PNG、JPG、WebP、AVIF或GIF图片。",
     "imageUploadFailed": "图片上传失败，请重试。",
     "profileServer": "服务器",
-    "profileUpdated": "最后更新"
+    "profileUpdated": "最后更新",
+    "stat_streak": "连续纪录",
+    "stat_bestStreak": "最佳连续纪录",
+    "stat_losses": "失败",
+    "stat_mobKills": "击杀生物",
+    "stat_blocksBroken": "挖掘方块",
+    "stat_blocksPlaced": "放置方块",
+    "stat_jumps": "跳跃",
+    "stat_fishCaught": "钓到的鱼",
+    "stat_animalsBred": "繁殖动物",
+    "stat_itemsEnchanted": "附魔物品",
+    "stat_damageDealt": "造成伤害",
+    "stat_damageTaken": "受到伤害",
+    "stat_distanceMeters": "距离（米）",
+    "profileNetworkHint": "网络中可用的统计。连续纪录取最大值，等级来自最新档案。",
+    "statCoverage": "来自 {total} 个服务器中的 {available} 个"
   },
   "dashboard": {
     "dashboard": "控制面板",
@@ -1148,7 +1163,15 @@
     "rotateWarning": "旧密钥将失效。请更新插件配置。",
     "keyWarning": "此密钥允许更新玩家档案。请妥善保密。",
     "rename": "重命名服务器",
-    "renameHint": "更改名称会保留服务器密钥和已保存的玩家资料。"
+    "renameHint": "更改名称会保留服务器密钥和已保存的玩家资料。",
+    "settings": "统计设置",
+    "visibleCount": "已选择 {count} 项统计",
+    "selectAll": "全选",
+    "selectNone": "清空选择",
+    "networkDescription": "自动汇总所有服务器的统计。计数器相加，连续纪录取最大值。",
+    "networkServers": "{count} 个启用的服务器",
+    "statisticsHint": "选择此服务器显示的统计。Zo7al Network 仍汇总所有已同步的统计。",
+    "statisticsMissing": "勾选的统计在插件发送后显示。游戏胜利、失败和连续纪录可配置 PlaceholderAPI。"
   },
   "youtubeStudio": {
     "overview": "概览",

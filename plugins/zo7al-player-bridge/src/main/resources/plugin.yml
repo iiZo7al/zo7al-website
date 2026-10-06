@@ -1,5 +1,5 @@
 name: Zo7alPlayerBridge
-version: 1.0.0
+version: 1.1.0
 main: dev.zo7al.bridge.Zo7alPlayerBridge
 api-version: '1.21'
 authors: [Zo7al]

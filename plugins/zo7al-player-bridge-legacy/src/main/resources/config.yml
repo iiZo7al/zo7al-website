@@ -33,14 +33,30 @@ rank-names:
   twitch: TWITCH
   tiktok: TIKTOK
 
-# Optional PlaceholderAPI overrides. Empty values use Bukkit's real counters.
-# Set wins to the actual wins placeholder supplied by your practice plugin.
-# Unknown/missing wins stay unknown; the bridge does not invent zero wins.
+# Optional numeric PlaceholderAPI overrides for your actual game/practice plugin.
+# Blank values use native Minecraft counters when available. Wins/losses remain
+# unknown until configured. Invalid configured placeholders remain unknown.
+# Default streak is a persistent kill streak; best streak and placed blocks are
+# tracked since installation. For your game's own streak, configure BOTH streak
+# placeholders. Playtime must return seconds, distance meters, damage health points.
 statistics:
   kills-placeholder: ''
   deaths-placeholder: ''
   wins-placeholder: ''
+  losses-placeholder: ''
+  streak-placeholder: ''
+  best-streak-placeholder: ''
   playtime-seconds-placeholder: ''
+  mob-kills-placeholder: ''
+  blocks-broken-placeholder: ''
+  blocks-placed-placeholder: ''
+  jumps-placeholder: ''
+  fish-caught-placeholder: ''
+  animals-bred-placeholder: ''
+  items-enchanted-placeholder: ''
+  damage-dealt-placeholder: ''
+  damage-taken-placeholder: ''
+  distance-meters-placeholder: ''
 
 messages:
   prefix: '&8[&6Zo7al&8] &r'
@@ -58,3 +74,4 @@ messages:
   missing-luckperms: 'LuckPerms is unavailable. Player statistics will sync, but ranks will remain unknown.'
   failed: 'Website synchronization failed (HTTP {status}). Retrying in {seconds}s. Check the endpoint and dashboard bridge key.'
   queue-full: 'The profile queue is full. Offline importing is paused until website synchronization resumes.'
+  stats-storage-failed: 'Could not read or save local Zo7al statistics. Check player-counters.json and plugin folder permissions.'

@@ -28,6 +28,13 @@
 .hub-consent input { margin-top:6px; width:18px; height:18px; flex-shrink:0; }
 .hub-honey { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); }
 .hub-muted { color:var(--text-muted); font-size:14px; line-height:1.8; }
+.hub-player-stats { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; margin-top:22px; }
+.hub-player-stat { min-width:0; padding:18px; border:1px solid var(--border); border-radius:20px; background:var(--surface); }
+.hub-player-stat dt { display:flex; align-items:center; gap:10px; color:var(--text-muted); font-size:13px; }
+.hub-player-stat-icon { display:flex; color:var(--accent); flex-shrink:0; }
+.hub-player-stat dd { font-size:26px; font-weight:700; margin-top:10px; font-variant-numeric:tabular-nums; overflow-wrap:anywhere; }
+.hub-player-stat small { display:block; font-size:11px; margin-top:6px; color:var(--text-muted); }
+@media(max-width:420px) { .hub-player-stat { padding:14px; }.hub-player-stat dt { flex-wrap:wrap; gap:8px; }.hub-player-stat dd { font-size:22px; } }
 .hub-error { color:#ff9e9e; }
 .hub-status { display:inline-flex; padding:6px 12px; margin-top:12px; border:1px solid var(--accent); border-radius:99px; color:var(--accent); font-size:13px; }
 .hub-receipt { margin-top:20px; padding:18px; border:1px solid var(--accent); border-radius:16px; overflow-wrap:anywhere; }

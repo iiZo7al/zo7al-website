@@ -1,11 +1,12 @@
 import { parsePlayerRank,parsePlayerStats } from "@/lib/server/player-profile";
 import { readSyncedProfile } from "@/lib/server/minecraft-bridge";
 import { bridgeId } from "@/lib/data/minecraft-bridge";
+import { NETWORK_PROFILE_ID } from "@/lib/data/player-statistics";
 export const runtime = "nodejs";
 export async function GET(request: Request) {
   const params = new URL(request.url).searchParams;
   const username = params.get("username")?.trim() ?? "", server = params.get("server")?.toLowerCase();
-  if (!/^[.a-zA-Z0-9_ ]{3,32}$/.test(username) || server !== undefined && !bridgeId(server)) return Response.json({ error: "INVALID" }, { status: 400 });
+  if (!/^[.a-zA-Z0-9_ ]{3,32}$/.test(username) || server !== undefined && server !== NETWORK_PROFILE_ID && !bridgeId(server)) return Response.json({ error: "INVALID" }, { status: 400 });
   const unknown = () => Response.json({ rank: null,stats:null,online:null,lastSeen:null, ...(server ? { serverId: server } : {}) }, { headers: { "Cache-Control": "no-store" } });
   try {
     const synced = await readSyncedProfile(username, Date.now(), server);

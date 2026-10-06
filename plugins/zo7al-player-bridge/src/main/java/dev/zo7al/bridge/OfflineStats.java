@@ -1,4 +1,4 @@
-package dev.zo7al.bridge.legacy;
+package dev.zo7al.bridge;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
