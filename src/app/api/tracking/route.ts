@@ -1,3 +1,4 @@
+import { accountUser } from "@/lib/server/account-auth";
 import { limitAttempt } from "@/lib/server/site-content";
 import { siteDatabase } from "@/lib/server/site-db";
 import { privateHeaders, readJSON, sameOrigin, tokenHash, validReceipt } from "@/lib/server/site-security";
@@ -8,16 +9,18 @@ export async function POST(request: Request) {
   try {
     const body = await readJSON(request,2000) as {reference?:string;token?:string;kind?:string};
     const kind=body?.kind;
-    if (!validReceipt(body) || !["order","application","support","event"].includes(String(kind))) return Response.json({error:"INVALID"},{status:400,headers:privateHeaders});
+    const user = await accountUser(request);
+    const hasReceipt = validReceipt(body);
+    if ((!hasReceipt && !(user && typeof body.reference === "string" && /^[a-f0-9-]{36}$/i.test(body.reference))) || !["order","application","support","event"].includes(String(kind))) return Response.json({error:"INVALID"},{status:400,headers:privateHeaders});
     const ip=request.headers.get("x-forwarded-for")?.split(",")[0]??"unknown";
     if(!await limitAttempt("tracking:"+ip,30,60))return Response.json({error:"RATE_LIMIT"},{status:429,headers:privateHeaders});
     const db = await siteDatabase();
     if (kind !== "order") {
-      const found = (await db.query('SELECT id AS reference,kind,status,public_note AS note,payload,created_at AS "createdAt",updated_at AS "updatedAt" FROM site_requests WHERE id=$1 AND token_hash=$2 AND kind=$3',[body.reference,tokenHash(body.token),kind])).rows[0];
+      const found = (await db.query('SELECT id AS reference,kind,status,public_note AS note,payload,created_at AS "createdAt",updated_at AS "updatedAt" FROM site_requests WHERE id=$1 AND (token_hash=$2 OR user_id=$4) AND kind=$3',[body.reference,hasReceipt?tokenHash(body.token!):null,kind,user?.id??null])).rows[0];
       if (!found) return Response.json({error:"NOT_FOUND"},{status:404,headers:privateHeaders});
       return Response.json({reference:found.reference,kind:found.kind,status:found.status,note:found.note,createdAt:found.createdAt,updatedAt:found.updatedAt,platform:found.payload.platform??null,eventTitle:found.kind==="event"?found.payload.eventTitle:null},{headers:privateHeaders});
     }
-    const order = (await db.query("SELECT id,username,items,basket_ident,created_at FROM site_orders WHERE id=$1 AND token_hash=$2",[body.reference,tokenHash(body.token)])).rows[0];
+    const order = (await db.query("SELECT id,username,items,basket_ident,created_at FROM site_orders WHERE id=$1 AND (token_hash=$2 OR user_id=$3)",[body.reference,hasReceipt?tokenHash(body.token!):null,user?.id??null])).rows[0];
     if (!order) return Response.json({error:"NOT_FOUND"},{status:404,headers:privateHeaders});
     let paid: boolean | null = null;
     const token = tebexToken();

@@ -6,6 +6,8 @@ import { getLocale, getMessages } from "next-intl/server";
 import "./globals.css";
 import "@/components/hub/hub.css";
 import CommandSearch from "@/components/hub/CommandSearch";
+import AccountProvider from "@/components/account/AccountProvider";
+import "@/components/account/account.css";
 import CartProvider from "@/components/store/CartProvider";
 import CommunityProvider from "@/components/community/CommunityProvider";
 import AppShell from "@/components/layout/AppShell";
@@ -41,7 +43,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <html lang={locale} dir={dir} className={`${GeistSans.variable} h-full`}>
       <body className="min-h-full flex flex-col antialiased">
         <NextIntlClientProvider messages={messages}>
-          <CommunityProvider><CartProvider><MotionConfig reducedMotion="user">
+          <AccountProvider><CommunityProvider><CartProvider><MotionConfig reducedMotion="user">
             <div className="grain" aria-hidden="true" />
             <CustomCursor />
             <CommandSearch />
@@ -50,7 +52,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               <div className="flex-1">{children}</div>
             </PageTransition>
             </AppShell>
-          </MotionConfig></CartProvider></CommunityProvider>
+          </MotionConfig></CartProvider></CommunityProvider></AccountProvider>
         </NextIntlClientProvider>
       </body>
     </html>

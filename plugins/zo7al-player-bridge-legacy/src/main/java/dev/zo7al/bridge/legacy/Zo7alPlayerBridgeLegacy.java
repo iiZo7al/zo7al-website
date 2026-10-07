@@ -35,6 +35,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.stream.Collectors;
 
 public final class Zo7alPlayerBridgeLegacy extends JavaPlugin implements Listener {
+    private final Map<java.util.UUID, Long> linkAttempts = new HashMap<>();
     private ProfileQueue queue;
     private BridgeTransport transport;
     private ExecutorService network;
@@ -202,6 +203,25 @@ public final class Zo7alPlayerBridgeLegacy extends JavaPlugin implements Listene
     }
     private void log(String name, Map<String, String> replacements) { getLogger().info(ChatColor.stripColor(text(name, replacements))); }
     @Override public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (command.getName().equalsIgnoreCase("zo7allink")) {
+            if (!(sender instanceof Player)) { sender.sendMessage(text("link-player-only", Collections.emptyMap())); return true; }
+            final Player player = (Player) sender;
+            if (args.length != 1 || !args[0].toUpperCase(Locale.ROOT).matches("[A-HJ-NP-Z2-9]{8}")) { player.sendMessage(text("link-usage", Collections.emptyMap())); return true; }
+            if (transport == null) { player.sendMessage(text("link-failed", Collections.emptyMap())); return true; }
+            long now = System.currentTimeMillis();
+            if (now - linkAttempts.getOrDefault(player.getUniqueId(), 0L) < 10000L) { player.sendMessage(text("link-wait", Collections.emptyMap())); return true; }
+            linkAttempts.entrySet().removeIf(entry -> now - entry.getValue() > 60000L);
+            linkAttempts.put(player.getUniqueId(), now);
+            player.sendMessage(text("link-checking", Collections.emptyMap()));
+            final int epoch = generation;
+            transport.link(player.getUniqueId(), player.getName(), args[0].toUpperCase(Locale.ROOT)).whenComplete((result, error) -> {
+                if (!isEnabled()) return;
+                try { Bukkit.getScheduler().runTask(this, () -> {
+                    if (epoch == generation && player.isOnline()) player.sendMessage(text(error == null && result.confirmed() ? "link-success" : "link-failed", Collections.emptyMap()));
+                }); } catch (IllegalStateException ignored) { }
+            });
+            return true;
+        }
         if (!sender.hasPermission("zo7al.bridge.admin")) { sender.sendMessage(text("no-permission", Collections.emptyMap())); return true; }
         String action = args.length == 0 ? "status" : args[0].toLowerCase(Locale.ROOT);
         if ("reload".equals(action)) { reloadConfig(); configure(); sender.sendMessage(text("reloaded", Collections.emptyMap())); }
@@ -219,6 +239,7 @@ public final class Zo7alPlayerBridgeLegacy extends JavaPlugin implements Listene
         return true;
     }
     @Override public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        if (command.getName().equalsIgnoreCase("zo7allink")) return Collections.emptyList();
         if (!sender.hasPermission("zo7al.bridge.admin")) return Collections.emptyList();
         if (args.length == 1) return Arrays.asList("status", "reload", "sync").stream().filter(value -> value.startsWith(args[0].toLowerCase(Locale.ROOT))).collect(Collectors.toList());
         if (args.length == 2 && "sync".equalsIgnoreCase(args[0])) return Bukkit.getOnlinePlayers().stream().map(Player::getName).filter(name -> name.toLowerCase(Locale.ROOT).startsWith(args[1].toLowerCase(Locale.ROOT))).collect(Collectors.toList());

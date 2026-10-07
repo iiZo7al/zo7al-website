@@ -15,17 +15,19 @@ export default function FaqAccordion({
   searchPlaceholder,
   noResults,
   allLabel,
+  initiallyOpen = true,
 }: {
   items: FaqItem[];
   categories: Record<string, string>;
   searchPlaceholder: string;
   noResults: string;
   allLabel: string;
+  initiallyOpen?: boolean;
 }) {
   const t = useTranslations("faq");
   const [query, setQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState<string>("all");
-  const [openKeys, setOpenKeys] = useState<Set<number>>(new Set([0]));
+  const [openKeys, setOpenKeys] = useState<Set<number>>(new Set(initiallyOpen ? [0] : []));
 
   const filtered = useMemo(() => filterFaqItems(items, query, activeCategory), [items, query, activeCategory]);
   const visibleCategories = Object.entries(categories).filter(([key]) => items.some(item => item.category === key));

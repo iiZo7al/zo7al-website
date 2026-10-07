@@ -43,6 +43,14 @@ final class BridgeTransport {
                 && value.get("accepted").getAsBigDecimal().compareTo(java.math.BigDecimal.valueOf(expected)) == 0;
         } catch (RuntimeException error) { return false; }
     }
+    CompletableFuture<Result> link(java.util.UUID uuid, String username, String code) {
+        JsonObject value = new JsonObject(); value.addProperty("uuid", uuid.toString()); value.addProperty("username", username); value.addProperty("code", code);
+        HttpRequest request = HttpRequest.newBuilder(endpoint.resolve("/api/minecraft/link")).timeout(Duration.ofSeconds(15))
+            .header("Content-Type", "application/json").header("Accept", "application/json").header("Authorization", "Bearer " + token)
+            .POST(HttpRequest.BodyPublishers.ofString(value.toString(), StandardCharsets.UTF_8)).build();
+        return http.sendAsync(request, HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8))
+            .thenApply(response -> new Result(response.statusCode(), response.statusCode() >= 200 && response.statusCode() < 300 && confirmed(response.body(), 0)));
+    }
     CompletableFuture<Result> send(List<PlayerProfile> profiles) {
         HttpRequest request = HttpRequest.newBuilder(endpoint).timeout(Duration.ofSeconds(15))
             .header("Content-Type", "application/json").header("Accept", "application/json")

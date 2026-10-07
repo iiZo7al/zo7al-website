@@ -1,5 +1,5 @@
 name: Zo7alPlayerBridge
-version: 1.1.0
+version: 1.2.0
 main: dev.zo7al.bridge.Zo7alPlayerBridge
 api-version: '1.21'
 authors: [Zo7al]
@@ -7,6 +7,9 @@ website: https://zo7al.is-a.dev
 description: Read-only player profile synchronization for Zo7al Projects.
 softdepend: [LuckPerms, PlaceholderAPI]
 commands:
+  zo7allink:
+    description: Verify your Minecraft account on Zo7al Projects.
+    usage: /zo7allink <code>
   zo7albridge:
     description: Manage Zo7al player profile synchronization.
     usage: /zo7albridge <status|reload|sync [player]>

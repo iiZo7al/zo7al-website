@@ -1,3 +1,4 @@
+import { accountUser } from "@/lib/server/account-auth";
 import { createTrackedRequest, limitAttempt } from "@/lib/server/site-content";
 import { siteDatabase } from "@/lib/server/site-db";
 import { notifyDiscord } from "@/lib/server/discord-notifications";
@@ -19,7 +20,7 @@ export async function POST(request: Request) {
     const ip = request.headers.get("x-forwarded-for")?.split(",")[0] ?? "unknown";
     if (!await limitAttempt("event:"+ip,3,900)) return Response.json({error:"RATE_LIMIT"},{status:429,headers:privateHeaders});
     const payload = {eventId:b.eventId,eventTitle:event.title,topic,...player,email:b.email,discord:b.discord};
-    const receipt = await createTrackedRequest("event",payload); reference = receipt.reference;
+    const receipt = await createTrackedRequest("event",payload,undefined,(await accountUser(request))?.id??null); reference = receipt.reference;
     const discordId = await notifyDiscord("event",reference,{"Event":event.title,"Game":topic === "fortnite" ? "Fortnite" : "Minecraft",[topic === "fortnite" ? "Epic Games" : "Minecraft"]:player.epic ?? player.minecraft ?? "","Email":b.email,"Discord":b.discord});
     await db.query("UPDATE site_requests SET discord_receipt=$2 WHERE id=$1",[reference,discordId]).catch(()=>{});
     return Response.json({ok:true,...receipt},{headers:privateHeaders});

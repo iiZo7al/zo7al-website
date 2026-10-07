@@ -16,6 +16,12 @@ export async function receiveProfiles(id: string, hash: string, profiles: Synced
       FROM jsonb_to_recordset($2::jsonb) AS p(uuid text,username text,rank text,stats jsonb,online boolean,"lastSeen" text,"capturedAt" text)
       ON CONFLICT(bridge_id,uuid) DO UPDATE SET username=excluded.username,username_key=excluded.username_key,rank=excluded.rank,stats=excluded.stats,online=excluded.online,last_seen=GREATEST(minecraft_player_profiles.last_seen,excluded.last_seen),captured_at=excluded.captured_at,updated_at=now()
       WHERE excluded.captured_at>=minecraft_player_profiles.captured_at`, [id, JSON.stringify(profiles)]);
+    if (profiles.length) await client.query(`UPDATE site_minecraft_links l SET username=current.username,username_key=current.username_key
+      FROM (SELECT DISTINCT ON (p.uuid) p.uuid,p.username,p.username_key FROM minecraft_player_profiles p
+      JOIN minecraft_profile_bridges b ON b.id=p.bridge_id AND b.enabled WHERE p.uuid=ANY($1::uuid[])
+      ORDER BY p.uuid,p.captured_at DESC,p.updated_at DESC) current
+      WHERE l.uuid=current.uuid AND l.username_key<>current.username_key
+      AND NOT EXISTS(SELECT 1 FROM site_minecraft_links other WHERE other.username_key=current.username_key AND other.user_id<>l.user_id)`, [profiles.map(p=>p.uuid)]);
     await client.query("UPDATE minecraft_profile_bridges SET last_sync=now() WHERE id=$1", [id]);
     await client.query("COMMIT");
   } catch (error) { await client.query("ROLLBACK").catch(() => {}); throw error; }

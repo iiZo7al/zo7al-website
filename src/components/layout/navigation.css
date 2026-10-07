@@ -80,3 +80,6 @@
 @media(prefers-reduced-motion:reduce) { .site-navigation,.site-navigation-inner,.site-navigation-item,.navigation-disclosure svg,.navigation-menu-link,.navigation-link-arrow { transition:none; }.navigation-menu-link:hover,.navigation-menu-link:hover .navigation-link-arrow { transform:none; } }
 
 @media(max-width:380px) { .site-navigation-inner { padding-inline:10px; gap:8px; }.site-navigation-brand { font-size:13px; gap:6px; }.site-navigation-actions,.site-navigation-mobile-tools { gap:2px; }.community-bell { width:34px; } }
+
+.navigation-mobile-search-menu{display:none}
+@media(max-width:400px){.navigation-mobile-search{display:none}.navigation-mobile-search-menu{display:flex;justify-content:flex-end;padding:4px 10px}}

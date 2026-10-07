@@ -14,8 +14,10 @@ type Profile = {
   serverId?: string; serverName?: string; updatedAt?: string | null; servers?: { id: string; name: string }[];
   statCoverage?: Record<string, { available: number; total: number }>;
 };
-export default function PlayerProfile() {
-  const { username, setUsername } = usePlayerName(), t = useTranslations("hub"), locale = useLocale();
+export default function PlayerProfile({linkedUsername}:{linkedUsername?:string} = {}) {
+  const savedPlayer = usePlayerName();
+  const username=linkedUsername??savedPlayer.username, setUsername=savedPlayer.setUsername;
+  const t = useTranslations("hub"), locale = useLocale();
   const [name, setName] = useState(""), [profile, setProfile] = useState<Profile | null>(null), [busy, setBusy] = useState(false), [error, setError] = useState(false);
   const mounted = useRef(false), request = useRef<AbortController | null>(null);
   useEffect(() => { mounted.current = true; return () => { mounted.current = false; request.current?.abort(); }; }, []);
@@ -29,18 +31,19 @@ export default function PlayerProfile() {
     } catch { if (mounted.current && !controller.signal.aborted) setError(true); }
     finally { if(request.current===controller){request.current=null;if(mounted.current)setBusy(false);} }
   },[]);
+  useEffect(()=>{if(!linkedUsername)return;const timer=setTimeout(()=>void lookup(linkedUsername),0);return()=>clearTimeout(timer);},[linkedUsername,lookup]);
   const queryChanged=useCallback(()=>{
     const player=new URL(window.location.href).searchParams.get('player');
-    if(!player||!/^[.a-zA-Z0-9_ ]{3,32}$/.test(player))return;
+    if(linkedUsername||!player||!/^[.a-zA-Z0-9_ ]{3,32}$/.test(player))return;
     const server=new URL(window.location.href).searchParams.get('server');
     setUsername(player);void lookup(player,server===NETWORK_PROFILE_ID||isUUID(server)?server:undefined);
-  },[setUsername,lookup]);
+  },[setUsername,lookup,linkedUsername]);
   const date = (value: string) => new Intl.DateTimeFormat(locale, { dateStyle: "medium", timeStyle: "short" }).format(new Date(value));
   return <div className="hub-grid">
     <QueryObserver param="player" onChange={queryChanged}/>
     <QueryObserver param="server" onChange={queryChanged}/>
     <form className="hub-card hub-form" onSubmit={event => { event.preventDefault(); void lookup(username.trim()); }}>
-      <PlayerIdentity id="profile-username" username={username} onChange={setUsername} required allowCharacterPreview={false} />
+      {linkedUsername?<strong className="store-character-name" dir="ltr">{linkedUsername}</strong>:<PlayerIdentity id="profile-username" username={username} onChange={setUsername} required allowCharacterPreview={false} />}
       <p className="hub-muted">{t("profileHelp")}</p>
       <button className="hub-button" disabled={busy}>{t(busy ? "loading" : "viewProfile")}</button>
       <div className="hub-actions"><Link href="/requests?tab=orders" className="hub-button">{t("activity")}</Link></div>
