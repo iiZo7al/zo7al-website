@@ -4,7 +4,7 @@ import LanguageSwitcher from "@/components/layout/LanguageSwitcher";
 import { playerKey } from "./player-identity";
 import { spaceApi } from "./space-api";
 
-import { useState, Suspense, useEffect, useRef, useCallback } from "react";
+import { useState, Suspense, useEffect, useRef, useCallback, useImperativeHandle, type Ref } from "react";
 import Image from "next/image";
 import { GAME_VERSION } from "./game-version";
 import { createPortal } from "react-dom";
@@ -20,9 +20,10 @@ import GameControls from "./GameControls";
 import { SpaceAudio, type SpaceSound } from "./space-audio";
 
 type GameState = "SATURN" | "TRANSITION" | "GAME" | "GAMEOVER";
-interface SpaceExperienceProps { onGameStateChange?: (state: GameState) => void; gameOnly?: boolean }
+export type SpaceExperienceHandle = { launch: () => void };
+interface SpaceExperienceProps { onGameStateChange?: (state: GameState) => void; gameOnly?: boolean; ref?: Ref<SpaceExperienceHandle> }
 
-export default function SpaceExperience({ onGameStateChange, gameOnly = false }: SpaceExperienceProps) {
+export default function SpaceExperience({ onGameStateChange, gameOnly = false, ref }: SpaceExperienceProps) {
   const t = useTranslations("game"), locale = useLocale();
   const reducedMotion = useReducedMotion();
   const [audio] = useState(() => new SpaceAudio());
@@ -64,6 +65,8 @@ export default function SpaceExperience({ onGameStateChange, gameOnly = false }:
         if (!controller.signal.aborted && result.id && result.token) setTicket(result);
       }).catch(() => undefined);
   }, [audio]);
+
+  useImperativeHandle(ref, () => ({ launch: triggerTransition }), [triggerTransition]);
 
   const autoStarted = useRef(false);
   useEffect(() => { if (gameOnly && !autoStarted.current) { autoStarted.current = true; queueMicrotask(triggerTransition); } }, [gameOnly, triggerTransition]);
@@ -160,7 +163,6 @@ export default function SpaceExperience({ onGameStateChange, gameOnly = false }:
         {inFlight && <GameScene key={run} onGameOver={handleGameOver} onProgress={updateProgress} touchInput={touchInput} isGameOver={gameState === "GAMEOVER"} paused={paused || entering} onReady={flightReady} onSound={playSound} />}
       </Suspense>
     </Canvas>
-    {!active && !gameOnly && <button type="button" data-cursor="button" data-cursor-label={t("enter")} onClick={triggerTransition} className="absolute bottom-28 start-1/2 z-20 -translate-x-1/2 whitespace-nowrap rounded-full border border-[var(--accent)] bg-[var(--bg)]/80 px-6 py-3 text-xs font-semibold text-[var(--accent)] backdrop-blur rtl:translate-x-1/2">{t("play")} ↗</button>}
     {inFlight && !curtain && <div className="pointer-events-none absolute inset-x-0 top-0 flex items-start justify-between gap-3 bg-gradient-to-b from-[var(--bg)] to-transparent px-5 pb-8 pt-[max(4.5rem,calc(env(safe-area-inset-top)+4rem))] sm:px-8">
       <div><div className="text-[10px] text-[var(--text-muted)]">{t("title")}</div><div className="mt-2 text-2xl font-bold tabular-nums sm:text-3xl">{score.toLocaleString(locale)}</div><div className="mt-1 text-[10px] text-[var(--accent)]">{t("speed", { value: telemetry.speed.toLocaleString(locale) })}</div></div>
       <div className="text-end"><div className="text-xs text-[var(--accent)]">✦ {stars.toLocaleString(locale)} {t("stars")} {telemetry.combo > 1 && <span className="ms-2 rounded bg-[var(--surface)] px-2 py-1">×{telemetry.combo.toLocaleString(locale)}</span>}</div><div className="mt-3 flex justify-end gap-1.5" aria-label={t("shields", { count: gameState === "GAMEOVER" ? 0 : telemetry.shields })}>{[0, 1, 2].map((i) => <span key={i} className={`h-1.5 w-7 rounded-full ${gameState !== "GAMEOVER" && i < telemetry.shields ? "bg-[var(--accent)] shadow-[0_0_10px_var(--glow)]" : "bg-[var(--border)]"}`} />)}</div></div>

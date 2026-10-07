@@ -4,8 +4,9 @@ import Link from "next/link";
 import { ArrowDown } from "lucide-react";
 import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
-import { useState, useCallback } from "react";
-import SpaceExperience from "./SpaceExperience";
+import { useState, useCallback, useRef } from "react";
+import SpaceExperience, { type SpaceExperienceHandle } from "./SpaceExperience";
+import GameLaunchButton from "./GameLaunchButton";
 import MagneticButton from "@/components/cursor/MagneticButton";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
@@ -22,11 +23,12 @@ const item = {
 export default function Hero() {
   const t = useTranslations("home");
   const [gameActive, setGameActive] = useState(false);
+  const space = useRef<SpaceExperienceHandle>(null);
   const onGameStateChange = useCallback((state: string) => setGameActive(state !== "SATURN"), []);
 
   return (
-    <section className="relative flex min-h-[100svh] items-center justify-center pt-[var(--nav-height)]">
-      <SpaceExperience onGameStateChange={onGameStateChange} />
+    <section className="relative flex min-h-[100svh] items-center justify-center pb-28 pt-[calc(var(--nav-height)+1.5rem)] sm:pb-32 sm:pt-[calc(var(--nav-height)+3rem)]">
+      <SpaceExperience ref={space} onGameStateChange={onGameStateChange} />
 
       <motion.div
         variants={container}
@@ -81,6 +83,9 @@ export default function Hero() {
             </a>
           </MagneticButton>
         </motion.div>
+        <motion.div variants={item} className="mt-6 flex w-full justify-center" style={{ pointerEvents: gameActive ? "none" : "auto" }}>
+          <GameLaunchButton onPlay={() => space.current?.launch()}/>
+        </motion.div>
       </motion.div>
 
       <motion.div
@@ -103,4 +108,3 @@ export default function Hero() {
     </section>
   );
 }
-

@@ -476,7 +476,7 @@
         "id": "news-events",
         "category": "community",
         "q": "Where are news and events published?",
-        "a": "Published news appears on the home page, and events appear on /minecraft. Use View more when the event list grows. Registration is available on upcoming events that accept it. The team manages publication from the dashboard.",
+        "a": "Published news appears on the homepage. Fortnite has its own news, events, gallery and polls at /fortnite, independent of Minecraft. Minecraft events are at /minecraft. Use Show more for additional events. Future event registrations use your Minecraft or Epic Games name according to the event; publishing is managed in the dashboard.",
         "href": "/minecraft#events",
         "action": "View events"
       },
@@ -573,7 +573,15 @@
     "achievementHelp": "Badges are saved on this device after a verified run. Daily progress is for the current flight.",
     "allTime": "All time",
     "weekly": "This week",
-    "weeklyPeriod": "Monday–Sunday, Riyadh time"
+    "weeklyPeriod": "Monday–Sunday, Riyadh time",
+    "installTitle": "Add Zo7al Game to your home screen",
+    "installIntro": "Keep Space Run on your home screen for quick access. You can also play now in your browser.",
+    "installShare": "On iPhone or iPad: open this page in Safari and tap the browser’s Share button.",
+    "installHome": "Choose “Add to Home Screen”, then tap “Add”. Open Zo7al Game from its icon to play.",
+    "installAndroid": "On Android: open the browser menu ⋮ and choose “Install app” or “Add to Home Screen”, then confirm.",
+    "installDesktop": "On desktop: use your browser’s install icon or its “Install app” menu option when available.",
+    "installDontShow": "Don’t show this again",
+    "installPlayNow": "Play now"
   },
   "ui": {
     "social_epicgames": "News and updates for my Fortnite maps, plus your suggestions and bug reports.",
@@ -931,7 +939,17 @@
     "statCoverage": "Data from {available} of {total} servers",
     "allStatuses": "All statuses",
     "allPlatforms": "All platforms",
-    "platform": "Platform"
+    "platform": "Platform",
+    "fortniteNews": "Fortnite news",
+    "fortniteNewsIntro": "Island updates, new experiences and announcements from Zo7al Fortnite.",
+    "fortniteEvents": "Fortnite events",
+    "fortniteEventsIntro": "Upcoming tournaments, island sessions and Fortnite community challenges.",
+    "fortniteCommunity": "Fortnite community",
+    "fortniteCommunityIntro": "Share your island screenshots, builds and best Fortnite moments. Submissions are reviewed before publication.",
+    "fortnitePolls": "Fortnite voting",
+    "fortnitePollIntro": "Choose what comes next for our Fortnite islands and community.",
+    "epic": "Epic Games display name",
+    "allGames": "All games"
   },
   "dashboard": {
     "dashboard": "Dashboard",

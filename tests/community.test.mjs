@@ -67,6 +67,8 @@ test('poll inputs reject duplicate, excessive, empty options and malformed dates
  for(const payload of [{options:['SMP',' SMP ']},{options:['SMP']},{options:['','PvP']},{options:Array.from({length:9},(_,i)=>String(i))},{options:['SMP','PvP'],endsAt:'tomorrow'}])assert.equal(validateCommunity({...poll,payload}),null);
  assert.equal(validateCommunity({...poll,id:'invalid'}),null);
  assert.equal(validateCommunity({...poll,published:'true'}),null);
+ assert.equal(validateCommunity({...poll,topic:'all'}),null);
+ assert.ok(validateCommunity({...poll,topic:'fortnite'}));
  assert.equal(validateCommunity({...poll,payload:{options:['SMP','PvP'],contactEmail:'private'}}).payload.contactEmail,undefined);
 });
 test('gallery links require supported HTTPS origins and permission to publish',()=>{
@@ -74,6 +76,8 @@ test('gallery links require supported HTTPS origins and permission to publish',(
  for(const url of ['javascript:alert(1)','http://youtube.com/watch','https://youtube.com.evil.test/watch','https://user:pass@youtube.com/watch','https://youtube.com:8443/watch','https://example.test/clip']){assert.equal(safeMediaLink(url),null);assert.equal(validateGallerySubmission({...submission,videoUrl:url}),null);}
  assert.equal(validateGallerySubmission({...submission,consent:false}),null);
  assert.equal(validateGallerySubmission({...submission,website:'bot'}),null);
+ assert.equal(validateGallerySubmission({...submission,topic:'all'}),null);
+ assert.ok(validateGallerySubmission({...submission,topic:'fortnite'}));
  assert.equal(validateCommunity({...poll,kind:'gallery',author:'Creator',payload:{},imageId:null}),null);
 });
 test('project states, releases and achievement goals have strict server validation',()=>{

@@ -476,7 +476,7 @@
         "id": "news-events",
         "category": "community",
         "q": "ニュースやイベントはどこですか？",
-        "a": "公開されたニュースはホーム、イベントは/minecraftにあります。件数が増えると「もっと見る」が表示されます。受付中の予定イベントに登録できます。公開はチームが管理します。",
+        "a": "公開ニュースはホームページに表示されます。Fortniteには/fortniteに独立したニュース、イベント、ギャラリー、投票があります。Minecraftイベントは/minecraftにあります。「もっと見る」で他のイベントを開けます。参加登録にはゲームに応じてMinecraft名またはEpic Games表示名を使います。公開はダッシュボードで管理します。",
         "href": "/minecraft#events",
         "action": "イベントを見る"
       },
@@ -573,7 +573,15 @@
     "achievementHelp": "バッジは認証済みのプレイ後にこの端末に保存されます。デイリーの進行状況は現在のフライトに対するものです。",
     "allTime": "全期間",
     "weekly": "今週",
-    "weeklyPeriod": "月曜日～日曜日（リヤド時間）"
+    "weeklyPeriod": "月曜日～日曜日（リヤド時間）",
+    "installTitle": "Zo7al Gameをホーム画面に追加",
+    "installIntro": "Space Runをホーム画面に保存してすぐにプレイできます。今すぐブラウザーで遊ぶこともできます。",
+    "installShare": "iPhoneやiPadでは、このページをSafariで開き、ブラウザーの共有ボタンをタップします。",
+    "installHome": "「ホーム画面に追加」を選び、「追加」をタップします。Zo7al Gameのアイコンから起動してください。",
+    "installAndroid": "Androidではブラウザーの⋮メニューを開き、「アプリをインストール」または「ホーム画面に追加」を選んで確認します。",
+    "installDesktop": "パソコンでは、利用できる場合、ブラウザーのインストールアイコンや「アプリをインストール」を使います。",
+    "installDontShow": "今後表示しない",
+    "installPlayNow": "今すぐプレイ"
   },
   "ui": {
     "social_epicgames": "自作のフォートナイトマップの最新情報や更新、ご提案と不具合報告はこちら。",
@@ -931,7 +939,17 @@
     "statCoverage": "{total} 台中 {available} 台のデータ",
     "allStatuses": "すべての状態",
     "allPlatforms": "すべてのプラットフォーム",
-    "platform": "プラットフォーム"
+    "platform": "プラットフォーム",
+    "fortniteNews": "Fortniteニュース",
+    "fortniteNewsIntro": "Zo7al Fortniteの島の更新、新しい体験、お知らせ。",
+    "fortniteEvents": "Fortniteイベント",
+    "fortniteEventsIntro": "今後の大会、島でのプレイ、Fortniteコミュニティチャレンジ。",
+    "fortniteCommunity": "Fortniteコミュニティ",
+    "fortniteCommunityIntro": "島の画像、建築、Fortniteのベストシーンを共有しましょう。投稿は公開前に審査されます。",
+    "fortnitePolls": "Fortnite投票",
+    "fortnitePollIntro": "Fortniteの島とコミュニティの次の内容を選びましょう。",
+    "epic": "Epic Gamesの表示名",
+    "allGames": "すべてのゲーム"
   },
   "dashboard": {
     "dashboard": "ダッシュボード",

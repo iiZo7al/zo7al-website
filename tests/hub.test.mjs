@@ -17,10 +17,10 @@ function moduleUrl(path,replacements={}) {
  return "data:text/javascript;base64,"+Buffer.from(ts.transpileModule(source,{compilerOptions:{module:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ES2022}}).outputText).toString("base64");
 }
 const stub=code=>"data:text/javascript;base64,"+Buffer.from(code).toString("base64");
-const state={queries:[],notify:[],notificationFails:false,updateFails:false,found:null,limits:true};
+const state={queries:[],notify:[],notificationFails:false,updateFails:false,found:null,eventTopic:"minecraft",limits:true};
 const database={query:async(sql,args=[])=>{
  state.queries.push({sql,args});
- if(sql.startsWith("SELECT title"))return {rows:[{title:"Community event"}]};
+ if(sql.startsWith("SELECT title"))return {rows:[{title:"Community event",topic:state.eventTopic}]};
  if(sql.startsWith("DELETE"))return {rows:[]};
  if(sql.startsWith("UPDATE")&&state.updateFails)throw Error("DB unavailable after Discord confirmation");
  return {rows:state.found?[state.found]:[],rowCount:1};
@@ -38,7 +38,7 @@ const admin=await import(moduleUrl("src/app/api/admin/hub/route.ts",replacements
 const tracking=await import(moduleUrl("src/app/api/tracking/route.ts",{...replacements,"@/lib/server/tebex":stub('export function tebexToken(){return "test";}export async function tebexRequest(){return {data:globalThis.__zo7alHubTest.state.basket};}')}));
 const reference="a1234567-1234-1234-1234-123456789abc",token="a".repeat(64);
 const req=(path,body,headers={})=>new Request("https://zo7al.test"+path,{method:"POST",headers:{origin:"https://zo7al.test","content-type":"application/json","x-forwarded-for":"192.0.2.10",...headers},body:JSON.stringify(body)});
-const reset=()=>{state.queries=[];state.notify=[];state.found=null;state.notificationFails=false;state.updateFails=false;state.limits=true;};
+const reset=()=>{state.queries=[];state.notify=[];state.found=null;state.eventTopic="minecraft";state.notificationFails=false;state.updateFails=false;state.limits=true;};
 const validSupport={type:"technical",email:"person@example.com",subject:"Connection issue",message:"The game disconnects when I join the server.",consent:true};
 const saveEnv=keys=>Object.fromEntries(keys.map(key=>[key,process.env[key]]));
 const restoreEnv=saved=>{for(const [k,v] of Object.entries(saved))if(v===undefined)delete process.env[k];else process.env[k]=v;};
@@ -86,6 +86,8 @@ test("content and review validation keep drafts, supported locales and safe even
  assert.equal(validateContent({...value,registrationUrl:"https://name:password@example.com"}),null);
  assert.equal(validateContent({...value,startsAt:"not a date"}),null);
  assert.equal(validateContent({...value,locale:"unknown"}),null);
+ assert.equal(validateContent({...value,topic:"fortnite"}).topic,"fortnite");
+ assert.equal(validateContent({...value,topic:"all"}),null);
  assert.equal(validReview({id:reference,kind:"application",status:"closed",note:""}),null);
  assert.equal(validReview({id:reference,kind:"support",status:"closed",note:"Handled"}).status,"closed");
  assert.equal(validateSupport({...validSupport,consent:false}),null);
@@ -112,6 +114,17 @@ test("event registration only accepts published future events and sends to Disco
  assert.equal(state.notify[0][0],"event");
  assert.match(state.queries[0].sql,/published AND starts_at>now\(\)/);
  reset();assert.equal((await events.POST(req("/api/events/register",{...payload,eventId:"-".repeat(36)}))).status,400);assert.equal(state.notify.length,0);
+});
+test("Fortnite events use Epic names and trust the event's stored game",async()=>{
+ reset();state.eventTopic="fortnite";
+ const payload={eventId:reference,epic:"زحل Player",email:"person@example.com",discord:"person",consent:true,topic:"minecraft"};
+ assert.equal((await events.POST(req("/api/events/register",payload))).status,200);
+ const tracked=state.queries.find(query=>query.sql==="reserve").payload;
+ assert.equal(tracked.topic,"fortnite");assert.equal(tracked.epic,"زحل Player");assert.equal("minecraft" in tracked,false);
+ assert.equal(state.notify[0][2]["Epic Games"],"زحل Player");assert.equal(state.notify[0][2].Game,"Fortnite");
+ reset();state.eventTopic="fortnite";
+ assert.equal((await events.POST(req("/api/events/register",{...payload,epic:undefined,minecraft:"Player"}))).status,400);assert.equal(state.notify.length,0);
+ reset();assert.equal((await events.POST(req("/api/events/register",payload))).status,400);assert.equal(state.notify.length,0);
 });
 test("tracking requires the private code and never exposes payloads or token hashes",async()=>{
  reset();state.found={reference,kind:"application",status:"pending",note:"Review queued",payload:{platform:"youtube",email:"private@example.com",reason:"Private content"},createdAt:"2026-10-03T00:00:00Z",updatedAt:"2026-10-03T00:00:00Z"};

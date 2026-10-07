@@ -476,7 +476,7 @@
         "id": "news-events",
         "category": "community",
         "q": "Haberler ve etkinlikler nerede yayınlanır?",
-        "a": "Yayınlanan haberler ana sayfada, etkinlikler /minecraft sayfasındadır. Liste büyürse Daha fazla göster görünür. Gelecek etkinlikler kayıt kabul edebilir. Ekip yayını panelden yönetir.",
+        "a": "Yayımlanan haberler ana sayfadadır. Fortnite’ın bağımsız haberleri, etkinlikleri, galerisi ve anketleri /fortnite sayfasındadır. Minecraft etkinlikleri /minecraft sayfasındadır. Daha fazla göster diğer etkinlikleri açar. Kayıt, oyuna göre Minecraft veya Epic Games adınızı ister. Yayınlar panelden yönetilir.",
         "href": "/minecraft#events",
         "action": "Etkinlikler"
       },
@@ -573,7 +573,15 @@
     "achievementHelp": "Rozetler doğrulanmış bir oyun sonrası bu cihazda saklanır. Günlük ilerleme mevcut uçuş içindir.",
     "allTime": "Tüm zamanlar",
     "weekly": "Bu hafta",
-    "weeklyPeriod": "Pazartesi–Pazar, Riyad saati"
+    "weeklyPeriod": "Pazartesi–Pazar, Riyad saati",
+    "installTitle": "Zo7al Game’i ana ekranınıza ekleyin",
+    "installIntro": "Hızlı erişim için Space Run’ı ana ekranınıza ekleyin. Tarayıcınızda hemen de oynayabilirsiniz.",
+    "installShare": "iPhone veya iPad’de: bu sayfayı Safari’de açın ve tarayıcının Paylaş düğmesine dokunun.",
+    "installHome": "“Ana Ekrana Ekle”yi, ardından “Ekle”yi seçin. Oynamak için Zo7al Game simgesini açın.",
+    "installAndroid": "Android’de: tarayıcının ⋮ menüsünü açın, “Uygulamayı yükle” veya “Ana ekrana ekle”yi seçip onaylayın.",
+    "installDesktop": "Bilgisayarda: varsa tarayıcının yükleme simgesini veya “Uygulamayı yükle” menü seçeneğini kullanın.",
+    "installDontShow": "Bir daha gösterme",
+    "installPlayNow": "Şimdi oyna"
   },
   "ui": {
     "social_epicgames": "Fortnite haritalarımdan haberler, güncellemeler, önerileriniz ve hata bildirimleriniz.",
@@ -931,7 +939,17 @@
     "statCoverage": "{total} sunucudan {available} tanesinin verisi",
     "allStatuses": "Tüm durumlar",
     "allPlatforms": "Tüm platformlar",
-    "platform": "Platform"
+    "platform": "Platform",
+    "fortniteNews": "Fortnite haberleri",
+    "fortniteNewsIntro": "Zo7al Fortnite ada güncellemeleri, yeni deneyimler ve duyurular.",
+    "fortniteEvents": "Fortnite etkinlikleri",
+    "fortniteEventsIntro": "Yaklaşan turnuvalar, ada oyunları ve Fortnite topluluk görevleri.",
+    "fortniteCommunity": "Fortnite topluluğu",
+    "fortniteCommunityIntro": "Ada görüntülerinizi, yapılarınızı ve en iyi Fortnite anlarınızı paylaşın. Gönderiler yayımlanmadan önce incelenir.",
+    "fortnitePolls": "Fortnite oylaması",
+    "fortnitePollIntro": "Fortnite adalarımız ve topluluğumuz için sırada ne olacağını seçin.",
+    "epic": "Epic Games görünen adı",
+    "allGames": "Tüm oyunlar"
   },
   "dashboard": {
     "dashboard": "Kontrol paneli",

@@ -476,7 +476,7 @@
         "id": "news-events",
         "category": "community",
         "q": "¿Dónde se publican noticias y eventos?",
-        "a": "Las noticias publicadas aparecen en Inicio y los eventos en /minecraft. Ver más aparece si hay muchos. Los próximos eventos pueden admitir inscripción. El equipo controla la publicación desde el panel.",
+        "a": "Las noticias publicadas aparecen en la portada. Fortnite tiene noticias, eventos, galería y encuestas independientes en /fortnite. Los eventos de Minecraft están en /minecraft. Mostrar más abre los demás eventos. El registro usa tu nombre de Minecraft o Epic Games según el juego. El equipo gestiona la publicación desde el panel.",
         "href": "/minecraft#events",
         "action": "Ver eventos"
       },
@@ -573,7 +573,15 @@
     "achievementHelp": "Las insignias se guardan en este dispositivo tras una partida verificada. El progreso diario corresponde al vuelo actual.",
     "allTime": "Histórico",
     "weekly": "Esta semana",
-    "weeklyPeriod": "Lunes–domingo, hora de Riad"
+    "weeklyPeriod": "Lunes–domingo, hora de Riad",
+    "installTitle": "Añade Zo7al Game a tu pantalla de inicio",
+    "installIntro": "Guarda Space Run en tu pantalla de inicio para acceder rápidamente. También puedes jugar ahora en el navegador.",
+    "installShare": "En iPhone o iPad: abre esta página en Safari y toca Compartir en el navegador.",
+    "installHome": "Elige “Añadir a pantalla de inicio” y toca “Añadir”. Abre Zo7al Game desde su icono para jugar.",
+    "installAndroid": "En Android: abre el menú ⋮ del navegador, elige “Instalar aplicación” o “Añadir a pantalla de inicio” y confirma.",
+    "installDesktop": "En ordenador: usa el icono de instalación o la opción “Instalar aplicación” del navegador, si está disponible.",
+    "installDontShow": "No volver a mostrar",
+    "installPlayNow": "Jugar ahora"
   },
   "ui": {
     "social_epicgames": "Noticias de mis mapas de Fortnite, junto con vuestras sugerencias e informes de errores.",
@@ -931,7 +939,17 @@
     "statCoverage": "Datos de {available} de {total} servidores",
     "allStatuses": "Todos los estados",
     "allPlatforms": "Todas las plataformas",
-    "platform": "Plataforma"
+    "platform": "Plataforma",
+    "fortniteNews": "Noticias de Fortnite",
+    "fortniteNewsIntro": "Actualizaciones de islas, nuevas experiencias y anuncios de Zo7al Fortnite.",
+    "fortniteEvents": "Eventos de Fortnite",
+    "fortniteEventsIntro": "Próximos torneos, sesiones en islas y retos de la comunidad de Fortnite.",
+    "fortniteCommunity": "Comunidad de Fortnite",
+    "fortniteCommunityIntro": "Comparte capturas, construcciones y tus mejores momentos en Fortnite. Revisamos los envíos antes de publicarlos.",
+    "fortnitePolls": "Votación de Fortnite",
+    "fortnitePollIntro": "Elige lo próximo para nuestras islas y la comunidad de Fortnite.",
+    "epic": "Nombre de Epic Games",
+    "allGames": "Todos los juegos"
   },
   "dashboard": {
     "dashboard": "Panel",

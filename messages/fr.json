@@ -476,7 +476,7 @@
         "id": "news-events",
         "category": "community",
         "q": "Où sont publiés les actualités et événements ?",
-        "a": "Les actualités publiées sont sur l’accueil et les événements sur /minecraft. Voir plus apparaît si la liste s’allonge. Les événements à venir peuvent proposer une inscription. L’équipe contrôle la publication dans le tableau de bord.",
+        "a": "Les actualités publiées apparaissent sur la page d’accueil. Fortnite a ses propres actualités, événements, galerie et votes sur /fortnite. Les événements Minecraft sont sur /minecraft. Voir plus affiche les autres événements. Les inscriptions demandent le nom Minecraft ou Epic Games selon le jeu. La publication se gère dans le tableau de bord.",
         "href": "/minecraft#events",
         "action": "Voir les événements"
       },
@@ -573,7 +573,15 @@
     "achievementHelp": "Les badges sont enregistrés sur cet appareil après une partie vérifiée. La progression quotidienne concerne le vol en cours.",
     "allTime": "Tous les temps",
     "weekly": "Cette semaine",
-    "weeklyPeriod": "Lundi–dimanche, heure de Riyad"
+    "weeklyPeriod": "Lundi–dimanche, heure de Riyad",
+    "installTitle": "Ajoutez Zo7al Game à votre écran d’accueil",
+    "installIntro": "Gardez Space Run sur votre écran d’accueil pour y accéder rapidement. Vous pouvez aussi jouer dans votre navigateur.",
+    "installShare": "Sur iPhone ou iPad : ouvrez cette page dans Safari et touchez le bouton Partager du navigateur.",
+    "installHome": "Choisissez « Sur l’écran d’accueil », puis « Ajouter ». Ouvrez Zo7al Game depuis son icône pour jouer.",
+    "installAndroid": "Sur Android : ouvrez le menu ⋮ du navigateur, choisissez « Installer l’application » ou « Ajouter à l’écran d’accueil » et confirmez.",
+    "installDesktop": "Sur ordinateur : utilisez l’icône d’installation ou l’option « Installer l’application » du navigateur, si disponible.",
+    "installDontShow": "Ne plus afficher",
+    "installPlayNow": "Jouer maintenant"
   },
   "ui": {
     "social_epicgames": "Les nouveautés de mes maps Fortnite, vos suggestions et vos signalements de bugs.",
@@ -931,7 +939,17 @@
     "statCoverage": "Données de {available} serveurs sur {total}",
     "allStatuses": "Tous les états",
     "allPlatforms": "Toutes les plateformes",
-    "platform": "Plateforme"
+    "platform": "Plateforme",
+    "fortniteNews": "Actualités Fortnite",
+    "fortniteNewsIntro": "Mises à jour des îles, nouvelles expériences et annonces de Zo7al Fortnite.",
+    "fortniteEvents": "Événements Fortnite",
+    "fortniteEventsIntro": "Tournois à venir, sessions sur les îles et défis de la communauté Fortnite.",
+    "fortniteCommunity": "Communauté Fortnite",
+    "fortniteCommunityIntro": "Partagez vos captures, créations et meilleurs moments Fortnite. Les contributions sont vérifiées avant publication.",
+    "fortnitePolls": "Votes Fortnite",
+    "fortnitePollIntro": "Choisissez la suite pour nos îles et la communauté Fortnite.",
+    "epic": "Nom affiché Epic Games",
+    "allGames": "Tous les jeux"
   },
   "dashboard": {
     "dashboard": "Tableau de bord",
