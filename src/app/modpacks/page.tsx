@@ -8,7 +8,7 @@ import ModpackChangelog from "@/components/modpacks/ModpackChangelog";
 import { getSyncedCurseForgeProjects } from "@/lib/sync/curseforge";
 
 export const metadata: Metadata = {
-  title: "Modpacks — ZO7AL Projects",
+  title: "Modpacks",
   description: "Explore Minecraft projects created by Zo7al.",
 };
 

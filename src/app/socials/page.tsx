@@ -7,7 +7,7 @@ import SocialGrid from "@/components/socials/SocialGrid";
 import { getSyncedSocials, getSyncedGamesSocials } from "@/lib/sync/socials";
 
 export const metadata: Metadata = {
-  title: "Socials — ZO7AL Projects",
+  title: "Socials",
   description: "Follow the journey.",
 };
 

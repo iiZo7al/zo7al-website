@@ -5,7 +5,7 @@ import UniverseShowcase from "@/components/home/UniverseShowcase";
 import FaqSection from "@/components/faq/FaqSection";
 
 export const metadata: Metadata = {
-  title: "ZO7AL Projects — Gaming Universe",
+  title: { absolute: "Zo7al Projects — Gaming Universe" },
   description:
     "Minecraft servers, Fortnite maps, modpacks and gaming projects by Zo7al.",
 };

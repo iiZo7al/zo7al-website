@@ -8,7 +8,7 @@ import Image from "next/image";
 import StoreRanks from "@/components/store/StoreRanks";
 import StoreActivity from "@/components/hub/StoreActivity";
 import { getStoreCatalog } from "@/lib/server/tebex";
-export const metadata: Metadata = { title: "Store — ZO7AL Projects", description: "Support the network and explore the official Zo7al store." };
+export const metadata: Metadata = { title: "Store", description: "Support the network and explore the official Zo7al store." };
 export default async function StorePage() {
   const [t, catalog] = await Promise.all([getTranslations("store"), getStoreCatalog()]);
   return <main data-accent="store">

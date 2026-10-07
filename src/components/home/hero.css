@@ -1,6 +1,6 @@
-.hero-brand-heading { width:100%; font-size:clamp(1.875rem,9vw,6.5rem); line-height:1.1; }
-.hero-brand { display:inline-flex; align-items:baseline; justify-content:center; gap:.2em; white-space:nowrap; }
-.hero-typewriter { display:inline-grid; text-align:start; transition:color .18s ease; }
+.hero-brand-heading { width:100%; font-size:clamp(3rem,16vw,7.5rem); line-height:1.05; }
+.hero-brand { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:.08em; white-space:nowrap; }
+.hero-typewriter { display:inline-grid; text-align:center; transition:color .18s ease; }
 .hero-typewriter-reserve,.hero-typewriter-line { grid-area:1/1; }
 .hero-typewriter-reserve { visibility:hidden; pointer-events:none; user-select:none; }
 .hero-typewriter-caret { display:inline-block; width:.028em; height:.82em; margin-inline-start:.035em; vertical-align:-.045em; background:currentColor; }

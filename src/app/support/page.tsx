@@ -4,7 +4,7 @@ import PageHero from "@/components/ui/PageHero";
 import SupportCenter from "@/components/hub/SupportCenter";
 
 export const metadata: Metadata = {
-  title: "Support — ZO7AL Projects",
+  title: "Support",
   description: "Find answers or contact the Zo7al Projects support team.",
 };
 

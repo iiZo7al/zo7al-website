@@ -1,5 +1,8 @@
 # Space Run
 
+## 1.0.10
+- Match the homepage launch button to the transparent View Projects action, preserving its installation guide and desktop and touch controls.
+
 ## 1.0.9
 - Place the homepage launch button below the hero actions so it stays clear of text and scroll hints on mobile and in RTL layouts.
 - Show an animated, translated home-screen installation guide before launching, with a saved “don't show again” choice.

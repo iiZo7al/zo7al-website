@@ -6,7 +6,7 @@ import SectionHeader from "@/components/ui/SectionHeader";
 import ContentFeed from "@/components/hub/ContentFeed";
 import CommunitySections from "@/components/community/CommunitySections";
 
-export default function FortniteCommunity() {
+export function FortniteCommunityLinks() {
   const t = useTranslations("hub");
   const links = [
     { id: "news", label: "fortniteNews", icon: Newspaper },
@@ -14,10 +14,14 @@ export default function FortniteCommunity() {
     { id: "community-gallery", label: "fortniteCommunity", icon: Images },
     { id: "community-polls", label: "fortnitePolls", icon: Vote },
   ] as const;
-  return <>
-    <nav className="hub-section-inner hub-actions justify-center px-6 pb-12" aria-label={t("fortniteCommunity")}>
+  return <nav className="hub-actions mt-6" aria-label={t("fortniteCommunity")}>
       {links.map(({ id, label, icon: Icon }) => <a key={id} href={"#" + id} className="hub-button" data-cursor="button"><Icon size={17} aria-hidden="true"/>{t(label)}</a>)}
-    </nav>
+    </nav>;
+}
+
+export default function FortniteCommunity() {
+  const t = useTranslations("hub");
+  return <>
     <section id="news" className="hub-section scroll-mt-24">
       <div className="hub-section-inner">
         <SectionHeader eyebrow="FORTNITE CREATIVE" title={t("fortniteNews")} text={t("fortniteNewsIntro")}/>

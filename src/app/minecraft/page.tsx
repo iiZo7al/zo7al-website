@@ -16,7 +16,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 export const metadata: Metadata = {
-  title: "Minecraft — ZO7AL Projects",
+  title: "Minecraft",
   description: "Your next Minecraft adventure starts here.",
 };
 
@@ -40,6 +40,7 @@ export default async function MinecraftPage() {
           </Link>
         </MagneticButton>
         </div>
+        <LinkHub />
       </PageHero>
 
       <section className="relative pb-20 sm:pb-28">
@@ -50,7 +51,6 @@ export default async function MinecraftPage() {
         </div>
       </section>
 
-      <LinkHub />
       <section className="relative border-t py-24 sm:py-32" style={{ borderColor: "var(--border)" }}>
         <div className="mx-auto max-w-[1180px] px-6">
           <SectionHeader eyebrow={t("connectEyebrow")} title={t("connectTitle")} text={t("connectText")} />

@@ -3,14 +3,14 @@ import { getLocale, getTranslations } from "next-intl/server";
 import PageHero from "@/components/ui/PageHero";
 import SectionHeader from "@/components/ui/SectionHeader";
 import MapGallery from "@/components/fortnite/MapGallery";
-import FortniteCommunity from "@/components/fortnite/FortniteCommunity";
+import FortniteCommunity, { FortniteCommunityLinks } from "@/components/fortnite/FortniteCommunity";
 import MagneticButton from "@/components/cursor/MagneticButton";
 import { FORTNITE_PROFILE_URL } from "@/lib/data/fortnite";
 import { fortniteLocale } from "@/lib/sync/fortnite-parser";
 import { getSyncedFortniteMaps } from "@/lib/sync/fortnite";
 
 export const metadata: Metadata = {
-  title: "Fortnite Creative — ZO7AL Projects",
+  title: "Fortnite Creative",
   description: "Maps and experiences built by Zo7al.",
 };
 
@@ -38,6 +38,7 @@ export default async function FortnitePage() {
             {t("creatorPage")} ↗
           </a>
         </MagneticButton>
+        <FortniteCommunityLinks />
       </PageHero>
 
       <section className="relative pb-24 sm:pb-32">

@@ -3,7 +3,7 @@ import { getTranslations } from "next-intl/server";
 import PageHero from "@/components/ui/PageHero";
 import RequestActivity from "@/components/hub/RequestActivity";
 export const metadata: Metadata = {
-  title: "My requests and applications — Zo7al Projects",
+  title: "My requests and applications",
   description: "Track orders, creator applications, support requests and event registrations.",
   robots: { index: false, follow: true },
 };
