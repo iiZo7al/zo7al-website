@@ -476,7 +476,7 @@
         "id": "news-events",
         "category": "community",
         "q": "Wo erscheinen Neuigkeiten und Events?",
-        "a": "Veröffentlichte Neuigkeiten stehen auf der Startseite, Events unter /minecraft. Bei vielen Events erscheint Mehr anzeigen. Künftige Events können Anmeldungen anbieten. Das Team verwaltet die Veröffentlichung im Dashboard.",
+        "a": "Veröffentlichte Neuigkeiten stehen auf der Startseite. Fortnite hat eigene Neuigkeiten, Veranstaltungen, Galerie und Umfragen unter /fortnite. Minecraft-Veranstaltungen stehen unter /minecraft. Mehr anzeigen öffnet weitere Veranstaltungen. Die Anmeldung verwendet je nach Spiel den Minecraft- oder Epic-Games-Namen. Das Team verwaltet Veröffentlichungen im Dashboard.",
         "href": "/minecraft#events",
         "action": "Events ansehen"
       },
@@ -573,7 +573,15 @@
     "achievementHelp": "Abzeichen werden nach einem bestätigten Lauf auf diesem Gerät gespeichert. Der tägliche Fortschritt gilt für den aktuellen Flug.",
     "allTime": "Gesamt",
     "weekly": "Diese Woche",
-    "weeklyPeriod": "Montag–Sonntag, Riad-Zeit"
+    "weeklyPeriod": "Montag–Sonntag, Riad-Zeit",
+    "installTitle": "Zo7al Game zum Startbildschirm hinzufügen",
+    "installIntro": "Speichere Space Run auf deinem Startbildschirm für schnellen Zugriff. Du kannst auch gleich im Browser spielen.",
+    "installShare": "Auf iPhone oder iPad: Öffne diese Seite in Safari und tippe auf die Teilen-Schaltfläche des Browsers.",
+    "installHome": "Wähle „Zum Home-Bildschirm“ und dann „Hinzufügen“. Öffne Zo7al Game über sein Symbol zum Spielen.",
+    "installAndroid": "Auf Android: Öffne das Browsermenü ⋮, wähle „App installieren“ oder „Zum Startbildschirm hinzufügen“ und bestätige.",
+    "installDesktop": "Am Computer: Verwende das Installationssymbol oder die Option „App installieren“ im Browser, falls verfügbar.",
+    "installDontShow": "Nicht erneut anzeigen",
+    "installPlayNow": "Jetzt spielen"
   },
   "ui": {
     "social_epicgames": "Neuigkeiten zu meinen Fortnite-Maps sowie eure Vorschläge und Fehlermeldungen.",
@@ -931,7 +939,17 @@
     "statCoverage": "Daten von {available} von {total} Servern",
     "allStatuses": "Alle Status",
     "allPlatforms": "Alle Plattformen",
-    "platform": "Plattform"
+    "platform": "Plattform",
+    "fortniteNews": "Fortnite-Neuigkeiten",
+    "fortniteNewsIntro": "Inselupdates, neue Erlebnisse und Ankündigungen von Zo7al Fortnite.",
+    "fortniteEvents": "Fortnite-Veranstaltungen",
+    "fortniteEventsIntro": "Kommende Turniere, Inselrunden und Herausforderungen für die Fortnite-Community.",
+    "fortniteCommunity": "Fortnite-Community",
+    "fortniteCommunityIntro": "Teile Bilder, Bauten und deine besten Fortnite-Momente. Beiträge werden vor der Veröffentlichung geprüft.",
+    "fortnitePolls": "Fortnite-Abstimmung",
+    "fortnitePollIntro": "Wähle die nächsten Inhalte für unsere Fortnite-Inseln und Community.",
+    "epic": "Epic-Games-Anzeigename",
+    "allGames": "Alle Spiele"
   },
   "dashboard": {
     "dashboard": "Dashboard",

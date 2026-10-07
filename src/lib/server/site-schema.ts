@@ -6,6 +6,8 @@ CREATE TABLE IF NOT EXISTS site_content (
  registration_url text, created_at timestamptz NOT NULL DEFAULT now(), updated_at timestamptz NOT NULL DEFAULT now()
 );
 CREATE INDEX IF NOT EXISTS site_content_public ON site_content(kind,locale,created_at DESC) WHERE published;
+ALTER TABLE site_content ADD COLUMN IF NOT EXISTS topic text NOT NULL DEFAULT 'minecraft' CHECK(topic IN ('minecraft','fortnite'));
+CREATE INDEX IF NOT EXISTS site_content_topic_public ON site_content(kind,topic,locale,created_at DESC) WHERE published;
 CREATE TABLE IF NOT EXISTS site_content_images (
  id uuid PRIMARY KEY, mime_type text NOT NULL CHECK (mime_type='image/webp'),
  width integer NOT NULL CHECK(width>0), height integer NOT NULL CHECK(height>0),

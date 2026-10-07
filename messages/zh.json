@@ -476,7 +476,7 @@
         "id": "news-events",
         "category": "community",
         "q": "新闻和活动在哪里发布？",
-        "a": "已发布新闻在首页，活动在/minecraft。活动较多时会显示查看更多。接受报名的未来活动可注册，团队在管理面板控制发布。",
+        "a": "已发布新闻显示在首页。Fortnite在/fortnite拥有独立的新闻、活动、社区作品和投票。Minecraft活动位于/minecraft。“查看更多”可打开其他活动。报名按游戏使用Minecraft名称或Epic Games显示名称。发布通过管理面板控制。",
         "href": "/minecraft#events",
         "action": "查看活动"
       },
@@ -573,7 +573,15 @@
     "achievementHelp": "徽章在通过验证的游戏结束后保存在此设备上。每日进度以当前飞行为准。",
     "allTime": "总榜",
     "weekly": "本周",
-    "weeklyPeriod": "星期一至星期日，利雅得时间"
+    "weeklyPeriod": "星期一至星期日，利雅得时间",
+    "installTitle": "将Zo7al Game添加到主屏幕",
+    "installIntro": "将Space Run保存在主屏幕上，方便快速打开。你也可以立即在浏览器中游玩。",
+    "installShare": "在iPhone或iPad上：使用Safari打开此页面，点击浏览器的分享按钮。",
+    "installHome": "选择“添加到主屏幕”，然后点击“添加”。从Zo7al Game图标启动游戏。",
+    "installAndroid": "在Android上：打开浏览器⋮菜单，选择“安装应用”或“添加到主屏幕”并确认。",
+    "installDesktop": "在电脑上：如果可用，使用浏览器的安装图标或菜单中的“安装应用”。",
+    "installDontShow": "不再显示",
+    "installPlayNow": "立即游玩"
   },
   "ui": {
     "social_epicgames": "我的堡垒之夜地图新闻与更新，以及大家的建议和问题反馈。",
@@ -931,7 +939,17 @@
     "statCoverage": "来自 {total} 个服务器中的 {available} 个",
     "allStatuses": "所有状态",
     "allPlatforms": "所有平台",
-    "platform": "平台"
+    "platform": "平台",
+    "fortniteNews": "Fortnite新闻",
+    "fortniteNewsIntro": "Zo7al Fortnite岛屿更新、新体验和公告。",
+    "fortniteEvents": "Fortnite活动",
+    "fortniteEventsIntro": "即将举办的比赛、岛屿游戏和Fortnite社区挑战。",
+    "fortniteCommunity": "Fortnite社区",
+    "fortniteCommunityIntro": "分享岛屿截图、建筑和精彩Fortnite时刻。投稿将在发布前审核。",
+    "fortnitePolls": "Fortnite投票",
+    "fortnitePollIntro": "选择Fortnite岛屿和社区的下一步内容。",
+    "epic": "Epic Games显示名称",
+    "allGames": "所有游戏"
   },
   "dashboard": {
     "dashboard": "控制面板",

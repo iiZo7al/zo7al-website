@@ -4,6 +4,7 @@ import { siteDatabase } from "./site-db";
 import { notifyDiscord } from "./discord-notifications";
 import { tokenHash } from "./site-security";
 import { validateContent } from "../data/hub-validation";
+import type { HubTopic } from "../data/hub-validation";
 import { validateApplication, sendApplicationNotification } from "./creator-applications";
 export async function limitAttempt(key: string, limit: number, seconds: number) {
   const db = await siteDatabase();
@@ -11,9 +12,9 @@ export async function limitAttempt(key: string, limit: number, seconds: number) 
   const result = await db.query("INSERT INTO site_rate_limits(key,attempts,expires_at) VALUES($1,1,now()+$2*interval '1 second') ON CONFLICT(key) DO UPDATE SET attempts=CASE WHEN site_rate_limits.expires_at<=now() THEN 1 ELSE site_rate_limits.attempts+1 END, expires_at=CASE WHEN site_rate_limits.expires_at<=now() THEN excluded.expires_at ELSE site_rate_limits.expires_at END RETURNING attempts", [hash, seconds]);
   return result.rows[0].attempts <= limit;
 }
-export async function publicContent(kind: "news" | "event" | "rule", locale: string) {
+export async function publicContent(kind: "news" | "event" | "rule", locale: string, topic: HubTopic | "all" = "minecraft") {
   try {
-    const result = await (await siteDatabase()).query("SELECT c.id,c.kind,c.locale,c.title,c.body,c.starts_at AS \"startsAt\",c.registration_url AS \"registrationUrl\",c.created_at AS \"createdAt\",CASE WHEN i.id IS NOT NULL THEN json_build_object('id',i.id,'width',i.width,'height',i.height) ELSE NULL END AS image FROM site_content c LEFT JOIN site_content_images i ON i.id=c.image_id WHERE c.kind=$1 AND c.published AND c.locale=$2 ORDER BY COALESCE(c.starts_at,c.created_at) DESC LIMIT 40", [kind,locale]);
+    const result = await (await siteDatabase()).query("SELECT c.id,c.kind,c.topic,c.locale,c.title,c.body,c.starts_at AS \"startsAt\",c.registration_url AS \"registrationUrl\",c.created_at AS \"createdAt\",CASE WHEN i.id IS NOT NULL THEN json_build_object('id',i.id,'width',i.width,'height',i.height) ELSE NULL END AS image FROM site_content c LEFT JOIN site_content_images i ON i.id=c.image_id WHERE c.kind=$1 AND c.published AND c.locale=$2 AND ($3='all' OR c.topic=$3) ORDER BY COALESCE(c.starts_at,c.created_at) DESC LIMIT 40", [kind,locale,topic]);
     return { items: result.rows, available: true };
   } catch { return { items: [], available: false }; }
 }
@@ -22,7 +23,7 @@ export async function saveContent(value: unknown) {
   const id = content.id ?? randomUUID();
   const db = await siteDatabase();
   if (content.imageId && !(await db.query("SELECT id FROM site_content_images WHERE id=$1", [content.imageId])).rowCount) throw Error("INVALID");
-  await db.query("INSERT INTO site_content(id,kind,locale,title,body,published,starts_at,registration_url,image_id) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9) ON CONFLICT(id) DO UPDATE SET kind=excluded.kind,locale=excluded.locale,title=excluded.title,body=excluded.body,published=excluded.published,starts_at=excluded.starts_at,registration_url=excluded.registration_url,image_id=excluded.image_id,updated_at=now()", [id,content.kind,content.locale,content.title,content.body,content.published,content.startsAt,content.registrationUrl,content.imageId]);
+  await db.query("INSERT INTO site_content(id,kind,locale,title,body,published,starts_at,registration_url,image_id,topic) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) ON CONFLICT(id) DO UPDATE SET kind=excluded.kind,locale=excluded.locale,title=excluded.title,body=excluded.body,published=excluded.published,starts_at=excluded.starts_at,registration_url=excluded.registration_url,image_id=excluded.image_id,topic=excluded.topic,updated_at=now()", [id,content.kind,content.locale,content.title,content.body,content.published,content.startsAt,content.registrationUrl,content.imageId,content.topic]);
   return id;
 }
 export async function createTrackedRequest(kind: "application" | "support" | "event", payload: unknown, id: string = randomUUID()) {

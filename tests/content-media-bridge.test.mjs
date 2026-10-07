@@ -114,8 +114,8 @@ test('content images only accept stored IDs and saving can replace or remove the
   assert.equal(validateContent(news).imageId, id);
   assert.equal(validateContent({ ...news, imageId: 'https://untrusted.test/image' }), null);
   assert.equal(validateContent({ ...news, kind: 'rule' }), null);
-  await content.saveContent(news); assert.equal(state.queries.at(-1).args.at(-1), id);
-  await content.saveContent({ ...news, imageId: '' }); assert.equal(state.queries.at(-1).args.at(-1), null);
+  await content.saveContent(news); assert.equal(state.queries.at(-1).args[8], id);
+  await content.saveContent({ ...news, imageId: '' }); assert.equal(state.queries.at(-1).args[8], null);
   state.imageExists = false; await assert.rejects(content.saveContent(news), /INVALID/);
 });
 test('player payloads preserve real zeroes and unknown ranks and discard private fields', () => {

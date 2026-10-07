@@ -22,6 +22,7 @@ export function validateCommunity(value: unknown) {
   if (!value || typeof value !== "object" || Array.isArray(value)) return null;
   const v = value as Record<string, unknown>, p = v.payload as Record<string, unknown>;
   if (!COMMUNITY_KINDS.includes(v.kind as CommunityKind) || !COMMUNITY_LOCALES.includes(String(v.locale)) || !["all","minecraft","fortnite"].includes(String(v.topic)) || !text(v.title,1,160) || !text(v.body,0,10000) || !text(v.projectKey,0,200) || typeof v.published !== "boolean" || !p || typeof p !== "object" || Array.isArray(p) || v.id !== undefined && !isUUID(v.id)) return null;
+  if ((v.kind === "poll" || v.kind === "gallery") && v.topic === "all") return null;
   const payload: Record<string, unknown> = {};
   if (v.kind === "poll") {
     if (!Array.isArray(p.options) || p.options.length < 2 || p.options.length > 8 || !p.options.every(x => text(x,1,120)) || new Set(p.options.map(x=>String(x).trim())).size !== p.options.length) return null;
@@ -44,7 +45,7 @@ export function validateCommunity(value: unknown) {
 export function validateGallerySubmission(value: unknown) {
   if (!value || typeof value !== "object") return null;
   const v = value as Record<string, unknown>;
-  if (!text(v.title,1,160) || !text(v.body,0,2000) || !text(v.author,1,64) || !text(v.email,3,254) || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.email) || !["all","minecraft","fortnite"].includes(String(v.topic)) || !COMMUNITY_LOCALES.includes(String(v.locale)) || v.consent !== "on" && v.consent !== true || v.website || v.videoUrl && !safeMediaLink(v.videoUrl)) return null;
+  if (!text(v.title,1,160) || !text(v.body,0,2000) || !text(v.author,1,64) || !text(v.email,3,254) || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.email) || !["minecraft","fortnite"].includes(String(v.topic)) || !COMMUNITY_LOCALES.includes(String(v.locale)) || v.consent !== "on" && v.consent !== true || v.website || v.videoUrl && !safeMediaLink(v.videoUrl)) return null;
   return { title:v.title.trim(), body:v.body.trim(), author:v.author.trim(), email:v.email.trim(), topic:String(v.topic), locale:String(v.locale), videoUrl:safeMediaLink(v.videoUrl) };
 }
 export const DEFAULT_ACHIEVEMENTS = [

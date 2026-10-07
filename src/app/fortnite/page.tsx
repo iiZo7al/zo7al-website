@@ -3,7 +3,7 @@ import { getLocale, getTranslations } from "next-intl/server";
 import PageHero from "@/components/ui/PageHero";
 import SectionHeader from "@/components/ui/SectionHeader";
 import MapGallery from "@/components/fortnite/MapGallery";
-import CommunitySections from "@/components/community/CommunitySections";
+import FortniteCommunity from "@/components/fortnite/FortniteCommunity";
 import MagneticButton from "@/components/cursor/MagneticButton";
 import { FORTNITE_PROFILE_URL } from "@/lib/data/fortnite";
 import { fortniteLocale } from "@/lib/sync/fortnite-parser";
@@ -51,7 +51,7 @@ export default async function FortnitePage() {
           </div>
         </div>
       </section>
-      <CommunitySections topic="fortnite"/>
+      <FortniteCommunity/>
     </main>
   );
 }

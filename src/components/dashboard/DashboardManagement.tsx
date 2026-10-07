@@ -5,6 +5,7 @@ import Image from "next/image";
 import { FileText, Pencil, Plus, Trash2, Send, Inbox, ShoppingBag, CalendarDays, ExternalLink } from "lucide-react";
 import DetailsDialog from "@/components/ui/DetailsDialog";
 import type { HubContent } from "@/components/hub/ContentFeed";
+import { communityCopy } from "@/lib/data/community-copy";
 import { hubLocales } from "@/lib/data/hub-validation";
 import type { DashboardData, ManagementTab, Mutate, RequestRow } from "./types";
 import ContentImageField from "./ContentImageField";
@@ -15,6 +16,8 @@ export default function DashboardManagement({ data,tab,busy,mutate }: { data:Das
   const [editing,setEditing] = useState<HubContent|null>(null);
   const [deleting,setDeleting] = useState<HubContent|null>(null);
   const [query,setQuery] = useState("");
+  const [contentTopic,setContentTopic] = useState("");
+  const c = communityCopy(locale);
   const [statusFilter, setStatusFilter] = useState("");
   const [platformFilter, setPlatformFilter] = useState("");
   const [uploading,setUploading] = useState(false);
@@ -22,24 +25,25 @@ export default function DashboardManagement({ data,tab,busy,mutate }: { data:Das
   const label = tab === "event" ? "events" : tab === "rule" ? "rules" : tab === "application" ? "applications" : tab;
   const matches = (text:string) => text.toLocaleLowerCase().includes(query.trim().toLocaleLowerCase());
   if (tab === "news" || tab === "event" || tab === "rule") {
-    const content = data.content.filter(item => item.kind === tab && matches(item.title));
+    const content = data.content.filter(item => item.kind === tab && matches(item.title) && (!contentTopic || item.topic === contentTopic));
     return <section className="dash-management">
       <div className="dash-section-heading"><div><p className="dash-eyebrow">{d("manage")}</p><h2>{t(label)}</h2></div><button className="dash-button" type="button" disabled={busy||uploading} onClick={() => {setEditing(null);setEditorVersion(value=>value+1);}}><Plus size={16}/>{t("create")}</button></div>
       <div className="dash-editor-grid">
         <div className="dash-panel card-glow dash-content-list">
-          <input className="dash-search" aria-label={d("filter")} placeholder={d("filter")} value={query} onChange={e => setQuery(e.target.value)}/>
+          <div className="dash-review-filters"><input className="dash-search" aria-label={d("filter")} placeholder={d("filter")} value={query} onChange={e => setQuery(e.target.value)}/>{tab!=="rule"&&<select aria-label={c.topic} value={contentTopic} onChange={event=>setContentTopic(event.target.value)}><option value="">{t("allGames")}</option><option value="minecraft">Minecraft</option><option value="fortnite">Fortnite</option></select>}</div>
           {content.length ? content.map(item => <article className="dash-content-item" key={item.id}>
-            <span className="dash-item-icon"><FileText size={20}/></span><div className="dash-item-copy"><ContentImage image={item.image} title={item.title} className="dash-content-thumbnail"/><h3 dir="auto">{item.title}</h3><p><span>{item.locale.toUpperCase()}</span><span className={"dash-tag "+(item.published?"dash-tag-green":"")}>{t(item.published?"published":"draft")}</span></p><p dir="auto" className="dash-excerpt">{item.body}</p></div>
+            <span className="dash-item-icon"><FileText size={20}/></span><div className="dash-item-copy"><ContentImage image={item.image} title={item.title} className="dash-content-thumbnail"/><h3 dir="auto">{item.title}</h3><p><span>{item.locale.toUpperCase()}</span>{tab!=="rule"&&<span className="dash-tag">{item.topic==="fortnite"?"Fortnite":"Minecraft"}</span>}<span className={"dash-tag "+(item.published?"dash-tag-green":"")}>{t(item.published?"published":"draft")}</span></p><p dir="auto" className="dash-excerpt">{item.body}</p></div>
             <div className="dash-icon-actions"><button className="dash-icon-button" type="button" aria-label={t("edit")} disabled={busy||uploading} onClick={() => setEditing(item)}><Pencil size={16}/></button><button className="dash-icon-button dash-danger" type="button" aria-label={t("delete")} disabled={busy||uploading} onClick={() => setDeleting(item)}><Trash2 size={16}/></button></div>
           </article>) : <Empty icon={<FileText size={30}/>} text={t("empty")}/>}
         </div>
         <form key={(editing?.id??tab)+":"+editorVersion} className="dash-panel card-glow hub-form dash-editor" onSubmit={async e => {
           e.preventDefault(); if(busy||uploading)return; const element = e.currentTarget; const form = new FormData(element); const date = String(form.get("startsAt")??"");
-          if (await mutate("content",{ id:editing?.id,kind:tab,locale:form.get("locale"),title:form.get("title"),body:form.get("body"),
+          if (await mutate("content",{ id:editing?.id,kind:tab,topic:form.get("topic")??"minecraft",locale:form.get("locale"),title:form.get("title"),body:form.get("body"),
             published:form.get("published")==="on",startsAt:date?new Date(date+":00+03:00").toISOString():null,registrationUrl:form.get("registrationUrl"),imageId:form.get("imageId") })) { setEditing(null); setEditorVersion(value=>value+1); if (!editing) element.reset(); }
         }}>
           <div className="dash-section-heading"><h3>{t(editing?"edit":"create")}</h3><span className="dash-tag">CMS</span></div>
           <label>{t("language")}<select name="locale" defaultValue={editing?.locale??locale}>{hubLocales.map(l => <option key={l} value={l}>{l.toUpperCase()}</option>)}</select></label>
+          {tab!=="rule"&&<label>{c.topic}<select name="topic" defaultValue={editing?.topic??(contentTopic||"minecraft")}><option value="minecraft">Minecraft</option><option value="fortnite">Fortnite</option></select></label>}
           <label>{t("title")}<input name="title" required maxLength={160} defaultValue={editing?.title??""}/></label>
           <label>{t("body")}<textarea name="body" required maxLength={10000} rows={8} defaultValue={editing?.body??""}/></label>
           {tab!=="rule"&&<ContentImageField key={editing?.id??tab} initial={editing?.image} disabled={busy} onBusy={setUploading}/>}
@@ -85,7 +89,7 @@ function ReviewCard({ row,busy,onSave,onRetry }: { row:RequestRow; busy:boolean;
   };
   return <form className="dash-panel card-glow hub-form dash-review" onSubmit={e => { e.preventDefault(); void onSave({id:row.id,kind:row.kind,status,note}); }}>
     {platform && <div className={"dash-application-banner dash-application-" + platform}><Image src={`/assets/site/rank-${platform}.png`} width={667} height={375} alt={platform.toUpperCase()} /><span className="dash-tag">{platform.toUpperCase()}</span></div>}
-    <div className="dash-section-heading"><h3 dir="auto">{String(row.payload.minecraft??row.payload.subject??row.payload.eventTitle??row.id)}</h3><span className="dash-tag">{t("status_"+row.status)}</span></div>
+    <div className="dash-section-heading"><h3 dir="auto">{String(row.payload.minecraft??row.payload.epic??row.payload.subject??row.payload.eventTitle??row.id)}</h3><span className="dash-tag">{t("status_"+row.status)}</span></div>
     <p className="dash-help"><time dateTime={row.createdAt}>{new Intl.DateTimeFormat(locale,{dateStyle:"medium",timeStyle:"short",timeZone:"Asia/Riyadh"}).format(new Date(row.createdAt))}</time></p><bdi className="dash-reference">{row.id}</bdi>
     <dl className="dash-review-fields">{Object.entries(row.payload).filter(([key]) => !["consent","website","platform"].includes(key)).map(([key,value]) => { const href = link(key, value); return <div key={key}><dt>{t.has(key)?t(key):key}</dt><dd dir="auto">{href ? <a href={href} target={key === "channel" ? "_blank" : undefined} rel="noopener noreferrer">{String(value)}<ExternalLink size={13} aria-hidden="true" /></a> : String(value)}</dd></div>; })}</dl>
     <span className={"dash-tag "+(row.discordReceipt?"dash-tag-green":"")}>{t(row.discordReceipt?"discordDelivered":"discordPending")}</span>

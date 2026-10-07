@@ -1,5 +1,9 @@
 # Space Run
 
+## 1.0.9
+- Place the homepage launch button below the hero actions so it stays clear of text and scroll hints on mobile and in RTL layouts.
+- Show an animated, translated home-screen installation guide before launching, with a saved “don't show again” choice.
+
 ## 1.0.8
 - Add daily score/star challenges, locally saved achievements from verified runs, and a weekly leaderboard using Riyadh week boundaries.
 - Keep existing desktop controls, touch joystick and all-time ranking.

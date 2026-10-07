@@ -15,9 +15,23 @@ const translations: Record<string, { title: string; body: string; options: strin
 
 // These are real, editable entries. One poll ID and option order are shared by all languages.
 export const COMMUNITY_STARTER_ENTRIES = [
-  { kind: "poll", topic: "all", title: translations.en.title, body: translations.en.body, payload: { options: translations.en.options, endsAt: null, translations: Object.fromEntries(Object.entries(translations).map(([locale, value]) => [locale, { title: value.title, body: value.body, options: value.options }])) } },
+  { kind: "poll", topic: "minecraft", title: translations.en.title, body: translations.en.body, payload: { options: translations.en.options, endsAt: null, translations: Object.fromEntries(Object.entries(translations).map(([locale, value]) => [locale, { title: value.title, body: value.body, options: value.options }])) } },
   ...DEFAULT_ACHIEVEMENTS.map((goal, index) => ({ kind: "achievement", topic: "minecraft", title: translations.en.goals[index], body: "", payload: { stat: goal.stat, threshold: goal.threshold, translations: Object.fromEntries(Object.entries(translations).map(([locale, value]) => [locale, { title: value.goals[index], body: "" }])) } })),
 ];
+
+const fortniteTranslations: Record<string, { title: string; body: string; options: string[] }> = {
+  en: { title: "What would you like next in Zo7al Fortnite?", body: "Vote for your next Fortnite update. This poll is independent of Minecraft.", options: ["New islands", "Map improvements", "Tournaments", "Community challenges"] },
+  ar: { title: "وش تبغى نضيف في فورتنايت زحل؟", body: "اختر التحديث اللي تبيه في فورتنايت. هذا التصويت مستقل عن ماينكرافت.", options: ["مابات جديدة", "تحسين المابات الحالية", "بطولات", "تحديات المجتمع"] },
+  es: { title: "¿Qué quieres ver en Zo7al Fortnite?", body: "Vota por la próxima actualización de Fortnite. Esta encuesta es independiente de Minecraft.", options: ["Nuevas islas", "Mejoras de mapas", "Torneos", "Retos de la comunidad"] },
+  fr: { title: "Que souhaitez-vous pour Zo7al Fortnite ?", body: "Votez pour la prochaine mise à jour Fortnite. Ce vote est indépendant de Minecraft.", options: ["Nouvelles îles", "Améliorations des cartes", "Tournois", "Défis communautaires"] },
+  de: { title: "Was wünschst du dir für Zo7al Fortnite?", body: "Stimme für das nächste Fortnite-Update ab. Diese Umfrage ist unabhängig von Minecraft.", options: ["Neue Inseln", "Kartenverbesserungen", "Turniere", "Community-Herausforderungen"] },
+  pt: { title: "O que você quer em Zo7al Fortnite?", body: "Vote na próxima atualização de Fortnite. Esta enquete é independente de Minecraft.", options: ["Novas ilhas", "Melhorias nos mapas", "Torneios", "Desafios da comunidade"] },
+  tr: { title: "Zo7al Fortnite için sırada ne olsun?", body: "Bir sonraki Fortnite güncellemesine oy verin. Bu anket Minecraft'tan bağımsızdır.", options: ["Yeni adalar", "Harita iyileştirmeleri", "Turnuvalar", "Topluluk görevleri"] },
+  ja: { title: "Zo7al Fortniteに次は何がほしい？", body: "次のFortniteアップデートに投票してください。Minecraftとは別の投票です。", options: ["新しい島", "マップの改善", "トーナメント", "コミュニティチャレンジ"] },
+  ko: { title: "Zo7al Fortnite에 무엇을 원하시나요?", body: "다음 Fortnite 업데이트에 투표하세요. Minecraft 투표와 별개입니다.", options: ["새로운 섬", "맵 개선", "토너먼트", "커뮤니티 도전"] },
+  zh: { title: "你希望Zo7al Fortnite接下来推出什么？", body: "为下一次Fortnite更新投票。此投票独立于Minecraft。", options: ["新岛屿", "地图改进", "锦标赛", "社区挑战"] },
+};
+export const FORTNITE_STARTER_POLL = { kind: "poll", topic: "fortnite", title: fortniteTranslations.en.title, body: fortniteTranslations.en.body, payload: { options: fortniteTranslations.en.options, endsAt: null, translations: fortniteTranslations } };
 
 export function localizeCommunityEntry(entry: CommunityEntry, locale: string): CommunityEntry {
   const { translations: raw, ...payload } = entry.payload;

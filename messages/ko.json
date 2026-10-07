@@ -476,7 +476,7 @@
         "id": "news-events",
         "category": "community",
         "q": "소식과 이벤트는 어디에 있나요?",
-        "a": "공개한 소식은 홈에, 이벤트는 /minecraft에 있습니다. 목록이 길어지면 더 보기 버튼이 표시됩니다. 신청 가능한 예정 이벤트에 등록할 수 있습니다. 팀이 대시보드에서 공개를 관리합니다.",
+        "a": "공개된 소식은 홈 페이지에 표시됩니다. Fortnite는 /fortnite에서 별도의 소식, 이벤트, 갤러리와 투표를 제공합니다. Minecraft 이벤트는 /minecraft에 있습니다. 더 보기를 누르면 나머지 이벤트가 열립니다. 참가 신청에는 게임에 따라 Minecraft 또는 Epic Games 이름을 사용합니다. 게시물은 대시보드에서 관리합니다.",
         "href": "/minecraft#events",
         "action": "이벤트 보기"
       },
@@ -573,7 +573,15 @@
     "achievementHelp": "배지는 검증된 플레이 후 이 기기에 저장됩니다. 일일 진행 상황은 현재 비행에 해당합니다.",
     "allTime": "전체 기간",
     "weekly": "이번 주",
-    "weeklyPeriod": "월요일~일요일, 리야드 시간"
+    "weeklyPeriod": "월요일~일요일, 리야드 시간",
+    "installTitle": "Zo7al Game을 홈 화면에 추가",
+    "installIntro": "Space Run을 홈 화면에 저장하면 빠르게 실행할 수 있습니다. 브라우저에서도 바로 플레이할 수 있습니다.",
+    "installShare": "iPhone 또는 iPad: Safari에서 이 페이지를 열고 브라우저의 공유 버튼을 누르세요.",
+    "installHome": "“홈 화면에 추가”를 선택하고 “추가”를 누르세요. Zo7al Game 아이콘으로 게임을 실행하세요.",
+    "installAndroid": "Android: 브라우저 ⋮ 메뉴에서 “앱 설치” 또는 “홈 화면에 추가”를 선택하고 확인하세요.",
+    "installDesktop": "컴퓨터: 지원되는 경우 브라우저의 설치 아이콘이나 “앱 설치” 메뉴를 사용하세요.",
+    "installDontShow": "다시 표시하지 않기",
+    "installPlayNow": "지금 플레이"
   },
   "ui": {
     "social_epicgames": "제 포트나이트 맵 소식과 업데이트, 여러분의 제안과 버그 제보를 위한 공간.",
@@ -931,7 +939,17 @@
     "statCoverage": "서버 {total}개 중 {available}개의 데이터",
     "allStatuses": "모든 상태",
     "allPlatforms": "모든 플랫폼",
-    "platform": "플랫폼"
+    "platform": "플랫폼",
+    "fortniteNews": "Fortnite 소식",
+    "fortniteNewsIntro": "Zo7al Fortnite 섬 업데이트, 새로운 경험과 공지.",
+    "fortniteEvents": "Fortnite 이벤트",
+    "fortniteEventsIntro": "다가오는 토너먼트, 섬 플레이와 Fortnite 커뮤니티 도전.",
+    "fortniteCommunity": "Fortnite 커뮤니티",
+    "fortniteCommunityIntro": "섬 스크린샷, 건축과 최고의 Fortnite 순간을 공유하세요. 게시 전에 검토합니다.",
+    "fortnitePolls": "Fortnite 투표",
+    "fortnitePollIntro": "Fortnite 섬과 커뮤니티의 다음 콘텐츠를 선택하세요.",
+    "epic": "Epic Games 표시 이름",
+    "allGames": "모든 게임"
   },
   "dashboard": {
     "dashboard": "대시보드",
