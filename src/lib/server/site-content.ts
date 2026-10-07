@@ -26,22 +26,23 @@ export async function saveContent(value: unknown) {
   await db.query("INSERT INTO site_content(id,kind,locale,title,body,published,starts_at,registration_url,image_id,topic) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) ON CONFLICT(id) DO UPDATE SET kind=excluded.kind,locale=excluded.locale,title=excluded.title,body=excluded.body,published=excluded.published,starts_at=excluded.starts_at,registration_url=excluded.registration_url,image_id=excluded.image_id,topic=excluded.topic,updated_at=now()", [id,content.kind,content.locale,content.title,content.body,content.published,content.startsAt,content.registrationUrl,content.imageId,content.topic]);
   return id;
 }
-export async function createTrackedRequest(kind: "application" | "support" | "event", payload: unknown, id: string = randomUUID()) {
+export async function createTrackedRequest(kind: "application" | "support" | "event", payload: unknown, id: string = randomUUID(), userId: string | null = null) {
   const token = randomBytes(32).toString("hex");
-  await (await siteDatabase()).query("INSERT INTO site_requests(id,kind,token_hash,payload,status) VALUES($1,$2,$3,$4,$5)", [id,kind,tokenHash(token),JSON.stringify(payload),kind === "support" ? "open" : "pending"]);
+  await (await siteDatabase()).query("INSERT INTO site_requests(id,kind,token_hash,payload,status,user_id) VALUES($1,$2,$3,$4,$5,$6)", [id,kind,tokenHash(token),JSON.stringify(payload),kind === "support" ? "open" : "pending",userId]);
   return { reference: id, token };
 }
-export async function createOrderReceipt(ident: string, username: string, items: {packageId:number;quantity:number}[], products: {id:number;name:string}[] = []) {
+export async function createOrderReceipt(ident: string, username: string, items: {packageId:number;quantity:number}[], products: {id:number;name:string}[] = [], ownership?: {userId:string;gift:boolean}) {
   const reference = randomUUID(), token = randomBytes(32).toString("hex");
-  const fields = { "Status": "Checkout created · Awaiting payment. This notification does not confirm payment or in-game delivery.", "Minecraft": username,
+  const fields = { "Status": "Checkout created · Awaiting payment. This notification does not confirm payment or in-game delivery.", "Minecraft": username, ...(ownership?.gift ? {"Gift": "Yes · Delivery to the recipient Minecraft account"} : {}),
     "Items": items.map(item => (products.find(product => product.id === item.packageId)?.name?.slice(0,160) ?? ("Package #" + item.packageId)) + " × " + item.quantity).join("\n") };
   let stored = false;
   if (process.env.DATABASE_URL) {
     try {
-      await (await siteDatabase()).query("INSERT INTO site_orders(id,token_hash,basket_ident,username,items,discord_payload) VALUES($1,$2,$3,$4,$5,$6)", [reference,tokenHash(token),ident,username,JSON.stringify(items),JSON.stringify(fields)]);
+      await (await siteDatabase()).query("INSERT INTO site_orders(id,token_hash,basket_ident,username,items,discord_payload,user_id,gift) VALUES($1,$2,$3,$4,$5,$6,$7,$8)", [reference,tokenHash(token),ident,username,JSON.stringify(items),JSON.stringify(fields),ownership?.userId??null,ownership?.gift??false]);
       stored = true;
     } catch {}
   }
+  if (ownership && !stored) throw Error("UNAVAILABLE");
   // Keep checkout usable during a notification outage. A stored notification can
   // be retried by the administrator; its access code never goes to Discord.
   try {

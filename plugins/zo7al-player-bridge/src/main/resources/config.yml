@@ -59,6 +59,12 @@ statistics:
   distance-meters-placeholder: ''
 
 messages:
+  link-player-only: '&cRun this command inside Minecraft.'
+  link-usage: '&7Use &f/zo7allink <code> &7with the code from your Zo7al account.'
+  link-wait: '&ePlease wait a few seconds before trying again.'
+  link-checking: '&7Verifying your Zo7al account link...'
+  link-success: '&aYour Minecraft account is now linked to Zo7al Projects.'
+  link-failed: '&cCould not link your account. Check the name and code on the website, or generate a new code.'
   prefix: '&8[&6Zo7al&8] &r'
   no-permission: '&cYou do not have permission to manage the Zo7al bridge.'
   usage: '&7Use &f/zo7albridge status&7, &f/zo7albridge reload &7or &f/zo7albridge sync [player]&7.'

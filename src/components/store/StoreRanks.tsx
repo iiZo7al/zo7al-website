@@ -9,6 +9,9 @@ import "./store.css";
 import { useCart } from "./CartProvider";
 import { isCoinProduct, isRankProduct, parseCartItems, MAX_COIN_QUANTITY, type CartItem } from "@/lib/data/store-cart";
 import { cartCopy } from "@/lib/data/cart-copy";
+import { useAccount } from "@/components/account/AccountProvider";
+import AccountLogin from "@/components/account/AccountLogin";
+import Link from "next/link";
 import PlayerIdentity, { usePlayerName } from "./PlayerIdentity";
 import RankComparison from "./RankComparison";
 import RankName from "./RankName";
@@ -24,7 +27,7 @@ import { localizedDescription } from "@/lib/data/store-localization";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import CommerceIcon from "@/components/ui/CommerceIcon";
 import DetailsIcon from "@/components/ui/DetailsIcon";
-import { Check, ShieldCheck, X, ArrowRight, LoaderCircle, AlertCircle, Zap, Minus, Plus, Search, Columns3 } from "lucide-react";
+import { Check, ShieldCheck, X, ArrowRight, LoaderCircle, AlertCircle, Zap, Minus, Plus, Search, Columns3, Gift, UserRound } from "lucide-react";
 import type { StoreProduct } from "@/lib/server/tebex";
 
 type CheckoutSdk = { on: (event: "payment:complete", handler: () => void) => void; init: (options: { ident: string; theme: string; locale: string; colors: {name: string; color: string}[] }) => void; render: (element: HTMLElement, width: number, height: number, newTab: boolean) => void; };
@@ -63,7 +66,14 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
   const rankIds = products.filter(isRankProduct).map(product => product.id);
   const hasRank = cartIds.some(id => rankIds.includes(id));
   const copy = cartCopy(locale);
-  const { username, setUsername } = usePlayerName();
+  const legacyName = usePlayerName();
+  const { account, ready: accountReady } = useAccount();
+  const accountT = useTranslations("account");
+  const [gift, setGift] = useState(false), [giftName, setGiftName] = useState(""), [login, setLogin] = useState(false), [accountError, setAccountError] = useState("");
+  const username = gift ? giftName : account?.minecraft?.username ?? legacyName.username;
+  const setUsername = (value: string) => { if (gift) setGiftName(value); else if (!account?.minecraft) legacyName.setUsername(value); };
+  const canCheckout = !!account && (gift ? /^[.a-zA-Z0-9_ ]{3,32}$/.test(giftName.trim()) : !!account.minecraft);
+
   const experience = storeExperienceCopy(locale);
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState<"all" | "ranks" | "coins" | "creators">("all");
@@ -113,7 +123,7 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
         const result = response.ok ? await response.json() : null;
         if (controller.signal.aborted) return;
         if (result?.paid === true) {
-          setPaymentStatus("paid"); setCartOpen(false); setIdent(""); setError(null);
+          setPaymentStatus("paid"); setCartOpen(false); setAccountError(""); setIdent(""); setError(null);
           removePurchased(verifiedItems);
           try { sessionStorage.removeItem("zo7al-checkout"); sessionStorage.removeItem("zo7al-checkout-items"); } catch { /* Optional persistence. */ }
           const url = new URL(window.location.href);
@@ -152,13 +162,14 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
     } catch { queueMicrotask(() => setError("paymentError")); }
     return () => { active = false; element.replaceChildren(); };
   }, [ident, sdkReady, locale]);
-  const close = () => { setCartRankView(null); abort.current?.abort(); abort.current = null; setCartOpen(false); setIdent(""); setError(null); setErrorPackage(null); setBusy(false); };
+  const close = () => { setCartRankView(null); abort.current?.abort(); abort.current = null; setCartOpen(false); setAccountError(""); setIdent(""); setError(null); setErrorPackage(null); setBusy(false); };
   const pay = async (event: React.FormEvent) => {
     event.preventDefault(); if (!cartOpen || busy || abort.current || !cartIds.length || cartIds.some(id => !products.some(p => p.id === id && p.available))) return;
-    const controller = new AbortController(); abort.current = controller; setBusy(true); setError(null); setErrorPackage(null);
+    const controller = new AbortController(); abort.current = controller; setBusy(true); setError(null); setAccountError(""); setErrorPackage(null);
     try {
-      const response = await fetch("/api/store/checkout", { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({items:cartItems,username:username.trim()}),signal:controller.signal });
+      const response = await fetch("/api/store/checkout", { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({items:cartItems,username:username.trim(),gift}),signal:controller.signal });
       const data = await response.json();
+      if (["LOGIN_REQUIRED", "LINK_REQUIRED", "CONFIGURATION"].includes(data.error)) { setAccountError(accountT("errors." + data.error)); return; }
       if (data.error === "ONE_RANK_ONLY") { if (!controller.signal.aborted) setError("oneRank"); return; }
       if (response.status === 409 && ["PURCHASE_RESTRICTED", "ALREADY_OWNED"].includes(data.error)) {
         if (!controller.signal.aborted) { setError(data.error === "ALREADY_OWNED" ? "alreadyOwned" : "purchaseRestricted"); setErrorPackage(Number.isSafeInteger(data.packageId) ? data.packageId : null); }
@@ -236,12 +247,13 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
           <div className="store-rank-actions">{booster ? <a href={DISCORD_LINK} target="_blank" rel="noopener noreferrer" data-cursor="button" className="store-action"><span>{t("getRank")} <bdi dir="ltr">Booster</bdi></span><ArrowRight size={16} className="store-direction" aria-hidden="true" /></a> : isCoinProduct(product) && quantity > 0 ? <QuantityControl name={product.name} quantity={quantity} disabled={!live || !product.available || !cartReady} decrease={copy.decrease} increase={copy.increase} onChange={delta => changeQuantity(product.id, delta)} removeLabel={copy.remove} onRemove={() => remove(product.id)}/> : <button title={rankBlocked ? copy.oneRank : undefined} disabled={rankBlocked || !live || !product.available || !cartReady || (cartIds.length >= 20 && !cartIds.includes(product.id))} onClick={() => { if (cartIds.includes(product.id)) setCartOpen(true); else { add(product.id, isRankProduct(product) ? rankIds : []); setToast({ product, key: Date.now() }); } }} data-cursor="button" className={`store-action${featured ? " store-action-primary" : ""}`}>
             <span>{cartIds.includes(product.id) ? copy.added : <>{copy.add.split("{name}")[0]}<bdi dir="ltr">{product.name}</bdi>{copy.add.split("{name}")[1]}</>}</span>{cartIds.includes(product.id) ? <Check size={16} aria-hidden="true"/> : <CommerceIcon name="shopping-cart" size={16} aria-hidden="true"/>}
           </button>}
-          <div className="store-rank-tools">{isRankProduct(product) && quantity > 0 && <button type="button" className="store-action store-details-button" disabled={busy} aria-label={`${copy.remove} — ${product.name}`} title={copy.remove} onClick={() => { remove(product.id); setCartRankView(current => current?.packageId === product.id ? null : current); setToast(null); setError(null); }}><CommerceIcon name="trash" size={18}/></button>}<button type="button" className="store-action store-details-button" onClick={() => setDetails(product)} data-cursor="button" aria-haspopup="dialog" aria-label={`${t("details")} — ${product.name}`} title={t("details")}><DetailsIcon /></button>
+          <div className="store-rank-tools">{!booster && <button type="button" className="store-action store-details-button" aria-label={accountT("giftProduct", {name: product.name})} title={accountT("giftProduct", {name: product.name})} disabled={rankBlocked || !live || !product.available || !cartReady} onClick={() => {setGift(true);setAccountError("");if(!cartIds.includes(product.id))add(product.id,isRankProduct(product)?rankIds:[]);setCartOpen(true);}} data-cursor="button"><Gift size={18} aria-hidden="true"/></button>}{isRankProduct(product) && quantity > 0 && <button type="button" className="store-action store-details-button" disabled={busy} aria-label={`${copy.remove} — ${product.name}`} title={copy.remove} onClick={() => { remove(product.id); setCartRankView(current => current?.packageId === product.id ? null : current); setToast(null); setError(null); }}><CommerceIcon name="trash" size={18}/></button>}<button type="button" className="store-action store-details-button" onClick={() => setDetails(product)} data-cursor="button" aria-haspopup="dialog" aria-label={`${t("details")} — ${product.name}`} title={t("details")}><DetailsIcon /></button>
           {(isRankProduct(product) || booster) && <button type="button" className="store-action store-details-button" aria-haspopup="dialog" aria-label={`${experience.preview} — ${product.name}`} title={experience.preview} onClick={() => setRankPreview(product)}><EyeIcon/></button>}</div></div>
         </article></motion.div>;
       })}
       </div>
     </section></Fragment>)}
+    {login && <AccountLogin next="/store" onClose={()=>setLogin(false)}/>}
     {showCreators && <CreatorRanks query={query} showEmpty={!visibleGroups.length} username={username} onNameChange={setUsername}/>}
     {rankPreview && <RankPreviewDialog rankName={rankPreview.name} username={username} onNameChange={setUsername} onClose={() => setRankPreview(null)}/>}
     {comparing && <RankComparison products={products.filter(isRankProduct)} price={price} describe={describe} onClose={() => setComparing(false)}/>}
@@ -293,9 +305,13 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
         </>}
         <p id="checkout-description" className="store-checkout-description">{copy.note}</p>
         {!ident ? <form onSubmit={pay} className="store-checkout-form">
-          <PlayerIdentity id="store-username" username={username} onChange={value => { setUsername(value); setError(null); }} required active={cartOpen}/>
+          <button type="button" className="account-gift-toggle" aria-pressed={gift} disabled={busy} onClick={() => {setGift(value=>!value);setAccountError("");setError(null);}} data-cursor="button"><Gift size={18} aria-hidden="true"/>{accountT(gift?"giftEnabled":"giftToggle")}</button>
+          {gift ? <><PlayerIdentity id="store-username" username={giftName} onChange={value=>{setGiftName(value);setError(null);}} required active={cartOpen}/><p className="account-help">{accountT("giftIntro")}</p></> : account?.minecraft ? <div className="account-purchase-player"><UserRound size={24}/><div><strong dir="ltr">{account.minecraft.username}</strong><p>{accountT("verifiedPlayer")}</p></div><Link href="/account?tab=connections" onClick={close} className="account-text-button">{accountT("manage")}</Link></div> : <p className="account-notice">{accountT(account?"errors.LINK_REQUIRED":"errors.LOGIN_REQUIRED")}</p>}
+          {!account && <button type="button" className="store-action" disabled={!accountReady} onClick={() => {close();setLogin(true);}}>{accountT("signin")}</button>}
+          {account && !gift && !account.minecraft && <Link href="/account?tab=connections" className="store-action" onClick={close}>{accountT("connectMinecraft")}</Link>}
+          {accountError && <p role="alert" className="account-error">{accountError}</p>}
           <p>{t("usernameHelp")}</p>
-          <button disabled={!cartIds.length || busy || !sdkReady || sdkError || cartUnavailable || !cartReady} className="store-action store-action-primary store-pay" aria-busy={busy}>
+          <button disabled={!canCheckout || !accountReady || !cartIds.length || busy || !sdkReady || sdkError || cartUnavailable || !cartReady} className="store-action store-action-primary store-pay" aria-busy={busy}>
             <span>{t(busy || !sdkReady ? "preparing" : "continuePayment")}</span>
             {busy || !sdkReady ? <LoaderCircle size={18} className="store-spinner" aria-hidden="true" /> : <ArrowRight size={18} className="store-direction" aria-hidden="true" />}
           </button>

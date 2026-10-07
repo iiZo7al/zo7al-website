@@ -1,9 +1,10 @@
 "use client";
 import Link from 'next/link';
-import { useCallback,useRef,useState } from 'react';
+import { useCallback,useEffect,useRef,useState } from 'react';
 import { useLocale,useTranslations } from 'next-intl';
 import { Flag } from 'lucide-react';
 import QueryObserver from './QueryObserver';
+import CommonErrors from "./CommonErrors";
 import FaqAccordion,{type FaqItem} from '@/components/faq/FaqAccordion';
 import ContentFeed from './ContentFeed';
 import Receipt from './Receipt';
@@ -19,10 +20,11 @@ export default function SupportCenter(){
  const projectChanged=useCallback((value:string|null)=>{setProject(value?.slice(0,200)??'');if(value){setType('technical');setTab('report');}},[]);
  const titleChanged=useCallback((value:string|null)=>{setProjectTitle(value?.slice(0,160)??'');if(value)setSubject(previous=>previous||value.slice(0,160));},[]);
  const versionChanged=useCallback((value:string|null)=>setVersion(value?.slice(0,64)??''),[]);
- const tabChanged=useCallback((value:string|null)=>{if(value&&['faq','rules','report'].includes(value))setTab(value);},[]);
+ useEffect(()=>{if(window.location.hash==='#common-errors')queueMicrotask(()=>setTab('errors'));},[]);
+ const tabChanged=useCallback((value:string|null)=>{if(value&&['faq','errors','rules','report'].includes(value))setTab(value);},[]);
  return <><QueryObserver param="tab" onChange={tabChanged}/><QueryObserver param="order" onChange={orderChanged}/><QueryObserver param="project" onChange={projectChanged}/><QueryObserver param="projectTitle" onChange={titleChanged}/><QueryObserver param="version" onChange={versionChanged}/>
-  <div className="hub-actions mb-8" role="group" aria-label={t('support')}>{['faq','rules','report'].map(value=><button key={value} type="button" className="hub-button" aria-pressed={tab===value} onClick={()=>setTab(value)}>{value==='faq'?faq('title'):t(value)}</button>)}<Link href="/support#common-errors" className="hub-button">{t('commonErrorsTitle')}</Link><Link href="/requests?tab=support" className="hub-button">{t('track')}</Link><a href={DISCORD_LINK} className="hub-button" target="_blank" rel="noopener noreferrer">Discord</a></div>
-  {tab==='faq'?<div id="faq"><FaqAccordion items={faq.raw('items') as FaqItem[]} categories={faq.raw('categories') as Record<string,string>} searchPlaceholder={faq('searchPlaceholder')} noResults={faq('noResults')} allLabel={common('all')}/></div>:tab==='rules'?<ContentFeed kind="rule"/>:<div className="hub-card max-w-[760px]">{receipt?<Receipt kind="support" {...receipt}/>:<form className="hub-form" onSubmit={async event=>{
+  <div className="hub-actions mb-8" role="group" aria-label={t('support')}>{['faq','errors','rules','report'].map(value=><button key={value} type="button" className="hub-button" aria-pressed={tab===value} onClick={()=>setTab(value)}>{value==='faq'?faq('title'):value==='errors'?t('commonErrorsTitle'):t(value)}</button>)}<Link href="/requests?tab=support" className="hub-button">{t('track')}</Link><a href={DISCORD_LINK} className="hub-button" target="_blank" rel="noopener noreferrer">Discord</a></div>
+  {tab==='faq'?<div id="faq"><FaqAccordion items={faq.raw('items') as FaqItem[]} categories={faq.raw('categories') as Record<string,string>} searchPlaceholder={faq('searchPlaceholder')} noResults={faq('noResults')} allLabel={common('all')}/></div>:tab==='errors'?<CommonErrors/>:tab==='rules'?<ContentFeed kind="rule"/>:<div className="hub-card max-w-[760px]">{receipt?<Receipt kind="support" {...receipt}/>:<form className="hub-form" onSubmit={async event=>{
    event.preventDefault();if(lock.current)return;const data=new FormData(event.currentTarget);lock.current=true;setBusy(true);setError('');
    try{const response=await fetch('/api/support',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...Object.fromEntries(data),consent:data.get('consent')==='on'})}),result=await response.json();if(!response.ok)throw Error(result.error);saveReceipt('support',result);setReceipt(result);}
    catch(error){setError(error instanceof Error&&error.message==='RATE_LIMIT'?'rateLimit':'unavailable');}finally{lock.current=false;setBusy(false);}

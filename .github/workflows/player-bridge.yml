@@ -28,7 +28,7 @@ jobs:
         run: mvn --batch-mode --no-transfer-progress verify
       - uses: actions/upload-artifact@v7.0.1
         with:
-          name: ${{ matrix.plugin }}-1.1.0
+          name: ${{ matrix.plugin }}-1.2.0
           path: |
             plugins/${{ matrix.plugin }}/target/Zo7al-*.jar
             plugins/${{ matrix.plugin }}/src/main/resources/config.yml

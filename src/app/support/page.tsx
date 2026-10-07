@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import PageHero from "@/components/ui/PageHero";
 import SupportCenter from "@/components/hub/SupportCenter";
-import CommonErrors from "@/components/hub/CommonErrors";
 
 export const metadata: Metadata = {
   title: "Support",
@@ -19,7 +18,7 @@ export default async function SupportPage() {
           <SupportCenter />
         </div>
       </section>
-      <CommonErrors />
+
     </main>
   );
 }

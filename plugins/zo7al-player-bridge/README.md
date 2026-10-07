@@ -1,4 +1,4 @@
-# Zo7al Player Bridge 1.1.0
+# Zo7al Player Bridge 1.2.0
 
 بلوقن يربط ملفات لاعبي سيرفر Paper بموقع Zo7al. يقرأ الرتبة والإحصائيات وحالة الاتصال وآخر ظهور ويرسلها عبر HTTPS إلى الموقع. تظهر الرتبة الحالية في ملف اللاعب ومعاينة الشخصية والسلة من نفس مصدر البيانات.
 
@@ -6,17 +6,17 @@
 
 | السيرفر | إصدار ماينكرافت | البلوقن |
 | --- | --- | --- |
-| lobby | 1.21.11 | Zo7al-Player-Bridge-1.1.0.jar |
-| smp | 1.21.11 | Zo7al-Player-Bridge-1.1.0.jar |
-| pvp-modren | 1.21.11 | Zo7al-Player-Bridge-1.1.0.jar |
-| pvp-clasic | 1.8.9 | Zo7al-Player-Bridge-Legacy-1.1.0.jar |
+| lobby | 1.21.11 | Zo7al-Player-Bridge-1.2.0.jar |
+| smp | 1.21.11 | Zo7al-Player-Bridge-1.2.0.jar |
+| pvp-modren | 1.21.11 | Zo7al-Player-Bridge-1.2.0.jar |
+| pvp-clasic | 1.8.9 | Zo7al-Player-Bridge-Legacy-1.2.0.jar |
 
 أنشئ أربعة اتصالات بأسمائها في لوحة الموقع، بمفتاح مستقل لكل سيرفر. هذا البلوقن مخصص للثلاثة الحديثة؛ تعليمات نسخة الكلاسيك في [README الخاص بها](../zo7al-player-bridge-legacy/README.md). ضع البلوقنين على سيرفرات اللعبة الخلفية فقط. لا يحتاج Velocity بلوقنًا لهذا الربط.
 
 ## التركيب
 
 1. ادمج تحديث الموقع أولًا وانتظر نشره. افتح `/dashboard` وسجّل دخول الإدارة، ثم **Connections → ملفات لاعبي ماينكرافت → إضافة سيرفر**. اكتب اسم السيرفر وانسخ المفتاح الذي يظهر مرة واحدة.
-2. ضع `Zo7al-Player-Bridge-1.1.0.jar` في مجلد `plugins` الخاص بسيرفر **Paper 1.21.11**، ثم أعد تشغيل السيرفر. البلوقن يعمل على **Java 21 أو أحدث**؛ Java 25 مناسب. ضعه على سيرفر اللعبة الخلفي، وليس على Velocity.
+2. ضع `Zo7al-Player-Bridge-1.2.0.jar` في مجلد `plugins` الخاص بسيرفر **Paper 1.21.11**، ثم أعد تشغيل السيرفر. البلوقن يعمل على **Java 21 أو أحدث**؛ Java 25 مناسب. ضعه على سيرفر اللعبة الخلفي، وليس على Velocity.
 3. عدّل `plugins/Zo7alPlayerBridge/config.yml` وضع المفتاح بين علامات الاقتباس في `token: ''`. رابط الموقع مضبوط مسبقًا. الملف الكامل مرفق في الحزمة وتُنسخ نسخة منه تلقائيًا عند أول تشغيل.
 4. نفّذ `/zo7albridge reload`، ثم `/zo7albridge status`. تحقق من **Last sync** في Connections، وابحث عن اسم اللاعب في الموقع. يستورد البلوقن اللاعبين السابقين تدريجيًا، ويحدث المتصلين كل 60 ثانية وعند الدخول والخروج.
 
@@ -40,7 +40,7 @@
 
 إذا أردت ستريك بلوقن Practice، ضع placeholders الفعلية في **streak-placeholder** و**best-streak-placeholder**. الانتصارات والخسائر تحتاج أيضًا placeholders من بلوقن الألعاب؛ البلوقن لا يستطيع تخمين أسماء placeholders الخاصة بإضافتك.
 
-للتحديث من 1.0.0: أوقف السيرفر، استبدل ملف JAR القديم بإصدار 1.1.0، واحتفظ بمجلد إعداداته والتوكين، ثم شغل السيرفر. أضف مفاتيح `statistics` الجديدة من نموذج config.yml عند الحاجة. حدد إحصائيات العرض بعد دمج تحديث الموقع ونشره. لا يحتاج Zo7al Network توكين إضافيًا.
+للتحديث من 1.0.0: أوقف السيرفر، استبدل ملف JAR القديم بإصدار 1.2.0، واحتفظ بمجلد إعداداته والتوكين، ثم شغل السيرفر. أضف مفاتيح `statistics` الجديدة من نموذج config.yml عند الحاجة. حدد إحصائيات العرض بعد دمج تحديث الموقع ونشره. لا يحتاج Zo7al Network توكين إضافيًا.
 
 ## الأوامر
 
@@ -70,8 +70,12 @@
 
 ## البناء والتحقق
 
-المصدر الكامل موجود في مجلد `source/zo7al-player-bridge` داخل الحزمة، وفي `plugins/zo7al-player-bridge` في مستودع الموقع. من هذا المجلد نفّذ `mvn clean package` باستخدام Java 21 أو أحدث وMaven 3.9. ستجد JAR في `target/Zo7al-Player-Bridge-1.1.0.jar`.
+المصدر الكامل موجود في مجلد `source/zo7al-player-bridge` داخل الحزمة، وفي `plugins/zo7al-player-bridge` في مستودع الموقع. من هذا المجلد نفّذ `mvn clean package` باستخدام Java 21 أو أحدث وMaven 3.9. ستجد JAR في `target/Zo7al-Player-Bridge-1.2.0.jar`.
 
 تم البناء مقابل Paper API 1.21.11 وتوجد اختبارات للطابور، وتزامن الدفعات، وصيغة البيانات، وتأكيد استلام الموقع، وحماية وجهة الاتصال، وحفظ الستريك، ورفض الحفظ القديم، وتحويل وحدات الإحصائيات. البناء والاختبارات يعملان أيضًا في GitHub Actions لكل إصدار من البلوغن. يلزم تجربة التركيب على سيرفرك للتحقق من إضافاتك ومجموعات LuckPerms والـ placeholders الفعلية.
 
 مراجع: [Paper plugin setup](https://docs.papermc.io/paper/dev/project-setup/)، [LuckPerms API](https://luckperms.net/wiki/Developer-API)، [Paper OfflinePlayer API](https://jd.papermc.io/paper/1.21.11/org/bukkit/OfflinePlayer.html).
+
+## Website account linking
+
+Version 1.2.0 adds `/zo7allink CODE` for online players. In the website account settings, enter the exact Minecraft name and generate a code. Run it from the matching player within ten minutes. The plugin sends the player UUID and name through the existing authenticated HTTPS bridge. A player can belong to only one website account; this does not require administrator permissions. Replace the 1.1.0 jar on every backend and restart. Existing bridge endpoint and token settings stay compatible. New messages use the Zo7al prefix, including fallback text for existing configurations.

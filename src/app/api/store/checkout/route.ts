@@ -1,3 +1,5 @@
+import { AccountError, accountConfigured, requireAccount, accountView } from "@/lib/server/account-auth";
+import { checkoutRecipient } from "@/lib/data/account";
 import { createOrderReceipt } from "@/lib/server/site-content";
 import { isIP } from "node:net";
 import { getStoreCatalog, ownsStorePackage, tebexRequest, tebexToken, tebexPrivateKey, TebexConfigurationError, TebexRequestError } from "@/lib/server/tebex";
@@ -12,11 +14,18 @@ export async function POST(request: Request) {
   if (request.headers.get("origin") !== origin) return Response.json({ error: "ORIGIN" }, { status: 403 });
   const token = tebexToken();
   if (!token || !tebexPrivateKey()) return Response.json({ error: "CONFIGURATION" }, { status: 503 });
-  let body: { packageId?: number; packageIds?: number[]; items?: unknown; username?: string };
+  let body: { packageId?: number; packageIds?: number[]; items?: unknown; username?: string; gift?: boolean };
   try { const text = await request.text(); if (text.length > 1024) throw Error(); body = JSON.parse(text); if (!body || typeof body !== "object") throw Error(); }
   catch { return Response.json({ error: "INVALID" }, { status: 400 }); }
   const items = parseCartItems(body.items ?? (Array.isArray(body.packageIds) ? body.packageIds.map(packageId => ({ packageId, quantity: 1 })) : [{ packageId: body.packageId, quantity: 1 }]));
   if (!items?.length || typeof body.username !== "string" || !/^[.a-zA-Z0-9_ ]{3,32}$/.test(body.username.trim())) return Response.json({ error: "INVALID" }, { status: 400 });
+  let buyerId: string, recipient: string;
+  try {
+    if (!accountConfigured()) throw new AccountError("CONFIGURATION",503);
+    const buyer = await requireAccount(request);
+    buyerId = buyer.id;
+    recipient = checkoutRecipient(body.gift, body.username, (await accountView(buyer)).minecraft);
+  } catch(error) { const code = error instanceof Error ? error.message : "UNAVAILABLE"; return Response.json({error:code},{status:error instanceof AccountError ? error.status : code==="LINK_REQUIRED" ? 409 : 400,headers:{"Cache-Control":"private, no-store"}}); }
   const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "";
   if (!isIP(ip)) return Response.json({ error: "UNAVAILABLE" }, { status: 503 });
   const now = Date.now();
@@ -34,7 +43,7 @@ export async function POST(request: Request) {
     if (products.filter(product => isRankProduct(product!)).length > 1) return Response.json({ error: "ONE_RANK_ONLY" }, { status: 400 });
     if (products.some((product, index) => !isCoinProduct(product!) && items[index].quantity !== 1)) return Response.json({ error: "INVALID" }, { status: 400 });
     stage = "CREATE";
-    const result = await tebexRequest(`accounts/${encodeURIComponent(token)}/baskets`, { username: body.username.trim(), ip_address: ip, complete_url: `${origin}/store?checkout=complete`, cancel_url: `${origin}/store`, complete_auto_redirect: false }, true);
+    const result = await tebexRequest(`accounts/${encodeURIComponent(token)}/baskets`, { username: recipient, ip_address: ip, complete_url: `${origin}/store?checkout=complete`, cancel_url: `${origin}/store`, complete_auto_redirect: false }, true);
     const ident = result.data?.ident;
     if (typeof ident !== "string" || !/^[a-zA-Z0-9_-]+$/.test(ident)) throw Error("INVALID_BASKET");
     for (const product of products) {
@@ -49,7 +58,7 @@ export async function POST(request: Request) {
       activePackageId = product!.id;
       await tebexRequest(`baskets/${encodeURIComponent(ident)}/packages`, { package_id: String(product!.id), quantity: items.find(item => item.packageId === product!.id)!.quantity });
     }
-    const tracking = await createOrderReceipt(ident, body.username.trim(), items, products.map(product=>({id:product!.id,name:product!.name}))).catch(() => null);
+    const tracking = await createOrderReceipt(ident, recipient, items, products.map(product=>({id:product!.id,name:product!.name})), {userId:buyerId,gift:body.gift===true});
     return Response.json({ ident, ...(tracking ? {tracking} : {}) }, { headers: { "Cache-Control": "no-store" } });
   } catch (error) {
     // Never expose upstream responses, usernames, basket identifiers or credentials.

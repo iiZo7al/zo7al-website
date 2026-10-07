@@ -13,7 +13,9 @@ const backend = moduleUrl('src/lib/server/tebex.ts', {'@/lib/data/store': data, 
 const {getStoreCatalog, ownsStorePackage} = await import(backend);
 const cartRules = moduleUrl('src/lib/data/store-cart.ts');
 const trackingStub = 'data:text/javascript;base64,' + Buffer.from('export async function createOrderReceipt(){return null;}').toString('base64');
-const {POST} = await import(moduleUrl('src/app/api/store/checkout/route.ts', {'@/lib/server/tebex': backend, '@/lib/data/store-cart': cartRules, '@/lib/server/site-content': trackingStub}));
+const accountStub = 'data:text/javascript;base64,' + Buffer.from(`export class AccountError extends Error{};export function accountConfigured(){return true;}export async function requireAccount(){return {id:'12345678-1234-1234-1234-123456789abc'};}export async function accountView(){return {minecraft:{username:'Player',uuid:'12345678-1234-1234-1234-123456789abd'}};}`).toString('base64');
+const accountRules=moduleUrl('src/lib/data/account.ts');
+const {POST} = await import(moduleUrl('src/app/api/store/checkout/route.ts', {'@/lib/server/account-auth':accountStub,'@/lib/data/account':accountRules,'@/lib/server/tebex': backend, '@/lib/data/store-cart': cartRules, '@/lib/server/site-content': trackingStub}));
 const {GET: paymentStatus} = await import(moduleUrl('src/app/api/store/status/route.ts', {'@/lib/server/tebex': backend}));
 const request = (body, origin = 'https://zo7al.test', ip = '203.0.113.5') => new Request('https://zo7al.test/api/store/checkout', {method:'POST', headers:{origin,'x-forwarded-for':ip},body:JSON.stringify(body)});
 
@@ -58,6 +60,12 @@ test('checkout validates catalog, preserves Tebex prices and fails closed', asyn
     assert.equal(basket.body.ip_address,'203.0.113.5');
     assert.equal(basket.body.complete_url,'https://zo7al.test/store?checkout=complete');
     assert.deepEqual(calls.at(-1).body,{package_id:'7312779',quantity:1});
+    calls.length=0;
+    assert.equal((await POST(request({packageId:7312779,username:'ForgedOtherPlayer'},undefined,'203.0.113.19'))).status,200);
+    assert.equal(calls.find(call=>call.url.endsWith('/baskets')).body.username,'Player');
+    calls.length=0;
+    assert.equal((await POST(request({packageId:7312779,username:'Gift_Recipient',gift:true},undefined,'203.0.113.20'))).status,200);
+    assert.equal(calls.find(call=>call.url.endsWith('/baskets')).body.username,'Gift_Recipient');
     const validFetch = globalThis.fetch;
     process.env.TEBEX_PLUGIN_SECRET = 'test-game-secret';
     globalThis.fetch = async (url,options) => {

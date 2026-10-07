@@ -1,4 +1,4 @@
-# Zo7al Player Bridge Legacy 1.1.0
+# Zo7al Player Bridge Legacy 1.2.0
 
 نسخة مستقلة لسيرفر **pvp-clasic** من عائلة Spigot 1.8 واللعب بإصدار 1.8.9. تعمل على **Java 8 أو أحدث**، ومبنية مقابل Spigot API 1.8.8. ترسل ملف اللاعب إلى موقع Zo7al بنفس صيغة النسخة الحديثة، مع مراعاة واجهة إحصائيات 1.8 ونسخة Gson القديمة الموجودة في السيرفر.
 
@@ -6,15 +6,15 @@
 
 | السيرفر | البلوقن |
 | --- | --- |
-| lobby / smp / pvp-modren — 1.21.11 | Zo7al-Player-Bridge-1.1.0.jar، Java 21 أو أحدث |
-| pvp-clasic — 1.8.9 | Zo7al-Player-Bridge-Legacy-1.1.0.jar، Java 8 أو أحدث |
+| lobby / smp / pvp-modren — 1.21.11 | Zo7al-Player-Bridge-1.2.0.jar، Java 21 أو أحدث |
+| pvp-clasic — 1.8.9 | Zo7al-Player-Bridge-Legacy-1.2.0.jar، Java 8 أو أحدث |
 
 لا تركّب أيًا منهما على Velocity؛ كلاهما يعمل على سيرفرات اللعبة الخلفية. تعليمات النسخة الحديثة في [README الخاص بها](../zo7al-player-bridge/README.md).
 
 ## التركيب
 
 1. ادمج تحديث الموقع وانتظر نشره. افتح `/dashboard` وسجّل دخول الإدارة، ثم **Connections → ملفات لاعبي ماينكرافت → إضافة سيرفر**. أنشئ اتصالًا باسم `pvp-clasic` وانسخ مفتاحه الذي يظهر مرة واحدة.
-2. ضع `Zo7al-Player-Bridge-Legacy-1.1.0.jar` في مجلد `plugins` الخاص بسيرفر الكلاسيك، ثم أعد تشغيله. لا تضع النسخة الحديثة على هذا السيرفر، ولا تضع النسختين معًا على نفس السيرفر.
+2. ضع `Zo7al-Player-Bridge-Legacy-1.2.0.jar` في مجلد `plugins` الخاص بسيرفر الكلاسيك، ثم أعد تشغيله. لا تضع النسخة الحديثة على هذا السيرفر، ولا تضع النسختين معًا على نفس السيرفر.
 3. عدّل `plugins/Zo7alPlayerBridgeLegacy/config.yml` وضع مفتاح الكلاسيك بين علامات الاقتباس في `token: ''`. رابط الموقع مضبوط مسبقًا: `https://zo7al.is-a.dev/api/minecraft/bridge`.
 4. نفّذ `/zo7albridge reload` ثم `/zo7albridge status`. تحقق من **Last sync** لاتصال الكلاسيك في لوحة الموقع، وابحث عن اسم لاعب دخل الكلاسيك من قبل. يستورد اللاعبين السابقين تدريجيًا، ويحدّث المتصلين كل 60 ثانية وعند الدخول والخروج.
 5. أنشئ اتصالات مستقلة باسم `lobby` و`smp` و`pvp-modren` وضع المفتاح المناسب في إعداد النسخة الحديثة على كل سيرفر. لا تشارك مفتاحًا واحدًا بينها؛ لكل سيرفر رتبته وإحصائياته المستقلة في الموقع.
@@ -55,7 +55,7 @@
 - **الرتبة أو الانتصارات غير معروفة:** تحقق من LuckPerms والمجموعة الأساسية أو placeholder بلوقن PvP الفعلي.
 - **اللاعب لا يظهر:** يجب أن يكون معروفًا للسيرفر وغير موجود في `excluded-players`. جرّب sync وتحقق من Last sync.
 
-المصدر الكامل في `source/zo7al-player-bridge-legacy` داخل الحزمة، أو `plugins/zo7al-player-bridge-legacy` في المستودع. للبناء استخدم JDK 17 أو أحدث وMaven 3.9 ثم `mvn clean package`. الناتج يستهدف Java 8: `target/Zo7al-Player-Bridge-Legacy-1.1.0.jar`.
+المصدر الكامل في `source/zo7al-player-bridge-legacy` داخل الحزمة، أو `plugins/zo7al-player-bridge-legacy` في المستودع. للبناء استخدم JDK 17 أو أحدث وMaven 3.9 ثم `mvn clean package`. الناتج يستهدف Java 8: `target/Zo7al-Player-Bridge-Legacy-1.2.0.jar`.
 
 اجتازت النسخة ستة اختبارات لصيغة إحصائيات 1.8 وGson القديم، والطابور، وترتيب التحديثات، والتحقق من استلام الموقع وHTTPS. تحقق البناء من bytecode Java 8 وواجهة Spigot 1.8. تحتاج إعداد LuckPerms والـ placeholders وتجربة التركيب على سيرفرك الفعلي.
 
@@ -68,3 +68,7 @@
 يمكن ضبط كل إحصائية باستخدام PlaceholderAPI من قسم `statistics`، بما فيها `streak-placeholder` و`best-streak-placeholder` و`wins-placeholder` و`losses-placeholder`. يجب أن يعيد وقت اللعب ثواني رقمية، والمسافة أمتارًا، والضرر نقاط صحة. القيم غير المتوفرة تبقى غير معروفة. لا يُخمن البلوقن placeholders الخاصة ببلوقن Practice.
 
 من الموقع: **Connections → ملفات لاعبي ماينكرافت → إعدادات الإحصائيات**، اختر ما يظهر لهذا السيرفر واحفظ. **Zo7al Network** يجمع العدادات من جميع السيرفرات المفعلة ويأخذ أعلى ستريك، بناءً على UUID موحد. تفاصيل التجميع والتحديث في [دليل النسخة الحديثة](../zo7al-player-bridge/README.md#الستريك-وتحديث-البلوغن).
+
+## Website account linking
+
+Version 1.2.0 adds `/zo7allink CODE` for online players. In the website account settings, enter the exact Minecraft name and generate a code. Run it from the matching player within ten minutes. The plugin sends the player UUID and name through the existing authenticated HTTPS bridge. A player can belong to only one website account; this does not require administrator permissions. Replace the 1.1.0 jar on every backend and restart. Existing bridge endpoint and token settings stay compatible. New messages use the Zo7al prefix, including fallback text for existing configurations.

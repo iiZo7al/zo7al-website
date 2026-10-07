@@ -34,7 +34,7 @@ export default function CommandSearch() {
     ...(["home","minecraft","modpacks","fortnite","socials","support","store"] as const).map(key=>({title:nav(key),href:key==="home"?"/":"/"+key,keywords:key})),
     ...([{key:"news",href:"/#news"},{key:"events",href:"/minecraft#events"},{key:"player",href:"/minecraft#player"},{key:"activity",href:"/requests?tab=orders"},{key:"applications",href:"/requests?tab=applications"}]).map(({key,href})=>({title:t(key),href,keywords:key})),
     {title:"Space Run",href:"/game",keywords:"game rocket"},
-    {title:t("commonErrorsTitle"),href:"/support#common-errors",keywords:"errors حلول مشاكل"},
+    {title:t("commonErrorsTitle"),href:"/support?tab=errors#common-errors",keywords:"errors حلول مشاكل"},
     ...(faq.raw("items") as {q:string;a:string}[]).map(item=>({title:item.q,href:"/support#faq",keywords:item.a,category:faq("title")})),
     ...remote
   ];

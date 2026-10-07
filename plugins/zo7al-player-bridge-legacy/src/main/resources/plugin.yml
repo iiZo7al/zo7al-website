@@ -1,11 +1,14 @@
 name: Zo7alPlayerBridgeLegacy
-version: 1.1.0
+version: 1.2.0
 main: dev.zo7al.bridge.legacy.Zo7alPlayerBridgeLegacy
 description: Read-only player profile sync for the Zo7al classic PvP server.
 authors: [Zo7al]
 website: https://zo7al.is-a.dev
 softdepend: [LuckPerms, PlaceholderAPI]
 commands:
+  zo7allink:
+    description: Verify your Minecraft account on Zo7al Projects.
+    usage: /zo7allink <code>
   zo7albridge:
     description: Manage the Zo7al profile bridge.
     usage: /zo7albridge <status|reload|sync [player]>

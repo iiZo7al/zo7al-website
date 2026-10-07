@@ -23,7 +23,7 @@ test('all FAQs cover the same durable features and only use existing internal de
   assert.ok(faq.clearSearch&&faq.filterLabel&&faq.resetFilters);
   for(const item of faq.items){
    assert.ok(item.q&&item.a&&faq.categories[item.category]);
-   if(item.href){assert.equal(faqActionHref(item.href),item.href);assert.ok(item.action);assert.ok(['/','/minecraft','/store','/socials','/support','/requests','/modpacks'].includes(new URL(item.href,'https://zo7al.test').pathname));}
+   if(item.href){assert.equal(faqActionHref(item.href),item.href);assert.ok(item.action);assert.ok(['/','/minecraft','/store','/socials','/support','/requests','/modpacks','/account'].includes(new URL(item.href,'https://zo7al.test').pathname));}
   }
  }
  assert.ok(catalogs.ar.items.find(item=>item.id==='requests').a.includes('رمز المتابعة'));

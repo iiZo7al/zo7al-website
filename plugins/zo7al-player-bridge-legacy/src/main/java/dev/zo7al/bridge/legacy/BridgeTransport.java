@@ -48,20 +48,27 @@ final class BridgeTransport {
         } catch (RuntimeException error) { return false; }
     }
     CompletableFuture<Result> send(final List<PlayerProfile> profiles) {
+        return sendPayload(endpoint, body(profiles), profiles.size());
+    }
+    CompletableFuture<Result> link(java.util.UUID uuid, String username, String code) {
+        JsonObject value = new JsonObject(); value.addProperty("uuid", uuid.toString()); value.addProperty("username", username); value.addProperty("code", code);
+        return sendPayload(endpoint.resolve("/api/minecraft/link"), value.toString(), 0);
+    }
+    private CompletableFuture<Result> sendPayload(final URI target, final String payload, final int expected) {
         return CompletableFuture.supplyAsync(() -> {
             HttpsURLConnection connection = null;
             try {
-                connection = (HttpsURLConnection) endpoint.toURL().openConnection(); connection.setInstanceFollowRedirects(false);
+                connection = (HttpsURLConnection) target.toURL().openConnection(); connection.setInstanceFollowRedirects(false);
                 connection.setConnectTimeout(8000); connection.setReadTimeout(15000); connection.setRequestMethod("POST"); connection.setDoOutput(true);
                 connection.setRequestProperty("Content-Type", "application/json"); connection.setRequestProperty("Accept", "application/json");
                 connection.setRequestProperty("Authorization", "Bearer " + token); connection.setRequestProperty("User-Agent", "Zo7alPlayerBridgeLegacy/1.0.0");
-                byte[] bytes = body(profiles).getBytes(StandardCharsets.UTF_8); connection.setFixedLengthStreamingMode(bytes.length);
+                byte[] bytes = payload.getBytes(StandardCharsets.UTF_8); connection.setFixedLengthStreamingMode(bytes.length);
                 try (OutputStream output = connection.getOutputStream()) { output.write(bytes); }
                 int status = connection.getResponseCode(); if (status < 200 || status >= 300) return new Result(status, false);
                 try (InputStream input = connection.getInputStream(); ByteArrayOutputStream response = new ByteArrayOutputStream()) {
                     byte[] buffer = new byte[1024]; int count;
                     while ((count = input.read(buffer)) != -1) { if (response.size() + count > 4096) return new Result(status, false); response.write(buffer, 0, count); }
-                    return new Result(status, confirmed(new String(response.toByteArray(), StandardCharsets.UTF_8), profiles.size()));
+                    return new Result(status, confirmed(new String(response.toByteArray(), StandardCharsets.UTF_8), expected));
                 }
             } catch (Exception error) { return new Result(0, false); }
             finally { if (connection != null) connection.disconnect(); }

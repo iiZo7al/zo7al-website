@@ -11,6 +11,7 @@ import BrandIcon from "@/components/ui/BrandIcon";
 import { NAV_LINKS, DISCORD_LINK, SITE } from "@/lib/data/site";
 import { SearchTrigger } from "@/components/hub/CommandSearch";
 import StoreNavAction from "@/components/store/StoreNavAction";
+import AccountMenu from "@/components/account/AccountMenu";
 import NotificationBell from "@/components/community/NotificationBell";
 import MagneticButton from "@/components/cursor/MagneticButton";
 import LanguageSwitcher from "./LanguageSwitcher";
@@ -163,9 +164,9 @@ export default function Navbar() {
         <div className="site-navigation-tools">
           <a href={DISCORD_LINK} onClick={closeAll} target="_blank" rel="noopener noreferrer" className="navigation-discord" aria-label={nav("discord")} data-cursor="link"><BrandIcon slug="discord" size={19}/></a>
           <div onFocus={() => { cancelClose(); setDesktopMenu(null); }} onMouseEnter={() => { cancelClose(); setDesktopMenu(null); }}><LanguageSwitcher/></div>
-          <MagneticButton><StoreNavAction onActivate={closeAll}/></MagneticButton>
+          <MagneticButton><StoreNavAction onActivate={closeAll}/></MagneticButton><AccountMenu/>
         </div>
-        <div className="site-navigation-mobile-tools"><SearchTrigger/><button ref={mobileTrigger} type="button" className="navigation-mobile-trigger" aria-label={ui(mobileOpen ? "closeMenu" : "openMenu")} aria-expanded={mobileOpen} aria-controls="navigation-mobile-panel" data-cursor="button" onClick={() => { cancelClose(); setDesktopMenu(null); setMobileGroup(null); setMobileOpen(!mobileOpen); }}><SolidIcon name={mobileOpen ? "cross" : "menu-burger"} size={20}/></button></div>
+        <div className="site-navigation-mobile-tools"><StoreNavAction iconOnly onActivate={closeAll}/><AccountMenu/><span className="navigation-mobile-search"><SearchTrigger/></span><button ref={mobileTrigger} type="button" className="navigation-mobile-trigger" aria-label={ui(mobileOpen ? "closeMenu" : "openMenu")} aria-expanded={mobileOpen} aria-controls="navigation-mobile-panel" data-cursor="button" onClick={() => { cancelClose(); setDesktopMenu(null); setMobileGroup(null); setMobileOpen(!mobileOpen); }}><SolidIcon name={mobileOpen ? "cross" : "menu-burger"} size={20}/></button></div>
         </div>
       </nav>
       <AnimatePresence initial={false}>{mobileOpen && <MenuSurface mobile>
@@ -180,7 +181,7 @@ export default function Navbar() {
               {menu && mobileGroup === menu && <NavigationMenu compact id={`navigation-mobile-${menu}`} menu={menu} pathname={pathname} onNavigate={closeAll}/>}
             </li>;
           })}</ul>
-          <div className="navigation-mobile-actions"><StoreNavAction mobile onActivate={closeAll}/><a href={DISCORD_LINK} target="_blank" rel="noopener noreferrer" onClick={closeAll} className="navigation-mobile-discord" data-cursor="link"><BrandIcon slug="discord" size={18}/>{nav("discord")}</a></div>
+          <div className="navigation-mobile-search-menu"><SearchTrigger/></div><div className="navigation-mobile-actions"><StoreNavAction mobile onActivate={closeAll}/><a href={DISCORD_LINK} target="_blank" rel="noopener noreferrer" onClick={closeAll} className="navigation-mobile-discord" data-cursor="link"><BrandIcon slug="discord" size={18}/>{nav("discord")}</a></div>
           <LanguageSwitcher variant="mobile"/>
         </nav>
       </MenuSurface>}</AnimatePresence>
