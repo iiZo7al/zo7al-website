@@ -8,6 +8,7 @@ import { useState, useCallback, useRef } from "react";
 import SpaceExperience, { type SpaceExperienceHandle } from "./SpaceExperience";
 import GameLaunchButton from "./GameLaunchButton";
 import MagneticButton from "@/components/cursor/MagneticButton";
+import HeroHeadline from "./HeroHeadline";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -41,13 +42,9 @@ export default function Hero() {
       >
         <motion.h1
           variants={item}
-          className="text-display text-[16vw] sm:text-7xl md:text-8xl lg:text-[7.5rem]"
+          className="text-display hero-brand-heading"
         >
-          {t("headline1")}
-          <br />
-          {t("headline2")}
-          <br />
-          {t("headline3")}
+          <HeroHeadline />
         </motion.h1>
 
         <motion.p

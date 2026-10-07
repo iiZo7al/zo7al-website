@@ -1,0 +1,10 @@
+.hero-brand-heading { width:100%; font-size:clamp(1.875rem,9vw,6.5rem); line-height:1.1; }
+.hero-brand { display:inline-flex; align-items:baseline; justify-content:center; gap:.2em; white-space:nowrap; }
+.hero-typewriter { display:inline-grid; text-align:start; transition:color .18s ease; }
+.hero-typewriter-reserve,.hero-typewriter-line { grid-area:1/1; }
+.hero-typewriter-reserve { visibility:hidden; pointer-events:none; user-select:none; }
+.hero-typewriter-caret { display:inline-block; width:.028em; height:.82em; margin-inline-start:.035em; vertical-align:-.045em; background:currentColor; }
+.hero-typewriter-caret.is-complete { opacity:0; }
+@keyframes hero-caret-blink { 0%,45% { opacity:1; } 46%,100% { opacity:0; } }
+@media(prefers-reduced-motion:no-preference) { .hero-typewriter-line>.hero-typewriter-caret:not(.is-complete) { animation:hero-caret-blink .85s step-end infinite; } }
+@media(prefers-reduced-motion:reduce) { .hero-typewriter { transition:none; } }
