@@ -1,6 +1,7 @@
 export const studioTabs = ["overview", "content", "analytics", "comments", "playlists", "live", "subtitles", "channel", "tools"] as const;
 export type StudioTab = typeof studioTabs[number];
 export type StudioStatus = { connected: boolean; clientConfigured: boolean; managed: boolean; redirectUri: string; channel?: { id: string; title: string } };
+export const youtubeOAuthErrors = ["YT_CLIENT_INVALID", "YT_REDIRECT", "YT_AUTH_EXPIRED", "YT_NO_CHANNEL", "YT_API_DISABLED", "YT_PERMISSION", "YT_QUOTA", "YT_RECONNECT", "YT_UNAVAILABLE"] as const;
 export const youtubeObject = (value: unknown): Record<string, unknown> => value && typeof value === "object" && !Array.isArray(value) ? value as Record<string, unknown> : {};
 export const youtubeString = (value: unknown) => typeof value === "string" ? value : "";
 export const youtubeItems = (value: unknown) => Array.isArray(youtubeObject(value).items) ? (youtubeObject(value).items as unknown[]).map(youtubeObject) : [];

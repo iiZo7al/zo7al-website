@@ -8,10 +8,10 @@ import { communityCopy } from '@/lib/data/community-copy';
 import { NETWORK_PROFILE_ID,NETWORK_PROFILE_NAME } from '@/lib/data/player-statistics';
 type LeaderStat='streak'|'kills'|'playtimeSeconds';
 type Server={id:string;name:string;stats:string[]};
-const stats:LeaderStat[]=['streak','kills','playtimeSeconds'];
+const stats:LeaderStat[]=['playtimeSeconds','streak','kills'];
 export default function MinecraftLeaderboard(){
  const locale=useLocale(),c=communityCopy(locale),hub=useTranslations('hub');
- const [server,setServer]=useState<string>(NETWORK_PROFILE_ID),[stat,setStat]=useState<LeaderStat>('streak');
+ const [server,setServer]=useState<string>(NETWORK_PROFILE_ID),[stat,setStat]=useState<LeaderStat>('playtimeSeconds');
  const [data,setData]=useState({rows:[] as {username:string;value:number}[],servers:[{id:NETWORK_PROFILE_ID,name:NETWORK_PROFILE_NAME,stats}] as Server[],loading:true,available:true});
  useEffect(()=>{const controller=new AbortController();void fetch('/api/minecraft/leaderboard?'+new URLSearchParams({server,stat}),{signal:controller.signal}).then(async response=>({response,value:await response.json()})).then(({response,value})=>{if(!controller.signal.aborted)setData({rows:value.rows??[],servers:value.servers?.length?value.servers:[{id:NETWORK_PROFILE_ID,name:NETWORK_PROFILE_NAME,stats}],available:response.ok&&value.available,loading:false});}).catch(()=>{if(!controller.signal.aborted)setData(s=>({...s,available:false,loading:false,rows:[]}));});return()=>controller.abort();},[server,stat]);
  const availableStats=data.servers.find(s=>s.id===server)?.stats??[],number=new Intl.NumberFormat(locale,{maximumFractionDigits:stat==='playtimeSeconds'?1:0});

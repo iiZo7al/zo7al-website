@@ -2,7 +2,7 @@ import { hasAdminSession, privateHeaders, readJSON, sameOrigin } from "@/lib/ser
 import { limitAttempt } from "@/lib/server/site-content";
 import { youtubeStatus, saveYoutubeApp, startYoutubeOAuth, disconnectYoutube } from "@/lib/server/youtube-auth";
 import { readYoutubeStudio, writeYoutubeStudio, YoutubeError } from "@/lib/server/youtube-studio";
-import { youtubeObject } from "@/lib/data/youtube-studio";
+import { youtubeObject, youtubeOAuthErrors } from "@/lib/data/youtube-studio";
 import { clearPlatformCache } from "@/lib/server/dashboard-platforms";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -10,7 +10,7 @@ export const maxDuration = 60;
 const json = (value: unknown, status = 200) => Response.json(value, { status, headers: privateHeaders });
 function failed(error: unknown) {
   if (error instanceof YoutubeError) return json({ error: error.code }, error.status);
-  const code = error instanceof Error && ["INVALID", "YT_SETUP", "YT_RECONNECT", "YT_CLIENT_MISSING", "YT_MANAGED"].includes(error.message) ? error.message : error instanceof SyntaxError ? "INVALID" : "YT_UNAVAILABLE";
+  const code = error instanceof Error && ["INVALID", "YT_SETUP", "YT_CLIENT_MISSING", "YT_MANAGED", ...youtubeOAuthErrors].includes(error.message) ? error.message : error instanceof SyntaxError ? "INVALID" : "YT_UNAVAILABLE";
   return json({ error: code }, code === "INVALID" ? 400 : code === "YT_UNAVAILABLE" ? 503 : 409);
 }
 export async function GET(request: Request) {

@@ -6,7 +6,7 @@ import { communityCopy } from '@/lib/data/community-copy';
 import type { CommunityEntry } from '@/lib/data/community';
 import { useCommunity } from './CommunityProvider';
 
-function Poll({entry}:{entry:CommunityEntry}) {
+export function CommunityPollCard({entry}:{entry:CommunityEntry}) {
  const locale=useLocale(),c=communityCopy(locale),{votingAvailable,refresh}=useCommunity(),id=useId(),lock=useRef(false);
  const [selected,setSelected]=useState<number|null>(null),[busy,setBusy]=useState(false),[message,setMessage]=useState(''),[done,setDone]=useState(false);
  const options=entry.payload.options as string[],counts=entry.votes??options.map(()=>0),total=counts.reduce((sum,n)=>sum+n,0),deadline=typeof entry.payload.endsAt==='string'?entry.payload.endsAt:null;
@@ -28,5 +28,5 @@ function Poll({entry}:{entry:CommunityEntry}) {
 }
 export default function CommunityPolls({topic='minecraft'}:{topic?:'minecraft'|'fortnite'}) {
  const {entries,loading,available}=useCommunity(),c=communityCopy(useLocale()),polls=entries.filter(e=>e.kind==='poll'&&e.topic===topic);
- return polls.length?<div className="community-grid">{polls.map(entry=><Poll key={entry.id} entry={entry}/>)}</div>:<p className="community-empty" role="status"><Vote size={20} aria-hidden="true"/>{loading?c.loading:available?c.empty:c.unavailable}</p>;
+ return polls.length?<div className="community-grid">{polls.map(entry=><CommunityPollCard key={entry.id} entry={entry}/>)}</div>:<p className="community-empty" role="status"><Vote size={20} aria-hidden="true"/>{loading?c.loading:available?c.empty:c.unavailable}</p>;
 }

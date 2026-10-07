@@ -41,7 +41,7 @@ export default function DashboardManagement({ data,tab,busy,mutate }: { data:Das
           if (await mutate("content",{ id:editing?.id,kind:tab,topic:form.get("topic")??"minecraft",locale:form.get("locale"),title:form.get("title"),body:form.get("body"),
             published:form.get("published")==="on",startsAt:date?new Date(date+":00+03:00").toISOString():null,registrationUrl:form.get("registrationUrl"),imageId:form.get("imageId") })) { setEditing(null); setEditorVersion(value=>value+1); if (!editing) element.reset(); }
         }}>
-          <div className="dash-section-heading"><h3>{t(editing?"edit":"create")}</h3><span className="dash-tag">CMS</span></div>
+          <div className="dash-section-heading"><h3>{t(editing?"edit":"create")}</h3><span className="dash-tag">{d("manage")}</span></div>
           <label>{t("language")}<select name="locale" defaultValue={editing?.locale??locale}>{hubLocales.map(l => <option key={l} value={l}>{l.toUpperCase()}</option>)}</select></label>
           {tab!=="rule"&&<label>{c.topic}<select name="topic" defaultValue={editing?.topic??(contentTopic||"minecraft")}><option value="minecraft">Minecraft</option><option value="fortnite">Fortnite</option></select></label>}
           <label>{t("title")}<input name="title" required maxLength={160} defaultValue={editing?.title??""}/></label>

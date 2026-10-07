@@ -1,4 +1,3 @@
-import CommonErrors from "@/components/hub/CommonErrors";
 import MinecraftCommunity from "@/components/hub/MinecraftCommunity";
 import ProjectExtras,{ProjectStatus} from "@/components/community/ProjectExtras";
 import LinkHub from "@/components/hub/MinecraftHubLinks";
@@ -79,7 +78,6 @@ export default async function MinecraftPage() {
         </div>
       </section>
 
-      <CommonErrors />
       <MinecraftCommunity />
     </main>
   );

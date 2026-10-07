@@ -37,6 +37,7 @@ const uploadModule = moduleUrl('src/lib/server/youtube-upload.ts', { './youtube-
 const limits = stub('export async function limitAttempt(){return globalThis.__youtubeTests.state.limits;}');
 const replacements = { '@/lib/server/site-security': security, '@/lib/server/site-content': limits, '@/lib/server/youtube-auth': authModule, '@/lib/server/youtube-studio': studioModule, '@/lib/server/youtube-upload': uploadModule, '@/lib/data/youtube-studio': data, '@/lib/server/dashboard-platforms': stub('export function clearPlatformCache(){}') };
 const route = await import(moduleUrl('src/app/api/admin/youtube/route.ts', replacements)), uploadRoute = await import(moduleUrl('src/app/api/admin/youtube/upload/route.ts', replacements));
+const callbackRoute = await import(moduleUrl('src/app/api/admin/youtube/oauth/callback/route.ts', replacements));
 const media = await import(moduleUrl('src/app/api/admin/youtube/media/route.ts', { ...replacements, '"sharp"': JSON.stringify(import.meta.resolve('sharp')) }));
 const keys = ['ZO7AL_ADMIN_PASSWORD_HASH', 'ZO7AL_ADMIN_SESSION_SECRET', 'YOUTUBE_OAUTH_CLIENT_ID', 'YOUTUBE_OAUTH_CLIENT_SECRET'];
 const env = Object.fromEntries(keys.map(k => [k, process.env[k]])), originalFetch = globalThis.fetch;
@@ -74,6 +75,48 @@ test('a disconnect or app replacement cancels an OAuth callback already exchangi
  globalThis.fetch = async raw => { if (String(raw).includes('/token')) { state.oauth.clear(); return Response.json({ access_token: 'token', refresh_token: 'refresh', expires_in: 3600 }); } return Response.json({ items: [{ id: channelId, snippet: { title: 'Zo7al' } }] }); };
  await assert.rejects(auth.finishYoutubeOAuth(new Request('https://zo7al.test/api/admin/youtube/oauth/callback?state=' + url.searchParams.get('state') + '&code=test', { headers: { cookie: started.cookie.split(';')[0] } })), /YT_RECONNECT/);
  assert.equal(state.auth, null);
+});
+test('OAuth keeps the public host consistent through proxy URLs and the code exchange', async () => {
+ reset(false); const publicHost = 'zo7al.example', proxyHeaders = { host: publicHost, 'x-forwarded-proto': 'https' };
+ const status = await auth.youtubeStatus(new Request('http://internal.test/api/admin/youtube', { headers: proxyHeaders }));
+ const started = await auth.startYoutubeOAuth(new Request('https://deployment.test/api/admin/youtube', { headers: proxyHeaders }));
+ const redirect = new URL(started.url).searchParams.get('redirect_uri'); assert.equal(redirect, status.redirectUri); assert.equal(redirect, 'https://' + publicHost + '/api/admin/youtube/oauth/callback');
+ const calls = []; globalThis.fetch = async (url, options) => { calls.push(options); return String(url).includes('/token') ? Response.json({ access_token: 'new-token', refresh_token: 'new-refresh', expires_in: 3600 }) : Response.json({ items: [{ id: channelId, snippet: { title: 'Zo7al' } }] }); };
+ const request = new Request('https://different-proxy.test/api/admin/youtube/oauth/callback?state=' + new URL(started.url).searchParams.get('state') + '&code=test-code', { headers: { ...proxyHeaders, cookie: started.cookie.split(';')[0] } });
+ const response = await callbackRoute.GET(request), location = new URL(response.headers.get('location'));
+ assert.equal(location.origin, 'https://' + publicHost); assert.equal(location.searchParams.get('oauth'), 'connected'); assert.equal(calls[0].body.get('redirect_uri'), redirect);
+ assert.doesNotMatch(location.href, /test-code|new-token|new-refresh/);
+ assert.throws(() => auth.youtubeCallback(new Request('https://zo7al.test', { headers: { host: 'evil.test/path' } })), /INVALID/);
+});
+test('reconnecting the same channel reuses its refresh token when Google omits a new one', async () => {
+ reset(); const started = await auth.startYoutubeOAuth(new Request('https://zo7al.test/api/admin/youtube'));
+ globalThis.fetch = async url => String(url).includes('/token') ? Response.json({ access_token: 'replacement-token', expires_in: 3600 }) : Response.json({ items: [{ id: channelId, snippet: { title: 'Zo7al' } }] });
+ const response = await callbackRoute.GET(new Request('https://zo7al.test/api/admin/youtube/oauth/callback?state=' + new URL(started.url).searchParams.get('state') + '&code=test-code', { headers: { cookie: started.cookie.split(';')[0] } }));
+ assert.equal(new URL(response.headers.get('location')).searchParams.get('oauth'), 'connected');
+ const connected = await auth.youtubeAuth(); assert.equal(connected.accessToken, 'replacement-token'); assert.equal(connected.refreshToken, 'test-refresh-token');
+});
+test('refresh tokens never cross channels and failed reconnections preserve the existing identity', async () => {
+ reset(); const previous = state.auth, started = await auth.startYoutubeOAuth(new Request('https://zo7al.test/api/admin/youtube'));
+ globalThis.fetch = async url => String(url).includes('/token') ? Response.json({ access_token: 'another-token', expires_in: 3600 }) : Response.json({ items: [{ id: 'UC' + 'b'.repeat(22), snippet: { title: 'Other channel' } }] });
+ const response = await callbackRoute.GET(new Request('https://zo7al.test/api/admin/youtube/oauth/callback?state=' + new URL(started.url).searchParams.get('state') + '&code=test-code', { headers: { cookie: started.cookie.split(';')[0] } }));
+ assert.equal(new URL(response.headers.get('location')).searchParams.get('reason'), 'YT_RECONNECT'); assert.equal(state.auth, previous);
+});
+test('OAuth reports safe actionable errors without exposing provider responses or credentials', async () => {
+ for (const [stage, body, status, reason] of [
+  ['token', { error: 'invalid_client', error_description: 'private-provider-message' }, 401, 'YT_CLIENT_INVALID'],
+  ['token', { error: 'redirect_uri_mismatch', error_description: 'private-provider-message' }, 400, 'YT_REDIRECT'],
+  ['channel', { error: { errors: [{ reason: 'accessNotConfigured' }], message: 'private-provider-message' } }, 403, 'YT_API_DISABLED'],
+  ['channel', { error: { errors: [{ reason: 'insufficientPermissions' }] } }, 403, 'YT_PERMISSION'],
+  ['channel', { items: [] }, 200, 'YT_NO_CHANNEL'],
+ ]) {
+  reset(); const previous = state.auth, started = await auth.startYoutubeOAuth(new Request('https://zo7al.test/api/admin/youtube'));
+  globalThis.fetch = async url => String(url).includes('/token') ? stage === 'token' ? Response.json(body, { status }) : Response.json({ access_token: 'private-access-token', refresh_token: 'private-refresh-token', expires_in: 3600 }) : Response.json(body, { status });
+  const response = await callbackRoute.GET(new Request('https://zo7al.test/api/admin/youtube/oauth/callback?state=' + new URL(started.url).searchParams.get('state') + '&code=private-code', { headers: { cookie: started.cookie.split(';')[0] } }));
+  const location = response.headers.get('location'); assert.equal(response.status, 303); assert.equal(new URL(location).searchParams.get('oauth'), 'failed'); assert.equal(new URL(location).searchParams.get('reason'), reason);
+  assert.doesNotMatch(location, /private-|clientSecret|sealed|error_description/); assert.equal(state.auth, previous); assert.match(response.headers.get('set-cookie'), /Max-Age=0/);
+ }
+ const expired = await callbackRoute.GET(new Request('https://zo7al.test/api/admin/youtube/oauth/callback?state=expired&code=private-code'));
+ assert.equal(new URL(expired.headers.get('location')).searchParams.get('reason'), 'YT_AUTH_EXPIRED');
 });
 test('video updates preserve untouched fields and block mutation of another channel', async () => {
  reset(); const calls = [];

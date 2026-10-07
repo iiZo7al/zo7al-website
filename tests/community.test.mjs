@@ -16,6 +16,7 @@ const communityDataUrl=moduleUrl('src/lib/data/community.ts',{'./player-statisti
 const defaultsUrl=moduleUrl('src/lib/data/community-defaults.ts',{'./community':communityDataUrl});
 const {validateCommunity,validateGallerySubmission,safeMediaLink,achievementProgress,DEFAULT_ACHIEVEMENTS}=await import(communityDataUrl);
 const copy=await import(moduleUrl('src/lib/data/community-copy.ts'));
+const {communityNewsFeed}=await import(moduleUrl('src/lib/data/community-news.ts'));
 const id='a1234567-1234-1234-1234-123456789abc',bridgeId='b1234567-1234-1234-1234-123456789abc',token='a'.repeat(64);
 const state={queries:[],previous:null,poll:null,voters:new Set(),limits:true,notificationFails:false,notifications:[],entries:[],found:[],bridges:[],scores:[],galleryImage:null,failInsert:false,rollbacks:0};
 const database={async query(sql,args=[]){
@@ -182,6 +183,28 @@ test('leaderboard server choices expose only enabled statistics including an emp
  assert.deepEqual(value.servers[0].stats,['streak','playtimeSeconds']);assert.deepEqual(value.servers[2].stats,[]);
  const query=state.queries.find(q=>q.sql.startsWith('WITH selected'));assert.match(query.sql,/b.enabled/);assert.match(query.sql,/b.visible_stats \? \$1/);assert.match(query.sql,/max\(value\)/);assert.equal(query.args[1],null);
  reset();await leaderboardRoute.GET(new Request('https://zo7al.test/api/minecraft/leaderboard?stat=kills&server='+bridgeId));const specific=state.queries.find(q=>q.sql.startsWith('WITH selected'));assert.match(specific.sql,/sum\(value\)/);assert.equal(specific.args[1],bridgeId);
+});
+test('news and polls share a newest-first feed without mixing game topics',()=>{
+ const news=[{id:'old-news',createdAt:'2026-10-06T12:00:00Z'},{id:'new-news',createdAt:'2026-10-07T12:00:00Z'}];
+ const polls=[{id:'minecraft-poll',kind:'poll',topic:'minecraft',createdAt:'2026-10-07T13:00:00Z',votes:[2,3]},{id:'fortnite-poll',kind:'poll',topic:'fortnite',createdAt:'2026-10-07T14:00:00Z'},{id:'gallery',kind:'gallery',topic:'minecraft',createdAt:'2026-10-07T15:00:00Z'}];
+ const feed=communityNewsFeed(news,polls,'minecraft');
+ assert.deepEqual(feed.map(entry=>entry.type==='poll'?entry.entry.id:entry.item.id),['minecraft-poll','new-news','old-news']);
+ assert.deepEqual(feed[0].entry.votes,[2,3]);assert.deepEqual(news.map(entry=>entry.id),['old-news','new-news']);
+ assert.deepEqual(communityNewsFeed([],polls,'fortnite').map(entry=>entry.entry.id),['fortnite-poll']);
+});
+test('news feed handles poll-only, empty and undated entries without invented dates',()=>{
+ const poll={id:'poll',kind:'poll',topic:'minecraft',createdAt:'2026-10-07T12:00:00Z'};
+ assert.equal(communityNewsFeed([],[poll],'minecraft')[0].entry,poll);
+ assert.deepEqual(communityNewsFeed([],[],'minecraft'),[]);
+ assert.deepEqual(communityNewsFeed([{id:'undated'},{id:'invalid',createdAt:'invalid'}],[poll],'minecraft').map(entry=>entry.type==='poll'?entry.entry.id:entry.item.id),['poll','undated','invalid']);
+});
+test('leaderboard defaults to summed network playtime from enabled statistics',async()=>{
+ reset();state.bridges=[{id:bridgeId,name:'Lobby',visibleStats:['playtimeSeconds']}];state.scores=[{username:'Player',value:7200}];
+ const response=await leaderboardRoute.GET(new Request('https://zo7al.test/api/minecraft/leaderboard'));const value=await response.json();
+ assert.equal(response.status,200);assert.equal(value.stat,'playtimeSeconds');assert.equal(value.server,'network');
+ assert.deepEqual(value.rows,[{username:'Player',value:7200}]);assert.deepEqual(value.servers[0].stats,['playtimeSeconds']);
+ const query=state.queries.find(q=>q.sql.startsWith('WITH selected'));
+ assert.deepEqual(query.args,['playtimeSeconds',null]);assert.match(query.sql,/sum\(value\)/);assert.match(query.sql,/b.visible_stats \? \$1/);assert.match(query.sql,/ORDER BY t.value DESC/);
 });
 test('leaderboard rejects unsupported statistics and arbitrary server identifiers',async()=>{
  reset();for(const url of ['?stat=coins','?server=evil','?stat=kills;DROP TABLE'])assert.equal((await leaderboardRoute.GET(new Request('https://zo7al.test/api/minecraft/leaderboard'+url))).status,400);

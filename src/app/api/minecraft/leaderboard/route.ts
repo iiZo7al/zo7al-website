@@ -4,7 +4,7 @@ import { NETWORK_PROFILE_ID,NETWORK_PROFILE_NAME,visiblePlayerStats } from '@/li
 export const runtime='nodejs';
 export const dynamic='force-dynamic';
 export async function GET(request:Request){
- const params=new URL(request.url).searchParams,stat=params.get('stat')??'streak',server=params.get('server')??NETWORK_PROFILE_ID;
+ const params=new URL(request.url).searchParams,stat=params.get('stat')??'playtimeSeconds',server=params.get('server')??NETWORK_PROFILE_ID;
  if(!['streak','kills','playtimeSeconds'].includes(stat)||server!==NETWORK_PROFILE_ID&&!isUUID(server))return Response.json({error:'INVALID'},{status:400});
  try{
   const db=await siteDatabase();

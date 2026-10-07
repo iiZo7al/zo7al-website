@@ -5,6 +5,7 @@ import { CalendarDays, Images, Newspaper, Vote } from "lucide-react";
 import SectionHeader from "@/components/ui/SectionHeader";
 import ContentFeed from "@/components/hub/ContentFeed";
 import CommunitySections from "@/components/community/CommunitySections";
+import CommunityNews from "@/components/community/CommunityNews";
 
 export function FortniteCommunityLinks() {
   const t = useTranslations("hub");
@@ -25,7 +26,7 @@ export default function FortniteCommunity() {
     <section id="news" className="hub-section scroll-mt-24">
       <div className="hub-section-inner">
         <SectionHeader eyebrow="FORTNITE CREATIVE" title={t("fortniteNews")} text={t("fortniteNewsIntro")}/>
-        <div className="mt-14"><ContentFeed kind="news" topic="fortnite" limit={6} expandable/></div>
+        <div className="mt-14"><CommunityNews topic="fortnite"/></div>
       </div>
     </section>
     <section id="events" className="hub-section scroll-mt-24">
