@@ -30,14 +30,23 @@ function validApp(value: unknown): App {
   return { clientId: app.clientId, clientSecret: app.clientSecret };
 }
 function environmentApp(): App | null {
-  try { return validApp({ clientId: process.env.YOUTUBE_OAUTH_CLIENT_ID, clientSecret: process.env.YOUTUBE_OAUTH_CLIENT_SECRET }); } catch { return null; }
+  try { return validApp({ clientId: process.env.YOUTUBE_OAUTH_CLIENT_ID?.trim(), clientSecret: process.env.YOUTUBE_OAUTH_CLIENT_SECRET?.trim() }); } catch { return null; }
 }
 async function appCredentials(): Promise<App | null> {
   const configured = environmentApp(); if (configured) return configured;
   const row = (await (await siteDatabase()).query("SELECT sealed FROM youtube_studio_app WHERE id=true")).rows[0];
   try { return row ? validApp(openYoutube(row.sealed, "app")) : null; } catch { return null; }
 }
-export const youtubeCallback = (request: Request) => new URL("/api/admin/youtube/oauth/callback", request.url).href;
+export function youtubeCallback(request: Request) {
+  const origin = new URL(request.url), host = request.headers.get("host");
+  if (host) {
+    if (/[\s/\\?#@]/.test(host)) throw Error("INVALID");
+    const publicUrl = new URL(origin.protocol + "//" + host);
+    origin.host = publicUrl.host;
+  }
+  if (request.headers.get("x-forwarded-proto") === "https") origin.protocol = "https:";
+  return new URL("/api/admin/youtube/oauth/callback", origin.origin).href;
+}
 export async function youtubeStatus(request: Request) {
   const [app, result] = await Promise.all([appCredentials(), (await siteDatabase()).query("SELECT channel_id,title FROM youtube_studio_auth WHERE id=true")]);
   const row = result.rows[0];
@@ -60,8 +69,11 @@ export async function youtubeJSON(response: Response): Promise<Record<string, un
 }
 async function tokenRequest(body: URLSearchParams) {
   const response = await fetch("https://oauth2.googleapis.com/token", { method: "POST", body, cache: "no-store", redirect: "error", signal: AbortSignal.timeout(15000) });
-  if (!response.ok) throw Error("YT_RECONNECT");
   const value = await youtubeJSON(response);
+  if (!response.ok) {
+    const error = youtubeString(value.error);
+    throw Error(error === "invalid_client" || error === "unauthorized_client" ? "YT_CLIENT_INVALID" : error === "redirect_uri_mismatch" ? "YT_REDIRECT" : error === "access_denied" ? "YT_PERMISSION" : response.status === 429 ? "YT_QUOTA" : response.status >= 500 ? "YT_UNAVAILABLE" : "YT_RECONNECT");
+  }
   if (typeof value.access_token !== "string" || value.access_token.length > 8192 || typeof value.expires_in !== "number" || value.expires_in < 60 || value.expires_in > 86400) throw Error("YT_RECONNECT");
   return value;
 }
@@ -84,14 +96,28 @@ export async function finishYoutubeOAuth(request: Request) {
   if (!row) throw Error("INVALID");
   if (params.has("error")) { await (await siteDatabase()).query("DELETE FROM youtube_studio_oauth WHERE state_hash=$1", [tokenHash(state)]); return "cancelled"; }
   const pending = youtubeObject(openYoutube(row.sealed, "oauth")), app = validApp(pending), code = params.get("code");
-  if (!code || code.length > 4096 || pending.redirectUri !== youtubeCallback(request)) throw Error("INVALID");
+  if (pending.redirectUri !== youtubeCallback(request)) throw Error("YT_REDIRECT");
+  if (!code || code.length > 4096) throw Error("INVALID");
   const value = await tokenRequest(new URLSearchParams({ client_id: app.clientId, client_secret: app.clientSecret, grant_type: "authorization_code", code, code_verifier: String(pending.verifier), redirect_uri: String(pending.redirectUri) }));
-  if (typeof value.refresh_token !== "string" || value.refresh_token.length > 8192 || !value.refresh_token) throw Error("YT_RECONNECT");
   const response = await fetch("https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics&mine=true", { headers: { Authorization: "Bearer " + value.access_token }, cache: "no-store", redirect: "error", signal: AbortSignal.timeout(12000) });
-  if (!response.ok) throw Error("YT_RECONNECT");
-  const channel = youtubeItems(await youtubeJSON(response))[0];
-  if (!channel || !/^UC[\w-]{22}$/.test(youtubeString(channel.id))) throw Error("YT_RECONNECT");
-  const auth: YoutubeAuth = { ...app, accessToken: String(value.access_token), refreshToken: value.refresh_token, expiresAt: Date.now() + Number(value.expires_in) * 1000, channelId: String(channel.id), title: youtubeString(youtubeObject(channel.snippet).title).slice(0, 200) };
+  const channels = await youtubeJSON(response);
+  if (!response.ok) {
+    const error = youtubeObject(channels.error), reasons = Array.isArray(error.errors) ? error.errors.map(item => youtubeString(youtubeObject(item).reason)) : [];
+    throw Error(reasons.some(reason => ["accessNotConfigured", "serviceDisabled"].includes(reason)) ? "YT_API_DISABLED" : response.status === 401 ? "YT_RECONNECT" : response.status === 429 || reasons.some(reason => ["quotaExceeded", "dailyLimitExceeded", "rateLimitExceeded"].includes(reason)) ? "YT_QUOTA" : response.status === 403 ? "YT_PERMISSION" : "YT_UNAVAILABLE");
+  }
+  const channel = youtubeItems(channels)[0];
+  if (!channel || !/^UC[\w-]{22}$/.test(youtubeString(channel.id))) throw Error("YT_NO_CHANNEL");
+  let refreshToken = youtubeString(value.refresh_token);
+  if (!refreshToken) {
+    // Google may omit a new refresh token when the same channel reconnects.
+    const previous = (await (await siteDatabase()).query("SELECT sealed FROM youtube_studio_auth WHERE id=true")).rows[0];
+    if (previous) try {
+      const saved = youtubeObject(openYoutube(previous.sealed, "auth"));
+      if (saved.clientId === app.clientId && saved.clientSecret === app.clientSecret && saved.channelId === channel.id) refreshToken = youtubeString(saved.refreshToken);
+    } catch { /* A different or unreadable identity must obtain fresh consent. */ }
+  }
+  if (!refreshToken || refreshToken.length > 8192) throw Error("YT_RECONNECT");
+  const auth: YoutubeAuth = { ...app, accessToken: String(value.access_token), refreshToken, expiresAt: Date.now() + Number(value.expires_in) * 1000, channelId: String(channel.id), title: youtubeString(youtubeObject(channel.snippet).title).slice(0, 200) };
   const client = await (await siteDatabase()).connect();
   try {
     await client.query("BEGIN");

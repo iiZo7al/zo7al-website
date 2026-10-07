@@ -441,7 +441,7 @@
         "id": "leaderboard",
         "category": "minecraft",
         "q": "How does the Minecraft leaderboard work?",
-        "a": "Choose a server and statistic in the leaderboard. It ranks actual synchronized player data; playtime is displayed in hours. Select a player to open their profile. An empty table means no synchronized values are available for that choice.",
+        "a": "The leaderboard opens on Zo7al Network, ordered by total playtime in hours. Only statistics enabled for each server contribute to network totals. You can choose another server or statistic and select a player to open their profile. An empty table means no synchronized values are available for that selection.",
         "href": "/minecraft#leaderboard",
         "action": "View leaders"
       },
@@ -457,7 +457,7 @@
         "id": "polls",
         "category": "community",
         "q": "How do community votes work?",
-        "a": "Choose an option in an open poll and submit it. Your ballot and results are stored in the database, and your selection returns in the same browser after reloading. One vote per browser identity; clearing cookies changes that identity.",
+        "a": "Polls appear together with news in each game’s News section. Select an option in an open poll and submit your vote. Votes and results are saved, and your selection returns in the same browser after reloading. Each browser identity can vote once per poll.",
         "href": "/minecraft#community-polls",
         "action": "View community votes"
       },
@@ -489,7 +489,7 @@
         "id": "news-events",
         "category": "community",
         "q": "Where are news and events published?",
-        "a": "Published news appears on the homepage. Fortnite has its own news, events, gallery and polls at /fortnite, independent of Minecraft. Minecraft events are at /minecraft. Use Show more for additional events. Future event registrations use your Minecraft or Epic Games name according to the event; publishing is managed in the dashboard.",
+        "a": "Minecraft and Fortnite each have their own News section containing news and community polls. Their events and galleries remain separate. Published news also appears on the homepage. Use Show more to see additional events; registrations ask for your Minecraft or Epic Games name according to the event.",
         "href": "/minecraft#events",
         "action": "View events"
       },
@@ -508,6 +508,22 @@
         "a": "Yes. Published content, polls and ballots, gallery submissions, goals and notification settings are stored in the database and survive deployments. The team can edit or unpublish content. Player rankings and achievement progress continue to use real synchronized statistics.",
         "href": "/minecraft#community-polls",
         "action": "View community votes"
+      },
+      {
+        "id": "common-errors",
+        "category": "support",
+        "q": "Where can I find solutions to common connection errors?",
+        "a": "Open Common errors in the Support center for connection and login solutions. Expand the error that matches your message, follow its steps, and contact support with your game version and error message if the problem continues.",
+        "href": "/support#common-errors",
+        "action": "View common errors"
+      },
+      {
+        "id": "modpack-changelog",
+        "category": "modpacks",
+        "q": "Where can I read a modpack’s changelog?",
+        "a": "Open the changelog on the Modpacks page or in a modpack’s details. Choose a project and Modrinth or CurseForge to see published release notes. Opening one release closes the previous one. If a source has no changelog, the page shows that state instead of invented notes.",
+        "href": "/modpacks#changelog",
+        "action": "View changelog"
       }
     ],
     "clearSearch": "Clear search",
@@ -519,7 +535,8 @@
     "siteLabel": "Site",
     "platformsLabel": "Platforms",
     "copyright": "Zo7al. All rights reserved.",
-    "disclaimer": "Not an official Minecraft, Epic Games or Fortnite service."
+    "disclaimer": "Not an official Minecraft, Epic Games or Fortnite service.",
+    "iconCredit": "Uicons by Flaticon"
   },
   "language": {
     "label": "Language"
@@ -1323,7 +1340,8 @@
     "fleetState_installing": "Installing",
     "fleetState_unknown": "Unknown",
     "fleetCount": "{count} servers",
-    "backToServers": "Back to servers"
+    "backToServers": "Back to servers",
+    "twoFactor": "Two-factor authentication"
   },
   "minecraftBridge": {
     "title": "Minecraft player profiles",
@@ -1505,7 +1523,12 @@
     "YT_QUOTA": "A request limit or Google API quota was reached. Try again later.",
     "YT_PERMISSION": "Google denied this action. Check channel permissions, API scopes and eligibility.",
     "YT_NOT_FOUND": "This item was not found in your channel.",
-    "YT_UNAVAILABLE": "YouTube could not be reached. Your data was not marked as saved."
+    "YT_UNAVAILABLE": "YouTube could not be reached. Your data was not marked as saved.",
+    "YT_CLIENT_INVALID": "Google rejected the OAuth app credentials. Check that the client ID and secret belong to the same Web application in Google Cloud.",
+    "YT_REDIRECT": "The return address does not match. Copy the redirect URI from connection settings into Google Cloud, then start and finish linking on the same site address.",
+    "YT_AUTH_EXPIRED": "The linking session expired or belongs to another browser. Start Connect with Google again in this browser.",
+    "YT_NO_CHANNEL": "Google signed in, but no YouTube channel was found for the selected account. Reconnect and choose the account that owns your channel.",
+    "YT_API_DISABLED": "Enable YouTube Data API v3 in the Google Cloud project that owns this OAuth app, then reconnect the channel."
   },
   "oauth": {
     "appSettings": "Application settings",

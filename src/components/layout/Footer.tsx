@@ -109,7 +109,7 @@ export default async function Footer() {
       >
         <p>© {SITE.year} {t("footer.copyright")}</p>
         <p>{t("footer.disclaimer")}</p>
-        <a href="https://www.flaticon.com/uicons" target="_blank" rel="noopener noreferrer" className="underline underline-offset-4">Uicons by Flaticon</a>
+        <a href="https://www.flaticon.com/uicons" target="_blank" rel="noopener noreferrer" className="underline underline-offset-4">{t("footer.iconCredit")}</a>
       </div>
     </footer>
   );

@@ -1,14 +1,18 @@
 import Link from "next/link";
-import { getTranslations } from "next-intl/server";
-import { CalendarDays, Headset, UserRound } from "lucide-react";
+import { getLocale, getTranslations } from "next-intl/server";
+import { CalendarDays, Images, Trophy, UserRound, Vote } from "lucide-react";
+import { communityCopy } from "@/lib/data/community-copy";
 export default async function MinecraftHubLinks() {
-  const t = await getTranslations("hub");
+  const [t,locale] = await Promise.all([getTranslations("hub"),getLocale()]);
+  const c = communityCopy(locale);
   const links = [
-    { key: "player", href: "#player", icon: UserRound },
-    { key: "events", href: "#events", icon: CalendarDays },
-    { key: "support", href: "/support", icon: Headset },
+    { label: t("player"), href: "#player", icon: UserRound },
+    { label: t("events"), href: "#events", icon: CalendarDays },
+    { label: c.gallery, href: "#community-gallery", icon: Images },
+    { label: c.polls, href: "#community-polls", icon: Vote },
+    { label: c.leaderboard, href: "#leaderboard", icon: Trophy },
   ] as const;
-  return <nav className="hub-actions mt-6" aria-label={t("player")}>
-    {links.map(({key,href,icon:Icon}) => <Link key={key} href={href} className="hub-button" data-cursor="button"><Icon size={17} aria-hidden="true"/>{t(key)}</Link>)}
+  return <nav className="hub-actions mt-6" aria-label={c.community}>
+    {links.map(({label,href,icon:Icon}) => <Link key={href} href={href} className="hub-button" data-cursor="button"><Icon size={17} aria-hidden="true"/>{label}</Link>)}
   </nav>;
 }

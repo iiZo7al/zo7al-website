@@ -14,6 +14,7 @@ export default function ModpackChangelog() {
   const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
   const [source, setSource] = useState<ChangelogSource | "all">("all"), [projectKey, setProjectKey] = useState("all");
   const [refresh, setRefresh] = useState(0), [limit, setLimit] = useState(6);
+  const [openRelease, setOpenRelease] = useState<string | null | undefined>(undefined);
 
   useEffect(() => {
     const controller = new AbortController(), timeout = setTimeout(() => controller.abort(), 60000);
@@ -43,15 +44,15 @@ export default function ModpackChangelog() {
       <SectionHeader eyebrow={t("changelogEyebrow")} title={t("changelogTitle")} text={t("changelogText")} />
       <div className="modpack-changelog-toolbar mt-12">
         <div className="hub-actions" role="group" aria-label={t("changelogSource")}>
-          {(["all", ...CHANGELOG_SOURCES] as const).map(value => <button key={value} type="button" className="hub-button" aria-pressed={source === value} data-cursor="button" onClick={() => { setSource(value); setProjectKey("all"); setLimit(6); }}>{value === "all" ? t("changelogAllSources") : value}</button>)}
+          {(["all", ...CHANGELOG_SOURCES] as const).map(value => <button key={value} type="button" className="hub-button" aria-pressed={source === value} data-cursor="button" onClick={() => { setSource(value); setProjectKey("all"); setLimit(6); setOpenRelease(undefined); }}>{value === "all" ? t("changelogAllSources") : value}</button>)}
         </div>
         <div className="modpack-changelog-controls">
           <label htmlFor={selectId}>{t("changelogProject")}</label>
-          <select id={selectId} className="modpack-changelog-select" value={projectKey} onChange={event => { setProjectKey(event.target.value); setLimit(6); }}>
+          <select id={selectId} className="modpack-changelog-select" value={projectKey} onChange={event => { setProjectKey(event.target.value); setLimit(6); setOpenRelease(undefined); }}>
             <option value="all">{t("changelogAllProjects")}</option>
             {projects.map(project => <option key={project.projectKey} value={project.projectKey}>{project.title} · {project.source}</option>)}
           </select>
-          <button type="button" className="hub-button hub-icon-button" data-cursor="button" disabled={status === "loading"} aria-label={hub("refresh")} onClick={() => setRefresh(value => value + 1)}><RefreshCw size={18} aria-hidden="true" className={status === "loading" ? "dash-spinning" : undefined} /></button>
+          <button type="button" className="hub-button hub-icon-button" data-cursor="button" disabled={status === "loading"} aria-label={hub("refresh")} onClick={() => { setOpenRelease(undefined); setRefresh(value => value + 1); }}><RefreshCw size={18} aria-hidden="true" className={status === "loading" ? "dash-spinning" : undefined} /></button>
         </div>
       </div>
       <div aria-busy={status === "loading"}>
@@ -59,8 +60,8 @@ export default function ModpackChangelog() {
         {status === "error" && <p role="status" className="hub-muted mb-6">{t("changelogUnavailable")}</p>}
         {status === "ready" && affected.length > 0 && <p role="status" className="hub-muted mb-6">{t("changelogPartial", { sources: affected.map(item => item.source).join(", ") })}</p>}
         {releases.length > 0 ? <div className="modpack-changelog-list">
-          {releases.slice(0, limit).map(({ project, release }, index) => <details key={project.projectKey + release.url} name={selectId + "-releases"} open={index === 0} className="card-glow modpack-changelog-card">
-            <summary data-cursor="button">
+          {releases.slice(0, limit).map(({ project, release }, index) => <details key={project.projectKey + release.url} name={selectId + "-releases"} open={openRelease === undefined ? index === 0 : openRelease === project.projectKey + release.url} className="card-glow modpack-changelog-card">
+            <summary data-cursor="button" onClick={event => { event.preventDefault(); const key = project.projectKey + release.url; setOpenRelease(value => (value === undefined ? index === 0 : value === key) ? null : key); }}>
               {project.iconUrl ? <img src={project.iconUrl} alt="" width={48} height={48} loading="lazy" /> : <span className="modpack-changelog-icon"><History size={22} aria-hidden="true" /></span> /* eslint-disable-line @next/next/no-img-element */}
               <span className="modpack-changelog-summary"><span className="text-label">{project.source}</span><strong dir="auto">{project.title}</strong><span className="modpack-changelog-meta"><span dir="auto">{release.version}</span>{release.published && <time dateTime={release.published}>{format.dateTime(new Date(release.published), { year: "numeric", month: "short", day: "numeric", timeZone: "UTC" })}</time>}</span></span>
               <ChevronDown size={18} className="modpack-changelog-chevron" aria-hidden="true" />

@@ -4,11 +4,11 @@ import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import { RefreshCw, Check, ChevronLeft, ChevronRight } from "lucide-react";
 import DetailsDialog from "@/components/ui/DetailsDialog";
-import { youtubeObject as object, youtubeString as string, youtubeThumbnail } from "@/lib/data/youtube-studio";
+import { youtubeObject as object, youtubeString as string, youtubeThumbnail, youtubeOAuthErrors } from "@/lib/data/youtube-studio";
 
 export type StudioContext = { onExpired: () => void };
 export function youtubeError(error: unknown) {
-  return typeof error === "string" && ["INVALID", "YT_RECONNECT", "YT_SETUP", "YT_CLIENT_MISSING", "YT_MANAGED", "YT_QUOTA", "YT_PERMISSION", "YT_NOT_FOUND"].includes(error) ? error : "YT_UNAVAILABLE";
+  return typeof error === "string" && ["INVALID", "YT_SETUP", "YT_CLIENT_MISSING", "YT_MANAGED", "YT_NOT_FOUND", ...youtubeOAuthErrors].includes(error) ? error : "YT_UNAVAILABLE";
 }
 export function useYoutubeResource(resource: string, context: StudioContext, params: Record<string, string> = {}) {
   const { onExpired } = context, query = JSON.stringify(params);
