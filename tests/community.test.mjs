@@ -8,11 +8,12 @@ import { validateSupport } from '../src/lib/data/hub-validation.ts';
 
 function moduleUrl(path,replacements={}) {
  let source=readFileSync(new URL('../'+path,import.meta.url),'utf8').replace('import "server-only";','');
- for(const [name,value] of Object.entries(replacements))source=source.replaceAll(name,value);
+ for(const [name,value] of Object.entries(replacements).sort(([a],[b])=>b.length-a.length))source=source.replaceAll(name,value);
  return 'data:text/javascript;base64,'+Buffer.from(ts.transpileModule(source,{compilerOptions:{module:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ES2022}}).outputText).toString('base64');
 }
 const stub=code=>'data:text/javascript;base64,'+Buffer.from(code).toString('base64');
 const communityDataUrl=moduleUrl('src/lib/data/community.ts',{'./player-statistics':statDataUrl});
+const defaultsUrl=moduleUrl('src/lib/data/community-defaults.ts',{'./community':communityDataUrl});
 const {validateCommunity,validateGallerySubmission,safeMediaLink,achievementProgress,DEFAULT_ACHIEVEMENTS}=await import(communityDataUrl);
 const copy=await import(moduleUrl('src/lib/data/community-copy.ts'));
 const id='a1234567-1234-1234-1234-123456789abc',bridgeId='b1234567-1234-1234-1234-123456789abc',token='a'.repeat(64);
@@ -38,7 +39,7 @@ globalThis.__communityTests={state,database};
 const db=stub('export async function siteDatabase(){return globalThis.__communityTests.database;}');
 const security=moduleUrl('src/lib/server/site-security.ts');
 const discord=stub('export async function notifyDiscord(...args){const s=globalThis.__communityTests.state;s.notifications.push(args);if(s.notificationFails)throw Error("Delivery failed");return "discord-id";}');
-const serverUrl=moduleUrl('src/lib/server/community.ts',{'./site-db':db,'./discord-notifications':discord,'../data/community':communityDataUrl,'./site-security':security});
+const serverUrl=moduleUrl('src/lib/server/community.ts',{'./site-db':db,'./discord-notifications':discord,'../data/community-defaults':defaultsUrl,'../data/community':communityDataUrl,'./site-security':security});
 const server=await import(serverUrl);
 const content=stub('export async function limitAttempt(){return globalThis.__communityTests.state.limits;}export async function publicContent(){return {items:[],available:true};}');
 const mediaData=moduleUrl('src/lib/data/content-media.ts');

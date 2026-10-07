@@ -3,19 +3,11 @@ import SectionHeader from "@/components/ui/SectionHeader";
 import FaqAccordion, { type FaqItem } from "./FaqAccordion";
 
 export default async function FaqSection() {
-  const [t, tc, th] = await Promise.all([
+  const [t, tc] = await Promise.all([
     getTranslations("faq"),
     getTranslations("common"),
-    getTranslations("home"),
   ]);
-  const items: FaqItem[] = [
-    {
-      category: "gettingStarted",
-      q: th("aboutEyebrow"),
-      a: th("aboutText"),
-    },
-    ...(t.raw("items") as FaqItem[]),
-  ];
+  const items = t.raw("items") as FaqItem[];
   const categories = t.raw("categories") as Record<string, string>;
 
   return (

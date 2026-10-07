@@ -14,4 +14,12 @@ CREATE TABLE IF NOT EXISTS community_votes (
  option_index integer NOT NULL CHECK(option_index>=0 AND option_index<8), created_at timestamptz NOT NULL DEFAULT now(),
  PRIMARY KEY(poll_id,visitor_hash)
 );
+CREATE TABLE IF NOT EXISTS community_installations (
+ id text PRIMARY KEY, installed_at timestamptz NOT NULL DEFAULT now()
+);
+CREATE TABLE IF NOT EXISTS community_visitors (
+ visitor_hash char(64) PRIMARY KEY, preferences jsonb NOT NULL DEFAULT '{}', seen jsonb NOT NULL DEFAULT '[]',
+ updated_at timestamptz NOT NULL DEFAULT now(),
+ CHECK(jsonb_typeof(preferences)='object'), CHECK(jsonb_typeof(seen)='array' AND jsonb_array_length(seen)<=200)
+);
 `;

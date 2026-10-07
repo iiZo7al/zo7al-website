@@ -231,123 +231,275 @@
   "faq": {
     "eyebrow": "Brauchst du Hilfe?",
     "title": "Häufig gestellte Fragen",
-    "text": "Lerne Zo7al, seine Videos und Social-Media-Kanäle kennen und erfahre mehr über Server, Shop und Gaming-Projekte.",
+    "text": "Antworten zu Spielen, Warenkorb, Bewerbungen, Profilen und Community.",
     "searchPlaceholder": "Frage suchen…",
     "noResults": "Keine Frage passt zu deiner Suche.",
     "categories": {
       "gettingStarted": "Erste Schritte",
       "storeRanks": "Shop & Ränge",
+      "minecraft": "Minecraft und Profile",
       "fortnite": "Fortnite",
+      "modpacks": "Modpacks",
       "community": "Community",
-      "modpacks": "Modpacks"
+      "support": "Support und Anfragen"
     },
     "items": [
       {
         "category": "gettingStarted",
         "q": "Was ist ZO7AL Network?",
-        "a": "Ein Minecraft-Server und Gaming-Universum von Zo7al mit Survival, PvP, Modpacks und Fortnite-Creative-Maps."
+        "a": "Ein Minecraft-Server und Gaming-Universum von Zo7al mit Survival, PvP, Modpacks und Fortnite-Creative-Maps.",
+        "id": "network"
       },
       {
         "category": "gettingStarted",
         "q": "Wie trete ich Zo7al Network über Java bei?",
-        "a": "Kopiere die Java-Adresse zo7al.play-mc.fun von der Minecraft-Seite und füge sie im Mehrspieler-Menü von Minecraft Java als Server hinzu."
+        "a": "Kopiere die Java-Adresse zo7al.play-mc.fun von der Minecraft-Seite und füge sie im Mehrspieler-Menü von Minecraft Java als Server hinzu.",
+        "id": "java",
+        "href": "/minecraft",
+        "action": "Minecraft öffnen"
       },
       {
         "category": "gettingStarted",
         "q": "Wie trete ich Zo7al Network über Bedrock bei?",
-        "a": "Füge in Minecraft Bedrock einen Server mit der Adresse zo7al.play-mc.fun und dem Port 25807 hinzu."
+        "a": "Füge in Minecraft Bedrock einen Server mit der Adresse zo7al.play-mc.fun und dem Port 25807 hinzu.",
+        "id": "bedrock",
+        "href": "/minecraft",
+        "action": "Minecraft öffnen"
       },
       {
-        "category": "gettingStarted",
-        "q": "Wird Bedrock unterstützt?",
-        "a": "Ja. Bedrock: zo7al.play-mc.fun — Port 25807."
-      },
-      {
-        "category": "gettingStarted",
+        "category": "minecraft",
         "q": "Welche Minecraft-Versionen werden unterstützt?",
-        "a": "1.8.9 für klassisches PvP, 1.20.x für stabiles Survival und 1.21.x für die neueste Version."
+        "a": "Die modernen Server verwenden 1.21.11, Classic PvP verwendet 1.8.9. Wähle die Version deines Spielmodus und prüfe die Minecraft-Seite vor dem Beitritt.",
+        "id": "versions",
+        "href": "/minecraft",
+        "action": "Minecraft öffnen"
       },
       {
         "category": "gettingStarted",
         "q": "Welche Videos machst du?",
-        "a": "Gaming-Videos und Shorts: Fortnite, Minecraft und andere Spiele, Challenges, lustige Momente und Spielen mit Freunden. Mein YouTube-Kanal: @iiZo7al."
+        "a": "Gaming-Videos und Shorts: Fortnite, Minecraft und andere Spiele, Challenges, lustige Momente und Spielen mit Freunden. Mein YouTube-Kanal: @iiZo7al.",
+        "id": "videos"
       },
       {
         "category": "storeRanks",
         "q": "Wie kaufe ich einen Rang?",
-        "a": "Öffne /store, wähle einen Rang, gib deinen Minecraft-Namen ein und bezahle sicher über Tebex. Booster erhältst du durch einen Boost unseres Discord-Servers."
+        "a": "Lege unter /store einen Rang in den Warenkorb. Gib dort deinen genauen Minecraft-Namen ein, prüfe die Produkte und bezahle über Tebex. Booster erhältst du durch einen Discord-Server-Boost.",
+        "id": "buy",
+        "href": "/store",
+        "action": "Shop öffnen"
       },
       {
         "category": "storeRanks",
         "q": "Welche Ränge gibt es?",
-        "a": "Kaufbare Ränge sind VIP, MVP, MVP+ und MVP++. Booster erhältst du durch einen Boost des Discord-Servers. Die Creator-Ränge YOUTUBE, TWITCH und TIKTOK gibt es auf Bewerbung und nach Prüfung, nicht zum Kauf. Aktuelle Details, Preise und Bewerbungen findest du unter /store. Coins sind Spielwährung, keine Ränge."
+        "a": "Kaufbare Ränge sind VIP, MVP, MVP+ und MVP++. Booster erhältst du durch einen Boost des Discord-Servers. Die Creator-Ränge YOUTUBE, TWITCH und TIKTOK gibt es auf Bewerbung und nach Prüfung, nicht zum Kauf. Aktuelle Details, Preise und Bewerbungen findest du unter /store. Coins sind Spielwährung, keine Ränge.",
+        "id": "ranks",
+        "href": "/store",
+        "action": "Shop öffnen"
       },
       {
         "category": "storeRanks",
         "q": "Wo ist der Shop von Zo7al Network?",
-        "a": "Öffne den Shop unter /store. Zahlungen laufen über Tebex; Abonnements kannst du auf portal.tebex.io ansehen oder kündigen."
+        "a": "Öffne den Shop unter /store. Zahlungen laufen über Tebex; Abonnements kannst du auf portal.tebex.io ansehen oder kündigen.",
+        "id": "store",
+        "href": "/store",
+        "action": "Shop öffnen"
       },
       {
         "category": "storeRanks",
         "q": "Wie kaufe ich Coins und kann ich sie erneut kaufen?",
-        "a": "Öffne /store und wähle ein Coins-Paket. Gib deinen genauen Minecraft-Namen ein und bezahle über Tebex. Die Paketdetails zeigen Menge und Bonus. Coins sind Spielwährung, unabhängig von Rängen, und mehrfach kaufbar. Bei verzögerter Lieferung kontaktiere den Discord-Support mit deiner Transaktionsnummer."
+        "a": "Lege ein Coins-Paket in den Warenkorb und ändere die Menge mit + und −. Der Papierkorb entfernt das gesamte Paket. Coins sind von Rängen getrennt und erneut kaufbar. Details zeigen Menge und Bonus.",
+        "id": "coins",
+        "href": "/store",
+        "action": "Shop öffnen"
       },
       {
         "category": "fortnite",
         "q": "Wie trete ich einer Zo7al-Map in Fortnite bei?",
-        "a": "Öffne Fortnite, gehe zu Creative, wähle „Code eingeben“ und gib den Inselcode ein, der bei jeder Map auf der Fortnite-Seite steht."
+        "a": "Öffne Fortnite, gehe zu Creative, wähle „Code eingeben“ und gib den Inselcode ein, der bei jeder Map auf der Fortnite-Seite steht.",
+        "id": "fortnite-map"
       },
       {
         "category": "fortnite",
         "q": "Wo finde ich alle Maps von Zo7al?",
-        "a": "Die Fortnite-Seite listet jede veröffentlichte Insel mit ihrem Code, synchronisiert mit der offiziellen Creator-Seite."
+        "a": "Die Fortnite-Seite listet jede veröffentlichte Insel mit ihrem Code, synchronisiert mit der offiziellen Creator-Seite.",
+        "id": "fortnite-list"
       },
       {
         "category": "community",
         "q": "Was ist der offizielle Zo7al-Discord-Server?",
-        "a": "discord.gg/nxScVYrSXq — der Treffpunkt für Events, Support und Community-Updates."
+        "a": "discord.gg/nxScVYrSXq — der Treffpunkt für Events, Support und Community-Updates.",
+        "id": "discord"
       },
       {
         "category": "community",
         "q": "Wo finde ich Zo7als Social Media?",
-        "a": "Meinen YouTube-Kanal @iiZo7al und weitere Konten findest du auf der Socials-Seite. Die Links werden mit meinem offiziellen Linktree synchronisiert."
+        "a": "Meinen YouTube-Kanal @iiZo7al und weitere Konten findest du auf der Socials-Seite. Die Links werden mit meinem offiziellen Linktree synchronisiert.",
+        "id": "socials",
+        "href": "/socials",
+        "action": "Socials öffnen"
       },
       {
-        "category": "community",
+        "category": "support",
         "q": "Wie melde ich ein Problem?",
-        "a": "Tritt dem Discord-Server bei und eröffne ein Ticket im Support-Kanal — das ist der schnellste Weg zum Team."
+        "a": "Unter /support findest du häufige Fehler und ein Anfrageformular. Problem melden in den Projektdetails übernimmt Projekt und Version. Bewahre den Beleg für die Verfolgung unter /requests auf.",
+        "id": "report",
+        "href": "/support?tab=report",
+        "action": "Support öffnen"
       },
       {
-        "category": "community",
+        "category": "support",
         "q": "Wie kontaktiere ich Zo7al?",
-        "a": "Für Werbung und Kooperationen: ads@zo7al.net. Für Server- oder Kaufsupport tritt Discord über die Socials-Seite bei."
+        "a": "Werbung und Kooperationen: ads@zo7al.net. Für Server- und Kaufprobleme sende eine Anfrage unter /support und verfolge sie unter /requests. Offizielle Konten findest du unter /socials.",
+        "id": "contact",
+        "href": "/support",
+        "action": "Support öffnen"
       },
       {
         "category": "modpacks",
         "q": "Wo lade ich Zo7als Modpacks herunter?",
-        "a": "Auf Modrinth und CurseForge — beide mit direkten Links auf der Modpacks-Seite gelistet."
+        "a": "Auf Modrinth und CurseForge — beide mit direkten Links auf der Modpacks-Seite gelistet.",
+        "id": "modpacks",
+        "href": "/modpacks",
+        "action": "Modpacks ansehen"
       },
       {
         "category": "community",
         "q": "Wie sehe ich aktuelle Inhalte von Zo7als Konten?",
-        "a": "Öffne /socials und klicke auf das Detailsymbol eines Kontos, auch bei Zo7al Games. Die Vorschau zeigt die Biografie und verfügbare öffentliche Plattforminhalte, etwa ein langes YouTube-Video, einen Beitrag, eine gespeicherte Twitch-Übertragung oder eine Modpack-Version."
+        "a": "Öffne /socials und klicke auf das Detailsymbol eines Kontos, auch bei Zo7al Games. Die Vorschau zeigt die Biografie und verfügbare öffentliche Plattforminhalte, etwa ein langes YouTube-Video, einen Beitrag, eine gespeicherte Twitch-Übertragung oder eine Modpack-Version.",
+        "id": "social-preview",
+        "href": "/socials",
+        "action": "Socials öffnen"
       },
       {
         "category": "community",
         "q": "Warum ist eine Vorschau manchmal nicht verfügbar?",
-        "a": "Manche Plattformen beschränken öffentliche Vorschauen, erfordern eine API-Verbindung oder haben keine öffentlichen Inhalte. Öffne das Originalkonto über den Link. Eine fehlende Vorschau bedeutet nicht, dass das Konto gelöscht wurde."
+        "a": "Manche Plattformen beschränken öffentliche Vorschauen, erfordern eine API-Verbindung oder haben keine öffentlichen Inhalte. Öffne das Originalkonto über den Link. Eine fehlende Vorschau bedeutet nicht, dass das Konto gelöscht wurde.",
+        "id": "social-unavailable"
       },
       {
         "category": "storeRanks",
         "q": "Wie bewerbe ich mich für einen Creator-Rang?",
-        "a": "Öffne /store und wähle unter Coins einen Creator-Rang für YouTube, Twitch oder TikTok. Gib E-Mail, Minecraft- und Discord-Namen, Kanallink und Inhaltsdetails an. Das Team prüft die Bewerbung; der Rang wird nicht automatisch vergeben."
+        "a": "Öffne /store und wähle unter Coins einen Creator-Rang für YouTube, Twitch oder TikTok. Gib E-Mail, Minecraft- und Discord-Namen, Kanallink und Inhaltsdetails an. Das Team prüft die Bewerbung; der Rang wird nicht automatisch vergeben.",
+        "id": "creator-apply",
+        "href": "/store",
+        "action": "Shop öffnen"
       },
       {
         "category": "storeRanks",
         "q": "Kosten Creator-Ränge Geld?",
-        "a": "Die Bewerbung ist kostenlos und unabhängig von gekauften Rängen und Coins. Das Team entscheidet über Eignung und Annahme. Es gibt keine zugesicherte Follower-Grenze oder Prüfungsdauer."
+        "a": "Die Bewerbung ist kostenlos und unabhängig von gekauften Rängen und Coins. Das Team entscheidet über Eignung und Annahme. Es gibt keine zugesicherte Follower-Grenze oder Prüfungsdauer.",
+        "id": "creator-free",
+        "href": "/store",
+        "action": "Shop öffnen"
+      },
+      {
+        "id": "one-rank",
+        "category": "storeRanks",
+        "q": "Kann ich mehrere Ränge in den Warenkorb legen?",
+        "a": "Es ist jeweils ein bezahlter Rang möglich. Entferne ihn vor der Auswahl eines anderen. Coins können zusätzlich hinzugefügt und in ihrer Menge geändert werden.",
+        "href": "/store",
+        "action": "Shop öffnen"
+      },
+      {
+        "id": "rank-preview",
+        "category": "storeRanks",
+        "q": "Wie sehe ich einen Rang an meinem Charakter?",
+        "a": "Klicke das Auge neben Details auf der Karte oder im Warenkorb. Gib bei Bedarf deinen Minecraft-Namen ein, um deinen 3D-Charakter, Namen und gewählten Rang zu sehen.",
+        "href": "/store",
+        "action": "Shop öffnen"
+      },
+      {
+        "id": "player-profile",
+        "category": "minecraft",
+        "q": "Wo finde ich mein Minecraft-Profil?",
+        "a": "Gib deinen Namen im Spielerbereich unter /minecraft ein. Wähle einen Server für deinen aktuellen Rang, 3D-Charakter und freigegebene Statistiken. Das Server-Plugin synchronisiert die Daten.",
+        "href": "/minecraft#player",
+        "action": "Minecraft öffnen"
+      },
+      {
+        "id": "network-statistics",
+        "category": "minecraft",
+        "q": "Wie werden Zo7al-Network-Statistiken berechnet?",
+        "a": "Nur aktivierte Statistiken aktiver Server werden kombiniert. Abgewählte Zähler zählen nicht zur Summe. Spielzeit und Kills werden addiert; für die Serie zählt der höchste Wert.",
+        "href": "/minecraft#player",
+        "action": "Minecraft öffnen"
+      },
+      {
+        "id": "leaderboard",
+        "category": "minecraft",
+        "q": "Wie funktioniert die Minecraft-Rangliste?",
+        "a": "Wähle Server und Statistik. Die Rangliste verwendet echte synchronisierte Daten; Spielzeit erscheint in Stunden. Wähle einen Spieler für sein Profil. Eine leere Liste bedeutet fehlende synchronisierte Werte für diese Auswahl.",
+        "href": "/minecraft#leaderboard",
+        "action": "Rangliste ansehen"
+      },
+      {
+        "id": "achievements",
+        "category": "minecraft",
+        "q": "Wie schalte ich Erfolge frei?",
+        "a": "Der Fortschritt basiert auf synchronisierten, aktivierten Serverstatistiken. Ein Erfolg wird beim Erreichen seines Ziels freigeschaltet. Aktualisiere dein Profil nach dem Spielen. Verborgene oder fehlende Zähler zählen nicht.",
+        "href": "/minecraft#player",
+        "action": "Minecraft öffnen"
+      },
+      {
+        "id": "polls",
+        "category": "community",
+        "q": "Wie funktionieren Abstimmungen?",
+        "a": "Wähle eine Option in einer offenen Abstimmung. Stimme und Ergebnisse bleiben in der Datenbank; deine Auswahl erscheint nach dem Neuladen im selben Browser. Eine Stimme pro Browseridentität; gelöschte Cookies ändern diese Identität.",
+        "href": "/minecraft#community-polls",
+        "action": "Abstimmungen ansehen"
+      },
+      {
+        "id": "gallery",
+        "category": "community",
+        "q": "Wie reiche ich ein Bild oder Video ein?",
+        "a": "Nutze Werk einreichen in der Minecraft- oder Fortnite-Galerie. Füge Bild oder unterstützten Videolink, Namen und E-Mail hinzu. Beiträge bleiben bis zur Freigabe privat; deine E-Mail wird nicht veröffentlicht.",
+        "href": "/minecraft#community-gallery",
+        "action": "Galerie ansehen"
+      },
+      {
+        "id": "notifications",
+        "category": "community",
+        "q": "Wie verwalte ich Benachrichtigungen?",
+        "a": "Öffne die Glocke und wähle Kategorien in den Einstellungen. Einstellungen und Lesestatus werden für diesen Browser auf dem Server gespeichert. Private Anfragen nutzen gespeicherte Belege. Browserwechsel oder gelöschte Cookies erzeugen eine andere Identität.",
+        "href": "/support",
+        "action": "Support öffnen"
+      },
+      {
+        "id": "requests",
+        "category": "support",
+        "q": "Wo verfolge ich Bestellungen und Bewerbungen?",
+        "a": "Öffne /requests über Support. Tabs trennen Bestellungen, Bewerbungen, Support und Events. Mit Referenz und privatem Code aus dem Beleg kannst du eine Anfrage in einem anderen Browser wiederherstellen.",
+        "href": "/requests",
+        "action": "Meine Anfragen"
+      },
+      {
+        "id": "news-events",
+        "category": "community",
+        "q": "Wo erscheinen Neuigkeiten und Events?",
+        "a": "Veröffentlichte Neuigkeiten stehen auf der Startseite, Events unter /minecraft. Bei vielen Events erscheint Mehr anzeigen. Künftige Events können Anmeldungen anbieten. Das Team verwaltet die Veröffentlichung im Dashboard.",
+        "href": "/minecraft#events",
+        "action": "Events ansehen"
+      },
+      {
+        "id": "project-updates",
+        "category": "modpacks",
+        "q": "Wo sehe ich Projektstatus und Änderungen?",
+        "a": "Öffne Karten- oder Modpackdetails für veröffentlichten Status, Versionsänderungen und Problemmeldung. Das Team verwaltet diese Inhalte. Nicht veröffentlichte Zustände oder Änderungen werden nicht erfunden.",
+        "href": "/modpacks",
+        "action": "Modpacks ansehen"
+      },
+      {
+        "id": "permanent-features",
+        "category": "community",
+        "q": "Bleiben die neuen Funktionen dauerhaft?",
+        "a": "Ja. Inhalte, Abstimmungen, Stimmen, Einreichungen, Ziele und Einstellungen bleiben nach Deployments in der Datenbank. Das Team kann Inhalte ändern oder zurückziehen. Ranglisten und Erfolge nutzen echte Statistiken.",
+        "href": "/minecraft#community-polls",
+        "action": "Abstimmungen ansehen"
       }
-    ]
+    ],
+    "clearSearch": "Suche löschen",
+    "filterLabel": "Kategorien",
+    "resetFilters": "Alle Fragen anzeigen"
   },
   "footer": {
     "tagline": "Gaming-Creator. Minecraft-Netzwerk-Erbauer. Fortnite-Creator.",

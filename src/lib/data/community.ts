@@ -9,7 +9,7 @@ export type CommunityEntry = {
   projectKey: string; title: string; body: string; payload: Record<string, unknown>;
   published: boolean; moderation: "draft" | "pending" | "approved" | "rejected";
   author: string; image?: { id: string; width: number; height: number } | null;
-  createdAt: string; updatedAt: string; votes?: number[]; contactEmail?: string; discordReceipt?: string | null;
+  createdAt: string; updatedAt: string; votes?: number[]; myVote?: number | null; contactEmail?: string; discordReceipt?: string | null;
 };
 export const isUUID = (v: unknown): v is string => typeof v === "string" && /^[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}$/i.test(v);
 const text = (v: unknown, min: number, max: number): v is string => typeof v === "string" && v.trim().length >= min && v.length <= max && !/[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]/.test(v);

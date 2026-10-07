@@ -4,21 +4,23 @@ import { siteDatabase } from "./site-db";
 import { notifyDiscord } from "./discord-notifications";
 import { validateCommunity, type CommunityEntry } from "../data/community";
 import { tokenHash } from "./site-security";
+import { localizeCommunityEntry } from "../data/community-defaults";
 
 const PUBLIC_COLUMNS = `e.id,e.kind,e.locale,e.topic,e.project_key AS "projectKey",e.title,e.body,e.payload,e.published,e.moderation,e.author,e.created_at AS "createdAt",e.updated_at AS "updatedAt",CASE WHEN i.id IS NOT NULL THEN json_build_object('id',i.id,'width',i.width,'height',i.height) ELSE NULL END AS image`;
-export async function communityEntries(locale: string, admin = false) {
+export async function communityEntries(locale: string, admin = false, visitorHash?: string) {
   const db = await siteDatabase();
   const result = await db.query(`SELECT ${PUBLIC_COLUMNS}${admin ? ',e.contact_email AS "contactEmail",e.discord_receipt AS "discordReceipt"' : ''} FROM community_entries e LEFT JOIN site_content_images i ON i.id=e.image_id
     WHERE $2::boolean OR (e.published AND e.moderation='approved' AND (e.locale=$1 OR (e.locale='en' AND NOT EXISTS(SELECT 1 FROM community_entries translated WHERE translated.kind=e.kind AND translated.project_key=e.project_key AND e.project_key<>'' AND (e.kind<>'changelog' OR translated.payload->>'version'=e.payload->>'version') AND translated.locale=$1 AND translated.published AND translated.moderation='approved')))) ORDER BY e.updated_at DESC LIMIT 200`,[locale,admin]);
   const rows = result.rows.map(row=>({...row,createdAt:new Date(row.createdAt).toISOString(),updatedAt:new Date(row.updatedAt).toISOString()})) as CommunityEntry[];
   const polls = rows.filter(row=>row.kind==='poll').map(row=>row.id);
   if (polls.length) {
-    const votes = (await db.query('SELECT poll_id,option_index,count(*)::integer AS count FROM community_votes WHERE poll_id=ANY($1::uuid[]) GROUP BY poll_id,option_index',[polls])).rows;
+    const votes = (await db.query('SELECT poll_id,option_index,count(*)::integer AS count,max(option_index) FILTER(WHERE visitor_hash=$2) AS "myVote" FROM community_votes WHERE poll_id=ANY($1::uuid[]) GROUP BY poll_id,option_index',[polls,visitorHash??null])).rows;
     for (const row of rows.filter(row=>row.kind==='poll')) {
       row.votes = (row.payload.options as string[]).map((_,index)=>votes.find(v=>v.poll_id===row.id&&v.option_index===index)?.count??0);
+      if (!admin) row.myVote = votes.find(v=>v.poll_id===row.id && v.myVote !== null)?.myVote ?? null;
     }
   }
-  return rows;
+  return admin ? rows : rows.map(row=>localizeCommunityEntry(row,locale));
 }
 export async function saveCommunity(value: unknown) {
   const entry = validateCommunity(value); if (!entry) throw Error('INVALID');
@@ -28,9 +30,10 @@ export async function saveCommunity(value: unknown) {
   const client = await db.connect();
   try {
     await client.query('BEGIN');
-    const previous = (await client.query('SELECT kind,payload FROM community_entries WHERE id=$1 FOR UPDATE',[id])).rows[0];
+    const previous = (await client.query('SELECT kind,payload,title,body,locale FROM community_entries WHERE id=$1 FOR UPDATE',[id])).rows[0];
     if (previous && previous.kind !== entry.kind) throw Error('INVALID');
     if (previous?.kind==='poll' && JSON.stringify(previous.payload.options)!==JSON.stringify(entry.payload.options) && (await client.query('SELECT 1 FROM community_votes WHERE poll_id=$1 LIMIT 1',[id])).rowCount) throw Error('POLL_LOCKED');
+    if (previous?.payload.translations && previous.title===entry.title && previous.body===entry.body && previous.locale===entry.locale && (entry.kind==='poll' ? JSON.stringify(previous.payload.options)===JSON.stringify(entry.payload.options) : entry.kind==='achievement' && previous.payload.stat===entry.payload.stat && previous.payload.threshold===entry.payload.threshold)) entry.payload.translations=previous.payload.translations;
     await client.query(`INSERT INTO community_entries(id,kind,locale,topic,project_key,title,body,payload,published,moderation,author,image_id) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,'approved',$10,$11)
       ON CONFLICT(id) DO UPDATE SET locale=excluded.locale,topic=excluded.topic,project_key=excluded.project_key,title=excluded.title,body=excluded.body,payload=excluded.payload,published=excluded.published,moderation='approved',author=excluded.author,image_id=excluded.image_id,updated_at=now()`,[id,entry.kind,entry.locale,entry.topic,entry.projectKey,entry.title,entry.body,JSON.stringify(entry.payload),entry.published,entry.author,entry.imageId]);
     await client.query('COMMIT');return id;
@@ -38,14 +41,15 @@ export async function saveCommunity(value: unknown) {
 }
 const VISITOR_COOKIE = process.env.NODE_ENV==='production' ? '__Host-zo7al-voter' : 'zo7al-voter';
 const visitorMac = (nonce:string) => createHmac('sha256',process.env.ZO7AL_ADMIN_SESSION_SECRET ?? '').update('community-vote:'+nonce).digest('hex');
-export function voter(request: Request) {
+const visitorCookie = (nonce:string) => `${VISITOR_COOKIE}=${nonce}.${visitorMac(nonce)}; Path=/; HttpOnly; SameSite=Lax; Max-Age=31536000${process.env.NODE_ENV==='production'?'; Secure':''}`;
+export function voter(request: Request, renew = false) {
   const secret = process.env.ZO7AL_ADMIN_SESSION_SECRET;
   if (!secret || secret.length<43) return null;
   const value=request.headers.get('cookie')?.split(';').map(p=>p.trim()).find(p=>p.startsWith(VISITOR_COOKIE+'='))?.slice(VISITOR_COOKIE.length+1)??'';
   const [nonce,mac,extra]=value.split('.');
-  if (!extra && /^[a-f0-9]{64}$/.test(nonce??'') && /^[a-f0-9]{64}$/.test(mac??'') && timingSafeEqual(Buffer.from(mac),Buffer.from(visitorMac(nonce)))) return {hash:tokenHash(nonce),cookie:null};
+  if (!extra && /^[a-f0-9]{64}$/.test(nonce??'') && /^[a-f0-9]{64}$/.test(mac??'') && timingSafeEqual(Buffer.from(mac),Buffer.from(visitorMac(nonce)))) return {hash:tokenHash(nonce),cookie:renew?visitorCookie(nonce):null};
   const fresh=randomBytes(32).toString('hex');
-  return {hash:tokenHash(fresh),cookie:`${VISITOR_COOKIE}=${fresh}.${visitorMac(fresh)}; Path=/; HttpOnly; SameSite=Lax; Max-Age=2592000${process.env.NODE_ENV==='production'?'; Secure':''}`};
+  return {hash:tokenHash(fresh),cookie:visitorCookie(fresh)};
 }
 export async function vote(poll:string, option:number, hash:string) {
   const client=await(await siteDatabase()).connect();
