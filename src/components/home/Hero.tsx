@@ -36,7 +36,7 @@ export default function Hero() {
         initial="hidden"
         animate={gameActive ? { opacity: 0, y: -20 } : "show"}
         transition={{ duration: 0.5, ease: "easeIn" }}
-        className="relative z-10 mx-auto flex max-w-4xl flex-col items-center px-6 text-center"
+        className="relative z-10 mx-auto flex w-full max-w-4xl flex-col items-center px-6 text-center"
         style={{ pointerEvents: "none" }}
         inert={gameActive}
       >

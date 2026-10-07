@@ -22,7 +22,7 @@ export default function GameLaunchButton({ onPlay }: { onPlay: () => void }) {
     setOpen(false);
   };
   return <>
-    <button type="button" data-cursor="button" data-cursor-label={t("enter")} aria-haspopup="dialog" onClick={launch} className="inline-flex min-h-12 max-w-full items-center justify-center gap-2 rounded-full border border-[var(--accent)] bg-[var(--bg)]/80 px-6 py-3 text-xs font-semibold text-[var(--accent)] backdrop-blur">
+    <button type="button" data-cursor="button" data-cursor-label={t("enter")} aria-haspopup="dialog" onClick={launch} className="inline-flex min-h-12 max-w-full items-center justify-center gap-2 rounded-full border border-[var(--border-strong)] bg-transparent px-7 py-3.5 text-sm font-semibold text-[var(--text)] transition-colors hover:bg-white/5">
       <Rocket size={16} aria-hidden="true"/>{t("play")}<span aria-hidden="true">↗</span>
     </button>
     {open && <DetailsDialog title={t("installTitle")} onClose={dismiss} style={{width:"min(560px,calc(100vw - 24px))"}}>
