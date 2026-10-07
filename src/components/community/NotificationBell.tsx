@@ -2,7 +2,8 @@
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
-import { Bell, CalendarDays, CheckCheck, ClipboardList, Layers, Newspaper, RefreshCw } from "lucide-react";
+import { CalendarDays, CheckCheck, ClipboardList, Layers, Newspaper, RefreshCw } from "lucide-react";
+import BellIcon from "@/components/ui/BellIcon";
 import DetailsDialog from "@/components/ui/DetailsDialog";
 import { RECEIPT_KEY, parseReceipts } from "@/lib/data/hub-receipts";
 import { communityCopy } from "@/lib/data/community-copy";
@@ -110,7 +111,7 @@ export default function NotificationBell() {
   const visible = items.filter(item => settings.preferences[item.kind]), unread = visible.filter(item => !settings.seen.includes(item.id));
   const mark = (ids: string[]) => { cache({ ...settingsRef.current, seen: [...new Set([...ids, ...settingsRef.current.seen])].slice(0, 200) }); save({ seen: ids }); };
   return <>
-    <button type="button" className="community-bell" data-cursor="button" aria-label={c.notifications + (unread.length ? " (" + unread.length + ")" : "")} aria-haspopup="dialog" onClick={() => { setOpen(true); void load(); }}><Bell size={18} aria-hidden="true" />{unread.length > 0 && <span className="community-bell-dot" aria-hidden="true" />}</button>
+    <button type="button" className="community-bell" data-cursor="button" aria-label={c.notifications + (unread.length ? " (" + unread.length + ")" : "")} aria-haspopup="dialog" onClick={() => { setOpen(true); void load(); }}><BellIcon />{unread.length > 0 && <span className="community-bell-dot" aria-hidden="true" />}</button>
     {open && <DetailsDialog title={c.notifications} onClose={() => setOpen(false)} style={{ width: "min(520px,calc(100vw - 24px))" }}><div className="community-dialog-body">
       <div className="hub-actions"><button className="hub-button" type="button" disabled={!ready || !unread.length} onClick={() => mark(visible.map(notice => notice.id))}><CheckCheck size={16} aria-hidden="true" />{c.markRead}</button><button className="hub-button" type="button" aria-label={hub("refresh")} disabled={busy || !ready} onClick={() => void load(true)}><RefreshCw size={16} className={busy ? "dash-spinning" : ""} aria-hidden="true" /></button></div>
       <details className="community-preferences"><summary>{c.preferences}</summary><fieldset disabled={!ready}>{NOTIFICATION_CATEGORIES.map(kind => <label key={kind}><input type="checkbox" checked={settings.preferences[kind]} onChange={event => { const checked = event.target.checked; cache({ ...settingsRef.current, preferences: { ...settingsRef.current.preferences, [kind]: checked } }); save({ preferences: { [kind]: checked } }); if (kind === "requests" && checked) void load(true); }} />{c[kind]}</label>)}</fieldset><p className="hub-muted mt-4">{c.privateNote}</p>{syncStatus && <p className="hub-muted mt-3" role="status">{syncStatus === "saving" ? c.preferencesSaving : syncStatus === "error" ? c.preferencesError : c.preferencesSaved}</p>}</details>

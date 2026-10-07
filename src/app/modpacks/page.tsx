@@ -4,6 +4,7 @@ import PageHero from "@/components/ui/PageHero";
 import SectionHeader from "@/components/ui/SectionHeader";
 import ModpackGallery from "@/components/modpacks/ModpackGallery";
 import CurseForgeGallery from "@/components/modpacks/CurseForgeGallery";
+import ModpackChangelog from "@/components/modpacks/ModpackChangelog";
 import { getSyncedCurseForgeProjects } from "@/lib/sync/curseforge";
 
 export const metadata: Metadata = {
@@ -40,6 +41,7 @@ export default async function ModpacksPage() {
           </div>
         </div>
       </section>
+      <ModpackChangelog />
     </main>
   );
 }
