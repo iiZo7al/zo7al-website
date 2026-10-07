@@ -59,7 +59,7 @@ export default function ModpackChangelog() {
         {status === "error" && <p role="status" className="hub-muted mb-6">{t("changelogUnavailable")}</p>}
         {status === "ready" && affected.length > 0 && <p role="status" className="hub-muted mb-6">{t("changelogPartial", { sources: affected.map(item => item.source).join(", ") })}</p>}
         {releases.length > 0 ? <div className="modpack-changelog-list">
-          {releases.slice(0, limit).map(({ project, release }, index) => <details key={project.projectKey + release.url} open={index === 0} className="card-glow modpack-changelog-card">
+          {releases.slice(0, limit).map(({ project, release }, index) => <details key={project.projectKey + release.url} name={selectId + "-releases"} open={index === 0} className="card-glow modpack-changelog-card">
             <summary data-cursor="button">
               {project.iconUrl ? <img src={project.iconUrl} alt="" width={48} height={48} loading="lazy" /> : <span className="modpack-changelog-icon"><History size={22} aria-hidden="true" /></span> /* eslint-disable-line @next/next/no-img-element */}
               <span className="modpack-changelog-summary"><span className="text-label">{project.source}</span><strong dir="auto">{project.title}</strong><span className="modpack-changelog-meta"><span dir="auto">{release.version}</span>{release.published && <time dateTime={release.published}>{format.dateTime(new Date(release.published), { year: "numeric", month: "short", day: "numeric", timeZone: "UTC" })}</time>}</span></span>
