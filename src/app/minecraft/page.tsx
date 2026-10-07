@@ -1,5 +1,6 @@
 import CommonErrors from "@/components/hub/CommonErrors";
 import MinecraftCommunity from "@/components/hub/MinecraftCommunity";
+import ProjectExtras,{ProjectStatus} from "@/components/community/ProjectExtras";
 import LinkHub from "@/components/hub/MinecraftHubLinks";
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
@@ -27,6 +28,7 @@ export default async function MinecraftPage() {
       <PageHero eyebrow={t("eyebrow")} title={t("title")} text={t("text")}>
         <div className="flex flex-wrap items-center gap-6">
         <Image src="/assets/site/server-logo.png" width={208} height={198} alt="Z7" className="h-14 w-auto" priority />
+        <ProjectStatus projectKey="minecraft:network"/>
         <MagneticButton>
           <Link
             href="/store"
@@ -54,6 +56,7 @@ export default async function MinecraftPage() {
           <SectionHeader eyebrow={t("connectEyebrow")} title={t("connectTitle")} text={t("connectText")} />
           <div className="mt-14">
             <ServerConnect />
+            <ProjectExtras projectKey="minecraft:network" title="Zo7al Network"/>
           </div>
         </div>
       </section>

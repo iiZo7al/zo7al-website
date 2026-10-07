@@ -7,6 +7,7 @@ import "./globals.css";
 import "@/components/hub/hub.css";
 import CommandSearch from "@/components/hub/CommandSearch";
 import CartProvider from "@/components/store/CartProvider";
+import CommunityProvider from "@/components/community/CommunityProvider";
 import AppShell from "@/components/layout/AppShell";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -40,7 +41,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <html lang={locale} dir={dir} className={`${GeistSans.variable} h-full`}>
       <body className="min-h-full flex flex-col antialiased">
         <NextIntlClientProvider messages={messages}>
-          <CartProvider><MotionConfig reducedMotion="user">
+          <CommunityProvider><CartProvider><MotionConfig reducedMotion="user">
             <div className="grain" aria-hidden="true" />
             <CustomCursor />
             <CommandSearch />
@@ -49,10 +50,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               <div className="flex-1">{children}</div>
             </PageTransition>
             </AppShell>
-          </MotionConfig></CartProvider>
+          </MotionConfig></CartProvider></CommunityProvider>
         </NextIntlClientProvider>
       </body>
     </html>
   );
 }
-

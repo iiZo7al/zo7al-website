@@ -1,5 +1,6 @@
 import { getTranslations } from "next-intl/server";
 import ModpackDetailsButton from "./ModpackDetailsButton";
+import { ProjectStatus } from "@/components/community/ProjectExtras";
 import SolidIcon from "@/components/ui/SolidIcon";
 import Reveal from "@/components/ui/Reveal";
 import { CURSEFORGE_PROFILE_URL, type CurseForgeProject } from "@/lib/data/curseforge";
@@ -53,6 +54,7 @@ export default async function CurseForgeGallery({
               )}
               <div className="flex min-w-0 flex-1 flex-col">
                 <p className="font-semibold">{project.title}</p>
+                <ProjectStatus projectKey={'curseforge:'+project.id}/>
                 {project.description && (
                   <p className="mt-2 flex-1 text-sm leading-relaxed text-[var(--text-muted)]">
                     {project.description}
@@ -78,4 +80,3 @@ export default async function CurseForgeGallery({
     </div>
   );
 }
-

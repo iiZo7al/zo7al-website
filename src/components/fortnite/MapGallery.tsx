@@ -12,6 +12,7 @@ import QueryObserver from "@/components/hub/QueryObserver";
 import DetailsIcon from "@/components/ui/DetailsIcon";
 import SolidIcon from "@/components/ui/SolidIcon";
 import MapMedia from "./MapMedia";
+import ProjectExtras,{ ProjectStatus } from "@/components/community/ProjectExtras";
 import "@/components/store/store.css";
 
 export default function MapGallery({ maps: providedMaps }: { maps: FortniteMap[] }) {
@@ -110,6 +111,7 @@ export default function MapGallery({ maps: providedMaps }: { maps: FortniteMap[]
 
               <div className="p-5">
                 <p dir="auto" className="font-semibold">{map.title}</p>
+                <ProjectStatus projectKey={'fortnite:'+map.code}/>
                 <p className="mt-1 text-xs text-[var(--text-muted)]">{t("byZo7al")}</p>
 
                 <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
@@ -156,6 +158,7 @@ export default function MapGallery({ maps: providedMaps }: { maps: FortniteMap[]
             <p dir="auto" className="whitespace-pre-line text-sm leading-7 text-[var(--text-muted)]">{t.has(`descriptions.${details.code}`) ? t(`descriptions.${details.code}`) : details.description || t("detailsUnavailable")}</p>
             <div className="hub-actions"><ShareButton path={"/fortnite?map="+details.code}/>{mapPlayerCount(details)&&<span className="hub-muted">{hub("players")}: {mapPlayerCount(details)}</span>}</div>
             {!!details.tags?.length && <ul aria-label={t("tags")} className="flex flex-wrap gap-2">{details.tags.map(tag => <li key={tag} dir="auto" className="rounded-full border border-[var(--border)] px-3 py-1.5 text-xs font-semibold">{tag}</li>)}</ul>}
+            <ProjectExtras projectKey={'fortnite:'+details.code} title={details.title}/>
             <a href={islandCodeUrl(details.code, locale)} target="_blank" rel="noopener noreferrer" className="store-action">{t("viewOnFortnite")}<SolidIcon name="arrow-up-right" size={16} /></a>
           </div>
         </>}
@@ -163,4 +166,3 @@ export default function MapGallery({ maps: providedMaps }: { maps: FortniteMap[]
     </div>
   );
 }
-
