@@ -231,123 +231,275 @@
   "faq": {
     "eyebrow": "お困りですか？",
     "title": "よくある質問",
-    "text": "Zo7al の動画やSNS、サーバー、ストア、ゲームプロジェクトについてご案内します。",
+    "text": "プレイ、カート、クリエイター申請、プレイヤープロフィール、コミュニティのご案内。",
     "searchPlaceholder": "質問を検索…",
     "noResults": "検索条件に一致する質問はありません。",
     "categories": {
       "gettingStarted": "はじめに",
       "storeRanks": "ストアとランク",
+      "minecraft": "Minecraftとプロフィール",
       "fortnite": "Fortnite",
+      "modpacks": "Modpack",
       "community": "コミュニティ",
-      "modpacks": "Modpack"
+      "support": "サポートと申請"
     },
     "items": [
       {
         "category": "gettingStarted",
         "q": "ZO7AL Networkとは何ですか？",
-        "a": "Zo7alが構築したMinecraftサーバー兵ゲーミングユニバースで、サバイバル、PvP、Modpack、Fortniteクリエイティブマップを含みます。"
+        "a": "Zo7alが構築したMinecraftサーバー兵ゲーミングユニバースで、サバイバル、PvP、Modpack、Fortniteクリエイティブマップを含みます。",
+        "id": "network"
       },
       {
         "category": "gettingStarted",
         "q": "Javaで Zo7al Network に参加するには？",
-        "a": "MinecraftページからJavaアドレス zo7al.play-mc.fun をコピーし、Minecraft Java Editionのマルチプレイメニューにサーバーとして追加してください。"
+        "a": "MinecraftページからJavaアドレス zo7al.play-mc.fun をコピーし、Minecraft Java Editionのマルチプレイメニューにサーバーとして追加してください。",
+        "id": "java",
+        "href": "/minecraft",
+        "action": "Minecraftを開く"
       },
       {
         "category": "gettingStarted",
         "q": "BedrockでZo7al Networkに参加するには？",
-        "a": "Minecraft Bedrock でアドレス zo7al.play-mc.fun、ポート 25807 のサーバーを追加してください。"
+        "a": "Minecraft Bedrock でアドレス zo7al.play-mc.fun、ポート 25807 のサーバーを追加してください。",
+        "id": "bedrock",
+        "href": "/minecraft",
+        "action": "Minecraftを開く"
       },
       {
-        "category": "gettingStarted",
-        "q": "Bedrockに対応していますか？",
-        "a": "はい。Bedrock：zo7al.play-mc.fun — ポート 25807。"
-      },
-      {
-        "category": "gettingStarted",
+        "category": "minecraft",
         "q": "対応しているMinecraftのバージョンは？",
-        "a": "クラシックPvP向けの1.8.9、安定したサバイバル向けの1.20.x、そして最新版の1.21.xに対応しています。"
+        "a": "新しいサーバーは1.21.11、Classic PvPは1.8.9を使用します。ゲームモードに合うバージョンを選び、参加前にMinecraftページを確認してください。",
+        "id": "versions",
+        "href": "/minecraft",
+        "action": "Minecraftを開く"
       },
       {
         "category": "gettingStarted",
         "q": "どんな動画を作っていますか？",
-        "a": "Fortnite、Minecraft などのゲーム動画や Shorts、チャレンジ、笑える瞬間、仲間とのプレイを発信しています。YouTube チャンネルは @iiZo7al です。"
+        "a": "Fortnite、Minecraft などのゲーム動画や Shorts、チャレンジ、笑える瞬間、仲間とのプレイを発信しています。YouTube チャンネルは @iiZo7al です。",
+        "id": "videos"
       },
       {
         "category": "storeRanks",
         "q": "ランクの購入方法は？",
-        "a": "/store でランクを選び、Minecraft ユーザー名を入力して Tebex で安全に支払えます。Booster は Discord サーバーのブーストで獲得できます。"
+        "a": "/storeでランクをカートに追加し、カートに正確なMinecraft名を入力して内容を確認し、Tebexで支払います。BoosterはDiscordサーバーのブーストで取得します。",
+        "id": "buy",
+        "href": "/store",
+        "action": "ストアを開く"
       },
       {
         "category": "storeRanks",
         "q": "利用できるランクは？",
-        "a": "購入できるランクはVIP、MVP、MVP+、MVP++です。BoosterはDiscordサーバーのブーストで取得できます。YOUTUBE、TWITCH、TIKTOKは購入ではなく応募と審査によるクリエイターランクです。最新の詳細、価格、応募は/storeをご覧ください。Coinsはゲーム内通貨であり、ランクではありません。"
+        "a": "購入できるランクはVIP、MVP、MVP+、MVP++です。BoosterはDiscordサーバーのブーストで取得できます。YOUTUBE、TWITCH、TIKTOKは購入ではなく応募と審査によるクリエイターランクです。最新の詳細、価格、応募は/storeをご覧ください。Coinsはゲーム内通貨であり、ランクではありません。",
+        "id": "ranks",
+        "href": "/store",
+        "action": "ストアを開く"
       },
       {
         "category": "storeRanks",
         "q": "Zo7al Networkのストアはどこですか？",
-        "a": "ストアは /store です。決済は Tebex 経由で行われ、サブスクリプションの確認・解約は portal.tebex.io でできます。"
+        "a": "ストアは /store です。決済は Tebex 経由で行われ、サブスクリプションの確認・解約は portal.tebex.io でできます。",
+        "id": "store",
+        "href": "/store",
+        "action": "ストアを開く"
       },
       {
         "category": "storeRanks",
         "q": "Coinsの購入方法は？再購入できますか？",
-        "a": "/storeのCoinsからパッケージを選び、正確なMinecraftユーザー名を入力してTebexで支払います。数量とボーナスは詳細に表示されます。Coinsはランクとは別のゲーム内通貨で、何度でも購入できます。受け取りが遅れている場合は取引番号を添えてDiscordサポートに連絡してください。"
+        "a": "Coinsパックをカートに追加し、+と−で数量を変更します。ごみ箱でパック全体を削除できます。Coinsはランクと別で、再購入できます。数量やボーナスは詳細を確認してください。",
+        "id": "coins",
+        "href": "/store",
+        "action": "ストアを開く"
       },
       {
         "category": "fortnite",
         "q": "FortniteでZo7alのマップに参加するには？",
-        "a": "Fortniteを開き、クリエイティブに進み、「コードを入力」を選択し、Fortniteページに表示されているアイランドコードを入力してください。"
+        "a": "Fortniteを開き、クリエイティブに進み、「コードを入力」を選択し、Fortniteページに表示されているアイランドコードを入力してください。",
+        "id": "fortnite-map"
       },
       {
         "category": "fortnite",
         "q": "Zo7alのすべてのマップはどこで見られますか？",
-        "a": "Fortniteページには公開済みのすべてのアイランドがコード付きで一覧表示され、公式クリエイターページと同期しています。"
+        "a": "Fortniteページには公開済みのすべてのアイランドがコード付きで一覧表示され、公式クリエイターページと同期しています。",
+        "id": "fortnite-list"
       },
       {
         "category": "community",
         "q": "Zo7alの公式Discordサーバーは？",
-        "a": "discord.gg/nxScVYrSXq — イベント、サポート、コミュニティ更新情報の拠点です。"
+        "a": "discord.gg/nxScVYrSXq — イベント、サポート、コミュニティ更新情報の拠点です。",
+        "id": "discord"
       },
       {
         "category": "community",
         "q": "Zo7alのSNSはどこで見られますか？",
-        "a": "YouTube チャンネル @iiZo7al と他のアカウントはSNSページに掲載しています。リンクは公式 Linktree と同期しています。"
+        "a": "YouTube チャンネル @iiZo7al と他のアカウントはSNSページに掲載しています。リンクは公式 Linktree と同期しています。",
+        "id": "socials",
+        "href": "/socials",
+        "action": "SNSを開く"
       },
       {
-        "category": "community",
+        "category": "support",
         "q": "問題を報告するには？",
-        "a": "Discordサーバーに参加し、サポートチャンネルでチケットを開いてください — チームに最も早く連絡できる方法です。"
+        "a": "/supportでよくあるエラーを確認するか、問い合わせを送信してください。プロジェクト詳細の問題報告なら名前とバージョンが含まれます。受付情報を保存し、/requestsで確認できます。",
+        "id": "report",
+        "href": "/support?tab=report",
+        "action": "サポートを開く"
       },
       {
-        "category": "community",
+        "category": "support",
         "q": "Zo7alに連絡するには？",
-        "a": "広告・コラボのご相談は ads@zo7al.net へ。サーバーや購入のサポートはSNSページから Discord に参加してください。"
+        "a": "広告・コラボ：ads@zo7al.net。サーバーや購入の問題は/supportで問い合わせ、/requestsで追跡してください。公式アカウントは/socialsにあります。",
+        "id": "contact",
+        "href": "/support",
+        "action": "サポートを開く"
       },
       {
         "category": "modpacks",
         "q": "Zo7alのModpackはどこでダウンロードできますか？",
-        "a": "ModrinthとCurseForgeで、どちらもModpackページに直接リンクが掲載されています。"
+        "a": "ModrinthとCurseForgeで、どちらもModpackページに直接リンクが掲載されています。",
+        "id": "modpacks",
+        "href": "/modpacks",
+        "action": "Modパックを見る"
       },
       {
         "category": "community",
         "q": "Zo7alのアカウントの最新コンテンツを見るには？",
-        "a": "/socials を開き、Zo7al Gamesを含む各アカウントの詳細アイコンを押してください。紹介文と、取得できたプラットフォーム別の公開コンテンツが表示されます。通常のYouTube動画、投稿、保存されたTwitch配信、Modパックのリリースなどです。"
+        "a": "/socials を開き、Zo7al Gamesを含む各アカウントの詳細アイコンを押してください。紹介文と、取得できたプラットフォーム別の公開コンテンツが表示されます。通常のYouTube動画、投稿、保存されたTwitch配信、Modパックのリリースなどです。",
+        "id": "social-preview",
+        "href": "/socials",
+        "action": "SNSを開く"
       },
       {
         "category": "community",
         "q": "プレビューを表示できないことがあるのはなぜ？",
-        "a": "プラットフォームが公開プレビューを制限していたり、API接続が必要だったり、公開コンテンツがない場合があります。プレビュー内のリンクから元のアカウントを開けます。表示できないことはアカウントの削除を意味しません。"
+        "a": "プラットフォームが公開プレビューを制限していたり、API接続が必要だったり、公開コンテンツがない場合があります。プレビュー内のリンクから元のアカウントを開けます。表示できないことはアカウントの削除を意味しません。",
+        "id": "social-unavailable"
       },
       {
         "category": "storeRanks",
         "q": "クリエイターランクにはどう応募しますか？",
-        "a": "/store の Coins の下で YouTube、Twitch、TikTok を選び、メール、Minecraft と Discord のユーザー名、チャンネルURL、内容の詳細を送信してください。運営が審査し、ランクは自動付与されません。"
+        "a": "/store の Coins の下で YouTube、Twitch、TikTok を選び、メール、Minecraft と Discord のユーザー名、チャンネルURL、内容の詳細を送信してください。運営が審査し、ランクは自動付与されません。",
+        "id": "creator-apply",
+        "href": "/store",
+        "action": "ストアを開く"
       },
       {
         "category": "storeRanks",
         "q": "クリエイターランクは有料ですか？",
-        "a": "応募は無料で、購入ランクや Coins とは別です。資格と承認は運営が判断します。登録者数の条件や審査期間は確約していません。"
+        "a": "応募は無料で、購入ランクや Coins とは別です。資格と承認は運営が判断します。登録者数の条件や審査期間は確約していません。",
+        "id": "creator-free",
+        "href": "/store",
+        "action": "ストアを開く"
+      },
+      {
+        "id": "one-rank",
+        "category": "storeRanks",
+        "q": "複数のランクをカートに入れられますか？",
+        "a": "有料ランクは同時に1つまでです。別のランクを選ぶ前に削除してください。Coinsはランクと一緒に追加し、数量を変更できます。",
+        "href": "/store",
+        "action": "ストアを開く"
+      },
+      {
+        "id": "rank-preview",
+        "category": "storeRanks",
+        "q": "キャラクターでランクを確認するには？",
+        "a": "カードやカートの詳細横にある目のアイコンを押します。必要に応じてMinecraft名を入力すると、3Dキャラクター、名前、選択したランクが表示されます。",
+        "href": "/store",
+        "action": "ストアを開く"
+      },
+      {
+        "id": "player-profile",
+        "category": "minecraft",
+        "q": "Minecraftプロフィールはどこですか？",
+        "a": "/minecraftのプレイヤー欄に名前を入力してください。サーバーを選ぶと、現在のランク、3Dキャラクター、公開が許可された統計を確認できます。データはサーバープラグインから同期されます。",
+        "href": "/minecraft#player",
+        "action": "Minecraftを開く"
+      },
+      {
+        "id": "network-statistics",
+        "category": "minecraft",
+        "q": "Zo7al Networkの統計はどう計算されますか？",
+        "a": "有効なサーバーの有効な統計のみ集計します。無効な項目は合計に含めません。プレイ時間とキルは合計し、連続日数は最大値を使用します。",
+        "href": "/minecraft#player",
+        "action": "Minecraftを開く"
+      },
+      {
+        "id": "leaderboard",
+        "category": "minecraft",
+        "q": "Minecraftランキングの仕組みは？",
+        "a": "サーバーと統計を選ぶと、実際の同期データを順位付けします。プレイ時間は時間単位です。プレイヤーを選ぶとプロフィールが開きます。空の一覧はその条件の同期値がないことを示します。",
+        "href": "/minecraft#leaderboard",
+        "action": "ランキングを見る"
+      },
+      {
+        "id": "achievements",
+        "category": "minecraft",
+        "q": "実績はどう解除しますか？",
+        "a": "選択したサーバーの同期済み・有効な統計から進捗を計算し、目標に達すると解除します。プレイ後にプロフィールを更新してください。非公開または不足している項目は対象外です。",
+        "href": "/minecraft#player",
+        "action": "Minecraftを開く"
+      },
+      {
+        "id": "polls",
+        "category": "community",
+        "q": "コミュニティ投票の仕組みは？",
+        "a": "受付中の投票で選択肢を選んで送信します。投票と結果はデータベースに保存され、同じブラウザで再読込すると選択が戻ります。ブラウザの識別情報ごとに1票です。Cookieを消すと識別情報が変わります。",
+        "href": "/minecraft#community-polls",
+        "action": "投票を見る"
+      },
+      {
+        "id": "gallery",
+        "category": "community",
+        "q": "画像や動画を投稿するには？",
+        "a": "MinecraftかFortniteのギャラリーで作品投稿を選び、画像または対応する動画リンク、名前、メールを送信します。承認までは非公開で、メールは公開されません。",
+        "href": "/minecraft#community-gallery",
+        "action": "ギャラリーを見る"
+      },
+      {
+        "id": "notifications",
+        "category": "community",
+        "q": "通知の設定方法は？",
+        "a": "ベルを開き、通知設定で分類を選びます。設定と既読状態はこのブラウザ用にサーバー保存されます。申請通知には保存済み受付情報を使います。ブラウザ変更やCookie削除で識別情報が変わります。",
+        "href": "/support",
+        "action": "サポートを開く"
+      },
+      {
+        "id": "requests",
+        "category": "support",
+        "q": "注文や申請を確認するには？",
+        "a": "サポートから/requestsを開いてください。注文、クリエイター申請、問い合わせ、イベントにタブがあります。別のブラウザでは受付情報の参照番号と秘密の追跡コードで復元できます。",
+        "href": "/requests",
+        "action": "申請一覧"
+      },
+      {
+        "id": "news-events",
+        "category": "community",
+        "q": "ニュースやイベントはどこですか？",
+        "a": "公開されたニュースはホーム、イベントは/minecraftにあります。件数が増えると「もっと見る」が表示されます。受付中の予定イベントに登録できます。公開はチームが管理します。",
+        "href": "/minecraft#events",
+        "action": "イベントを見る"
+      },
+      {
+        "id": "project-updates",
+        "category": "modpacks",
+        "q": "プロジェクトの状態や更新はどこですか？",
+        "a": "マップやModパックの詳細に、公開された状態、更新履歴、問題報告リンクがあります。チームが管理しており、未公開の状態や更新を作り出すことはありません。",
+        "href": "/modpacks",
+        "action": "Modパックを見る"
+      },
+      {
+        "id": "permanent-features",
+        "category": "community",
+        "q": "新しい機能は恒久的ですか？",
+        "a": "はい。公開内容、投票、投稿、目標、通知設定はデータベースに保存され、デプロイ後も残ります。チームは編集や公開停止ができます。ランキングと実績は実際の同期統計を使います。",
+        "href": "/minecraft#community-polls",
+        "action": "投票を見る"
       }
-    ]
+    ],
+    "clearSearch": "検索をクリア",
+    "filterLabel": "質問の分類",
+    "resetFilters": "すべての質問"
   },
   "footer": {
     "tagline": "ゲーミングクリエイター。Minecraftネットワーク構築者。Fortniteクリエイター。",
