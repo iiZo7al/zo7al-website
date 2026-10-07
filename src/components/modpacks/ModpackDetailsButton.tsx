@@ -10,6 +10,7 @@ import ProjectExtras from "@/components/community/ProjectExtras";
 import DetailsIcon from "@/components/ui/DetailsIcon";
 import SolidIcon from "@/components/ui/SolidIcon";
 import { modrinthDetails, readableDescription, type ModpackDetails } from "@/lib/data/modpack-details";
+import type { ModpackChangelogData } from "@/lib/data/modpack-changelog";
 import "@/components/store/store.css";
 
 type Project = ModpackDetails & { title: string; description: string; iconUrl: string | null; url: string; categories: string[]; downloads: number; id?: string; slug?: string; projectType?: string };
@@ -24,7 +25,7 @@ export default function ModpackDetailsButton({ project, source }: { project: Pro
   const dialog = useRef<HTMLDialogElement>(null);
   const [open, setOpen] = useState(false);
   const [details, setDetails] = useState<ModpackDetails>(project);
-  const [status, setStatus] = useState<"snapshot" | "loading" | "live" | "error">("snapshot");
+  const [status, setStatus] = useState<"snapshot" | "loading" | "live" | "partial" | "error">("snapshot");
 
   useEffect(() => {
     if (!open) { dialog.current?.close(); return; }
@@ -35,10 +36,23 @@ export default function ModpackDetailsButton({ project, source }: { project: Pro
   }, [open]);
 
   useEffect(() => {
-    if (!open || source !== "Modrinth" || !project.slug) return;
+    if (!open || source === "Modrinth" && !project.slug || project.projectType === "server") return;
     let cancelled = false;
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 10000);
+    const timeout = setTimeout(() => controller.abort(), source === "CurseForge" ? 60000 : 10000);
+    if (source === "CurseForge") {
+      void fetch("/api/modpacks/changelog?project=" + encodeURIComponent(projectKey), { signal: controller.signal })
+        .then(async response => {
+          if (!response.ok) throw Error("UNAVAILABLE");
+          const data = await response.json() as ModpackChangelogData;
+          const current = data.projects.find(item => item.projectKey === projectKey);
+          if (!current || current.status === "unavailable") throw Error("UNAVAILABLE");
+          if (!cancelled && !controller.signal.aborted) { setDetails({ ...project, releases: current.releases }); setStatus(current.status === "live" ? "live" : "partial"); }
+        })
+        .catch(() => { if (!cancelled) setStatus("error"); })
+        .finally(() => clearTimeout(timeout));
+      return () => { cancelled = true; clearTimeout(timeout); controller.abort(); };
+    }
     const get = async (path: string) => {
       const response = await fetch(`https://api.modrinth.com/v2/project/${encodeURIComponent(project.slug!)}/${path}`, { signal: controller.signal });
       if (!response.ok) throw new Error("Unable to load project");
@@ -50,14 +64,14 @@ export default function ModpackDetailsButton({ project, source }: { project: Pro
       .catch(() => { if (!cancelled) setStatus("error"); })
       .finally(() => clearTimeout(timeout));
     return () => { cancelled = true; clearTimeout(timeout); controller.abort(); };
-  }, [open, source, project.slug, project.projectType]);
+  }, [open, source, project, projectKey]);
 
   const queryChanged=useCallback((value:string|null)=>setOpen(value===projectKey),[projectKey]);
 
   const date = (value: string) => Number.isNaN(Date.parse(value)) ? value : format.dateTime(new Date(value), { year: "numeric", month: "short", day: "numeric", timeZone: "UTC" });
   return <>
     <QueryObserver param="project" onChange={queryChanged}/>
-    <button type="button" className="store-action store-details-button" data-cursor="button" aria-haspopup="dialog" aria-label={`${store("details")} — ${project.title}`} title={store("details")} onClick={() => { setStatus(source === "Modrinth" ? "loading" : "snapshot"); setOpen(true);const url=new URL(window.location.href);url.searchParams.set("project",projectKey);window.history.replaceState(null,"",url); }}><DetailsIcon /></button>
+    <button type="button" className="store-action store-details-button" data-cursor="button" aria-haspopup="dialog" aria-label={`${store("details")} — ${project.title}`} title={store("details")} onClick={() => { setStatus(project.projectType === "server" ? "snapshot" : "loading"); setOpen(true);const url=new URL(window.location.href);url.searchParams.set("project",projectKey);window.history.replaceState(null,"",url); }}><DetailsIcon /></button>
     <dialog ref={dialog} onCancel={closeDetails} onClose={closeDetails} aria-labelledby={titleId} className="checkout-shell store-checkout">
       {open && <>
         <header className="store-checkout-header"><h2 id={titleId} dir="auto" className="font-semibold">{project.title}</h2><button type="button" className="store-close" aria-label={store("close")} onClick={closeDetails}>×</button></header>
@@ -69,7 +83,7 @@ export default function ModpackDetailsButton({ project, source }: { project: Pro
           </div>
           <div className="hub-actions"><ShareButton path={"/modpacks?project="+encodeURIComponent(projectKey)}/></div>
           {project.projectType!=="server" && <InstallationGuide source={source} url={project.url}/>}
-          <p role="status" className="text-xs text-[var(--text-muted)]">{t(status === "loading" ? "detailsLoading" : status === "live" ? "detailsLive" : status === "error" ? "detailsFallback" : "detailsSnapshot")}</p>
+          <p role="status" className="text-xs text-[var(--text-muted)]">{t(status === "loading" ? "detailsLoading" : status === "live" ? "detailsLive" : status === "partial" ? "detailsPartial" : status === "error" ? "detailsFallback" : "detailsSnapshot", { source })}</p>
           <dl className="card-glow grid grid-cols-1 gap-4 rounded-xl border border-[var(--border)] p-4 sm:grid-cols-2">
             {[[t("gameVersions"), details.gameVersions?.join(", ")], [t("loaders"), details.loaders?.join(", ")], [t("updated"), details.updated ? date(details.updated) : undefined], [t("license"), details.license]].map(([label, value]) => <div key={label}><dt className="mb-1 text-xs text-[var(--text-muted)]">{label}</dt><dd dir="auto" className="break-words text-sm">{value || t("notListed")}</dd></div>)}
           </dl>

@@ -39,10 +39,6 @@ export default function Hero() {
         style={{ pointerEvents: "none" }}
         inert={gameActive}
       >
-        <motion.p variants={item} className="text-label mb-6" style={{ color: "var(--accent)" }}>
-          {t("eyebrow")}
-        </motion.p>
-
         <motion.h1
           variants={item}
           className="text-display text-[16vw] sm:text-7xl md:text-8xl lg:text-[7.5rem]"
