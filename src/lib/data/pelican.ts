@@ -28,13 +28,4 @@ export function validConsoleCommand(value: unknown): value is string {
 export function cleanConsoleLine(value: string): string {
   return value.slice(0,16000).replace(/\x1b\][^\x07]*(?:\x07|\x1b\\)/g, "").replace(/\x1b\[[0-?]*[ -/]*[@-~]/g, "").replace(/[\x00-\x08\x0b-\x1f\x7f]/g, "");
 }
-export function publicIPv4(value: string): boolean {
-  if (!/^\d{1,3}(\.\d{1,3}){3}$/.test(value)) return false;
-  const [a,b,c,d] = value.split(".").map(Number);
-  if ([a,b,c,d].some(n => n > 255)) return false;
-  if (a === 0 || a === 10 || a === 127 || a >= 224 || (a === 100 && b >= 64 && b <= 127) || (a === 169 && b === 254) || (a === 172 && b >= 16 && b <= 31)) return false;
-  if (a === 192 && (b === 168 || b === 0 || (b === 88 && c === 99))) return false;
-  if (a === 198 && (b === 18 || b === 19 || (b === 51 && c === 100))) return false;
-  if (a === 203 && b === 0 && c === 113) return false;
-  return true;
-}
+export { publicIPv4 } from "./dashboard";

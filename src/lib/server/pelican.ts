@@ -1,13 +1,17 @@
 import "server-only";
 import { lookup } from "node:dns/promises";
 import { request as httpsRequest } from "node:https";
+import { request as httpRequest } from "node:http";
 import { isIP } from "node:net";
 import { publicPanelOrigin, validServerId, type ConnectionInput } from "../data/dashboard";
 import { parsePelicanServer, parsePelicanStats, publicIPv4, type PelicanServer } from "../data/pelican";
 import { allowedPelicanEndpoint, object, type PelicanOperation } from "../data/pelican-management";
 
 async function publicAddress(hostname: string): Promise<string> {
-  if (isIP(hostname)) throw Error("INVALID_HOST");
+  if (isIP(hostname)) {
+    if (!publicIPv4(hostname)) throw Error("INVALID_HOST");
+    return hostname;
+  }
   let timer: ReturnType<typeof setTimeout> | undefined;
   const addresses = await Promise.race([
     lookup(hostname,{ family:4, all:true }),
@@ -30,8 +34,9 @@ export async function pelicanRequest(connection: ConnectionInput, suffix = "", b
   for (const [key,value] of Object.entries(options.query ?? {})) url.searchParams.set(key,value);
   const address = await publicAddress(url.hostname);
   const payload = typeof body === "string" ? body : body === undefined ? undefined : JSON.stringify(body);
+  const sendRequest = url.protocol === "http:" ? httpRequest : httpsRequest;
   return new Promise((resolve,reject) => {
-    const req = httpsRequest(url, { method, family:4,
+    const req = sendRequest(url, { method, family:4,
       lookup: (_hostname,_options,callback) => callback(null,address,4),
       headers: { Accept:"application/json", Authorization:"Bearer " + connection.apiKey,
         "User-Agent":"Zo7alProjects/1.0 (zo7al.is-a.dev)", ...(payload !== undefined ? { "Content-Type":typeof body === "string" ? "text/plain; charset=utf-8" : "application/json", "Content-Length":Buffer.byteLength(payload) } : {}) },

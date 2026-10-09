@@ -1072,7 +1072,7 @@
     "connectPelican": "连接 Pelican",
     "connect_youtube": "使用 YouTube Data API 密钥和频道用户名。订阅者、观看次数和视频数为公开统计；收益和观看时长仍在 YouTube Studio 中查看。",
     "connect_curseforge": "使用 CurseForge API 密钥加载已发布模组包的下载统计。",
-    "connect_pelican": "连接 HTTPS 面板和 Client API 密钥以自动发现服务器。",
+    "connect_pelican": "连接 HTTP / HTTPS 面板和 Client API 密钥以自动发现服务器。",
     "description_minecraft": "实时 Minecraft 状态与玩家数。连接 Pelican 后可查看 CPU、内存、日志并发送命令。",
     "description_fortnite": "通过 Epic Games Data API 获取过去7天的公开统计。部分岛屿或时段可能没有数据。",
     "description_youtube": "YouTube Data API 的公开频道统计。私有分析、收益和视频管理请打开 YouTube Studio。",

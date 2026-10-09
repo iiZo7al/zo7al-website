@@ -1072,7 +1072,7 @@
     "connectPelican": "Pelican 연결",
     "connect_youtube": "YouTube Data API 키와 채널 핸들을 사용하세요. 구독자, 조회수, 동영상 수는 공개 통계이며 수익과 시청 시간은 YouTube Studio에서 확인합니다.",
     "connect_curseforge": "CurseForge API 키를 사용해 게시된 모드팩의 다운로드 통계를 불러옵니다.",
-    "connect_pelican": "HTTPS 패널과 Client API 키를 연결하여 서버를 자동으로 찾습니다.",
+    "connect_pelican": "HTTP / HTTPS 패널과 Client API 키를 연결하여 서버를 자동으로 찾습니다.",
     "description_minecraft": "Minecraft 상태와 온라인 플레이어 수입니다. CPU, 메모리, 로그, 명령은 Pelican 연결 후 사용할 수 있습니다.",
     "description_fortnite": "Epic Games Data API의 최근 7일 공개 통계입니다. 일부 섬이나 구간에는 데이터가 없을 수 있습니다.",
     "description_youtube": "YouTube Data API 공개 통계입니다. 비공개 분석, 수익, 영상 관리는 YouTube Studio에서 확인하세요.",

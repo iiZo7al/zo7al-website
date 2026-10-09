@@ -30,13 +30,25 @@ export type DashboardInsights = {
 export type DashboardConnection = { provider: ConnectionProvider; configured: boolean; account: string; panelUrl?: string; managedByEnvironment: boolean };
 export type ConnectionInput = { provider: ConnectionProvider; apiKey: string; account: string; panelUrl?: string };
 
+export function publicIPv4(value: string): boolean {
+  if (!/^\d{1,3}(\.\d{1,3}){3}$/.test(value)) return false;
+  const [a,b,c,d] = value.split(".").map(Number);
+  if ([a,b,c,d].some(n => n > 255)) return false;
+  if (a === 0 || a === 10 || a === 127 || a >= 224 || (a === 100 && b >= 64 && b <= 127) || (a === 169 && b === 254) || (a === 172 && b >= 16 && b <= 31)) return false;
+  if (a === 192 && (b === 168 || b === 0 || (b === 88 && c === 99))) return false;
+  if (a === 198 && (b === 18 || b === 19 || (b === 51 && c === 100))) return false;
+  if (a === 203 && b === 0 && c === 113) return false;
+  return true;
+}
+
 export function publicPanelOrigin(value: unknown): string | null {
   if (typeof value !== "string" || value.length > 250) return null;
   try {
     const url = new URL(value);
-    if (url.protocol !== "https:" || url.username || url.password || url.port || url.search || url.hash || !/^\/[\s]*$/.test(url.pathname)) return null;
-    // DNS and the resolved address are checked again, and pinned, on the server.
-    if (!/^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,63}$/i.test(url.hostname) || /\.(local|localhost|internal|lan)$/i.test(url.hostname)) return null;
+    if (!["http:", "https:"].includes(url.protocol) || url.username || url.password || url.port || url.search || url.hash || !/^\/[\s]*$/.test(url.pathname)) return null;
+    // Domains resolve to checked, pinned public addresses on the server.
+    const domain = /^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,63}$/i.test(url.hostname) && !/\.(local|localhost|internal|lan)$/i.test(url.hostname);
+    if (!domain && !publicIPv4(url.hostname)) return null;
     return url.origin;
   } catch { return null; }
 }
@@ -51,7 +63,8 @@ export function validConnection(value: unknown): ConnectionInput | null {
   if (!value || typeof value !== "object") return null;
   const v = value as Record<string, unknown>;
   if (!connectionProviders.includes(v.provider as ConnectionProvider)) return null;
-  if (typeof v.apiKey !== "string" || v.apiKey.length < 20 || v.apiKey.length > 256 || /\s|[^\x21-\x7e]/.test(v.apiKey)) return null;
+  if (typeof v.apiKey !== "string" || !v.apiKey.length || /\s|[^\x21-\x7e]/.test(v.apiKey)) return null;
+  if (v.provider !== "pelican" && (v.apiKey.length < 20 || v.apiKey.length > 256)) return null;
   if (v.provider === "pelican") {
     const account = typeof v.account === "string" ? v.account.trim() : "";
     const panelUrl = publicPanelOrigin(v.panelUrl);

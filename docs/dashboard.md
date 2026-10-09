@@ -20,7 +20,8 @@ Use **Connections** to verify and save credentials for:
   subscribers, channel views, and video counts. Private revenue and watch-time
   analytics are available through the separate Google OAuth Studio connection below.
 - **CurseForge:** authorized API key for the published modpack download counts.
-- **Pelican:** HTTPS panel origin and a Client API key. Server UUIDs are discovered
+- **Pelican:** HTTP or HTTPS panel origin (public domain or IPv4) and a nonempty
+  Client API key of any length within the request body limit. Server UUIDs are discovered
   automatically; a previously configured UUID remains optional.
 
 Saved keys are encrypted using AES-256-GCM and the existing server-side session
@@ -115,7 +116,7 @@ Epic response was not verified from the restricted development workspace.
 Required Pelican permissions: `websocket.connect` and `control.console`.
 The optional power buttons require `control.start`, `control.stop`, and
 `control.restart` respectively. Use a Client API key, not an Application key.
-The panel URL must use valid HTTPS with a publicly resolvable domain.
+The panel URL accepts HTTP or HTTPS with a publicly resolvable domain or public IPv4 address.
 
 The website proxies resource reads and command/power requests through protected
 server routes. The browser connects directly to Wings using Pelican's short-lived

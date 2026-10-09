@@ -1072,7 +1072,7 @@
     "connectPelican": "ربط Pelican",
     "connect_youtube": "استخدم مفتاح YouTube Data API ومعرّف القناة لعرض المشتركين والمشاهدات والفيديوهات. وقت المشاهدة والأرباح الخاصة تبقى في YouTube Studio.",
     "connect_curseforge": "استخدم مفتاح CurseForge API لجلب إحصاءات تحميل المودباكات المنشورة.",
-    "connect_pelican": "اربط لوحة HTTPS ومفتاح Client API لاكتشاف السيرفرات تلقائيًا.",
+    "connect_pelican": "اربط لوحة HTTP / HTTPS ومفتاح Client API لاكتشاف السيرفرات تلقائيًا.",
     "description_minecraft": "حالة الاتصال وعدد اللاعبين مباشرة من سيرفر ماينكرافت. استهلاك المعالج والذاكرة والسجلات والأوامر متاحة عبر كونسول Pelican بعد ربطه.",
     "description_fortnite": "إحصاءات عامة للمابات من Epic Games Data API الرسمي لآخر 7 أيام. بعض المابات أو الفترات قد لا تتوفر لها بيانات عامة.",
     "description_youtube": "إحصاءات القناة العامة من YouTube Data API. افتح YouTube Studio للتحليلات الخاصة والأرباح وإدارة الفيديوهات.",

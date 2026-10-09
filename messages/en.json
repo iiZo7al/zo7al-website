@@ -1072,7 +1072,7 @@
     "connectPelican": "Connect Pelican",
     "connect_youtube": "Use a YouTube Data API key and channel handle. Subscribers, views, and videos are public statistics; private watch-time and earnings remain in YouTube Studio.",
     "connect_curseforge": "Use a CurseForge API key to load download statistics for your published modpacks.",
-    "connect_pelican": "Connect your HTTPS panel and a Client API key to discover servers automatically.",
+    "connect_pelican": "Connect your HTTP / HTTPS panel and a Client API key to discover servers automatically.",
     "description_minecraft": "Live connection status and player count for your Minecraft server. CPU, memory, logs, and commands are available through the Pelican console after connecting it.",
     "description_fortnite": "Public island statistics from the official Epic Games Data API, covering the last 7 days. Some islands or intervals may not have public data.",
     "description_youtube": "Public channel statistics from YouTube Data API. Open YouTube Studio for private analytics, earnings, and video management.",
