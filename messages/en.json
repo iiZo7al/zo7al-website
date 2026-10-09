@@ -1595,7 +1595,7 @@
     "accountIntro": "Manage your profile and linked accounts.",
     "passwordHint": "Use a unique password of 12–128 characters.",
     "emailSent": "Check your email to continue. The link must be opened in this browser.",
-    "connectionsHint": "Link Discord, Google and your Minecraft player to this account. Keep at least one sign-in method.",
+    "connectionsHint": "Link Discord, Google, Microsoft and your Minecraft player to this account. Keep at least one sign-in method.",
     "reauthHint": "If required, send a verification code to your registered email before changing your password.",
     "linkIntro": "Verify your Minecraft account in the server to view your profile and shop for yourself.",
     "linkInstructions": "Join Zo7al with this Minecraft name and run the command below.",

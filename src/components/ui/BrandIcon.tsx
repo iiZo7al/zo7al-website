@@ -2,6 +2,7 @@ import { useId, type CSSProperties } from "react";
 import {
   siYoutube,
   siDiscord,
+  siGoogle,
   siTiktok,
   siInstagram,
   siX,
@@ -28,6 +29,7 @@ import { Link2 } from "lucide-react";
 export const BRAND_ICONS: Record<string, SimpleIcon> = {
   youtube: siYoutube,
   discord: siDiscord,
+  google: siGoogle,
   tiktok: siTiktok,
   instagram: siInstagram,
   x: siX,

@@ -1595,7 +1595,7 @@
     "accountIntro": "管理你的资料和关联账户。",
     "passwordHint": "使用 12–128 个字符的独立密码。",
     "emailSent": "请检查邮箱，并在当前浏览器中打开链接。",
-    "connectionsHint": "关联 Discord、Google 和 Minecraft，并至少保留一种登录方式。",
+    "connectionsHint": "关联 Discord、Google、Microsoft 和 Minecraft，并至少保留一种登录方式。",
     "reauthHint": "如需验证，请在修改密码前向注册邮箱发送验证码。",
     "linkIntro": "在服务器内验证 Minecraft 账户，即可查看资料并为自己购买。",
     "linkInstructions": "使用此用户名进入 Zo7al，然后执行以下命令。",

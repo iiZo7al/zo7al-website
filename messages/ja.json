@@ -1595,7 +1595,7 @@
     "accountIntro": "プロフィールと連携アカウントを管理。",
     "passwordHint": "12～128文字の固有のパスワードを使用してください。",
     "emailSent": "メールを確認し、このブラウザでリンクを開いてください。",
-    "connectionsHint": "Discord、Google、Minecraft を連携できます。ログイン方法を一つ以上残してください。",
+    "connectionsHint": "Discord、Google、Microsoft、Minecraft を連携できます。ログイン方法を一つ以上残してください。",
     "reauthHint": "必要に応じて、変更前に登録メールへ確認コードを送信してください。",
     "linkIntro": "サーバー内で Minecraft を認証すると、自分のプロフィール表示と購入ができます。",
     "linkInstructions": "このユーザー名で Zo7al に入り、次のコマンドを実行してください。",
