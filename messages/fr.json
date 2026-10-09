@@ -154,8 +154,11 @@
       "4621-8547-5867": "🧡🌹 Mets un J’aime et ajoute aux favoris pour me soutenir\n🏆 12 joueurs : chacun pour soi\n🔫 Choisis tes armes préférées\n✏️ Améliore tes constructions\n📝 Entraîne-toi et progresse\n✨ Système de rangs\n⭐ Noms des joueurs visibles\n🤩 Du fun et des objets à l’infini\n💪 Entraîne ta visée\n💥 Action rapide\n😎 Créé avec UEFN",
       "1888-6512-8811": "🧡🌹 Mets un J’aime et ajoute aux favoris pour me soutenir\n🏆 12 joueurs : chacun pour soi\n🔫 Tous les fusils de précision\n✏️ Zéro construction\n✨ Système de rangs\n⭐ Noms des joueurs visibles\n🤩 Du fun et des objets à l’infini\n💪 Entraîne ta visée\n💥 Action rapide\n😎 Créé avec UEFN",
       "6995-1684-7602": "🧡🌹 Mets un J’aime et ajoute aux favoris pour me soutenir\n🏆 12 joueurs : chacun pour soi\n🔫 Choisis tes armes préférées\n✏️ Améliore tes constructions\n📝 Entraîne-toi et progresse\n✨ Système de rangs\n⭐ Noms des joueurs visibles\n🤩 Du fun et des objets à l’infini\n💪 Entraîne ta visée\n💥 Action rapide\n😎 Créé avec UEFN",
-      "2404-2844-7787": "Mets un J’aime et ajoute aux favoris pour me soutenir 🧡🌹\nCombats de construction chacun pour soi 🏗️\nAction rapide 💥\nRéinitialisation des constructions 💣\nSystème de rangs ✨\nCréé avec UEFN 😎"
-    }
+      "2404-2844-7787": "Mets un J’aime et ajoute aux favoris pour me soutenir 🧡🌹\nCombats de construction chacun pour soi 🏗️\nAction rapide 💥\nRéinitialisation des constructions 💣\nSystème de rangs ✨\nCréé avec UEFN 😎",
+      "4162-0323-5737": "🧡🌹 Aimez et ajoutez aux favoris pour me soutenir\n\n🏰 Doomspire Brickbattle\n💥 Tours destructibles et explosions\n🔫 6 armes classiques\n🎮 Combats rapides en équipe\n🏆 100 manches\n🛒 Boutique en jeu\n🪜 Tours et échelles à escalader\n😎 Créé avec UEFN",
+      "8238-8280-9827": "🧡🌹 Aimez et ajoutez aux favoris pour me soutenir\n\n🏰 Doomspire Brickbattle\n💥 Tours destructibles et explosions\n🔫 6 armes classiques\n🎮 Combats rapides en équipe\n🏆 100 manches\n🛒 Boutique en jeu\n🔫 Sans rechargement\n🪜 Tours et échelles à escalader\n😎 Créé avec UEFN"
+    },
+    "newMap": "Nouveau !!"
   },
   "socials": {
     "eyebrow": "Communauté",
@@ -681,7 +684,8 @@
     "cat_BuildFight": "Combats de construction",
     "cat_1v1v1": "1 contre 1 contre 1",
     "cat_RedvsBlue": "Rouge contre bleu",
-    "gamesAccount": "Zo7al Games sur {platform}."
+    "gamesAccount": "Zo7al Games sur {platform}.",
+    "cat_TeamBattle": "Bataille en équipe"
   },
   "lost": {
     "eyebrow": "Perdu dans l’espace",

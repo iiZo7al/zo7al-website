@@ -3,8 +3,8 @@ import assert from 'node:assert/strict';
 import { FORTNITE_DETAILS } from '../src/lib/data/fortnite-details.ts';
 import { modrinthDetails, readableDescription } from '../src/lib/data/modpack-details.ts';
 
-test('all eleven owner-supplied islands have code-keyed descriptions and exact tags', () => {
-  assert.equal(Object.keys(FORTNITE_DETAILS).length, 11);
+test('all thirteen verified islands have code-keyed descriptions and exact tags', () => {
+  assert.equal(Object.keys(FORTNITE_DETAILS).length, 13);
   for (const [code, details] of Object.entries(FORTNITE_DETAILS)) {
     assert.match(code, /^\d{4}-\d{4}-\d{4}$/);
     assert.match(details.description, /Made In UEFN/);

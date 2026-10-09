@@ -14,6 +14,7 @@ import SolidIcon from "@/components/ui/SolidIcon";
 import MapMedia from "./MapMedia";
 import ProjectExtras,{ ProjectStatus } from "@/components/community/ProjectExtras";
 import "@/components/store/store.css";
+import "./fortnite.css";
 
 export default function MapGallery({ maps: providedMaps }: { maps: FortniteMap[] }) {
   const locale = useLocale();
@@ -22,7 +23,7 @@ export default function MapGallery({ maps: providedMaps }: { maps: FortniteMap[]
   const store = useTranslations("store");
   const t = useTranslations("fortnite"), tc = useTranslations("common"), ui = useTranslations("ui");
   const categoryLabel = (cat: string) => cat === "All" ? tc("all") : ui.has(`cat_${cat.replace(/\W/g, "")}`) ? ui(`cat_${cat.replace(/\W/g, "")}`) : cat;
-  const maps = providedMaps;
+  const maps = useMemo(() => [...providedMaps].sort((a, b) => Number(!!b.spotlight) - Number(!!a.spotlight)), [providedMaps]);
   const categories = useMemo(
     () => ["All", ...Array.from(new Set(maps.map((m) => m.category)))],
     [maps]
@@ -82,11 +83,11 @@ export default function MapGallery({ maps: providedMaps }: { maps: FortniteMap[]
       {!filteredMaps.length && <p className="hub-muted mb-6">{hub("noResults")}</p>}
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {filteredMaps.map((map, i) => (
-          <Reveal key={map.id} delay={i * 0.04}>
+          <Reveal key={map.id} delay={i * 0.04} className={map.spotlight ? "sm:col-span-2 lg:col-span-3" : undefined}>
             <div
               onPointerEnter={event => { if (event.pointerType === "mouse") setHovered(map.id); }}
               onPointerLeave={() => setHovered(null)}
-              className="card-glow group h-full overflow-hidden rounded-2xl border"
+              className={`fortnite-map-card card-glow group h-full overflow-hidden rounded-2xl border${map.spotlight ? " fortnite-map-spotlight" : ""}`}
               style={{ background: "var(--surface)", borderColor: "var(--border)" }}
             >
               <a
@@ -94,7 +95,7 @@ export default function MapGallery({ maps: providedMaps }: { maps: FortniteMap[]
                 target="_blank"
                 rel="noopener noreferrer"
                 data-cursor="image"
-                className="relative block aspect-video overflow-hidden"
+                className="fortnite-map-media relative block aspect-video overflow-hidden"
               >
                 <MapMedia map={map} active={hovered === map.id && !details} />
                 <div
@@ -102,17 +103,22 @@ export default function MapGallery({ maps: providedMaps }: { maps: FortniteMap[]
                   style={{ background: "linear-gradient(to top, rgba(7,8,11,0.8), transparent 60%)" }}
                 />
                 <span
-                  className="absolute left-4 top-4 rounded-full px-3 py-1 text-[11px] font-semibold"
+                  className="absolute start-4 top-4 rounded-full px-3 py-1 text-[11px] font-semibold"
                   style={{ background: "rgba(7,8,11,0.6)", color: "var(--accent-secondary)" }}
                 >
                   {categoryLabel(map.category)}
                 </span>
+                {map.spotlight && <span className="fortnite-new-badge">{t("newMap")}</span>}
               </a>
 
-              <div className="p-5">
-                <p dir="auto" className="font-semibold">{map.title}</p>
+              <div className="fortnite-map-content p-5">
+                <p dir="auto" className="fortnite-map-title font-semibold">{map.title}</p>
                 <ProjectStatus projectKey={'fortnite:'+map.code}/>
                 <p className="mt-1 text-xs text-[var(--text-muted)]">{t("byZo7al")}</p>
+                {map.spotlight && <>
+                  <p dir="auto" className="fortnite-map-summary">{(t.has(`descriptions.${map.code}`) ? t(`descriptions.${map.code}`) : map.description)?.split("\n").filter(Boolean).slice(1).join("\n")}</p>
+                  {!!map.tags?.length && <ul className="fortnite-map-tags" aria-label={t("tags")}>{map.tags.map(tag => <li key={tag}>{tag}</li>)}</ul>}
+                </>}
 
                 <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
                   <code dir="ltr" className="text-xs text-[var(--text-muted)]">{map.code}</code>

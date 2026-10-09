@@ -11,6 +11,7 @@ export type FortniteMap = {
   category: string;
   thumbnail: string;
   featured?: boolean;
+  spotlight?: boolean;
   maxPlayers?: number;
   description?: string;
   tags?: string[];
@@ -20,6 +21,15 @@ export type FortniteMap = {
 // Verified against the live creator page — island codes and artwork only,
 // nothing invented.
 const MAPS: FortniteMap[] = [
+  {
+    id: "doomspire-brickbattle",
+    title: "Doomspire Brickbattle",
+    code: "4162-0323-5737",
+    category: "Team Battle",
+    thumbnail: "https://cdn-0001.qstv.on.epicgames.com/WOqWMTMexDEKZUudqW/image/landscape_comp_s.jpeg",
+    featured: true,
+    spotlight: true,
+  },
   {
     id: "saturn-sniper",
     title: "سنايبرات زحل Zo7al 💥🚀",
@@ -54,6 +64,13 @@ const MAPS: FortniteMap[] = [
     category: "Clan Wars",
     thumbnail:
       "https://cdn-0001.qstv.on.epicgames.com/KSyPkiECgPrJXxxbgG/image/landscape_comp_s.jpeg",
+  },
+  {
+    id: "doomspire-no-reload",
+    title: "(Doomspire Brickbattle (No Reload",
+    code: "8238-8280-9827",
+    category: "Team Battle",
+    thumbnail: "https://cdn-0001.qstv.on.epicgames.com/aEQpIztYjKXcJPxHZz/image/landscape_comp_s.jpeg",
   },
   {
     id: "best-1v1",

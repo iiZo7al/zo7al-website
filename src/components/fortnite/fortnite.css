@@ -1,0 +1,38 @@
+.fortnite-map-card { min-width: 0; }
+.fortnite-map-spotlight {
+  border-color: color-mix(in srgb, var(--accent) 48%, var(--border)) !important;
+  background: linear-gradient(135deg, var(--surface), color-mix(in srgb, var(--accent) 9%, var(--surface))) !important;
+}
+.fortnite-map-content { min-width: 0; }
+.fortnite-map-title { overflow-wrap: anywhere; }
+.fortnite-map-spotlight .fortnite-map-title { font-size: clamp(1.4rem, 2.7vw, 2.1rem); line-height: 1.2; }
+.fortnite-new-badge {
+  position: absolute;
+  inset-inline-end: 1rem;
+  top: 1rem;
+  padding: .45rem .95rem;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #07080b;
+  font-size: .85rem;
+  font-weight: 800;
+  box-shadow: 0 3px 20px #0004;
+}
+.fortnite-map-summary {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 5;
+  overflow: hidden;
+  white-space: pre-line;
+  color: var(--text-muted);
+  margin-top: 1rem;
+  font-size: .85rem;
+  line-height: 1.65;
+}
+.fortnite-map-tags { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: 1rem; }
+.fortnite-map-tags li { border: 1px solid var(--border); border-radius: 999px; padding: .25rem .6rem; font-size: .7rem; color: var(--text-muted); }
+@media (min-width: 640px) {
+  .fortnite-map-spotlight { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); }
+  .fortnite-map-spotlight .fortnite-map-media { aspect-ratio: auto; min-height: 320px; }
+  .fortnite-map-spotlight .fortnite-map-content { display: flex; flex-direction: column; justify-content: center; padding: clamp(1.5rem, 3vw, 2.25rem); }
+}

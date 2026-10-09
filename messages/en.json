@@ -154,8 +154,11 @@
       "4621-8547-5867": "🧡🌹 Press Like & Favorite To Support Me\n🏆 12 Player FREE FOR ALL\n🔫 Choose your favorite weapons\n✏️ Improve your builds\n📝 Practice and train\n✨ Ranked System\n⭐ Name tags ON\n🤩 Endless fun and items\n💪 Train your aim\n💥 Fast Action\n😎 Made In UEFN",
       "1888-6512-8811": "🧡🌹 Press Like & Favorite To Support Me\n🏆 12 Player FREE FOR ALL\n🔫 All Snipers\n✏️ Zero Build\n✨ Ranked System\n⭐ Name tags ON\n🤩 Endless fun and items\n💪 Train your aim\n💥 Fast Action\n😎 Made In UEFN",
       "6995-1684-7602": "🧡🌹 Press Like & Favorite To Support Me\n🏆 12 Player FREE FOR ALL\n🔫 Choose your favorite weapons\n✏️ Improve your builds\n📝 Practice and train\n✨ Ranked System\n⭐ Name tags ON\n🤩 Endless fun and items\n💪 Train your aim\n💥 Fast Action\n😎 Made In UEFN",
-      "2404-2844-7787": "Press Like & Favorite To Support Me 🧡🌹\nFFA Build Fights 🏗️\nFast Action 💥\nBuild Reset 💣\nRanked System ✨\nMade In UEFN 😎"
-    }
+      "2404-2844-7787": "Press Like & Favorite To Support Me 🧡🌹\nFFA Build Fights 🏗️\nFast Action 💥\nBuild Reset 💣\nRanked System ✨\nMade In UEFN 😎",
+      "4162-0323-5737": "🧡🌹 Press Like & Favorite To Support Me\n\n🏰 Doomspire Brickbattle\n💥 Destructive Towers & Explosions\n🔫 6 Classic Weapons\n🎮 Fast-Paced Team Battles\n🏆 100 Rounds\n🛒 In-Game Shop\n🪜 Climbable Towers & Ladders\n😎 Made In UEFN",
+      "8238-8280-9827": "🧡🌹 Press Like & Favorite To Support Me\n\n🏰 Doomspire Brickbattle\n💥 Destructive Towers & Explosions\n🔫 6 Classic Weapons\n🎮 Fast-Paced Team Battles\n🏆 100 Rounds\n🛒 In-Game Shop\n🔫 Without Reload\n🪜 Climbable Towers & Ladders\n😎 Made In UEFN"
+    },
+    "newMap": "New!!"
   },
   "socials": {
     "eyebrow": "Community",
@@ -681,7 +684,8 @@
     "cat_BuildFight": "Build fights",
     "cat_1v1v1": "1v1v1",
     "cat_RedvsBlue": "Red vs blue",
-    "gamesAccount": "Zo7al Games on {platform}."
+    "gamesAccount": "Zo7al Games on {platform}.",
+    "cat_TeamBattle": "Team battle"
   },
   "lost": {
     "eyebrow": "Lost in space",

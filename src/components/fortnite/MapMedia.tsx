@@ -32,7 +32,7 @@ export default function MapMedia({ map, active }: { map: FortniteMap; active: bo
   }, [active, map.videoUrl]);
   return <>
     {/* eslint-disable-next-line @next/next/no-img-element */}
-    <img src={map.thumbnail} alt={map.title} loading="lazy" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.07]" />
+    <img src={map.thumbnail} alt={map.title} loading={map.spotlight ? "eager" : "lazy"} fetchPriority={map.spotlight ? "high" : "auto"} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.07]" />
     {map.videoUrl && active && <video ref={video} muted loop playsInline preload="none" aria-hidden="true" onLoadStart={() => setPlaying(false)} onPlaying={() => setPlaying(true)} onPause={() => setPlaying(false)} onError={() => setPlaying(false)} className={`pointer-events-none absolute inset-0 h-full w-full object-cover transition-opacity ${playing ? "opacity-100" : "opacity-0"}`} />}
   </>;
 }
