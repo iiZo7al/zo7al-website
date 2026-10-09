@@ -1,10 +1,10 @@
 "use client";
 import { createContext,useCallback,useContext,useEffect,useRef,useState,type ReactNode } from 'react';
 import type { SiteAccount } from '@/lib/data/account';
-type AccountState={account:SiteAccount|null;configured:boolean;email:boolean;providers:string[];ready:boolean;error:boolean;refresh:()=>Promise<void>};
+type AccountState={account:SiteAccount|null;configured:boolean;email:boolean;providers:string[];ready:boolean;error:boolean;mfaRequired:boolean;mfaEnabled:boolean;refresh:()=>Promise<void>};
 const Context=createContext<AccountState|null>(null);
 export default function AccountProvider({children}:{children:ReactNode}) {
-  const [state,setState]=useState({account:null as SiteAccount|null,configured:false,email:false,providers:[] as string[],ready:false,error:false});
+  const [state,setState]=useState({account:null as SiteAccount|null,configured:false,email:false,providers:[] as string[],ready:false,error:false,mfaRequired:false,mfaEnabled:false});
   const sequence=useRef(0);
   const refresh=useCallback(async()=>{
     const generation=++sequence.current;

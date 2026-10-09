@@ -16,6 +16,11 @@ CREATE TABLE IF NOT EXISTS site_account_auth_flows (
  browser_hash char(64) PRIMARY KEY, verifier varchar(128) NOT NULL,
  purpose varchar(16) NOT NULL, user_id uuid, next_path varchar(512) NOT NULL, expires_at timestamptz NOT NULL
 );
+CREATE TABLE IF NOT EXISTS site_account_mfa_attempts (
+ user_id uuid NOT NULL, factor_id uuid NOT NULL, code_hash char(64) NOT NULL,
+ expires_at timestamptz NOT NULL, PRIMARY KEY(user_id,factor_id,code_hash)
+);
+CREATE INDEX IF NOT EXISTS site_account_mfa_attempt_expiry ON site_account_mfa_attempts(expires_at);
 ALTER TABLE site_orders ADD COLUMN IF NOT EXISTS user_id uuid;
 ALTER TABLE site_orders ADD COLUMN IF NOT EXISTS gift boolean NOT NULL DEFAULT false;
 ALTER TABLE site_requests ADD COLUMN IF NOT EXISTS user_id uuid;

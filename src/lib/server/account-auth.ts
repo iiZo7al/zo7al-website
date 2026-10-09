@@ -8,8 +8,9 @@ const secure = process.env.NODE_ENV === 'production';
 export const ACCOUNT_ACCESS = secure ? '__Host-zo7al-access' : 'zo7al-access';
 export const ACCOUNT_REFRESH = secure ? '__Host-zo7al-refresh' : 'zo7al-refresh';
 const FLOW_COOKIE = secure ? '__Host-zo7al-account-flow' : 'zo7al-account-flow';
-type AuthUser = { id: string; email?: string; email_confirmed_at?: string; user_metadata?: Record<string, unknown>; app_metadata?: Record<string, unknown>; identities?: { id: string; identity_id?: string; provider: string }[] };
-type AuthResult = { access_token?: string; refresh_token?: string; expires_in?: number; user?: AuthUser; url?: string; external?: Record<string, boolean>; email?: boolean; code?: string; msg?: string };
+export type AuthFactor = { id: string; factor_type: string; status: string; friendly_name?: string };
+export type AuthUser = { id: string; email?: string; email_confirmed_at?: string; user_metadata?: Record<string, unknown>; app_metadata?: Record<string, unknown>; identities?: { id: string; identity_id?: string; provider: string }[]; factors?: AuthFactor[] };
+export type AuthResult = { access_token?: string; refresh_token?: string; expires_in?: number; user?: AuthUser; url?: string; external?: Record<string, boolean>; email?: boolean; code?: string; msg?: string; id?: string; type?: string; totp?: {qr_code:string;secret:string;uri:string}; codes?:string[]; total?:number; remaining?:number };
 export class AccountError extends Error { constructor(public code: string, public status = 400) { super(code); } }
 export function accountConfigured() { return !!process.env.SUPABASE_URL && !!process.env.SUPABASE_PUBLISHABLE_KEY && !!process.env.DATABASE_URL; }
 export function publicOrigin(request: Request) {
@@ -39,20 +40,36 @@ export async function authRequest(path: string, method = 'GET', body?: unknown, 
   const response = await fetch(`${url.origin}/auth/v1${path}`, { method, headers: { apikey: key, 'Content-Type': 'application/json', ...(access ? { Authorization: 'Bearer ' + access } : {}) }, ...(body !== undefined ? { body: JSON.stringify(body) } : {}), cache: 'no-store', redirect: 'error', signal: AbortSignal.timeout(12000) });
   const data = await response.json().catch(() => ({}));
   if (!response.ok) {
-    const code = response.status === 429 ? 'RATE_LIMIT' : response.status >= 500 ? 'UNAVAILABLE' : ['invalid_credentials','user_not_found'].includes(data.code) ? 'CREDENTIALS' : data.code === 'email_not_confirmed' ? 'EMAIL_CONFIRM' : ['weak_password','same_password'].includes(data.code) ? 'PASSWORD' : ['provider_disabled','identity_already_exists','manual_linking_disabled'].includes(data.code) ? 'PROVIDER' : ['session_not_found','refresh_token_not_found','refresh_token_already_used','bad_jwt'].includes(data.code) || response.status === 401 ? 'AUTH_EXPIRED' : 'INVALID';
+    const reason=data.error_code??data.code;
+    const code = response.status === 429 ? 'RATE_LIMIT' : response.status >= 500 ? 'UNAVAILABLE' : ['invalid_credentials','user_not_found'].includes(reason) ? 'CREDENTIALS' : reason === 'email_not_confirmed' ? 'EMAIL_CONFIRM' : ['weak_password','same_password'].includes(reason) ? 'PASSWORD' : ['provider_disabled','identity_already_exists','manual_linking_disabled'].includes(reason) ? 'PROVIDER' : ['session_not_found','refresh_token_not_found','refresh_token_already_used','bad_jwt'].includes(reason) || response.status === 401 ? 'AUTH_EXPIRED' : reason==='mfa_factor_not_found'?'MFA_NOT_FOUND':reason==='insufficient_aal'?'MFA_REQUIRED':['mfa_verification_failed','mfa_verification_rejected','mfa_challenge_expired'].includes(reason)?'MFA_CODE':path.startsWith('/factors')&&(response.status===404||/not_enabled|disabled/.test(reason??''))?'MFA_UNAVAILABLE':'INVALID';
     throw new AccountError(code, response.status === 429 ? 429 : response.status >= 500 ? 503 : response.status === 401 ? 401 : 400);
   }
   return data;
 }
-export async function accountUser(request: Request, headers?: Headers): Promise<AuthUser | null> {
+export async function accountSession(request: Request, headers?: Headers): Promise<{user:AuthUser;access:string}|null> {
   let access = requestCookie(request, ACCOUNT_ACCESS);
   if (!accountConfigured() || !access && !requestCookie(request, ACCOUNT_REFRESH)) return null;
-  try { if (access) return await authRequest('/user', 'GET', undefined, access) as AuthUser; }
+  try { if (access) return {user:await authRequest('/user', 'GET', undefined, access) as AuthUser,access}; }
   catch (error) { if (!(error instanceof AccountError) || error.code !== 'AUTH_EXPIRED') throw error; }
   if (!headers) return null;
   const refresh = requestCookie(request, ACCOUNT_REFRESH); if (!refresh) return null;
-  try { const tokens = await authRequest('/token?grant_type=refresh_token', 'POST', { refresh_token: refresh }); setAccountTokens(tokens, headers); access = tokens.access_token!; return await authRequest('/user', 'GET', undefined, access) as AuthUser; }
+  try { const tokens = await authRequest('/token?grant_type=refresh_token', 'POST', { refresh_token: refresh }); setAccountTokens(tokens, headers); access = tokens.access_token!; return {user:await authRequest('/user', 'GET', undefined, access) as AuthUser,access}; }
   catch (error) { if (error instanceof AccountError && error.code === 'AUTH_EXPIRED') { clearAccount(headers); return null; } throw error; }
+}
+/** Only inspect claims AFTER the exact access token was validated by /user. */
+export function accountRequiresMFA(user:AuthUser,validatedAccess:string) {
+  if(!(user.factors??[]).some(factor=>factor.status==='verified'))return false;
+  try {const claims=JSON.parse(Buffer.from(validatedAccess.split('.')[1],'base64url').toString());return claims.sub!==user.id||claims.aal!=='aal2';}catch{return true;}
+}
+export async function accountUser(request:Request,headers?:Headers):Promise<AuthUser|null> {
+  const session=await accountSession(request,headers);if(!session)return null;
+  if(accountRequiresMFA(session.user,session.access))throw new AccountError('MFA_REQUIRED',403);
+  return session.user;
+}
+export async function requireAccountSession(request:Request,headers:Headers) {
+  const session=await accountSession(request,headers);
+  if(!session||!/^[a-f0-9-]{36}$/i.test(session.user.id))throw new AccountError('LOGIN_REQUIRED',401);
+  return session;
 }
 export async function requireAccount(request: Request, headers?: Headers) { const user = await accountUser(request, headers); if (!user || !/^[a-f0-9-]{36}$/i.test(user.id)) throw new AccountError('LOGIN_REQUIRED', 401); return user; }
 export async function accountView(user: AuthUser): Promise<SiteAccount> {
@@ -81,5 +98,6 @@ export async function finishAccountFlow(request: Request, headers: Headers, code
   const user = await authRequest('/user', 'GET', undefined, result.access_token) as AuthUser;
   if (!user?.id || flow.user_id && flow.user_id !== user.id) throw new AccountError('AUTH_EXPIRED', 401);
   await accountView(user); setAccountTokens(result, headers);
+  if(accountRequiresMFA(user,result.access_token!))return '/account?mfa=1&next='+encodeURIComponent(flow.purpose==='recover'?'/account?tab=password&recovery=1':accountNext(flow.next_path));
   return flow.purpose === 'recover' ? '/account?tab=password&recovery=1' : accountNext(flow.next_path);
 }
