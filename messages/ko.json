@@ -979,7 +979,10 @@
     "fortnitePolls": "커뮤니티 투표",
     "fortnitePollIntro": "Fortnite 섬과 커뮤니티의 다음 콘텐츠를 선택하세요.",
     "epic": "Epic Games 표시 이름",
-    "allGames": "모든 게임"
+    "allGames": "모든 게임",
+    "mySubmissions": "내 게시물",
+    "submissionsIntro": "커뮤니티 게시물과 검토 상태를 확인하세요.",
+    "status_approved": "승인됨"
   },
   "dashboard": {
     "dashboard": "대시보드",
@@ -1655,6 +1658,7 @@
       "generateCodes": "백업 코드 생성",
       "changeApp": "인증 앱 변경",
       "setup": "2FA 설정"
-    }
+    },
+    "submissionLogin": "로그인하여 게시물, 신청 및 지원 요청을 계정에 연결하고 진행 상황을 확인하세요."
   }
 }

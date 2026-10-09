@@ -979,7 +979,10 @@
     "fortnitePolls": "コミュニティ投票",
     "fortnitePollIntro": "Fortniteの島とコミュニティの次の内容を選びましょう。",
     "epic": "Epic Gamesの表示名",
-    "allGames": "すべてのゲーム"
+    "allGames": "すべてのゲーム",
+    "mySubmissions": "自分の投稿",
+    "submissionsIntro": "コミュニティへの投稿と審査状況を確認できます。",
+    "status_approved": "承認済み"
   },
   "dashboard": {
     "dashboard": "ダッシュボード",
@@ -1655,6 +1658,7 @@
       "generateCodes": "コードを生成",
       "changeApp": "認証アプリを変更",
       "setup": "2FAを設定"
-    }
+    },
+    "submissionLogin": "ログインして投稿、応募、サポート依頼をアカウントに保存し、進捗を確認できます。"
   }
 }

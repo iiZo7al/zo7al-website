@@ -14,6 +14,8 @@ import DetailsDialog from "@/components/ui/DetailsDialog";
 import { getCreatorRankContent } from "@/lib/data/creator-rank-content";
 import { storeExperienceCopy } from "@/lib/data/store-experience-copy";
 import "./creator-ranks.css";
+import AccountLogin from '@/components/account/AccountLogin';
+import {useAccount} from '@/components/account/AccountProvider';
 
 const platforms = ["youtube", "twitch", "tiktok"] as const;
 type Platform = typeof platforms[number];
@@ -73,6 +75,7 @@ function CreatorText({ text }: { text: string }) {
 }
 function ApplicationForm({ platform, username, onClose }: { platform: Platform; username: string; onClose: () => void }) {
   const t = useTranslations("creators");
+  const {account,refresh}=useAccount();
   const [busy, setBusy] = useState(false);
   const lock = useRef(false);
   const [status, setStatus] = useState("");
@@ -87,16 +90,17 @@ function ApplicationForm({ platform, username, onClose }: { platform: Platform; 
       const response = await fetch("/api/creator-applications", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...Object.fromEntries(data), platform, consent: data.get("consent") === "on" }) });
       const result = await response.json();
       if (response.ok && result.ok === true) { setReference(result.reference);if(result.token){saveReceipt("application",result);setToken(result.token);} setDiscordPending(result.discordPending === true); setStatus("success"); }
-      else setStatus(result.error === "RATE_LIMIT" ? "rateLimit" : result.error === "INVALID" ? "invalid" : result.error === "UNAVAILABLE" ? "unavailable" : "failed");
+      else {if(['LOGIN_REQUIRED','MFA_REQUIRED'].includes(result.error))await refresh();setStatus(result.error === "RATE_LIMIT" ? "rateLimit" : result.error === "INVALID" ? "invalid" : result.error === "UNAVAILABLE" ? "unavailable" : "failed");}
     } catch { setStatus("failed"); }
     finally { lock.current = false; setBusy(false); }
   }
+  if(!account)return <AccountLogin next="/store" onClose={()=>{if(!account)void refresh();onClose();}}/>;
   return <DetailsDialog title={`${t("apply")} · ${platform.toUpperCase()}`} onClose={onClose}>
     <div className="creator-form-body">
       <Image src={`/assets/site/rank-${platform}.png`} width={667} height={375} alt={platform.toUpperCase()} className="creator-modal-image"/>
       {status === "success" ? <div role="status" className="creator-success"><Check size={30}/><h3>{t("success")}</h3><p>{t("review")}</p>{discordPending && <p>{t("notificationPending")}</p>}<p>{t("reference")}: <bdi>{reference}</bdi></p>{token&&<Receipt kind="application" reference={reference} token={token} onTrack={onClose}/>}</div> : <form onSubmit={submit} className="creator-form">
         <p>{t("intro")}</p>
-        <div className="creator-fields">{([ ["email", "email", 254], ["minecraft", "text", 32], ["discord", "text", 40], ["channel", "url", 500], ["followers", "number", 10] ] as const).map(([name, type, max]) => <label key={name} htmlFor={`creator-${name}`}>{t(name)}<input id={`creator-${name}`} name={name} type={type} required maxLength={max} defaultValue={name === "minecraft" ? username : undefined} min={type === "number" ? 0 : undefined} max={type === "number" ? 1000000000 : undefined} step={type === "number" ? 1 : undefined} autoComplete={name === "email" ? "email" : "off"} dir="ltr" placeholder={name === "channel" ? { youtube: "https://www.youtube.com/@yourchannel", twitch: "https://www.twitch.tv/yourchannel", tiktok: "https://www.tiktok.com/@yourchannel" }[platform] : undefined}/></label>)}</div>
+        <div className="creator-fields">{([ ["email", "email", 254], ["minecraft", "text", 32], ["discord", "text", 40], ["channel", "url", 500], ["followers", "number", 10] ] as const).map(([name, type, max]) => <label key={name} htmlFor={`creator-${name}`}>{t(name)}<input id={`creator-${name}`} name={name} type={type} required maxLength={max} defaultValue={name === "minecraft" ? account.minecraft?.username ?? username : name === "email" ? account.email : undefined} min={type === "number" ? 0 : undefined} max={type === "number" ? 1000000000 : undefined} step={type === "number" ? 1 : undefined} autoComplete={name === "email" ? "email" : "off"} dir="ltr" placeholder={name === "channel" ? { youtube: "https://www.youtube.com/@yourchannel", twitch: "https://www.twitch.tv/yourchannel", tiktok: "https://www.tiktok.com/@yourchannel" }[platform] : undefined}/></label>)}</div>
         <label htmlFor="creator-content">{t("content")}<input id="creator-content" name="content" required maxLength={500}/></label>
         <label htmlFor="creator-reason">{t("reason")}<textarea id="creator-reason" name="reason" required minLength={20} maxLength={1000} rows={4}/><small>{t("reasonHint")}</small></label>
         <div className="creator-honey" aria-hidden="true"><label>Website<input name="website" tabIndex={-1} autoComplete="off"/></label></div>

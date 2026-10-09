@@ -3,13 +3,13 @@
 import { Suspense, useRef, type KeyboardEvent } from "react";
 import { useSearchParams } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
-import { Package, Video, Headset, CalendarDays } from "lucide-react";
+import { Package, Video, Headset, CalendarDays,Images } from "lucide-react";
 import { REQUEST_TABS, requestTab, type RequestTab } from "@/lib/data/request-tabs";
 import { isRtl } from "@/i18n/config";
 import TrackingPanel from "./TrackingPanel";
 import "./requests.css";
 
-const ICONS = { order: Package, application: Video, support: Headset, event: CalendarDays };
+const ICONS = { order: Package, application: Video, support: Headset, event: CalendarDays,gallery:Images };
 
 function ActivityTabs({ selected }: { selected: RequestTab }) {
   const t = useTranslations("hub");

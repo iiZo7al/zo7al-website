@@ -979,7 +979,10 @@
     "fortnitePolls": "تصويت المجتمع",
     "fortnitePollIntro": "اختر القادم لمابات فورتنايت ومجتمعها.",
     "epic": "اسم العرض في Epic Games",
-    "allGames": "كل الألعاب"
+    "allGames": "كل الألعاب",
+    "mySubmissions": "مشاركاتي",
+    "submissionsIntro": "تابع مشاركات المجتمع وحالة مراجعتها.",
+    "status_approved": "مقبول"
   },
   "dashboard": {
     "dashboard": "لوحة التحكم",
@@ -1655,6 +1658,7 @@
       "generateCodes": "إنشاء رموز احتياطية",
       "changeApp": "تغيير تطبيق المصادقة",
       "setup": "إعداد 2FA"
-    }
+    },
+    "submissionLogin": "سجّل الدخول لربط مشاركاتك وتقديماتك وطلبات الدعم بحسابك ومتابعتها."
   }
 }

@@ -31,11 +31,11 @@ const security=moduleUrl("src/lib/server/site-security.ts");
 const validation=moduleUrl("src/lib/data/hub-validation.ts");
 const content=stub(`const s=globalThis.__zo7alHubTest;export async function limitAttempt(){return s.state.limits;}export async function createTrackedRequest(kind,payload){s.state.queries.push({sql:"reserve",kind,payload});return {reference:"a1234567-1234-1234-1234-123456789abc",token:"a".repeat(64)};}export async function saveContent(){}export async function retryApplicationNotification(){} export async function retryOrderNotification(){}`);
 const discord=stub(`export async function notifyDiscord(...args){const s=globalThis.__zo7alHubTest.state;s.notify.push(args);if(s.notificationFails)throw Error("Delivery failed");return "12345";}`);
-const replacements={"@/lib/server/account-auth":stub("export async function accountUser(){return null;}"),"@/lib/server/site-db":db,"@/lib/server/site-content":content,"@/lib/server/site-security":security,"@/lib/data/hub-validation":validation,"@/lib/server/discord-notifications":discord};
+const replacements={"@/lib/server/account-auth":stub(`export class AccountError extends Error {} export function accountHeaders(){return new Headers({"Cache-Control":"private, no-store"});}export async function requireAccount(){return {id:"a1234567-1234-1234-1234-123456789abc"};}export async function accountUser(){return null;}`),"@/lib/server/site-db":db,"@/lib/server/site-content":content,"@/lib/server/site-security":security,"@/lib/data/hub-validation":validation,"@/lib/server/discord-notifications":discord};
 const support=await import(moduleUrl("src/app/api/support/route.ts",replacements));
 const events=await import(moduleUrl("src/app/api/events/register/route.ts",replacements));
 const admin=await import(moduleUrl("src/app/api/admin/hub/route.ts",replacements));
-const tracking=await import(moduleUrl("src/app/api/tracking/route.ts",{...replacements,"@/lib/server/account-auth":stub("export async function accountUser(){return null;}"),"@/lib/server/tebex":stub('export function tebexToken(){return "test";}export async function tebexRequest(){return {data:globalThis.__zo7alHubTest.state.basket};}')}));
+const tracking=await import(moduleUrl("src/app/api/tracking/route.ts",{...replacements,"@/lib/server/account-auth":stub(`export class AccountError extends Error {} export function accountHeaders(){return new Headers({"Cache-Control":"private, no-store"});}export async function requireAccount(){return {id:"a1234567-1234-1234-1234-123456789abc"};}export async function accountUser(){return null;}`),"@/lib/server/tebex":stub('export function tebexToken(){return "test";}export async function tebexRequest(){return {data:globalThis.__zo7alHubTest.state.basket};}')}));
 const reference="a1234567-1234-1234-1234-123456789abc",token="a".repeat(64);
 const req=(path,body,headers={})=>new Request("https://zo7al.test"+path,{method:"POST",headers:{origin:"https://zo7al.test","content-type":"application/json","x-forwarded-for":"192.0.2.10",...headers},body:JSON.stringify(body)});
 const reset=()=>{state.queries=[];state.notify=[];state.found=null;state.eventTopic="minecraft";state.notificationFails=false;state.updateFails=false;state.limits=true;};
@@ -93,14 +93,14 @@ test("content and review validation keep drafts, supported locales and safe even
  assert.equal(validateSupport({...validSupport,consent:false}),null);
  assert.equal(validateSupport({...validSupport,website:"spam"}),null);
 });
-test("support success requires a Discord receipt; confirmed submissions survive a later DB outage",async()=>{
+test("support submissions retain their account receipt when Discord or its confirmation update fails",async()=>{
  reset();const response=await support.POST(req("/api/support",validSupport));
  assert.equal(response.status,200);assert.equal((await response.json()).token,token);
  assert.equal(state.notify[0][0],"support");assert.equal(state.notify[0][2].Message,validSupport.message);
- assert.equal(response.headers.get("cache-control"),"no-store");
+ assert.equal(response.headers.get("cache-control"),"private, no-store");
  reset();state.notificationFails=true;
- assert.equal((await support.POST(req("/api/support",validSupport))).status,503);
- assert.ok(state.queries.some(q=>q.sql.startsWith("DELETE")));
+ const queued=await support.POST(req("/api/support",validSupport));assert.equal(queued.status,202);assert.equal((await queued.json()).notificationPending,true);
+ assert.equal(state.queries.some(q=>q.sql.startsWith("DELETE")),false);
  reset();state.updateFails=true;
  assert.equal((await support.POST(req("/api/support",validSupport))).status,200);
  assert.equal(state.queries.some(q=>q.sql.startsWith("DELETE")),false);

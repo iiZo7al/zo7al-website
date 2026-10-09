@@ -979,7 +979,10 @@
     "fortnitePolls": "社区投票",
     "fortnitePollIntro": "选择Fortnite岛屿和社区的下一步内容。",
     "epic": "Epic Games显示名称",
-    "allGames": "所有游戏"
+    "allGames": "所有游戏",
+    "mySubmissions": "我的投稿",
+    "submissionsIntro": "查看你的社区投稿及其审核状态。",
+    "status_approved": "已通过"
   },
   "dashboard": {
     "dashboard": "控制面板",
@@ -1655,6 +1658,7 @@
       "generateCodes": "生成备用代码",
       "changeApp": "更换验证器应用",
       "setup": "设置2FA"
-    }
+    },
+    "submissionLogin": "登录后可将投稿、申请和支持请求关联到你的账户，并跟踪处理进度。"
   }
 }

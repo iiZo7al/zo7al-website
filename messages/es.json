@@ -979,7 +979,10 @@
     "fortnitePolls": "Votación de la comunidad",
     "fortnitePollIntro": "Elige lo próximo para nuestras islas y la comunidad de Fortnite.",
     "epic": "Nombre de Epic Games",
-    "allGames": "Todos los juegos"
+    "allGames": "Todos los juegos",
+    "mySubmissions": "Mis publicaciones",
+    "submissionsIntro": "Consulta tus publicaciones de la comunidad y su revisión.",
+    "status_approved": "Aceptada"
   },
   "dashboard": {
     "dashboard": "Panel",
@@ -1655,6 +1658,7 @@
       "generateCodes": "Generar códigos",
       "changeApp": "Cambiar aplicación",
       "setup": "Configurar 2FA"
-    }
+    },
+    "submissionLogin": "Inicia sesión para vincular tus publicaciones, solicitudes y consultas de soporte a tu cuenta y seguir su estado."
   }
 }

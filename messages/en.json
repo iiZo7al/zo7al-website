@@ -979,7 +979,10 @@
     "fortnitePolls": "Community voting",
     "fortnitePollIntro": "Choose what comes next for our Fortnite islands and community.",
     "epic": "Epic Games display name",
-    "allGames": "All games"
+    "allGames": "All games",
+    "mySubmissions": "My submissions",
+    "submissionsIntro": "Follow your community submissions and their review status.",
+    "status_approved": "Accepted"
   },
   "dashboard": {
     "dashboard": "Dashboard",
@@ -1655,6 +1658,7 @@
       "generateCodes": "Generate backup codes",
       "changeApp": "Change authenticator app",
       "setup": "Set up 2FA"
-    }
+    },
+    "submissionLogin": "Sign in to save your submissions, applications and support requests to your account and follow their progress."
   }
 }

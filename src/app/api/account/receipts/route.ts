@@ -6,7 +6,7 @@ export const runtime='nodejs';
 export const dynamic='force-dynamic';
 export async function GET(request:Request) {
  const headers=accountHeaders();
- try {const user=await requireAccount(request,headers);const rows=(await (await siteDatabase()).query(`SELECT id AS reference,'order' AS kind,created_at AS "savedAt" FROM site_orders WHERE user_id=$1 UNION ALL SELECT id AS reference,kind,created_at AS "savedAt" FROM site_requests WHERE user_id=$1 ORDER BY "savedAt" DESC LIMIT 100`,[user.id])).rows;return Response.json({receipts:rows},{headers});}
+ try {const user=await requireAccount(request,headers);const rows=(await (await siteDatabase()).query(`SELECT id AS reference,'order' AS kind,created_at AS "savedAt",username AS title FROM site_orders WHERE user_id=$1 UNION ALL SELECT id AS reference,kind,created_at AS "savedAt",COALESCE(payload->>'subject',payload->>'platform',payload->>'eventTitle','') AS title FROM site_requests WHERE user_id=$1 UNION ALL SELECT id AS reference,'gallery' AS kind,created_at AS "savedAt",title FROM community_entries WHERE user_id=$1 AND kind='gallery' ORDER BY "savedAt" DESC LIMIT 100`,[user.id])).rows;return Response.json({receipts:rows},{headers});}
  catch(error){return Response.json({error:error instanceof AccountError?error.code:'UNAVAILABLE'},{status:error instanceof AccountError?error.status:503,headers});}
 }
 export async function POST(request:Request) {

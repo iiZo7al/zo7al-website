@@ -1,5 +1,5 @@
 .requests-workspace { min-width:0; }
-.requests-tabs { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; margin-bottom:36px; }
+.requests-tabs { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:10px; margin-bottom:36px; }
 .requests-tab { display:flex; align-items:center; justify-content:center; gap:12px; min-width:0; min-height:72px; padding:14px 18px; border:1px solid var(--border); border-radius:20px; color:var(--text-muted); background:var(--surface); text-align:start; font-size:14px; font-weight:600; transition:background 200ms,border-color 200ms,color 200ms,transform 200ms; }
 .requests-tab:hover { background:var(--surface-elevated); color:var(--text); transform:translateY(-2px); }
 .requests-tab[aria-selected=true] { border-color:var(--accent); background:color-mix(in srgb,var(--accent) 8%,var(--surface)); color:var(--text); }
