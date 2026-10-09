@@ -154,8 +154,11 @@
       "4621-8547-5867": "🧡🌹 Drücke „Gefällt mir“ und füge die Insel deinen Favoriten hinzu, um mich zu unterstützen\n🏆 12 Spieler: Jeder gegen jeden\n🔫 Wähle deine Lieblingswaffen\n✏️ Verbessere deine Baufähigkeiten\n📝 Übe und trainiere\n✨ Rangsystem\n⭐ Spielernamen eingeblendet\n🤩 Endloser Spaß und unzählige Gegenstände\n💪 Trainiere dein Zielen\n💥 Schnelle Action\n😎 Mit UEFN erstellt",
       "1888-6512-8811": "🧡🌹 Drücke „Gefällt mir“ und füge die Insel deinen Favoriten hinzu, um mich zu unterstützen\n🏆 12 Spieler: Jeder gegen jeden\n🔫 Alle Scharfschützengewehre\n✏️ Null Bauen\n✨ Rangsystem\n⭐ Spielernamen eingeblendet\n🤩 Endloser Spaß und unzählige Gegenstände\n💪 Trainiere dein Zielen\n💥 Schnelle Action\n😎 Mit UEFN erstellt",
       "6995-1684-7602": "🧡🌹 Drücke „Gefällt mir“ und füge die Insel deinen Favoriten hinzu, um mich zu unterstützen\n🏆 12 Spieler: Jeder gegen jeden\n🔫 Wähle deine Lieblingswaffen\n✏️ Verbessere deine Baufähigkeiten\n📝 Übe und trainiere\n✨ Rangsystem\n⭐ Spielernamen eingeblendet\n🤩 Endloser Spaß und unzählige Gegenstände\n💪 Trainiere dein Zielen\n💥 Schnelle Action\n😎 Mit UEFN erstellt",
-      "2404-2844-7787": "Drücke „Gefällt mir“ und füge die Insel deinen Favoriten hinzu, um mich zu unterstützen 🧡🌹\nJeder-gegen-jeden-Baukämpfe 🏗️\nSchnelle Action 💥\nBauten zurücksetzen 💣\nRangsystem ✨\nMit UEFN erstellt 😎"
-    }
+      "2404-2844-7787": "Drücke „Gefällt mir“ und füge die Insel deinen Favoriten hinzu, um mich zu unterstützen 🧡🌹\nJeder-gegen-jeden-Baukämpfe 🏗️\nSchnelle Action 💥\nBauten zurücksetzen 💣\nRangsystem ✨\nMit UEFN erstellt 😎",
+      "4162-0323-5737": "🧡🌹 Gib ein Like und füge die Insel zu deinen Favoriten hinzu\n\n🏰 Doomspire Brickbattle\n💥 Zerstörbare Türme und Explosionen\n🔫 6 klassische Waffen\n🎮 Schnelle Teamkämpfe\n🏆 100 Runden\n🛒 Shop im Spiel\n🪜 Kletterbare Türme und Leitern\n😎 Mit UEFN erstellt",
+      "8238-8280-9827": "🧡🌹 Gib ein Like und füge die Insel zu deinen Favoriten hinzu\n\n🏰 Doomspire Brickbattle\n💥 Zerstörbare Türme und Explosionen\n🔫 6 klassische Waffen\n🎮 Schnelle Teamkämpfe\n🏆 100 Runden\n🛒 Shop im Spiel\n🔫 Ohne Nachladen\n🪜 Kletterbare Türme und Leitern\n😎 Mit UEFN erstellt"
+    },
+    "newMap": "Neu!!"
   },
   "socials": {
     "eyebrow": "Community",
@@ -681,7 +684,8 @@
     "cat_BuildFight": "Baukämpfe",
     "cat_1v1v1": "1 gegen 1 gegen 1",
     "cat_RedvsBlue": "Rot gegen Blau",
-    "gamesAccount": "Zo7al Games auf {platform}."
+    "gamesAccount": "Zo7al Games auf {platform}.",
+    "cat_TeamBattle": "Teamkampf"
   },
   "lost": {
     "eyebrow": "Im Weltall verloren",

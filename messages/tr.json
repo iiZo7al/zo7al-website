@@ -154,8 +154,11 @@
       "4621-8547-5867": "🧡🌹 Beni desteklemek için beğen ve favorilerine ekle\n🏆 12 oyunculu herkes tek\n🔫 Favori silahlarını seç\n✏️ İnşa becerilerini geliştir\n📝 Pratik yap ve antrenman yap\n✨ Rütbe sistemi\n⭐ Oyuncu adları görünür\n🤩 Sınırsız eğlence ve eşyalar\n💪 Nişanını geliştir\n💥 Hızlı aksiyon\n😎 UEFN ile yapıldı",
       "1888-6512-8811": "🧡🌹 Beni desteklemek için beğen ve favorilerine ekle\n🏆 12 oyunculu herkes tek\n🔫 Tüm keskin nişancı tüfekleri\n✏️ Sıfır İnşa\n✨ Rütbe sistemi\n⭐ Oyuncu adları görünür\n🤩 Sınırsız eğlence ve eşyalar\n💪 Nişanını geliştir\n💥 Hızlı aksiyon\n😎 UEFN ile yapıldı",
       "6995-1684-7602": "🧡🌹 Beni desteklemek için beğen ve favorilerine ekle\n🏆 12 oyunculu herkes tek\n🔫 Favori silahlarını seç\n✏️ İnşa becerilerini geliştir\n📝 Pratik yap ve antrenman yap\n✨ Rütbe sistemi\n⭐ Oyuncu adları görünür\n🤩 Sınırsız eğlence ve eşyalar\n💪 Nişanını geliştir\n💥 Hızlı aksiyon\n😎 UEFN ile yapıldı",
-      "2404-2844-7787": "Beni desteklemek için beğen ve favorilerine ekle 🧡🌹\nHerkes tek inşa savaşları 🏗️\nHızlı aksiyon 💥\nYapıları sıfırlama 💣\nRütbe sistemi ✨\nUEFN ile yapıldı 😎"
-    }
+      "2404-2844-7787": "Beni desteklemek için beğen ve favorilerine ekle 🧡🌹\nHerkes tek inşa savaşları 🏗️\nHızlı aksiyon 💥\nYapıları sıfırlama 💣\nRütbe sistemi ✨\nUEFN ile yapıldı 😎",
+      "4162-0323-5737": "🧡🌹 Destek olmak için beğen ve favorilere ekle\n\n🏰 Doomspire Brickbattle\n💥 Yıkılabilir kuleler ve patlamalar\n🔫 6 klasik silah\n🎮 Hızlı takım savaşları\n🏆 100 tur\n🛒 Oyun içi mağaza\n🪜 Tırmanılabilir kuleler ve merdivenler\n😎 UEFN ile yapıldı",
+      "8238-8280-9827": "🧡🌹 Destek olmak için beğen ve favorilere ekle\n\n🏰 Doomspire Brickbattle\n💥 Yıkılabilir kuleler ve patlamalar\n🔫 6 klasik silah\n🎮 Hızlı takım savaşları\n🏆 100 tur\n🛒 Oyun içi mağaza\n🔫 Yeniden doldurma yok\n🪜 Tırmanılabilir kuleler ve merdivenler\n😎 UEFN ile yapıldı"
+    },
+    "newMap": "Yeni!!"
   },
   "socials": {
     "eyebrow": "Topluluk",
@@ -681,7 +684,8 @@
     "cat_BuildFight": "İnşa savaşları",
     "cat_1v1v1": "1e1e1",
     "cat_RedvsBlue": "Kırmızıya karşı mavi",
-    "gamesAccount": "{platform} üzerinde Zo7al Games."
+    "gamesAccount": "{platform} üzerinde Zo7al Games.",
+    "cat_TeamBattle": "Takım savaşı"
   },
   "lost": {
     "eyebrow": "Uzayda kayboldu",

@@ -15,6 +15,9 @@ export async function getSyncedFortniteMaps(locale = "en"): Promise<{
     if (found.length) {
       const known = new Map(FORTNITE_MAPS.map(map => [map.code, map]));
       items = found.map(info => ({ ...known.get(info.code), ...info, id: known.get(info.code)?.id ?? info.code, category: known.get(info.code)?.category ?? "Featured", thumbnail: info.thumbnail ?? known.get(info.code)?.thumbnail ?? "" }));
+      const listedCodes = new Set(found.map(info => info.code));
+      // A cached or partial creator page must not hide verified saved islands.
+      items.push(...FORTNITE_MAPS.filter(map => !listedCodes.has(map.code)).map(map => ({ ...map })));
       source = "live";
     }
   } catch { /* Verified names and artwork remain usable during upstream outages. */ }

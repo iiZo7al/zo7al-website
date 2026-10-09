@@ -1,5 +1,13 @@
 // Descriptions and tags supplied by Zo7al, keyed by island code (not live display order).
 export const FORTNITE_DETAILS: Record<string, { description: string; tags: string[] }> = {
+  "4162-0323-5737": {
+    description: "🧡🌹 Press Like & Favorite To Support Me\n\n🏰 Doomspire Brickbattle\n💥 Destructive Towers & Explosions\n🔫 6 Classic Weapons\n🎮 Fast-Paced Team Battles\n🏆 100 Rounds\n🛒 In-Game Shop\n🪜 Climbable Towers & Ladders\n😎 Made In UEFN",
+    tags: ["squad", "explosives", "space"],
+  },
+  "8238-8280-9827": {
+    description: "🧡🌹 Press Like & Favorite To Support Me\n\n🏰 Doomspire Brickbattle\n💥 Destructive Towers & Explosions\n🔫 6 Classic Weapons\n🎮 Fast-Paced Team Battles\n🏆 100 Rounds\n🛒 In-Game Shop\n🔫 Without Reload\n🪜 Climbable Towers & Ladders\n😎 Made In UEFN",
+    tags: ["squad", "explosives", "space"],
+  },
   "0633-4212-9611": {
     "description": "🧡🌹 Press Like & Favorite To Support Me\n🔫 All Snipers\n💥 Fast Action\n🎮 First Parson\n✨ Ranked System\n😎 Made In UEFN",
     "tags": [

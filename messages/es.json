@@ -154,8 +154,11 @@
       "4621-8547-5867": "🧡🌹 Dale a Me gusta y añade a favoritos para apoyarme\n🏆 12 jugadores: todos contra todos\n🔫 Elige tus armas favoritas\n✏️ Mejora tus construcciones\n📝 Practica y entrena\n✨ Sistema de rangos\n⭐ Nombres de jugadores visibles\n🤩 Diversión y objetos sin fin\n💪 Entrena tu puntería\n💥 Acción rápida\n😎 Creado en UEFN",
       "1888-6512-8811": "🧡🌹 Dale a Me gusta y añade a favoritos para apoyarme\n🏆 12 jugadores: todos contra todos\n🔫 Todos los rifles de francotirador\n✏️ Cero construcción\n✨ Sistema de rangos\n⭐ Nombres de jugadores visibles\n🤩 Diversión y objetos sin fin\n💪 Entrena tu puntería\n💥 Acción rápida\n😎 Creado en UEFN",
       "6995-1684-7602": "🧡🌹 Dale a Me gusta y añade a favoritos para apoyarme\n🏆 12 jugadores: todos contra todos\n🔫 Elige tus armas favoritas\n✏️ Mejora tus construcciones\n📝 Practica y entrena\n✨ Sistema de rangos\n⭐ Nombres de jugadores visibles\n🤩 Diversión y objetos sin fin\n💪 Entrena tu puntería\n💥 Acción rápida\n😎 Creado en UEFN",
-      "2404-2844-7787": "Dale a Me gusta y añade a favoritos para apoyarme 🧡🌹\nCombates de construcción todos contra todos 🏗️\nAcción rápida 💥\nReinicio de construcciones 💣\nSistema de rangos ✨\nCreado en UEFN 😎"
-    }
+      "2404-2844-7787": "Dale a Me gusta y añade a favoritos para apoyarme 🧡🌹\nCombates de construcción todos contra todos 🏗️\nAcción rápida 💥\nReinicio de construcciones 💣\nSistema de rangos ✨\nCreado en UEFN 😎",
+      "4162-0323-5737": "🧡🌹 Dale a Me gusta y añade a favoritos para apoyarme\n\n🏰 Doomspire Brickbattle\n💥 Torres destructibles y explosiones\n🔫 6 armas clásicas\n🎮 Batallas rápidas por equipos\n🏆 100 rondas\n🛒 Tienda dentro del juego\n🪜 Torres y escaleras escalables\n😎 Creado con UEFN",
+      "8238-8280-9827": "🧡🌹 Dale a Me gusta y añade a favoritos para apoyarme\n\n🏰 Doomspire Brickbattle\n💥 Torres destructibles y explosiones\n🔫 6 armas clásicas\n🎮 Batallas rápidas por equipos\n🏆 100 rondas\n🛒 Tienda dentro del juego\n🔫 Sin recargar\n🪜 Torres y escaleras escalables\n😎 Creado con UEFN"
+    },
+    "newMap": "¡¡Nuevo!!"
   },
   "socials": {
     "eyebrow": "Comunidad",
@@ -681,7 +684,8 @@
     "cat_BuildFight": "Combates de construcción",
     "cat_1v1v1": "1 contra 1 contra 1",
     "cat_RedvsBlue": "Rojo contra azul",
-    "gamesAccount": "Zo7al Games en {platform}."
+    "gamesAccount": "Zo7al Games en {platform}.",
+    "cat_TeamBattle": "Batalla por equipos"
   },
   "lost": {
     "eyebrow": "Perdido en el espacio",

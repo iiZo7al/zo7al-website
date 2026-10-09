@@ -154,8 +154,11 @@
       "4621-8547-5867": "🧡🌹 Deixe um like e adicione aos favoritos para me apoiar\n🏆 12 jogadores: todos contra todos\n🔫 Escolha suas armas favoritas\n✏️ Melhore suas construções\n📝 Pratique e treine\n✨ Sistema de ranques\n⭐ Nomes dos jogadores visíveis\n🤩 Diversão e itens sem fim\n💪 Treine sua mira\n💥 Ação rápida\n😎 Criado no UEFN",
       "1888-6512-8811": "🧡🌹 Deixe um like e adicione aos favoritos para me apoiar\n🏆 12 jogadores: todos contra todos\n🔫 Todos os rifles de precisão\n✏️ Construção Zero\n✨ Sistema de ranques\n⭐ Nomes dos jogadores visíveis\n🤩 Diversão e itens sem fim\n💪 Treine sua mira\n💥 Ação rápida\n😎 Criado no UEFN",
       "6995-1684-7602": "🧡🌹 Deixe um like e adicione aos favoritos para me apoiar\n🏆 12 jogadores: todos contra todos\n🔫 Escolha suas armas favoritas\n✏️ Melhore suas construções\n📝 Pratique e treine\n✨ Sistema de ranques\n⭐ Nomes dos jogadores visíveis\n🤩 Diversão e itens sem fim\n💪 Treine sua mira\n💥 Ação rápida\n😎 Criado no UEFN",
-      "2404-2844-7787": "Deixe um like e adicione aos favoritos para me apoiar 🧡🌹\nBatalhas de construção todos contra todos 🏗️\nAção rápida 💥\nReinício das construções 💣\nSistema de ranques ✨\nCriado no UEFN 😎"
-    }
+      "2404-2844-7787": "Deixe um like e adicione aos favoritos para me apoiar 🧡🌹\nBatalhas de construção todos contra todos 🏗️\nAção rápida 💥\nReinício das construções 💣\nSistema de ranques ✨\nCriado no UEFN 😎",
+      "4162-0323-5737": "🧡🌹 Curta e adicione aos favoritos para me apoiar\n\n🏰 Doomspire Brickbattle\n💥 Torres destrutíveis e explosões\n🔫 6 armas clássicas\n🎮 Batalhas rápidas em equipe\n🏆 100 rodadas\n🛒 Loja dentro do jogo\n🪜 Torres e escadas escaláveis\n😎 Criado no UEFN",
+      "8238-8280-9827": "🧡🌹 Curta e adicione aos favoritos para me apoiar\n\n🏰 Doomspire Brickbattle\n💥 Torres destrutíveis e explosões\n🔫 6 armas clássicas\n🎮 Batalhas rápidas em equipe\n🏆 100 rodadas\n🛒 Loja dentro do jogo\n🔫 Sem recarregar\n🪜 Torres e escadas escaláveis\n😎 Criado no UEFN"
+    },
+    "newMap": "Novo!!"
   },
   "socials": {
     "eyebrow": "Comunidade",
@@ -681,7 +684,8 @@
     "cat_BuildFight": "Batalhas de construção",
     "cat_1v1v1": "1 contra 1 contra 1",
     "cat_RedvsBlue": "Vermelho contra azul",
-    "gamesAccount": "Zo7al Games no {platform}."
+    "gamesAccount": "Zo7al Games no {platform}.",
+    "cat_TeamBattle": "Batalha em equipe"
   },
   "lost": {
     "eyebrow": "Perdido no espaço",
