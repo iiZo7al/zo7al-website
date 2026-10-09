@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 import { X } from "lucide-react";
 
 /** Native top-layer dialog: keyboard focus, Escape and focus restoration. */
-export default function DetailsDialog({ title, children, onClose, style }: { title: string; children: ReactNode; onClose: () => void; style?: CSSProperties }) {
+export default function DetailsDialog({ title, children, onClose, style, className }: { title: string; children: ReactNode; onClose: () => void; style?: CSSProperties; className?: string }) {
   const dialog = useRef<HTMLDialogElement>(null);
   const titleId = useId();
   const t = useTranslations("store");
@@ -16,7 +16,7 @@ export default function DetailsDialog({ title, children, onClose, style }: { tit
     element?.showModal();
     return () => { element?.close(); document.body.style.overflow = previousOverflow; };
   }, []);
-  return <dialog ref={dialog} className="site-details" style={style} aria-labelledby={titleId} onCancel={onClose} onClose={onClose} onClick={event => {
+  return <dialog ref={dialog} className={`site-details${className ? ` ${className}` : ''}`} style={style} aria-labelledby={titleId} onCancel={onClose} onClose={onClose} onClick={event => {
     if (event.target !== event.currentTarget) return;
     const box = event.currentTarget.getBoundingClientRect();
     if (event.clientX < box.left || event.clientX > box.right || event.clientY < box.top || event.clientY > box.bottom) onClose();

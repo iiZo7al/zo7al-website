@@ -1,4 +1,5 @@
 import { useId, type CSSProperties } from "react";
+import Image from "next/image";
 import {
   siYoutube,
   siDiscord,
@@ -122,6 +123,9 @@ export default function BrandIcon({
   const gradientId = useId();
   const gradient = slug === "instagram" && !color;
   const icon = BRAND_ICONS[slug];
+  if (slug === "google") {
+    return <Image src="/assets/site/google-g.png" alt="" width={size} height={size} className={className} aria-hidden="true" />;
+  }
   if (!icon) {
     // Graceful fallback for a platform we don't have a brand mark for yet.
     return <Link2 size={size} className={className} aria-hidden="true" />;

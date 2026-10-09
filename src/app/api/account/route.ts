@@ -1,4 +1,4 @@
-import { AccountError, accountConfigured, accountHeaders, accountOrigin, accountUser, accountView, authRequest, clearAccount, requestCookie, requireAccount, setAccountTokens, startAccountFlow, ACCOUNT_ACCESS } from '@/lib/server/account-auth';
+import { AccountError, accountConfigured, accountHeaders, accountOrigin, accountSession, accountRequiresMFA, accountView, authRequest, clearAccount, requestCookie, requireAccount, setAccountTokens, startAccountFlow, ACCOUNT_ACCESS, type AuthUser } from '@/lib/server/account-auth';
 import { ACCOUNT_PROVIDERS, accountEmail, accountPassword, safeAccountName } from '@/lib/data/account';
 import { readJSON } from '@/lib/server/site-security';
 import { limitAttempt } from '@/lib/server/site-content';
@@ -11,8 +11,9 @@ export async function GET(request:Request) {
   const headers=accountHeaders();
   try {
     if (!accountConfigured()) return Response.json({configured:false,account:null,providers:[],email:false},{headers});
-    const [user,settings]=await Promise.all([accountUser(request,headers),authRequest('/settings')]);
-    return Response.json({configured:true,account:user?await accountView(user):null,providers:ACCOUNT_PROVIDERS.filter(p=>settings.external?.[p]),email:settings.external?.email===true},{headers});
+    const [session,settings]=await Promise.all([accountSession(request,headers),authRequest('/settings')]);
+    const mfaRequired=!!session&&accountRequiresMFA(session.user,session.access);
+    return Response.json({configured:true,account:session&&!mfaRequired?await accountView(session.user):null,mfaRequired,mfaEnabled:process.env.ZO7AL_ACCOUNT_MFA_ENABLED==='true'||!!session?.user.factors?.some(f=>f.factor_type==='totp'&&f.status==='verified'),providers:ACCOUNT_PROVIDERS.filter(p=>settings.external?.[p]),email:settings.external?.email===true},{headers});
   } catch(error){return failed(error,headers);}
 }
 export async function POST(request:Request) {
@@ -29,8 +30,9 @@ export async function POST(request:Request) {
       if(body.action==='signin') {
         if(typeof body.password!=='string'||body.password.length>128)throw new AccountError('CREDENTIALS');
         const tokens=await authRequest('/token?grant_type=password','POST',{email,password:body.password});
+        const user=await authRequest('/user','GET',undefined,tokens.access_token) as AuthUser;
         setAccountTokens(tokens,headers);
-        return Response.json({ok:true},{headers});
+        return Response.json({ok:true,mfaRequired:accountRequiresMFA(user,tokens.access_token!)},{headers});
       }
       if(body.action==='signup'&&!accountPassword(body.password))throw new AccountError('PASSWORD');
       const flow=await startAccountFlow(request,headers,body.action,body.next);
