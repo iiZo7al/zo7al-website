@@ -12,7 +12,7 @@ export function accountPassword(value: unknown): value is string { return typeof
 export function safeAccountName(value: unknown): string | null {
   return typeof value === 'string' && value.trim().length >= 2 && value.trim().length <= 64 && !/[<>\x00-\x1f\x7f]/.test(value) ? value.trim() : null;
 }
-export function accountNext(value: unknown): string { return typeof value === 'string' && /^\/(?:store|requests|account|minecraft|fortnite)(?:[?#][^\\]*)?$/.test(value) ? value : '/account'; }
+export function accountNext(value: unknown): string { return typeof value === 'string' && /^\/(?:store|requests|account|minecraft|fortnite|support)(?:[?#][^\\]*)?$/.test(value) ? value : '/account'; }
 export const LINK_CODE = /^[A-HJ-NP-Z2-9]{8}$/;
 export function checkoutRecipient(gift: unknown, supplied: unknown, linked: MinecraftLink | null) {
   if (gift !== undefined && typeof gift !== 'boolean') throw Error('INVALID');

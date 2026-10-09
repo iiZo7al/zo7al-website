@@ -979,7 +979,10 @@
     "fortnitePolls": "Community-Abstimmungen",
     "fortnitePollIntro": "Wähle die nächsten Inhalte für unsere Fortnite-Inseln und Community.",
     "epic": "Epic-Games-Anzeigename",
-    "allGames": "Alle Spiele"
+    "allGames": "Alle Spiele",
+    "mySubmissions": "Meine Beiträge",
+    "submissionsIntro": "Verfolge deine Community-Beiträge und ihren Prüfstatus.",
+    "status_approved": "Angenommen"
   },
   "dashboard": {
     "dashboard": "Dashboard",
@@ -1655,6 +1658,7 @@
       "generateCodes": "Ersatzcodes erstellen",
       "changeApp": "Authenticator-App wechseln",
       "setup": "2FA einrichten"
-    }
+    },
+    "submissionLogin": "Melde dich an, um Beiträge, Bewerbungen und Supportanfragen mit deinem Konto zu verknüpfen und ihren Status zu verfolgen."
   }
 }

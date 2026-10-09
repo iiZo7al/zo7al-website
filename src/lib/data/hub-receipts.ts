@@ -1,5 +1,5 @@
-export type ReceiptKind = "order" | "application" | "support" | "event";
-export type SavedReceipt = { kind: ReceiptKind; reference: string; token: string; savedAt: string };
+export type ReceiptKind = "order" | "application" | "support" | "event" | "gallery";
+export type SavedReceipt = { kind: ReceiptKind; reference: string; token: string; savedAt: string; title?:string };
 export const RECEIPT_KEY = "zo7al-private-receipts";
 export function parseReceipts(value: string | null): SavedReceipt[] {
   try { const rows: unknown = JSON.parse(value ?? "[]"); if (!Array.isArray(rows)) return [];

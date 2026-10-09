@@ -63,3 +63,12 @@ Lost-app recovery: sign in using an unused backup code, then add a new app using
 Live checks before release: enable with a real member; save backups; sign out and authenticate with password and each enabled OAuth provider; verify AAL1 requests fail before the challenge; redeem a backup once and confirm replay fails; regenerate and confirm old codes fail; replace a lost app; disable the last app and confirm backup revocation; confirm existing native MFA accounts can still challenge when the settings flag is off. Do not enroll or modify an owner's authenticator without their action-time confirmation.
 
 References: [TOTP guide](https://supabase.com/docs/guides/auth/auth-mfa/totp), [recovery-code generation](https://supabase.com/docs/reference/javascript/auth-mfa-recovery-codes-generate), [recovery-code verification](https://supabase.com/docs/reference/javascript/auth-mfa-recovery-codes-verify), [Auth OpenAPI](https://github.com/supabase/auth/blob/master/openapi.yaml).
+
+
+## Account-owned submissions
+
+New community gallery submissions, creator applications and support reports require a server-validated member session with all enrolled MFA factors satisfied. Their owner is taken only from that session, never from a supplied email, name or user ID. Contact fields remain contact details and do not prove ownership. Forms request sign-in first and prefill account contact/player details where available.
+
+The Requests page includes My submissions alongside orders, creator applications, support and event registrations. Gallery submissions remain privately trackable while pending or rejected; account lists and tracking are scoped to the owner and do not expose contact details, access tokens or private report bodies. Public galleries still show only published approved entries and never disclose member IDs. Existing guest receipts can be claimed using their private code; old gallery entries without a proven owner are not reassigned by matching emails. A Discord notification failure preserves an account-owned support request for later retry.
+
+The schema initializer adds a nullable gallery owner and a partial per-account index without changing existing submissions. Verify two accounts across separate browser sessions, pending/approved/rejected moderation, expired/refresh sessions, MFA challenge enforcement, guest receipt claims and sign-in return paths before release.

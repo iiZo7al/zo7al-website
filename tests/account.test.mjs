@@ -4,11 +4,12 @@ import { readFileSync } from 'node:fs';
 import ts from 'typescript';
 import { PGlite } from '@electric-sql/pglite';
 import { SITE_SCHEMA } from '../src/lib/server/site-schema.ts';
+import { COMMUNITY_SCHEMA } from '../src/lib/server/community-schema.ts';
 import { ACCOUNT_SCHEMA } from '../src/lib/server/account-schema.ts';
 import { minecraftName,accountEmail,accountPassword,accountNext,checkoutRecipient,accountProviderName } from '../src/lib/data/account.ts';
 const stub=source=>'data:text/javascript;base64,'+Buffer.from(source).toString('base64');
 function moduleURL(path,replacements={}){let source=readFileSync(new URL('../'+path,import.meta.url),'utf8').replaceAll("import 'server-only';",'');for(const [a,b] of Object.entries(replacements))source=source.replaceAll(a,b);return stub(ts.transpileModule(source,{compilerOptions:{module:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ES2022}}).outputText);}
-const engine=new PGlite();await engine.exec(SITE_SCHEMA+ACCOUNT_SCHEMA);
+const engine=new PGlite();await engine.exec(SITE_SCHEMA+COMMUNITY_SCHEMA+ACCOUNT_SCHEMA);
 const pool={query:async(sql,args=[])=>{const r=await engine.query(sql,args);return {...r,rowCount:/^SELECT/.test(sql)?r.rows.length:r.affectedRows??r.rows.length};},connect:async()=>({query:pool.query,release(){}})};
 globalThis.__accountTests={pool};
 const db=stub('export async function siteDatabase(){return globalThis.__accountTests.pool;}');

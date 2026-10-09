@@ -8,6 +8,8 @@ CREATE TABLE IF NOT EXISTS community_entries (
  discord_receipt text, created_at timestamptz NOT NULL DEFAULT now(), updated_at timestamptz NOT NULL DEFAULT now()
 );
 CREATE INDEX IF NOT EXISTS community_public ON community_entries(locale,kind,updated_at DESC) WHERE published AND moderation='approved';
+ALTER TABLE community_entries ADD COLUMN IF NOT EXISTS user_id uuid;
+CREATE INDEX IF NOT EXISTS community_account_submissions ON community_entries(user_id,created_at DESC) WHERE user_id IS NOT NULL AND kind='gallery';
 CREATE UNIQUE INDEX IF NOT EXISTS community_project_key ON community_entries(kind,locale,project_key) WHERE kind='project';
 CREATE TABLE IF NOT EXISTS community_votes (
  poll_id uuid NOT NULL REFERENCES community_entries(id) ON DELETE CASCADE, visitor_hash char(64) NOT NULL,

@@ -979,7 +979,10 @@
     "fortnitePolls": "Topluluk oylaması",
     "fortnitePollIntro": "Fortnite adalarımız ve topluluğumuz için sırada ne olacağını seçin.",
     "epic": "Epic Games görünen adı",
-    "allGames": "Tüm oyunlar"
+    "allGames": "Tüm oyunlar",
+    "mySubmissions": "Paylaşımlarım",
+    "submissionsIntro": "Topluluk paylaşımlarınızın inceleme durumunu takip edin.",
+    "status_approved": "Kabul edildi"
   },
   "dashboard": {
     "dashboard": "Kontrol paneli",
@@ -1655,6 +1658,7 @@
       "generateCodes": "Yedek kod oluştur",
       "changeApp": "Doğrulayıcıyı değiştir",
       "setup": "2FA’yı kur"
-    }
+    },
+    "submissionLogin": "Paylaşımlarınızı, başvurularınızı ve destek taleplerinizi hesabınıza bağlamak ve durumlarını takip etmek için giriş yapın."
   }
 }

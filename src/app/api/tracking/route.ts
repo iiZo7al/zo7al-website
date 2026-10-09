@@ -1,24 +1,29 @@
-import { accountUser } from "@/lib/server/account-auth";
+import { AccountError,accountHeaders,accountUser,requireAccount } from "@/lib/server/account-auth";
 import { limitAttempt } from "@/lib/server/site-content";
 import { siteDatabase } from "@/lib/server/site-db";
 import { privateHeaders, readJSON, sameOrigin, tokenHash, validReceipt } from "@/lib/server/site-security";
 import { tebexRequest, tebexToken } from "@/lib/server/tebex";
 export const runtime = "nodejs";
 export async function POST(request: Request) {
+  const headers=accountHeaders();
   if (!sameOrigin(request)) return Response.json({error:"INVALID"},{status:403,headers:privateHeaders});
   try {
     const body = await readJSON(request,2000) as {reference?:string;token?:string;kind?:string};
     const kind=body?.kind;
-    const user = await accountUser(request);
+    const user = kind==='gallery'?await requireAccount(request,headers):await accountUser(request,headers);
     const hasReceipt = validReceipt(body);
-    if ((!hasReceipt && !(user && typeof body.reference === "string" && /^[a-f0-9-]{36}$/i.test(body.reference))) || !["order","application","support","event"].includes(String(kind))) return Response.json({error:"INVALID"},{status:400,headers:privateHeaders});
+    if ((!hasReceipt && !(user && typeof body.reference === "string" && /^[a-f0-9-]{36}$/i.test(body.reference))) || !["order","application","support","event","gallery"].includes(String(kind))) return Response.json({error:"INVALID"},{status:400,headers});
     const ip=request.headers.get("x-forwarded-for")?.split(",")[0]??"unknown";
     if(!await limitAttempt("tracking:"+ip,30,60))return Response.json({error:"RATE_LIMIT"},{status:429,headers:privateHeaders});
     const db = await siteDatabase();
+    if(kind==='gallery') {
+      const found=(await db.query("SELECT id AS reference,title,moderation AS status,created_at AS \"createdAt\",updated_at AS \"updatedAt\" FROM community_entries WHERE id=$1 AND kind='gallery' AND user_id=$2",[body.reference,user!.id])).rows[0];
+      return found?Response.json({...found,kind},{headers}):Response.json({error:'NOT_FOUND'},{status:404,headers});
+    }
     if (kind !== "order") {
       const found = (await db.query('SELECT id AS reference,kind,status,public_note AS note,payload,created_at AS "createdAt",updated_at AS "updatedAt" FROM site_requests WHERE id=$1 AND (token_hash=$2 OR user_id=$4) AND kind=$3',[body.reference,hasReceipt?tokenHash(body.token!):null,kind,user?.id??null])).rows[0];
       if (!found) return Response.json({error:"NOT_FOUND"},{status:404,headers:privateHeaders});
-      return Response.json({reference:found.reference,kind:found.kind,status:found.status,note:found.note,createdAt:found.createdAt,updatedAt:found.updatedAt,platform:found.payload.platform??null,eventTitle:found.kind==="event"?found.payload.eventTitle:null},{headers:privateHeaders});
+      return Response.json({reference:found.reference,kind:found.kind,status:found.status,note:found.note,createdAt:found.createdAt,updatedAt:found.updatedAt,platform:found.payload.platform??null,title:found.payload.subject??null,eventTitle:found.kind==="event"?found.payload.eventTitle:null},{headers});
     }
     const order = (await db.query("SELECT id,username,items,basket_ident,created_at FROM site_orders WHERE id=$1 AND (token_hash=$2 OR user_id=$3)",[body.reference,hasReceipt?tokenHash(body.token!):null,user?.id??null])).rows[0];
     if (!order) return Response.json({error:"NOT_FOUND"},{status:404,headers:privateHeaders});
@@ -40,6 +45,6 @@ export async function POST(request: Request) {
         }
       } catch {}
     }
-    return Response.json({reference:order.id,kind:"order",username:order.username,items:order.items,createdAt:order.created_at,status:paid===null?"unknown":paid?"paid":"awaitingPayment",delivery},{headers:privateHeaders});
-  } catch { return Response.json({error:"UNAVAILABLE"},{status:503,headers:privateHeaders}); }
+    return Response.json({reference:order.id,kind:"order",username:order.username,items:order.items,createdAt:order.created_at,status:paid===null?"unknown":paid?"paid":"awaitingPayment",delivery},{headers});
+  } catch(error) { return Response.json({error:error instanceof AccountError?error.code:"UNAVAILABLE"},{status:error instanceof AccountError?error.status:503,headers}); }
 }
