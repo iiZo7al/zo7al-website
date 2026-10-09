@@ -1595,7 +1595,7 @@
     "accountIntro": "Administra tu perfil y cuentas vinculadas.",
     "passwordHint": "Usa una contraseña única de 12 a 128 caracteres.",
     "emailSent": "Revisa tu correo y abre el enlace en este navegador.",
-    "connectionsHint": "Vincula Discord, Google y Minecraft. Conserva al menos un método de acceso.",
+    "connectionsHint": "Vincula Discord, Google, Microsoft y Minecraft. Conserva al menos un método de acceso.",
     "reauthHint": "Si se solicita, envía un código a tu correo antes de cambiar la contraseña.",
     "linkIntro": "Verifica Minecraft en el servidor para ver tu perfil y comprar para ti.",
     "linkInstructions": "Entra a Zo7al con este nombre y ejecuta el siguiente comando.",

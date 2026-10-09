@@ -1,5 +1,5 @@
 import { AccountError, accountConfigured, accountHeaders, accountOrigin, accountUser, accountView, authRequest, clearAccount, requestCookie, requireAccount, setAccountTokens, startAccountFlow, ACCOUNT_ACCESS } from '@/lib/server/account-auth';
-import { accountEmail, accountPassword, safeAccountName } from '@/lib/data/account';
+import { ACCOUNT_PROVIDERS, accountEmail, accountPassword, safeAccountName } from '@/lib/data/account';
 import { readJSON } from '@/lib/server/site-security';
 import { limitAttempt } from '@/lib/server/site-content';
 import { siteDatabase } from '@/lib/server/site-db';
@@ -12,7 +12,7 @@ export async function GET(request:Request) {
   try {
     if (!accountConfigured()) return Response.json({configured:false,account:null,providers:[],email:false},{headers});
     const [user,settings]=await Promise.all([accountUser(request,headers),authRequest('/settings')]);
-    return Response.json({configured:true,account:user?await accountView(user):null,providers:['discord','google'].filter(p=>settings.external?.[p]),email:settings.external?.email===true},{headers});
+    return Response.json({configured:true,account:user?await accountView(user):null,providers:ACCOUNT_PROVIDERS.filter(p=>settings.external?.[p]),email:settings.external?.email===true},{headers});
   } catch(error){return failed(error,headers);}
 }
 export async function POST(request:Request) {
@@ -39,10 +39,12 @@ export async function POST(request:Request) {
       return Response.json({ok:true,message:result.access_token?'SIGNED_IN':'EMAIL_SENT'},{headers});
     }
     if(['oauth','link'].includes(body.action)) {
-      if(!['discord','google'].includes(String(body.provider)))throw new AccountError('INVALID');
+      if(!ACCOUNT_PROVIDERS.some(provider=>provider===body.provider))throw new AccountError('INVALID');
+      const settings=await authRequest('/settings');if(!settings.external?.[String(body.provider)])throw new AccountError('PROVIDER');
       const user=body.action==='link'?await requireAccount(request):null;
       const flow=await startAccountFlow(request,headers,body.action,body.next,user?.id??null);
       const params=new URLSearchParams({provider:String(body.provider),redirect_to:flow.redirectTo,code_challenge:flow.code_challenge,code_challenge_method:flow.code_challenge_method,...(body.action==='link'?{skip_http_redirect:'true'}:{})});
+      if(body.provider==='azure')params.set('scopes','email');
       const url=body.action==='link'?(await authRequest('/user/identities/authorize?'+params,'GET',undefined,requestCookie(request,ACCOUNT_ACCESS))).url:process.env.SUPABASE_URL!.replace(/\/$/,'')+'/auth/v1/authorize?'+params;
       if(!url||new URL(url).protocol!=='https:')throw new AccountError('PROVIDER');
       return Response.json({url},{headers});

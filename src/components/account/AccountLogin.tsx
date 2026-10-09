@@ -3,7 +3,8 @@ import {useState} from 'react';
 import {useTranslations} from 'next-intl';
 import {LoaderCircle,Mail,KeyRound} from 'lucide-react';
 import DetailsDialog from '@/components/ui/DetailsDialog';
-import BrandIcon from '@/components/ui/BrandIcon';
+import AccountIdentityIcon from './AccountIdentityIcon';
+import {accountProviderName} from '@/lib/data/account';
 import {useAccount,accountAction} from './AccountProvider';
 export default function AccountLogin({onClose,next='/account'}:{onClose:()=>void;next?:string}) {
   const t=useTranslations('account'),{configured,email,providers,refresh,error:loadError}=useAccount();
@@ -12,7 +13,7 @@ export default function AccountLogin({onClose,next='/account'}:{onClose:()=>void
   return <DetailsDialog title={t(mode)} onClose={onClose}><div className="account-dialog-body">
     <p className="account-help">{t('loginIntro')}</p>
     {!configured?<p role="status" className="account-notice">{t(loadError?'errors.UNAVAILABLE':'errors.CONFIGURATION')}</p>:<>
-      {mode!=='recover'&&providers.length>0&&<div className="account-provider-buttons">{providers.map(provider=><button key={provider} type="button" className="hub-button" disabled={busy} data-cursor="button" onClick={()=>void run('oauth',{provider})}><BrandIcon slug={provider} size={20}/>{t('continueWith',{provider:provider==='google'?'Google':'Discord'})}</button>)}</div>}
+      {mode!=='recover'&&providers.length>0&&<div className="account-provider-buttons">{providers.map(provider=><button key={provider} type="button" className="hub-button" disabled={busy} data-cursor="button" onClick={()=>void run('oauth',{provider})}><AccountIdentityIcon provider={provider}/>{t('continueWith',{provider:accountProviderName(provider)})}</button>)}</div>}
       {email&&<><div className="account-auth-tabs">{(['signin','signup'] as const).map(tab=><button type="button" key={tab} aria-pressed={mode===tab} disabled={busy} onClick={()=>{setMode(tab);setMessage('');setError('');}}>{t(tab)}</button>)}</div>
       <form className="hub-form" onSubmit={event=>{event.preventDefault();const data=new FormData(event.currentTarget);void run(mode,{email:data.get('email'),...(mode==='recover'?{}:{password:data.get('password')})});}}>
         <label>{t('email')}<div className="account-input"><Mail size={17} aria-hidden="true"/><input name="email" type="email" autoComplete="email" dir="ltr" required maxLength={254} disabled={busy}/></div></label>

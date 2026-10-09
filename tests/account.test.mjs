@@ -5,7 +5,7 @@ import ts from 'typescript';
 import { PGlite } from '@electric-sql/pglite';
 import { SITE_SCHEMA } from '../src/lib/server/site-schema.ts';
 import { ACCOUNT_SCHEMA } from '../src/lib/server/account-schema.ts';
-import { minecraftName,accountEmail,accountPassword,accountNext,checkoutRecipient } from '../src/lib/data/account.ts';
+import { minecraftName,accountEmail,accountPassword,accountNext,checkoutRecipient,accountProviderName } from '../src/lib/data/account.ts';
 const stub=source=>'data:text/javascript;base64,'+Buffer.from(source).toString('base64');
 function moduleURL(path,replacements={}){let source=readFileSync(new URL('../'+path,import.meta.url),'utf8').replaceAll("import 'server-only';",'');for(const [a,b] of Object.entries(replacements))source=source.replaceAll(a,b);return stub(ts.transpileModule(source,{compilerOptions:{module:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ES2022}}).outputText);}
 const engine=new PGlite();await engine.exec(SITE_SCHEMA+ACCOUNT_SCHEMA);
@@ -94,6 +94,22 @@ test('account API blocks cross-origin writes and exposes only enabled real provi
  handler=url=>url.endsWith('/settings')?Response.json({external:{google:true,discord:false,email:true}}):Response.json(user);
  const response=await accountRoute.GET(request('/api/account',undefined,{cookie:auth.ACCOUNT_ACCESS+'=verified-access'})),data=await response.json();
  assert.deepEqual(data.providers,['google']);assert.equal(data.email,true);assert.equal(data.account.id,userId);assert.ok(!JSON.stringify(data).includes('access_token'));assert.ok(!JSON.stringify(data).includes('site_role'));
+});
+
+test('Microsoft is offered only when enabled and requests email through PKCE for sign-in and linking',async()=>{
+ assert.equal(accountProviderName('azure'),'Microsoft');
+ handler=url=>url.endsWith('/settings')?Response.json({external:{azure:true,google:true,discord:false}}):url.includes('/user/identities/authorize?')?Response.json({url:'https://login.microsoftonline.com/common/oauth2/v2.0/authorize'}):Response.json(user);
+ const view=await (await accountRoute.GET(request())).json();assert.deepEqual(view.providers,['google','azure']);
+ const start=await accountRoute.POST(request('/api/account',{action:'oauth',provider:'azure',next:'/store'}));
+ assert.equal(start.status,200);const url=new URL((await start.json()).url);
+ assert.equal(url.searchParams.get('provider'),'azure');assert.equal(url.searchParams.get('scopes'),'email');assert.equal(url.searchParams.get('code_challenge_method'),'s256');assert.match(url.searchParams.get('code_challenge'),/^[A-Za-z0-9_-]{43}$/);
+ assert.equal(url.searchParams.get('redirect_to'),'https://zo7al.test/api/account/callback');assert.ok(start.headers.getSetCookie().some(value=>value.includes('account-flow=')));
+ calls=[];const linked=await accountRoute.POST(request('/api/account',{action:'link',provider:'azure',next:'/account?tab=connections'},{cookie:auth.ACCOUNT_ACCESS+'=verified-access'}));
+ assert.equal(linked.status,200);const linkRequest=new URL(calls.find(call=>call.url.includes('/user/identities/authorize?')).url);
+ assert.equal(linkRequest.searchParams.get('scopes'),'email');assert.equal(linkRequest.searchParams.get('skip_http_redirect'),'true');
+ handler=()=>Response.json({external:{azure:false}});
+ const disabled=await accountRoute.POST(request('/api/account',{action:'oauth',provider:'azure'}));assert.equal(disabled.status,400);assert.equal((await disabled.json()).error,'PROVIDER');assert.equal(disabled.headers.get('set-cookie'),null);
+ const phone=await accountRoute.POST(request('/api/account',{action:'oauth',provider:'phone'}));assert.equal(phone.status,400);assert.equal((await phone.json()).error,'INVALID');
 });
 
 

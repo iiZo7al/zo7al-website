@@ -1595,7 +1595,7 @@
     "accountIntro": "Profilini ve bağlı hesaplarını yönet.",
     "passwordHint": "12–128 karakterlik benzersiz bir şifre kullan.",
     "emailSent": "E-postanı kontrol et ve bağlantıyı bu tarayıcıda aç.",
-    "connectionsHint": "Discord, Google ve Minecraft hesaplarını bağla. En az bir giriş yöntemi bırak.",
+    "connectionsHint": "Discord, Google, Microsoft ve Minecraft hesaplarını bağla. En az bir giriş yöntemi bırak.",
     "reauthHint": "Gerekirse şifreni değiştirmeden önce e-postana doğrulama kodu gönder.",
     "linkIntro": "Profilini görmek ve kendin için alışveriş yapmak üzere Minecraft hesabını sunucuda doğrula.",
     "linkInstructions": "Zo7al sunucusuna bu adla girip aşağıdaki komutu çalıştır.",

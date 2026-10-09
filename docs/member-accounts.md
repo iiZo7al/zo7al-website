@@ -9,7 +9,7 @@ This change requires member sign-in for checkout. Do not merge into production u
 1. Select or create the owner's Supabase project. Configure these **server-only** Vercel variables: `SUPABASE_URL` and `SUPABASE_PUBLISHABLE_KEY`. Keep the existing `DATABASE_URL`. Never put a service-role/secret key or database password in client variables.
 2. In Supabase Authentication → URL Configuration, set Site URL to `https://zo7al.is-a.dev` and allow `https://zo7al.is-a.dev/api/account/callback`. Add the exact preview deployment's `/api/account/callback` separately for testing. Use production-only `ZO7AL_SITE_URL=https://zo7al.is-a.dev` for a fixed production origin; omit this variable on previews so their own origin is used.
 3. Enable Email, email confirmation, and secure password change. Configure production SMTP and its sender domain, then test confirmation, recovery, and reauthentication delivery.
-4. Enable Discord and Google with owner-controlled OAuth credentials. Their provider callback is the Supabase project's `/auth/v1/callback`, distinct from the website callback above. Enable manual identity linking to let members connect an additional provider from account settings. Only enabled providers appear on the website.
+4. Enable Discord, Google and Azure (Microsoft) with owner-controlled OAuth credentials. Their provider callback is the Supabase project's `/auth/v1/callback`, distinct from the website callback above. Enable manual identity linking to let members connect an additional provider from account settings. Only enabled providers appear on the website.
 5. Deploy the preview with these variables. The existing schema initializer adds account tables, link codes, OAuth flows, and optional ownership columns to orders and requests. Existing receipts are retained. Account profile IDs are verified Supabase user IDs, never browser-supplied roles.
 6. Build/install bridge **1.2.0** on every backend accepting member link commands: modern Paper 1.21.11 and legacy Bukkit/Spigot 1.8.9 have separate jars. Keep each backend's existing HTTPS bridge endpoint and dashboard-issued key. Install on backend servers, not Velocity. Restart after replacing the old jar.
 
@@ -26,10 +26,20 @@ This change requires member sign-in for checkout. Do not merge into production u
 
 ## End-to-end checks before production
 
-1. Complete email signup/confirmation, sign-in, recovery, password reauthentication, and logout. Reload and verify session refresh. Verify enabled Google/Discord login and same-account provider linking; decline or cancel a provider flow and confirm no unexpected identity switch.
+1. Complete email signup/confirmation, sign-in, recovery, password reauthentication, and logout. Reload and verify session refresh. Verify enabled Google/Discord/Microsoft login and same-account provider linking; decline or cancel a provider flow and confirm no unexpected identity switch.
 2. Attempt a wrong player name, wrong code, expired code, duplicate player, and reused code. Verify only the matching online player can link. Confirm profile/rank/statistics after a bridge sync.
 3. Add a rank, ordinary purchase for the linked name, gift to a second linked account, coins quantity, and one-rank restriction. Use Tebex's supported test checkout process; do not create a real charge during verification. Confirm the recipient name before payment.
 4. Verify separate accounts cannot list, claim, or track each other's requests by reference alone. Claim a guest receipt with its private token and reload the requests page.
 5. Check mobile avatar/cart placement, account tabs, keyboard focus, native dialog opening, common-error accordion, and all ten locales.
 
 Local tests use simulated provider/Tebex responses and PostgreSQL-compatible PGlite. A successful local test run does not confirm production OAuth credentials, SMTP delivery, live payment delivery, or an installed backend plugin. Those checks require the configured preview and servers.
+
+## Microsoft sign-in
+
+Microsoft uses the Supabase `azure` provider. Register a Web application in Microsoft Entra ID with **Accounts in any organizational directory and personal Microsoft accounts**, so members can use personal Microsoft/Xbox accounts as well as work accounts. Register `https://istvaveorgqcgxsdqsch.supabase.co/auth/v1/callback` as its Web redirect URI.
+
+In Supabase Authentication → Sign In / Providers → Azure, set the Application (client) ID, the client secret **Value** (not the Secret ID), and `https://login.microsoftonline.com/common` as the tenant URL. Keep “Allow users without an email” disabled. Add the `email` and `xms_edov` optional claims as described in the current Supabase Azure guide, and record the client secret expiry date. Credentials belong in Supabase, never in repository files or public environment variables.
+
+The website requests the `email` scope for Microsoft sign-in and same-account linking. Both actions retain the existing PKCE flow. Disabled providers are not offered for sign-in, and the API rejects them before creating an OAuth flow. Test personal-account sign-in, cancel, linking, and unlink protection before enabling it in production. Current account menu connections show Microsoft with its four-color icon.
+
+Phone authentication remains disabled and no SMS provider is configured.
