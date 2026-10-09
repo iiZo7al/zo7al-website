@@ -1072,7 +1072,7 @@
     "connectPelican": "Pelican bağla",
     "connect_youtube": "YouTube Data API anahtarı ve kanal kullanıcı adı kullan. Aboneler, görüntülemeler ve videolar geneldir; gelir ve izlenme süresi YouTube Studio içinde kalır.",
     "connect_curseforge": "Yayımlanmış mod paketlerinin indirme verileri için CurseForge API anahtarı kullan.",
-    "connect_pelican": "Sunucuları keşfetmek için HTTPS panelini ve Client API anahtarını bağla.",
+    "connect_pelican": "Sunucuları keşfetmek için HTTP / HTTPS panelini ve Client API anahtarını bağla.",
     "description_minecraft": "Canlı Minecraft durumu ve oyuncu sayısı. CPU, bellek, günlükler ve komutlar Pelican bağlantısından sonra kullanılabilir.",
     "description_fortnite": "Son 7 günün genel ada istatistikleri Epic Games Data API üzerinden alınır. Bazı adalar veya aralıklar için veri olmayabilir.",
     "description_youtube": "YouTube Data API üzerinden genel kanal istatistikleri. Özel analizler, gelir ve videolar için YouTube Studio aç.",

@@ -19,12 +19,12 @@ const connectionModule=moduleUrl("src/lib/server/dashboard-connections.ts",{"./s
 const connections=await import(connectionModule);
 const server=stub('export class PelicanError extends Error{constructor(status){super("PELICAN_UNAVAILABLE");this.status=status;}}export async function pelicanOperation(connection,operation){const s=globalThis.__dashboardTest;s.calls.push({operation,server:connection.account});if(s.upstreamError)throw new PelicanError(s.upstreamError);return {data:[]};}export async function pelicanServer(){globalThis.__dashboardTest.calls.push("verify");return {name:"Test server"};}export async function pelicanWebsocket(){globalThis.__dashboardTest.calls.push("websocket");return {socket:"wss://node.example.com/api/servers/12345678-1234-1234-1234-123456789abc/ws",token:"short.lived.token"};}export async function pelicanRequest(c,suffix,body){globalThis.__dashboardTest.calls.push({suffix,body});}');
 const dns=stub('export async function lookup(){return globalThis.__dashboardTest.addresses;}');
-const https=stub(`import {EventEmitter} from "node:events";export function request(url,options,callback){
- const s=globalThis.__dashboardTest,req=new EventEmitter();s.calls.push({url:String(url),options});
+const transport=protocol=>stub(`import {EventEmitter} from "node:events";export function request(url,options,callback){
+ const s=globalThis.__dashboardTest,req=new EventEmitter();s.calls.push({url:String(url),options,transport:${JSON.stringify(protocol)}});
  req.end=payload=>{s.payload=payload;queueMicrotask(()=>{options.lookup(url.hostname,{},(error,address,family)=>{s.pinned={address,family};});const response=new EventEmitter();response.statusCode=s.statusCode;response.resume=()=>queueMicrotask(()=>req.emit("close"));callback(response);if(s.statusCode>=200&&s.statusCode<300){response.emit("data",Buffer.from(s.responseBody));response.emit("end");req.emit("close");}});};
  req.destroy=error=>{req.emit("error",error);req.emit("close");};return req;
 }`);
-const actualPelican=await import(moduleUrl("src/lib/server/pelican.ts",{"node:dns/promises":dns,"node:https":https,"../data/dashboard":data,"../data/pelican":pelicanData,"../data/pelican-management":managementData}));
+const actualPelican=await import(moduleUrl("src/lib/server/pelican.ts",{"node:dns/promises":dns,"node:https":transport("https:"),"node:http":transport("http:"),"../data/dashboard":data,"../data/pelican":pelicanData,"../data/pelican-management":managementData}));
 const limits=stub('export async function limitAttempt(){return globalThis.__dashboardTest.limits;}');
 const pelican=await import(moduleUrl("src/app/api/admin/pelican/route.ts",{"@/lib/server/site-security":security,"@/lib/server/dashboard-connections":connectionModule,"@/lib/server/pelican":server,"@/lib/data/pelican":pelicanData,"@/lib/data/dashboard":data,"@/lib/server/site-content":limits}));
 const connectionRoute=await import(moduleUrl("src/app/api/admin/connections/route.ts",{"@/lib/data/pelican-management":managementData,"@/lib/server/site-security":security,"@/lib/server/dashboard-connections":connectionModule,"@/lib/server/pelican":server,"@/lib/data/dashboard":data,"@/lib/server/site-content":limits,"@/lib/server/dashboard-platforms":stub('export function clearPlatformCache(){} export async function fetchPlatform(){if(globalThis.__dashboardTest.upstreamError)throw Error("UPSTREAM");return {status:"connected"};}')}));
@@ -33,7 +33,7 @@ const manageRoute=await import(moduleUrl("src/app/api/admin/pelican/manage/route
 const saved=Object.fromEntries(["ZO7AL_ADMIN_PASSWORD_HASH","ZO7AL_ADMIN_SESSION_SECRET","PELICAN_CLIENT_API_KEY","PELICAN_PANEL_URL","PELICAN_SERVER_ID","YOUTUBE_API_KEY","CURSEFORGE_API_KEY"].map(key=>[key,process.env[key]]));
 const secret="s".repeat(43),hash="scrypt:"+"a".repeat(32)+":"+"b".repeat(128);
 const credential={provider:"pelican",apiKey:"example-private-client-key",account:"12345678-1234-1234-1234-123456789abc",panelUrl:"https://panel.example.com"};
-const reset=()=>{state.queries=[];state.calls=[];state.rows=[];state.limits=true;state.upstreamError=0;state.responseBody='{"ok":true}';};
+const reset=()=>{state.queries=[];state.calls=[];state.rows=[];state.limits=true;state.upstreamError=0;state.responseBody='{"ok":true}';state.statusCode=200;state.addresses=[{address:"8.8.8.8",family:4}];};
 const request=(body,auth=true,origin="https://zo7al.test")=>new Request("https://zo7al.test/api/admin/pelican",{method:"POST",headers:{"Content-Type":"application/json",origin,...(auth?{cookie:ADMIN_COOKIE+"="+signAdminSession(secret,hash)}:{})},body:JSON.stringify(body)});
 test.after(()=>{for(const [key,value] of Object.entries(saved))if(value===undefined)delete process.env[key];else process.env[key]=value;});
 
@@ -54,10 +54,15 @@ test("missing statistics stay unknown, and live zeroes remain zero",()=>{
 });
 test("panel settings reject internal URLs, credentials in URLs, and unsafe server paths",()=>{
  assert.equal(publicPanelOrigin("https://panel.example.com/"),"https://panel.example.com");
- for(const url of ["http://panel.example.com","https://127.0.0.1","https://[::1]","https://panel.local","https://user:pass@panel.example.com","https://panel.example.com/path","https://panel.example.com?key=secret","https://panel.example.com:8080"]){assert.equal(publicPanelOrigin(url),null,url);}
+ assert.equal(publicPanelOrigin("http://panel.example.com/"),"http://panel.example.com");
+ assert.equal(publicPanelOrigin("http://8.8.8.8/"),"http://8.8.8.8");
+ for(const url of ["http://127.0.0.1","http://10.0.0.1","http://169.254.169.254","ftp://panel.example.com","https://127.0.0.1","https://[::1]","https://panel.local","https://user:pass@panel.example.com","https://panel.example.com/path","https://panel.example.com?key=secret","https://panel.example.com:8080"]){assert.equal(publicPanelOrigin(url),null,url);}
  assert.deepEqual(validConnection(credential),credential);
  assert.equal(validConnection({...credential,account:"../../resources"}),null);
  assert.equal(validConnection({...credential,apiKey:"secret\n"+"a".repeat(30)}),null);
+ for(const apiKey of ["k","pacc_test","k".repeat(512)])assert.equal(validConnection({...credential,apiKey})?.apiKey,apiKey);
+ assert.equal(validConnection({...credential,apiKey:""}),null);
+ assert.equal(validConnection({provider:"curseforge",apiKey:"short"}),null);
  for(const address of ["127.0.0.1","10.1.2.3","172.16.0.1","172.31.255.255","192.168.0.1","169.254.169.254","100.100.100.100","0.0.0.0","198.18.0.1","198.51.100.1","203.0.113.1","224.1.2.3","999.2.3.4","::1"]){assert.equal(publicIPv4(address),false,address);}
  assert.equal(publicIPv4("8.8.8.8"),true);
 });
@@ -85,8 +90,21 @@ test("Pelican rejects private DNS resolutions, pins public addresses, and never 
  state.addresses=[{address:"8.8.8.8",family:4},{address:"10.0.0.1",family:4}];await assert.rejects(actualPelican.pelicanRequest(credential));assert.equal(state.calls.length,0);
  state.addresses=[{address:"8.8.8.8",family:4}];state.statusCode=200;assert.deepEqual(await actualPelican.pelicanRequest(credential,"/resources"),{ok:true});assert.deepEqual(state.pinned,{address:"8.8.8.8",family:4});assert.equal(state.calls[0].url.includes(credential.apiKey),false);
  assert.equal(state.calls[0].options.headers.Authorization,"Bearer "+credential.apiKey);
+ assert.equal(state.calls[0].transport,"https:");
  reset();state.statusCode=302;await assert.rejects(actualPelican.pelicanRequest(credential),/PELICAN_UNAVAILABLE/);assert.equal(state.calls.length,1);
  state.statusCode=200;await assert.rejects(actualPelican.pelicanRequest(credential,"/files/../../account"));assert.equal(state.calls.length,1);
+});
+test("HTTP Pelican panels use HTTP transport with public DNS/IP validation and no redirects",async()=>{
+ for(const panelUrl of ["http://panel.example.com","http://8.8.8.8"]){
+  reset();const input={...credential,panelUrl,apiKey:"pacc_test"};
+  if(panelUrl.endsWith("8.8.8.8"))state.addresses=[{address:"10.0.0.1",family:4}];
+  assert.deepEqual(await actualPelican.pelicanRequest(input,"",undefined,{client:true}),{ok:true});
+  assert.equal(state.calls[0].transport,"http:");assert.equal(state.calls[0].url,panelUrl+"/api/client");assert.equal(state.calls[0].options.headers.Authorization,"Bearer pacc_test");
+  assert.deepEqual(state.pinned,{address:"8.8.8.8",family:4});
+  reset();state.statusCode=302;await assert.rejects(actualPelican.pelicanRequest(input,"",undefined,{client:true}),/PELICAN_UNAVAILABLE/);assert.equal(state.calls.length,1);
+ }
+ reset();state.addresses=[{address:"10.0.0.1",family:4}];await assert.rejects(actualPelican.pelicanRequest({...credential,panelUrl:"http://panel.example.com"}),/INVALID_HOST/);assert.equal(state.calls.length,0);
+ for(const panelUrl of ["http://127.0.0.1","http://169.254.169.254"]){await assert.rejects(actualPelican.pelicanRequest({...credential,panelUrl}));assert.equal(state.calls.length,0);}
 });
 test("console routes authenticate and reject cross-origin writes before any upstream call",async()=>{
  process.env.ZO7AL_ADMIN_PASSWORD_HASH=hash;process.env.ZO7AL_ADMIN_SESSION_SECRET=secret;
@@ -110,6 +128,11 @@ test("saving a connection requires owner authentication and persists only encryp
  const result=await connectionRoute.POST(request(credential));assert.equal(result.status,200);assert.ok(state.calls.some(call=>call.operation?.client===true&&call.operation.endpoint===""));
  const insert=state.queries.find(q=>q.sql.startsWith("INSERT"));assert.ok(insert);assert.equal(insert.args[1].includes(credential.apiKey),false);assert.deepEqual(connections.openConnection(insert.args[1],"pelican",secret),credential);
  assert.equal(JSON.stringify(await result.json()).includes(credential.apiKey),false);
+ reset();const shortHttp={...credential,apiKey:"pacc_test",panelUrl:"http://8.8.8.8"};
+ const httpResult=await connectionRoute.POST(request(shortHttp));assert.equal(httpResult.status,200);
+ const httpInsert=state.queries.find(q=>q.sql.startsWith("INSERT"));assert.deepEqual(connections.openConnection(httpInsert.args[1],"pelican",secret),shortHttp);
+ assert.equal(JSON.stringify(await httpResult.json()).includes(shortHttp.apiKey),false);
+ reset();state.upstreamError=403;assert.equal((await connectionRoute.POST(request(shortHttp))).status,400);assert.equal(state.queries.length,0);
  reset();assert.equal((await connectionRoute.POST(request({...credential,panelUrl:"https://127.0.0.1"}))).status,400);assert.equal(state.calls.length,0);
 });
 test("CurseForge only saves a key after provider verification and never returns its credentials",async()=>{

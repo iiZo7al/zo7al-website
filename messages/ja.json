@@ -1072,7 +1072,7 @@
     "connectPelican": "Pelicanを接続",
     "connect_youtube": "YouTube Data APIキーとチャンネルハンドルを使用します。登録者、再生数、動画数は公開統計です。収益と視聴時間はYouTube Studioで確認してください。",
     "connect_curseforge": "CurseForge APIキーを使って公開済みModパックのダウンロード統計を取得します。",
-    "connect_pelican": "HTTPSパネルとClient APIキーを接続してサーバーを自動検出します。",
+    "connect_pelican": "HTTP / HTTPSパネルとClient APIキーを接続してサーバーを自動検出します。",
     "description_minecraft": "Minecraftの稼働状態とプレイヤー数を表示します。CPU、メモリ、ログ、コマンドはPelican接続後に利用できます。",
     "description_fortnite": "Epic Games Data APIによる過去7日間の公開統計です。一部の島や期間にはデータがありません。",
     "description_youtube": "YouTube Data APIの公開統計です。非公開分析、収益、動画管理はYouTube Studioを開いてください。",
