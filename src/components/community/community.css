@@ -97,3 +97,5 @@
 .notification-dialog .community-notification-list { display:grid; gap:10px; margin-top:20px; }
 .notification-dialog .community-notification { border:1px solid var(--border); border-radius:16px; padding:16px; background:var(--surface); }
 .notification-dialog .community-notification.is-unread { border-inline-start:3px solid var(--accent); background:var(--surface-elevated); }
+
+.news-embedded-poll { margin-top:24px; border-top:1px solid var(--border); padding-top:20px; }.news-embedded-poll .community-card { padding:0; border:0; background:transparent; box-shadow:none; }.news-poll-editor { padding:18px; border:1px solid var(--border); border-radius:16px; }

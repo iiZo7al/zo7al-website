@@ -9,8 +9,8 @@ const uuid=(value:unknown):value is string=>typeof value==='string'&&/^[a-f0-9]{
 const failed=(error:unknown,headers:Headers)=>Response.json({error:error instanceof AccountError?error.code:'UNAVAILABLE'},{status:error instanceof AccountError?error.status:503,headers});
 const verified=(user:AuthUser)=>(user.factors??[]).filter(factor=>factor.factor_type==='totp'&&factor.status==='verified');
 async function recoveryStatus(access:string) {
- try {const data=await authRequest('/factors/recovery-codes','GET',undefined,access);return {enrolled:true,remaining:data.remaining??0,total:data.total??0};}
- catch(error){if(error instanceof AccountError&&error.code==='MFA_NOT_FOUND')return {enrolled:false,remaining:0,total:0};throw error;}
+ try {const data=await authRequest('/factors/recovery-codes','GET',undefined,access);return {available:true,enrolled:true,remaining:data.remaining??0,total:data.total??0};}
+ catch(error){if(error instanceof AccountError&&error.code==='MFA_NOT_FOUND')return {available:true,enrolled:false,remaining:0,total:0};if(error instanceof AccountError&&error.code==='MFA_UNAVAILABLE')return {available:false,enrolled:false,remaining:0,total:0};throw error;}
 }
 /** Supabase consumes/rejects replayed codes and owns the TOTP secret and code hashes. */
 async function verifyCode(user:AuthUser,access:string,body:Record<string,unknown>,headers:Headers,allowUnverified=false):Promise<AuthResult> {
@@ -63,6 +63,7 @@ export async function POST(request:Request) {
    const tokens=await verifyCode(user,access,body,headers,true);
    try {
     const status=await recoveryStatus(tokens.access_token!);
+    if(!status.available)return Response.json({ok:true,recoveryError:'MFA_UNAVAILABLE'},{headers});
     if(!status.enrolled) {
      const data=await authRequest('/factors/recovery-codes','POST',{},tokens.access_token);
      if(!data.codes?.length||data.codes.some(c=>!/^[a-z0-9]{16}$/i.test(c)))throw new AccountError('UNAVAILABLE',503);
@@ -73,7 +74,6 @@ export async function POST(request:Request) {
   }
   if(required)throw new AccountError('MFA_REQUIRED',403);
   if(body.action==='enroll') {
-   if(process.env.ZO7AL_ACCOUNT_MFA_ENABLED!=='true'&&!factors.length)throw new AccountError('MFA_UNAVAILABLE',503);
    const fresh=factors.length?await verifyCode(user,access,body,headers):null;
    for(const pending of user.factors??[])if(pending.factor_type==='totp'&&pending.status==='unverified'&&uuid(pending.id))await authRequest('/factors/'+pending.id,'DELETE',undefined,fresh?.access_token??access);
    const result=await authRequest('/factors','POST',{factor_type:'totp',friendly_name:'Zo7al '+randomBytes(3).toString('hex'),issuer:'Zo7al'},fresh?.access_token??access);
@@ -94,6 +94,7 @@ export async function POST(request:Request) {
    const fresh=await verifyCode(user,access,body,headers),freshAccess=fresh.access_token!;
    const status=await recoveryStatus(freshAccess);
    if(body.action==='codes') {
+    if(!status.available)throw new AccountError('MFA_UNAVAILABLE',503);
     const data=await authRequest('/factors/recovery-codes'+(status.enrolled?'/regenerate':''),'POST',{},freshAccess);
     if(!Array.isArray(data.codes)||data.codes.length===0||data.codes.some(c=>typeof c!=='string'||!/^[a-z0-9]{16}$/i.test(c)))throw new AccountError('UNAVAILABLE',503);
     return Response.json({codes:data.codes.map(c=>c.toUpperCase().match(/.{4}/g)!.join('-'))},{headers});

@@ -258,7 +258,8 @@
       "fortnite": "Fortnite",
       "modpacks": "Modpack",
       "community": "コミュニティ",
-      "support": "サポートと申請"
+      "support": "サポートと申請",
+      "accountSecurity": "アカウントとセキュリティ"
     },
     "items": [
       {
@@ -300,7 +301,7 @@
       {
         "category": "storeRanks",
         "q": "ランクの購入方法は？",
-        "a": "/storeでランクをカートに追加し、カートに正確なMinecraft名を入力して内容を確認し、Tebexで支払います。BoosterはDiscordサーバーのブーストで取得します。",
+        "a": "購入前にログインしMinecraftを連携します。通常の購入は確認済みのプレイヤーを使い、ギフトでは受取人を選べます。カートを確認してTebexで支払います。",
         "id": "buy",
         "href": "/store",
         "action": "ストアを開く"
@@ -358,7 +359,7 @@
       {
         "category": "support",
         "q": "問題を報告するには？",
-        "a": "/supportでよくあるエラーを確認するか、問い合わせを送信してください。プロジェクト詳細の問題報告なら名前とバージョンが含まれます。受付情報を保存し、/requestsで確認できます。",
+        "a": "ログインしてサポートから報告してください。同じアカウントでどの端末からも「自分のリクエスト」で状況を確認できます。",
         "id": "report",
         "href": "/support?tab=report",
         "action": "サポートを開く"
@@ -396,7 +397,7 @@
       {
         "category": "storeRanks",
         "q": "クリエイターランクにはどう応募しますか？",
-        "a": "/store の Coins の下で YouTube、Twitch、TikTok を選び、メール、Minecraft と Discord のユーザー名、チャンネルURL、内容の詳細を送信してください。運営が審査し、ランクは自動付与されません。",
+        "a": "ログインしDiscordを連携してMinecraftを確認します。クリエイターランクを選びチャンネルと内容を入力すると、連携アカウント情報は自動で反映されます。応募は運営が審査します。",
         "id": "creator-apply",
         "href": "/store",
         "action": "ストアを開く"
@@ -429,7 +430,7 @@
         "id": "player-profile",
         "category": "minecraft",
         "q": "Minecraftプロフィールはどこですか？",
-        "a": "サーバー内で Minecraft を認証すると、自分のプロフィール表示と購入ができます。 このユーザー名で Zo7al に入り、次のコマンドを実行してください。 コードは10分で失効します。他人に共有しないでください。",
+        "a": "サーバー内コマンドでMinecraftを確認後、マイアカウント → プレイヤープロフィールを開きます。同期されたサーバー情報が表示されます。",
         "href": "/account?tab=player",
         "action": "プレイヤープロフィール"
       },
@@ -461,15 +462,15 @@
         "id": "polls",
         "category": "community",
         "q": "コミュニティ投票の仕組みは？",
-        "a": "投票は各ゲームのニュース欄に記事と一緒に表示されます。受付中の投票で選択肢を選び、投票してください。投票と結果は保存され、同じブラウザで再読み込みすると選択が復元されます。ブラウザの識別情報ごとに、各投票で1回投票できます。",
-        "href": "/minecraft#community-polls",
+        "a": "ニュースには任意の投票を追加できます。選択肢を選んで投票すると保存されます。各ブラウザー識別情報につき1回投票できます。",
+        "href": "/minecraft#news",
         "action": "投票を見る"
       },
       {
         "id": "gallery",
         "category": "community",
         "q": "画像や動画を投稿するには？",
-        "a": "MinecraftかFortniteのギャラリーで作品投稿を選び、画像または対応する動画リンク、名前、メールを送信します。承認までは非公開で、メールは公開されません。",
+        "a": "ログインしてギャラリーから画像や対応動画と詳細を送信します。アカウントは自動表示され、承認されるまで投稿は非公開です。",
         "href": "/minecraft#community-gallery",
         "action": "ギャラリーを見る"
       },
@@ -477,7 +478,7 @@
         "id": "notifications",
         "category": "community",
         "q": "通知の設定方法は？",
-        "a": "ベルを開き、通知設定で分類を選びます。設定と既読状態はこのブラウザ用にサーバー保存されます。申請通知には保存済み受付情報を使います。ブラウザ変更やCookie削除で識別情報が変わります。",
+        "a": "ベルから種類を選びます。公開通知の既読と設定はブラウザー、非公開リクエストはアカウントに紐付きます。Cookieの削除でブラウザー識別情報は変わります。",
         "href": "/support",
         "action": "サポートを開く"
       },
@@ -485,7 +486,7 @@
         "id": "requests",
         "category": "support",
         "q": "注文や申請を確認するには？",
-        "a": "サポートから/requestsを開いてください。注文、クリエイター申請、問い合わせ、イベントにタブがあります。別のブラウザでは受付情報の参照番号と秘密の追跡コードで復元できます。",
+        "a": "ログインして自分のリクエストを開きます。注文、応募、サポート、イベント、投稿は別タブです。参照番号や追跡コードなしで、同じアカウントの各端末から確認できます。",
         "href": "/requests",
         "action": "申請一覧"
       },
@@ -493,7 +494,7 @@
         "id": "news-events",
         "category": "community",
         "q": "ニュースやイベントはどこですか？",
-        "a": "MinecraftとFortniteには、それぞれニュースとコミュニティ投票をまとめたニュース欄があります。イベントとギャラリーは別の欄です。公開ニュースはホームにも表示されます。「もっと見る」で他のイベントを確認できます。参加登録ではイベントに応じてMinecraftまたはEpic Gamesの名前を入力します。",
+        "a": "各ゲームのニュースに任意の投票を追加できます。公開ニュースはホームにも表示されます。イベントとギャラリーは別セクションです。",
         "href": "/minecraft#events",
         "action": "イベントを見る"
       },
@@ -509,8 +510,8 @@
         "id": "permanent-features",
         "category": "community",
         "q": "新しい機能は恒久的ですか？",
-        "a": "はい。公開内容、投票、投稿、目標、通知設定はデータベースに保存され、デプロイ後も残ります。チームは編集や公開停止ができます。ランキングと実績は実際の同期統計を使います。",
-        "href": "/minecraft#community-polls",
+        "a": "ニュース、記事内投票、票、投稿、通知設定はサーバーに保存されます。運営は編集や非公開化ができ、統計には実際のサーバー同期を使用します。",
+        "href": "/minecraft#news",
         "action": "投票を見る"
       },
       {
@@ -528,6 +529,70 @@
         "a": "モッドパックのページまたは詳細で変更履歴を開いてください。プロジェクトとModrinthまたはCurseForgeを選ぶと公開済みのリリースノートを読めます。別のバージョンを開くと前のものが閉じます。提供元に記録がない場合はその状態を表示し、内容を作りません。",
         "href": "/modpacks#changelog",
         "action": "変更履歴を見る"
+      },
+      {
+        "id": "account-login",
+        "category": "accountSecurity",
+        "q": "ログインや追加アカウントの連携方法は？",
+        "a": "有効なメール、Discord、Google、Microsoft、Modrinthの方法を使用します。マイアカウント → 連携アカウントで追加し、利用できるログイン方法を残してください。",
+        "href": "/account",
+        "action": "ログイン"
+      },
+      {
+        "id": "public-profile",
+        "category": "accountSecurity",
+        "q": "公開プロフィールを作るには？",
+        "a": "マイアカウント → 公開プロフィールでユーザー名を選び、画像、バナー、自己紹介、リンクを編集します。URLは/@usernameで、承認済みの公開投稿のみ表示されます。",
+        "href": "/account?tab=profile",
+        "action": "公開プロフィール"
+      },
+      {
+        "id": "minecraft-link",
+        "category": "accountSecurity",
+        "q": "Minecraftアカウントを確認するには？",
+        "a": "連携アカウントでコードを作り、同じプレイヤーでサーバーに入り/zo7allink CODEを実行します。コードは10分有効で、名前の入力だけでは所有を確認できません。",
+        "href": "/account?tab=connections",
+        "action": "Minecraft アカウント連携"
+      },
+      {
+        "id": "two-factor",
+        "category": "accountSecurity",
+        "q": "二要素認証を有効にするには？",
+        "a": "マイアカウント → セキュリティで認証アプリにQRを読み込み、6桁のコードを確認します。以降のログインでは確認が必要です。",
+        "href": "/account?tab=security",
+        "action": "セキュリティ"
+      },
+      {
+        "id": "passkeys",
+        "category": "accountSecurity",
+        "q": "顔や指紋によるログインの仕組みは？",
+        "a": "対応端末でセキュリティからパスキーを追加します。端末が顔、指紋、セキュリティキーで確認し、生体情報は端末内に残ります。",
+        "href": "/account?tab=security",
+        "action": "パスキー"
+      },
+      {
+        "id": "backup-codes",
+        "category": "accountSecurity",
+        "q": "バックアップコードを使うには？",
+        "a": "ログインサービスが対応していればセキュリティで作成して保存します。各コードは1回だけ使え、再作成すると旧コードは無効です。利用不可の場合は表示されます。",
+        "href": "/account?tab=security",
+        "action": "セキュリティ"
+      },
+      {
+        "id": "discord-account-conflict",
+        "category": "accountSecurity",
+        "q": "Discordが連携済みと表示されるのはなぜ？",
+        "a": "別のZo7alアカウントに連携されています。Discordでそのアカウントに入り、別のログイン方法を追加してから解除し、目的のアカウントに連携します。",
+        "href": "/account?tab=connections",
+        "action": "連携アカウント"
+      },
+      {
+        "id": "minecraft-bans",
+        "category": "accountSecurity",
+        "q": "Minecraftサーバーの利用停止はどこで確認できますか？",
+        "a": "Minecraft連携後にアカウント設定やプレイヤープロフィールを開きます。対応ブリッジが理由と期限を報告し、同期情報がない場合や古い場合は表示されます。",
+        "href": "/account?tab=player",
+        "action": "Minecraftサーバーの利用停止"
       }
     ],
     "clearSearch": "検索をクリア",
@@ -686,7 +751,8 @@
     "cat_1v1v1": "1対1対1",
     "cat_RedvsBlue": "赤対青",
     "gamesAccount": "{platform}のZo7al Games。",
-    "cat_TeamBattle": "チームバトル"
+    "cat_TeamBattle": "チームバトル",
+    "social_github": "GitHubにあるコードとプログラミングプロジェクト。"
   },
   "lost": {
     "eyebrow": "宇宙で迷子に",
@@ -986,9 +1052,14 @@
     "epic": "Epic Gamesの表示名",
     "allGames": "すべてのゲーム",
     "mySubmissions": "自分の投稿",
-    "submissionsIntro": "View status and updates saved to your account.",
+    "submissionsIntro": "アカウントから状態や更新を確認できます。",
     "status_approved": "承認済み",
-    "profiles": "Profiles"
+    "profiles": "プロフィール",
+    "addPoll": "このニュースに投票を追加",
+    "pollQuestion": "投票の質問",
+    "pollOptions": "選択肢 · 1行に1つ",
+    "pollEnds": "投票終了日時",
+    "pollImmutable": "投票後は選択肢を変更できません。"
   },
   "dashboard": {
     "dashboard": "ダッシュボード",
@@ -1604,7 +1675,7 @@
     "accountIntro": "プロフィールと連携アカウントを管理。",
     "passwordHint": "12～128文字の固有のパスワードを使用してください。",
     "emailSent": "メールを確認し、このブラウザでリンクを開いてください。",
-    "connectionsHint": "Discord、Google、Microsoft、Minecraft を連携できます。ログイン方法を一つ以上残してください。",
+    "connectionsHint": "Discord、Google、Microsoft、Modrinth、Minecraftのプレイヤーを連携します。利用できるログイン方法を残してください。",
     "reauthHint": "必要に応じて、変更前に登録メールへ確認コードを送信してください。",
     "linkIntro": "サーバー内で Minecraft を認証すると、自分のプロフィール表示と購入ができます。",
     "linkInstructions": "このユーザー名で Zo7al に入り、次のコマンドを実行してください。",
@@ -1629,10 +1700,11 @@
       "MFA_CODE": "コードが無効、期限切れ、または使用済みです。",
       "MFA_UNAVAILABLE": "2FA設定またはバックアップコードを利用できません。後でもう一度お試しください。",
       "MFA_APP_REQUIRED": "最後のアプリはそのコードで確認して削除してください。紛失した場合はバックアップコードで先に新しいアプリを追加してください。",
-      "USERNAME_TAKEN": "Username already taken",
-      "DISCORD_REQUIRED": "Link Discord first",
-      "ACCOUNT_BANNED": "This account is banned",
-      "ACCOUNT_DELETED": "This profile has been deleted"
+      "USERNAME_TAKEN": "ユーザー名は使用されています",
+      "DISCORD_REQUIRED": "先にDiscordを連携してください",
+      "ACCOUNT_BANNED": "このアカウントは利用停止中です",
+      "ACCOUNT_DELETED": "このプロフィールは削除されました",
+      "IDENTITY_LINKED": "このDiscordは別のZo7alアカウントに連携されています。ここで連携せず、そのアカウントでログインしてください。"
     },
     "security": {
       "title": "二要素認証",
@@ -1667,48 +1739,55 @@
       "regenerate": "コードを再発行",
       "generateCodes": "コードを生成",
       "changeApp": "認証アプリを変更",
-      "setup": "2FAを設定"
+      "setup": "2FAを設定",
+      "backupsUnavailable": "ログインサービスでは現在バックアップコードを利用できません。認証アプリでの確認は引き続き利用できます。"
     },
     "submissionLogin": "ログインして投稿、応募、サポート依頼をアカウントに保存し、進捗を確認できます。",
-    "publicProfile": "Public profile",
-    "username": "Username",
-    "avatar": "Profile picture",
-    "banner": "Banner",
-    "bio": "Bio",
-    "socialLinks": "Social links",
-    "submissions": "My submissions",
-    "profileIntro": "Choose your public username and personalize your profile.",
-    "linkDiscord": "Link Discord",
-    "imageURL": "HTTPS image URL",
-    "uploadImage": "Upload image",
-    "profileSaved": "Profile saved",
-    "banned": "Banned",
-    "permanent": "Permanent",
-    "banUntil": "Until",
-    "banReason": "Reason",
-    "banStatus": "Minecraft server bans",
-    "banUnknown": "No ban information synced yet",
-    "noBans": "No active bans reported by your servers",
-    "viewProfile": "View profile",
-    "profiles": "Profiles",
-    "banAccount": "Ban account",
-    "unbanAccount": "Remove ban",
-    "deleteAccount": "Delete profile",
-    "temporaryBan": "Temporary ban",
-    "searchMembers": "Search profiles",
-    "confirmDelete": "Delete this profile? It will be hidden and site access revoked.",
-    "deleted": "Deleted",
-    "profileNotFound": "Profile not found",
-    "passkeys": "Passkeys",
-    "passkeyIntro": "Sign in using your device’s fingerprint, face recognition, or security key.",
-    "addPasskey": "Add passkey",
-    "signinPasskey": "Sign in with a passkey",
-    "removePasskey": "Remove",
-    "passkeyUnavailable": "Passkeys are not enabled yet.",
-    "passkeyCancelled": "The request was cancelled or could not be completed.",
-    "noSubmissions": "No published submissions yet",
-    "emptyPermanent": "Leave the date empty for a permanent ban.",
-    "durationUnknown": "Ban duration unavailable",
-    "banStale": "Last synced state; it may have changed."
+    "publicProfile": "公開プロフィール",
+    "username": "ユーザー名",
+    "avatar": "プロフィール画像",
+    "banner": "バナー",
+    "bio": "自己紹介",
+    "socialLinks": "ソーシャルリンク",
+    "submissions": "自分の投稿",
+    "profileIntro": "公開ユーザー名を選び、プロフィールをカスタマイズします。",
+    "linkDiscord": "Discordを連携",
+    "imageURL": "画像のHTTPS URL",
+    "uploadImage": "画像をアップロード",
+    "profileSaved": "プロフィールを保存しました",
+    "banned": "利用停止中",
+    "permanent": "無期限",
+    "banUntil": "期限",
+    "banReason": "理由",
+    "banStatus": "Minecraftサーバーの利用停止",
+    "banUnknown": "利用停止情報はまだ同期されていません",
+    "noBans": "サーバーから有効な利用停止は報告されていません",
+    "viewProfile": "プロフィールを見る",
+    "profiles": "プロフィール",
+    "banAccount": "アカウントを利用停止",
+    "unbanAccount": "利用停止を解除",
+    "deleteAccount": "プロフィールを削除",
+    "temporaryBan": "一時的な利用停止",
+    "searchMembers": "プロフィールを検索",
+    "confirmDelete": "このプロフィールを削除しますか？非公開になり、サイトへのアクセスが取り消されます。",
+    "deleted": "削除済み",
+    "profileNotFound": "プロフィールが見つかりません",
+    "passkeys": "パスキー",
+    "passkeyIntro": "端末の指紋認証、顔認証、またはセキュリティキーでログインします。",
+    "addPasskey": "パスキーを追加",
+    "signinPasskey": "パスキーでログイン",
+    "removePasskey": "削除",
+    "passkeyUnavailable": "パスキーはまだ有効になっていません。",
+    "passkeyCancelled": "リクエストがキャンセルされたか、完了できませんでした。",
+    "noSubmissions": "公開済みの投稿はまだありません",
+    "emptyPermanent": "無期限の利用停止にするには日付を空欄にします。",
+    "durationUnknown": "利用停止期間を取得できません",
+    "banStale": "最後に同期された状態です。変更されている可能性があります。",
+    "profile": "公開プロフィール",
+    "securityTab": "セキュリティ",
+    "identityLinked": "このDiscordは別のZo7alアカウントに連携されています。ここで連携せず、そのアカウントでログインしてください。",
+    "linkMinecraft": "Minecraftを連携",
+    "minecraftRequired": "応募前にMinecraftアカウントを連携してください。",
+    "useLinkedDiscord": "Discordに連携されたアカウントでログイン"
   }
 }

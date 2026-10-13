@@ -258,7 +258,8 @@
       "fortnite": "Fortnite",
       "modpacks": "Modpack'ler",
       "community": "Topluluk",
-      "support": "Destek ve talepler"
+      "support": "Destek ve talepler",
+      "accountSecurity": "Hesap ve güvenlik"
     },
     "items": [
       {
@@ -300,7 +301,7 @@
       {
         "category": "storeRanks",
         "q": "Bir rütbeyi nasıl satın alırım?",
-        "a": "/store üzerinden bir rütbeyi sepete ekleyin. Sepette doğru Minecraft adınızı girin, ürünleri kontrol edin ve Tebex ile ödeyin. Booster, Discord sunucusuna takviye vererek alınır.",
+        "a": "Satın almadan önce giriş yap ve Minecraft’ı bağla. Normal alışveriş doğrulanmış oyuncunu kullanır; hediye modunda alıcı seçebilirsin. Sepeti kontrol edip Tebex ile öde.",
         "id": "buy",
         "href": "/store",
         "action": "Mağazayı aç"
@@ -358,7 +359,7 @@
       {
         "category": "support",
         "q": "Bir sorunu nasıl bildiririm?",
-        "a": "/support üzerinde yaygın hatalara bakın veya talep gönderin. Proje ayrıntılarındaki Sorun bildir, proje ve sürümü ekler. Talebi /requests üzerinden takip etmek için makbuzu saklayın.",
+        "a": "Giriş yapıp Destek’ten bildirim gönder. Aynı hesapla her cihazda İsteklerim bölümünden takip edebilirsin.",
         "id": "report",
         "href": "/support?tab=report",
         "action": "Desteği aç"
@@ -396,7 +397,7 @@
       {
         "category": "storeRanks",
         "q": "İçerik üreticisi rütbesine nasıl başvururum?",
-        "a": "/store sayfasında Coins altından YouTube, Twitch veya TikTok seç. E-posta, Minecraft ve Discord adlarını, kanal bağlantını ve içerik bilgilerini gönder. Ekip başvuruyu inceler; rütbe otomatik verilmez.",
+        "a": "Giriş yap, Discord’u bağla ve Minecraft’ı doğrula. Üretici rütbesini seçip kanal ve içerik bilgilerini ekle; bağlı hesap bilgileri otomatik alınır. Başvuruyu ekip inceler.",
         "id": "creator-apply",
         "href": "/store",
         "action": "Mağazayı aç"
@@ -429,7 +430,7 @@
         "id": "player-profile",
         "category": "minecraft",
         "q": "Minecraft profilimi nerede görürüm?",
-        "a": "Profilini görmek ve kendin için alışveriş yapmak üzere Minecraft hesabını sunucuda doğrula. Zo7al sunucusuna bu adla girip aşağıdaki komutu çalıştır. Kod 10 dakika içinde sona erer. Paylaşma.",
+        "a": "Minecraft’ı sunucu komutuyla doğruladıktan sonra Hesabım → Oyuncu profili bölümünü aç. Eşitlenen sunucu bilgileri burada görünür.",
         "href": "/account?tab=player",
         "action": "Oyuncu profili"
       },
@@ -461,15 +462,15 @@
         "id": "polls",
         "category": "community",
         "q": "Topluluk oylamaları nasıl çalışır?",
-        "a": "Oylamalar, her oyunun Haberler bölümünde haberlerle birlikte görünür. Açık bir oylamada bir seçenek belirleyip oyunuzu gönderin. Oylar ve sonuçlar kaydedilir; aynı tarayıcıda sayfayı yenilediğinizde seçiminiz geri gelir. Her tarayıcı kimliği, her oylamada bir kez oy verebilir.",
-        "href": "/minecraft#community-polls",
+        "a": "Bir haber isteğe bağlı oylama içerebilir. Seçeneği işaretle ve oy ver; oylar kaydedilir. Her tarayıcı kimliği her oylamada bir kez oy verebilir.",
+        "href": "/minecraft#news",
         "action": "Oylamalar"
       },
       {
         "id": "gallery",
         "category": "community",
         "q": "Görsel veya video nasıl gönderirim?",
-        "a": "Minecraft ya da Fortnite galerisinde İçeriğini gönder'i kullanın. Görsel veya desteklenen bağlantı, ad ve e-posta ekleyin. Onaya kadar özel kalır; e-posta yayınlanmaz.",
+        "a": "Giriş yapıp galeriden desteklenen resim veya videoyu ayrıntılarıyla gönder. Hesabın otomatik gösterilir; gönderi onaylanana kadar gizli kalır.",
         "href": "/minecraft#community-gallery",
         "action": "Galeri"
       },
@@ -477,7 +478,7 @@
         "id": "notifications",
         "category": "community",
         "q": "Bildirimleri nasıl yönetirim?",
-        "a": "Zili açıp Tercihler'den kategorileri seçin. Tercihler ve okunma durumu bu tarayıcı için sunucuda saklanır. Özel talepler kayıtlı makbuzları kullanır. Çerezleri silmek veya tarayıcı değiştirmek yeni kimlik oluşturur.",
+        "a": "Zilden kategorileri seç. Genel okuma işaretleri ve tercihler tarayıcıyı, özel istekler hesabını takip eder. Çerezleri silmek tarayıcı kimliğini değiştirir.",
         "href": "/support",
         "action": "Desteği aç"
       },
@@ -485,7 +486,7 @@
         "id": "requests",
         "category": "support",
         "q": "Sipariş ve başvuruları nereden takip ederim?",
-        "a": "Destek üzerinden /requests açın. Siparişler, üretici başvuruları, destek ve etkinlikler ayrı sekmelerdedir. Başka tarayıcıda geri yüklemek için makbuzdaki referans ve özel kodu kullanın.",
+        "a": "Giriş yapıp İsteklerim’i aç. Siparişler, üretici başvuruları, destek, etkinlikler ve paylaşımlar ayrı sekmelerdedir. Referans veya takip kodu gerekmeden tüm cihazlarda hesabından görünür.",
         "href": "/requests",
         "action": "Taleplerim"
       },
@@ -493,7 +494,7 @@
         "id": "news-events",
         "category": "community",
         "q": "Haberler ve etkinlikler nerede yayınlanır?",
-        "a": "Minecraft ve Fortnite’ın haberleri ve topluluk oylamalarını birleştiren ayrı Haberler bölümleri vardır. Etkinlikler ve galeriler ayrı kalır. Yayınlanan haberler ana sayfada da görünür. Diğer etkinlikler için Daha fazla göster’i kullanın; kayıt sırasında etkinliğe göre Minecraft veya Epic Games adınız istenir.",
+        "a": "Her oyunun haber bölümü vardır; haberler isteğe bağlı oylama içerebilir. Yayımlanan haberler ana sayfada da görünür. Etkinlikler ve galeriler ayrı kalır.",
         "href": "/minecraft#events",
         "action": "Etkinlikler"
       },
@@ -509,8 +510,8 @@
         "id": "permanent-features",
         "category": "community",
         "q": "Yeni özellikler kalıcı mı?",
-        "a": "Evet. İçerik, oylamalar, oylar, gönderiler, hedefler ve ayarlar dağıtımlardan sonra veritabanında kalır. Ekip içeriği düzenleyebilir veya yayından kaldırabilir. Sıralama ve başarımlar gerçek istatistikleri kullanır.",
-        "href": "/minecraft#community-polls",
+        "a": "Haberler, içlerindeki oylamalar, oylar, paylaşımlar ve tercihler sunucuda tutulur. Ekip içeriği düzenleyebilir veya gizleyebilir; istatistikler gerçek sunucu eşitlemesinden gelir.",
+        "href": "/minecraft#news",
         "action": "Oylamalar"
       },
       {
@@ -528,6 +529,70 @@
         "a": "Mod paketleri sayfasında veya paket ayrıntılarında değişiklik günlüğünü açın. Yayınlanan sürüm notları için bir proje ve Modrinth veya CurseForge seçin. Bir sürümü açmak öncekini kapatır. Kaynak not yayınlamadıysa uydurma içerik yerine bu durum gösterilir.",
         "href": "/modpacks#changelog",
         "action": "Değişiklik günlüğünü görüntüle"
+      },
+      {
+        "id": "account-login",
+        "category": "accountSecurity",
+        "q": "Nasıl giriş yaparım veya başka hesap bağlarım?",
+        "a": "Etkin e-posta, Discord, Google, Microsoft veya Modrinth seçeneklerini kullan. Hesabım → Bağlı hesaplar bölümünden yeni yöntemler ekle ve çalışan bir giriş yöntemi bırak.",
+        "href": "/account",
+        "action": "Giriş yap"
+      },
+      {
+        "id": "public-profile",
+        "category": "accountSecurity",
+        "q": "Herkese açık profilimi nasıl oluştururum?",
+        "a": "Hesabım → Herkese açık profil bölümünden kullanıcı adını seç; resim, kapak, açıklama ve sosyal bağlantıları düzenle. Adresin /@username olur; yalnızca onaylanmış yayımlanan gönderiler görünür.",
+        "href": "/account?tab=profile",
+        "action": "Herkese açık profil"
+      },
+      {
+        "id": "minecraft-link",
+        "category": "accountSecurity",
+        "q": "Minecraft hesabımı nasıl doğrularım?",
+        "a": "Bağlı hesaplardan kod oluştur, o oyuncuyla sunucuya gir ve /zo7allink CODE komutunu çalıştır. Kod on dakika geçerlidir; yalnızca isim yazmak sahipliği kanıtlamaz.",
+        "href": "/account?tab=connections",
+        "action": "Minecraft hesabını bağla"
+      },
+      {
+        "id": "two-factor",
+        "category": "accountSecurity",
+        "q": "İki faktörlü doğrulamayı nasıl açarım?",
+        "a": "Hesabım → Güvenlik bölümünden QR’ı doğrulama uygulamasıyla tara ve altı haneli kodu doğrula. Sonraki girişlerde doğrulama gerekir.",
+        "href": "/account?tab=security",
+        "action": "Güvenlik"
+      },
+      {
+        "id": "passkeys",
+        "category": "accountSecurity",
+        "q": "Yüz veya parmak iziyle giriş nasıl çalışır?",
+        "a": "Desteklenen cihazda Güvenlik bölümünden geçiş anahtarı ekle. Cihaz yüz, parmak izi veya güvenlik anahtarıyla doğrular; biyometrik veriler cihazda kalır.",
+        "href": "/account?tab=security",
+        "action": "Geçiş anahtarları"
+      },
+      {
+        "id": "backup-codes",
+        "category": "accountSecurity",
+        "q": "Yedek kodları nasıl kullanırım?",
+        "a": "Giriş sağlayıcısı destekliyorsa Güvenlik’ten kod oluşturup sakla. Her kod bir kez çalışır; yenilemek eskileri geçersiz kılar. Kullanılamadığında açıkça belirtilir.",
+        "href": "/account?tab=security",
+        "action": "Güvenlik"
+      },
+      {
+        "id": "discord-account-conflict",
+        "category": "accountSecurity",
+        "q": "Discord neden zaten bağlı görünüyor?",
+        "a": "Başka bir Zo7al hesabına bağlıdır. Discord ile o hesaba gir, bağlantıyı kaldırmadan başka yöntem ekle ve sonra istediğin hesaba bağla.",
+        "href": "/account?tab=connections",
+        "action": "Bağlı hesaplar"
+      },
+      {
+        "id": "minecraft-bans",
+        "category": "accountSecurity",
+        "q": "Minecraft sunucu yasağını nerede görürüm?",
+        "a": "Minecraft’ı bağladıktan sonra hesap ayarları veya Oyuncu profilini aç. Desteklenen sunucu köprüleri nedeni ve bitişi bildirir; eksik veya eski eşitleme belirtilir.",
+        "href": "/account?tab=player",
+        "action": "Minecraft sunucu yasakları"
       }
     ],
     "clearSearch": "Aramayı temizle",
@@ -686,7 +751,8 @@
     "cat_1v1v1": "1e1e1",
     "cat_RedvsBlue": "Kırmızıya karşı mavi",
     "gamesAccount": "{platform} üzerinde Zo7al Games.",
-    "cat_TeamBattle": "Takım savaşı"
+    "cat_TeamBattle": "Takım savaşı",
+    "social_github": "GitHub’daki kodlarım ve yazılım projelerim."
   },
   "lost": {
     "eyebrow": "Uzayda kayboldu",
@@ -986,9 +1052,14 @@
     "epic": "Epic Games görünen adı",
     "allGames": "Tüm oyunlar",
     "mySubmissions": "Paylaşımlarım",
-    "submissionsIntro": "View status and updates saved to your account.",
+    "submissionsIntro": "Durumu ve güncellemeleri hesabından takip et.",
     "status_approved": "Kabul edildi",
-    "profiles": "Profiles"
+    "profiles": "Profiller",
+    "addPoll": "Bu habere oylama ekle",
+    "pollQuestion": "Oylama sorusu",
+    "pollOptions": "Seçenekler · her satıra bir seçenek",
+    "pollEnds": "Oylama bitişi",
+    "pollImmutable": "Oy verildikten sonra seçenekler değiştirilemez."
   },
   "dashboard": {
     "dashboard": "Kontrol paneli",
@@ -1604,7 +1675,7 @@
     "accountIntro": "Profilini ve bağlı hesaplarını yönet.",
     "passwordHint": "12–128 karakterlik benzersiz bir şifre kullan.",
     "emailSent": "E-postanı kontrol et ve bağlantıyı bu tarayıcıda aç.",
-    "connectionsHint": "Discord, Google, Microsoft ve Minecraft hesaplarını bağla. En az bir giriş yöntemi bırak.",
+    "connectionsHint": "Discord, Google, Microsoft, Modrinth ve Minecraft oyuncunu bağla. Çalışan bir giriş yöntemi bırak.",
     "reauthHint": "Gerekirse şifreni değiştirmeden önce e-postana doğrulama kodu gönder.",
     "linkIntro": "Profilini görmek ve kendin için alışveriş yapmak üzere Minecraft hesabını sunucuda doğrula.",
     "linkInstructions": "Zo7al sunucusuna bu adla girip aşağıdaki komutu çalıştır.",
@@ -1629,10 +1700,11 @@
       "MFA_CODE": "Kod geçersiz, süresi dolmuş veya kullanılmış.",
       "MFA_UNAVAILABLE": "2FA kurulumu veya yedek kodlar kullanılamıyor. Daha sonra dene.",
       "MFA_APP_REQUIRED": "Son uygulamayı kaldırmak için koduyla doğrula. Kaybettiysen önce yedek kodla yeni uygulama ekle.",
-      "USERNAME_TAKEN": "Username already taken",
-      "DISCORD_REQUIRED": "Link Discord first",
-      "ACCOUNT_BANNED": "This account is banned",
-      "ACCOUNT_DELETED": "This profile has been deleted"
+      "USERNAME_TAKEN": "Kullanıcı adı zaten kullanılıyor",
+      "DISCORD_REQUIRED": "Önce Discord’u bağla",
+      "ACCOUNT_BANNED": "Bu hesap yasaklı",
+      "ACCOUNT_DELETED": "Bu profil silindi",
+      "IDENTITY_LINKED": "Bu Discord hesabı başka bir Zo7al hesabına bağlı. Buraya bağlamak yerine onunla giriş yap."
     },
     "security": {
       "title": "İki faktörlü kimlik doğrulama",
@@ -1667,48 +1739,55 @@
       "regenerate": "Kodları yenile",
       "generateCodes": "Yedek kod oluştur",
       "changeApp": "Doğrulayıcıyı değiştir",
-      "setup": "2FA’yı kur"
+      "setup": "2FA’yı kur",
+      "backupsUnavailable": "Giriş sağlayıcısında yedek kodlar şu anda kullanılamıyor. Doğrulama uygulamasıyla doğrulama devam eder."
     },
     "submissionLogin": "Paylaşımlarınızı, başvurularınızı ve destek taleplerinizi hesabınıza bağlamak ve durumlarını takip etmek için giriş yapın.",
-    "publicProfile": "Public profile",
-    "username": "Username",
-    "avatar": "Profile picture",
-    "banner": "Banner",
-    "bio": "Bio",
-    "socialLinks": "Social links",
-    "submissions": "My submissions",
-    "profileIntro": "Choose your public username and personalize your profile.",
-    "linkDiscord": "Link Discord",
-    "imageURL": "HTTPS image URL",
-    "uploadImage": "Upload image",
-    "profileSaved": "Profile saved",
-    "banned": "Banned",
-    "permanent": "Permanent",
-    "banUntil": "Until",
-    "banReason": "Reason",
-    "banStatus": "Minecraft server bans",
-    "banUnknown": "No ban information synced yet",
-    "noBans": "No active bans reported by your servers",
-    "viewProfile": "View profile",
-    "profiles": "Profiles",
-    "banAccount": "Ban account",
-    "unbanAccount": "Remove ban",
-    "deleteAccount": "Delete profile",
-    "temporaryBan": "Temporary ban",
-    "searchMembers": "Search profiles",
-    "confirmDelete": "Delete this profile? It will be hidden and site access revoked.",
-    "deleted": "Deleted",
-    "profileNotFound": "Profile not found",
-    "passkeys": "Passkeys",
-    "passkeyIntro": "Sign in using your device’s fingerprint, face recognition, or security key.",
-    "addPasskey": "Add passkey",
-    "signinPasskey": "Sign in with a passkey",
-    "removePasskey": "Remove",
-    "passkeyUnavailable": "Passkeys are not enabled yet.",
-    "passkeyCancelled": "The request was cancelled or could not be completed.",
-    "noSubmissions": "No published submissions yet",
-    "emptyPermanent": "Leave the date empty for a permanent ban.",
-    "durationUnknown": "Ban duration unavailable",
-    "banStale": "Last synced state; it may have changed."
+    "publicProfile": "Herkese açık profil",
+    "username": "Kullanıcı adı",
+    "avatar": "Profil resmi",
+    "banner": "Kapak resmi",
+    "bio": "Hakkımda",
+    "socialLinks": "Sosyal bağlantılar",
+    "submissions": "Paylaşımlarım",
+    "profileIntro": "Herkese açık kullanıcı adını seç ve profilini kişiselleştir.",
+    "linkDiscord": "Discord’u bağla",
+    "imageURL": "HTTPS resim adresi",
+    "uploadImage": "Resim yükle",
+    "profileSaved": "Profil kaydedildi",
+    "banned": "Yasaklı",
+    "permanent": "Kalıcı",
+    "banUntil": "Bitiş",
+    "banReason": "Neden",
+    "banStatus": "Minecraft sunucu yasakları",
+    "banUnknown": "Henüz yasak bilgisi eşitlenmedi",
+    "noBans": "Sunucularından etkin yasak bildirilmedi",
+    "viewProfile": "Profili görüntüle",
+    "profiles": "Profiller",
+    "banAccount": "Hesabı yasakla",
+    "unbanAccount": "Yasağı kaldır",
+    "deleteAccount": "Profili sil",
+    "temporaryBan": "Geçici yasak",
+    "searchMembers": "Profil ara",
+    "confirmDelete": "Bu profil silinsin mi? Gizlenir ve site erişimi kaldırılır.",
+    "deleted": "Silindi",
+    "profileNotFound": "Profil bulunamadı",
+    "passkeys": "Geçiş anahtarları",
+    "passkeyIntro": "Cihazının parmak izi, yüz tanıma veya güvenlik anahtarıyla giriş yap.",
+    "addPasskey": "Geçiş anahtarı ekle",
+    "signinPasskey": "Geçiş anahtarıyla giriş yap",
+    "removePasskey": "Kaldır",
+    "passkeyUnavailable": "Geçiş anahtarları henüz etkin değil.",
+    "passkeyCancelled": "İstek iptal edildi veya tamamlanamadı.",
+    "noSubmissions": "Henüz yayımlanan paylaşım yok",
+    "emptyPermanent": "Kalıcı yasak için tarihi boş bırak.",
+    "durationUnknown": "Yasak süresi mevcut değil",
+    "banStale": "Son eşitlenen durum; değişmiş olabilir.",
+    "profile": "Herkese açık profil",
+    "securityTab": "Güvenlik",
+    "identityLinked": "Bu Discord hesabı başka bir Zo7al hesabına bağlı. Buraya bağlamak yerine onunla giriş yap.",
+    "linkMinecraft": "Minecraft’ı bağla",
+    "minecraftRequired": "Başvurmadan önce Minecraft hesabını bağla.",
+    "useLinkedDiscord": "Discord’a bağlı hesaba giriş yap"
   }
 }

@@ -258,7 +258,8 @@
       "fortnite": "Fortnite",
       "modpacks": "Modpacks",
       "community": "Community",
-      "support": "Support & requests"
+      "support": "Support & requests",
+      "accountSecurity": "Accounts & security"
     },
     "items": [
       {
@@ -300,7 +301,7 @@
       {
         "category": "storeRanks",
         "q": "How do I buy a rank?",
-        "a": "Open /store and add your chosen rank to the cart. Enter your exact Minecraft username in the cart, review your items and pay through Tebex. Booster comes from boosting the Discord server.",
+        "a": "Sign in and link your Minecraft account before checking out. Ordinary purchases use your verified player; Gift mode lets you choose a recipient. Review the cart and pay through Tebex.",
         "id": "buy",
         "href": "/store",
         "action": "Open the store"
@@ -358,7 +359,7 @@
       {
         "category": "support",
         "q": "How do I report a problem?",
-        "a": "Open /support to check common errors or send a support request. For a particular map or modpack, use Report an issue in its details to include the project and version. Keep your receipt to follow the request in /requests.",
+        "a": "Sign in and submit your report in Support. Follow its status from My requests on any device using the same account.",
         "id": "report",
         "href": "/support?tab=report",
         "action": "Open Support Center"
@@ -396,7 +397,7 @@
       {
         "category": "storeRanks",
         "q": "How do I apply for a creator rank?",
-        "a": "Open /store and find Creator ranks below Coins. Choose YouTube, Twitch or TikTok, then submit your email, Minecraft and Discord usernames, channel link and content details. The team reviews your application; submission does not grant a rank automatically.",
+        "a": "Sign in, link Discord and verify Minecraft, then choose a creator rank in the store. Add your channel and content details; your linked account details are supplied automatically. Applications require team review.",
         "id": "creator-apply",
         "href": "/store",
         "action": "Open the store"
@@ -429,7 +430,7 @@
         "id": "player-profile",
         "category": "minecraft",
         "q": "Where can I see my Minecraft player profile?",
-        "a": "Verify your Minecraft account in the server to view your profile and shop for yourself. Join Zo7al with this Minecraft name and run the command below. The code expires in 10 minutes. Do not share it.",
+        "a": "Open My account → Player profile after verifying Minecraft with the in-server link command. Your profile shows synchronized server information.",
         "href": "/account?tab=player",
         "action": "Player profile"
       },
@@ -461,15 +462,15 @@
         "id": "polls",
         "category": "community",
         "q": "How do community votes work?",
-        "a": "Polls appear together with news in each game’s News section. Select an option in an open poll and submit your vote. Votes and results are saved, and your selection returns in the same browser after reloading. Each browser identity can vote once per poll.",
-        "href": "/minecraft#community-polls",
+        "a": "A news post can include an optional poll. Choose an option and submit; votes are saved. Each browser identity can vote once per poll.",
+        "href": "/minecraft#news",
         "action": "View community votes"
       },
       {
         "id": "gallery",
         "category": "community",
         "q": "How do I submit a community image or video?",
-        "a": "Use Submit your work in the community gallery on Minecraft or Fortnite. Add an image or supported video link, your creator name and contact email. Submissions stay private until the team approves publication; your email stays private.",
+        "a": "Sign in and select Submit your work in the gallery. Add an image or supported video and details. Your account is shown automatically; posts stay private until approved.",
         "href": "/minecraft#community-gallery",
         "action": "View community gallery"
       },
@@ -477,7 +478,7 @@
         "id": "notifications",
         "category": "community",
         "q": "How do I control website notifications?",
-        "a": "Open the bell and select the categories you want in Preferences. Read markers and preferences are saved on the server for this browser identity. Private request updates use your saved receipts. Clearing site cookies or changing browsers creates a different identity.",
+        "a": "Use the bell to choose notification categories. Public read markers and preferences follow this browser identity. Private request updates follow your signed-in account. Clearing site cookies changes the browser identity.",
         "href": "/support",
         "action": "Open Support Center"
       },
@@ -485,7 +486,7 @@
         "id": "requests",
         "category": "support",
         "q": "Where can I follow orders and applications?",
-        "a": "Open /requests from Support → My requests & applications. Orders, creator applications, support requests and event registrations have separate tabs. Use the private reference and tracking code from your receipt to restore a request in another browser.",
+        "a": "Sign in and open My requests. Orders, creator applications, support, events and submissions have separate tabs. Your account keeps them available across devices; no tracking reference or code is needed.",
         "href": "/requests",
         "action": "My requests & applications"
       },
@@ -493,7 +494,7 @@
         "id": "news-events",
         "category": "community",
         "q": "Where are news and events published?",
-        "a": "Minecraft and Fortnite each have their own News section containing news and community polls. Their events and galleries remain separate. Published news also appears on the homepage. Use Show more to see additional events; registrations ask for your Minecraft or Epic Games name according to the event.",
+        "a": "Each game has a News section; a news post may include a poll. Published news also appears on the homepage. Events and galleries remain separate.",
         "href": "/minecraft#events",
         "action": "View events"
       },
@@ -509,8 +510,8 @@
         "id": "permanent-features",
         "category": "community",
         "q": "Are the new community features permanent?",
-        "a": "Yes. Published content, polls and ballots, gallery submissions, goals and notification settings are stored in the database and survive deployments. The team can edit or unpublish content. Player rankings and achievement progress continue to use real synchronized statistics.",
-        "href": "/minecraft#community-polls",
+        "a": "News, embedded polls, votes, submissions and notification preferences are stored on the server. The team can edit or unpublish content; player statistics use actual server synchronization.",
+        "href": "/minecraft#news",
         "action": "View community votes"
       },
       {
@@ -528,6 +529,70 @@
         "a": "Open the changelog on the Modpacks page or in a modpack’s details. Choose a project and Modrinth or CurseForge to see published release notes. Opening one release closes the previous one. If a source has no changelog, the page shows that state instead of invented notes.",
         "href": "/modpacks#changelog",
         "action": "View changelog"
+      },
+      {
+        "id": "account-login",
+        "category": "accountSecurity",
+        "q": "How do I sign in or link another account?",
+        "a": "Use the enabled email, Discord, Google, Microsoft or Modrinth options. Link additional methods from My account → Linked accounts, and keep a usable sign-in method.",
+        "href": "/account",
+        "action": "Sign in"
+      },
+      {
+        "id": "public-profile",
+        "category": "accountSecurity",
+        "q": "How do I create my public profile?",
+        "a": "Choose a username in My account → Public profile. Edit your photo, banner, bio and social links. Your address is /@username and only approved published submissions appear.",
+        "href": "/account?tab=profile",
+        "action": "Public profile"
+      },
+      {
+        "id": "minecraft-link",
+        "category": "accountSecurity",
+        "q": "How do I verify my Minecraft account?",
+        "a": "Generate a link code in Linked accounts, join the server with that player and run /zo7allink CODE. The code lasts ten minutes; typing a name alone does not prove ownership.",
+        "href": "/account?tab=connections",
+        "action": "Link Minecraft account"
+      },
+      {
+        "id": "two-factor",
+        "category": "accountSecurity",
+        "q": "How do I enable two-factor authentication?",
+        "a": "Open My account → Security, scan the QR code in an authenticator app and confirm its six-digit code. Future sign-ins require verification.",
+        "href": "/account?tab=security",
+        "action": "Security"
+      },
+      {
+        "id": "passkeys",
+        "category": "accountSecurity",
+        "q": "How do face or fingerprint sign-ins work?",
+        "a": "Add a passkey from Security on a supported device. Your device verifies you with a fingerprint, face or security key; biometric data stays on the device.",
+        "href": "/account?tab=security",
+        "action": "Passkeys"
+      },
+      {
+        "id": "backup-codes",
+        "category": "accountSecurity",
+        "q": "How do I use backup codes?",
+        "a": "If the sign-in provider supports them, generate and save codes from Security. Each code works once; regenerating invalidates the old set. Unavailable codes are clearly indicated.",
+        "href": "/account?tab=security",
+        "action": "Security"
+      },
+      {
+        "id": "discord-account-conflict",
+        "category": "accountSecurity",
+        "q": "Why does Discord say the account is already linked?",
+        "a": "It belongs to another Zo7al account. Sign in to that account with Discord, add another sign-in method before unlinking, then link Discord to the intended account.",
+        "href": "/account?tab=connections",
+        "action": "Linked accounts"
+      },
+      {
+        "id": "minecraft-bans",
+        "category": "accountSecurity",
+        "q": "Where can I see a Minecraft server ban?",
+        "a": "After linking Minecraft, open your account settings or Player profile. Supported server bridges report the ban reason and expiry. Missing or stale synchronization is shown explicitly.",
+        "href": "/account?tab=player",
+        "action": "Minecraft server bans"
       }
     ],
     "clearSearch": "Clear search",
@@ -686,7 +751,8 @@
     "cat_1v1v1": "1v1v1",
     "cat_RedvsBlue": "Red vs blue",
     "gamesAccount": "Zo7al Games on {platform}.",
-    "cat_TeamBattle": "Team battle"
+    "cat_TeamBattle": "Team battle",
+    "social_github": "Code and projects from Zo7al on GitHub."
   },
   "lost": {
     "eyebrow": "Lost in space",
@@ -988,7 +1054,12 @@
     "mySubmissions": "My submissions",
     "submissionsIntro": "View status and updates saved to your account.",
     "status_approved": "Accepted",
-    "profiles": "Profiles"
+    "profiles": "Profiles",
+    "addPoll": "Add a poll to this news post",
+    "pollQuestion": "Poll question",
+    "pollOptions": "Options · one per line",
+    "pollEnds": "Voting deadline",
+    "pollImmutable": "Options cannot change after votes are recorded."
   },
   "dashboard": {
     "dashboard": "Dashboard",
@@ -1604,7 +1675,7 @@
     "accountIntro": "Manage your profile and linked accounts.",
     "passwordHint": "Use a unique password of 12–128 characters.",
     "emailSent": "Check your email to continue. The link must be opened in this browser.",
-    "connectionsHint": "Link Discord, Google, Microsoft and your Minecraft player to this account. Keep at least one sign-in method.",
+    "connectionsHint": "Link Discord, Google, Microsoft, Modrinth and your Minecraft player to this account. Keep a usable sign-in method.",
     "reauthHint": "If required, send a verification code to your registered email before changing your password.",
     "linkIntro": "Verify your Minecraft account in the server to view your profile and shop for yourself.",
     "linkInstructions": "Join Zo7al with this Minecraft name and run the command below.",
@@ -1632,7 +1703,8 @@
       "USERNAME_TAKEN": "Username already taken",
       "DISCORD_REQUIRED": "Link Discord first",
       "ACCOUNT_BANNED": "This account is banned",
-      "ACCOUNT_DELETED": "This profile has been deleted"
+      "ACCOUNT_DELETED": "This profile has been deleted",
+      "IDENTITY_LINKED": "This Discord identity belongs to another Zo7al account. Sign in with it instead of linking it here."
     },
     "security": {
       "title": "Two-factor authentication",
@@ -1667,7 +1739,8 @@
       "regenerate": "Regenerate codes",
       "generateCodes": "Generate backup codes",
       "changeApp": "Change authenticator app",
-      "setup": "Set up 2FA"
+      "setup": "Set up 2FA",
+      "backupsUnavailable": "Backup codes are currently unavailable from the sign-in provider. Authenticator app verification remains available."
     },
     "submissionLogin": "Sign in to save your submissions, applications and support requests to your account and follow their progress.",
     "publicProfile": "Public profile",
@@ -1709,6 +1782,12 @@
     "noSubmissions": "No published submissions yet",
     "emptyPermanent": "Leave the date empty for a permanent ban.",
     "durationUnknown": "Ban duration unavailable",
-    "banStale": "Last synced state; it may have changed."
+    "banStale": "Last synced state; it may have changed.",
+    "profile": "Public profile",
+    "securityTab": "Security",
+    "identityLinked": "This Discord identity belongs to another Zo7al account. Sign in with it instead of linking it here.",
+    "linkMinecraft": "Link Minecraft",
+    "minecraftRequired": "Link your Minecraft account before applying.",
+    "useLinkedDiscord": "Sign in to the account linked to Discord"
   }
 }

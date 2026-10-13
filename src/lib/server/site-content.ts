@@ -14,7 +14,7 @@ export async function limitAttempt(key: string, limit: number, seconds: number) 
 }
 export async function publicContent(kind: "news" | "event" | "rule", locale: string, topic: HubTopic | "all" = "minecraft") {
   try {
-    const result = await (await siteDatabase()).query("SELECT c.id,c.kind,c.topic,c.locale,c.title,c.body,c.starts_at AS \"startsAt\",c.registration_url AS \"registrationUrl\",c.created_at AS \"createdAt\",CASE WHEN i.id IS NOT NULL THEN json_build_object('id',i.id,'width',i.width,'height',i.height) ELSE NULL END AS image FROM site_content c LEFT JOIN site_content_images i ON i.id=c.image_id WHERE c.kind=$1 AND c.published AND c.locale=$2 AND ($3='all' OR c.topic=$3) ORDER BY COALESCE(c.starts_at,c.created_at) DESC LIMIT 40", [kind,locale,topic]);
+    const result = await (await siteDatabase()).query("SELECT c.poll_id AS \"pollId\",c.id,c.kind,c.topic,c.locale,c.title,c.body,c.starts_at AS \"startsAt\",c.registration_url AS \"registrationUrl\",c.created_at AS \"createdAt\",CASE WHEN i.id IS NOT NULL THEN json_build_object('id',i.id,'width',i.width,'height',i.height) ELSE NULL END AS image FROM site_content c LEFT JOIN site_content_images i ON i.id=c.image_id WHERE c.kind=$1 AND c.published AND c.locale=$2 AND ($3='all' OR c.topic=$3) ORDER BY COALESCE(c.starts_at,c.created_at) DESC LIMIT 40", [kind,locale,topic]);
     return { items: result.rows, available: true };
   } catch { return { items: [], available: false }; }
 }
@@ -23,7 +23,22 @@ export async function saveContent(value: unknown) {
   const id = content.id ?? randomUUID();
   const db = await siteDatabase();
   if (content.imageId && !(await db.query("SELECT id FROM site_content_images WHERE id=$1", [content.imageId])).rowCount) throw Error("INVALID");
-  await db.query("INSERT INTO site_content(id,kind,locale,title,body,published,starts_at,registration_url,image_id,topic) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) ON CONFLICT(id) DO UPDATE SET kind=excluded.kind,locale=excluded.locale,title=excluded.title,body=excluded.body,published=excluded.published,starts_at=excluded.starts_at,registration_url=excluded.registration_url,image_id=excluded.image_id,topic=excluded.topic,updated_at=now()", [id,content.kind,content.locale,content.title,content.body,content.published,content.startsAt,content.registrationUrl,content.imageId,content.topic]);
+  const client=await db.connect();
+  try {
+   await client.query('BEGIN');
+   const previous=(await client.query('SELECT poll_id FROM site_content WHERE id=$1 FOR UPDATE',[id])).rows[0];
+   let pollId:string|null=previous?.poll_id??null;
+   if(content.poll){
+    if(pollId){
+     const prior=(await client.query('SELECT payload FROM community_entries WHERE id=$1 FOR UPDATE',[pollId])).rows[0];
+     const voted=(await client.query('SELECT 1 FROM community_votes WHERE poll_id=$1 LIMIT 1',[pollId])).rowCount;
+     if(voted&&JSON.stringify(prior?.payload.options)!==JSON.stringify(content.poll.options))throw Error('POLL_LOCKED');
+    } else pollId=randomUUID();
+    await client.query("INSERT INTO community_entries(id,kind,locale,topic,title,body,payload,published,moderation) VALUES($1,'poll',$2,$3,$4,'',$5,$6,'approved') ON CONFLICT(id) DO UPDATE SET locale=excluded.locale,topic=excluded.topic,title=excluded.title,payload=excluded.payload,published=excluded.published,moderation='approved',updated_at=now()",[pollId,content.locale,content.topic,content.poll.question,JSON.stringify({options:content.poll.options,endsAt:content.poll.endsAt}),content.published]);
+   } else if(pollId){ await client.query('UPDATE community_entries SET published=false,updated_at=now() WHERE id=$1',[pollId]);pollId=null; }
+   await client.query("INSERT INTO site_content(id,kind,locale,title,body,published,starts_at,registration_url,image_id,topic,poll_id) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11) ON CONFLICT(id) DO UPDATE SET kind=excluded.kind,locale=excluded.locale,title=excluded.title,body=excluded.body,published=excluded.published,starts_at=excluded.starts_at,registration_url=excluded.registration_url,image_id=excluded.image_id,topic=excluded.topic,poll_id=excluded.poll_id,updated_at=now()",[id,content.kind,content.locale,content.title,content.body,content.published,content.startsAt,content.registrationUrl,content.imageId,content.topic,pollId]);
+   await client.query('COMMIT');
+  }catch(error){await client.query('ROLLBACK').catch(()=>{});throw error;}finally{client.release();}
   return id;
 }
 export async function createTrackedRequest(kind: "application" | "support" | "event", payload: unknown, id: string = randomUUID(), userId: string | null = null) {

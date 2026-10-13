@@ -62,7 +62,7 @@ export async function sendApplicationNotification(a: Application, reference: str
 }
 export function createApplicationHandler(getWebhook: () => string | undefined, send: typeof fetch = fetch, storage?: ApplicationStore) {
   const attempts = new Map<string, { count: number; expires: number }>();
-  return async (request: Request, accountContact?: {email:string;discord:string}) => {
+  return async (request: Request, accountContact?: {email:string;discord:string;minecraft?:string}) => {
     const reply = (error: string, status: number) => Response.json({ error }, { status, headers: { "Cache-Control": "no-store" } });
     const url = new URL(request.url);
     if (request.headers.get("origin") !== `${url.protocol}//${request.headers.get("host") ?? url.host}`) return reply("INVALID", 403);

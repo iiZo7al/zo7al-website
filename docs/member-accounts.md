@@ -11,7 +11,7 @@ This change requires member sign-in for checkout. Do not merge into production u
 3. Enable Email, email confirmation, and secure password change. Configure production SMTP and its sender domain, then test confirmation, recovery, and reauthentication delivery.
 4. Enable Discord, Google and Azure (Microsoft) with owner-controlled OAuth credentials. Their provider callback is the Supabase project's `/auth/v1/callback`, distinct from the website callback above. Enable manual identity linking to let members connect an additional provider from account settings. Only enabled providers appear on the website.
 5. Deploy the preview with these variables. The existing schema initializer adds account tables, link codes, OAuth flows, and optional ownership columns to orders and requests. Existing receipts are retained. Account profile IDs are verified Supabase user IDs, never browser-supplied roles.
-6. Build/install bridge **1.2.0** on every backend accepting member link commands: modern Paper 1.21.11 and legacy Bukkit/Spigot 1.8.9 have separate jars. Keep each backend's existing HTTPS bridge endpoint and dashboard-issued key. Install on backend servers, not Velocity. Restart after replacing the old jar.
+6. Build/install bridge **1.3.0** on every backend accepting member link commands: modern Paper 1.21.11 and legacy Bukkit/Spigot 1.8.9 have separate jars. Keep each backend's existing HTTPS bridge endpoint and dashboard-issued key. Install on backend servers, not Velocity. Restart after replacing the old jar.
 
 ## Behavior
 
@@ -21,7 +21,7 @@ This change requires member sign-in for checkout. Do not merge into production u
 - Normal checkout requires a linked player and always uses its verified name. Changing the request's recipient field cannot redirect an ordinary purchase.
 - Gift mode sends **every item in the cart** to the entered Minecraft name, including a player linked to another member account. The buyer owns the order receipt. Gifts never transfer account ownership. Existing Tebex ownership restrictions still apply to the recipient. One rank per cart, real catalog prices, and quantity restrictions remain enforced.
 - Authenticated submissions and orders are associated with the member. Old browser receipts can be claimed only with their existing private receipt token and only when unowned or already owned by that member. IDs alone cannot reveal another member's request.
-- Guests can still submit support requests, event registrations, and creator applications and use private tracking codes.
+- Creator applications, gallery submissions and support reports require sign-in. Event registrations retain their existing guest flow.
 - Common errors open through a support tab with closed accordion items. Fortnite section titles use ordinary news/events/community labels. Account messages and updated profile FAQ destinations cover all ten website locales.
 
 ## End-to-end checks before production
@@ -50,10 +50,9 @@ Phone authentication remains disabled and no SMS provider is configured.
 
 The current Auth source defaults `GOTRUE_MFA_RECOVERY_CODES_ENROLL_ENABLED` and `GOTRUE_MFA_RECOVERY_CODES_VERIFY_ENABLED` to false. These are Auth-server flags, not website environment variables; hosted-project availability/configuration must be confirmed with Supabase.
 
-Before enabling the settings panel, verify TOTP enrollment/verification and recovery-code enrollment/verification are enabled for this hosted project's Auth version. The current project dashboard confirms TOTP is enabled and AAL1 sessions are limited to 15 minutes; it does not expose recovery-code controls. Recovery-code support is experimental in the current Supabase documentation. Do not assume a successful TOTP setup means backup codes are available.
+TOTP setup is available independently of the experimental recovery-code feature. Supabase remains authoritative for enrollment and verification. If the native recovery-code endpoint reports the feature disabled/not found, the status response distinguishes unavailable backups from unenrolled backups; TOTP setup, challenge and removal continue to work. Invalid responses and upstream outages still surface as errors. The former website `ZO7AL_ACCOUNT_MFA_ENABLED` gate is no longer required.
 
-Only set server-side `ZO7AL_ACCOUNT_MFA_ENABLED=true` after live verification of all four recovery-code endpoints: status (`GET /factors/recovery-codes`), generation (`POST /factors/recovery-codes`), rotation (`POST /factors/recovery-codes/regenerate`) and redemption (`POST /factors/recovery-codes/verify`). `DELETE /factors/recovery-codes` must also be supported for complete disablement. If this feature is unavailable in the project's hosted Auth version/configuration, keep the panel disabled and this PR in draft. Do not weaken authentication or use a service-role bypass to simulate recovery codes.
-
+Live verification is still required for all backup endpoints before promising recovery-code support: status, generation, regeneration, redemption and deletion. No service-role or local assurance bypass is used. If backup generation fails after TOTP confirmation, the factor remains active and the UI reports the unavailable backup service.
 MFA is enforced independently of the feature flag: a validated `/user` response with verified factors requires the exact remotely validated JWT to have the same user subject and `aal2`. AAL1 sessions cannot view the account or use protected account, receipt, player-link, identity-link or checkout operations. Password, email-recovery and OAuth sessions enter the app/backup challenge. Refreshing a session does not skip MFA. User-editable metadata is never used for assurance decisions.
 
 Account Settings supports QR/manual-key setup, confirmation, one-time backup-code display/copy/download, remaining-code counts, code regeneration and app replacement/removal. Security changes require a new code; generating replacements invalidates the old set. Activation attempts to generate backups in the same fresh verified session, without asking the user to reuse the same TOTP. If backup generation fails after successful TOTP verification, the UI reports that error while preserving the activated factor. The user can retry code generation with a new app code.
@@ -77,7 +76,7 @@ The schema initializer adds a nullable gallery owner and a partial per-account i
 
 Members can choose a unique, case-insensitive username (3–32 letters, digits or underscores), then publish `/@username` with an avatar, banner, biography and HTTPS social links. Account settings support image uploads as well as image URLs. Uploaded images are size-limited, decoded and converted to WebP; unpublished uploads are visible only to their owner. Public profiles show only approved, published gallery submissions, without email addresses, account IDs, request bodies or receipt tokens.
 
-The requests workspace now requires sign-in for every tab and loads account-owned records directly. It does not read device receipts or display a reference/code lookup form. Legacy claim APIs remain available for a deliberate migration of older receipts. New gallery submissions and creator applications take the contact email and author from the verified account. Creator applications require linked Discord; the form offers identity linking instead of editable Discord/email fields.
+The requests workspace now requires sign-in for every tab and loads account-owned records directly. It does not read device receipts or display a reference/code lookup form. Legacy claim APIs remain available for a deliberate migration of older receipts. New gallery submissions and creator applications take the contact email and author from the verified account. Creator applications require linked Discord and a Minecraft account verified through the server bridge; the form offers identity linking instead of editable Discord/email fields.
 
 Dashboard → Profiles provides search, permanent bans, timed bans, unbanning and profile deletion. Every action requires the existing administrator session and a same-origin request, is recorded in a moderation log, and runs in a transaction. Bans and deletion are checked against the site database on protected account operations, including existing sessions and MFA/passkey enrollment. Timed bans expire automatically. Profile deletion removes its public identity, uploaded media and Minecraft link, hides its submissions and keeps a minimal revocation tombstone plus order/support history. This operation deletes the website profile; it does not delete the upstream Supabase Auth identity or erase purchase records. A deleted identity cannot recreate its profile by signing in again.
 
@@ -85,7 +84,7 @@ Dashboard → Profiles provides search, permanent bans, timed bans, unbanning an
 
 The website uses Supabase's native two-step WebAuthn endpoints with HttpOnly session cookies. Registration/list/deletion require the verified account with enrolled MFA satisfied. Authentication options are bound to a five-minute, one-use HttpOnly browser flow; the provider validates the signed credential. A passkey sign-in still enters the existing MFA challenge whenever the returned verified session is AAL1 for a user with verified factors. No session tokens or private keys are returned to client JavaScript or saved in localStorage.
 
-Before setting `ZO7AL_ACCOUNT_PASSKEY_ENABLED=true`, enable Authentication → Passkeys in the same Supabase project:
+Enable Authentication → Passkeys in the same Supabase project:
 
 - RP display name: `Zo7al Projects`
 - RP ID: `zo7al.is-a.dev`
@@ -93,7 +92,7 @@ Before setting `ZO7AL_ACCOUNT_PASSKEY_ENABLED=true`, enable Authentication → P
 
 Use a separate localhost configuration/project for local testing; unrelated Vercel preview domains cannot register a passkey bound to `zo7al.is-a.dev`. Keep the production RP ID stable. Verify registration, sign-in, cancellation, credential deletion, missing/replayed challenges and an account with TOTP/backup codes before release. Face/fingerprint prompts depend on the member's device and authenticator; the website never receives biometric data. Supabase passkeys are currently experimental. Documentation: https://supabase.com/docs/guides/auth/passkeys. REST shapes checked against `@supabase/auth-js` 2.117.3.
 
-The existing MFA feature gate remains separate. Keep `ZO7AL_ACCOUNT_MFA_ENABLED` off until the provider's TOTP **and recovery-code** flows have passed the live checks above. Disabled security features display their unavailable state in settings; do not turn flags on just to show enabled controls.
+The website reads Supabase `/settings.passkeys_enabled` for both its UI and API. It no longer requires a second website passkey flag. A disabled upstream feature stays unavailable, and existing MFA requirements are enforced independently.
 
 ## Minecraft ban synchronization
 
@@ -104,3 +103,32 @@ Old 1.2.0 jars do not report bans and display “no information” rather than �
 ## Validation for this change
 
 Local verification covers the site build, TypeScript, ESLint, account ownership/MFA and passkey replay tests, profile uniqueness and ban/deletion authorization, and modern/legacy Java bridge compilation and tests. Live provider enrollment/recovery and deployment configuration still need the authorized project session. No owner authenticator was changed during development.
+
+## Modrinth member sign-in
+
+Create a **separate member OAuth application** in Modrinth, named `Zo7al Projects`, with redirect URI `https://istvaveorgqcgxsdqsch.supabase.co/auth/v1/callback` and read-only scopes `USER_READ USER_READ_EMAIL`. This is separate from the existing dashboard integration; do not reuse the dashboard callback or its stored token.
+
+Configure server-only Vercel variables `MODRINTH_MEMBER_CLIENT_ID` and `MODRINTH_MEMBER_CLIENT_SECRET`. In Supabase Authentication → Custom OAuth Providers, add an OAuth2 provider with identifier `modrinth`, its same client ID/secret, and these endpoints:
+
+| Setting | Value |
+| --- | --- |
+| Authorization URL | `https://modrinth.com/auth/authorize` |
+| Token URL | `https://zo7al.is-a.dev/api/account/modrinth/token` |
+| Userinfo URL | `https://zo7al.is-a.dev/api/account/modrinth/userinfo` |
+| Scopes | `USER_READ USER_READ_EMAIL` |
+
+The server adapters translate standard OAuth Basic/form client authentication and Bearer tokens to Modrinth's raw Authorization headers. The token adapter accepts only the configured client, authorization-code grant and exact Supabase callback. It forwards no arbitrary URL. Userinfo derives subject, name and email only from a verified upstream token and never invents verified-email status or site roles. Supabase owns identity linking, PKCE, sessions, email verification and MFA. Modrinth app credentials are never returned to the browser or mixed with administrator OAuth credentials.
+
+After configuration, set `ZO7AL_ACCOUNT_MODRINTH_ENABLED=true` and deploy. This provider is offered only when the flag and both server credentials are present; Supabase still rejects disabled/misconfigured providers. Verify login, cancellation, linking, unlink protection and an MFA account. Native custom providers are not listed by Supabase's public `/settings.external`, so this provider needs its own configured marker.
+
+## Google consent branding and Discord conflicts
+
+In Google Cloud → Google Auth Platform → Branding, set the OAuth **App name** to `Zo7al Projects`. Repository metadata cannot change the Google consent app name. Google's branding review/verification can affect when the name replaces the Supabase domain on the consent screen.
+
+Discord's observed callback failure was `Identity is already linked to another user`. The website explains this conflict and offers an explicit sign-in to the account already linked to Discord. It never moves a provider identity or merges accounts merely because an email matches. To move the identity, first authenticate the existing account, ensure another usable sign-in method, then unlink Discord there and link it from the intended account.
+
+## Optional polls in news
+
+Dashboard → News creates a news post with an optional poll question, 2–8 unique options and an optional expiry. News and poll publication update atomically; editing a news post preserves its poll ID and votes. Once votes exist, changing options is rejected without changing the news. Removing a poll or deleting its news unpublishes that poll while retaining existing ballots. There is no separate poll tab or standalone poll card in the public news feed. Existing legacy polls remain stored and are not automatically attached to unrelated news.
+
+Public profile routing decodes Next's encoded `@` parameter once before validation. `/@iiZo7al` and the encoded `%40iiZo7al` route resolve the same saved, case-insensitive handle; malformed/non-profile routes stay 404.

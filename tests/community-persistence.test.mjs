@@ -198,3 +198,18 @@ test('an existing Fortnite poll, including a draft, prevents duplicate starter c
   const rows=(await target.query("SELECT title,published FROM community_entries WHERE topic='fortnite'")).rows;assert.deepEqual(rows,[{title:'Owner Fortnite draft',published:false}]);
  }finally{await other.close();}
 });
+
+test('optional news polls publish together, preserve votes on edits and roll back changed options',async()=>{
+ const news={kind:'news',locale:'ar',topic:'minecraft',title:'خبر مع تصويت',body:'اختيار تحديث المجتمع القادم',published:true,poll:{question:'ماذا تفضل؟',options:['خيار أول','خيار ثان'],endsAt:null}};
+ const id=await siteContent.saveContent(news),row=(await pool.query('SELECT poll_id FROM site_content WHERE id=$1',[id])).rows[0];
+ assert.ok(row.poll_id);assert.equal((await siteContent.publicContent('news','ar','minecraft')).items.find(x=>x.id===id).pollId,row.poll_id);
+ assert.equal(await server.vote(row.poll_id,1,'c'.repeat(64)),true);
+ await siteContent.saveContent({...news,id,title:'خبر معدل'});
+ assert.equal((await pool.query('SELECT poll_id FROM site_content WHERE id=$1',[id])).rows[0].poll_id,row.poll_id);
+ assert.equal((await server.communityEntries('ar',false,'c'.repeat(64))).find(x=>x.id===row.poll_id).myVote,1);
+ await assert.rejects(siteContent.saveContent({...news,id,title:'Must roll back',poll:{...news.poll,options:['جديد','غيره']}}),/POLL_LOCKED/);
+ assert.equal((await pool.query('SELECT title FROM site_content WHERE id=$1',[id])).rows[0].title,'خبر معدل');
+ await siteContent.saveContent({...news,id,published:false});assert.equal((await server.communityEntries('ar')).some(x=>x.id===row.poll_id),false);
+ await siteContent.saveContent({...news,id,poll:null});assert.equal((await pool.query('SELECT poll_id FROM site_content WHERE id=$1',[id])).rows[0].poll_id,null);assert.equal((await pool.query('SELECT count(*)::int AS n FROM community_votes WHERE poll_id=$1',[row.poll_id])).rows[0].n,1);
+ const plain=await siteContent.saveContent({...news,poll:null});assert.equal((await pool.query('SELECT poll_id FROM site_content WHERE id=$1',[plain])).rows[0].poll_id,null);
+});

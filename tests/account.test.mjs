@@ -172,9 +172,9 @@ test('site bans immediately block verified existing sessions; expiry restores ac
 const passkeys=await import(moduleURL('src/app/api/account/passkeys/route.ts',{'@/lib/server/account-auth':authURL,'@/lib/server/site-security':security,'@/lib/server/site-db':db,'@/lib/server/site-content':stub('export async function limitAttempt(){return true;}')}));
 test('passkeys bind challenges to the initiating browser, consume once, and preserve MFA enforcement',async()=>{
  const previous=process.env.ZO7AL_ACCOUNT_PASSKEY_ENABLED;process.env.ZO7AL_ACCOUNT_PASSKEY_ENABLED='true';
- const challengeId='passkey-challenge-1';let verifyCalls=0;
+ const challengeId='passkey-challenge-1';let verifyCalls=0,providerEnabled=true;
  const pendingUser={...user,factors:[{id:'verified-factor',factor_type:'totp',status:'verified'}]};
- handler=url=>url.endsWith('/options')?Response.json({challenge_id:challengeId,options:{challenge:'challenge-bytes'}}):url.endsWith('/verify')?(verifyCalls++,Response.json({access_token:'h.'+Buffer.from(JSON.stringify({sub:userId,aal:'aal1'})).toString('base64url')+'.sig',refresh_token:'refresh',expires_in:3600})):Response.json(pendingUser);
+ handler=url=>url.endsWith('/settings')?Response.json({passkeys_enabled:providerEnabled}):url.endsWith('/options')?Response.json({challenge_id:challengeId,options:{challenge:'challenge-bytes'}}):url.endsWith('/verify')?(verifyCalls++,Response.json({access_token:'h.'+Buffer.from(JSON.stringify({sub:userId,aal:'aal1'})).toString('base64url')+'.sig',refresh_token:'refresh',expires_in:3600})):Response.json(pendingUser);
  try {
   assert.equal((await passkeys.POST(request('/api/account/passkeys',{action:'signin-start'},{origin:'https://evil.test'}))).status,403);
   const start=await passkeys.POST(request('/api/account/passkeys',{action:'signin-start'}));assert.equal(start.status,200);const flow=start.headers.getSetCookie()[0].split(';')[0];
@@ -183,7 +183,7 @@ test('passkeys bind challenges to the initiating browser, consume once, and pres
   const verified=await passkeys.POST(request('/api/account/passkeys',body,{cookie:flow}));assert.equal(verified.status,200);const result=await verified.json();assert.equal(result.mfaRequired,true);assert.ok(!JSON.stringify(result).includes('access_token'));assert.match(verified.headers.get('set-cookie'),/HttpOnly/);
   assert.equal((await passkeys.POST(request('/api/account/passkeys',body,{cookie:flow}))).status,401);assert.equal(verifyCalls,1);
   assert.equal((await passkeys.POST(request('/api/account/passkeys',{action:'register-start'},{cookie:auth.ACCOUNT_ACCESS+'=validated-access'}))).status,403);
-  process.env.ZO7AL_ACCOUNT_PASSKEY_ENABLED='false';assert.equal((await passkeys.POST(request('/api/account/passkeys',{action:'signin-start'}))).status,503);
+  providerEnabled=false;assert.equal((await passkeys.POST(request('/api/account/passkeys',{action:'signin-start'}))).status,503);
  } finally {if(previous===undefined)delete process.env.ZO7AL_ACCOUNT_PASSKEY_ENABLED;else process.env.ZO7AL_ACCOUNT_PASSKEY_ENABLED=previous;handler=()=>Response.json(user);}
 });
 
@@ -207,4 +207,22 @@ test('profile moderation requires administrator session and same origin; deletio
   await assert.rejects(()=>auth.assertAccountAllowed(otherId),/ACCOUNT_DELETED/);
   assert.equal((await pool.query('SELECT * FROM site_account_moderation_log WHERE user_id=$1',[otherId])).rows.length,3);
  } finally {if(savedSecret===undefined)delete process.env.ZO7AL_ADMIN_SESSION_SECRET;else process.env.ZO7AL_ADMIN_SESSION_SECRET=savedSecret;if(savedHash===undefined)delete process.env.ZO7AL_ADMIN_PASSWORD_HASH;else process.env.ZO7AL_ADMIN_PASSWORD_HASH=savedHash;}
+});
+
+const {profileHandle}=await import(moduleURL("src/lib/data/member-profile.ts"));
+test("public profile routes accept Next encoded at-signs and reject malformed or non-profile paths",()=>{
+ for(const path of ["@iiZo7al","%40iiZo7al","%40iizo7al"])assert.equal(profileHandle(path).toLowerCase(),"iizo7al");
+ for(const path of ["iiZo7al","%","%40../../admin","%40abc%2Fdef","%2540iiZo7al"])assert.equal(profileHandle(path),null);
+});
+
+test('Modrinth member OAuth is offered only with its own configured app and retains browser-bound PKCE',async()=>{
+ const keys=['ZO7AL_ACCOUNT_MODRINTH_ENABLED','MODRINTH_MEMBER_CLIENT_ID','MODRINTH_MEMBER_CLIENT_SECRET'];const saved=Object.fromEntries(keys.map(k=>[k,process.env[k]]));
+ try{
+  handler=url=>url.endsWith('/settings')?Response.json({external:{google:true}}):Response.json(user);
+  for(const key of keys)delete process.env[key];
+  assert.equal((await accountRoute.POST(request('/api/account',{action:'oauth',provider:'custom:modrinth'}))).status,400);
+  Object.assign(process.env,{ZO7AL_ACCOUNT_MODRINTH_ENABLED:'true',MODRINTH_MEMBER_CLIENT_ID:'MemberApp123',MODRINTH_MEMBER_CLIENT_SECRET:'private-test-member-secret'});
+  const view=await(await accountRoute.GET(request())).json();assert.ok(view.providers.includes('custom:modrinth'));
+  const response=await accountRoute.POST(request('/api/account',{action:'oauth',provider:'custom:modrinth',next:'/account?tab=connections'})),data=await response.json();assert.equal(response.status,200);const url=new URL(data.url);assert.equal(url.searchParams.get('provider'),'custom:modrinth');assert.equal(url.searchParams.get('code_challenge_method'),'s256');assert.match(url.searchParams.get('code_challenge'),/^[\w-]{43}$/);assert.ok(response.headers.get('set-cookie'));assert.ok(!JSON.stringify(data).includes(process.env.MODRINTH_MEMBER_CLIENT_SECRET));
+ }finally{for(const [k,v] of Object.entries(saved))if(v===undefined)delete process.env[k];else process.env[k]=v;handler=()=>Response.json(user);}
 });

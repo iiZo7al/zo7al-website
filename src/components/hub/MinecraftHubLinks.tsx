@@ -1,13 +1,12 @@
 import Link from "next/link";
 import { getLocale, getTranslations } from "next-intl/server";
-import { CalendarDays, Trophy, Vote } from "lucide-react";
+import { CalendarDays, Trophy } from "lucide-react";
 import { communityCopy } from "@/lib/data/community-copy";
 export default async function MinecraftHubLinks() {
   const [t,locale] = await Promise.all([getTranslations("hub"),getLocale()]);
   const c = communityCopy(locale);
   const links = [
     { label: t("events"), href: "#events", icon: CalendarDays },
-    { label: c.polls, href: "#community-polls", icon: Vote },
     { label: c.leaderboard, href: "#leaderboard", icon: Trophy },
   ] as const;
   return <nav className="hub-actions mt-6" aria-label={c.community}>

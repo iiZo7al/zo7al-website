@@ -1,4 +1,4 @@
-import { AccountError, accountConfigured, accountHeaders, accountOrigin, accountSession, accountRequiresMFA, accountView, authRequest, clearAccount, requestCookie, requireAccount, setAccountTokens, startAccountFlow, ACCOUNT_ACCESS, type AuthUser } from '@/lib/server/account-auth';
+import { AccountError, accountProviderEnabled, accountConfigured, accountHeaders, accountOrigin, accountSession, accountRequiresMFA, accountView, authRequest, clearAccount, requestCookie, requireAccount, setAccountTokens, startAccountFlow, ACCOUNT_ACCESS, type AuthUser } from '@/lib/server/account-auth';
 import { ACCOUNT_PROVIDERS, accountEmail, accountPassword, safeAccountName } from '@/lib/data/account';
 import { readJSON } from '@/lib/server/site-security';
 import { limitAttempt } from '@/lib/server/site-content';
@@ -14,7 +14,7 @@ export async function GET(request:Request) {
     if (!accountConfigured()) return Response.json({configured:false,account:null,providers:[],email:false},{headers});
     const [session,settings]=await Promise.all([accountSession(request,headers),authRequest('/settings')]);
     const mfaRequired=!!session&&accountRequiresMFA(session.user,session.access);
-    return Response.json({configured:true,account:session&&!mfaRequired?await accountView(session.user):null,mfaRequired,mfaEnabled:process.env.ZO7AL_ACCOUNT_MFA_ENABLED==='true'||!!session?.user.factors?.some(f=>f.factor_type==='totp'&&f.status==='verified'),passkeyEnabled:process.env.ZO7AL_ACCOUNT_PASSKEY_ENABLED==='true',providers:ACCOUNT_PROVIDERS.filter(p=>settings.external?.[p]),email:settings.external?.email===true},{headers});
+    return Response.json({configured:true,account:session&&!mfaRequired?await accountView(session.user):null,mfaRequired,mfaEnabled:true,passkeyEnabled:settings.passkeys_enabled===true,providers:ACCOUNT_PROVIDERS.filter(p=>accountProviderEnabled(p,settings)),email:settings.external?.email===true},{headers});
   } catch(error){return failed(error,headers);}
 }
 export async function POST(request:Request) {
@@ -44,7 +44,7 @@ export async function POST(request:Request) {
     }
     if(['oauth','link'].includes(body.action)) {
       if(!ACCOUNT_PROVIDERS.some(provider=>provider===body.provider))throw new AccountError('INVALID');
-      const settings=await authRequest('/settings');if(!settings.external?.[String(body.provider)])throw new AccountError('PROVIDER');
+      const settings=await authRequest('/settings');if(!accountProviderEnabled(String(body.provider),settings))throw new AccountError('PROVIDER');
       const user=body.action==='link'?await requireAccount(request):null;
       const flow=await startAccountFlow(request,headers,body.action,body.next,user?.id??null);
       const params=new URLSearchParams({provider:String(body.provider),redirect_to:flow.redirectTo,code_challenge:flow.code_challenge,code_challenge_method:flow.code_challenge_method,...(body.action==='link'?{skip_http_redirect:'true'}:{})});

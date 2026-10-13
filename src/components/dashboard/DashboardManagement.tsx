@@ -39,7 +39,7 @@ export default function DashboardManagement({ data,tab,busy,mutate }: { data:Das
         <form key={(editing?.id??tab)+":"+editorVersion} className="dash-panel card-glow hub-form dash-editor" onSubmit={async e => {
           e.preventDefault(); if(busy||uploading)return; const element = e.currentTarget; const form = new FormData(element); const date = String(form.get("startsAt")??"");
           if (await mutate("content",{ id:editing?.id,kind:tab,topic:form.get("topic")??"minecraft",locale:form.get("locale"),title:form.get("title"),body:form.get("body"),
-            published:form.get("published")==="on",startsAt:date?new Date(date+":00+03:00").toISOString():null,registrationUrl:form.get("registrationUrl"),imageId:form.get("imageId") })) { setEditing(null); setEditorVersion(value=>value+1); if (!editing) element.reset(); }
+            published:form.get("published")==="on",startsAt:date?new Date(date+":00+03:00").toISOString():null,registrationUrl:form.get("registrationUrl"),imageId:form.get("imageId"),poll:tab==="news"&&form.get("enablePoll")==="on"?{question:form.get("pollQuestion"),options:String(form.get("pollOptions")??"").split("\n").map(v=>v.trim()).filter(Boolean),endsAt:form.get("pollEnds")?new Date(String(form.get("pollEnds"))+":00+03:00").toISOString():null}:null })) { setEditing(null); setEditorVersion(value=>value+1); if (!editing) element.reset(); }
         }}>
           <div className="dash-section-heading"><h3>{t(editing?"edit":"create")}</h3><span className="dash-tag">{d("manage")}</span></div>
           <label>{t("language")}<select name="locale" defaultValue={editing?.locale??locale}>{hubLocales.map(l => <option key={l} value={l}>{l.toUpperCase()}</option>)}</select></label>
@@ -48,6 +48,7 @@ export default function DashboardManagement({ data,tab,busy,mutate }: { data:Das
           <label>{t("body")}<textarea name="body" required maxLength={10000} rows={8} defaultValue={editing?.body??""}/></label>
           {tab!=="rule"&&<ContentImageField key={editing?.id??tab} initial={editing?.image} disabled={busy} onBusy={setUploading}/>}
           {tab==="event" && <><label>{t("startsAt")} · {t("riyadhTime")}<input name="startsAt" type="datetime-local" required defaultValue={editing?.startsAt?new Date(Date.parse(editing.startsAt)+3*3600000).toISOString().slice(0,16):""}/></label><label>{t("eventLink")}<input type="url" name="registrationUrl" defaultValue={editing?.registrationUrl??""} maxLength={1000} placeholder="https://" dir="ltr"/></label></>}
+          {tab==='news'&&<NewsPollFields poll={editing?.poll}/>}
           <label className="hub-consent"><input type="checkbox" name="published" defaultChecked={editing?.published??false}/>{t("published")}</label>
           <button className="dash-button dash-button-primary" disabled={busy||uploading} type="submit">{t(busy?"loading":uploading?"uploadingImage":"save")}</button>
         </form>
@@ -98,4 +99,9 @@ function ReviewCard({ row,busy,onSave,onRetry }: { row:RequestRow; busy:boolean;
     <label>{t("publicNote")}<textarea value={note} onChange={e => setNote(e.target.value)} maxLength={2000} rows={3}/></label>
     <button className="dash-button dash-button-primary" type="submit" disabled={busy}>{t(busy?"loading":"save")}</button>
   </form>;
+}
+
+function NewsPollFields({poll}:{poll:HubContent['poll']}) {
+ const t=useTranslations('hub'),[enabled,setEnabled]=useState(!!poll);
+ return <fieldset className="news-poll-editor"><label className="hub-consent"><input type="checkbox" name="enablePoll" checked={enabled} onChange={e=>setEnabled(e.target.checked)}/>{t('addPoll')}</label>{enabled&&<div className="hub-form mt-4"><label>{t('pollQuestion')}<input name="pollQuestion" required maxLength={160} defaultValue={poll?.question??''}/></label><label>{t('pollOptions')}<textarea name="pollOptions" required rows={4} maxLength={1000} defaultValue={poll?.options.join('\n')??''}/></label><label>{t('pollEnds')} · {t('riyadhTime')}<input name="pollEnds" type="datetime-local" defaultValue={poll?.endsAt?new Date(Date.parse(poll.endsAt)+10800000).toISOString().slice(0,16):''}/></label><small className="hub-muted">{t('pollImmutable')}</small></div>}</fieldset>;
 }
