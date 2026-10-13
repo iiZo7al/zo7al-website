@@ -33,7 +33,7 @@ const gallery=await import(moduleURL('src/app/api/community/gallery/route.ts',{.
 const receipts=await import(moduleURL('src/app/api/account/receipts/route.ts',replacements));
 const tracking=await import(moduleURL('src/app/api/tracking/route.ts',{...replacements,'@/lib/server/tebex':stub('export function tebexToken(){return null;}export async function tebexRequest(){throw Error();}')}));
 const owner='a1234567-1234-1234-1234-123456789abc',stranger='b1234567-1234-1234-1234-123456789abc';
-let current={id:owner,email:'owner@example.com',factors:[]};
+let current={id:owner,email:'owner@example.com',factors:[],identities:[{id:'discord-test',provider:'discord',identity_data:{full_name:'Verified Discord'}}]};
 const savedEnv=Object.fromEntries(['SUPABASE_URL','SUPABASE_PUBLISHABLE_KEY','DATABASE_URL','ZO7AL_SITE_URL','DISCORD_APPLICATION_WEBHOOK_URL'].map(k=>[k,process.env[k]]));
 process.env.SUPABASE_URL='https://auth.zo7al.test';process.env.SUPABASE_PUBLISHABLE_KEY='test';process.env.DATABASE_URL='test';delete process.env.ZO7AL_SITE_URL;
 process.env.DISCORD_APPLICATION_WEBHOOK_URL='https://discord.com/api/webhooks/123456789/'+ 'a'.repeat(64);

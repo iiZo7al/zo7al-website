@@ -25,6 +25,7 @@ export const STORE_LINK = "https://zo7al.tebex.io/";
 export const DISCORD_LINK = "https://discord.gg/nxScVYrSXq";
 
 export const SOCIALS = [
+  { id: "github", label: "GitHub", handle: "iiZo7al", url: "https://github.com/iiZo7al", description: "Code and projects from Zo7al.", color: "#FFFFFF" },
   {
     id: "youtube",
     label: "YouTube",

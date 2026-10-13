@@ -62,3 +62,13 @@
 @media(min-width:640px) { .hub-section { padding-block:128px; } }
 @media(max-width:680px) { .hub-admin-editor { grid-template-columns:1fr; } .hub-card { padding:22px; } .hub-command { padding:20px; } }
 @media(prefers-reduced-motion:reduce) { .hub-card::after { transition:none; } }
+
+.search-dialog { width:min(680px,calc(100vw - 24px)); background:var(--bg-secondary); border-radius:24px; }
+.search-dialog .hub-search-input { min-height:56px; border-radius:16px; background:var(--surface); border-color:var(--border-strong); }
+.search-dialog .hub-command-list { margin-top:16px; display:grid; gap:6px; max-height:52dvh; }
+.search-dialog .hub-command-item { display:flex; align-items:center; gap:12px; padding:14px; border:1px solid transparent; border-radius:14px; }
+.search-dialog .hub-command-item[aria-selected=true] { background:var(--surface-elevated); border-color:var(--border-strong); }
+.search-result-symbol { display:grid; place-items:center; width:34px; height:34px; border-radius:10px; background:var(--bg); color:var(--accent); flex-shrink:0; }
+.search-dialog .hub-command-item small { margin-inline-start:auto; font-size:11px; }
+
+.search-dialog .hub-command-item { flex-direction:row; text-align:start; min-height:54px; }.search-dialog .hub-command-item>span:not(.search-result-symbol) { flex:1; }.search-dialog .hub-command-list { overflow-y:auto; }

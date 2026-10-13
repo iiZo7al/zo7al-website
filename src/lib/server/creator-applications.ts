@@ -62,7 +62,7 @@ export async function sendApplicationNotification(a: Application, reference: str
 }
 export function createApplicationHandler(getWebhook: () => string | undefined, send: typeof fetch = fetch, storage?: ApplicationStore) {
   const attempts = new Map<string, { count: number; expires: number }>();
-  return async (request: Request) => {
+  return async (request: Request, accountContact?: {email:string;discord:string}) => {
     const reply = (error: string, status: number) => Response.json({ error }, { status, headers: { "Cache-Control": "no-store" } });
     const url = new URL(request.url);
     if (request.headers.get("origin") !== `${url.protocol}//${request.headers.get("host") ?? url.host}`) return reply("INVALID", 403);
@@ -81,7 +81,7 @@ export function createApplicationHandler(getWebhook: () => string | undefined, s
       const reader = request.body?.getReader(); if (!reader) return reply("INVALID", 400);
       const chunks: Uint8Array[] = []; let length = 0;
       while (true) { const { value, done } = await reader.read(); if (done) break; length += value.length; if (length > 12000) { await reader.cancel(); return reply("INVALID", 413); } chunks.push(value); }
-      application = validateApplication(JSON.parse(Buffer.concat(chunks).toString("utf8")));
+      application = validateApplication({...JSON.parse(Buffer.concat(chunks).toString("utf8")),...accountContact});
     } catch { return reply("INVALID", 400); }
     if (!application) return reply("INVALID", 400);
     const a = application;

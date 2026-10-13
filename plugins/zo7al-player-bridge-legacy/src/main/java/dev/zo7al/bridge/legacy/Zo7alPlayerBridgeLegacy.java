@@ -150,12 +150,13 @@ public final class Zo7alPlayerBridgeLegacy extends JavaPlugin implements Listene
         long seen = online || active != null ? System.currentTimeMillis() : player.getLastPlayed();
         final Instant lastSeen = seen > 0 ? Instant.ofEpochMilli(seen) : null;
         lastCapture = Math.max(System.currentTimeMillis(), lastCapture + 1); final Instant capturedAt = Instant.ofEpochMilli(lastCapture);
+        final com.google.gson.JsonObject ban=BanSnapshot.read(player);
         final int epoch = generation; pending++;
         CompletableFuture<String> rank = ranks == null ? CompletableFuture.completedFuture(null) : ranks.rank(uuid, online);
         final File stats = statisticsDirectory == null ? null : new File(statisticsDirectory, uuid.toString() + ".json");
         CompletableFuture<Map<String, Double>> offlineStats = active != null || stats == null ? CompletableFuture.completedFuture(new HashMap<String, Double>())
             : CompletableFuture.supplyAsync(() -> OfflineStats.read(stats), network);
-        rank.handle((value, error) -> value).thenCombine(offlineStats, (value, values) -> { values.keySet().removeAll(overridden); values.putAll(counters); return new PlayerProfile(uuid, name, value, online, lastSeen, capturedAt, values); })
+        rank.handle((value, error) -> value).thenCombine(offlineStats, (value, values) -> { values.keySet().removeAll(overridden); values.putAll(counters); return new PlayerProfile(uuid, name, value, online, lastSeen, capturedAt, values).withBan(ban); })
             .whenComplete((snapshot, error) -> {
                 if (!isEnabled() || epoch != generation) return;
                 try { Bukkit.getScheduler().runTask(this, () -> {

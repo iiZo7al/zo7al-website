@@ -13,7 +13,7 @@ const WORDS = [
 const FINAL = WORDS[WORDS.length - 1];
 
 export default function HeroHeadline() {
-  const [frame, setFrame] = useState<{ text: string; color: string; complete: boolean }>({ text: "", color: WORDS[0].color, complete: false });
+  const [frame, setFrame] = useState<{ text: string; color: string; complete: boolean }>({ text: "Projects", color: FINAL.color, complete: false });
 
   useEffect(() => {
     const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -39,10 +39,10 @@ export default function HeroHeadline() {
   return <>
     <span className="sr-only">Zo7al Projects</span>
     <span className="hero-brand" dir="ltr" aria-hidden="true">
-      <span>Zo7al</span>
+      <span>ZO7AL</span>
       <span className="hero-typewriter" style={{ color: frame.color }}>
         <span className="hero-typewriter-reserve">Modpacks<span className="hero-typewriter-caret" /></span>
-        <span className="hero-typewriter-line"><span className="hero-typewriter-word">{frame.text}</span><span className={"hero-typewriter-caret" + (frame.complete ? " is-complete" : "")} /></span>
+        <span className="hero-typewriter-line"><span className="hero-typewriter-word">{frame.text.toUpperCase()}</span><span className={"hero-typewriter-caret" + (frame.complete ? " is-complete" : "")} /></span>
       </span>
     </span>
   </>;

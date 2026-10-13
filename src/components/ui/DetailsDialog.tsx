@@ -16,7 +16,7 @@ export default function DetailsDialog({ title, children, onClose, style, classNa
     element?.showModal();
     return () => { element?.close(); document.body.style.overflow = previousOverflow; };
   }, []);
-  return <dialog ref={dialog} className={`site-details${className ? ` ${className}` : ''}`} style={style} aria-labelledby={titleId} onCancel={onClose} onClose={onClose} onClick={event => {
+  return <dialog ref={dialog} className={`site-details${className ? ` ${className}` : ''}`} style={style} aria-labelledby={titleId} onCancel={event => { event.preventDefault(); onClose(); }} onClick={event => {
     if (event.target !== event.currentTarget) return;
     const box = event.currentTarget.getBoundingClientRect();
     if (event.clientX < box.left || event.clientX > box.right || event.clientY < box.top || event.clientY > box.bottom) onClose();

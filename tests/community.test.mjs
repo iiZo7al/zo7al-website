@@ -45,7 +45,7 @@ const server=await import(serverUrl);
 const content=stub('export async function limitAttempt(){return globalThis.__communityTests.state.limits;}export async function publicContent(){return {items:[],available:true};}');
 const mediaData=moduleUrl('src/lib/data/content-media.ts');
 const media=stub('export async function normalizeContentImage(){return {data:new Uint8Array([1,2,3]),width:1600,height:900};}');
-const accountStub=stub('export class AccountError extends Error{}export function accountHeaders(){return new Headers({"Cache-Control":"private, no-store"});}export async function requireAccount(){return {id:"a1234567-1234-1234-1234-123456789abc"};}');
+const accountStub=stub('export class AccountError extends Error{}export function accountHeaders(){return new Headers({"Cache-Control":"private, no-store"});}export async function accountView(){return {name:"Verified member",email:"verified@example.com"};}export async function requireAccount(){return {id:"a1234567-1234-1234-1234-123456789abc"};}');
 const replacements={'@/lib/server/account-auth':accountStub,'@/lib/server/site-db':db,'@/lib/server/community':serverUrl,'@/lib/server/site-security':security,'@/lib/server/site-content':content,'@/lib/data/community':communityDataUrl,'@/lib/data/player-statistics':statDataUrl,'@/lib/data/content-media':mediaData,'@/lib/server/content-media':media};
 const publicRoute=await import(moduleUrl('src/app/api/community/route.ts',replacements));
 const ballotRoute=await import(moduleUrl('src/app/api/community/vote/route.ts',replacements));
@@ -159,7 +159,7 @@ test('new voters obtain their cookie, retry once, then respect the ballot rate l
 test('gallery submissions remain pending and retain receipt if Discord delivery fails',async()=>{
  reset();state.notificationFails=true;const response=await galleryRoute.POST(multipart());assert.equal(response.status,202);const value=await response.json();assert.ok(value.reference);assert.equal(value.notificationPending,true);
  const insert=state.queries.find(q=>q.sql.startsWith('INSERT INTO community_entries'));
- assert.match(insert.sql,/'pending',false/);assert.equal(insert.args[7],submission.email);assert.equal(state.queries.some(q=>q.sql.startsWith('DELETE')),false);
+ assert.match(insert.sql,/'pending',false/);assert.equal(insert.args[7],'verified@example.com');assert.equal(insert.args[6],'Verified member');assert.equal(state.queries.some(q=>q.sql.startsWith('DELETE')),false);
  assert.equal(state.notifications.length,1);
 });
 test('gallery image and submission writes roll back together on failure',async()=>{

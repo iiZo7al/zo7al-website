@@ -1,14 +1,14 @@
 "use client";
 import { createContext,useCallback,useContext,useEffect,useRef,useState,type ReactNode } from 'react';
 import type { SiteAccount } from '@/lib/data/account';
-type AccountState={account:SiteAccount|null;configured:boolean;email:boolean;providers:string[];ready:boolean;error:boolean;mfaRequired:boolean;mfaEnabled:boolean;refresh:()=>Promise<void>};
+type AccountState={account:SiteAccount|null;configured:boolean;email:boolean;providers:string[];ready:boolean;error:boolean;errorCode?:string;mfaRequired:boolean;mfaEnabled:boolean;passkeyEnabled:boolean;refresh:()=>Promise<void>};
 const Context=createContext<AccountState|null>(null);
 export default function AccountProvider({children}:{children:ReactNode}) {
-  const [state,setState]=useState({account:null as SiteAccount|null,configured:false,email:false,providers:[] as string[],ready:false,error:false,mfaRequired:false,mfaEnabled:false});
+  const [state,setState]=useState({account:null as SiteAccount|null,configured:false,email:false,providers:[] as string[],ready:false,error:false,mfaRequired:false,mfaEnabled:false,passkeyEnabled:false,errorCode:undefined as string|undefined});
   const sequence=useRef(0);
   const refresh=useCallback(async()=>{
     const generation=++sequence.current;
-    try {const response=await fetch('/api/account',{cache:'no-store'});if(!response.ok)throw Error();const data=await response.json();if(generation===sequence.current)setState({...data,ready:true,error:false});}
+    try {const response=await fetch('/api/account',{cache:'no-store'});const data=await response.json();if(!response.ok){if(generation===sequence.current)setState(s=>({...s,account:null,ready:true,error:true,errorCode:data.error??'UNAVAILABLE'}));return;}if(generation===sequence.current)setState({...data,ready:true,error:false,errorCode:undefined});}
     catch {if(generation===sequence.current)setState(s=>({...s,ready:true,error:true}));}
   },[]);
   useEffect(()=>{const initial=setTimeout(()=>void refresh(),0);const timer=setInterval(()=>{if(document.visibilityState==='visible')void refresh();},300000);window.addEventListener('focus',refresh);return()=>{clearTimeout(initial);clearInterval(timer);window.removeEventListener('focus',refresh);};},[refresh]);

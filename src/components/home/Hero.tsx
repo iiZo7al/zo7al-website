@@ -28,7 +28,7 @@ export default function Hero() {
   const onGameStateChange = useCallback((state: string) => setGameActive(state !== "SATURN"), []);
 
   return (
-    <section className="relative flex min-h-[100svh] items-center justify-center pb-28 pt-[calc(var(--nav-height)+1.5rem)] sm:pb-32 sm:pt-[calc(var(--nav-height)+3rem)]">
+    <section className="hero-orbit-section relative flex min-h-[100svh] items-center justify-center pb-28 pt-[calc(var(--nav-height)+1.5rem)] sm:pb-32 sm:pt-[calc(var(--nav-height)+3rem)]">
       <SpaceExperience ref={space} onGameStateChange={onGameStateChange} />
 
       <motion.div
@@ -36,7 +36,7 @@ export default function Hero() {
         initial="hidden"
         animate={gameActive ? { opacity: 0, y: -20 } : "show"}
         transition={{ duration: 0.5, ease: "easeIn" }}
-        className="relative z-10 mx-auto flex w-full max-w-4xl flex-col items-center px-6 text-center"
+        className="hero-orbit-content relative z-10 mx-auto flex w-full max-w-4xl flex-col items-center px-6 text-center"
         style={{ pointerEvents: "none" }}
         inert={gameActive}
       >

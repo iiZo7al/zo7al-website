@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import {useAccount} from "@/components/account/AccountProvider";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { CalendarDays, CheckCheck, ClipboardList, Layers, Newspaper, RefreshCw } from "lucide-react";
@@ -21,6 +22,7 @@ function mergePatch(older: NotificationPatch | null, newer: NotificationPatch): 
 }
 
 export default function NotificationBell() {
+  const {account}=useAccount(),accountId=account?.id;
   const locale = useLocale(), c = communityCopy(locale), hub = useTranslations("hub");
   const [open, setOpen] = useState(false), [items, setItems] = useState<Notice[]>([]), [settings, setSettings] = useState<NotificationState>(normalizeNotificationState);
   const [ready, setReady] = useState(false), [busy, setBusy] = useState(false), [failed, setFailed] = useState(false), [syncStatus, setSyncStatus] = useState<"" | "saving" | "saved" | "error">("");
@@ -62,7 +64,16 @@ export default function NotificationBell() {
     let receipts: ReturnType<typeof parseReceipts> = [];
     try { receipts = parseReceipts(localStorage.getItem(RECEIPT_KEY)); } catch {}
     const tasks = [fetch("/api/community/notifications?locale=" + locale, { cache: "no-store", signal: controller.signal }).then(async response => { if (!response.ok) throw Error(); return (await response.json()).items as Notice[]; })];
-    if (settingsRef.current.preferences.requests && receipts.length) {
+    if(settingsRef.current.preferences.requests && accountId) {
+      tasks.push(fetch('/api/account/receipts',{cache:'no-store',signal:controller.signal}).then(async response=>{
+        if(!response.ok)throw Error();const data=await response.json();
+        const updates=await Promise.allSettled((data.receipts as ReturnType<typeof parseReceipts>).slice(0,16).map(async receipt=>{
+          const tracked=await fetch('/api/tracking',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({kind:receipt.kind,reference:receipt.reference}),signal:controller.signal});if(!tracked.ok)throw Error();const value=await tracked.json();
+          return {id:receipt.reference+':'+value.status+':'+(value.delivery??''),kind:'requests' as const,title:receipt.title,requestKind:receipt.kind,status:value.status,delivery:value.delivery,date:value.updatedAt??value.createdAt,href:'/requests?tab='+({order:'orders',application:'applications',support:'support',event:'events',gallery:'gallery'}[receipt.kind])};
+        }));
+        return updates.flatMap(result=>result.status==='fulfilled'?[result.value]:[]);
+      }));
+    } else if (settingsRef.current.preferences.requests && receipts.length) {
       const requests = receipts.filter(receipt => receipt.kind !== "order").slice(0, 12), orders = receipts.filter(receipt => receipt.kind === "order").slice(0, 4);
       if (requests.length) tasks.push(fetch("/api/community/notifications", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ receipts: requests }), signal: controller.signal }).then(async response => { if (!response.ok) throw Error(); return (await response.json()).items as Notice[]; }));
       for (const order of orders) tasks.push(fetch("/api/tracking", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(order), signal: controller.signal }).then(async response => {
@@ -76,7 +87,7 @@ export default function NotificationBell() {
       const next = results.flatMap(result => result.status === "fulfilled" ? result.value : []).filter(notice => Number.isFinite(Date.parse(notice.date)));
       setItems(next.sort((a, b) => Date.parse(b.date) - Date.parse(a.date)).slice(0, 50)); setFailed(results.some(result => result.status === "rejected")); lastLoad.current = Date.now();
     } finally { if (inflight.current === controller) inflight.current = null; if (!controller.signal.aborted && mounted.current) setBusy(false); }
-  }, [locale, save]);
+  }, [locale, save,accountId]);
 
   useEffect(() => {
     mounted.current = true; initialized.current = false;
@@ -112,7 +123,7 @@ export default function NotificationBell() {
   const mark = (ids: string[]) => { cache({ ...settingsRef.current, seen: [...new Set([...ids, ...settingsRef.current.seen])].slice(0, 200) }); save({ seen: ids }); };
   return <>
     <button type="button" className="community-bell" data-cursor="button" aria-label={c.notifications + (unread.length ? " (" + unread.length + ")" : "")} aria-haspopup="dialog" onClick={() => { setOpen(true); void load(); }}><BellIcon />{unread.length > 0 && <span className="community-bell-dot" aria-hidden="true" />}</button>
-    {open && <DetailsDialog title={c.notifications} onClose={() => setOpen(false)} style={{ width: "min(520px,calc(100vw - 24px))" }}><div className="community-dialog-body">
+    {open && <DetailsDialog className="notification-dialog" title={c.notifications} onClose={() => setOpen(false)} style={{ width: "min(520px,calc(100vw - 24px))" }}><div className="community-dialog-body">
       <div className="hub-actions"><button className="hub-button" type="button" disabled={!ready || !unread.length} onClick={() => mark(visible.map(notice => notice.id))}><CheckCheck size={16} aria-hidden="true" />{c.markRead}</button><button className="hub-button" type="button" aria-label={hub("refresh")} disabled={busy || !ready} onClick={() => void load(true)}><RefreshCw size={16} className={busy ? "dash-spinning" : ""} aria-hidden="true" /></button></div>
       <details className="community-preferences"><summary>{c.preferences}</summary><fieldset disabled={!ready}>{NOTIFICATION_CATEGORIES.map(kind => <label key={kind}><input type="checkbox" checked={settings.preferences[kind]} onChange={event => { const checked = event.target.checked; cache({ ...settingsRef.current, preferences: { ...settingsRef.current.preferences, [kind]: checked } }); save({ preferences: { [kind]: checked } }); if (kind === "requests" && checked) void load(true); }} />{c[kind]}</label>)}</fieldset><p className="hub-muted mt-4">{c.privateNote}</p>{syncStatus && <p className="hub-muted mt-3" role="status">{syncStatus === "saving" ? c.preferencesSaving : syncStatus === "error" ? c.preferencesError : c.preferencesSaved}</p>}</details>
       {failed && <p className="hub-muted mt-4" role="status">{c.unavailable}</p>}

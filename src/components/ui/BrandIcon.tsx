@@ -1,6 +1,7 @@
 import { useId, type CSSProperties } from "react";
 import Image from "next/image";
 import {
+  siGithub,
   siYoutube,
   siDiscord,
   siGoogle,
@@ -28,6 +29,7 @@ import {
 import { Link2 } from "lucide-react";
 
 export const BRAND_ICONS: Record<string, SimpleIcon> = {
+  github: siGithub,
   youtube: siYoutube,
   discord: siDiscord,
   google: siGoogle,
@@ -77,6 +79,7 @@ export function detectPlatform(url: string): string | null {
   try {
     const host = new URL(url).hostname.replace(/^www\./, "");
     const rules: [RegExp, string][] = [
+      [/^github\.com$/, "github"],
       [/youtube\.com|youtu\.be/, "youtube"],
       [/discord\.(gg|com)/, "discord"],
       [/tiktok\.com/, "tiktok"],

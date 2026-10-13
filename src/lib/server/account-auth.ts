@@ -9,7 +9,7 @@ export const ACCOUNT_ACCESS = secure ? '__Host-zo7al-access' : 'zo7al-access';
 export const ACCOUNT_REFRESH = secure ? '__Host-zo7al-refresh' : 'zo7al-refresh';
 const FLOW_COOKIE = secure ? '__Host-zo7al-account-flow' : 'zo7al-account-flow';
 export type AuthFactor = { id: string; factor_type: string; status: string; friendly_name?: string };
-export type AuthUser = { id: string; email?: string; email_confirmed_at?: string; user_metadata?: Record<string, unknown>; app_metadata?: Record<string, unknown>; identities?: { id: string; identity_id?: string; provider: string }[]; factors?: AuthFactor[] };
+export type AuthUser = { id: string; email?: string; email_confirmed_at?: string; user_metadata?: Record<string, unknown>; app_metadata?: Record<string, unknown>; identities?: { id: string; identity_id?: string; provider: string; identity_data?:Record<string,unknown> }[]; factors?: AuthFactor[] };
 export type AuthResult = { access_token?: string; refresh_token?: string; expires_in?: number; user?: AuthUser; url?: string; external?: Record<string, boolean>; email?: boolean; code?: string; msg?: string; id?: string; type?: string; totp?: {qr_code:string;secret:string;uri:string}; codes?:string[]; total?:number; remaining?:number };
 export class AccountError extends Error { constructor(public code: string, public status = 400) { super(code); } }
 export function accountConfigured() { return !!process.env.SUPABASE_URL && !!process.env.SUPABASE_PUBLISHABLE_KEY && !!process.env.DATABASE_URL; }
@@ -41,7 +41,7 @@ export async function authRequest(path: string, method = 'GET', body?: unknown, 
   const data = await response.json().catch(() => ({}));
   if (!response.ok) {
     const reason=data.error_code??data.code;
-    const code = response.status === 429 ? 'RATE_LIMIT' : response.status >= 500 ? 'UNAVAILABLE' : ['invalid_credentials','user_not_found'].includes(reason) ? 'CREDENTIALS' : reason === 'email_not_confirmed' ? 'EMAIL_CONFIRM' : ['weak_password','same_password'].includes(reason) ? 'PASSWORD' : ['provider_disabled','identity_already_exists','manual_linking_disabled'].includes(reason) ? 'PROVIDER' : ['session_not_found','refresh_token_not_found','refresh_token_already_used','bad_jwt'].includes(reason) || response.status === 401 ? 'AUTH_EXPIRED' : reason==='mfa_factor_not_found'?'MFA_NOT_FOUND':reason==='insufficient_aal'?'MFA_REQUIRED':['mfa_verification_failed','mfa_verification_rejected','mfa_challenge_expired'].includes(reason)?'MFA_CODE':path.startsWith('/factors')&&(response.status===404||/not_enabled|disabled/.test(reason??''))?'MFA_UNAVAILABLE':'INVALID';
+    const code = response.status === 429 ? 'RATE_LIMIT' : response.status >= 500 ? 'UNAVAILABLE' : ['invalid_credentials','user_not_found'].includes(reason) ? 'CREDENTIALS' : reason === 'email_not_confirmed' ? 'EMAIL_CONFIRM' : ['weak_password','same_password'].includes(reason) ? 'PASSWORD' : ['provider_disabled','identity_already_exists','manual_linking_disabled'].includes(reason) ? 'PROVIDER' : ['session_not_found','refresh_token_not_found','refresh_token_already_used','bad_jwt'].includes(reason) || response.status === 401 ? 'AUTH_EXPIRED' : path.startsWith('/passkeys')&&(response.status===404||/passkey_disabled|webauthn_/.test(reason??''))?'PASSKEY_UNAVAILABLE':reason==='mfa_factor_not_found'?'MFA_NOT_FOUND':reason==='insufficient_aal'?'MFA_REQUIRED':['mfa_verification_failed','mfa_verification_rejected','mfa_challenge_expired'].includes(reason)?'MFA_CODE':path.startsWith('/factors')&&(response.status===404||/not_enabled|disabled/.test(reason??''))?'MFA_UNAVAILABLE':'INVALID';
     throw new AccountError(code, response.status === 429 ? 429 : response.status >= 500 ? 503 : response.status === 401 ? 401 : 400);
   }
   return data;
@@ -64,23 +64,31 @@ export function accountRequiresMFA(user:AuthUser,validatedAccess:string) {
 export async function accountUser(request:Request,headers?:Headers):Promise<AuthUser|null> {
   const session=await accountSession(request,headers);if(!session)return null;
   if(accountRequiresMFA(session.user,session.access))throw new AccountError('MFA_REQUIRED',403);
+  await assertAccountAllowed(session.user.id);
   return session.user;
 }
 export async function requireAccountSession(request:Request,headers:Headers) {
   const session=await accountSession(request,headers);
   if(!session||!/^[a-f0-9-]{36}$/i.test(session.user.id))throw new AccountError('LOGIN_REQUIRED',401);
+  await assertAccountAllowed(session.user.id);
   return session;
 }
 export async function requireAccount(request: Request, headers?: Headers) { const user = await accountUser(request, headers); if (!user || !/^[a-f0-9-]{36}$/i.test(user.id)) throw new AccountError('LOGIN_REQUIRED', 401); return user; }
+export async function assertAccountAllowed(id:string) {
+ const row=(await (await siteDatabase()).query('SELECT deleted_at,banned_until FROM site_accounts WHERE id=$1',[id])).rows[0];
+ if(row?.deleted_at)throw new AccountError('ACCOUNT_DELETED',403);
+ if(row?.banned_until && new Date(row.banned_until).getTime()>Date.now())throw new AccountError('ACCOUNT_BANNED',403);
+}
 export async function accountView(user: AuthUser): Promise<SiteAccount> {
   const db = await siteDatabase();
   const fallback = safeAccountName(user.user_metadata?.full_name) ?? safeAccountName(user.user_metadata?.name) ?? user.email?.split('@')[0]?.slice(0,64) ?? 'Zo7al';
   await db.query('INSERT INTO site_accounts(id,name) VALUES($1,$2) ON CONFLICT(id) DO NOTHING', [user.id, fallback]);
-  const row = (await db.query('SELECT a.name,l.uuid,l.username,l.linked_at FROM site_accounts a LEFT JOIN site_minecraft_links l ON l.user_id=a.id WHERE a.id=$1',[user.id])).rows[0];
-  const rawAvatar = user.user_metadata?.avatar_url;
-  let avatar: string | null = null;
+  const row = (await db.query('SELECT a.name,a.username AS handle,a.avatar,a.banner,a.bio,a.socials,l.uuid,l.username,l.linked_at FROM site_accounts a LEFT JOIN site_minecraft_links l ON l.user_id=a.id WHERE a.id=$1',[user.id])).rows[0];
+  await assertAccountAllowed(user.id);
+  const rawAvatar = row.avatar ?? user.user_metadata?.avatar_url;
+  let avatar: string | null = typeof rawAvatar==='string'&&/^\/api\/profile-media\/[a-f0-9-]{36}$/.test(rawAvatar)?rawAvatar:null;
   if (typeof rawAvatar === 'string' && rawAvatar.length < 1024) { try { const url = new URL(rawAvatar); if (url.protocol === 'https:' && !url.username && !url.password) avatar = url.href; } catch {} }
-  return { id: user.id, name: row.name, email: user.email ?? '', avatar, providers: (user.identities ?? []).map(v => ({ id: v.identity_id ?? v.id, provider: v.provider })), minecraft: row.uuid ? { uuid: row.uuid, username: row.username, linkedAt: new Date(row.linked_at).toISOString() } : null };
+  return { id: user.id, name: row.name, username:row.handle??null, banner:row.banner??null, bio:row.bio??'', socials:row.socials??{}, email: user.email ?? '', avatar, providers: (user.identities ?? []).map(v => ({ id: v.identity_id ?? v.id, provider: v.provider, ...(v.provider==='discord'?{name:safeAccountName(v.identity_data?.full_name)??safeAccountName(v.identity_data?.name)??'Discord'}:{}) })), minecraft: row.uuid ? { uuid: row.uuid, username: row.username, linkedAt: new Date(row.linked_at).toISOString() } : null };
 }
 export async function startAccountFlow(request: Request, headers: Headers, purpose: string, next: unknown, userId: string | null = null) {
   const browser = randomBytes(32).toString('hex'), verifier = randomBytes(48).toString('base64url');

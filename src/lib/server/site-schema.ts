@@ -45,6 +45,7 @@ CREATE TABLE IF NOT EXISTS minecraft_player_profiles (
  last_seen timestamptz, captured_at timestamptz NOT NULL, updated_at timestamptz NOT NULL DEFAULT now(),
  PRIMARY KEY(bridge_id,uuid)
 );
+ALTER TABLE minecraft_player_profiles ADD COLUMN IF NOT EXISTS ban jsonb;
 CREATE INDEX IF NOT EXISTS minecraft_profile_names ON minecraft_player_profiles(username_key,captured_at DESC);
 ALTER TABLE minecraft_profile_bridges ADD COLUMN IF NOT EXISTS visible_stats jsonb;
 CREATE TABLE IF NOT EXISTS youtube_studio_app (

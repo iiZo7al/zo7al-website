@@ -18,7 +18,7 @@ const security=moduleURL('src/lib/server/site-security.ts');
 const authURL=moduleURL('src/lib/server/account-auth.ts',{'./site-db':db,'./site-security':security,'../data/account':data});
 const auth=await import(authURL);
 const links=await import(moduleURL('src/lib/server/account-minecraft.ts',{'./site-db':db,'./site-security':security,'./account-auth':authURL,'../data/account':data}));
-const accountRoute=await import(moduleURL('src/app/api/account/route.ts',{'@/lib/server/account-auth':authURL,'@/lib/data/account':data,'@/lib/server/site-security':security,'@/lib/server/site-content':stub('export async function limitAttempt(){return true;}'),'@/lib/server/site-db':db,'@/i18n/config':moduleURL('src/i18n/config.ts')}));
+const accountRoute=await import(moduleURL('src/app/api/account/route.ts',{'@/lib/server/account-auth':authURL,'@/lib/data/member-profile':moduleURL('src/lib/data/member-profile.ts'),'@/lib/data/account':data,'@/lib/server/site-security':security,'@/lib/server/site-content':stub('export async function limitAttempt(){return true;}'),'@/lib/server/site-db':db,'@/i18n/config':moduleURL('src/i18n/config.ts')}));
 const userId='a1234567-1234-1234-1234-123456789abc',otherId='b1234567-1234-1234-1234-123456789abc',uuid='c1234567-1234-1234-1234-123456789abc',bridgeId='d1234567-1234-1234-1234-123456789abc';
 const headers=(values={})=>({origin:'https://zo7al.test',host:'zo7al.test','Content-Type':'application/json',...values});
 const request=(path='/api/account',body,extra={})=>new Request('https://zo7al.test'+path,{method:body?'POST':'GET',headers:headers(extra),...(body?{body:JSON.stringify(body)}:{})});
@@ -139,4 +139,72 @@ test('private receipts can be claimed once; another account cannot list, steal o
  assert.equal((await pool.query('SELECT user_id FROM site_requests WHERE id=$1',[reference])).rows[0].user_id,userId);
  handler=()=>Response.json({code:'bad_jwt'},{status:401});
  const signout=await accountRoute.POST(request('/api/account',{action:'signout'},logged));assert.equal(signout.status,200);assert.match(signout.headers.get('set-cookie'),/Max-Age=0/);
+});
+
+test('profile handles are unique, private fields are excluded, and unsafe social URLs fail',async()=>{
+ handler=()=>Response.json(user);
+ const body={action:'profile',username:'iiZo7al',avatar:'https://example.com/avatar.webp',banner:'',bio:'Minecraft and Fortnite creator',socials:{github:'https://github.com/iiZo7al'}};
+ const req=(input)=>request('/api/account',input,{cookie:auth.ACCOUNT_ACCESS+'=verified-access'});
+ assert.equal((await accountRoute.POST(req(body))).status,200);
+ const profile=await auth.accountView(user);assert.equal(profile.username,'iiZo7al');assert.equal(profile.bio,body.bio);assert.equal(profile.socials.github,body.socials.github);assert.equal(profile.avatar,body.avatar);
+ assert.equal((await accountRoute.POST(req({...body,username:'unsafe/name'}))).status,400);
+ assert.equal((await accountRoute.POST(req({...body,socials:{website:'javascript:alert(1)'}}))).status,400);
+ handler=()=>Response.json({...user,id:otherId});
+ assert.equal((await accountRoute.POST(req({...body,username:'IIZO7AL'}))).status,409);
+ handler=()=>Response.json(user);
+});
+
+test('site bans immediately block verified existing sessions; expiry restores access; deleted profiles stay revoked',async()=>{
+ handler=()=>Response.json(user);
+ await pool.query("UPDATE site_accounts SET banned_until=now()+interval '1 hour' WHERE id=$1",[userId]);
+ const req=request('/api/account',undefined,{cookie:auth.ACCOUNT_ACCESS+'=verified-access'});
+ await assert.rejects(()=>auth.requireAccount(req),/ACCOUNT_BANNED/);
+ await assert.rejects(()=>auth.requireAccountSession(req,auth.accountHeaders()),/ACCOUNT_BANNED/);
+ assert.equal((await accountRoute.POST(request('/api/account',{action:'settings',name:'Zo7al',locale:'en'},{cookie:auth.ACCOUNT_ACCESS+'=verified-access'}))).status,403);
+ await pool.query("UPDATE site_accounts SET banned_until=now()-interval '1 hour' WHERE id=$1",[userId]);
+ assert.equal((await auth.requireAccount(req)).id,userId);
+ await pool.query('UPDATE site_accounts SET deleted_at=now() WHERE id=$1',[userId]);
+ await assert.rejects(()=>auth.accountView(user),/ACCOUNT_DELETED/);
+ await assert.rejects(()=>auth.requireAccount(req),/ACCOUNT_DELETED/);
+ await pool.query('UPDATE site_accounts SET deleted_at=NULL,banned_until=NULL WHERE id=$1',[userId]);
+});
+
+const passkeys=await import(moduleURL('src/app/api/account/passkeys/route.ts',{'@/lib/server/account-auth':authURL,'@/lib/server/site-security':security,'@/lib/server/site-db':db,'@/lib/server/site-content':stub('export async function limitAttempt(){return true;}')}));
+test('passkeys bind challenges to the initiating browser, consume once, and preserve MFA enforcement',async()=>{
+ const previous=process.env.ZO7AL_ACCOUNT_PASSKEY_ENABLED;process.env.ZO7AL_ACCOUNT_PASSKEY_ENABLED='true';
+ const challengeId='passkey-challenge-1';let verifyCalls=0;
+ const pendingUser={...user,factors:[{id:'verified-factor',factor_type:'totp',status:'verified'}]};
+ handler=url=>url.endsWith('/options')?Response.json({challenge_id:challengeId,options:{challenge:'challenge-bytes'}}):url.endsWith('/verify')?(verifyCalls++,Response.json({access_token:'h.'+Buffer.from(JSON.stringify({sub:userId,aal:'aal1'})).toString('base64url')+'.sig',refresh_token:'refresh',expires_in:3600})):Response.json(pendingUser);
+ try {
+  assert.equal((await passkeys.POST(request('/api/account/passkeys',{action:'signin-start'},{origin:'https://evil.test'}))).status,403);
+  const start=await passkeys.POST(request('/api/account/passkeys',{action:'signin-start'}));assert.equal(start.status,200);const flow=start.headers.getSetCookie()[0].split(';')[0];
+  const body={action:'signin-verify',challengeId,credential:{type:'public-key',id:'credential'}};
+  assert.equal((await passkeys.POST(request('/api/account/passkeys',body))).status,400);assert.equal(verifyCalls,0);
+  const verified=await passkeys.POST(request('/api/account/passkeys',body,{cookie:flow}));assert.equal(verified.status,200);const result=await verified.json();assert.equal(result.mfaRequired,true);assert.ok(!JSON.stringify(result).includes('access_token'));assert.match(verified.headers.get('set-cookie'),/HttpOnly/);
+  assert.equal((await passkeys.POST(request('/api/account/passkeys',body,{cookie:flow}))).status,401);assert.equal(verifyCalls,1);
+  assert.equal((await passkeys.POST(request('/api/account/passkeys',{action:'register-start'},{cookie:auth.ACCOUNT_ACCESS+'=validated-access'}))).status,403);
+  process.env.ZO7AL_ACCOUNT_PASSKEY_ENABLED='false';assert.equal((await passkeys.POST(request('/api/account/passkeys',{action:'signin-start'}))).status,503);
+ } finally {if(previous===undefined)delete process.env.ZO7AL_ACCOUNT_PASSKEY_ENABLED;else process.env.ZO7AL_ACCOUNT_PASSKEY_ENABLED=previous;handler=()=>Response.json(user);}
+});
+
+const bridgeData=moduleURL('src/lib/data/minecraft-bridge.ts',{'./player-statistics':moduleURL('src/lib/data/player-statistics.ts')});
+const adminProfiles=await import(moduleURL('src/app/api/admin/profiles/route.ts',{'@/lib/server/site-security':security,'@/lib/server/site-db':db,'@/lib/data/minecraft-bridge':bridgeData}));
+test('profile moderation requires administrator session and same origin; deletion preserves a revocation tombstone',async()=>{
+ const savedSecret=process.env.ZO7AL_ADMIN_SESSION_SECRET,savedHash=process.env.ZO7AL_ADMIN_PASSWORD_HASH;
+ const secret='s'.repeat(43),hash='scrypt:'+ 'a'.repeat(32)+':'+ 'b'.repeat(128);process.env.ZO7AL_ADMIN_SESSION_SECRET=secret;process.env.ZO7AL_ADMIN_PASSWORD_HASH=hash;
+ const adminCookie= (await import(security)).ADMIN_COOKIE+'='+(await import(security)).signAdminSession(secret,hash);
+ const req=(body,origin='https://zo7al.test')=>request('/api/admin/profiles',body,{origin,cookie:adminCookie});
+ try {
+  assert.equal((await adminProfiles.GET(request('/api/admin/profiles'))).status,401);
+  assert.equal((await adminProfiles.POST(request('/api/admin/profiles',{id:otherId,action:'ban',until:null},{cookie:auth.ACCOUNT_ACCESS+'=member'}))).status,401);
+  assert.equal((await adminProfiles.POST(req({id:otherId,action:'ban',until:null},'https://evil.test'))).status,403);
+  assert.equal((await adminProfiles.POST(req({id:otherId,action:'ban',until:'2000-01-01'}))).status,400);
+  assert.equal((await adminProfiles.POST(req({id:otherId,action:'ban',until:new Date(Date.now()+3600000).toISOString(),reason:'Temporary moderation'}))).status,200);
+  await assert.rejects(()=>auth.assertAccountAllowed(otherId),/ACCOUNT_BANNED/);
+  assert.equal((await adminProfiles.POST(req({id:otherId,action:'unban'}))).status,200);await auth.assertAccountAllowed(otherId);
+  assert.equal((await adminProfiles.POST(req({id:otherId,action:'delete'}))).status,200);
+  const row=(await pool.query('SELECT username,deleted_at,bio FROM site_accounts WHERE id=$1',[otherId])).rows[0];assert.equal(row.username,null);assert.ok(row.deleted_at);assert.equal(row.bio,'');
+  await assert.rejects(()=>auth.assertAccountAllowed(otherId),/ACCOUNT_DELETED/);
+  assert.equal((await pool.query('SELECT * FROM site_account_moderation_log WHERE user_id=$1',[otherId])).rows.length,3);
+ } finally {if(savedSecret===undefined)delete process.env.ZO7AL_ADMIN_SESSION_SECRET;else process.env.ZO7AL_ADMIN_SESSION_SECRET=savedSecret;if(savedHash===undefined)delete process.env.ZO7AL_ADMIN_PASSWORD_HASH;else process.env.ZO7AL_ADMIN_PASSWORD_HASH=savedHash;}
 });

@@ -50,7 +50,7 @@ export default function NavigationMenu({
       </aside>}
       {compact && <h3 id={`${id}-title`} className="sr-only">{nav(menu)}</h3>}
       <ul className="navigation-menu-links">
-        {menu === "socials" ? SOCIALS.map(social => <li key={social.id}>
+        {menu === "socials" ? (compact ? SOCIALS.filter(s => s.id !== "github").slice(0,4) : SOCIALS).map(social => <li key={social.id}>
           <a href={social.url} target="_blank" rel="noopener noreferrer" onClick={onNavigate} className="navigation-menu-link navigation-platform" data-cursor="link">
             <span className="navigation-link-icon"><BrandIcon slug={social.id} size={22}/></span>
             <span className="navigation-link-copy"><span className="navigation-link-title" dir="auto">{social.label}</span><span className="navigation-link-description" dir="auto">{social.handle}</span></span>
@@ -64,7 +64,7 @@ export default function NavigationMenu({
           </Link>
         </li>)}
       </ul>
-      {compact && menu === "socials" && <Link href="/socials#games-socials-title" onClick={onNavigate} className="navigation-games-link" data-cursor="link"><Gamepad2 size={18} aria-hidden="true"/>Zo7al Games<ArrowUpRight size={14} aria-hidden="true"/></Link>}
+      {compact && menu === "socials" && <Link href="/socials" onClick={onNavigate} className="navigation-games-link" data-cursor="link">{hub("viewMore")}<ArrowUpRight size={14} aria-hidden="true"/></Link>}
     </div>
   );
 }
