@@ -16,7 +16,7 @@ const authURL=moduleURL('src/lib/server/account-auth.ts',{'./site-db':db,'./site
 const limit=stub('export async function limitAttempt(){return globalThis.__mfaTests.allowed;}');
 const replacements={'@/lib/server/account-auth':authURL,'@/lib/server/site-security':security,'@/lib/server/site-content':limit,'@/lib/server/site-db':db};
 const mfa=await import(moduleURL('src/app/api/account/mfa/route.ts',replacements));
-const account=await import(moduleURL('src/app/api/account/route.ts',{...replacements,'@/lib/server/site-db':db,'@/lib/data/account':data,'@/i18n/config':moduleURL('src/i18n/config.ts')}));
+const account=await import(moduleURL('src/app/api/account/route.ts',{...replacements,'@/lib/server/site-db':db,'@/lib/data/member-profile':moduleURL('src/lib/data/member-profile.ts'),'@/lib/data/account':data,'@/i18n/config':moduleURL('src/i18n/config.ts')}));
 const receipts=await import(moduleURL('src/app/api/account/receipts/route.ts',{...replacements,'@/lib/server/site-db':db}));
 const envKeys=['SUPABASE_URL','SUPABASE_PUBLISHABLE_KEY','DATABASE_URL','ZO7AL_SITE_URL','ZO7AL_ACCOUNT_MFA_ENABLED'];
 const savedEnv=Object.fromEntries(envKeys.map(k=>[k,process.env[k]]));

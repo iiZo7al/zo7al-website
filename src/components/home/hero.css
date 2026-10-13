@@ -8,3 +8,11 @@
 @keyframes hero-caret-blink { 0%,45% { opacity:1; } 46%,100% { opacity:0; } }
 @media(prefers-reduced-motion:no-preference) { .hero-typewriter-line>.hero-typewriter-caret:not(.is-complete) { animation:hero-caret-blink .85s step-end infinite; } }
 @media(prefers-reduced-motion:reduce) { .hero-typewriter { transition:none; } }
+
+.hero-orbit-section .hero-orbit-content { position:absolute; inset-inline:0; top:50%; translate:0 -2.8rem; }
+.hero-brand-heading { font-size:clamp(2.1rem,8vw,5.4rem); }
+.hero-brand { flex-direction:row; gap:.22em; }
+.hero-typewriter-reserve { display:none; }.hero-typewriter { min-width:0; }
+@media(max-width:600px) { .hero-brand { flex-direction:column; } .hero-brand-heading { font-size:clamp(2.3rem,10vw,3.4rem); } .hero-orbit-content>p { margin-top:1.2rem; font-size:1rem; } }
+
+@media(max-width:600px) { .hero-orbit-section .hero-orbit-content { translate:0 -3.5rem; } }

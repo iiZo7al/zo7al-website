@@ -1,5 +1,5 @@
 import { randomUUID } from 'node:crypto';
-import {AccountError,accountHeaders,requireAccount} from '@/lib/server/account-auth';
+import {AccountError,accountHeaders,requireAccount,accountView} from '@/lib/server/account-auth';
 import { sameOrigin,privateHeaders } from '@/lib/server/site-security';
 import { limitAttempt } from '@/lib/server/site-content';
 import { siteDatabase } from '@/lib/server/site-db';
@@ -18,7 +18,8 @@ export async function POST(request:Request){
   let size=0;const chunks:Uint8Array[]=[];
   try{while(true){const part=await reader.read();if(part.done)break;size+=part.value.length;if(size>CONTENT_IMAGE_UPLOAD_BYTES+32000)throw Error('IMAGE_SIZE');chunks.push(part.value);}}finally{await reader.cancel();}
   const form=await new Response(Buffer.concat(chunks),{headers:{'Content-Type':request.headers.get('content-type')!}}).formData();
-  const entry=validateGallerySubmission(Object.fromEntries(form));if(!entry)throw Error('INVALID');
+  const member=await accountView(user);
+  const entry=validateGallerySubmission({...Object.fromEntries(form),author:member.name,email:member.email});if(!entry)throw Error('INVALID');
   const file=form.get('image');let image:Awaited<ReturnType<typeof normalizeContentImage>>|null=null;
   if(file instanceof File&&file.size){if(form.getAll('image').length!==1)throw Error('INVALID');image=await normalizeContentImage(Buffer.from(await file.arrayBuffer()));}
   if(!image&&!entry.videoUrl)throw Error('INVALID');

@@ -160,13 +160,13 @@ export default function Navbar() {
             </li>;
           })}
         </ul>
-        <div className="site-navigation-actions"><NotificationBell/>
-        <div className="site-navigation-tools">
+        <div className="site-navigation-actions">
+        <div className="site-navigation-tools"><NotificationBell/>
           <a href={DISCORD_LINK} onClick={closeAll} target="_blank" rel="noopener noreferrer" className="navigation-discord" aria-label={nav("discord")} data-cursor="link"><BrandIcon slug="discord" size={19}/></a>
           <div onFocus={() => { cancelClose(); setDesktopMenu(null); }} onMouseEnter={() => { cancelClose(); setDesktopMenu(null); }}><LanguageSwitcher/></div>
           <MagneticButton><StoreNavAction onActivate={closeAll}/></MagneticButton><AccountMenu/>
         </div>
-        <div className="site-navigation-mobile-tools"><StoreNavAction iconOnly onActivate={closeAll}/><AccountMenu/><span className="navigation-mobile-search"><SearchTrigger/></span><button ref={mobileTrigger} type="button" className="navigation-mobile-trigger" aria-label={ui(mobileOpen ? "closeMenu" : "openMenu")} aria-expanded={mobileOpen} aria-controls="navigation-mobile-panel" data-cursor="button" onClick={() => { cancelClose(); setDesktopMenu(null); setMobileGroup(null); setMobileOpen(!mobileOpen); }}><SolidIcon name={mobileOpen ? "cross" : "menu-burger"} size={20}/></button></div>
+        <div className="site-navigation-mobile-tools"><AccountMenu/><StoreNavAction iconOnly onActivate={closeAll}/><NotificationBell/><span className="navigation-mobile-search"><SearchTrigger/></span><button ref={mobileTrigger} type="button" className="navigation-mobile-trigger" aria-label={ui(mobileOpen ? "closeMenu" : "openMenu")} aria-expanded={mobileOpen} aria-controls="navigation-mobile-panel" data-cursor="button" onClick={() => { cancelClose(); setDesktopMenu(null); setMobileGroup(null); setMobileOpen(!mobileOpen); }}><SolidIcon name={mobileOpen ? "cross" : "menu-burger"} size={20}/></button></div>
         </div>
       </nav>
       <AnimatePresence initial={false}>{mobileOpen && <MenuSurface mobile>

@@ -9,6 +9,8 @@ import java.util.Map;
 import java.util.UUID;
 
 final class PlayerProfile {
+    private JsonObject ban;
+    PlayerProfile withBan(JsonObject value) { this.ban=value;return this; }
     private final UUID uuid;
     private final String username, rank;
     private final boolean online;
@@ -28,6 +30,6 @@ final class PlayerProfile {
         value.addProperty("online", online); if (lastSeen == null) value.add("lastSeen", JsonNull.INSTANCE); else value.addProperty("lastSeen", lastSeen.toString());
         value.addProperty("capturedAt", capturedAt.toString()); JsonObject numbers = new JsonObject();
         for (Map.Entry<String, Double> item : stats.entrySet()) numbers.addProperty(item.getKey(), item.getValue());
-        value.add("stats", numbers); return value;
+        value.add("stats", numbers); if (ban != null) value.add("ban",ban);return value;
     }
 }

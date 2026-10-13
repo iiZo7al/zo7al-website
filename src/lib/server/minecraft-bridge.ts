@@ -11,10 +11,10 @@ export async function receiveProfiles(id: string, hash: string, profiles: Synced
     // Revocation and writes share this row lock: a revoked key cannot finish an old write.
     const bridge = (await client.query("SELECT id FROM minecraft_profile_bridges WHERE id=$1 AND token_hash=$2 AND enabled FOR UPDATE", [id, hash])).rows[0];
     if (!bridge) throw Error("UNAUTHORIZED");
-    if (profiles.length) await client.query(`INSERT INTO minecraft_player_profiles(bridge_id,uuid,username,username_key,rank,stats,online,last_seen,captured_at)
-      SELECT $1,p.uuid::uuid,p.username,lower(p.username),p.rank,p.stats,p.online,p."lastSeen"::timestamptz,p."capturedAt"::timestamptz
-      FROM jsonb_to_recordset($2::jsonb) AS p(uuid text,username text,rank text,stats jsonb,online boolean,"lastSeen" text,"capturedAt" text)
-      ON CONFLICT(bridge_id,uuid) DO UPDATE SET username=excluded.username,username_key=excluded.username_key,rank=excluded.rank,stats=excluded.stats,online=excluded.online,last_seen=GREATEST(minecraft_player_profiles.last_seen,excluded.last_seen),captured_at=excluded.captured_at,updated_at=now()
+    if (profiles.length) await client.query(`INSERT INTO minecraft_player_profiles(bridge_id,uuid,username,username_key,rank,stats,online,last_seen,captured_at,ban)
+      SELECT $1,p.uuid::uuid,p.username,lower(p.username),p.rank,p.stats,p.online,p."lastSeen"::timestamptz,p."capturedAt"::timestamptz,p.ban
+      FROM jsonb_to_recordset($2::jsonb) AS p(uuid text,username text,rank text,stats jsonb,online boolean,"lastSeen" text,"capturedAt" text,ban jsonb)
+      ON CONFLICT(bridge_id,uuid) DO UPDATE SET username=excluded.username,username_key=excluded.username_key,rank=excluded.rank,stats=excluded.stats,online=excluded.online,last_seen=GREATEST(minecraft_player_profiles.last_seen,excluded.last_seen),captured_at=excluded.captured_at,ban=COALESCE(excluded.ban,minecraft_player_profiles.ban),updated_at=now()
       WHERE excluded.captured_at>=minecraft_player_profiles.captured_at`, [id, JSON.stringify(profiles)]);
     if (profiles.length) await client.query(`UPDATE site_minecraft_links l SET username=current.username,username_key=current.username_key
       FROM (SELECT DISTINCT ON (p.uuid) p.uuid,p.username,p.username_key FROM minecraft_player_profiles p

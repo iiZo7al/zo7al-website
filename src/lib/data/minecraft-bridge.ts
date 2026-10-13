@@ -4,6 +4,7 @@ export const PLAYER_NAME_PATTERN = /^[.a-zA-Z0-9_ ]{3,32}$/;
 export const BRIDGE_BATCH_LIMIT = 100;
 export type SyncedPlayerProfile = {
   uuid: string; username: string; rank: string | null; stats: Record<string, number>;
+  ban?: {banned:boolean;reason:string|null;expiresAt:string|null;durationKnown:boolean}|null;
   online: boolean; lastSeen: string | null; capturedAt: string;
 };
 const uuid = /^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/i;
@@ -32,8 +33,15 @@ export function validateProfileBatch(value: unknown, now = Date.now()): SyncedPl
     }
     const lastSeen = p.lastSeen === null || p.lastSeen === undefined ? null : date(p.lastSeen);
     if (p.lastSeen !== null && p.lastSeen !== undefined && !lastSeen) return null;
+    let ban:SyncedPlayerProfile['ban']=null;
+    if(p.ban!==undefined&&p.ban!==null){
+      if(typeof p.ban!=='object'||Array.isArray(p.ban))return null;
+      const b=p.ban as Record<string,unknown>;
+      if(typeof b.banned!=='boolean'||typeof b.durationKnown!=='boolean'||b.reason!==null&&(typeof b.reason!=='string'||b.reason.length>500)||b.expiresAt!==null&&(typeof b.expiresAt!=='string'||b.expiresAt.length>50||!Number.isFinite(Date.parse(b.expiresAt))))return null;
+      ban={banned:b.banned,reason:b.reason as string|null,expiresAt:b.expiresAt===null?null:new Date(b.expiresAt as string).toISOString(),durationKnown:b.durationKnown};
+    }
     seen.add(p.uuid.toLowerCase());
-    profiles.push({ uuid: p.uuid.toLowerCase(), username: p.username.trim(), rank: typeof p.rank === "string" ? p.rank.trim() : null, stats, online: p.online, lastSeen, capturedAt });
+    profiles.push({ uuid: p.uuid.toLowerCase(), username: p.username.trim(), rank: typeof p.rank === "string" ? p.rank.trim() : null, stats, ...(ban?{ban}:{}), online: p.online, lastSeen, capturedAt });
   }
   return profiles;
 }

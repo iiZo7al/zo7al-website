@@ -1,7 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { CalendarDays, Images, Newspaper, Vote } from "lucide-react";
+import { CalendarDays, Images, Newspaper } from "lucide-react";
 import SectionHeader from "@/components/ui/SectionHeader";
 import ContentFeed from "@/components/hub/ContentFeed";
 import CommunitySections from "@/components/community/CommunitySections";
@@ -13,7 +13,6 @@ export function FortniteCommunityLinks() {
     { id: "news", label: "fortniteNews", icon: Newspaper },
     { id: "events", label: "fortniteEvents", icon: CalendarDays },
     { id: "community-gallery", label: "fortniteCommunity", icon: Images },
-    { id: "community-polls", label: "fortnitePolls", icon: Vote },
   ] as const;
   return <nav className="hub-actions mt-6" aria-label={t("fortniteCommunity")}>
       {links.map(({ id, label, icon: Icon }) => <a key={id} href={"#" + id} className="hub-button" data-cursor="button"><Icon size={17} aria-hidden="true"/>{t(label)}</a>)}

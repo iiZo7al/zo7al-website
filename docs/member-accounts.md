@@ -72,3 +72,35 @@ New community gallery submissions, creator applications and support reports requ
 The Requests page includes My submissions alongside orders, creator applications, support and event registrations. Gallery submissions remain privately trackable while pending or rejected; account lists and tracking are scoped to the owner and do not expose contact details, access tokens or private report bodies. Public galleries still show only published approved entries and never disclose member IDs. Existing guest receipts can be claimed using their private code; old gallery entries without a proven owner are not reassigned by matching emails. A Discord notification failure preserves an account-owned support request for later retry.
 
 The schema initializer adds a nullable gallery owner and a partial per-account index without changing existing submissions. Verify two accounts across separate browser sessions, pending/approved/rejected moderation, expired/refresh sessions, MFA challenge enforcement, guest receipt claims and sign-in return paths before release.
+
+## Public member profiles and moderation
+
+Members can choose a unique, case-insensitive username (3–32 letters, digits or underscores), then publish `/@username` with an avatar, banner, biography and HTTPS social links. Account settings support image uploads as well as image URLs. Uploaded images are size-limited, decoded and converted to WebP; unpublished uploads are visible only to their owner. Public profiles show only approved, published gallery submissions, without email addresses, account IDs, request bodies or receipt tokens.
+
+The requests workspace now requires sign-in for every tab and loads account-owned records directly. It does not read device receipts or display a reference/code lookup form. Legacy claim APIs remain available for a deliberate migration of older receipts. New gallery submissions and creator applications take the contact email and author from the verified account. Creator applications require linked Discord; the form offers identity linking instead of editable Discord/email fields.
+
+Dashboard → Profiles provides search, permanent bans, timed bans, unbanning and profile deletion. Every action requires the existing administrator session and a same-origin request, is recorded in a moderation log, and runs in a transaction. Bans and deletion are checked against the site database on protected account operations, including existing sessions and MFA/passkey enrollment. Timed bans expire automatically. Profile deletion removes its public identity, uploaded media and Minecraft link, hides its submissions and keeps a minimal revocation tombstone plus order/support history. This operation deletes the website profile; it does not delete the upstream Supabase Auth identity or erase purchase records. A deleted identity cannot recreate its profile by signing in again.
+
+## Passkeys (face/fingerprint/security key)
+
+The website uses Supabase's native two-step WebAuthn endpoints with HttpOnly session cookies. Registration/list/deletion require the verified account with enrolled MFA satisfied. Authentication options are bound to a five-minute, one-use HttpOnly browser flow; the provider validates the signed credential. A passkey sign-in still enters the existing MFA challenge whenever the returned verified session is AAL1 for a user with verified factors. No session tokens or private keys are returned to client JavaScript or saved in localStorage.
+
+Before setting `ZO7AL_ACCOUNT_PASSKEY_ENABLED=true`, enable Authentication → Passkeys in the same Supabase project:
+
+- RP display name: `Zo7al Projects`
+- RP ID: `zo7al.is-a.dev`
+- RP origin: `https://zo7al.is-a.dev`
+
+Use a separate localhost configuration/project for local testing; unrelated Vercel preview domains cannot register a passkey bound to `zo7al.is-a.dev`. Keep the production RP ID stable. Verify registration, sign-in, cancellation, credential deletion, missing/replayed challenges and an account with TOTP/backup codes before release. Face/fingerprint prompts depend on the member's device and authenticator; the website never receives biometric data. Supabase passkeys are currently experimental. Documentation: https://supabase.com/docs/guides/auth/passkeys. REST shapes checked against `@supabase/auth-js` 2.117.3.
+
+The existing MFA feature gate remains separate. Keep `ZO7AL_ACCOUNT_MFA_ENABLED` off until the provider's TOTP **and recovery-code** flows have passed the live checks above. Disabled security features display their unavailable state in settings; do not turn flags on just to show enabled controls.
+
+## Minecraft ban synchronization
+
+Install bridge **1.3.0** on both modern Paper and legacy backends. Each captured player profile now includes vanilla account-ban state, reason and expiry from the backend's Bukkit/Paper ban list. Account Settings → Minecraft bans reads only the authenticated member's verified Minecraft UUID across enabled bridges. These details remain private; public player profiles never expose ban reasons.
+
+Old 1.2.0 jars do not report bans and display “no information” rather than “not banned.” Stale/offline servers display the last synchronization warning. Expired bans are no longer shown as active. Ban systems that maintain their own separate storage (for example a proxy-wide punishment plugin) need an adapter before their punishments can be reported; do not infer bans from kicks or failed connections.
+
+## Validation for this change
+
+Local verification covers the site build, TypeScript, ESLint, account ownership/MFA and passkey replay tests, profile uniqueness and ban/deletion authorization, and modern/legacy Java bridge compilation and tests. Live provider enrollment/recovery and deployment configuration still need the authorized project session. No owner authenticator was changed during development.

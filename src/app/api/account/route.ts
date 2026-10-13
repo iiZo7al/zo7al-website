@@ -3,6 +3,7 @@ import { ACCOUNT_PROVIDERS, accountEmail, accountPassword, safeAccountName } fro
 import { readJSON } from '@/lib/server/site-security';
 import { limitAttempt } from '@/lib/server/site-content';
 import { siteDatabase } from '@/lib/server/site-db';
+import { profileSettings } from '@/lib/data/member-profile';
 import { LOCALES } from '@/i18n/config';
 export const runtime='nodejs';
 export const dynamic='force-dynamic';
@@ -13,7 +14,7 @@ export async function GET(request:Request) {
     if (!accountConfigured()) return Response.json({configured:false,account:null,providers:[],email:false},{headers});
     const [session,settings]=await Promise.all([accountSession(request,headers),authRequest('/settings')]);
     const mfaRequired=!!session&&accountRequiresMFA(session.user,session.access);
-    return Response.json({configured:true,account:session&&!mfaRequired?await accountView(session.user):null,mfaRequired,mfaEnabled:process.env.ZO7AL_ACCOUNT_MFA_ENABLED==='true'||!!session?.user.factors?.some(f=>f.factor_type==='totp'&&f.status==='verified'),providers:ACCOUNT_PROVIDERS.filter(p=>settings.external?.[p]),email:settings.external?.email===true},{headers});
+    return Response.json({configured:true,account:session&&!mfaRequired?await accountView(session.user):null,mfaRequired,mfaEnabled:process.env.ZO7AL_ACCOUNT_MFA_ENABLED==='true'||!!session?.user.factors?.some(f=>f.factor_type==='totp'&&f.status==='verified'),passkeyEnabled:process.env.ZO7AL_ACCOUNT_PASSKEY_ENABLED==='true',providers:ACCOUNT_PROVIDERS.filter(p=>settings.external?.[p]),email:settings.external?.email===true},{headers});
   } catch(error){return failed(error,headers);}
 }
 export async function POST(request:Request) {
@@ -31,6 +32,7 @@ export async function POST(request:Request) {
         if(typeof body.password!=='string'||body.password.length>128)throw new AccountError('CREDENTIALS');
         const tokens=await authRequest('/token?grant_type=password','POST',{email,password:body.password});
         const user=await authRequest('/user','GET',undefined,tokens.access_token) as AuthUser;
+        await accountView(user);
         setAccountTokens(tokens,headers);
         return Response.json({ok:true,mfaRequired:accountRequiresMFA(user,tokens.access_token!)},{headers});
       }
@@ -61,6 +63,13 @@ export async function POST(request:Request) {
       const name=safeAccountName(body.name);if(!name||!LOCALES.includes(String(body.locale) as typeof LOCALES[number]))throw new AccountError('INVALID');
       await accountView(user);
       await (await siteDatabase()).query('UPDATE site_accounts SET name=$2,locale=$3,updated_at=now() WHERE id=$1',[user.id,name,body.locale]);
+      return Response.json({ok:true},{headers});
+    }
+    if(body.action==='profile') {
+      const profile=profileSettings(body);if(!profile)throw new AccountError('INVALID');
+      await accountView(user);
+      try { await (await siteDatabase()).query('UPDATE site_accounts SET username=$2,avatar=$3,banner=$4,bio=$5,socials=$6,updated_at=now() WHERE id=$1',[user.id,profile.username,profile.avatar,profile.banner,profile.bio,JSON.stringify(profile.socials)]); }
+      catch(error){if((error as {code?:string}).code==='23505')throw new AccountError('USERNAME_TAKEN',409);throw error;}
       return Response.json({ok:true},{headers});
     }
     if(body.action==='password') {

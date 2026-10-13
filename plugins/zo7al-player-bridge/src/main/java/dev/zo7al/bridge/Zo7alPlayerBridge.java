@@ -136,7 +136,7 @@ public final class Zo7alPlayerBridge extends JavaPlugin implements Listener {
         // Monotonic milliseconds keep asynchronous rank reads from reverting join/quit state.
         lastCapture = Math.max(System.currentTimeMillis(), lastCapture + 1);
         PlayerProfile snapshot = new PlayerProfile(player.getUniqueId(), player.getName(), null, online,
-            lastSeen > 0 ? Instant.ofEpochMilli(lastSeen) : null, Instant.ofEpochMilli(lastCapture), stats);
+            lastSeen > 0 ? Instant.ofEpochMilli(lastSeen) : null, Instant.ofEpochMilli(lastCapture), stats, BanSnapshot.read(player));
         int epoch = generation; pending++;
         CompletableFuture<String> rank = ranks == null ? CompletableFuture.completedFuture(null) : ranks.rank(player.getUniqueId(), online);
         File file = statisticsDirectory == null ? null : new File(statisticsDirectory, player.getUniqueId() + ".json");

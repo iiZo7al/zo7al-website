@@ -8,7 +8,6 @@ import CommonErrors from "./CommonErrors";
 import FaqAccordion,{type FaqItem} from '@/components/faq/FaqAccordion';
 import ContentFeed from './ContentFeed';
 import Receipt from './Receipt';
-import { saveReceipt } from '@/lib/data/hub-receipts';
 import { DISCORD_LINK } from '@/lib/data/site';
 import { communityCopy } from '@/lib/data/community-copy';
 import AccountSubmission from '@/components/account/AccountSubmission';
@@ -29,7 +28,7 @@ export default function SupportCenter(){
   <div className="hub-actions mb-8" role="group" aria-label={t('support')}>{['faq','errors','rules','report'].map(value=><button key={value} type="button" className="hub-button" aria-pressed={tab===value} onClick={()=>setTab(value)}>{value==='faq'?faq('title'):value==='errors'?t('commonErrorsTitle'):t(value)}</button>)}<Link href="/requests?tab=support" className="hub-button">{t('track')}</Link><a href={DISCORD_LINK} className="hub-button" target="_blank" rel="noopener noreferrer">Discord</a></div>
   {tab==='faq'?<div id="faq"><FaqAccordion items={faq.raw('items') as FaqItem[]} categories={faq.raw('categories') as Record<string,string>} searchPlaceholder={faq('searchPlaceholder')} noResults={faq('noResults')} allLabel={common('all')}/></div>:tab==='errors'?<CommonErrors/>:tab==='rules'?<ContentFeed kind="rule"/>:<div className="hub-card max-w-[760px]">{receipt?<Receipt kind="support" {...receipt}/>:<AccountSubmission next="/support?tab=report"><form className="hub-form" key={account?.id} onSubmit={async event=>{
    event.preventDefault();if(lock.current)return;const data=new FormData(event.currentTarget);lock.current=true;setBusy(true);setError('');
-   try{const response=await fetch('/api/support',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...Object.fromEntries(data),consent:data.get('consent')==='on'})}),result=await response.json();if(!response.ok)throw Error(result.error);saveReceipt('support',result);setReceipt(result);}
+   try{const response=await fetch('/api/support',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...Object.fromEntries(data),consent:data.get('consent')==='on'})}),result=await response.json();if(!response.ok)throw Error(result.error);window.dispatchEvent(new Event('zo7al-receipts'));setReceipt(result);}
    catch(error){if(error instanceof Error&&['LOGIN_REQUIRED','MFA_REQUIRED'].includes(error.message))await refresh();setError(error instanceof Error&&error.message==='RATE_LIMIT'?'rateLimit':'unavailable');}finally{lock.current=false;setBusy(false);}
   }}>
    {project&&<><div className="community-meta"><Flag size={17} aria-hidden="true"/><strong dir="auto">{projectTitle||project}</strong></div><label>{c.project}<input name="project" value={project} readOnly dir="ltr"/><input name="projectTitle" value={projectTitle} type="hidden" readOnly/></label><label>{c.version}<input name="version" value={version} onChange={event=>setVersion(event.target.value)} maxLength={64} dir="auto"/></label></>}

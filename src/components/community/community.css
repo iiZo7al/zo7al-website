@@ -90,3 +90,10 @@
 @media(max-width:900px) { .community-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
 @media(max-width:600px) { .community-grid,.community-achievement-grid { grid-template-columns:minmax(0,1fr); } .community-card { padding:22px; } .community-gallery-card { padding:0; } .community-dialog-body { padding:20px; } .community-leader-row { gap:10px; padding:14px; } .community-filters label { width:100%; justify-content:space-between; } .community-leader-value { font-size:12px; } }
 @media(prefers-reduced-motion:reduce) { .community-leader-row,.community-poll-option>i { transition:none; } }
+
+.notification-dialog { border-radius:24px; background:var(--bg-secondary); }
+.notification-dialog .community-dialog-body { padding:24px; }
+.notification-dialog .community-preferences { margin-top:20px; border:1px solid var(--border); border-radius:16px; padding:14px; background:var(--surface); }
+.notification-dialog .community-notification-list { display:grid; gap:10px; margin-top:20px; }
+.notification-dialog .community-notification { border:1px solid var(--border); border-radius:16px; padding:16px; background:var(--surface); }
+.notification-dialog .community-notification.is-unread { border-inline-start:3px solid var(--accent); background:var(--surface-elevated); }

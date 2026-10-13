@@ -1,5 +1,8 @@
 # Space Run
 
+## 1.0.11
+- Center the Play Now action at the bottom of the home-screen installation guide.
+
 ## 1.0.10
 - Match the homepage launch button to the transparent View Projects action, preserving its installation guide and desktop and touch controls.
 

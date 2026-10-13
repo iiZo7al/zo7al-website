@@ -3,7 +3,6 @@ import { createPortal } from "react-dom";
 import { useLocale, useTranslations } from "next-intl";
 import { Fragment, useEffect, useRef, useState } from "react";
 import Script from "next/script";
-import { saveReceipt } from "@/lib/data/hub-receipts";
 import Image from "next/image";
 import "./store.css";
 import { useCart } from "./CartProvider";
@@ -177,7 +176,7 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
       }
       if (!response.ok || !data.ident) throw Error();
       if (!controller.signal.aborted) {
-        if (data.tracking) saveReceipt("order", data.tracking);
+        if (data.tracking) window.dispatchEvent(new Event("zo7al-receipts"));
         purchasedItems.current = cartItems.map(item => ({ ...item }));
         try { sessionStorage.setItem("zo7al-checkout", data.ident); sessionStorage.setItem("zo7al-checkout-items", JSON.stringify(cartItems)); } catch { /* Optional return-page recovery. */ }
         setPaymentStatus("idle"); setVerificationIdent(""); setIdent(data.ident);
@@ -306,8 +305,8 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
         <p id="checkout-description" className="store-checkout-description">{copy.note}</p>
         {!ident ? <form onSubmit={pay} className="store-checkout-form">
           <button type="button" className="account-gift-toggle" aria-pressed={gift} disabled={busy} onClick={() => {setGift(value=>!value);setAccountError("");setError(null);}} data-cursor="button"><Gift size={18} aria-hidden="true"/>{accountT(gift?"giftEnabled":"giftToggle")}</button>
-          {gift ? <><PlayerIdentity id="store-username" username={giftName} onChange={value=>{setGiftName(value);setError(null);}} required active={cartOpen}/><p className="account-help">{accountT("giftIntro")}</p></> : account?.minecraft ? <div className="account-purchase-player"><UserRound size={24}/><div><strong dir="ltr">{account.minecraft.username}</strong><p>{accountT("verifiedPlayer")}</p></div><Link href="/account?tab=connections" onClick={close} className="account-text-button">{accountT("manage")}</Link></div> : <p className="account-notice">{accountT(account?"errors.LINK_REQUIRED":"errors.LOGIN_REQUIRED")}</p>}
-          {!account && <button type="button" className="store-action" disabled={!accountReady} onClick={() => {close();setLogin(true);}}>{accountT("signin")}</button>}
+          {gift ? <><PlayerIdentity id="store-username" username={giftName} onChange={value=>{setGiftName(value);setError(null);}} required active={cartOpen}/><p className="account-help">{accountT("giftIntro")}</p></> : account?.minecraft ? <div className="account-purchase-player"><UserRound size={24}/><div><strong dir="ltr">{account.minecraft.username}</strong><p>{accountT("verifiedPlayer")}</p></div><Link href="/account?tab=connections" onClick={close} className="account-text-button">{accountT("manage")}</Link></div> : <div className="account-notice account-checkout-login"><span>{accountT(account?"errors.LINK_REQUIRED":"errors.LOGIN_REQUIRED")}</span>{!account && <button type="button" className="store-action" disabled={!accountReady} onClick={() => {close();setLogin(true);}}>{accountT("signin")}</button>}</div>}
+
           {account && !gift && !account.minecraft && <Link href="/account?tab=connections" className="store-action" onClick={close}>{accountT("connectMinecraft")}</Link>}
           {accountError && <p role="alert" className="account-error">{accountError}</p>}
           <p>{t("usernameHelp")}</p>

@@ -35,7 +35,7 @@ export default function GameLaunchButton({ onPlay }: { onPlay: () => void }) {
           <li className="flex items-start gap-3"><MonitorDown size={21} className="mt-1 shrink-0 text-[var(--accent)]" aria-hidden="true"/><span>{t("installDesktop")}</span></li>
         </ol>
         <label className="hub-consent mt-6"><input type="checkbox" checked={remember} onChange={event=>setRemember(event.target.checked)}/>{t("installDontShow")}</label>
-        <div className="hub-actions mt-6"><button type="button" className="hub-button" onClick={()=>{dismiss();onPlay();}} data-cursor="button"><Rocket size={17} aria-hidden="true"/>{t("installPlayNow")}</button></div>
+        <div className="hub-actions mt-8 justify-center"><button type="button" className="hub-button" onClick={()=>{dismiss();onPlay();}} data-cursor="button"><Rocket size={17} aria-hidden="true"/>{t("installPlayNow")}</button></div>
       </div>
     </DetailsDialog>}
   </>;

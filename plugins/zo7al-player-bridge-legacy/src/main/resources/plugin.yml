@@ -1,5 +1,5 @@
 name: Zo7alPlayerBridgeLegacy
-version: 1.2.0
+version: 1.3.0
 main: dev.zo7al.bridge.legacy.Zo7alPlayerBridgeLegacy
 description: Read-only player profile sync for the Zo7al classic PvP server.
 authors: [Zo7al]
