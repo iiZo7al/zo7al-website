@@ -2,6 +2,7 @@ import "server-only";
 import { siteDatabase } from "./site-db";
 import { readConnections } from "./dashboard-connections";
 import { cachedPlatform } from "./dashboard-platforms";
+import { resilientFortniteStats } from './fortnite-cache';
 import { platformIds, type DashboardInsights, type DashboardSummary } from "../data/dashboard";
 
 export async function dashboardInsights(): Promise<DashboardInsights> {
@@ -31,6 +32,6 @@ export async function dashboardInsights(): Promise<DashboardInsights> {
       FROM days LEFT JOIN requests USING(day) LEFT JOIN orders USING(day) ORDER BY days.day`),
     readConnections(),
   ]);
-  const platforms = await Promise.all(platformIds.map(id => cachedPlatform(id,id === "youtube" || id === "curseforge" ? connections[id] : undefined)));
+  const platforms = await Promise.all(platformIds.map(async id => {const data=await cachedPlatform(id,id === "youtube" || id === "curseforge" ? connections[id] : undefined);return id==='fortnite'?resilientFortniteStats(data):data;}));
   return { summary: summary.rows[0], activity: activity.rows, platforms, generatedAt: new Date().toISOString() };
 }

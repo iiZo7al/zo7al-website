@@ -8,7 +8,7 @@ import { siteDatabase } from '@/lib/server/site-db';
 import { profileSettings } from '@/lib/data/member-profile';
 import { LOCALES } from '@/i18n/config';
 import { startMemberModrinth } from '@/lib/server/member-modrinth';
-import { cancelAccountDeletion } from '@/lib/server/account-auth';
+import { cancelAccountDeletion,forgetSavedAccount } from '@/lib/server/account-auth';
 export const runtime='nodejs';
 export const dynamic='force-dynamic';
 function failed(error:unknown,headers:Headers) { return Response.json({error:error instanceof AccountError?error.code:'UNAVAILABLE'},{status:error instanceof AccountError?error.status:503,headers}); }
@@ -53,7 +53,7 @@ export async function POST(request:Request) {
       if(body.provider==='modrinth')return Response.json({url:await startMemberModrinth(request,headers,body.action as 'oauth'|'link',body.next)},{headers});
       const user=body.action==='link'?await requireAccount(request):null;
       const flow=await startAccountFlow(request,headers,body.action,body.next,user?.id??null);
-      const nativeProvider=body.provider==='x'&&settings.external?.x!==true&&settings.external?.twitter===true?'twitter':String(body.provider);
+      const nativeProvider=body.provider==='x'&&process.env.ZO7AL_ACCOUNT_X_ENABLED!=='true'&&settings.external?.x!==true&&settings.external?.twitter===true?'twitter':String(body.provider);
       const params=new URLSearchParams({provider:nativeProvider,redirect_to:flow.redirectTo,code_challenge:flow.code_challenge,code_challenge_method:flow.code_challenge_method,...(body.action==='link'?{skip_http_redirect:'true'}:{})});
       if(body.provider==='azure')params.set('scopes','email');
       if(body.chooseAccount===true&&['google','azure'].includes(String(body.provider)))params.set('prompt','select_account');
@@ -62,8 +62,9 @@ export async function POST(request:Request) {
       return Response.json({url},{headers});
     }
     if(body.action==='signout') {
-      const access=requestCookie(request,ACCOUNT_ACCESS);
+      const session=await accountSession(request,headers),access=session?.access;
       if(access) { try { await authRequest('/logout?scope=local','POST',{},access); } catch(error) { if(!(error instanceof AccountError)||error.code!=='AUTH_EXPIRED')throw error; } }
+      if(session)await forgetSavedAccount(request,session.user.id);
       clearAccount(headers);return Response.json({ok:true},{headers});
     }
     const user=await requireAccount(request);

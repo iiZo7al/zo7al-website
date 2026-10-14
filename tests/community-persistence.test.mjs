@@ -7,6 +7,7 @@ import { join } from 'node:path';
 import { PGlite } from '@electric-sql/pglite';
 import ts from 'typescript';
 import { statDataUrl } from './profile-modules.mjs';
+import { ACCOUNT_SCHEMA } from '../src/lib/server/account-schema.ts';
 import { SITE_SCHEMA } from '../src/lib/server/site-schema.ts';
 import { COMMUNITY_SCHEMA } from '../src/lib/server/community-schema.ts';
 
@@ -29,7 +30,7 @@ function poolFor(engine) {
 }
 const folder=await mkdtemp(join(tmpdir(),'zo7al-community-pg-'));
 let engine=new PGlite(folder),pool=poolFor(engine);
-await engine.exec(SITE_SCHEMA+COMMUNITY_SCHEMA);
+await engine.exec(SITE_SCHEMA+COMMUNITY_SCHEMA+ACCOUNT_SCHEMA);
 globalThis.__zo7alPersistentPool=pool;
 const dbUrl=stub('export async function siteDatabase(){return globalThis.__zo7alPersistentPool;}');
 const securityUrl=moduleUrl('src/lib/server/site-security.ts');
@@ -128,7 +129,7 @@ test('ballots, preferences and owner publication choices survive closing and reo
  await server.saveCommunity({...goal,title:'Owner-edited goal',published:false,imageId:null});
  await pool.query('UPDATE community_entries SET published=false WHERE kind=\'achievement\'');
  await engine.close();engine=new PGlite(folder);pool=poolFor(engine);globalThis.__zo7alPersistentPool=pool;
- await engine.exec(SITE_SCHEMA+COMMUNITY_SCHEMA);await initializeCommunity(pool);
+ await engine.exec(SITE_SCHEMA+COMMUNITY_SCHEMA+ACCOUNT_SCHEMA);await initializeCommunity(pool);
  const entries=await server.communityEntries('en',false,visitorHash),poll=entries.find(entry=>entry.id===pollId);
  assert.equal(poll.title,'What should Zo7al focus on next?');assert.equal(poll.myVote,2);assert.deepEqual(poll.votes,[0,0,1,0]);assert.equal(entries.some(entry=>entry.kind==='achievement'),false);
  assert.equal((await server.communityEntries('en',true)).find(entry=>entry.id===goal.id).title,'Owner-edited goal');
@@ -147,14 +148,14 @@ test('starter publication toggles retain translations, while owner edits replace
  const changed=(await server.communityEntries('ar')).find(entry=>entry.id===pollId);assert.equal(changed.title,'A new owner-written poll');assert.equal(changed.myVote,null);
 });
 test('pre-existing unpublished owner entries are respected during first activation',async()=>{
- const other=new PGlite();await other.exec(SITE_SCHEMA+COMMUNITY_SCHEMA);const target=poolFor(other);
+ const other=new PGlite();await other.exec(SITE_SCHEMA+COMMUNITY_SCHEMA+ACCOUNT_SCHEMA);const target=poolFor(other);
  try{
   for(const kind of ['poll','achievement'])await target.query("INSERT INTO community_entries(id,kind,locale,title,payload,published,moderation) VALUES(gen_random_uuid(),$1,'en','Owner entry',$2::jsonb,false,'approved')",[kind,JSON.stringify(kind==='poll'?{options:['One','Two']}:{stat:'kills',threshold:500})]);
   await initializeCommunity(target);assert.equal((await target.query('SELECT count(*)::int AS count FROM community_entries')).rows[0].count,3);assert.equal((await target.query("SELECT count(*)::int AS count FROM community_entries WHERE title='Owner entry' AND published")).rows[0].count,0);
  }finally{await other.close();}
 });
 test('failed first activation rolls back its marker and can retry without partial defaults',async()=>{
- const other=new PGlite();await other.exec(SITE_SCHEMA+COMMUNITY_SCHEMA);const target=poolFor(other);
+ const other=new PGlite();await other.exec(SITE_SCHEMA+COMMUNITY_SCHEMA+ACCOUNT_SCHEMA);const target=poolFor(other);
  try{
   const failing={connect:async()=>{const client=await target.connect();return {...client,query:(sql,args)=>sql.startsWith('INSERT INTO community_entries')?Promise.reject(Error('Injected failure')):client.query(sql,args)};}};
   await assert.rejects(initializeCommunity(failing),/Injected failure/);assert.equal((await target.query('SELECT count(*)::int AS count FROM community_installations')).rows[0].count,0);assert.equal((await target.query('SELECT count(*)::int AS count FROM community_entries')).rows[0].count,0);
@@ -177,7 +178,7 @@ test('the schema upgrades legacy news without changing content or publication',a
  }finally{await other.close();}
 });
 test('legacy shared community content moves once without losing votes or moderation',async()=>{
- const other=new PGlite();await other.exec(SITE_SCHEMA+COMMUNITY_SCHEMA);const target=poolFor(other);
+ const other=new PGlite();await other.exec(SITE_SCHEMA+COMMUNITY_SCHEMA+ACCOUNT_SCHEMA);const target=poolFor(other);
  try{
   await target.query("INSERT INTO community_installations(id) VALUES('community-starter-v1')");
   const original=(await target.query("INSERT INTO community_entries(id,kind,locale,topic,title,payload,published,moderation) VALUES(gen_random_uuid(),'poll','en','all','Owner poll','{\"options\":[\"One\",\"Two\"]}',false,'approved') RETURNING id")).rows[0].id;
@@ -191,7 +192,7 @@ test('legacy shared community content moves once without losing votes or moderat
  }finally{await other.close();}
 });
 test('an existing Fortnite poll, including a draft, prevents duplicate starter creation',async()=>{
- const other=new PGlite();await other.exec(SITE_SCHEMA+COMMUNITY_SCHEMA);const target=poolFor(other);
+ const other=new PGlite();await other.exec(SITE_SCHEMA+COMMUNITY_SCHEMA+ACCOUNT_SCHEMA);const target=poolFor(other);
  try{
   await target.query("INSERT INTO community_installations(id) VALUES('community-starter-v1')");
   await target.query("INSERT INTO community_entries(id,kind,locale,topic,title,payload,published,moderation) VALUES(gen_random_uuid(),'poll','en','fortnite','Owner Fortnite draft','{\"options\":[\"One\",\"Two\"]}',false,'approved')");
@@ -213,4 +214,13 @@ test('optional news polls publish together, preserve votes on edits and roll bac
  await siteContent.saveContent({...news,id,published:false});assert.equal((await server.communityEntries('ar')).some(x=>x.id===row.poll_id),false);
  await siteContent.saveContent({...news,id,poll:null});assert.equal((await pool.query('SELECT poll_id FROM site_content WHERE id=$1',[id])).rows[0].poll_id,null);assert.equal((await pool.query('SELECT count(*)::int AS n FROM community_votes WHERE poll_id=$1',[row.poll_id])).rows[0].n,1);
  const plain=await siteContent.saveContent({...news,poll:null});assert.equal((await pool.query('SELECT poll_id FROM site_content WHERE id=$1',[plain])).rows[0].poll_id,null);
+});
+test('gallery authors link only to their own active public profile and private account data stays excluded',async()=>{
+ const member='f1234567-1234-1234-1234-123456789abc',entry='f2234567-1234-1234-1234-123456789abc';
+ await pool.query("INSERT INTO site_accounts(id,name,username,avatar) VALUES($1,'Creator','Creator_One','https://example.com/avatar.png')",[member]);
+ await pool.query("INSERT INTO community_entries(id,kind,locale,topic,title,author,payload,published,moderation,user_id,contact_email) VALUES($1,'gallery','en','minecraft','Member work','Old name','{}',true,'approved',$2,'private@example.com')",[entry,member]);
+ let row=(await server.communityEntries('en')).find(x=>x.id===entry);assert.deepEqual(row.authorProfile,{username:'Creator_One',name:'Creator',avatar:'https://example.com/avatar.png'});assert.ok(!JSON.stringify(row).includes('private@example.com'));assert.equal(row.user_id,undefined);
+ await pool.query("UPDATE site_accounts SET username='Renamed' WHERE id=$1",[member]);assert.equal((await server.communityEntries('en')).find(x=>x.id===entry).authorProfile.username,'Renamed');
+ await pool.query("UPDATE site_accounts SET banned_until=now()+interval '1 day' WHERE id=$1",[member]);assert.equal((await server.communityEntries('en')).find(x=>x.id===entry).authorProfile,null);
+ await pool.query("UPDATE site_accounts SET banned_until=NULL,deletion_due_at=now()+interval '1 day' WHERE id=$1",[member]);assert.equal((await server.communityEntries('en')).find(x=>x.id===entry).authorProfile,null);
 });

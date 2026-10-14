@@ -45,6 +45,8 @@ CREATE TABLE IF NOT EXISTS site_account_recovery_codes(user_id uuid NOT NULL REF
 CREATE TABLE IF NOT EXISTS site_account_second_factors(token_hash char(64) PRIMARY KEY,user_id uuid NOT NULL,session_id uuid NOT NULL,factor_hash char(64) NOT NULL,expires_at timestamptz NOT NULL);
 CREATE TABLE IF NOT EXISTS site_account_action_proofs(token_hash char(64) PRIMARY KEY,user_id uuid NOT NULL,session_id uuid NOT NULL,purpose varchar(32) NOT NULL,target varchar(160) NOT NULL,expires_at timestamptz NOT NULL);
 CREATE TABLE IF NOT EXISTS site_account_email_challenges(browser_hash char(64) PRIMARY KEY,user_id uuid NOT NULL,session_id uuid NOT NULL,email varchar(254) NOT NULL,attempts integer NOT NULL DEFAULT 0,purpose varchar(32) NOT NULL,target varchar(160) NOT NULL,expires_at timestamptz NOT NULL);
+CREATE TABLE IF NOT EXISTS site_account_saved_sessions(device_hash char(64) NOT NULL,user_id uuid NOT NULL REFERENCES site_accounts(id) ON DELETE CASCADE,sealed text NOT NULL,expires_at timestamptz NOT NULL,updated_at timestamptz NOT NULL DEFAULT now(),PRIMARY KEY(device_hash,user_id));
+CREATE INDEX IF NOT EXISTS site_account_saved_session_expiry ON site_account_saved_sessions(expires_at);
 CREATE INDEX IF NOT EXISTS site_account_deletions_due ON site_accounts(deletion_due_at) WHERE deletion_due_at IS NOT NULL;
 CREATE UNIQUE INDEX IF NOT EXISTS site_account_usernames ON site_accounts(lower(username)) WHERE username IS NOT NULL;
 CREATE TABLE IF NOT EXISTS site_passkey_flows (

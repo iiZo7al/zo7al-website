@@ -6,10 +6,10 @@ import { validateCommunity, type CommunityEntry } from "../data/community";
 import { tokenHash } from "./site-security";
 import { localizeCommunityEntry } from "../data/community-defaults";
 
-const PUBLIC_COLUMNS = `e.id,e.kind,e.locale,e.topic,e.project_key AS "projectKey",e.title,e.body,e.payload,e.published,e.moderation,e.author,e.created_at AS "createdAt",e.updated_at AS "updatedAt",CASE WHEN i.id IS NOT NULL THEN json_build_object('id',i.id,'width',i.width,'height',i.height) ELSE NULL END AS image`;
+const PUBLIC_COLUMNS = `e.id,e.kind,e.locale,e.topic,e.project_key AS "projectKey",e.title,e.body,e.payload,e.published,e.moderation,e.author,e.created_at AS "createdAt",e.updated_at AS "updatedAt",CASE WHEN i.id IS NOT NULL THEN json_build_object('id',i.id,'width',i.width,'height',i.height) ELSE NULL END AS image,CASE WHEN a.username IS NOT NULL THEN json_build_object('username',a.username,'name',a.name,'avatar',a.avatar) ELSE NULL END AS "authorProfile"`;
 export async function communityEntries(locale: string, admin = false, visitorHash?: string) {
   const db = await siteDatabase();
-  const result = await db.query(`SELECT ${PUBLIC_COLUMNS}${admin ? ',e.contact_email AS "contactEmail",e.discord_receipt AS "discordReceipt"' : ''} FROM community_entries e LEFT JOIN site_content_images i ON i.id=e.image_id
+  const result = await db.query(`SELECT ${PUBLIC_COLUMNS}${admin ? ',e.contact_email AS "contactEmail",e.discord_receipt AS "discordReceipt"' : ''} FROM community_entries e LEFT JOIN site_content_images i ON i.id=e.image_id LEFT JOIN site_accounts a ON a.id=e.user_id AND e.kind='gallery' AND a.username ~ '^[a-zA-Z0-9_]{3,32}$' AND a.deleted_at IS NULL AND a.deletion_due_at IS NULL AND (a.banned_until IS NULL OR a.banned_until<=now())
     WHERE $2::boolean OR (e.published AND e.moderation='approved' AND (e.locale=$1 OR (e.locale='en' AND NOT EXISTS(SELECT 1 FROM community_entries translated WHERE translated.kind=e.kind AND translated.project_key=e.project_key AND e.project_key<>'' AND (e.kind<>'changelog' OR translated.payload->>'version'=e.payload->>'version') AND translated.locale=$1 AND translated.published AND translated.moderation='approved')))) ORDER BY e.updated_at DESC LIMIT 200`,[locale,admin]);
   const rows = result.rows.map(row=>({...row,createdAt:new Date(row.createdAt).toISOString(),updatedAt:new Date(row.updatedAt).toISOString()})) as CommunityEntry[];
   const polls = rows.filter(row=>row.kind==='poll').map(row=>row.id);

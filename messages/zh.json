@@ -1172,7 +1172,7 @@
     "connect_curseforge": "使用 CurseForge API 密钥加载已发布模组包的下载统计。",
     "connect_pelican": "连接 HTTP / HTTPS 面板和 Client API 密钥以自动发现服务器。",
     "description_minecraft": "实时 Minecraft 状态与玩家数。连接 Pelican 后可查看 CPU、内存、日志并发送命令。",
-    "description_fortnite": "通过 Epic Games Data API 获取过去7天的公开统计。部分岛屿或时段可能没有数据。",
+    "description_fortnite": "来自Fortnite.GG的Zo7al地图统计，显示更新时间与各指标的统计周期。",
     "description_youtube": "YouTube Data API 的公开频道统计。私有分析、收益和视频管理请打开 YouTube Studio。",
     "description_modrinth": "通过官方 Modrinth API 获取实时项目、下载和关注者统计。",
     "description_curseforge": "使用授权 API 密钥获取 CurseForge 模组包下载统计。",
@@ -1208,7 +1208,9 @@
     "last24Hours": "过去24小时",
     "uniquePlayers": "独立玩家",
     "averagePlaytime": "平均游玩时间",
-    "fortnitePeriods": "游玩次数和独立玩家为过去24小时数据；游玩分钟和最高人数为历史累计数据。来源中的部分数字经过取整。"
+    "fortnitePeriods": "游玩次数和独立玩家为过去24小时数据；游玩分钟和最高人数为历史累计数据。来源中的部分数字经过取整。",
+    "connection_cached": "最近保存的数据",
+    "fortniteCachedHint": "无法刷新Fortnite.GG。此处显示标注时间的最近核实数据。过时的在线人数和前一天指标会隐藏。"
   },
   "pelican": {
     "title": "服务器管理",
@@ -1832,7 +1834,8 @@
       "scheduled": "已申请删除。15天内登录即可取消。"
     },
     "dashboard": "控制面板",
-    "switchAccount": "切换账号"
+    "switchAccount": "切换账号",
+    "addAccount": "添加账号"
   },
   "systemNotifications": {
     "title": "设备通知",

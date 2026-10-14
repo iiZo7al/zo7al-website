@@ -1,0 +1,15 @@
+"use client";
+import {useState} from 'react';
+import Image from 'next/image';
+import {ArrowLeftRight,ChevronRight,LoaderCircle,Plus,UserRound} from 'lucide-react';
+import {useTranslations} from 'next-intl';
+import {useAccount} from './AccountProvider';
+type SavedAccount={id:string;name:string;avatar:string|null};
+async function action(input:Record<string,unknown>){const response=await fetch('/api/account/accounts',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(input)}),data=await response.json();if(!response.ok)throw Error(data.error??'UNAVAILABLE');return data;}
+export default function AccountSwitcher({onAdd,onSwitch}:{onAdd:()=>void;onSwitch:(required:boolean)=>void}){
+ const t=useTranslations('account'),{account,refresh}=useAccount(),[open,setOpen]=useState(false),[accounts,setAccounts]=useState<SavedAccount[]>([]),[busy,setBusy]=useState(false),[error,setError]=useState('');
+ const toggle=async()=>{if(open){setOpen(false);return;}setOpen(true);setBusy(true);setError('');try{setAccounts((await action({action:'remember'})).accounts);}catch(e){const code=e instanceof Error?e.message:'UNAVAILABLE';setError(t.has('errors.'+code)?t('errors.'+code):t('errors.UNAVAILABLE'));}finally{setBusy(false);}};
+ const select=async(id:string)=>{if(id===account?.id||busy)return;setBusy(true);setError('');try{const result=await action({action:'switch',id});await refresh();onSwitch(result.mfaRequired===true);}catch(e){const code=e instanceof Error?e.message:'UNAVAILABLE';setError(t.has('errors.'+code)?t('errors.'+code):t('errors.UNAVAILABLE'));}finally{setBusy(false);}};
+ const rows=account?[{id:account.id,name:account.name,avatar:account.avatar},...accounts.filter(a=>a.id!==account.id)]:accounts;
+ return <div className="account-switcher"><button type="button" className="account-switch-trigger" aria-expanded={open} aria-controls={open?'account-switch-list':undefined} disabled={busy} data-cursor="button" onClick={()=>void toggle()}><ArrowLeftRight size={17} aria-hidden="true"/><span>{t('switchAccount')}</span><ChevronRight size={16} aria-hidden="true"/></button>{open&&<div id="account-switch-list" className="account-switch-list" aria-label={t('switchAccount')}><div className="account-switch-choices" role="group" aria-label={t('switchAccount')}>{rows.map(row=><button key={row.id} type="button" aria-pressed={row.id===account?.id} disabled={busy} onClick={()=>void select(row.id)} data-cursor="button"><span className="account-switch-radio" aria-hidden="true"/>{row.avatar?<Image src={row.avatar} width={24} height={24} alt="" unoptimized/>:<UserRound size={24} aria-hidden="true"/>}<strong dir="auto">{row.name}</strong></button>)}</div>{busy&&<LoaderCircle size={18} className="animate-spin" aria-label={t('loading')}/>}<button type="button" className="account-switch-add" disabled={busy} onClick={onAdd} data-cursor="button"><Plus size={18} aria-hidden="true"/>{t('addAccount')}</button>{error&&<p className="account-error" role="alert">{error}</p>}</div>}</div>;
+}

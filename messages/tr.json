@@ -1172,7 +1172,7 @@
     "connect_curseforge": "Yayımlanmış mod paketlerinin indirme verileri için CurseForge API anahtarı kullan.",
     "connect_pelican": "Sunucuları keşfetmek için HTTP / HTTPS panelini ve Client API anahtarını bağla.",
     "description_minecraft": "Canlı Minecraft durumu ve oyuncu sayısı. CPU, bellek, günlükler ve komutlar Pelican bağlantısından sonra kullanılabilir.",
-    "description_fortnite": "Son 7 günün genel ada istatistikleri Epic Games Data API üzerinden alınır. Bazı adalar veya aralıklar için veri olmayabilir.",
+    "description_fortnite": "Fortnite.GG üzerinden Zo7al harita istatistikleri; güncelleme zamanı ve her ölçümün dönemi belirtilir.",
     "description_youtube": "YouTube Data API üzerinden genel kanal istatistikleri. Özel analizler, gelir ve videolar için YouTube Studio aç.",
     "description_modrinth": "Resmî Modrinth API üzerinden canlı proje, indirme ve takipçi istatistikleri.",
     "description_curseforge": "Yetkili API anahtarı ile CurseForge mod paketlerinin indirme verileri.",
@@ -1208,7 +1208,9 @@
     "last24Hours": "Son 24 saat",
     "uniquePlayers": "Benzersiz oyuncular",
     "averagePlaytime": "Ortalama oyun süresi",
-    "fortnitePeriods": "Oyunlar ve benzersiz oyuncular son 24 saati; dakikalar ve en yüksek oyuncu sayısı tüm zamanı kapsar. Kaynak bazı sayıları yuvarlar."
+    "fortnitePeriods": "Oyunlar ve benzersiz oyuncular son 24 saati; dakikalar ve en yüksek oyuncu sayısı tüm zamanı kapsar. Kaynak bazı sayıları yuvarlar.",
+    "connection_cached": "Son kaydedilen veriler",
+    "fortniteCachedHint": "Fortnite.GG güncellenemedi. Gösterilen zamanda doğrulanan son değerler gösterilir. Eski canlı oyuncu sayıları ve önceki günün verileri gizlenir."
   },
   "pelican": {
     "title": "Sunucu yönetimi",
@@ -1832,7 +1834,8 @@
       "scheduled": "Silme talebi alındı. İptal etmek için 15 gün içinde giriş yap."
     },
     "dashboard": "Kontrol paneli",
-    "switchAccount": "Hesap değiştir"
+    "switchAccount": "Hesap değiştir",
+    "addAccount": "Hesap ekle"
   },
   "systemNotifications": {
     "title": "Cihaz bildirimleri",
