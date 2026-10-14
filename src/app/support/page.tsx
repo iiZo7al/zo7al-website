@@ -1,12 +1,9 @@
-import type { Metadata } from "next";
+import {localizedPageMetadata} from "@/lib/server/page-metadata";
 import { getTranslations } from "next-intl/server";
 import PageHero from "@/components/ui/PageHero";
 import SupportCenter from "@/components/hub/SupportCenter";
 
-export const metadata: Metadata = {
-  title: "Support",
-  description: "Find answers or contact the Zo7al Projects support team.",
-};
+export async function generateMetadata(){return localizedPageMetadata("hub.support","hub.supportIntro");}
 
 export default async function SupportPage() {
   const t = await getTranslations("hub");

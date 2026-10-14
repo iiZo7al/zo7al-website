@@ -1,3 +1,4 @@
+import MarkdownContent from "@/components/ui/MarkdownContent";
 import { getTranslations } from "next-intl/server";
 import ModpackDetailsButton from "./ModpackDetailsButton";
 import { ProjectStatus } from "@/components/community/ProjectExtras";
@@ -56,9 +57,7 @@ export default async function CurseForgeGallery({
                 <p className="font-semibold">{project.title}</p>
                 <ProjectStatus projectKey={'curseforge:'+project.id}/>
                 {project.description && (
-                  <p className="mt-2 flex-1 text-sm leading-relaxed text-[var(--text-muted)]">
-                    {project.description}
-                  </p>
+                  <MarkdownContent className="mt-2 flex-1 text-sm leading-relaxed text-[var(--text-muted)]">{project.description}</MarkdownContent>
                 )}
                 <div className="mt-4 flex flex-wrap items-center justify-between gap-3 text-sm">
                   <span className="text-[var(--text-muted)]">

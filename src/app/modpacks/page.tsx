@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import {localizedPageMetadata} from "@/lib/server/page-metadata";
 import { getTranslations } from "next-intl/server";
 import PageHero from "@/components/ui/PageHero";
 import SectionHeader from "@/components/ui/SectionHeader";
@@ -7,10 +7,7 @@ import CurseForgeGallery from "@/components/modpacks/CurseForgeGallery";
 import ModpackChangelog from "@/components/modpacks/ModpackChangelog";
 import { getSyncedCurseForgeProjects } from "@/lib/sync/curseforge";
 
-export const metadata: Metadata = {
-  title: "Modpacks",
-  description: "Explore Minecraft projects created by Zo7al.",
-};
+export async function generateMetadata(){return localizedPageMetadata("nav.modpacks","modpacks.text");}
 
 export const revalidate = 21600; // 6 hours
 

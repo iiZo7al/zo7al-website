@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import {localizedPageMetadata} from "@/lib/server/page-metadata";
 import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 import { ShieldCheck, Sparkles, Headphones, ArrowDown } from "lucide-react";
@@ -8,7 +8,7 @@ import Image from "next/image";
 import StoreRanks from "@/components/store/StoreRanks";
 import StoreActivity from "@/components/hub/StoreActivity";
 import { getStoreCatalog } from "@/lib/server/tebex";
-export const metadata: Metadata = { title: "Store", description: "Support the network and explore the official Zo7al store." };
+export async function generateMetadata(){return localizedPageMetadata("nav.store","store.text");}
 export default async function StorePage() {
   const [t, catalog] = await Promise.all([getTranslations("store"), getStoreCatalog()]);
   return <main data-accent="store">

@@ -17,7 +17,10 @@
     "copied": "Copied",
     "all": "All",
     "downloads": "downloads",
-    "viewMore": "View more"
+    "viewMore": "View more",
+    "website": "Website",
+    "markdownHint": "Markdown supported: **bold**, lists, links, tables and code.",
+    "markdownPreview": "Markdown preview"
   },
   "home": {
     "eyebrow": "@iiZo7al — Gaming Universe",
@@ -160,7 +163,33 @@
       "8238-8280-9827": "🧡🌹 Press Like & Favorite To Support Me\n\n🏰 Doomspire Brickbattle\n💥 Destructive Towers & Explosions\n🔫 6 Classic Weapons\n🎮 Fast-Paced Team Battles\n🏆 100 Rounds\n🛒 In-Game Shop\n🔫 Without Reload\n🪜 Climbable Towers & Ladders\n😎 Made In UEFN"
     },
     "newMap": "New!!",
-    "itemShopCode": "Use creator code Zo7al in the Fortnite Item Shop."
+    "itemShopCode": "Use creator code Zo7al in the Fortnite Item Shop.",
+    "mapsNav": "Zo7al Maps",
+    "codeNav": "Use Code: {code}",
+    "tagLabels": {
+      "squad": "Squad",
+      "explosives": "Explosives",
+      "space": "Space",
+      "gun_game": "Gun game",
+      "free_for_all": "Free for all",
+      "attack": "Attack",
+      "competitive": "Competitive",
+      "zonewars": "Zone wars",
+      "pvp": "PvP",
+      "8v8": "8v8",
+      "base": "Base",
+      "training": "Training",
+      "1v1": "1v1",
+      "music": "Music",
+      "just_for_fun": "Just for fun",
+      "team_deathmatch": "Team deathmatch",
+      "arena": "Arena",
+      "capture_the_flag": "Capture the flag",
+      "shooter": "Shooter",
+      "practice": "Practice",
+      "fighting": "Fighting",
+      "building": "Building"
+    }
   },
   "socials": {
     "eyebrow": "Community",
@@ -400,7 +429,7 @@
       {
         "category": "storeRanks",
         "q": "How do I apply for a creator rank?",
-        "a": "Sign in, link Discord and verify Minecraft, then choose a creator rank in the store. Add your channel and content details; your linked account details are supplied automatically. Applications require team review.",
+        "a": "Sign in, link Discord and verify Minecraft, then select a creator rank in the store. Submit your channel and content details. Once sent, the button says “Application submitted” and opens My requests → Applications to follow its status.",
         "id": "creator-apply",
         "href": "/store",
         "action": "Open the store"
@@ -417,7 +446,7 @@
         "id": "one-rank",
         "category": "storeRanks",
         "q": "Can I put several ranks in the cart?",
-        "a": "The cart accepts one paid rank at a time. Remove it before choosing another. You can add Coins alongside the rank and change Coins quantities. An owned paid rank also owns every lower paid tier (VIP, VIP+, VIP++, MVP, MVP+, MVP++). Booster is independent. Owned ranks cannot be purchased again for yourself; gifts remain available.",
+        "a": "Only one rank per cart. Remove the current rank to choose another.",
         "href": "/store",
         "action": "Open the store"
       },
@@ -449,7 +478,7 @@
         "id": "leaderboard",
         "category": "minecraft",
         "q": "How does the Minecraft leaderboard work?",
-        "a": "The leaderboard opens on Zo7al Network, ordered by total playtime in hours. Only statistics enabled for each server contribute to network totals. You can choose another server or statistic and select a player to open their profile. An empty table means no synchronized values are available for that selection.",
+        "a": "The Minecraft leaderboard starts with the top five players. Choose View more to show the rest. It opens on Zo7al Network, ordered by playtime; you can choose another server or statistic and open a player’s profile. An empty list means no synchronized values are available.",
         "href": "/minecraft#leaderboard",
         "action": "View leaders"
       },
@@ -505,7 +534,7 @@
         "id": "project-updates",
         "category": "modpacks",
         "q": "Where can I find a project's status and updates?",
-        "a": "Open a map or modpack's details to see its published status, version updates and issue-report link. The team manages these entries. A project with no published status or changelog does not display invented updates.",
+        "a": "Open a map or modpack’s details to see its published status, releases and issue-report link. If no status or changelog is published, that information is shown as unavailable.",
         "href": "/modpacks",
         "action": "View modpacks"
       },
@@ -537,7 +566,7 @@
         "id": "account-login",
         "category": "accountSecurity",
         "q": "How do I sign in or link another account?",
-        "a": "Use the enabled email, Discord, Google, Microsoft or Modrinth options. Link additional methods from My account → Linked accounts, and keep a usable sign-in method.",
+        "a": "Use an enabled email, Discord, Google, Microsoft, GitHub, Twitch, Modrinth or passkey option. Add other sign-in methods from My account → Linked accounts. Keep at least one usable sign-in method.",
         "href": "/account",
         "action": "Sign in"
       },
@@ -545,7 +574,7 @@
         "id": "public-profile",
         "category": "accountSecurity",
         "q": "How do I create my public profile?",
-        "a": "Choose a username in My account → Public profile. Edit your photo, banner, bio and social links. Your address is /@username and only approved published submissions appear.",
+        "a": "Choose a username in My account → Public profile. Set your photo, banner, bio and optional social links. Your public address is /@username. Social links appear as icons, awarded badges appear beside your profile information, and only approved published submissions are visible.",
         "href": "/account?tab=profile",
         "action": "Public profile"
       },
@@ -577,7 +606,7 @@
         "id": "backup-codes",
         "category": "accountSecurity",
         "q": "How do I use backup codes?",
-        "a": "If the sign-in provider supports them, generate and save codes from Security. Each code works once; regenerating invalidates the old set. Unavailable codes are clearly indicated.",
+        "a": "Generate and save ten backup codes in Security after enabling two-factor authentication. Each code works once. Regenerating codes invalidates the old set; keep them somewhere private and safe.",
         "href": "/account?tab=security",
         "action": "Security"
       },
@@ -601,7 +630,7 @@
         "id": "delete-account",
         "category": "accountSecurity",
         "q": "How do I delete my account?",
-        "a": "You will be signed out and your profile hidden. The account is permanently deleted after 15 days. Signing in and completing 2FA within that period cancels deletion. Profile data, requests and links are removed; purchase records remain unlinked from your account.",
+        "a": "Choose Delete account in your account settings and verify with 2FA or an available email verification method. You are signed out and your profile is hidden. Permanent deletion follows after 15 days; signing in and completing verification within that period cancels it. Purchase records remain without your account link.",
         "href": "/account?tab=settings",
         "action": "Settings"
       },
@@ -609,9 +638,41 @@
         "id": "account-password",
         "category": "accountSecurity",
         "q": "How do I change or reset my password?",
-        "a": "Open My account → Password to set a unique password of 12–128 characters. Confirm it and request an email verification code if prompted. If you cannot sign in, choose Forgot password in the sign-in window and open the emailed link in the same browser.",
+        "a": "Open My account → Security to set a password of 12–128 characters. Confirm it and request a verification code if prompted. If you cannot sign in, choose Forgot password and open the recovery email link in the same browser.",
         "href": "/account?tab=password",
         "action": "Manage password"
+      },
+      {
+        "id": "owned-ranks",
+        "category": "storeRanks",
+        "q": "Why are lower ranks marked as owned?",
+        "a": "A paid rank includes its tier and every lower tier in this order: VIP, VIP+, VIP++, MVP, MVP+, MVP++. VIP owns only itself; Booster is independent and owns only Booster. You cannot buy owned ranks again for yourself, but you may gift ranks to another player.",
+        "href": "/store",
+        "action": "Store"
+      },
+      {
+        "id": "subscriptions",
+        "category": "storeRanks",
+        "q": "Where do I manage subscriptions?",
+        "a": "Open My account → Subscriptions. Manage subscriptions opens the Tebex customer portal to view or cancel eligible recurring purchases. My orders opens your purchase requests on the website.",
+        "href": "/account?tab=subscriptions",
+        "action": "Subscriptions"
+      },
+      {
+        "id": "switch-account",
+        "category": "accountSecurity",
+        "q": "How do I switch between my accounts?",
+        "a": "Open your account menu, then hover over or click Switch account. Choose a saved account or Add account. Switching does not sign out your other saved accounts; an account with 2FA still requires verification.",
+        "href": "/account",
+        "action": "My account"
+      },
+      {
+        "id": "unlink-account",
+        "category": "accountSecurity",
+        "q": "How do I unlink an account?",
+        "a": "Open My account → Linked accounts and select Unlink. Verify with 2FA or an available email method before removal. Keep another usable sign-in method so you retain access.",
+        "href": "/account?tab=connections",
+        "action": "Linked accounts"
       }
     ],
     "clearSearch": "Clear search",
@@ -870,7 +931,8 @@
     },
     "applicationDetails": "To apply, open the application form and provide a reachable email, your Minecraft and Discord usernames, and your profile link on the selected platform. Give accurate content details and explain why you want the rank. With your consent, the application is sent to the Zo7al team through Discord for review. Keep the reference shown after successful delivery. Applying is not a purchase or an automatic rank grant; eligibility and acceptance are decided by the team, with no guaranteed review time or additional benefits.",
     "notificationPending": "Your application is saved. The Discord notification is pending and the team can retry it.",
-    "applied": "Application submitted"
+    "applied": "Application submitted",
+    "website": "Website"
   },
   "hub": {
     "latest": "New at Zo7al",
@@ -1079,7 +1141,8 @@
     "pollQuestion": "Poll question",
     "pollOptions": "Options · one per line",
     "pollEnds": "Voting deadline",
-    "pollImmutable": "Options cannot change after votes are recorded."
+    "pollImmutable": "Options cannot change after votes are recorded.",
+    "website": "Website"
   },
   "dashboard": {
     "dashboard": "Dashboard",
@@ -1880,5 +1943,41 @@
     "versions": "Versions",
     "files": "Files",
     "dependencies": "Dependencies"
+  },
+  "platformTerms": {
+    "mod": "Mod",
+    "modpack": "Modpack",
+    "plugin": "Plugin",
+    "resourcepack": "Resource pack",
+    "shader": "Shader",
+    "datapack": "Data pack",
+    "server": "Server",
+    "approved": "Approved",
+    "archived": "Archived",
+    "rejected": "Rejected",
+    "draft": "Draft",
+    "unlisted": "Unlisted",
+    "processing": "Processing",
+    "withheld": "Withheld",
+    "scheduled": "Scheduled",
+    "private": "Private",
+    "public": "Public",
+    "unknown": "Unknown",
+    "required": "Required",
+    "optional": "Optional",
+    "unsupported": "Unsupported",
+    "release": "Release",
+    "beta": "Beta",
+    "alpha": "Alpha",
+    "incompatible": "Incompatible",
+    "embedded": "Embedded",
+    "owner": "Owner",
+    "member": "Member",
+    "admin": "Administrator",
+    "moderator": "Moderator"
+  },
+  "metadata": {
+    "homeTitle": "Zo7al Projects — Gaming Universe",
+    "homeDescription": "Zo7al is a gaming creator building Minecraft networks, modpacks, Fortnite Creative maps and experimental gaming projects."
   }
 }

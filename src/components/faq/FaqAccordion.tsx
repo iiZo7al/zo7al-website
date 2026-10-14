@@ -1,4 +1,5 @@
 "use client";
+import MarkdownContent from "@/components/ui/MarkdownContent";
 
 import { useId, useMemo, useState } from "react";
 import Link from "next/link";
@@ -168,12 +169,13 @@ function FaqRow({
         id={`${id}-panel`}
         role="region"
         aria-hidden={!open}
+        inert={!open}
         aria-labelledby={`${id}-button`}
         className="grid transition-[grid-template-rows] duration-300 ease-out motion-reduce:transition-none"
         style={{ gridTemplateRows: open ? "1fr" : "0fr" }}
       >
         <div className="overflow-hidden">
-          <div className="px-6 pb-5"><p className="text-sm leading-relaxed text-[var(--text-muted)]" dir="auto">{item.a}</p>{faqActionHref(item.href) && item.action && <Link href={faqActionHref(item.href)!} tabIndex={open ? 0 : -1} className="mt-4 inline-flex max-w-full items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold text-[var(--accent)]" style={{ borderColor: "var(--border)" }} data-cursor="link">{item.action}<ArrowUpRight size={15} className="shrink-0 rtl:-scale-x-100" aria-hidden="true" /></Link>}</div>
+          <div className="px-6 pb-5"><MarkdownContent className="text-sm leading-relaxed text-[var(--text-muted)]">{item.a}</MarkdownContent>{faqActionHref(item.href) && item.action && <Link href={faqActionHref(item.href)!} tabIndex={open ? 0 : -1} className="mt-4 inline-flex max-w-full items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold text-[var(--accent)]" style={{ borderColor: "var(--border)" }} data-cursor="link">{item.action}<ArrowUpRight size={15} className="shrink-0 rtl:-scale-x-100" aria-hidden="true" /></Link>}</div>
         </div>
       </div>
     </div>

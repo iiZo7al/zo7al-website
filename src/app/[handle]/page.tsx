@@ -1,10 +1,11 @@
+import MarkdownContent from "@/components/ui/MarkdownContent";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getTranslations, getLocale } from "next-intl/server";
 import { UserRound, Gamepad2, Images } from "lucide-react";
 import { siteDatabase } from "@/lib/server/site-db";
-import { profileHandle } from "@/lib/data/member-profile";
+import { profileHandle,PROFILE_SOCIAL_LABELS } from "@/lib/data/member-profile";
 import BrandIcon from "@/components/ui/BrandIcon";
 import ContentImage from "@/components/hub/ContentImage";
 import {contentImageUrl} from '@/lib/data/content-media';
@@ -33,9 +34,9 @@ export default async function MemberProfile({
       [member.id],
     )
   ).rows;
-  const [t, locale] = await Promise.all([
+  const [t, locale, common] = await Promise.all([
     getTranslations("account"),
-    getLocale(),
+    getLocale(),getTranslations("common"),
   ]);
   return (
     <main className="public-member-profile">
@@ -68,9 +69,7 @@ export default async function MemberProfile({
           </div>
         </header>
         {member.bio && (
-          <p className="member-profile-bio" dir="auto">
-            {member.bio}
-          </p>
+          <MarkdownContent className="member-profile-bio">{member.bio}</MarkdownContent>
         )}
         <div className="hub-actions member-profile-socials">
           {Object.entries(member.socials as Record<string, string>).map(
@@ -81,8 +80,8 @@ export default async function MemberProfile({
                 className="hub-button"
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label={platform}
-                title={platform}
+                aria-label={platform==="website"?common("website"):PROFILE_SOCIAL_LABELS[platform]??platform}
+                title={platform==="website"?common("website"):PROFILE_SOCIAL_LABELS[platform]??platform}
               >
                 <BrandIcon slug={platform} size={19} />
               </a>
@@ -105,10 +104,8 @@ export default async function MemberProfile({
               {entries.map((e) => (
                 <article key={e.id} className="account-card">
                   <ContentImage image={e.image} title={e.title} />
-                  <h3 dir="auto">{e.title}</h3>
-                  <p className="account-help" dir="auto">
-                    {e.body}
-                  </p>
+                  <h3 dir="auto"><MarkdownContent inline>{e.title}</MarkdownContent></h3>
+                  <MarkdownContent className="account-help">{e.body}</MarkdownContent>
                   <time
                     className="account-help"
                     dateTime={new Date(e.created_at).toISOString()}

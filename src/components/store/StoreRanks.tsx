@@ -1,4 +1,5 @@
 "use client";
+import MarkdownContent from "@/components/ui/MarkdownContent";
 import { createPortal } from "react-dom";
 import { useLocale, useTranslations } from "next-intl";
 import { Fragment, useEffect, useRef, useState } from "react";
@@ -23,7 +24,7 @@ import CreatorRanks from "./CreatorRanks";
 import { groupStoreProducts } from "@/lib/data/store-groups";
 import { BOOSTER_PRODUCT, isMonthlyRank } from "@/lib/data/store-booster";
 import { DISCORD_LINK } from "@/lib/data/site";
-import { localizedDescription } from "@/lib/data/store-localization";
+import { localizedDescription, localizedMarkdownDescription } from "@/lib/data/store-localization";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import CommerceIcon from "@/components/ui/CommerceIcon";
 import DetailsIcon from "@/components/ui/DetailsIcon";
@@ -61,6 +62,7 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
   const descriptionT = useTranslations("storeDescription");
   const reduceMotion = useReducedMotion();
   const describe = (product: StoreProduct) => localizedDescription(product.description, descriptionT);
+  const describeMarkdown = (product: StoreProduct) => localizedMarkdownDescription(product.description, descriptionT);
   const subscriptionLink = <a href="https://portal.tebex.io/" target="_blank" rel="noopener noreferrer" className="store-subscription-link">{t("manageSubscriptions")}</a>;
   const { items: cartItems, ready: cartReady, open: cartOpen, setOpen: setCartOpen, add, changeQuantity, remove, removePurchased } = useCart();
   const cartIds = cartItems.map(item => item.packageId);
@@ -246,7 +248,7 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
           <p className="text-label">{booster ? t("ranksTitle") : categoryLabel(product.category?.name)}</p>
           <h3 className="text-display store-rank-name"><bdi dir="ltr">{isCoinProduct(product) ? <RankName name={product.name} variant="coins"/> : isRankProduct(product) || booster ? <RankName name={product.name}/> : product.name}</bdi></h3>
           <p className={`store-rank-price${product.price === null ? " store-price-pending" : ""}`}>{price(product)}</p>
-          {perks.length ? <ul className="store-rank-perks">{perks.map((perk, index) => <li key={index}><Check size={15} aria-hidden="true" /><span dir="auto">{perk}</span></li>)}</ul> : <p dir="auto" className="store-rank-description store-description-preview">{lines.join("\n") || t("descriptionUnavailable")}</p>}
+          {perks.length ? <ul className="store-rank-perks">{perks.map((perk, index) => <li key={index}><Check size={15} aria-hidden="true" /><MarkdownContent inline>{perk}</MarkdownContent></li>)}</ul> : <MarkdownContent className="store-rank-description store-description-preview">{lines.join("\n") || t("descriptionUnavailable")}</MarkdownContent>}
           <div className="store-rank-actions">{owned ? <div className="store-action store-owned" role="status"><ShieldCheck size={17}/>{t("owned")}</div> : booster ? <a href={DISCORD_LINK} target="_blank" rel="noopener noreferrer" data-cursor="button" className="store-action"><span>{t("getRank")} <bdi dir="ltr">Booster</bdi></span><ArrowRight size={16} className="store-direction" aria-hidden="true" /></a> : isCoinProduct(product) && quantity > 0 ? <QuantityControl name={product.name} quantity={quantity} disabled={!live || !product.available || !cartReady} decrease={copy.decrease} increase={copy.increase} onChange={delta => changeQuantity(product.id, delta)} removeLabel={copy.remove} onRemove={() => remove(product.id)}/> : <button title={rankBlocked ? copy.oneRank : undefined} disabled={rankBlocked || !live || !product.available || !cartReady || (cartIds.length >= 20 && !cartIds.includes(product.id))} onClick={() => { if (cartIds.includes(product.id)) setCartOpen(true); else { add(product.id, isRankProduct(product) ? rankIds : []); setToast({ product, key: Date.now() }); } }} data-cursor="button" className={`store-action${featured ? " store-action-primary" : ""}`}>
             <span>{cartIds.includes(product.id) ? copy.added : <>{copy.add.split("{name}")[0]}<bdi dir="ltr">{product.name}</bdi>{copy.add.split("{name}")[1]}</>}</span>{cartIds.includes(product.id) ? <Check size={16} aria-hidden="true"/> : <CommerceIcon name="shopping-cart" size={16} aria-hidden="true"/>}
           </button>}
@@ -267,7 +269,7 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
     </motion.aside>}</AnimatePresence>, document.body)}
     <dialog ref={detailsDialog} onCancel={() => setDetails(null)} onClose={() => setDetails(null)} aria-labelledby="rank-details-title" className="checkout-shell store-checkout">
       <header className="store-checkout-header"><h2 id="rank-details-title">{t("details")} · <bdi dir="ltr">{currentDetails?.name}</bdi></h2><button type="button" className="store-close" onClick={() => setDetails(null)} aria-label={t("close")}><X size={20} aria-hidden="true" /></button></header>
-      <div className="store-checkout-body store-full-description">{currentDetails?.image && <Image unoptimized src={currentDetails.image} alt={currentDetails.name} width={480} height={320} className="store-details-image" />}{currentDetails?.description ? describe(currentDetails).map((line, index) => line.startsWith("• ") ? <p className="store-detail-perk" key={index}><Check size={16} aria-hidden="true" /><span dir="auto">{line.slice(2)}</span></p> : <p dir="auto" key={index}>{line}</p>) : <p>{t("descriptionUnavailable")}</p>}</div>
+      <div className="store-checkout-body store-full-description">{currentDetails?.image && <Image unoptimized src={currentDetails.image} alt={currentDetails.name} width={480} height={320} className="store-details-image" />}{currentDetails?.description ? <MarkdownContent>{describeMarkdown(currentDetails)}</MarkdownContent> : <p>{t("descriptionUnavailable")}</p>}</div>
     </dialog>
     <dialog ref={dialog} onCancel={close} onClose={close} aria-labelledby="checkout-title" aria-describedby="checkout-description" className="checkout-shell store-checkout store-cart-dialog" onClick={event => {
       if (event.target !== event.currentTarget) return;
@@ -298,7 +300,7 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
               account?.minecraft ? <CharacterPreview key={`${cartRank.id}:${account.minecraft.uuid}`} id="cart-rank-character" username={account.minecraft.username} previewRank={cartRank.name}/> : <Link className="store-action" href="/account?tab=connections">{accountT("connectMinecraft")}</Link>
             ) : <div className="store-full-description">
               {cartRank.image && <Image unoptimized src={cartRank.image} alt={cartRank.name} width={480} height={320} className="store-details-image"/>}
-              {cartRank.description ? describe(cartRank).map((line, index) => line.startsWith("• ") ? <p className="store-detail-perk" key={index}><Check size={16} aria-hidden="true"/><span dir="auto">{line.slice(2)}</span></p> : <p dir="auto" key={index}>{line}</p>) : <p>{t("descriptionUnavailable")}</p>}
+              {cartRank.description ? <MarkdownContent>{describeMarkdown(cartRank)}</MarkdownContent> : <p>{t("descriptionUnavailable")}</p>}
             </div>}
           </section>}
           {!!cartIds.length && <div className="store-cart-total"><span>{copy.subtotal}</span><strong dir="ltr">{totalsKnown ? [...totals].map(([currency, amount]) => new Intl.NumberFormat("en-US", { style: "currency", currency, currencyDisplay: "narrowSymbol" }).format(amount)).join(" + ") : t("pricePending")}</strong></div>}

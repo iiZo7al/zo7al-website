@@ -17,7 +17,10 @@
     "copied": "Kopyalandı",
     "all": "Tümü",
     "downloads": "indirme",
-    "viewMore": "View more"
+    "viewMore": "Daha fazla göster",
+    "website": "Web sitesi",
+    "markdownHint": "Markdown desteklenir: **kalın**, listeler, bağlantılar, tablolar ve kod.",
+    "markdownPreview": "Markdown önizlemesi"
   },
   "home": {
     "eyebrow": "@iiZo7al — Oyun Evreni",
@@ -160,7 +163,33 @@
       "8238-8280-9827": "🧡🌹 Destek olmak için beğen ve favorilere ekle\n\n🏰 Doomspire Brickbattle\n💥 Yıkılabilir kuleler ve patlamalar\n🔫 6 klasik silah\n🎮 Hızlı takım savaşları\n🏆 100 tur\n🛒 Oyun içi mağaza\n🔫 Yeniden doldurma yok\n🪜 Tırmanılabilir kuleler ve merdivenler\n😎 UEFN ile yapıldı"
     },
     "newMap": "Yeni!!",
-    "itemShopCode": "Fortnite Eşya Mağazasında Zo7al içerik üreticisi kodunu kullanın."
+    "itemShopCode": "Fortnite Eşya Mağazasında Zo7al içerik üreticisi kodunu kullanın.",
+    "mapsNav": "Zo7al Haritaları",
+    "codeNav": "Kodu kullan: {code}",
+    "tagLabels": {
+      "squad": "Takım",
+      "explosives": "Patlayıcılar",
+      "space": "Uzay",
+      "gun_game": "Silah oyunu",
+      "free_for_all": "Herkes tek",
+      "attack": "Saldırı",
+      "competitive": "Rekabetçi",
+      "zonewars": "Bölge savaşları",
+      "pvp": "Oyuncuya karşı oyuncu",
+      "8v8": "8’e 8",
+      "base": "Üs",
+      "training": "Eğitim",
+      "1v1": "1’e 1",
+      "music": "Müzik",
+      "just_for_fun": "Sadece eğlence",
+      "team_deathmatch": "Takımlı ölüm maçı",
+      "arena": "Arena",
+      "capture_the_flag": "Bayrak kapmaca",
+      "shooter": "Nişancı",
+      "practice": "Alıştırma",
+      "fighting": "Dövüş",
+      "building": "İnşa"
+    }
   },
   "socials": {
     "eyebrow": "Topluluk",
@@ -400,7 +429,7 @@
       {
         "category": "storeRanks",
         "q": "İçerik üreticisi rütbesine nasıl başvururum?",
-        "a": "Giriş yap, Discord’u bağla ve Minecraft’ı doğrula. Üretici rütbesini seçip kanal ve içerik bilgilerini ekle; bağlı hesap bilgileri otomatik alınır. Başvuruyu ekip inceler.",
+        "a": "Giriş yapın, Discord’u bağlayın ve Minecraft’ı doğrulayın. Bir içerik üreticisi rütbesi seçip kanal ve içerik bilgilerinizi gönderin. Ardından düğmede “Başvuru gönderildi” yazar; düğme durumu izlemeniz için Taleplerim → Başvurular bölümünü açar.",
         "id": "creator-apply",
         "href": "/store",
         "action": "Mağazayı aç"
@@ -417,7 +446,7 @@
         "id": "one-rank",
         "category": "storeRanks",
         "q": "Sepete birden fazla rütbe ekleyebilir miyim?",
-        "a": "Sepette aynı anda bir ücretli rütbe bulunabilir. Başkasını seçmeden önce onu kaldırın. Rütbenin yanına Coins ekleyip miktarlarını değiştirebilirsiniz. Ücretli bir rütbe tüm alt seviyeleri kapsar (VIP, VIP+, VIP++, MVP, MVP+, MVP++). Booster bağımsızdır. Sahip olduğunuz rütbeleri kendiniz için tekrar alamazsınız; hediyeler kullanılabilir.",
+        "a": "Sepete yalnızca bir rütbe eklenebilir. Başka bir rütbe için mevcut olanı kaldır.",
         "href": "/store",
         "action": "Mağazayı aç"
       },
@@ -449,7 +478,7 @@
         "id": "leaderboard",
         "category": "minecraft",
         "q": "Minecraft sıralaması nasıl çalışır?",
-        "a": "Sıralama, toplam oyun saatine göre sıralanmış Zo7al Network ile açılır. Ağ toplamına yalnızca her sunucuda etkinleştirilen istatistikler katılır. Sunucuyu veya istatistiği değiştirebilir, profilini açmak için bir oyuncu seçebilirsiniz. Boş tablo, bu seçim için henüz eşitlenmiş değer olmadığını gösterir.",
+        "a": "Minecraft sıralaması ilk beş oyuncuyu gösterir. Diğerlerini görmek için Daha fazla göster seçeneğini kullanın. Zo7al Network’te oynama süresine göre başlar; sunucu veya istatistik seçip oyuncu profilini açabilirsiniz. Boş liste, eşitlenmiş değer olmadığını gösterir.",
         "href": "/minecraft#leaderboard",
         "action": "Sıralama"
       },
@@ -505,7 +534,7 @@
         "id": "project-updates",
         "category": "modpacks",
         "q": "Proje durumunu ve güncellemelerini nereden görürüm?",
-        "a": "Harita veya mod paketi ayrıntılarında yayınlanan durum, sürüm değişiklikleri ve sorun bildirimi vardır. Bunları ekip yönetir; yayınlanmamış durumlar veya güncellemeler uydurulmaz.",
+        "a": "Yayımlanan durum, sürümler ve sorun bildirme bağlantısı için harita veya mod paketi ayrıntılarını açın. Durum ya da değişiklik günlüğü yayımlanmamışsa bilgi kullanılamıyor olarak gösterilir.",
         "href": "/modpacks",
         "action": "Mod paketleri"
       },
@@ -537,7 +566,7 @@
         "id": "account-login",
         "category": "accountSecurity",
         "q": "Nasıl giriş yaparım veya başka hesap bağlarım?",
-        "a": "Etkin e-posta, Discord, Google, Microsoft veya Modrinth seçeneklerini kullan. Hesabım → Bağlı hesaplar bölümünden yeni yöntemler ekle ve çalışan bir giriş yöntemi bırak.",
+        "a": "Etkin e-posta, Discord, Google, Microsoft, GitHub, Twitch, Modrinth veya geçiş anahtarı seçeneğini kullanın. Hesabım → Bağlı hesaplar bölümünden başka yöntemler ekleyin. En az bir kullanılabilir giriş yöntemini koruyun.",
         "href": "/account",
         "action": "Giriş yap"
       },
@@ -545,7 +574,7 @@
         "id": "public-profile",
         "category": "accountSecurity",
         "q": "Herkese açık profilimi nasıl oluştururum?",
-        "a": "Hesabım → Herkese açık profil bölümünden kullanıcı adını seç; resim, kapak, açıklama ve sosyal bağlantıları düzenle. Adresin /@username olur; yalnızca onaylanmış yayımlanan gönderiler görünür.",
+        "a": "Hesabım → Herkese açık profil bölümünde kullanıcı adı seçin. Fotoğraf, kapak, biyografi ve isteğe bağlı sosyal bağlantılar ekleyin. Adresiniz /@username olur. Bağlantılar simge, verilen rozetler profil bilgilerinizin yanında görünür. Yalnızca onaylanıp yayımlanan gönderiler gösterilir.",
         "href": "/account?tab=profile",
         "action": "Herkese açık profil"
       },
@@ -577,7 +606,7 @@
         "id": "backup-codes",
         "category": "accountSecurity",
         "q": "Yedek kodları nasıl kullanırım?",
-        "a": "Giriş sağlayıcısı destekliyorsa Güvenlik’ten kod oluşturup sakla. Her kod bir kez çalışır; yenilemek eskileri geçersiz kılar. Kullanılamadığında açıkça belirtilir.",
+        "a": "İki aşamalı doğrulamayı etkinleştirdikten sonra Güvenlik bölümünde on yedek kod oluşturup güvenli ve özel bir yerde saklayın. Her kod bir kez çalışır. Yeni kodlar oluşturmak eskilerini geçersiz kılar.",
         "href": "/account?tab=security",
         "action": "Güvenlik"
       },
@@ -601,7 +630,7 @@
         "id": "delete-account",
         "category": "accountSecurity",
         "q": "Hesabımı nasıl silerim?",
-        "a": "Oturumun kapatılır ve profilin gizlenir. Hesap 15 gün sonra kalıcı olarak silinir. Bu sürede giriş yapıp 2FA doğrulamasını tamamlamak silmeyi iptal eder. Profil, talepler ve bağlantılar kaldırılır; satın alma kayıtları anonim tutulur.",
+        "a": "Hesabı sil seçeneğini seçip 2FA veya kullanılabilir e-posta yöntemiyle kimliğinizi doğrulayın. Oturum kapanır ve profil gizlenir. Kalıcı silme 15 gün sonra gerçekleşir; süre dolmadan giriş yapıp doğrulamayı tamamlamak silmeyi iptal eder. Satın alma kayıtlarının hesap bağlantısı kaldırılır.",
         "href": "/account?tab=settings",
         "action": "Ayarlar"
       },
@@ -609,9 +638,41 @@
         "id": "account-password",
         "category": "accountSecurity",
         "q": "Parolamı nasıl değiştirir veya sıfırlarım?",
-        "a": "Hesabım → Parola bölümünde 12–128 karakterlik benzersiz bir parola belirle. Parolayı onayla ve istenirse e-posta doğrulama kodu gönder. Giriş yapamıyorsan giriş penceresindeki Parolamı unuttum seçeneğini kullan ve e-postadaki bağlantıyı aynı tarayıcıda aç.",
+        "a": "12–128 karakterlik parola belirlemek için Hesabım → Güvenlik bölümünü açın. Parolayı doğrulayın ve gerekirse kod isteyin. Giriş yapamıyorsanız Parolamı unuttum seçeneğini kullanıp gelen kurtarma bağlantısını aynı tarayıcıda açın.",
         "href": "/account?tab=password",
         "action": "Parolayı yönet"
+      },
+      {
+        "id": "owned-ranks",
+        "category": "storeRanks",
+        "q": "Alt rütbeler neden sahip olunan olarak görünüyor?",
+        "a": "Ücretli rütbe kendi seviyesini ve alt seviyeleri kapsar: VIP, VIP+, VIP++, MVP, MVP+, MVP++. VIP yalnızca VIP’yi kapsar; Booster bağımsızdır ve yalnızca Booster’ı kapsar. Sahip olduğunuz rütbeyi kendiniz için tekrar alamaz, başka oyuncuya hediye edebilirsiniz.",
+        "href": "/store",
+        "action": "Mağaza"
+      },
+      {
+        "id": "subscriptions",
+        "category": "storeRanks",
+        "q": "Aboneliklerimi nereden yönetirim?",
+        "a": "Hesabım → Abonelikler bölümünü açın. Abonelikleri yönet, uygun yinelenen satın alımları görmek veya iptal etmek için Tebex portalını açar. Siparişlerim, sitedeki satın alma taleplerinizi açar.",
+        "href": "/account?tab=subscriptions",
+        "action": "Abonelikler"
+      },
+      {
+        "id": "switch-account",
+        "category": "accountSecurity",
+        "q": "Hesaplarım arasında nasıl geçiş yaparım?",
+        "a": "Hesap menüsünü açıp Hesap değiştir üzerine gelin veya tıklayın. Kayıtlı bir hesap ya da Hesap ekle seçin. Diğer kayıtlı hesaplardan çıkış yapılmaz; 2FA etkin bir hesaba geçerken doğrulama gerekir.",
+        "href": "/account",
+        "action": "Hesabım"
+      },
+      {
+        "id": "unlink-account",
+        "category": "accountSecurity",
+        "q": "Bir hesabın bağlantısını nasıl kaldırırım?",
+        "a": "Hesabım → Bağlı hesaplar bölümünde Bağlantıyı kaldır seçin. Kaldırmadan önce 2FA veya kullanılabilir e-posta yöntemiyle doğrulayın. Erişiminizi korumak için başka bir kullanılabilir giriş yöntemini tutun.",
+        "href": "/account?tab=connections",
+        "action": "Bağlı hesaplar"
       }
     ],
     "clearSearch": "Aramayı temizle",
@@ -870,7 +931,8 @@
     },
     "applicationDetails": "Başvuru formuna ulaşılabilir bir e-posta, Minecraft ve Discord adlarını ve seçilen platformdaki profil bağlantını yaz. İçerik ve başvuru nedenini doğru bilgilerle açıkla. Onayınla başvuru Discord üzerinden Zo7al ekibine iletilir. Teslimat onaylandıktan sonra gösterilen başvuru numarasını sakla. Başvuru bir satın alma veya otomatik rütbe kazanımı değildir. Uygunluk ve kabul kararını ekip verir; inceleme süresi veya ek avantajlar garanti edilmez.",
     "notificationPending": "Başvurun kaydedildi. Discord bildirimi bekliyor ve ekip yeniden gönderebilir.",
-    "applied": "Başvuru gönderildi"
+    "applied": "Başvuru gönderildi",
+    "website": "Web sitesi"
   },
   "hub": {
     "latest": "Zo7al'dan yenilikler",
@@ -911,7 +973,7 @@
     "accessCode": "Özel erişim kodu",
     "track": "Talebi takip et",
     "trackingHelp": "Referansını ve özel erişim kodunu gir veya kayıtlı bir talep seç.",
-    "savedRequests": "Your account requests",
+    "savedRequests": "Hesabınızın talepleri",
     "noSavedRequests": "Bu bölümde henüz talep yok.",
     "notFound": "Eşleşen talep bulunamadı. Referansı ve erişim kodunu kontrol et.",
     "consent": "Bu bilgileri Discord üzerinden Zo7al Network ekibiyle paylaşmayı kabul ediyorum.",
@@ -1029,7 +1091,7 @@
     "activity": "Siparişlerim ve başvurularım",
     "activityIntro": "Taleplerin ve gönderilerin hesabına kaydedilir.",
     "commonErrorsIntro": "Bağlantı, mağaza ve mod paketlerinde sık görülen sorunlara hızlı çözümler.",
-    "viewMore": "View more",
+    "viewMore": "Daha fazla göster",
     "copyLink": "Bu bağlantıyı kopyala",
     "coverImage": "Kapak görseli",
     "uploadImage": "Görsel yükle",
@@ -1079,7 +1141,8 @@
     "pollQuestion": "Oylama sorusu",
     "pollOptions": "Seçenekler · her satıra bir seçenek",
     "pollEnds": "Oylama bitişi",
-    "pollImmutable": "Oy verildikten sonra seçenekler değiştirilemez."
+    "pollImmutable": "Oy verildikten sonra seçenekler değiştirilemez.",
+    "website": "Web sitesi"
   },
   "dashboard": {
     "dashboard": "Kontrol paneli",
@@ -1880,5 +1943,41 @@
     "versions": "Sürümler",
     "files": "Dosyalar",
     "dependencies": "Bağımlılıklar"
+  },
+  "platformTerms": {
+    "mod": "Mod",
+    "modpack": "Mod paketi",
+    "plugin": "Eklenti",
+    "resourcepack": "Kaynak paketi",
+    "shader": "Gölgelendirici",
+    "datapack": "Veri paketi",
+    "server": "Sunucu",
+    "approved": "Onaylandı",
+    "archived": "Arşivlendi",
+    "rejected": "Reddedildi",
+    "draft": "Taslak",
+    "unlisted": "Listelenmemiş",
+    "processing": "İşleniyor",
+    "withheld": "Bekletiliyor",
+    "scheduled": "Planlandı",
+    "private": "Özel",
+    "public": "Herkese açık",
+    "unknown": "Bilinmiyor",
+    "required": "Gerekli",
+    "optional": "İsteğe bağlı",
+    "unsupported": "Desteklenmiyor",
+    "release": "Kararlı sürüm",
+    "beta": "Beta",
+    "alpha": "Alfa",
+    "incompatible": "Uyumsuz",
+    "embedded": "Gömülü",
+    "owner": "Sahip",
+    "member": "Üye",
+    "admin": "Yönetici",
+    "moderator": "Moderatör"
+  },
+  "metadata": {
+    "homeTitle": "Zo7al Projects — Oyun evreni",
+    "homeDescription": "Zo7al, Minecraft ağları, mod paketleri, Fortnite Kreatif haritaları ve deneysel oyun projeleri geliştiren bir oyun içerik üreticisidir."
   }
 }

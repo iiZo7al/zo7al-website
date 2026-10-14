@@ -137,6 +137,7 @@
 .dash-platform-heading>.dash-platform-logo { width:58px; height:58px; border-radius:16px; }
 .dash-platform-heading .dash-eyebrow { margin-bottom:3px; }
 .dash-platform-heading>.dash-button { margin-inline-start:auto; }
+.dash-platform-heading>.dash-button + .dash-button { margin-inline-start:0; }
 .dash-platform-description { font-size:13px; margin-bottom:28px; max-width:800px; }
 .dash-platform-metrics { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:18px; margin-bottom:20px; }
 .dash-platform-metrics small { color:var(--text-muted); font-size:14px; display:block; margin-top:10px; }

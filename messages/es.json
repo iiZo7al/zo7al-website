@@ -17,7 +17,10 @@
     "copied": "Copiado",
     "all": "Todos",
     "downloads": "descargas",
-    "viewMore": "View more"
+    "viewMore": "Ver más",
+    "website": "Sitio web",
+    "markdownHint": "Admite Markdown: **negrita**, listas, enlaces, tablas y código.",
+    "markdownPreview": "Vista previa de Markdown"
   },
   "home": {
     "eyebrow": "@iiZo7al — Universo Gamer",
@@ -160,7 +163,33 @@
       "8238-8280-9827": "🧡🌹 Dale a Me gusta y añade a favoritos para apoyarme\n\n🏰 Doomspire Brickbattle\n💥 Torres destructibles y explosiones\n🔫 6 armas clásicas\n🎮 Batallas rápidas por equipos\n🏆 100 rondas\n🛒 Tienda dentro del juego\n🔫 Sin recargar\n🪜 Torres y escaleras escalables\n😎 Creado con UEFN"
     },
     "newMap": "¡¡Nuevo!!",
-    "itemShopCode": "Usa el código de creador Zo7al en la tienda de Fortnite."
+    "itemShopCode": "Usa el código de creador Zo7al en la tienda de Fortnite.",
+    "mapsNav": "Mapas de Zo7al",
+    "codeNav": "Usa el código: {code}",
+    "tagLabels": {
+      "squad": "Escuadrón",
+      "explosives": "Explosivos",
+      "space": "Espacio",
+      "gun_game": "Juego de armas",
+      "free_for_all": "Todos contra todos",
+      "attack": "Ataque",
+      "competitive": "Competitivo",
+      "zonewars": "Guerras de zona",
+      "pvp": "Jugador contra jugador",
+      "8v8": "8 contra 8",
+      "base": "Base",
+      "training": "Entrenamiento",
+      "1v1": "1 contra 1",
+      "music": "Música",
+      "just_for_fun": "Solo por diversión",
+      "team_deathmatch": "Combate por equipos",
+      "arena": "Arena",
+      "capture_the_flag": "Captura la bandera",
+      "shooter": "Disparos",
+      "practice": "Práctica",
+      "fighting": "Lucha",
+      "building": "Construcción"
+    }
   },
   "socials": {
     "eyebrow": "Comunidad",
@@ -400,7 +429,7 @@
       {
         "category": "storeRanks",
         "q": "¿Cómo solicito un rango de creador?",
-        "a": "Inicia sesión, vincula Discord y verifica Minecraft. Elige un rango de creador y añade tu canal y contenido; los datos vinculados se incluyen automáticamente. El equipo revisa las solicitudes.",
+        "a": "Inicia sesión, vincula Discord y verifica Minecraft. Elige un rango de creador y envía los datos de tu canal y contenido. Después, el botón muestra «Solicitud enviada» y abre Mis solicitudes → Solicitudes de creador para seguir el estado.",
         "id": "creator-apply",
         "href": "/store",
         "action": "Abrir tienda"
@@ -417,7 +446,7 @@
         "id": "one-rank",
         "category": "storeRanks",
         "q": "¿Puedo añadir varios rangos al carrito?",
-        "a": "Solo se admite un rango de pago a la vez. Elimínalo antes de elegir otro. Puedes añadir Coins junto al rango y cambiar su cantidad. Un rango de pago incluye todos los niveles inferiores (VIP, VIP+, VIP++, MVP, MVP+, MVP++). Booster es independiente. No puedes volver a comprarlos para ti; los regalos siguen disponibles.",
+        "a": "Solo se permite un rango por carrito. Elimina el actual para elegir otro.",
         "href": "/store",
         "action": "Abrir tienda"
       },
@@ -449,7 +478,7 @@
         "id": "leaderboard",
         "category": "minecraft",
         "q": "¿Cómo funciona la clasificación de Minecraft?",
-        "a": "La clasificación se abre en Zo7al Network, ordenada por el total de horas de juego. Solo las estadísticas activadas en cada servidor cuentan para los totales de la red. Puedes cambiar de servidor o estadística y seleccionar un jugador para abrir su perfil. Una tabla vacía indica que aún no hay valores sincronizados para esa selección.",
+        "a": "La clasificación de Minecraft muestra los cinco primeros jugadores. Pulsa Ver más para ver el resto. Empieza en Zo7al Network por tiempo de juego; puedes cambiar de servidor o estadística y abrir el perfil del jugador. Una lista vacía indica que no hay valores sincronizados.",
         "href": "/minecraft#leaderboard",
         "action": "Ver clasificación"
       },
@@ -505,7 +534,7 @@
         "id": "project-updates",
         "category": "modpacks",
         "q": "¿Dónde veo el estado y las actualizaciones de un proyecto?",
-        "a": "En los detalles del mapa o modpack aparecen su estado publicado, cambios de versión y enlace para informar de problemas. El equipo los administra; no se inventan estados ni actualizaciones.",
+        "a": "Abre los detalles de un mapa o paquete de mods para ver su estado publicado, versiones y enlace para informar de problemas. Si no se publica un estado o registro de cambios, se indica que no está disponible.",
         "href": "/modpacks",
         "action": "Ver modpacks"
       },
@@ -537,7 +566,7 @@
         "id": "account-login",
         "category": "accountSecurity",
         "q": "¿Cómo inicio sesión o vinculo otra cuenta?",
-        "a": "Usa las opciones habilitadas de correo, Discord, Google, Microsoft o Modrinth. Añade métodos en Mi cuenta → Cuentas vinculadas y conserva un método de acceso válido.",
+        "a": "Usa una opción habilitada de correo, Discord, Google, Microsoft, GitHub, Twitch, Modrinth o clave de acceso. Añade métodos desde Mi cuenta → Cuentas vinculadas. Conserva al menos un método de acceso válido.",
         "href": "/account",
         "action": "Iniciar sesión"
       },
@@ -545,7 +574,7 @@
         "id": "public-profile",
         "category": "accountSecurity",
         "q": "¿Cómo creo mi perfil público?",
-        "a": "Elige un nombre en Mi cuenta → Perfil público y edita foto, banner, biografía y enlaces sociales. Tu dirección es /@username; solo aparecen publicaciones aprobadas y públicas.",
+        "a": "Elige un nombre de usuario en Mi cuenta → Perfil público y añade foto, portada, biografía y enlaces sociales opcionales. Tu dirección es /@username. Los enlaces aparecen como iconos y las insignias otorgadas junto a tu información. Solo se muestran publicaciones aprobadas.",
         "href": "/account?tab=profile",
         "action": "Perfil público"
       },
@@ -577,7 +606,7 @@
         "id": "backup-codes",
         "category": "accountSecurity",
         "q": "¿Cómo uso los códigos de respaldo?",
-        "a": "Si el proveedor los admite, genera y guarda códigos en Seguridad. Cada uno funciona una vez; regenerarlos invalida los antiguos. Su indisponibilidad se indica claramente.",
+        "a": "Tras activar la verificación en dos pasos, genera y guarda diez códigos de respaldo en Seguridad. Cada código funciona una vez. Crear otros invalida los anteriores; guárdalos en un lugar privado y seguro.",
         "href": "/account?tab=security",
         "action": "Seguridad"
       },
@@ -601,7 +630,7 @@
         "id": "delete-account",
         "category": "accountSecurity",
         "q": "¿Cómo elimino mi cuenta?",
-        "a": "Se cerrará tu sesión y se ocultará tu perfil. La cuenta se eliminará definitivamente tras 15 días. Iniciar sesión y completar 2FA durante ese plazo cancela la eliminación. Se eliminan el perfil, las solicitudes y los enlaces; las compras quedan anonimizadas.",
+        "a": "Elige Eliminar cuenta y confirma tu identidad con 2FA o un método de correo disponible. Se cierra tu sesión y se oculta el perfil. La eliminación definitiva ocurre a los 15 días; entrar y completar la verificación antes la cancela. Los registros de compra quedan sin vincular a tu cuenta.",
         "href": "/account?tab=settings",
         "action": "Ajustes"
       },
@@ -609,9 +638,41 @@
         "id": "account-password",
         "category": "accountSecurity",
         "q": "¿Cómo cambio o restablezco mi contraseña?",
-        "a": "Abre Mi cuenta → Contraseña y elige una contraseña única de 12 a 128 caracteres. Confírmala y solicita un código por correo si se te pide. Si no puedes iniciar sesión, elige ¿Olvidaste tu contraseña? en la ventana de acceso y abre el enlace del correo en el mismo navegador.",
+        "a": "Abre Mi cuenta → Seguridad para establecer una contraseña de 12 a 128 caracteres. Confírmala y solicita un código si se requiere. Si no puedes entrar, elige Olvidé mi contraseña y abre el enlace de recuperación del correo en el mismo navegador.",
         "href": "/account?tab=password",
         "action": "Gestionar contraseña"
+      },
+      {
+        "id": "owned-ranks",
+        "category": "storeRanks",
+        "q": "¿Por qué los rangos inferiores aparecen como adquiridos?",
+        "a": "Un rango de pago incluye su nivel y los inferiores: VIP, VIP+, VIP++, MVP, MVP+, MVP++. VIP solo incluye VIP; Booster es independiente y solo incluye Booster. No puedes volver a comprar rangos propios para ti, pero sí regalarlos a otro jugador.",
+        "href": "/store",
+        "action": "Tienda"
+      },
+      {
+        "id": "subscriptions",
+        "category": "storeRanks",
+        "q": "¿Dónde gestiono mis suscripciones?",
+        "a": "Abre Mi cuenta → Suscripciones. Gestionar suscripciones abre el portal Tebex para consultar o cancelar compras recurrentes elegibles. Mis pedidos abre tus solicitudes de compra en el sitio.",
+        "href": "/account?tab=subscriptions",
+        "action": "Suscripciones"
+      },
+      {
+        "id": "switch-account",
+        "category": "accountSecurity",
+        "q": "¿Cómo cambio entre mis cuentas?",
+        "a": "Abre el menú de cuenta y pasa el cursor o pulsa Cambiar cuenta. Elige una cuenta guardada o Añadir cuenta. Las otras cuentas guardadas no se desconectan; una cuenta con 2FA sigue requiriendo verificación.",
+        "href": "/account",
+        "action": "Mi cuenta"
+      },
+      {
+        "id": "unlink-account",
+        "category": "accountSecurity",
+        "q": "¿Cómo desvinculo una cuenta?",
+        "a": "Abre Mi cuenta → Cuentas vinculadas y elige Desvincular. Confirma con 2FA o un método de correo disponible antes de eliminar el vínculo. Mantén otro método válido para conservar el acceso.",
+        "href": "/account?tab=connections",
+        "action": "Cuentas vinculadas"
       }
     ],
     "clearSearch": "Borrar búsqueda",
@@ -870,7 +931,8 @@
     },
     "applicationDetails": "Abre el formulario y proporciona un correo accesible, tus usuarios de Minecraft y Discord y el perfil de la plataforma elegida. Describe tu contenido y motivación con información correcta. Con tu consentimiento, la solicitud se envía al equipo de Zo7al mediante Discord. Conserva la referencia tras el envío confirmado. Solicitar no es comprar ni recibir automáticamente un rango: el equipo decide la elegibilidad y aceptación, sin garantizar plazos ni beneficios adicionales.",
     "notificationPending": "Tu solicitud está guardada. La notificación de Discord está pendiente y el equipo puede reenviarla.",
-    "applied": "Solicitud enviada"
+    "applied": "Solicitud enviada",
+    "website": "Sitio web"
   },
   "hub": {
     "latest": "Novedades de Zo7al",
@@ -911,7 +973,7 @@
     "accessCode": "Código de acceso privado",
     "track": "Consultar solicitud",
     "trackingHelp": "Introduce la referencia y el código de acceso privado, o elige una solicitud guardada.",
-    "savedRequests": "Your account requests",
+    "savedRequests": "Solicitudes de tu cuenta",
     "noSavedRequests": "Todavía no hay solicitudes en esta sección.",
     "notFound": "No se encontró la solicitud. Comprueba la referencia y el código de acceso.",
     "consent": "Acepto compartir esta información con el equipo de Zo7al Network a través de Discord.",
@@ -1029,7 +1091,7 @@
     "activity": "Mis pedidos y solicitudes",
     "activityIntro": "Tus solicitudes y publicaciones se guardan en tu cuenta.",
     "commonErrorsIntro": "Soluciones rápidas a problemas comunes de conexión, tienda y modpacks.",
-    "viewMore": "View more",
+    "viewMore": "Ver más",
     "copyLink": "Copia este enlace",
     "coverImage": "Imagen de portada",
     "uploadImage": "Subir imagen",
@@ -1079,7 +1141,8 @@
     "pollQuestion": "Pregunta de la votación",
     "pollOptions": "Opciones · una por línea",
     "pollEnds": "Fin de la votación",
-    "pollImmutable": "No se pueden cambiar las opciones después de recibir votos."
+    "pollImmutable": "No se pueden cambiar las opciones después de recibir votos.",
+    "website": "Sitio web"
   },
   "dashboard": {
     "dashboard": "Panel",
@@ -1880,5 +1943,41 @@
     "versions": "Versiones",
     "files": "Archivos",
     "dependencies": "Dependencias"
+  },
+  "platformTerms": {
+    "mod": "Mod",
+    "modpack": "Paquete de mods",
+    "plugin": "Complemento",
+    "resourcepack": "Paquete de recursos",
+    "shader": "Sombreador",
+    "datapack": "Paquete de datos",
+    "server": "Servidor",
+    "approved": "Aprobado",
+    "archived": "Archivado",
+    "rejected": "Rechazado",
+    "draft": "Borrador",
+    "unlisted": "No listado",
+    "processing": "En proceso",
+    "withheld": "Retenido",
+    "scheduled": "Programado",
+    "private": "Privado",
+    "public": "Público",
+    "unknown": "Desconocido",
+    "required": "Obligatorio",
+    "optional": "Opcional",
+    "unsupported": "No compatible",
+    "release": "Versión estable",
+    "beta": "Beta",
+    "alpha": "Alfa",
+    "incompatible": "Incompatible",
+    "embedded": "Integrado",
+    "owner": "Propietario",
+    "member": "Miembro",
+    "admin": "Administrador",
+    "moderator": "Moderador"
+  },
+  "metadata": {
+    "homeTitle": "Zo7al Projects — Universo de videojuegos",
+    "homeDescription": "Zo7al crea contenido de videojuegos, redes de Minecraft, paquetes de mods, mapas de Fortnite Creativo y proyectos de juegos experimentales."
   }
 }

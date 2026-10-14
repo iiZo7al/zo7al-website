@@ -10,7 +10,7 @@ function moduleUrl(path, replacements = {}) {
   return 'data:text/javascript;base64,' + Buffer.from(ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022 } }).outputText).toString('base64');
 }
 const stub = source => 'data:text/javascript;base64,' + Buffer.from(source).toString('base64');
-const helper = moduleUrl('src/lib/data/modpack-changelog.ts', { './modpack-details': new URL('../src/lib/data/modpack-details.ts', import.meta.url).href });
+const helper = moduleUrl('src/lib/data/modpack-changelog.ts', { './markdown': new URL('../src/lib/data/markdown.ts', import.meta.url).href, './modpack-details': new URL('../src/lib/data/modpack-details.ts', import.meta.url).href });
 const { changelogText, curseForgeFileUrls, parseCurseForgeFilePage, parseCurseForgeFiles, parseModrinthReleases } = await import(helper);
 const cfUrl = 'https://www.curseforge.com/minecraft/modpacks/zo7al-pack';
 const cfProject = { id: 'zo7al-pack', title: 'Zo7al Pack', iconUrl: '', url: cfUrl, releases: [{ url: cfUrl + '/files/99' }] };
@@ -39,7 +39,7 @@ test('Modrinth changelogs preserve source versions and dates, exclude unpublishe
   assert.equal(releases.length, 2); assert.equal(releases[0].version, '2.0.0');
   assert.equal(releases[0].published, '2026-08-01T00:00:00.000Z');
   assert.equal(releases[0].url, 'https://modrinth.com/modpack/zo7al-pack/version/newer');
-  assert.equal(releases[0].changelog, 'Added\n- Better FPS');
+  assert.equal(releases[0].changelog, '# Added\n- **Better FPS**');
   assert.throws(() => parseModrinthReleases({}, 'zo7al-pack'), /UPSTREAM/);
 });
 test('CurseForge file metadata must belong to the requested project and contain real publication dates', () => {

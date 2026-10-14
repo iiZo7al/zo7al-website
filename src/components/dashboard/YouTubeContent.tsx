@@ -1,4 +1,5 @@
 "use client";
+import MarkdownContent from "@/components/ui/MarkdownContent";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { Pencil, Trash2, ImageIcon, ExternalLink, Search } from "lucide-react";
@@ -12,7 +13,7 @@ export default function YouTubeContent({ onExpired, overview = false }: StudioCo
   const actions = useYoutubeActions({ onExpired }, state.reload), format = useYoutubeFormat(), [form, setForm] = useState<StudioForm | null>(null), [thumbnail, setThumbnail] = useState("");
   const channel = object(state.data?.channel), snippet = object(channel.snippet), stats = object(channel.statistics), content = items(state.data);
   return <YoutubeSection title={overview ? "overview" : "content"} state={state}><YoutubeFeedback message={actions.message} />
-    {overview && <><div className="dash-panel card-glow yt-channel-summary"><YoutubeImage snippet={snippet} /><div><h2 dir="auto">{string(snippet.title)}</h2><p className="dash-help" dir="auto">{string(snippet.description).slice(0, 400)}</p><bdi className="dash-reference">{string(channel.id)}</bdi></div></div><div className="dash-platform-metrics">{["subscriberCount", "viewCount", "videoCount"].map(key => <div className="dash-panel card-glow dash-stat" key={key}><span className="dash-help">{y(key)}</span><strong>{key === "subscriberCount" && stats.hiddenSubscriberCount ? "—" : format.number(stats[key])}</strong></div>)}</div></>}
+    {overview && <><div className="dash-panel card-glow yt-channel-summary"><YoutubeImage snippet={snippet} /><div><h2 dir="auto">{string(snippet.title)}</h2><MarkdownContent className="dash-help">{string(snippet.description).slice(0, 400)}</MarkdownContent><bdi className="dash-reference">{string(channel.id)}</bdi></div></div><div className="dash-platform-metrics">{["subscriberCount", "viewCount", "videoCount"].map(key => <div className="dash-panel card-glow dash-stat" key={key}><span className="dash-help">{y(key)}</span><strong>{key === "subscriberCount" && stats.hiddenSubscriberCount ? "—" : format.number(stats[key])}</strong></div>)}</div></>}
     {!overview && <form className="yt-search hub-form" onSubmit={event => { event.preventDefault(); pages.reset(); setSearch(String(new FormData(event.currentTarget).get("search") ?? "").trim()); }}><input name="search" maxLength={100} aria-label={y("searchVideos")} placeholder={y("searchVideos")} dir="auto" /><button type="submit" className="dash-button" disabled={state.loading}><Search size={17} />{y("search")}</button></form>}
     {!content.length ? <div className="dash-panel card-glow dash-empty">{y("empty")}</div> : <div className="yt-video-grid">{content.slice(0, overview ? 6 : 25).map(value => {
       const id = youtubeVideoId(value.id), snippet = object(value.snippet), stats = object(value.statistics), status = object(value.status);

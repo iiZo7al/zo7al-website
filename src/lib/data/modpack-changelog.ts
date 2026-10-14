@@ -1,3 +1,4 @@
+import { markdownSource } from "./markdown";
 import { readableDescription, type ModpackRelease } from "./modpack-details";
 
 export const CHANGELOG_SOURCES = ["Modrinth", "CurseForge"] as const;
@@ -26,6 +27,9 @@ export function changelogText(value: string): string {
     return point > 0 && point <= 0x10ffff && !(point >= 0xd800 && point <= 0xdfff) ? String.fromCodePoint(point) : entity;
   });
 }
+export function changelogMarkdown(value: string): string {
+  return markdownSource(value).replace(/\n{3,}/g, "\n\n").trim();
+}
 export function parseModrinthReleases(value: unknown, slug: string): ModpackRelease[] {
   if (!Array.isArray(value)) throw Error("UPSTREAM");
   return value.flatMap(item => {
@@ -34,7 +38,7 @@ export function parseModrinthReleases(value: unknown, slug: string): ModpackRele
     return [{ name: text(version.name), version: text(version.version_number), published,
       type: ["release", "beta", "alpha"].includes(String(version.version_type)) ? String(version.version_type) : undefined,
       url: `https://modrinth.com/modpack/${encodeURIComponent(slug)}/version/${id}`,
-      changelog: changelogText(text(version.changelog, 50000)) }];
+      changelog: changelogMarkdown(text(version.changelog, 50000)) }];
   }).sort((a, b) => Date.parse(b.published!) - Date.parse(a.published!)).slice(0, 12);
 }
 export function parseCurseForgeFiles(value: unknown, projectUrl: string, modId: number): ModpackRelease[] {
@@ -71,5 +75,5 @@ export function parseCurseForgeFilePage(html: string, url: string): ModpackRelea
   if (!title || notes === undefined || !published) return null;
   const body = notes.replace(/<h3\b[^>]*>[\s\S]*?<\/h3>/i, "");
   const name = changelogText(title).slice(0, 200);
-  return name ? { name, version: name, published, url, changelog: changelogText(body.slice(0, 100000)) } : null;
+  return name ? { name, version: name, published, url, changelog: changelogMarkdown(body.slice(0, 100000)) } : null;
 }
