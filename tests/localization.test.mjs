@@ -1,7 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 import { parse } from '@formatjs/icu-messageformat-parser';
+import ts from 'typescript';
 import { cartCopy } from '../src/lib/data/cart-copy.ts';
 import { communityCopy } from '../src/lib/data/community-copy.ts';
 import { storeExperienceCopy } from '../src/lib/data/store-experience-copy.ts';
@@ -40,4 +42,43 @@ test('shared interface copy and administration instructions are translated in ev
    if (english.match(/[A-Za-z]+/g)?.length >= 4) assert.notEqual(catalogs[locale][namespace][key], english, locale + ':' + namespace + '.' + key);
   }
  }
+});
+test('translated catalogs do not retain English sentences in website interface copy', () => {
+ const english = flatten(catalogs.en);
+ for (const locale of locales.slice(1)) {
+  for (const [key, value] of Object.entries(flatten(catalogs[locale]))) {
+   if (typeof value !== 'string' || /\.(id|href|url)$/.test(key)) continue;
+   if ((english[key].match(/[A-Za-z]+/g) ?? []).length >= 4) {
+    assert.notEqual(value, english[key], `${locale}:${key}`);
+   }
+  }
+ }
+});
+test('literal translation calls resolve to existing catalog entries', () => {
+ const configFile = ts.readConfigFile(fileURLToPath(new URL('../tsconfig.json', import.meta.url)), ts.sys.readFile);
+ const config = ts.parseJsonConfigFileContent(configFile.config, ts.sys, fileURLToPath(new URL('..', import.meta.url)));
+ const program = ts.createProgram(config.fileNames, config.options), checker = program.getTypeChecker();
+ let checked = 0;
+ for (const source of program.getSourceFiles()) {
+  if (!source.fileName.replaceAll('\\', '/').includes('/src/')) continue;
+  const visit = node => {
+   if (ts.isCallExpression(node) && ts.isIdentifier(node.expression) && node.arguments[0] && ts.isStringLiteral(node.arguments[0])) {
+    const declaration = checker.getSymbolAtLocation(node.expression)?.valueDeclaration;
+    if (declaration && ts.isVariableDeclaration(declaration)) {
+     let initializer = declaration.initializer;
+     if (initializer && ts.isAwaitExpression(initializer)) initializer = initializer.expression;
+     if (initializer && ts.isCallExpression(initializer) && ['useTranslations', 'getTranslations'].includes(initializer.expression.getText(source)) && initializer.arguments[0] && ts.isStringLiteral(initializer.arguments[0])) {
+      const namespace = initializer.arguments[0].text, key = node.arguments[0].text;
+      let value = catalogs.en[namespace];
+      for (const part of key.split('.')) value = value?.[part];
+      assert.equal(typeof value, 'string', `${source.fileName}: ${namespace}.${key}`);
+      checked++;
+     }
+    }
+   }
+   ts.forEachChild(node, visit);
+  };
+  visit(source);
+ }
+ assert.ok(checked > 700, `Expected to audit website calls, checked ${checked}`);
 });
