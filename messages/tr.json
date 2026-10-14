@@ -593,6 +593,14 @@
         "a": "Minecraft’ı bağladıktan sonra hesap ayarları veya Oyuncu profilini aç. Desteklenen sunucu köprüleri nedeni ve bitişi bildirir; eksik veya eski eşitleme belirtilir.",
         "href": "/account?tab=player",
         "action": "Minecraft sunucu yasakları"
+      },
+      {
+        "id": "delete-account",
+        "category": "accountSecurity",
+        "q": "Hesabımı sil?",
+        "a": "Oturumun kapatılır ve profilin gizlenir. Hesap 15 gün sonra kalıcı olarak silinir. Bu sürede giriş yapıp 2FA doğrulamasını tamamlamak silmeyi iptal eder. Profil, talepler ve bağlantılar kaldırılır; satın alma kayıtları anonim tutulur.",
+        "href": "/account?tab=settings",
+        "action": "Ayarlar"
       }
     ],
     "clearSearch": "Aramayı temizle",
@@ -1139,7 +1147,7 @@
     "privateWorkspace": "Özel çalışma alanı",
     "loginTitle": "Evrenin tek bir yerde",
     "loginHint": "Projelerini yönet, topluluk taleplerini incele ve sunucunu bağla.",
-    "signInHint": "Mevcut panel şifrenle giriş yap.",
+    "signInHint": "Sahip hesabına bağlı Google, Microsoft, Discord veya Modrinth ile giriş yap.",
     "sessionProtected": "Korumalı oturum · Özel yönetim",
     "pelicanTitle": "Sunucun Zo7al içinde",
     "connectPelican": "Pelican bağla",
@@ -1704,7 +1712,8 @@
       "DISCORD_REQUIRED": "Önce Discord’u bağla",
       "ACCOUNT_BANNED": "Bu hesap yasaklı",
       "ACCOUNT_DELETED": "Bu profil silindi",
-      "IDENTITY_LINKED": "Bu Discord hesabı başka bir Zo7al hesabına bağlı. Buraya bağlamak yerine onunla giriş yap."
+      "IDENTITY_LINKED": "Bu Discord hesabı başka bir Zo7al hesabına bağlı. Buraya bağlamak yerine onunla giriş yap.",
+      "OWNER_PROTECTED": "Mevcut kontrol paneli sahibinin hesabı silinemez."
     },
     "security": {
       "title": "İki faktörlü kimlik doğrulama",
@@ -1769,7 +1778,7 @@
     "deleteAccount": "Profili sil",
     "temporaryBan": "Geçici yasak",
     "searchMembers": "Profil ara",
-    "confirmDelete": "Bu profil silinsin mi? Gizlenir ve site erişimi kaldırılır.",
+    "confirmDelete": "Giriş hesabını, profili, bağlantıları ve talepleri kalıcı olarak sil. Anonim satın alma kayıtları tutulur. Geri alınamaz. Emin misin?",
     "deleted": "Silindi",
     "profileNotFound": "Profil bulunamadı",
     "passkeys": "Geçiş anahtarları",
@@ -1788,6 +1797,14 @@
     "identityLinked": "Bu Discord hesabı başka bir Zo7al hesabına bağlı. Buraya bağlamak yerine onunla giriş yap.",
     "linkMinecraft": "Minecraft’ı bağla",
     "minecraftRequired": "Başvurmadan önce Minecraft hesabını bağla.",
-    "useLinkedDiscord": "Discord’a bağlı hesaba giriş yap"
+    "useLinkedDiscord": "Discord’a bağlı hesaba giriş yap",
+    "deletion": {
+      "title": "Hesabımı sil",
+      "hint": "Oturumun kapatılır ve profilin gizlenir. Hesap 15 gün sonra kalıcı olarak silinir. Bu sürede giriş yapıp 2FA doğrulamasını tamamlamak silmeyi iptal eder. Profil, talepler ve bağlantılar kaldırılır; satın alma kayıtları anonim tutulur.",
+      "request": "Hesap silme talebi",
+      "confirmTitle": "Hesabını silmek istediğine emin misin?",
+      "acknowledge": "15 günlük süreyi ve sonrasındaki silmenin kalıcı olduğunu anlıyorum.",
+      "scheduled": "Silme talebi alındı. İptal etmek için 15 gün içinde giriş yap."
+    }
   }
 }

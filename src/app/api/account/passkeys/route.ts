@@ -12,6 +12,7 @@ import {
   setAccountCookie,
   requestCookie,
   type AuthUser,
+  cancelAccountDeletion,
 } from "@/lib/server/account-auth";
 import { readJSON, tokenHash } from "@/lib/server/site-security";
 import { siteDatabase } from "@/lib/server/site-db";
@@ -144,6 +145,7 @@ export async function POST(request: Request) {
     )) as AuthUser;
     await accountView(user);
     setAccountTokens(result, headers);
+    if(!accountRequiresMFA(user,result.access_token))await cancelAccountDeletion(user.id);
     return Response.json(
       { ok: true, mfaRequired: accountRequiresMFA(user, result.access_token) },
       { headers },

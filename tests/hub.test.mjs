@@ -12,6 +12,7 @@ import { playerParser } from './profile-modules.mjs';
 const { parsePlayerStats } = playerParser;
 
 function moduleUrl(path,replacements={}) {
+ if(replacements["@/lib/server/site-security"]&&!replacements["@/lib/server/admin-account"])replacements["@/lib/server/admin-account"]=replacements["@/lib/server/site-security"];
  let source=readFileSync(new URL("../"+path,import.meta.url),"utf8").replace('import "server-only";',"");
  for(const [name,value] of Object.entries(replacements))source=source.replaceAll(name,value);
  return "data:text/javascript;base64,"+Buffer.from(ts.transpileModule(source,{compilerOptions:{module:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ES2022}}).outputText).toString("base64");

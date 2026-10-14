@@ -5,6 +5,8 @@ import { limitAttempt } from '@/lib/server/site-content';
 import { siteDatabase } from '@/lib/server/site-db';
 import { profileSettings } from '@/lib/data/member-profile';
 import { LOCALES } from '@/i18n/config';
+import { startMemberModrinth } from '@/lib/server/member-modrinth';
+import { cancelAccountDeletion } from '@/lib/server/account-auth';
 export const runtime='nodejs';
 export const dynamic='force-dynamic';
 function failed(error:unknown,headers:Headers) { return Response.json({error:error instanceof AccountError?error.code:'UNAVAILABLE'},{status:error instanceof AccountError?error.status:503,headers}); }
@@ -34,6 +36,7 @@ export async function POST(request:Request) {
         const user=await authRequest('/user','GET',undefined,tokens.access_token) as AuthUser;
         await accountView(user);
         setAccountTokens(tokens,headers);
+        if(!accountRequiresMFA(user,tokens.access_token!))await cancelAccountDeletion(user.id);
         return Response.json({ok:true,mfaRequired:accountRequiresMFA(user,tokens.access_token!)},{headers});
       }
       if(body.action==='signup'&&!accountPassword(body.password))throw new AccountError('PASSWORD');
@@ -45,6 +48,7 @@ export async function POST(request:Request) {
     if(['oauth','link'].includes(body.action)) {
       if(!ACCOUNT_PROVIDERS.some(provider=>provider===body.provider))throw new AccountError('INVALID');
       const settings=await authRequest('/settings');if(!accountProviderEnabled(String(body.provider),settings))throw new AccountError('PROVIDER');
+      if(body.provider==='modrinth')return Response.json({url:await startMemberModrinth(request,headers,body.action as 'oauth'|'link',body.next)},{headers});
       const user=body.action==='link'?await requireAccount(request):null;
       const flow=await startAccountFlow(request,headers,body.action,body.next,user?.id??null);
       const params=new URLSearchParams({provider:String(body.provider),redirect_to:flow.redirectTo,code_challenge:flow.code_challenge,code_challenge_method:flow.code_challenge_method,...(body.action==='link'?{skip_http_redirect:'true'}:{})});
@@ -80,8 +84,13 @@ export async function POST(request:Request) {
     }
     if(body.action==='reauthenticate') { await authRequest('/reauthenticate','GET',undefined,requestCookie(request,ACCOUNT_ACCESS));return Response.json({ok:true,message:'EMAIL_SENT'},{headers}); }
     if(body.action==='unlink') {
+      if(typeof body.identityId==='string'&&body.identityId.startsWith('modrinth:')) {
+        const view=await accountView(user);if(view.providers.length<2)throw new AccountError('INVALID');
+        await (await siteDatabase()).query('DELETE FROM site_member_modrinth_identities WHERE user_id=$1 AND provider_id=$2',[user.id,body.identityId.slice(9)]);
+        return Response.json({ok:true},{headers});
+      }
       const identity=user.identities?.find(v=>(v.identity_id??v.id)===body.identityId);
-      if(!identity||(user.identities?.length??0)<2)throw new AccountError('INVALID');
+      if(!identity||(await accountView(user)).providers.length<2)throw new AccountError('INVALID');
       await authRequest('/user/identities/'+encodeURIComponent(identity.identity_id??identity.id),'DELETE',undefined,requestCookie(request,ACCOUNT_ACCESS));
       return Response.json({ok:true},{headers});
     }

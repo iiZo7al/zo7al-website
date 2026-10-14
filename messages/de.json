@@ -593,6 +593,14 @@
         "a": "Öffne nach der Minecraft-Verknüpfung Kontoeinstellungen oder Spielerprofil. Unterstützte Server-Bridges melden Grund und Ablauf; fehlende oder veraltete Synchronisierung wird angezeigt.",
         "href": "/account?tab=player",
         "action": "Sperren auf Minecraft-Servern"
+      },
+      {
+        "id": "delete-account",
+        "category": "accountSecurity",
+        "q": "Mein Konto löschen?",
+        "a": "Du wirst abgemeldet und dein Profil ausgeblendet. Nach 15 Tagen wird das Konto dauerhaft gelöscht. Eine Anmeldung mit 2FA innerhalb dieser Frist bricht die Löschung ab. Profil, Anfragen und Verknüpfungen werden entfernt; Käufe bleiben anonymisiert erhalten.",
+        "href": "/account?tab=settings",
+        "action": "Einstellungen"
       }
     ],
     "clearSearch": "Suche löschen",
@@ -1139,7 +1147,7 @@
     "privateWorkspace": "Privater Arbeitsbereich",
     "loginTitle": "Ein Zuhause für dein Universum",
     "loginHint": "Verwalte Projekte, prüfe Community-Anfragen und verbinde deinen Spielserver.",
-    "signInHint": "Melde dich mit deinem bestehenden Dashboard-Passwort an.",
+    "signInHint": "Melde dich beim Inhaberkonto über das verknüpfte Google, Microsoft, Discord oder Modrinth an.",
     "sessionProtected": "Geschützte Sitzung · Private Verwaltung",
     "pelicanTitle": "Dein Server in Zo7al",
     "connectPelican": "Pelican verbinden",
@@ -1704,7 +1712,8 @@
       "DISCORD_REQUIRED": "Verknüpfe zuerst Discord",
       "ACCOUNT_BANNED": "Dieses Konto ist gesperrt",
       "ACCOUNT_DELETED": "Dieses Profil wurde gelöscht",
-      "IDENTITY_LINKED": "Dieses Discord-Konto gehört zu einem anderen Zo7al-Konto. Melde dich damit an, statt es hier zu verknüpfen."
+      "IDENTITY_LINKED": "Dieses Discord-Konto gehört zu einem anderen Zo7al-Konto. Melde dich damit an, statt es hier zu verknüpfen.",
+      "OWNER_PROTECTED": "Das Konto des aktuellen Dashboard-Inhabers kann nicht gelöscht werden."
     },
     "security": {
       "title": "Zwei-Faktor-Authentifizierung",
@@ -1769,7 +1778,7 @@
     "deleteAccount": "Profil löschen",
     "temporaryBan": "Zeitlich begrenzte Sperre",
     "searchMembers": "Profile suchen",
-    "confirmDelete": "Dieses Profil löschen? Es wird ausgeblendet und der Website-Zugang gesperrt.",
+    "confirmDelete": "Anmeldekonto, Profil, Verknüpfungen und Anfragen endgültig löschen. Anonymisierte Käufe bleiben erhalten. Dies ist unwiderruflich. Bestätigen?",
     "deleted": "Gelöscht",
     "profileNotFound": "Profil nicht gefunden",
     "passkeys": "Passkeys",
@@ -1788,6 +1797,14 @@
     "identityLinked": "Dieses Discord-Konto gehört zu einem anderen Zo7al-Konto. Melde dich damit an, statt es hier zu verknüpfen.",
     "linkMinecraft": "Minecraft verknüpfen",
     "minecraftRequired": "Verknüpfe dein Minecraft-Konto vor der Bewerbung.",
-    "useLinkedDiscord": "Beim mit Discord verknüpften Konto anmelden"
+    "useLinkedDiscord": "Beim mit Discord verknüpften Konto anmelden",
+    "deletion": {
+      "title": "Mein Konto löschen",
+      "hint": "Du wirst abgemeldet und dein Profil ausgeblendet. Nach 15 Tagen wird das Konto dauerhaft gelöscht. Eine Anmeldung mit 2FA innerhalb dieser Frist bricht die Löschung ab. Profil, Anfragen und Verknüpfungen werden entfernt; Käufe bleiben anonymisiert erhalten.",
+      "request": "Kontolöschung beantragen",
+      "confirmTitle": "Möchtest du dein Konto wirklich löschen?",
+      "acknowledge": "Ich verstehe die Frist von 15 Tagen und die anschließende endgültige Löschung.",
+      "scheduled": "Löschung beantragt. Melde dich innerhalb von 15 Tagen an, um sie abzubrechen."
+    }
   }
 }

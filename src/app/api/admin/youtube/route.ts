@@ -1,4 +1,5 @@
-import { hasAdminSession, privateHeaders, readJSON, sameOrigin } from "@/lib/server/site-security";
+import { hasAdminSession } from "@/lib/server/admin-account";
+import {  privateHeaders, readJSON, sameOrigin } from "@/lib/server/site-security";
 import { limitAttempt } from "@/lib/server/site-content";
 import { youtubeStatus, saveYoutubeApp, startYoutubeOAuth, disconnectYoutube } from "@/lib/server/youtube-auth";
 import { readYoutubeStudio, writeYoutubeStudio, YoutubeError } from "@/lib/server/youtube-studio";
@@ -14,7 +15,7 @@ function failed(error: unknown) {
   return json({ error: code }, code === "INVALID" ? 400 : code === "YT_UNAVAILABLE" ? 503 : 409);
 }
 export async function GET(request: Request) {
-  if (!hasAdminSession(request)) return json({ error: "UNAUTHORIZED" }, 401);
+  if (!await hasAdminSession(request)) return json({ error: "UNAUTHORIZED" }, 401);
   try {
     const params = Object.fromEntries(new URL(request.url).searchParams), resource = params.resource ?? "status";
     if (!await limitAttempt("youtube-studio-read", 90, 60)) return json({ error: "YT_QUOTA" }, 429);
@@ -22,7 +23,7 @@ export async function GET(request: Request) {
   } catch (error) { return failed(error); }
 }
 export async function POST(request: Request) {
-  if (!hasAdminSession(request)) return json({ error: "UNAUTHORIZED" }, 401);
+  if (!await hasAdminSession(request)) return json({ error: "UNAUTHORIZED" }, 401);
   if (!sameOrigin(request)) return json({ error: "INVALID" }, 403);
   try {
     const body = youtubeObject(await readJSON(request, 24000)), input = youtubeObject(body.input), action = String(body.action);

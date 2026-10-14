@@ -1,4 +1,5 @@
-import { hasAdminSession, privateHeaders, sameOrigin } from "@/lib/server/site-security";
+import { hasAdminSession } from "@/lib/server/admin-account";
+import {  privateHeaders, sameOrigin } from "@/lib/server/site-security";
 import { limitAttempt } from "@/lib/server/site-content";
 import { saveContentImage } from "@/lib/server/content-media";
 import { CONTENT_IMAGE_UPLOAD_BYTES } from "@/lib/data/content-media";
@@ -7,7 +8,7 @@ export const dynamic = "force-dynamic";
 export const maxDuration = 30;
 
 export async function POST(request: Request) {
-  if (!hasAdminSession(request)) return Response.json({ error: "UNAUTHORIZED" }, { status: 401, headers: privateHeaders });
+  if (!await hasAdminSession(request)) return Response.json({ error: "UNAUTHORIZED" }, { status: 401, headers: privateHeaders });
   if (!sameOrigin(request) || !request.headers.get("content-type")?.startsWith("multipart/form-data;")) return Response.json({ error: "INVALID" }, { status: 403, headers: privateHeaders });
   try {
     if (!(await limitAttempt("admin:content-image", 30, 60))) return Response.json({ error: "RATE_LIMIT" }, { status: 429, headers: privateHeaders });

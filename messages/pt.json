@@ -593,6 +593,14 @@
         "a": "Depois de associar Minecraft, abre as definições ou o Perfil do jogador. Pontes de servidor compatíveis mostram motivo e validade; indicam sincronização ausente ou desatualizada.",
         "href": "/account?tab=player",
         "action": "Banimentos dos servidores Minecraft"
+      },
+      {
+        "id": "delete-account",
+        "category": "accountSecurity",
+        "q": "Excluir minha conta?",
+        "a": "Sua sessão será encerrada e seu perfil ocultado. A conta será excluída definitivamente após 15 dias. Entrar e concluir a 2FA nesse prazo cancela a exclusão. Perfil, solicitações e vínculos são removidos; as compras ficam anonimizadas.",
+        "href": "/account?tab=settings",
+        "action": "Configurações"
       }
     ],
     "clearSearch": "Limpar busca",
@@ -1139,7 +1147,7 @@
     "privateWorkspace": "Área privada",
     "loginTitle": "Todo o seu universo num lugar",
     "loginHint": "Gira projetos, reveja pedidos da comunidade e ligue o servidor.",
-    "signInHint": "Entre com a palavra-passe atual do painel.",
+    "signInHint": "Entre na conta do proprietário usando Google, Microsoft, Discord ou Modrinth vinculado.",
     "sessionProtected": "Sessão protegida · Administração privada",
     "pelicanTitle": "O seu servidor no Zo7al",
     "connectPelican": "Ligar Pelican",
@@ -1704,7 +1712,8 @@
       "DISCORD_REQUIRED": "Associa primeiro o Discord",
       "ACCOUNT_BANNED": "Esta conta está banida",
       "ACCOUNT_DELETED": "Este perfil foi eliminado",
-      "IDENTITY_LINKED": "Esta conta Discord pertence a outra conta Zo7al. Inicia sessão com ela em vez de a associares aqui."
+      "IDENTITY_LINKED": "Esta conta Discord pertence a outra conta Zo7al. Inicia sessão com ela em vez de a associares aqui.",
+      "OWNER_PROTECTED": "A conta do proprietário atual do painel não pode ser excluída."
     },
     "security": {
       "title": "Autenticação de dois fatores",
@@ -1769,7 +1778,7 @@
     "deleteAccount": "Eliminar perfil",
     "temporaryBan": "Banimento temporário",
     "searchMembers": "Pesquisar perfis",
-    "confirmDelete": "Eliminar este perfil? Ficará oculto e o acesso ao site será revogado.",
+    "confirmDelete": "Excluir permanentemente a conta, o perfil, os vínculos e as solicitações. Compras anonimizadas são mantidas. Não é possível desfazer. Confirmar?",
     "deleted": "Eliminado",
     "profileNotFound": "Perfil não encontrado",
     "passkeys": "Chaves de acesso",
@@ -1788,6 +1797,14 @@
     "identityLinked": "Esta conta Discord pertence a outra conta Zo7al. Inicia sessão com ela em vez de a associares aqui.",
     "linkMinecraft": "Associar Minecraft",
     "minecraftRequired": "Associa a tua conta Minecraft antes de te candidatares.",
-    "useLinkedDiscord": "Entrar na conta associada ao Discord"
+    "useLinkedDiscord": "Entrar na conta associada ao Discord",
+    "deletion": {
+      "title": "Excluir minha conta",
+      "hint": "Sua sessão será encerrada e seu perfil ocultado. A conta será excluída definitivamente após 15 dias. Entrar e concluir a 2FA nesse prazo cancela a exclusão. Perfil, solicitações e vínculos são removidos; as compras ficam anonimizadas.",
+      "request": "Solicitar exclusão",
+      "confirmTitle": "Tem certeza de que deseja excluir sua conta?",
+      "acknowledge": "Entendo o prazo de 15 dias e que a exclusão será definitiva depois dele.",
+      "scheduled": "Exclusão solicitada. Entre em até 15 dias para cancelar."
+    }
   }
 }

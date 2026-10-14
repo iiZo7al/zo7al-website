@@ -1,8 +1,8 @@
 export type MinecraftLink = { uuid: string; username: string; linkedAt: string };
 import type { MemberProfile } from "./member-profile";
 export type SiteAccount = MemberProfile & { id: string; name: string; email: string; avatar: string | null; providers: { id: string; provider: string; name?:string }[]; minecraft: MinecraftLink | null };
-export const ACCOUNT_PROVIDERS = ['discord', 'google', 'azure', 'custom:modrinth'] as const;
-export function accountProviderName(provider: string) { return provider==='custom:modrinth'?'Modrinth':provider === 'azure' ? 'Microsoft' : provider === 'google' ? 'Google' : provider === 'discord' ? 'Discord' : provider; }
+export const ACCOUNT_PROVIDERS = ['discord', 'google', 'azure', 'modrinth'] as const;
+export function accountProviderName(provider: string) { return provider==='modrinth'?'Modrinth':provider === 'azure' ? 'Microsoft' : provider === 'google' ? 'Google' : provider === 'discord' ? 'Discord' : provider; }
 export function minecraftName(value: unknown): string | null {
   return typeof value === 'string' && /^[.a-zA-Z0-9_ ]{3,32}$/.test(value.trim()) ? value.trim() : null;
 }
@@ -13,7 +13,7 @@ export function accountPassword(value: unknown): value is string { return typeof
 export function safeAccountName(value: unknown): string | null {
   return typeof value === 'string' && value.trim().length >= 2 && value.trim().length <= 64 && !/[<>\x00-\x1f\x7f]/.test(value) ? value.trim() : null;
 }
-export function accountNext(value: unknown): string { return typeof value === 'string' && /^\/(?:store|requests|account|minecraft|fortnite|support)(?:[?#][^\\]*)?$/.test(value) ? value : '/account'; }
+export function accountNext(value: unknown): string { return typeof value === 'string' && /^\/(?:store|requests|account|minecraft|fortnite|support|dashboard)(?:[?#][^\\]*)?$/.test(value) ? value : '/account'; }
 export const LINK_CODE = /^[A-HJ-NP-Z2-9]{8}$/;
 export function checkoutRecipient(gift: unknown, supplied: unknown, linked: MinecraftLink | null) {
   if (gift !== undefined && typeof gift !== 'boolean') throw Error('INVALID');

@@ -81,11 +81,11 @@ export default function MemberProfiles({
         onExpired();
         return;
       }
-      if (!response.ok) throw Error();
+      if (!response.ok) {const data=await response.json().catch(()=>({}));throw Error(data.error??"UNAVAILABLE");}
       setSelected(null);
       setVersion((v) => v + 1);
-    } catch {
-      setError(h("unavailable"));
+    } catch(error) {
+      const key=error instanceof Error?error.message:"UNAVAILABLE";setError(t.has("errors."+key)?t("errors."+key):h("unavailable"));
     } finally {
       setBusy(false);
     }
@@ -186,6 +186,7 @@ export default function MemberProfiles({
                   </button>
                 </div>
               )}
+              {p.deletedAt&&<button type="button" className="dash-button" disabled={busy} onClick={()=>{if(window.confirm(t("confirmDelete")))void act(p,"delete");}}><Trash2 size={16}/>{t("deleteAccount")}</button>}
             </article>
           );
         })}

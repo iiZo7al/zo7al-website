@@ -12,19 +12,12 @@
 
 ## مودرين
 
-1. أنشئ تطبيق OAuth للمستخدمين باسم **Zo7al Projects** في Modrinth، منفصلًا عن تطبيق ربط لوحة الإدارة.
-2. أضف Redirect URI نفسه: `https://istvaveorgqcgxsdqsch.supabase.co/auth/v1/callback`، والصلاحيتين `USER_READ USER_READ_EMAIL`.
-3. أضف إلى إعدادات Vercel الخاصة بالسيرفر: `MODRINTH_MEMBER_CLIENT_ID` و`MODRINTH_MEMBER_CLIENT_SECRET`.
-4. في Supabase أضف Custom OAuth Provider بمعرّف `modrinth` ونوع OAuth2، وبنفس Client ID وClient Secret:
-
-| الحقل | القيمة |
-| --- | --- |
-| Authorization URL | `https://modrinth.com/auth/authorize` |
-| Token URL | `https://zo7al.is-a.dev/api/account/modrinth/token` |
-| Userinfo URL | `https://zo7al.is-a.dev/api/account/modrinth/userinfo` |
-| Scopes | `USER_READ USER_READ_EMAIL` |
-
-5. بعد حفظ المزود، أضف `ZO7AL_ACCOUNT_MODRINTH_ENABLED=true` في Vercel وأعد النشر. ظهور الزر وحده لا يكفي؛ جرّب تسجيل الدخول والربط من حسابك. تفاصيل الإعداد متاحة في [دليل Modrinth](https://docs.modrinth.com/guide/oauth/) و[دليل Supabase](https://supabase.com/docs/guides/auth/custom-oauth-providers).
+1. تطبيق المستخدمين باسم **Zo7al Projects** في Modrinth مستقل عن ربط لوحة الإدارة.
+2. رابط الرجوع: `https://zo7al.is-a.dev/auth/callback`؛ صلاحيتا القراءة فقط: `USER_READ USER_READ_EMAIL`.
+3. في Vercel Production، احفظ `MODRINTH_MEMBER_CLIENT_ID` و`MODRINTH_MEMBER_CLIENT_SECRET` كمتغيرات خاصة.
+4. احفظ مفتاح Supabase الخاص بالسيرفر في `SUPABASE_SECRET_KEY`. يستخدم لإنشاء جلسة نظام الحسابات بعد تحقق مودرين وحذف الحسابات النهائي؛ لا يُرسل إلى المتصفح.
+5. فعّل `ZO7AL_ACCOUNT_MODRINTH_ENABLED=true` ثم انشر. لا يحتاج مزود مودرين مخصصًا في Supabase. جميع إجراءات OAuth مع مودرين ترجع للموقع مباشرة. نظام الجلسات و2FA والبصمة يبقى في Supabase.
+6. لا يتم دمج حساب ببريد مودرين تلقائيًا. لربطه بحسابك الأساسي، سجّل دخولك أولًا ثم اختر الربط من إعدادات الحساب.
 
 ## اسم التطبيق في قوقل
 
@@ -49,3 +42,11 @@
 - فعّل Manual identity linking في Supabase لربط وسائل الدخول الإضافية من إعدادات الحساب.
 
 بعد إكمال الإعدادات، تحقق من الدخول والإلغاء والربط وفك الربط ومن تسجيل الدخول إلى حساب مفعّل عليه 2FA.
+
+## دخول المالك وحذف الحساب
+
+`ZO7AL_ADMIN_ACCOUNT_IDS` يحدد UUID الحسابات المسموح لها بالدخول إلى الداشبورد. لا تستخدم الاسم أو البريد لتحديد صلاحية الإدارة. كل طلب إداري يتحقق من الجلسة و2FA والحظر. سجّل الدخول بالوسيلة المرتبطة بنفس الحساب.
+
+حذف الأدمن نهائي وفوري، ويزيل حساب Auth والملف والروابط والطلبات والمشاركات. سجلات الشراء تبقى مجهولة الهوية مع سجل منع وصول صغير للحساب المحذوف. حساب المالك محمي من الحذف.
+
+طلب المستخدم حذف حسابه في الإعدادات يسجّله خروجًا ويخفي ملفه. تسجيل الدخول مع إكمال 2FA خلال 15 يومًا يلغي الطلب. بعد انتهاء المهلة لا يسمح بالدخول. مهمة Vercel اليومية `/api/cron/account-deletions` تكمل الحذف النهائي وتعيد محاولات Auth الفاشلة. احفظ `CRON_SECRET` خاصًا في Production لتوثيق المهمة.

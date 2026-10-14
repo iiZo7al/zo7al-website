@@ -593,6 +593,14 @@
         "a": "Après l’association Minecraft, ouvrez les paramètres ou le profil joueur. Les passerelles serveur compatibles donnent motif et expiration ; toute synchronisation absente ou ancienne est indiquée.",
         "href": "/account?tab=player",
         "action": "Bannissements des serveurs Minecraft"
+      },
+      {
+        "id": "delete-account",
+        "category": "accountSecurity",
+        "q": "Supprimer mon compte?",
+        "a": "Vous serez déconnecté et votre profil masqué. Le compte sera supprimé définitivement après 15 jours. Une connexion avec validation 2FA pendant ce délai annule la suppression. Le profil, les demandes et les liens sont supprimés ; les achats restent anonymisés.",
+        "href": "/account?tab=settings",
+        "action": "Paramètres"
       }
     ],
     "clearSearch": "Effacer la recherche",
@@ -1139,7 +1147,7 @@
     "privateWorkspace": "Espace privé",
     "loginTitle": "Tout votre univers au même endroit",
     "loginHint": "Gérez vos projets, examinez les demandes et connectez votre serveur.",
-    "signInHint": "Utilisez votre mot de passe actuel du tableau de bord.",
+    "signInHint": "Connectez-vous au compte propriétaire avec Google, Microsoft, Discord ou Modrinth associé.",
     "sessionProtected": "Session protégée · Administration privée",
     "pelicanTitle": "Votre serveur dans Zo7al",
     "connectPelican": "Connecter Pelican",
@@ -1704,7 +1712,8 @@
       "DISCORD_REQUIRED": "Associez d’abord Discord",
       "ACCOUNT_BANNED": "Ce compte est banni",
       "ACCOUNT_DELETED": "Ce profil a été supprimé",
-      "IDENTITY_LINKED": "Ce compte Discord appartient à un autre compte Zo7al. Connectez-vous avec celui-ci au lieu de l’associer ici."
+      "IDENTITY_LINKED": "Ce compte Discord appartient à un autre compte Zo7al. Connectez-vous avec celui-ci au lieu de l’associer ici.",
+      "OWNER_PROTECTED": "Le compte du propriétaire du tableau de bord ne peut pas être supprimé."
     },
     "security": {
       "title": "Authentification à deux facteurs",
@@ -1769,7 +1778,7 @@
     "deleteAccount": "Supprimer le profil",
     "temporaryBan": "Bannissement temporaire",
     "searchMembers": "Rechercher des profils",
-    "confirmDelete": "Supprimer ce profil ? Il sera masqué et l’accès au site sera révoqué.",
+    "confirmDelete": "Supprimer définitivement le compte, le profil, les liens et les demandes. Les achats anonymisés restent conservés. Cette action est irréversible. Confirmer ?",
     "deleted": "Supprimé",
     "profileNotFound": "Profil introuvable",
     "passkeys": "Clés d’accès",
@@ -1788,6 +1797,14 @@
     "identityLinked": "Ce compte Discord appartient à un autre compte Zo7al. Connectez-vous avec celui-ci au lieu de l’associer ici.",
     "linkMinecraft": "Associer Minecraft",
     "minecraftRequired": "Associez votre compte Minecraft avant de postuler.",
-    "useLinkedDiscord": "Se connecter au compte associé à Discord"
+    "useLinkedDiscord": "Se connecter au compte associé à Discord",
+    "deletion": {
+      "title": "Supprimer mon compte",
+      "hint": "Vous serez déconnecté et votre profil masqué. Le compte sera supprimé définitivement après 15 jours. Une connexion avec validation 2FA pendant ce délai annule la suppression. Le profil, les demandes et les liens sont supprimés ; les achats restent anonymisés.",
+      "request": "Demander la suppression",
+      "confirmTitle": "Voulez-vous vraiment supprimer votre compte ?",
+      "acknowledge": "Je comprends le délai de 15 jours et le caractère définitif de la suppression.",
+      "scheduled": "Suppression demandée. Connectez-vous sous 15 jours pour l’annuler."
+    }
   }
 }

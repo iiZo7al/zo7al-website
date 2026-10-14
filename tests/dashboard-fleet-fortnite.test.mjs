@@ -5,6 +5,7 @@ import ts from 'typescript';
 import { ADMIN_COOKIE, signAdminSession } from '../src/lib/server/site-security.ts';
 const stub = s => 'data:text/javascript;base64,' + Buffer.from(s).toString('base64');
 function moduleUrl(path, replacements = {}) {
+ if(replacements["@/lib/server/site-security"]&&!replacements["@/lib/server/admin-account"])replacements["@/lib/server/admin-account"]=replacements["@/lib/server/site-security"];
  let s = readFileSync(new URL('../' + path, import.meta.url), 'utf8').replace('import "server-only";', '');
  for (const [name, value] of Object.entries(replacements).sort(([a], [b]) => b.length - a.length)) s = s.replaceAll(name, value);
  return stub(ts.transpileModule(s, { compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022 } }).outputText);

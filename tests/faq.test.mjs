@@ -17,7 +17,7 @@ test('FAQ search finds Arabic diacritics, spelling variants, Latin accents and m
 test('all FAQs cover the same durable features and only use existing internal destinations',()=>{
  const base=catalogs.en.items.map(item=>item.id);
  for(const faq of Object.values(catalogs)){
-  assert.equal(faq.items.length,43);assert.equal(new Set(faq.items.map(item=>item.id)).size,43);
+  assert.equal(faq.items.length,44);assert.equal(new Set(faq.items.map(item=>item.id )).size,44);
   assert.deepEqual(faq.items.map(item=>item.id),base);
   assert.deepEqual(Object.keys(faq.categories),Object.keys(catalogs.en.categories));
   assert.ok(faq.clearSearch&&faq.filterLabel&&faq.resetFilters);

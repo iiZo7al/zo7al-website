@@ -593,6 +593,14 @@
         "a": "Minecraft連携後にアカウント設定やプレイヤープロフィールを開きます。対応ブリッジが理由と期限を報告し、同期情報がない場合や古い場合は表示されます。",
         "href": "/account?tab=player",
         "action": "Minecraftサーバーの利用停止"
+      },
+      {
+        "id": "delete-account",
+        "category": "accountSecurity",
+        "q": "アカウントを削除?",
+        "a": "ログアウトされ、プロフィールは非表示になります。15日後にアカウントを完全に削除します。期間内にログインして2FAを完了すると削除は取り消されます。プロフィール、申請、連携は削除され、購入記録は匿名化して保持されます。",
+        "href": "/account?tab=settings",
+        "action": "設定"
       }
     ],
     "clearSearch": "検索をクリア",
@@ -1139,7 +1147,7 @@
     "privateWorkspace": "非公開ワークスペース",
     "loginTitle": "すべての世界を一か所に",
     "loginHint": "プロジェクトを管理し、申請を確認してゲームサーバーを接続します。",
-    "signInHint": "現在のダッシュボード用パスワードでログインしてください。",
+    "signInHint": "所有者アカウントに連携済みのGoogle、Microsoft、Discord、Modrinthでログインしてください。",
     "sessionProtected": "保護されたセッション · 非公開管理",
     "pelicanTitle": "Zo7al内のサーバー",
     "connectPelican": "Pelicanを接続",
@@ -1704,7 +1712,8 @@
       "DISCORD_REQUIRED": "先にDiscordを連携してください",
       "ACCOUNT_BANNED": "このアカウントは利用停止中です",
       "ACCOUNT_DELETED": "このプロフィールは削除されました",
-      "IDENTITY_LINKED": "このDiscordは別のZo7alアカウントに連携されています。ここで連携せず、そのアカウントでログインしてください。"
+      "IDENTITY_LINKED": "このDiscordは別のZo7alアカウントに連携されています。ここで連携せず、そのアカウントでログインしてください。",
+      "OWNER_PROTECTED": "現在のダッシュボード所有者のアカウントは削除できません。"
     },
     "security": {
       "title": "二要素認証",
@@ -1769,7 +1778,7 @@
     "deleteAccount": "プロフィールを削除",
     "temporaryBan": "一時的な利用停止",
     "searchMembers": "プロフィールを検索",
-    "confirmDelete": "このプロフィールを削除しますか？非公開になり、サイトへのアクセスが取り消されます。",
+    "confirmDelete": "ログインアカウント、プロフィール、連携、申請を完全に削除します。匿名化した購入記録は保持します。取り消しはできません。続行しますか？",
     "deleted": "削除済み",
     "profileNotFound": "プロフィールが見つかりません",
     "passkeys": "パスキー",
@@ -1788,6 +1797,14 @@
     "identityLinked": "このDiscordは別のZo7alアカウントに連携されています。ここで連携せず、そのアカウントでログインしてください。",
     "linkMinecraft": "Minecraftを連携",
     "minecraftRequired": "応募前にMinecraftアカウントを連携してください。",
-    "useLinkedDiscord": "Discordに連携されたアカウントでログイン"
+    "useLinkedDiscord": "Discordに連携されたアカウントでログイン",
+    "deletion": {
+      "title": "アカウントを削除",
+      "hint": "ログアウトされ、プロフィールは非表示になります。15日後にアカウントを完全に削除します。期間内にログインして2FAを完了すると削除は取り消されます。プロフィール、申請、連携は削除され、購入記録は匿名化して保持されます。",
+      "request": "削除を申請",
+      "confirmTitle": "アカウントを削除しますか？",
+      "acknowledge": "15日間の猶予と、その後の削除が取り消せないことを理解しています。",
+      "scheduled": "削除を申請しました。15日以内にログインすると取り消せます。"
+    }
   }
 }

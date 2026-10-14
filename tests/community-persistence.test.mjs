@@ -11,6 +11,7 @@ import { SITE_SCHEMA } from '../src/lib/server/site-schema.ts';
 import { COMMUNITY_SCHEMA } from '../src/lib/server/community-schema.ts';
 
 function moduleUrl(path,replacements={}) {
+ if(replacements["@/lib/server/site-security"]&&!replacements["@/lib/server/admin-account"])replacements["@/lib/server/admin-account"]=replacements["@/lib/server/site-security"];
  let source=readFileSync(new URL('../'+path,import.meta.url),'utf8').replace('import "server-only";','');
  for(const [name,value] of Object.entries(replacements).sort(([a],[b])=>b.length-a.length))source=source.replaceAll(name,value);
  return 'data:text/javascript;base64,'+Buffer.from(ts.transpileModule(source,{compilerOptions:{module:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ES2022}}).outputText).toString('base64');

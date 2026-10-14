@@ -9,6 +9,7 @@ import {ACCOUNT_SCHEMA} from '../src/lib/server/account-schema.ts';
 import {requestLink,requestTab} from '../src/lib/data/request-tabs.ts';
 const stub=s=>'data:text/javascript;base64,'+Buffer.from(s).toString('base64');
 function moduleURL(path,replacements={}) {
+ if(replacements["@/lib/server/site-security"]&&!replacements["@/lib/server/admin-account"])replacements["@/lib/server/admin-account"]=replacements["@/lib/server/site-security"];
  let s=readFileSync(new URL('../'+path,import.meta.url),'utf8').replaceAll("import 'server-only';",'').replaceAll('import "server-only";','');
  for(const [a,b] of Object.entries(replacements).sort(([a],[b])=>b.length-a.length))s=s.replaceAll(a,b);
  return stub(ts.transpileModule(s,{compilerOptions:{module:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ES2022}}).outputText);

@@ -78,7 +78,7 @@ Members can choose a unique, case-insensitive username (3–32 letters, digits o
 
 The requests workspace now requires sign-in for every tab and loads account-owned records directly. It does not read device receipts or display a reference/code lookup form. Legacy claim APIs remain available for a deliberate migration of older receipts. New gallery submissions and creator applications take the contact email and author from the verified account. Creator applications require linked Discord and a Minecraft account verified through the server bridge; the form offers identity linking instead of editable Discord/email fields.
 
-Dashboard → Profiles provides search, permanent bans, timed bans, unbanning and profile deletion. Every action requires the existing administrator session and a same-origin request, is recorded in a moderation log, and runs in a transaction. Bans and deletion are checked against the site database on protected account operations, including existing sessions and MFA/passkey enrollment. Timed bans expire automatically. Profile deletion removes its public identity, uploaded media and Minecraft link, hides its submissions and keeps a minimal revocation tombstone plus order/support history. This operation deletes the website profile; it does not delete the upstream Supabase Auth identity or erase purchase records. A deleted identity cannot recreate its profile by signing in again.
+Dashboard → Profiles provides search, permanent bans, timed bans, unbanning and profile deletion. Every action requires the existing administrator session and a same-origin request, is recorded in a moderation log, and runs in a transaction. Bans and deletion are checked against the site database on protected account operations, including existing sessions and MFA/passkey enrollment. Timed bans expire automatically. Profile deletion removes its public identity, uploaded media and Minecraft link, hides its submissions and keeps a minimal revocation tombstone plus order/support history. Deletion now also permanently removes the upstream Auth account, revokes provider identities and anonymizes purchase records. A minimal revocation tombstone prevents stale sessions from reviving a deleted account.
 
 ## Passkeys (face/fingerprint/security key)
 
@@ -106,20 +106,19 @@ Local verification covers the site build, TypeScript, ESLint, account ownership/
 
 ## Modrinth member sign-in
 
-Create a **separate member OAuth application** in Modrinth, named `Zo7al Projects`, with redirect URI `https://istvaveorgqcgxsdqsch.supabase.co/auth/v1/callback` and read-only scopes `USER_READ USER_READ_EMAIL`. This is separate from the existing dashboard integration; do not reuse the dashboard callback or its stored token.
+Modrinth OAuth uses `https://zo7al.is-a.dev/auth/callback` directly. A separate member application requests only `USER_READ USER_READ_EMAIL`. Set the private Production variables `MODRINTH_MEMBER_CLIENT_ID`, `MODRINTH_MEMBER_CLIENT_SECRET`, `SUPABASE_SECRET_KEY`, and `ZO7AL_ACCOUNT_MODRINTH_ENABLED=true`. No Supabase custom Modrinth provider is required.
 
-Configure server-only Vercel variables `MODRINTH_MEMBER_CLIENT_ID` and `MODRINTH_MEMBER_CLIENT_SECRET`. In Supabase Authentication → Custom OAuth Providers, add an OAuth2 provider with identifier `modrinth`, its same client ID/secret, and these endpoints:
+A ten-minute, single-use database state is bound to an HttpOnly browser cookie. The backend validates the real Modrinth token and immutable user ID. Linking requires the existing fully authenticated account both before and after the redirect. Identities cannot move between accounts and emails never auto-merge them.
 
-| Setting | Value |
-| --- | --- |
-| Authorization URL | `https://modrinth.com/auth/authorize` |
-| Token URL | `https://zo7al.is-a.dev/api/account/modrinth/token` |
-| Userinfo URL | `https://zo7al.is-a.dev/api/account/modrinth/userinfo` |
-| Scopes | `USER_READ USER_READ_EMAIL` |
+The server-only Auth management bridge creates a native AAL1 session for the mapped account; verified native factors still require AAL2. New Modrinth-only members receive a random private synthetic login address, never a falsely verified personal email. This identifier is hidden from the account interface. Modrinth access tokens are discarded after identity verification. All account protection, passkeys and MFA remain within the existing native session system.
 
-The server adapters translate standard OAuth Basic/form client authentication and Bearer tokens to Modrinth's raw Authorization headers. The token adapter accepts only the configured client, authorization-code grant and exact Supabase callback. It forwards no arbitrary URL. Userinfo derives subject, name and email only from a verified upstream token and never invents verified-email status or site roles. Supabase owns identity linking, PKCE, sessions, email verification and MFA. Modrinth app credentials are never returned to the browser or mixed with administrator OAuth credentials.
+## Owner access and account deletion
 
-After configuration, set `ZO7AL_ACCOUNT_MODRINTH_ENABLED=true` and deploy. This provider is offered only when the flag and both server credentials are present; Supabase still rejects disabled/misconfigured providers. Verify login, cancellation, linking, unlink protection and an MFA account. Native custom providers are not listed by Supabase's public `/settings.external`, so this provider needs its own configured marker.
+`ZO7AL_ADMIN_ACCOUNT_IDS` contains immutable Auth UUIDs, not emails or editable metadata. Every dashboard API authorizes the remotely validated member session, checks bans/deletion and enforces enrolled MFA. The existing password fallback remains available. Dashboard sign-out clears member and administrator cookies.
+
+Administrator deletion immediately revokes the website account, removes its profile, links, requests and submissions, anonymizes purchase records, and permanently deletes the upstream Auth user including its provider identities. A minimal ID-only tombstone prevents stale sessions from reviving it. Failures remain revoked and are retried by the deletion queue. Owner accounts cannot be deleted.
+
+Members can request deletion after confirmation in Account Settings. The account signs out, its public profile becomes hidden, and a 15-day grace period starts. A fresh sign-in cancels the request only after enrolled MFA is satisfied and before the deadline. Expired requests fail closed. A private Vercel daily cron, authenticated by `CRON_SECRET`, completes permanent deletion and retries failed upstream cleanup.
 
 ## Google consent branding and Discord conflicts
 
