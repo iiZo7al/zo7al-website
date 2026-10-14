@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
-import { Fingerprint, Plus, Trash2, LoaderCircle } from "lucide-react";
+import { Fingerprint, Plus, Trash2, LoaderCircle, ArrowRight } from "lucide-react";
 import { useAccount } from "./AccountProvider";
 type Passkey = { id: string; friendly_name?: string; created_at: string };
 type Descriptor = {
@@ -110,10 +110,11 @@ export function PasskeySignin({
     [error, setError] = useState("");
   if (!passkeyEnabled) return null;
   return (
-    <div>
+    <div className="account-provider-buttons">
       <button
         type="button"
-        className="hub-button account-passkey-signin"
+        className="hub-button account-provider-button account-passkey-signin"
+        data-cursor="button"
         disabled={busy}
         onClick={async () => {
           setBusy(true);
@@ -129,12 +130,15 @@ export function PasskeySignin({
           }
         }}
       >
-        {busy ? (
-          <LoaderCircle size={19} className="animate-spin" />
-        ) : (
-          <Fingerprint size={19} />
-        )}{" "}
-        {t("signinPasskey")}
+        <span className="account-provider-icon" aria-hidden="true">
+          {busy ? (
+            <LoaderCircle size={22} className="animate-spin" />
+          ) : (
+            <Fingerprint size={22} />
+          )}
+        </span>
+        <span>{t("signinPasskey")}</span>
+        <ArrowRight size={16} className="account-provider-arrow" aria-hidden="true" />
       </button>
       {error && (
         <p role="alert" className="account-error mt-3">
