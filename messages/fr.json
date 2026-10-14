@@ -1204,7 +1204,11 @@
     "start": "Démarrer",
     "stop": "Arrêter",
     "restart": "Redémarrer",
-    "powerConfirm": "Confirmer {action} pour ce serveur ? Cette action modifie l’état du serveur actif."
+    "powerConfirm": "Confirmer {action} pour ce serveur ? Cette action modifie l’état du serveur actif.",
+    "last24Hours": "Dernières 24 heures",
+    "uniquePlayers": "Joueurs uniques",
+    "averagePlaytime": "Temps de jeu moyen",
+    "fortnitePeriods": "Les parties et joueurs uniques couvrent les dernières 24 heures ; les minutes et le pic couvrent toute la période. Certains chiffres sont arrondis."
   },
   "pelican": {
     "title": "Gestion du serveur",
@@ -1730,7 +1734,9 @@
       "ACCOUNT_BANNED": "Ce compte est banni",
       "ACCOUNT_DELETED": "Ce compte a été supprimé",
       "IDENTITY_LINKED": "Ce compte Discord appartient à un autre compte Zo7al. Connectez-vous avec celui-ci au lieu de l’associer ici.",
-      "OWNER_PROTECTED": "Le compte du propriétaire du tableau de bord ne peut pas être supprimé."
+      "OWNER_PROTECTED": "Le compte du propriétaire du tableau de bord ne peut pas être supprimé.",
+      "EMAIL_UNAVAILABLE": "Aucune adresse vérifiée disponible. Utilisez votre application d’authentification.",
+      "VERIFICATION_REQUIRED": "Vérifiez d’abord votre identité pour cette action."
     },
     "security": {
       "title": "Authentification à deux facteurs",
@@ -1766,7 +1772,9 @@
       "generateCodes": "Générer des codes",
       "changeApp": "Changer d’application",
       "setup": "Configurer la 2FA",
-      "backupsUnavailable": "Les codes de secours sont indisponibles auprès du service de connexion. La vérification par application reste disponible."
+      "backupsUnavailable": "Les codes de secours sont indisponibles auprès du service de connexion. La vérification par application reste disponible.",
+      "emailAlternative": "Ou vérifiez avec un code envoyé par courriel.",
+      "confirmAction": "Confirmez cette action avec un nouveau code de votre application ou de votre adresse vérifiée."
     },
     "submissionLogin": "Connectez-vous pour associer vos publications, candidatures et demandes d’assistance à votre compte et suivre leur traitement.",
     "publicProfile": "Profil public",
@@ -1822,6 +1830,18 @@
       "confirmTitle": "Voulez-vous vraiment supprimer votre compte ?",
       "acknowledge": "Je comprends le délai de 15 jours et le caractère définitif de la suppression.",
       "scheduled": "Suppression demandée. Connectez-vous sous 15 jours pour l’annuler."
-    }
+    },
+    "dashboard": "Tableau de bord",
+    "switchAccount": "Changer de compte"
+  },
+  "systemNotifications": {
+    "title": "Notifications de l’appareil",
+    "hint": "Les notifications arrivent lorsque le site est ouvert, même réduit.",
+    "unsupported": "Ce navigateur ne prend pas en charge les notifications de l’appareil.",
+    "enabled": "Les notifications de l’appareil sont activées.",
+    "blocked": "Notifications bloquées. Autorisez-les dans les paramètres du site du navigateur et de Windows.",
+    "enable": "Activer les notifications",
+    "test": "Envoyer une notification de test",
+    "testBody": "Les notifications Zo7al fonctionnent sur votre appareil."
   }
 }

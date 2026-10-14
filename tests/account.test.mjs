@@ -17,10 +17,11 @@ const db=stub('export async function siteDatabase(){return globalThis.__accountT
 const data=moduleURL('src/lib/data/account.ts');
 const security=moduleURL('src/lib/server/site-security.ts');
 const authURL=moduleURL('src/lib/server/account-auth.ts',{'./site-db':db,'./site-security':security,'../data/account':data});
+const verificationURL=moduleURL('src/lib/server/account-verification.ts',{'./account-auth':authURL,'./site-db':db,'./site-security':security}),verification=await import(verificationURL);
 const auth=await import(authURL);
 const links=await import(moduleURL('src/lib/server/account-minecraft.ts',{'./site-db':db,'./site-security':security,'./account-auth':authURL,'../data/account':data}));
 const memberURL=moduleURL('src/lib/server/member-modrinth.ts',{'./account-auth':authURL,'./account-admin':stub('export async function accountAdminRequest(){return {}}'),'./site-db':db,'./site-security':security,'../data/account':data});
-const accountRoute=await import(moduleURL('src/app/api/account/route.ts',{'@/lib/server/member-modrinth':memberURL,'@/lib/server/account-auth':authURL,'@/lib/data/member-profile':moduleURL('src/lib/data/member-profile.ts'),'@/lib/data/account':data,'@/lib/server/site-security':security,'@/lib/server/site-content':stub('export async function limitAttempt(){return true;}'),'@/lib/server/site-db':db,'@/i18n/config':moduleURL('src/i18n/config.ts')}));
+const accountRoute=await import(moduleURL('src/app/api/account/route.ts',{'@/lib/server/account-verification':verificationURL,'@/lib/server/admin-account':moduleURL('src/lib/server/admin-account.ts',{'./account-auth':authURL,'./site-security':security}),'@/lib/server/member-modrinth':memberURL,'@/lib/server/account-auth':authURL,'@/lib/data/member-profile':moduleURL('src/lib/data/member-profile.ts'),'@/lib/data/account':data,'@/lib/server/site-security':security,'@/lib/server/site-content':stub('export async function limitAttempt(){return true;}'),'@/lib/server/site-db':db,'@/i18n/config':moduleURL('src/i18n/config.ts')}));
 const userId='a1234567-1234-1234-1234-123456789abc',otherId='b1234567-1234-1234-1234-123456789abc',uuid='c1234567-1234-1234-1234-123456789abc',bridgeId='d1234567-1234-1234-1234-123456789abc';
 const headers=(values={})=>({origin:'https://zo7al.test',host:'zo7al.test','Content-Type':'application/json',...values});
 const request=(path='/api/account',body,extra={})=>new Request('https://zo7al.test'+path,{method:body?'POST':'GET',headers:headers(extra),...(body?{body:JSON.stringify(body)}:{})});
@@ -228,4 +229,19 @@ test('Modrinth member OAuth is offered only with its own configured direct app a
   const view=await(await accountRoute.GET(request())).json();assert.ok(view.providers.includes('modrinth'));
   const response=await accountRoute.POST(request('/api/account',{action:'oauth',provider:'modrinth',next:'/account?tab=connections'})),data=await response.json();assert.equal(response.status,200);const url=new URL(data.url);assert.equal(url.origin,'https://modrinth.com');assert.equal(url.searchParams.get('redirect_uri'),'https://zo7al.test/auth/callback');assert.match(url.searchParams.get('state'),/^[a-f0-9]{64}$/);assert.ok(response.headers.get('set-cookie'));assert.ok(!JSON.stringify(data).includes(process.env.MODRINTH_MEMBER_CLIENT_SECRET));
  }finally{for(const [k,v] of Object.entries(saved))if(v===undefined)delete process.env[k];else process.env[k]=v;handler=()=>Response.json(user);}
+});
+
+test('GitHub, Twitch and X are offered only when enabled; X uses the configured native provider',async()=>{
+ for(const provider of ['github','twitch','x']){
+  handler=url=>url.endsWith('/settings')?Response.json({external:{[provider]:true}}):Response.json(user);
+  assert.deepEqual((await(await accountRoute.GET(request())).json()).providers,[provider]);
+  const result=await accountRoute.POST(request('/api/account',{action:'oauth',provider}));assert.equal(result.status,200);assert.equal(new URL((await result.json()).url).searchParams.get('provider'),provider);
+ }
+ handler=url=>url.endsWith('/settings')?Response.json({external:{twitter:true}}):Response.json(user);
+ const legacy=await accountRoute.POST(request('/api/account',{action:'oauth',provider:'x'}));assert.equal(new URL((await legacy.json()).url).searchParams.get('provider'),'twitter');
+ handler=()=>Response.json({external:{}});assert.equal((await accountRoute.POST(request('/api/account',{action:'oauth',provider:'twitch'}))).status,400);
+});
+test('switch-account OAuth requests a provider account choice without bypassing PKCE',async()=>{
+ handler=url=>url.endsWith('/settings')?Response.json({external:{google:true}}):Response.json(user);
+ const result=await accountRoute.POST(request('/api/account',{action:'oauth',provider:'google',chooseAccount:true})),url=new URL((await result.json()).url);assert.equal(url.searchParams.get('prompt'),'select_account');assert.equal(url.searchParams.get('code_challenge_method'),'s256');
 });

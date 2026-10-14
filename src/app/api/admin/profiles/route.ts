@@ -23,7 +23,7 @@ export async function GET(request: Request) {
       await (
         await siteDatabase()
       ).query(
-        `SELECT id,name,username,avatar,banned_until AS "bannedUntil",ban_reason AS "banReason",deleted_at AS "deletedAt" FROM site_accounts WHERE name ILIKE $1 OR username ILIKE $1 ORDER BY updated_at DESC LIMIT 100`,
+        `SELECT id,name,username,avatar,banned_until AS "bannedUntil",ban_reason AS "banReason",deleted_at AS "deletedAt" FROM site_accounts WHERE auth_purged_at IS NULL AND (name ILIKE $1 OR username ILIKE $1) ORDER BY updated_at DESC LIMIT 100`,
         ["%" + query.replace(/[\\%_]/g, "\\$&") + "%"],
       )
     ).rows;

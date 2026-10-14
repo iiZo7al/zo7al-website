@@ -1,14 +1,16 @@
 "use client";
 import Link from "next/link";
 import {useAccount} from "@/components/account/AccountProvider";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
-import { CalendarDays, CheckCheck, ClipboardList, Layers, Newspaper, RefreshCw } from "lucide-react";
+import { CalendarDays, CheckCheck, ClipboardList, Layers, Newspaper, RefreshCw, BellRing } from "lucide-react";
 import BellIcon from "@/components/ui/BellIcon";
 import DetailsDialog from "@/components/ui/DetailsDialog";
 import { RECEIPT_KEY, parseReceipts } from "@/lib/data/hub-receipts";
 import { communityCopy } from "@/lib/data/community-copy";
 import { NOTIFICATION_CATEGORIES, normalizeNotificationState, validateNotificationPatch, type NotificationCategory, type NotificationPatch, type NotificationState } from "@/lib/data/community-notifications";
+
+import {newSystemNotices,showSystemNotice} from '@/lib/data/system-notifications';
 
 type Notice = { id: string; kind: NotificationCategory; title?: string; requestKind?: string; status?: string; delivery?: string; date: string; href: string };
 const icons = { news: Newspaper, events: CalendarDays, projects: Layers, requests: ClipboardList };
@@ -23,9 +25,12 @@ function mergePatch(older: NotificationPatch | null, newer: NotificationPatch): 
 
 export default function NotificationBell() {
   const {account}=useAccount(),accountId=account?.id;
-  const locale = useLocale(), c = communityCopy(locale), hub = useTranslations("hub");
+  const system=useTranslations("systemNotifications");
+  const locale = useLocale(), c = useMemo(()=>communityCopy(locale),[locale]), hub = useTranslations("hub");
   const [open, setOpen] = useState(false), [items, setItems] = useState<Notice[]>([]), [settings, setSettings] = useState<NotificationState>(normalizeNotificationState);
   const [ready, setReady] = useState(false), [busy, setBusy] = useState(false), [failed, setFailed] = useState(false), [syncStatus, setSyncStatus] = useState<"" | "saving" | "saved" | "error">("");
+  const [permission,setPermission]=useState<NotificationPermission|null>(null),[systemError,setSystemError]=useState(false);
+  const systemSeen=useRef<Set<string>|null>(null),systemSince=useRef(0);
   const settingsRef = useRef(settings), mounted = useRef(false), initialized = useRef(false), inflight = useRef<AbortController | null>(null), lastLoad = useRef(0);
   const pending = useRef<NotificationPatch | null>(null), queue = useRef<Promise<void>>(Promise.resolve()), jobs = useRef(0);
   const cache = useCallback((next: NotificationState) => {
@@ -85,12 +90,19 @@ export default function NotificationBell() {
       const results = await Promise.allSettled(tasks);
       if (controller.signal.aborted || !mounted.current) return;
       const next = results.flatMap(result => result.status === "fulfilled" ? result.value : []).filter(notice => Number.isFinite(Date.parse(notice.date)));
+      const previous=systemSeen.current;
+      if(previous){
+        const notices=newSystemNotices(next,previous,settingsRef.current.preferences,settingsRef.current.seen,systemSince.current);
+        for(const notice of notices)void showSystemNotice(notice.title??'Zo7al Projects',notice.kind==='requests'?c.requestUpdate:c[notice.kind as NotificationCategory],notice.id,notice.href);
+      }
+      systemSeen.current=new Set([...(previous??[]),...next.map(item=>item.id)].slice(-200));
       setItems(next.sort((a, b) => Date.parse(b.date) - Date.parse(a.date)).slice(0, 50)); setFailed(results.some(result => result.status === "rejected")); lastLoad.current = Date.now();
     } finally { if (inflight.current === controller) inflight.current = null; if (!controller.signal.aborted && mounted.current) setBusy(false); }
-  }, [locale, save,accountId]);
+  }, [locale, save,accountId,c]);
 
   useEffect(() => {
-    mounted.current = true; initialized.current = false;
+    mounted.current = true; initialized.current = false;systemSeen.current=null;systemSince.current=Date.now();
+    queueMicrotask(()=>{if(mounted.current&&'Notification' in window)setPermission(Notification.permission);});
     const controller = new AbortController();
     const start = async () => {
       if (controller.signal.aborted) return;
@@ -115,7 +127,7 @@ export default function NotificationBell() {
     const storage = (event: StorageEvent) => { if (initialized.current && [preferencesKey, seenKey].includes(event.key ?? "")) cache(cachedState()); };
     const receiptsChanged = () => { void load(true); };
     window.addEventListener("storage", storage); window.addEventListener("zo7al-receipts", receiptsChanged);
-    const interval = setInterval(() => { if (document.visibilityState === "visible") void load(); }, 60000);
+    const interval = setInterval(() => { void load(); }, 60000);
     return () => { mounted.current = false; initialized.current = false; controller.abort(); clearInterval(interval); inflight.current?.abort(); inflight.current = null; window.removeEventListener("storage", storage); window.removeEventListener("zo7al-receipts", receiptsChanged); };
   }, [cache, load, save]);
 
@@ -125,6 +137,7 @@ export default function NotificationBell() {
     <button type="button" className="community-bell" data-cursor="button" aria-label={c.notifications + (unread.length ? " (" + unread.length + ")" : "")} aria-haspopup="dialog" onClick={() => { setOpen(true); void load(); }}><BellIcon />{unread.length > 0 && <span className="community-bell-dot" aria-hidden="true" />}</button>
     {open && <DetailsDialog className="notification-dialog" title={c.notifications} onClose={() => setOpen(false)} style={{ width: "min(520px,calc(100vw - 24px))" }}><div className="community-dialog-body">
       <div className="hub-actions"><button className="hub-button" type="button" disabled={!ready || !unread.length} onClick={() => mark(visible.map(notice => notice.id))}><CheckCheck size={16} aria-hidden="true" />{c.markRead}</button><button className="hub-button" type="button" aria-label={hub("refresh")} disabled={busy || !ready} onClick={() => void load(true)}><RefreshCw size={16} className={busy ? "dash-spinning" : ""} aria-hidden="true" /></button></div>
+      <section className="community-preferences"><h3>{system('title')}</h3><p className="hub-muted">{system('hint')}</p>{permission===null?<p>{system('unsupported')}</p>:permission==='granted'?<p role="status">{system('enabled')}</p>:permission==='denied'?<p role="status">{system('blocked')}</p>:<button type="button" className="hub-button mt-3" onClick={async()=>{try{setPermission(await Notification.requestPermission());}catch{setSystemError(true);}}}><BellRing size={16}/>{system('enable')}</button>}{permission==='granted'&&<button type="button" className="hub-button mt-3" onClick={()=>void showSystemNotice('Zo7al Projects',system('testBody'),'zo7al-test','/')}><BellRing size={16}/>{system('test')}</button>}{systemError&&<p role="alert">{c.unavailable}</p>}</section>
       <details className="community-preferences"><summary>{c.preferences}</summary><fieldset disabled={!ready}>{NOTIFICATION_CATEGORIES.map(kind => <label key={kind}><input type="checkbox" checked={settings.preferences[kind]} onChange={event => { const checked = event.target.checked; cache({ ...settingsRef.current, preferences: { ...settingsRef.current.preferences, [kind]: checked } }); save({ preferences: { [kind]: checked } }); if (kind === "requests" && checked) void load(true); }} />{c[kind]}</label>)}</fieldset><p className="hub-muted mt-4">{c.privateNote}</p>{syncStatus && <p className="hub-muted mt-3" role="status">{syncStatus === "saving" ? c.preferencesSaving : syncStatus === "error" ? c.preferencesError : c.preferencesSaved}</p>}</details>
       {failed && <p className="hub-muted mt-4" role="status">{c.unavailable}</p>}
       {visible.length ? <div className="community-notification-list">{visible.map(notice => {

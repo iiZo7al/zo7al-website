@@ -1,4 +1,6 @@
-import { AccountError, accountProviderEnabled, accountConfigured, accountHeaders, accountOrigin, accountSession, accountRequiresMFA, accountView, authRequest, clearAccount, requestCookie, requireAccount, setAccountTokens, startAccountFlow, ACCOUNT_ACCESS, type AuthUser } from '@/lib/server/account-auth';
+import {isOwnerAccount} from '@/lib/server/admin-account';
+import {requireActionProof} from '@/lib/server/account-verification';
+import { AccountError, accountProviderEnabled, accountConfigured, accountHeaders, accountOrigin, accountSession, hasAccountSecondFactor, requireAccountSession, accountRequiresMFA, accountView, authRequest, clearAccount, requestCookie, requireAccount, setAccountTokens, startAccountFlow, ACCOUNT_ACCESS, type AuthUser } from '@/lib/server/account-auth';
 import { ACCOUNT_PROVIDERS, accountEmail, accountPassword, safeAccountName } from '@/lib/data/account';
 import { readJSON } from '@/lib/server/site-security';
 import { limitAttempt } from '@/lib/server/site-content';
@@ -15,8 +17,8 @@ export async function GET(request:Request) {
   try {
     if (!accountConfigured()) return Response.json({configured:false,account:null,providers:[],email:false},{headers});
     const [session,settings]=await Promise.all([accountSession(request,headers),authRequest('/settings')]);
-    const mfaRequired=!!session&&accountRequiresMFA(session.user,session.access);
-    return Response.json({configured:true,account:session&&!mfaRequired?await accountView(session.user):null,mfaRequired,mfaEnabled:true,passkeyEnabled:settings.passkeys_enabled===true,providers:ACCOUNT_PROVIDERS.filter(p=>accountProviderEnabled(p,settings)),email:settings.external?.email===true},{headers});
+    const mfaRequired=!!session&&!await hasAccountSecondFactor(request,session.user,session.access);
+    return Response.json({configured:true,canDashboard:!!session&&!mfaRequired&&isOwnerAccount(session.user.id),account:session&&!mfaRequired?await accountView(session.user):null,mfaRequired,mfaEnabled:true,passkeyEnabled:settings.passkeys_enabled===true,providers:ACCOUNT_PROVIDERS.filter(p=>accountProviderEnabled(p,settings)),email:settings.external?.email===true},{headers});
   } catch(error){return failed(error,headers);}
 }
 export async function POST(request:Request) {
@@ -51,8 +53,10 @@ export async function POST(request:Request) {
       if(body.provider==='modrinth')return Response.json({url:await startMemberModrinth(request,headers,body.action as 'oauth'|'link',body.next)},{headers});
       const user=body.action==='link'?await requireAccount(request):null;
       const flow=await startAccountFlow(request,headers,body.action,body.next,user?.id??null);
-      const params=new URLSearchParams({provider:String(body.provider),redirect_to:flow.redirectTo,code_challenge:flow.code_challenge,code_challenge_method:flow.code_challenge_method,...(body.action==='link'?{skip_http_redirect:'true'}:{})});
+      const nativeProvider=body.provider==='x'&&settings.external?.x!==true&&settings.external?.twitter===true?'twitter':String(body.provider);
+      const params=new URLSearchParams({provider:nativeProvider,redirect_to:flow.redirectTo,code_challenge:flow.code_challenge,code_challenge_method:flow.code_challenge_method,...(body.action==='link'?{skip_http_redirect:'true'}:{})});
       if(body.provider==='azure')params.set('scopes','email');
+      if(body.chooseAccount===true&&['google','azure'].includes(String(body.provider)))params.set('prompt','select_account');
       const url=body.action==='link'?(await authRequest('/user/identities/authorize?'+params,'GET',undefined,requestCookie(request,ACCOUNT_ACCESS))).url:process.env.SUPABASE_URL!.replace(/\/$/,'')+'/auth/v1/authorize?'+params;
       if(!url||new URL(url).protocol!=='https:')throw new AccountError('PROVIDER');
       return Response.json({url},{headers});
@@ -84,6 +88,7 @@ export async function POST(request:Request) {
     }
     if(body.action==='reauthenticate') { await authRequest('/reauthenticate','GET',undefined,requestCookie(request,ACCOUNT_ACCESS));return Response.json({ok:true,message:'EMAIL_SENT'},{headers}); }
     if(body.action==='unlink') {
+      const session=await requireAccountSession(request,headers);await requireActionProof(user,session.access,body.proof,'unlink-identity',String(body.identityId??''));
       if(typeof body.identityId==='string'&&body.identityId.startsWith('modrinth:')) {
         const view=await accountView(user);if(view.providers.length<2)throw new AccountError('INVALID');
         await (await siteDatabase()).query('DELETE FROM site_member_modrinth_identities WHERE user_id=$1 AND provider_id=$2',[user.id,body.identityId.slice(9)]);

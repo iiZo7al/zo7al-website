@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
-import { Fingerprint, Plus, Trash2, LoaderCircle, ArrowRight } from "lucide-react";
+import { Fingerprint, Plus, Trash2, LoaderCircle } from "lucide-react";
 import { useAccount } from "./AccountProvider";
 type Passkey = { id: string; friendly_name?: string; created_at: string };
 type Descriptor = {
@@ -110,7 +110,7 @@ export function PasskeySignin({
     [error, setError] = useState("");
   if (!passkeyEnabled) return null;
   return (
-    <div className="account-provider-buttons">
+    <div className="account-passkey-row">
       <button
         type="button"
         className="hub-button account-provider-button account-passkey-signin"
@@ -138,7 +138,6 @@ export function PasskeySignin({
           )}
         </span>
         <span>{t("signinPasskey")}</span>
-        <ArrowRight size={16} className="account-provider-arrow" aria-hidden="true" />
       </button>
       {error && (
         <p role="alert" className="account-error mt-3">

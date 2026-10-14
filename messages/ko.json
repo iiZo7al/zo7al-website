@@ -1204,7 +1204,11 @@
     "start": "시작",
     "stop": "중지",
     "restart": "재시작",
-    "powerConfirm": "이 서버에서 {action}을 실행할까요? 실제 서버 상태가 변경됩니다."
+    "powerConfirm": "이 서버에서 {action}을 실행할까요? 실제 서버 상태가 변경됩니다.",
+    "last24Hours": "지난 24시간",
+    "uniquePlayers": "고유 플레이어",
+    "averagePlaytime": "평균 플레이 시간",
+    "fortnitePeriods": "플레이 횟수와 고유 플레이어는 지난 24시간 기준이며 플레이 분수와 최대 인원은 전체 기간 기준입니다. 일부 수치는 반올림됩니다."
   },
   "pelican": {
     "title": "서버 관리",
@@ -1730,7 +1734,9 @@
       "ACCOUNT_BANNED": "이 계정은 이용 정지되었습니다",
       "ACCOUNT_DELETED": "이 계정은 삭제되었습니다",
       "IDENTITY_LINKED": "이 Discord 계정은 다른 Zo7al 계정에 연결되어 있습니다. 여기서 연결하는 대신 해당 계정으로 로그인하세요.",
-      "OWNER_PROTECTED": "현재 대시보드 소유자의 계정은 삭제할 수 없습니다."
+      "OWNER_PROTECTED": "현재 대시보드 소유자의 계정은 삭제할 수 없습니다.",
+      "EMAIL_UNAVAILABLE": "확인된 이메일이 없습니다. 인증 앱을 사용하세요.",
+      "VERIFICATION_REQUIRED": "먼저 이 작업에 대한 본인 확인을 하세요."
     },
     "security": {
       "title": "2단계 인증",
@@ -1766,7 +1772,9 @@
       "generateCodes": "백업 코드 생성",
       "changeApp": "인증 앱 변경",
       "setup": "2FA 설정",
-      "backupsUnavailable": "로그인 제공업체에서 현재 백업 코드를 지원하지 않습니다. 인증 앱 확인은 계속 사용할 수 있습니다."
+      "backupsUnavailable": "로그인 제공업체에서 현재 백업 코드를 지원하지 않습니다. 인증 앱 확인은 계속 사용할 수 있습니다.",
+      "emailAlternative": "또는 이메일로 받은 코드로 확인하세요.",
+      "confirmAction": "인증 앱 또는 확인된 이메일의 새 코드로 이 작업을 확인하세요."
     },
     "submissionLogin": "로그인하여 게시물, 신청 및 지원 요청을 계정에 연결하고 진행 상황을 확인하세요.",
     "publicProfile": "공개 프로필",
@@ -1822,6 +1830,18 @@
       "confirmTitle": "계정을 삭제하시겠습니까?",
       "acknowledge": "15일의 유예 기간과 이후 삭제를 취소할 수 없음을 이해합니다.",
       "scheduled": "삭제가 요청되었습니다. 15일 내 로그인하면 취소됩니다."
-    }
+    },
+    "dashboard": "관리 화면",
+    "switchAccount": "계정 전환"
+  },
+  "systemNotifications": {
+    "title": "기기 알림",
+    "hint": "사이트가 열려 있으면 최소화해도 알림이 도착합니다.",
+    "unsupported": "이 브라우저는 기기 알림을 지원하지 않습니다.",
+    "enabled": "기기 알림이 활성화되었습니다.",
+    "blocked": "알림이 차단되었습니다. 브라우저 사이트 설정과 Windows에서 허용하세요.",
+    "enable": "기기 알림 켜기",
+    "test": "테스트 알림 보내기",
+    "testBody": "기기에서 Zo7al 알림을 받을 수 있습니다."
   }
 }

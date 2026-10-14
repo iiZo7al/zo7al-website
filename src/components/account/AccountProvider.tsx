@@ -1,10 +1,10 @@
 "use client";
 import { createContext,useCallback,useContext,useEffect,useRef,useState,type ReactNode } from 'react';
 import type { SiteAccount } from '@/lib/data/account';
-type AccountState={account:SiteAccount|null;configured:boolean;email:boolean;providers:string[];ready:boolean;error:boolean;errorCode?:string;mfaRequired:boolean;mfaEnabled:boolean;passkeyEnabled:boolean;refresh:()=>Promise<void>};
+type AccountState={account:SiteAccount|null;configured:boolean;email:boolean;providers:string[];ready:boolean;error:boolean;errorCode?:string;mfaRequired:boolean;mfaEnabled:boolean;passkeyEnabled:boolean;canDashboard:boolean;refresh:()=>Promise<void>};
 const Context=createContext<AccountState|null>(null);
 export default function AccountProvider({children}:{children:ReactNode}) {
-  const [state,setState]=useState({account:null as SiteAccount|null,configured:false,email:false,providers:[] as string[],ready:false,error:false,mfaRequired:false,mfaEnabled:false,passkeyEnabled:false,errorCode:undefined as string|undefined});
+  const [state,setState]=useState({account:null as SiteAccount|null,configured:false,email:false,providers:[] as string[],ready:false,error:false,mfaRequired:false,mfaEnabled:false,passkeyEnabled:false,canDashboard:false,errorCode:undefined as string|undefined});
   const sequence=useRef(0);
   const refresh=useCallback(async()=>{
     const generation=++sequence.current;

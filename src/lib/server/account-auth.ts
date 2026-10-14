@@ -27,7 +27,7 @@ export function setAccountCookie(headers: Headers, name: string, value: string, 
   headers.append('Set-Cookie', `${name}=${value}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${age}${secure ? '; Secure' : ''}`);
 }
 export function accountHeaders() { return new Headers({ 'Cache-Control': 'private, no-store', 'Referrer-Policy': 'no-referrer', 'X-Robots-Tag': 'noindex, nofollow' }); }
-export function clearAccount(headers: Headers) { setAccountCookie(headers, ACCOUNT_ACCESS, '', 0); setAccountCookie(headers, ACCOUNT_REFRESH, '', 0); }
+export function clearAccount(headers: Headers) { setAccountCookie(headers, SECOND_FACTOR, '', 0); setAccountCookie(headers, ACCOUNT_ACCESS, '', 0); setAccountCookie(headers, ACCOUNT_REFRESH, '', 0); }
 export function setAccountTokens(result: AuthResult, headers: Headers) {
   if (!result.access_token || !result.refresh_token || !Number.isFinite(result.expires_in)) throw new AccountError('AUTH_EXPIRED', 401);
   setAccountCookie(headers, ACCOUNT_ACCESS, result.access_token, Math.min(86400, result.expires_in!));
@@ -61,9 +61,26 @@ export function accountRequiresMFA(user:AuthUser,validatedAccess:string) {
   if(!(user.factors??[]).some(factor=>factor.status==='verified'))return false;
   try {const claims=JSON.parse(Buffer.from(validatedAccess.split('.')[1],'base64url').toString());return claims.sub!==user.id||claims.aal!=='aal2';}catch{return true;}
 }
+const SECOND_FACTOR = secure ? '__Host-zo7al-second-factor' : 'zo7al-second-factor';
+/** Claims are read only after /user validated this exact access token. */
+export function accountSessionId(user:AuthUser,access:string):string|null {
+ try{const claims=JSON.parse(Buffer.from(access.split('.')[1],'base64url').toString());return claims.sub===user.id&&/^[a-f0-9-]{36}$/i.test(claims.session_id??'')?claims.session_id:null;}catch{return null;}
+}
+function factorFingerprint(user:AuthUser){return tokenHash((user.factors??[]).filter(f=>f.status==='verified').map(f=>f.id).sort().join(':'));}
+export async function grantAccountSecondFactor(user:AuthUser,access:string,headers:Headers){
+ const session=accountSessionId(user,access);if(!session)throw new AccountError('AUTH_EXPIRED',401);
+ const token=randomBytes(32).toString('hex'),db=await siteDatabase();await db.query('DELETE FROM site_account_second_factors WHERE expires_at<now()');
+ await db.query("INSERT INTO site_account_second_factors(token_hash,user_id,session_id,factor_hash,expires_at) VALUES($1,$2,$3,$4,now()+interval '12 hours')",[tokenHash(token),user.id,session,factorFingerprint(user)]);
+ setAccountCookie(headers,SECOND_FACTOR,token,43200);
+}
+export async function hasAccountSecondFactor(request:Request,user:AuthUser,access:string){
+ if(!accountRequiresMFA(user,access))return true;
+ const token=requestCookie(request,SECOND_FACTOR),session=accountSessionId(user,access);if(!session||!/^[a-f0-9]{64}$/.test(token))return false;
+ const result=await (await siteDatabase()).query('SELECT user_id FROM site_account_second_factors WHERE token_hash=$1 AND user_id=$2 AND session_id=$3 AND factor_hash=$4 AND expires_at>now()',[tokenHash(token),user.id,session,factorFingerprint(user)]);return result.rows.length>0;
+}
 export async function accountUser(request:Request,headers?:Headers):Promise<AuthUser|null> {
   const session=await accountSession(request,headers);if(!session)return null;
-  if(accountRequiresMFA(session.user,session.access))throw new AccountError('MFA_REQUIRED',403);
+  if(!await hasAccountSecondFactor(request,session.user,session.access))throw new AccountError('MFA_REQUIRED',403);
   await assertAccountAllowed(session.user.id);
   return session.user;
 }
@@ -92,7 +109,7 @@ export async function accountView(user: AuthUser): Promise<SiteAccount> {
   const rawAvatar = row.avatar ?? user.user_metadata?.avatar_url;
   let avatar: string | null = typeof rawAvatar==='string'&&/^\/api\/profile-media\/[a-f0-9-]{36}$/.test(rawAvatar)?rawAvatar:null;
   if (typeof rawAvatar === 'string' && rawAvatar.length < 1024) { try { const url = new URL(rawAvatar); if (url.protocol === 'https:' && !url.username && !url.password) avatar = url.href; } catch {} }
-  return { id: user.id, name: row.name, username:row.handle??null, banner:row.banner??null, bio:row.bio??'', socials:row.socials??{}, email: contactEmail, avatar, providers: [...(user.identities ?? []).filter(v=>!(v.provider==='email'&&user.email?.endsWith('@modrinth.accounts.zo7al.is-a.dev'))).map(v => ({ id: v.identity_id ?? v.id, provider: v.provider, ...(v.provider==='discord'?{name:safeAccountName(v.identity_data?.full_name)??safeAccountName(v.identity_data?.name)??'Discord'}:{}) })),...(modrinth?[{id:'modrinth:'+modrinth.provider_id,provider:'modrinth',name:modrinth.name}]:[])], minecraft: row.uuid ? { uuid: row.uuid, username: row.username, linkedAt: new Date(row.linked_at).toISOString() } : null };
+  return { id: user.id, name: row.name, username:row.handle??null, banner:row.banner??null, bio:row.bio??'', socials:row.socials??{}, email: contactEmail, avatar, providers: [...(user.identities ?? []).filter(v=>!(v.provider==='email'&&user.email?.endsWith('@modrinth.accounts.zo7al.is-a.dev'))).map(v => ({ id: v.identity_id ?? v.id, provider: v.provider==='twitter'?'x':v.provider, ...(v.provider==='discord'?{name:safeAccountName(v.identity_data?.full_name)??safeAccountName(v.identity_data?.name)??'Discord'}:{}) })),...(modrinth?[{id:'modrinth:'+modrinth.provider_id,provider:'modrinth',name:modrinth.name}]:[])], minecraft: row.uuid ? { uuid: row.uuid, username: row.username, linkedAt: new Date(row.linked_at).toISOString() } : null };
 }
 export async function startAccountFlow(request: Request, headers: Headers, purpose: string, next: unknown, userId: string | null = null) {
   const browser = randomBytes(32).toString('hex'), verifier = randomBytes(48).toString('base64url');
@@ -110,13 +127,14 @@ export async function finishAccountFlow(request: Request, headers: Headers, code
   const user = await authRequest('/user', 'GET', undefined, result.access_token) as AuthUser;
   if (!user?.id || flow.user_id && flow.user_id !== user.id) throw new AccountError('AUTH_EXPIRED', 401);
   await accountView(user); setAccountTokens(result, headers);
-  if(accountRequiresMFA(user,result.access_token!))return '/account?mfa=1&next='+encodeURIComponent(flow.purpose==='recover'?'/account?tab=password&recovery=1':accountNext(flow.next_path));
+  if(accountRequiresMFA(user,result.access_token!))return '/account?mfa=1&next='+encodeURIComponent(flow.purpose==='recover'?'/account?tab=security&recovery=1':accountNext(flow.next_path));
   await cancelAccountDeletion(user.id);
-  return flow.purpose === 'recover' ? '/account?tab=password&recovery=1' : accountNext(flow.next_path);
+  return flow.purpose === 'recover' ? '/account?tab=security&recovery=1' : accountNext(flow.next_path);
 }
 
 export function accountProviderEnabled(provider:string,settings:AuthResult) {
   if(provider==='modrinth')return process.env.ZO7AL_ACCOUNT_MODRINTH_ENABLED==='true'&&!!process.env.MODRINTH_MEMBER_CLIENT_ID&&!!process.env.MODRINTH_MEMBER_CLIENT_SECRET&&!!process.env.SUPABASE_SECRET_KEY;
+  if(provider==='x')return settings.external?.x===true||settings.external?.twitter===true;
   return settings.external?.[provider]===true;
 }
 export async function accountPasskeysEnabled() { return (await authRequest('/settings')).passkeys_enabled===true; }

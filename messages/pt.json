@@ -1204,7 +1204,11 @@
     "start": "Iniciar",
     "stop": "Parar",
     "restart": "Reiniciar",
-    "powerConfirm": "Confirmar {action} para este servidor? Esta ação altera o estado do servidor ativo."
+    "powerConfirm": "Confirmar {action} para este servidor? Esta ação altera o estado do servidor ativo.",
+    "last24Hours": "Últimas 24 horas",
+    "uniquePlayers": "Jogadores únicos",
+    "averagePlaytime": "Tempo médio de jogo",
+    "fortnitePeriods": "Partidas e jogadores únicos abrangem as últimas 24 horas; minutos e pico são históricos. A fonte arredonda alguns valores."
   },
   "pelican": {
     "title": "Gestão do servidor",
@@ -1730,7 +1734,9 @@
       "ACCOUNT_BANNED": "Esta conta está banida",
       "ACCOUNT_DELETED": "Esta conta foi excluída",
       "IDENTITY_LINKED": "Esta conta Discord pertence a outra conta Zo7al. Inicia sessão com ela em vez de a associares aqui.",
-      "OWNER_PROTECTED": "A conta do proprietário atual do painel não pode ser excluída."
+      "OWNER_PROTECTED": "A conta do proprietário atual do painel não pode ser excluída.",
+      "EMAIL_UNAVAILABLE": "Nenhum e-mail verificado disponível. Use seu aplicativo autenticador.",
+      "VERIFICATION_REQUIRED": "Verifique sua identidade para esta ação primeiro."
     },
     "security": {
       "title": "Autenticação de dois fatores",
@@ -1766,7 +1772,9 @@
       "generateCodes": "Gerar códigos",
       "changeApp": "Trocar aplicativo",
       "setup": "Configurar 2FA",
-      "backupsUnavailable": "Os códigos de recuperação estão indisponíveis no serviço de entrada. A verificação pela aplicação continua disponível."
+      "backupsUnavailable": "Os códigos de recuperação estão indisponíveis no serviço de entrada. A verificação pela aplicação continua disponível.",
+      "emailAlternative": "Ou verifique com um código enviado ao seu e-mail.",
+      "confirmAction": "Confirme esta ação com um novo código do aplicativo ou do e-mail verificado."
     },
     "submissionLogin": "Entre para vincular suas publicações, candidaturas e pedidos de suporte à sua conta e acompanhar o andamento.",
     "publicProfile": "Perfil público",
@@ -1822,6 +1830,18 @@
       "confirmTitle": "Tem certeza de que deseja excluir sua conta?",
       "acknowledge": "Entendo o prazo de 15 dias e que a exclusão será definitiva depois dele.",
       "scheduled": "Exclusão solicitada. Entre em até 15 dias para cancelar."
-    }
+    },
+    "dashboard": "Painel de controle",
+    "switchAccount": "Trocar de conta"
+  },
+  "systemNotifications": {
+    "title": "Notificações do dispositivo",
+    "hint": "As notificações chegam enquanto o site está aberto, mesmo minimizado.",
+    "unsupported": "Este navegador não oferece notificações do dispositivo.",
+    "enabled": "As notificações do dispositivo estão ativadas.",
+    "blocked": "Notificações bloqueadas. Permita-as nas configurações do site no navegador e no Windows.",
+    "enable": "Ativar notificações",
+    "test": "Enviar notificação de teste",
+    "testBody": "As notificações Zo7al funcionam no seu dispositivo."
   }
 }

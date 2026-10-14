@@ -1204,7 +1204,11 @@
     "start": "起動",
     "stop": "停止",
     "restart": "再起動",
-    "powerConfirm": "このサーバーで{action}を実行しますか？稼働中のサーバー状態が変わります。"
+    "powerConfirm": "このサーバーで{action}を実行しますか？稼働中のサーバー状態が変わります。",
+    "last24Hours": "過去24時間",
+    "uniquePlayers": "ユニークプレイヤー",
+    "averagePlaytime": "平均プレイ時間",
+    "fortnitePeriods": "プレイ回数とユニークプレイヤーは過去24時間、プレイ分数と最大同時人数は全期間の値です。一部の数値は丸められています。"
   },
   "pelican": {
     "title": "サーバー管理",
@@ -1730,7 +1734,9 @@
       "ACCOUNT_BANNED": "このアカウントは利用停止中です",
       "ACCOUNT_DELETED": "このアカウントは削除されました",
       "IDENTITY_LINKED": "このDiscordは別のZo7alアカウントに連携されています。ここで連携せず、そのアカウントでログインしてください。",
-      "OWNER_PROTECTED": "現在のダッシュボード所有者のアカウントは削除できません。"
+      "OWNER_PROTECTED": "現在のダッシュボード所有者のアカウントは削除できません。",
+      "EMAIL_UNAVAILABLE": "確認済みメールがありません。認証アプリを使用してください。",
+      "VERIFICATION_REQUIRED": "この操作の前に本人確認を行ってください。"
     },
     "security": {
       "title": "二要素認証",
@@ -1766,7 +1772,9 @@
       "generateCodes": "コードを生成",
       "changeApp": "認証アプリを変更",
       "setup": "2FAを設定",
-      "backupsUnavailable": "ログインサービスでは現在バックアップコードを利用できません。認証アプリでの確認は引き続き利用できます。"
+      "backupsUnavailable": "ログインサービスでは現在バックアップコードを利用できません。認証アプリでの確認は引き続き利用できます。",
+      "emailAlternative": "またはメールで届くコードで確認できます。",
+      "confirmAction": "認証アプリまたは確認済みメールの新しいコードでこの操作を確認してください。"
     },
     "submissionLogin": "ログインして投稿、応募、サポート依頼をアカウントに保存し、進捗を確認できます。",
     "publicProfile": "公開プロフィール",
@@ -1822,6 +1830,18 @@
       "confirmTitle": "アカウントを削除しますか？",
       "acknowledge": "15日間の猶予と、その後の削除が取り消せないことを理解しています。",
       "scheduled": "削除を申請しました。15日以内にログインすると取り消せます。"
-    }
+    },
+    "dashboard": "管理画面",
+    "switchAccount": "アカウントを切り替え"
+  },
+  "systemNotifications": {
+    "title": "端末の通知",
+    "hint": "サイトを開いている間は、最小化していても通知が届きます。",
+    "unsupported": "このブラウザーは端末の通知に対応していません。",
+    "enabled": "端末の通知が有効です。",
+    "blocked": "通知がブロックされています。ブラウザーのサイト設定とWindowsで許可してください。",
+    "enable": "端末の通知を有効にする",
+    "test": "テスト通知を送信",
+    "testBody": "端末でZo7alの通知を受信できます。"
   }
 }

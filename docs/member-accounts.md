@@ -131,3 +131,19 @@ Discord's observed callback failure was `Identity is already linked to another u
 Dashboard → News creates a news post with an optional poll question, 2–8 unique options and an optional expiry. News and poll publication update atomically; editing a news post preserves its poll ID and votes. Once votes exist, changing options is rejected without changing the news. Removing a poll or deleting its news unpublishes that poll while retaining existing ballots. There is no separate poll tab or standalone poll card in the public news feed. Existing legacy polls remain stored and are not automatically attached to unrelated news.
 
 Public profile routing decodes Next's encoded `@` parameter once before validation. `/@iiZo7al` and the encoded `%40iiZo7al` route resolve the same saved, case-insensitive handle; malformed/non-profile routes stay 404.
+
+## Fresh confirmation, recovery and system notifications
+
+Deleting an account or unlinking a provider/Minecraft requires a new app code, one-use recovery code, or verified email OTP. An opaque five-minute action proof is bound to the remotely validated user, native Supabase session ID, action and identity; the mutation consumes it atomically. A previously authenticated browser alone cannot authorize these changes.
+
+If native recovery codes are unavailable, the site stores only salted-by-account SHA-256 hashes of ten random 128-bit codes. A consumed code cannot be reused; regeneration invalidates previous codes. Email codes are sent only to the current Auth user's confirmed primary email, never a browser-selected address or synthetic Modrinth login identifier. Challenges expire in five minutes and allow at most five attempts. The code must verify back to the exact same Auth subject. Email/local backup verification grants a server-side, twelve-hour website assurance bound to the native session and verified-factor fingerprint; it does not forge or claim a native AAL2 JWT. Native Auth factor changes still require native assurance.
+
+In Supabase → Authentication → Email Templates → Magic Link, include `{{ .Token }}` in the email body for the numeric OTP form. Configure SMTP for delivery to members outside the project team; provider delivery/rate restrictions still apply. This change does not send a test email or change a member's authenticator during development.
+
+TOTP enrollment renders a PNG generated from the native Auth provisioning URI on the server. The QR regression test actually decodes the PNG and verifies that the scanned secret matches the enrollment secret.
+
+Password controls are under Account Security; older password-tab URLs map there. The dashboard link is returned only for the configured immutable owner account and no longer appears in quick search. Final Auth deletion records `auth_purged_at` so completed purges disappear from the member administration list while the ID-only revocation tombstone remains.
+
+The notification dialog requests browser permission on a user click and offers a test notification. New enabled-category notices trigger OS notifications while the site is open (including minimized); it does not promise delivery with the browser closed. A service worker handles notification clicks. Initial history, read notices and previously observed IDs do not generate a notification flood.
+
+Fortnite dashboard statistics come from the public Fortnite.GG creator cards. Plays/unique players cover 24 hours; total minutes and peak players are all-time. Source-rounded figures are disclosed, and unavailable data remains missing rather than fabricated zeroes. GitHub, Twitch and X (OAuth 2.0 provider `x`) appear only when Auth reports them enabled.
