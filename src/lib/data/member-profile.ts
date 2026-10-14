@@ -9,6 +9,7 @@ export const PROFILE_SOCIALS = [
   "website",
   "threads","bluesky","snapchat","facebook","telegram","whatsapp","kick","reddit","linkedin","pinterest","steam","spotify","roblox","playstation","epicgames","modrinth","curseforge","patreon","linktree","fortnite",
 ] as const;
+export const PROFILE_SOCIAL_LABELS: Record<string,string> = { github:'GitHub',youtube:'YouTube',discord:'Discord',twitch:'Twitch',tiktok:'TikTok',instagram:'Instagram',x:'X',threads:'Threads',bluesky:'Bluesky',snapchat:'Snapchat',facebook:'Facebook',telegram:'Telegram',whatsapp:'WhatsApp',kick:'Kick',reddit:'Reddit',linkedin:'LinkedIn',pinterest:'Pinterest',steam:'Steam',spotify:'Spotify',roblox:'Roblox',playstation:'PlayStation',epicgames:'Epic Games',modrinth:'Modrinth',curseforge:'CurseForge',patreon:'Patreon',linktree:'Linktree',fortnite:'Fortnite' };
 export type MemberProfile = {
   username: string | null;
   banner: string | null;

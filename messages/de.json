@@ -17,7 +17,10 @@
     "copied": "Kopiert",
     "all": "Alle",
     "downloads": "Downloads",
-    "viewMore": "View more"
+    "viewMore": "Mehr anzeigen",
+    "website": "Webseite",
+    "markdownHint": "Markdown unterstützt: **fett**, Listen, Links, Tabellen und Code.",
+    "markdownPreview": "Markdown-Vorschau"
   },
   "home": {
     "eyebrow": "@iiZo7al — Gaming-Universum",
@@ -160,7 +163,33 @@
       "8238-8280-9827": "🧡🌹 Gib ein Like und füge die Insel zu deinen Favoriten hinzu\n\n🏰 Doomspire Brickbattle\n💥 Zerstörbare Türme und Explosionen\n🔫 6 klassische Waffen\n🎮 Schnelle Teamkämpfe\n🏆 100 Runden\n🛒 Shop im Spiel\n🔫 Ohne Nachladen\n🪜 Kletterbare Türme und Leitern\n😎 Mit UEFN erstellt"
     },
     "newMap": "Neu!!",
-    "itemShopCode": "Nutze den Creator-Code Zo7al im Fortnite-Item-Shop."
+    "itemShopCode": "Nutze den Creator-Code Zo7al im Fortnite-Item-Shop.",
+    "mapsNav": "Zo7al-Karten",
+    "codeNav": "Nutze den Code: {code}",
+    "tagLabels": {
+      "squad": "Trupp",
+      "explosives": "Sprengstoffe",
+      "space": "Weltraum",
+      "gun_game": "Waffenspiel",
+      "free_for_all": "Jeder gegen jeden",
+      "attack": "Angriff",
+      "competitive": "Wettkampf",
+      "zonewars": "Zonenkriege",
+      "pvp": "Spieler gegen Spieler",
+      "8v8": "8 gegen 8",
+      "base": "Basis",
+      "training": "Training",
+      "1v1": "1 gegen 1",
+      "music": "Musik",
+      "just_for_fun": "Nur zum Spaß",
+      "team_deathmatch": "Team-Deathmatch",
+      "arena": "Arena",
+      "capture_the_flag": "Flagge erobern",
+      "shooter": "Shooter",
+      "practice": "Übung",
+      "fighting": "Kampf",
+      "building": "Bauen"
+    }
   },
   "socials": {
     "eyebrow": "Community",
@@ -400,7 +429,7 @@
       {
         "category": "storeRanks",
         "q": "Wie bewerbe ich mich für einen Creator-Rang?",
-        "a": "Melde dich an, verknüpfe Discord und bestätige Minecraft. Wähle einen Creator-Rang und ergänze Kanal und Inhaltsdetails; verknüpfte Kontodaten werden automatisch übernommen. Das Team prüft Bewerbungen.",
+        "a": "Melde dich an, verknüpfe Discord und verifiziere Minecraft. Wähle einen Creator-Rang und sende Informationen zu deinem Kanal und deinen Inhalten. Danach zeigt die Schaltfläche „Bewerbung eingereicht“ und öffnet Meine Anfragen → Bewerbungen zum Verfolgen des Status.",
         "id": "creator-apply",
         "href": "/store",
         "action": "Shop öffnen"
@@ -417,7 +446,7 @@
         "id": "one-rank",
         "category": "storeRanks",
         "q": "Kann ich mehrere Ränge in den Warenkorb legen?",
-        "a": "Es ist jeweils ein bezahlter Rang möglich. Entferne ihn vor der Auswahl eines anderen. Coins können zusätzlich hinzugefügt und in ihrer Menge geändert werden. Ein bezahlter Rang umfasst alle niedrigeren Stufen (VIP, VIP+, VIP++, MVP, MVP+, MVP++). Booster ist unabhängig. Eigene Ränge können nicht erneut für dich gekauft werden; Geschenke bleiben verfügbar.",
+        "a": "Nur ein Rang pro Warenkorb. Entferne den aktuellen, um einen anderen zu wählen.",
         "href": "/store",
         "action": "Shop öffnen"
       },
@@ -449,7 +478,7 @@
         "id": "leaderboard",
         "category": "minecraft",
         "q": "Wie funktioniert die Minecraft-Rangliste?",
-        "a": "Die Rangliste öffnet Zo7al Network, sortiert nach der gesamten Spielzeit in Stunden. Nur die je Server aktivierten Statistiken zählen zur Netzwerksumme. Du kannst Server oder Statistik wechseln und einen Spieler auswählen, um sein Profil zu öffnen. Eine leere Tabelle bedeutet, dass für diese Auswahl noch keine synchronisierten Werte vorliegen.",
+        "a": "Die Minecraft-Rangliste zeigt zunächst die besten fünf Spieler. Mit Mehr anzeigen siehst du den Rest. Sie startet auf Zo7al Network nach Spielzeit; du kannst Server oder Statistik wechseln und ein Spielerprofil öffnen. Eine leere Liste bedeutet, dass synchronisierte Werte fehlen.",
         "href": "/minecraft#leaderboard",
         "action": "Rangliste ansehen"
       },
@@ -505,7 +534,7 @@
         "id": "project-updates",
         "category": "modpacks",
         "q": "Wo sehe ich Projektstatus und Änderungen?",
-        "a": "Öffne Karten- oder Modpackdetails für veröffentlichten Status, Versionsänderungen und Problemmeldung. Das Team verwaltet diese Inhalte. Nicht veröffentlichte Zustände oder Änderungen werden nicht erfunden.",
+        "a": "Öffne die Details einer Karte oder eines Modpacks, um den veröffentlichten Status, Versionen und den Link zur Problemmeldung zu sehen. Fehlen Status oder Änderungsprotokoll, wird dies als nicht verfügbar angezeigt.",
         "href": "/modpacks",
         "action": "Modpacks ansehen"
       },
@@ -537,7 +566,7 @@
         "id": "account-login",
         "category": "accountSecurity",
         "q": "Wie melde ich mich an oder verknüpfe ein weiteres Konto?",
-        "a": "Nutze die aktivierten Optionen für E-Mail, Discord, Google, Microsoft oder Modrinth. Weitere Methoden verknüpfst du unter Mein Konto → Verknüpfte Konten. Behalte eine nutzbare Anmeldemethode.",
+        "a": "Nutze eine aktivierte Anmeldung per E-Mail, Discord, Google, Microsoft, GitHub, Twitch, Modrinth oder Passkey. Füge weitere Methoden unter Mein Konto → Verknüpfte Konten hinzu. Behalte mindestens eine nutzbare Anmeldemethode.",
         "href": "/account",
         "action": "Anmelden"
       },
@@ -545,7 +574,7 @@
         "id": "public-profile",
         "category": "accountSecurity",
         "q": "Wie erstelle ich mein öffentliches Profil?",
-        "a": "Wähle unter Mein Konto → Öffentliches Profil einen Benutzernamen und bearbeite Bild, Banner, Beschreibung und soziale Links. Deine Adresse ist /@username; nur freigegebene veröffentlichte Beiträge erscheinen.",
+        "a": "Wähle unter Mein Konto → Öffentliches Profil einen Nutzernamen. Füge Foto, Banner, Biografie und optionale soziale Links hinzu. Deine Adresse lautet /@username. Links erscheinen als Symbole, verliehene Abzeichen neben den Profilinformationen. Nur genehmigte veröffentlichte Beiträge sind sichtbar.",
         "href": "/account?tab=profile",
         "action": "Öffentliches Profil"
       },
@@ -577,7 +606,7 @@
         "id": "backup-codes",
         "category": "accountSecurity",
         "q": "Wie verwende ich Ersatzcodes?",
-        "a": "Wenn der Anmeldedienst sie unterstützt, erstelle und sichere Codes unter Sicherheit. Jeder funktioniert einmal; neue Codes machen alte ungültig. Nicht verfügbare Codes werden klar angezeigt.",
+        "a": "Erzeuge nach der Aktivierung von 2FA zehn Ersatzcodes unter Sicherheit und speichere sie privat und sicher. Jeder Code funktioniert einmal. Neue Codes machen die bisherigen ungültig.",
         "href": "/account?tab=security",
         "action": "Sicherheit"
       },
@@ -601,7 +630,7 @@
         "id": "delete-account",
         "category": "accountSecurity",
         "q": "Wie lösche ich mein Konto?",
-        "a": "Du wirst abgemeldet und dein Profil ausgeblendet. Nach 15 Tagen wird das Konto dauerhaft gelöscht. Eine Anmeldung mit 2FA innerhalb dieser Frist bricht die Löschung ab. Profil, Anfragen und Verknüpfungen werden entfernt; Käufe bleiben anonymisiert erhalten.",
+        "a": "Wähle Konto löschen und verifiziere dich mit 2FA oder einer verfügbaren E-Mail-Methode. Du wirst abgemeldet und dein Profil verborgen. Nach 15 Tagen erfolgt die endgültige Löschung; eine Anmeldung mit Verifizierung davor hebt sie auf. Kaufbelege bleiben ohne Kontoverknüpfung erhalten.",
         "href": "/account?tab=settings",
         "action": "Einstellungen"
       },
@@ -609,9 +638,41 @@
         "id": "account-password",
         "category": "accountSecurity",
         "q": "Wie ändere ich mein Passwort oder setze es zurück?",
-        "a": "Öffne Mein Konto → Passwort und wähle ein einzigartiges Passwort mit 12–128 Zeichen. Bestätige es und fordere bei Bedarf einen Bestätigungscode per E-Mail an. Wenn du dich nicht anmelden kannst, wähle Passwort vergessen im Anmeldefenster und öffne den E-Mail-Link im selben Browser.",
+        "a": "Öffne Mein Konto → Sicherheit, um ein Passwort mit 12–128 Zeichen festzulegen. Bestätige es und fordere bei Bedarf einen Code an. Wenn du dich nicht anmelden kannst, wähle Passwort vergessen und öffne den Wiederherstellungslink im selben Browser.",
         "href": "/account?tab=password",
         "action": "Passwort verwalten"
+      },
+      {
+        "id": "owned-ranks",
+        "category": "storeRanks",
+        "q": "Warum gelten niedrigere Ränge als gekauft?",
+        "a": "Ein bezahlter Rang umfasst seine Stufe und alle niedrigeren: VIP, VIP+, VIP++, MVP, MVP+, MVP++. VIP besitzt nur VIP; Booster ist unabhängig und besitzt nur Booster. Du kannst eigene Ränge nicht erneut für dich kaufen, aber anderen Spielern schenken.",
+        "href": "/store",
+        "action": "Shop"
+      },
+      {
+        "id": "subscriptions",
+        "category": "storeRanks",
+        "q": "Wo verwalte ich Abonnements?",
+        "a": "Öffne Mein Konto → Abonnements. Abonnements verwalten öffnet das Tebex-Kundenportal zum Anzeigen oder Kündigen geeigneter wiederkehrender Käufe. Meine Bestellungen öffnet deine Kaufanfragen auf der Website.",
+        "href": "/account?tab=subscriptions",
+        "action": "Abonnements"
+      },
+      {
+        "id": "switch-account",
+        "category": "accountSecurity",
+        "q": "Wie wechsle ich zwischen meinen Konten?",
+        "a": "Öffne das Kontomenü und fahre über Konto wechseln oder klicke darauf. Wähle ein gespeichertes Konto oder Konto hinzufügen. Andere gespeicherte Konten werden nicht abgemeldet; 2FA bleibt beim Wechsel erforderlich, wenn sie aktiviert ist.",
+        "href": "/account",
+        "action": "Mein Konto"
+      },
+      {
+        "id": "unlink-account",
+        "category": "accountSecurity",
+        "q": "Wie trenne ich eine Kontoverknüpfung?",
+        "a": "Öffne Mein Konto → Verknüpfte Konten und wähle Verknüpfung entfernen. Bestätige dich mit 2FA oder einer verfügbaren E-Mail-Methode. Behalte eine andere nutzbare Anmeldung, damit du Zugriff behältst.",
+        "href": "/account?tab=connections",
+        "action": "Verknüpfte Konten"
       }
     ],
     "clearSearch": "Suche löschen",
@@ -870,7 +931,8 @@
     },
     "applicationDetails": "Öffne das Bewerbungsformular und gib eine erreichbare E-Mail-Adresse, Minecraft- und Discord-Namen sowie den Profillink der gewählten Plattform an. Beschreibe deine Inhalte und Motivation wahrheitsgemäß. Mit deiner Zustimmung wird die Bewerbung über Discord an das Zo7al-Team gesendet. Bewahre die Referenz nach erfolgreicher Übermittlung auf. Die Bewerbung ist kein Kauf und vergibt keinen Rang automatisch. Das Team entscheidet über Eignung und Annahme; Bearbeitungszeit und zusätzliche Vorteile werden nicht garantiert.",
     "notificationPending": "Deine Bewerbung ist gespeichert. Die Discord-Benachrichtigung steht aus und das Team kann sie erneut senden.",
-    "applied": "Bewerbung eingereicht"
+    "applied": "Bewerbung eingereicht",
+    "website": "Webseite"
   },
   "hub": {
     "latest": "Neu bei Zo7al",
@@ -911,7 +973,7 @@
     "accessCode": "Privater Zugangscode",
     "track": "Anfrage verfolgen",
     "trackingHelp": "Gib deine Referenz und deinen privaten Zugangscode ein oder wähle eine gespeicherte Anfrage.",
-    "savedRequests": "Your account requests",
+    "savedRequests": "Deine Kontoanfragen",
     "noSavedRequests": "In diesem Bereich gibt es noch keine Anfragen.",
     "notFound": "Keine passende Anfrage gefunden. Prüfe Referenz und Zugangscode.",
     "consent": "Ich stimme zu, diese Angaben über Discord mit dem Zo7al-Network-Team zu teilen.",
@@ -1029,7 +1091,7 @@
     "activity": "Meine Bestellungen und Bewerbungen",
     "activityIntro": "Deine Anfragen und Beiträge werden in deinem Konto gespeichert.",
     "commonErrorsIntro": "Schnelle Lösungen für häufige Verbindungs-, Shop- und Modpack-Probleme.",
-    "viewMore": "View more",
+    "viewMore": "Mehr anzeigen",
     "copyLink": "Diesen Link kopieren",
     "coverImage": "Titelbild",
     "uploadImage": "Bild hochladen",
@@ -1079,7 +1141,8 @@
     "pollQuestion": "Frage der Abstimmung",
     "pollOptions": "Optionen · eine pro Zeile",
     "pollEnds": "Ende der Abstimmung",
-    "pollImmutable": "Nach dem ersten Stimmabgeben können Optionen nicht mehr geändert werden."
+    "pollImmutable": "Nach dem ersten Stimmabgeben können Optionen nicht mehr geändert werden.",
+    "website": "Webseite"
   },
   "dashboard": {
     "dashboard": "Dashboard",
@@ -1880,5 +1943,41 @@
     "versions": "Versionen",
     "files": "Dateien",
     "dependencies": "Abhängigkeiten"
+  },
+  "platformTerms": {
+    "mod": "Mod",
+    "modpack": "Modpack",
+    "plugin": "Plugin",
+    "resourcepack": "Ressourcenpaket",
+    "shader": "Shader",
+    "datapack": "Datenpaket",
+    "server": "Server",
+    "approved": "Genehmigt",
+    "archived": "Archiviert",
+    "rejected": "Abgelehnt",
+    "draft": "Entwurf",
+    "unlisted": "Nicht gelistet",
+    "processing": "In Bearbeitung",
+    "withheld": "Zurückgehalten",
+    "scheduled": "Geplant",
+    "private": "Privat",
+    "public": "Öffentlich",
+    "unknown": "Unbekannt",
+    "required": "Erforderlich",
+    "optional": "Optional",
+    "unsupported": "Nicht unterstützt",
+    "release": "Stabile Version",
+    "beta": "Beta",
+    "alpha": "Alpha",
+    "incompatible": "Inkompatibel",
+    "embedded": "Eingebettet",
+    "owner": "Inhaber",
+    "member": "Mitglied",
+    "admin": "Administrator",
+    "moderator": "Moderator"
+  },
+  "metadata": {
+    "homeTitle": "Zo7al Projects — Spieleuniversum",
+    "homeDescription": "Zo7al ist ein Gaming-Creator und entwickelt Minecraft-Netzwerke, Modpacks, Fortnite-Kreativkarten und experimentelle Spieleprojekte."
   }
 }

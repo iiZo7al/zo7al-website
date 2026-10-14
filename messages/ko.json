@@ -17,7 +17,10 @@
     "copied": "복사됨",
     "all": "전체",
     "downloads": "다운로드",
-    "viewMore": "View more"
+    "viewMore": "더 보기",
+    "website": "웹사이트",
+    "markdownHint": "Markdown 지원: **굵게**, 목록, 링크, 표, 코드.",
+    "markdownPreview": "Markdown 미리보기"
   },
   "home": {
     "eyebrow": "@iiZo7al — 게이밍 유니버스",
@@ -160,7 +163,33 @@
       "8238-8280-9827": "🧡🌹 좋아요와 즐겨찾기로 응원해 주세요\n\n🏰 Doomspire Brickbattle\n💥 파괴 가능한 타워와 폭발\n🔫 클래식 무기 6종\n🎮 빠른 팀 전투\n🏆 100라운드\n🛒 게임 내 상점\n🔫 재장전 없음\n🪜 오를 수 있는 타워와 사다리\n😎 UEFN으로 제작"
     },
     "newMap": "신규!!",
-    "itemShopCode": "포트나이트 아이템 상점에서 크리에이터 코드 Zo7al을 사용하세요."
+    "itemShopCode": "포트나이트 아이템 상점에서 크리에이터 코드 Zo7al을 사용하세요.",
+    "mapsNav": "Zo7al 맵",
+    "codeNav": "코드 사용: {code}",
+    "tagLabels": {
+      "squad": "스쿼드",
+      "explosives": "폭발물",
+      "space": "우주",
+      "gun_game": "건 게임",
+      "free_for_all": "개인전",
+      "attack": "공격",
+      "competitive": "경쟁",
+      "zonewars": "존 워즈",
+      "pvp": "플레이어 대전",
+      "8v8": "8 대 8",
+      "base": "기지",
+      "training": "훈련",
+      "1v1": "1 대 1",
+      "music": "음악",
+      "just_for_fun": "재미로 즐기기",
+      "team_deathmatch": "팀 데스매치",
+      "arena": "아레나",
+      "capture_the_flag": "깃발 뺏기",
+      "shooter": "슈팅",
+      "practice": "연습",
+      "fighting": "격투",
+      "building": "건설"
+    }
   },
   "socials": {
     "eyebrow": "커뮤니티",
@@ -400,7 +429,7 @@
       {
         "category": "storeRanks",
         "q": "크리에이터 등급은 어떻게 신청하나요?",
-        "a": "로그인하고 Discord를 연결한 뒤 Minecraft를 인증하세요. 크리에이터 등급을 선택해 채널과 콘텐츠 정보를 넣으면 연결된 계정 정보가 자동 반영됩니다. 팀이 신청을 심사합니다.",
+        "a": "로그인하고 Discord를 연결한 뒤 Minecraft 계정을 인증하세요. 크리에이터 등급을 선택하고 채널과 콘텐츠 정보를 제출하세요. 제출 후 버튼에 “신청 완료”가 표시되며, 누르면 내 요청 → 크리에이터 신청에서 상태를 확인할 수 있습니다.",
         "id": "creator-apply",
         "href": "/store",
         "action": "스토어 열기"
@@ -417,7 +446,7 @@
         "id": "one-rank",
         "category": "storeRanks",
         "q": "여러 등급을 장바구니에 담을 수 있나요?",
-        "a": "유료 등급은 한 번에 하나만 담을 수 있습니다. 다른 등급을 선택하기 전에 기존 등급을 삭제하세요. Coins는 함께 담고 수량을 바꿀 수 있습니다. 유료 등급을 보유하면 모든 하위 등급(VIP, VIP+, VIP++, MVP, MVP+, MVP++)도 보유한 것으로 처리됩니다. Booster는 독립적입니다. 자신을 위해 다시 구매할 수 없지만 선물은 가능합니다.",
+        "a": "등급은 하나만 담을 수 있습니다. 다른 등급을 선택하려면 현재 등급을 삭제하세요.",
         "href": "/store",
         "action": "스토어 열기"
       },
@@ -449,7 +478,7 @@
         "id": "leaderboard",
         "category": "minecraft",
         "q": "Minecraft 순위는 어떻게 작동하나요?",
-        "a": "순위표는 Zo7al Network의 총 플레이 시간을 기준으로 내림차순으로 열리며 시간 단위로 표시됩니다. 네트워크 합계에는 각 서버에서 활성화한 통계만 포함됩니다. 서버나 통계를 바꾸고 플레이어를 선택해 프로필을 열 수 있습니다. 빈 표는 해당 선택에 동기화된 값이 아직 없다는 뜻입니다.",
+        "a": "Minecraft 순위는 상위 5명을 표시합니다. 더 보기를 누르면 나머지를 볼 수 있습니다. 처음에는 Zo7al Network의 플레이 시간순이며, 서버나 통계를 바꾸고 플레이어 프로필을 열 수 있습니다. 빈 목록은 동기화된 값이 없다는 뜻입니다.",
         "href": "/minecraft#leaderboard",
         "action": "순위 보기"
       },
@@ -505,7 +534,7 @@
         "id": "project-updates",
         "category": "modpacks",
         "q": "프로젝트 상태와 업데이트는 어디서 보나요?",
-        "a": "맵이나 모드팩 상세에서 공개 상태, 버전 기록과 신고 링크를 확인하세요. 팀이 관리하며 공개하지 않은 상태나 변경 기록을 만들어 보여주지 않습니다.",
+        "a": "맵이나 모드팩의 상세 정보에서 공개된 상태, 버전과 문제 신고 링크를 확인하세요. 상태나 변경 기록이 게시되지 않았다면 사용할 수 없는 정보로 표시됩니다.",
         "href": "/modpacks",
         "action": "모드팩 보기"
       },
@@ -537,7 +566,7 @@
         "id": "account-login",
         "category": "accountSecurity",
         "q": "로그인하거나 다른 계정을 연결하려면?",
-        "a": "활성화된 이메일, Discord, Google, Microsoft 또는 Modrinth 옵션을 사용하세요. 내 계정 → 연결된 계정에서 방법을 추가하고 사용할 수 있는 로그인 방법을 남겨 두세요.",
+        "a": "활성화된 이메일, Discord, Google, Microsoft, GitHub, Twitch, Modrinth 또는 패스키로 로그인하세요. 내 계정 → 연결된 계정에서 방법을 추가할 수 있습니다. 사용 가능한 로그인 방법을 하나 이상 유지하세요.",
         "href": "/account",
         "action": "로그인"
       },
@@ -545,7 +574,7 @@
         "id": "public-profile",
         "category": "accountSecurity",
         "q": "공개 프로필을 만들려면?",
-        "a": "내 계정 → 공개 프로필에서 사용자 이름을 정하고 사진, 배너, 소개, 소셜 링크를 수정하세요. 주소는 /@username이며 승인된 공개 게시물만 표시됩니다.",
+        "a": "내 계정 → 공개 프로필에서 사용자 이름을 선택하고 사진, 배너, 소개와 선택 사항인 소셜 링크를 설정하세요. 공개 주소는 /@username입니다. 링크는 아이콘으로, 지급된 배지는 프로필 정보 옆에 표시됩니다. 승인되어 공개된 게시물만 표시됩니다.",
         "href": "/account?tab=profile",
         "action": "공개 프로필"
       },
@@ -577,7 +606,7 @@
         "id": "backup-codes",
         "category": "accountSecurity",
         "q": "백업 코드를 사용하려면?",
-        "a": "로그인 제공업체가 지원하면 보안에서 코드를 생성하고 보관하세요. 각 코드는 한 번만 작동하며 재생성하면 이전 코드는 무효입니다. 사용할 수 없으면 안내됩니다.",
+        "a": "2단계 인증을 활성화한 뒤 보안에서 백업 코드 10개를 생성하여 안전하고 비공개인 장소에 저장하세요. 각 코드는 한 번만 사용할 수 있습니다. 새 코드를 생성하면 이전 코드는 무효가 됩니다.",
         "href": "/account?tab=security",
         "action": "보안"
       },
@@ -601,7 +630,7 @@
         "id": "delete-account",
         "category": "accountSecurity",
         "q": "계정을 삭제하려면 어떻게 하나요?",
-        "a": "로그아웃되고 프로필이 숨겨집니다. 15일 후 계정이 영구 삭제됩니다. 기간 내 로그인하고 2FA를 완료하면 삭제가 취소됩니다. 프로필, 요청, 연결은 삭제되고 구매 기록은 익명화하여 보관됩니다.",
+        "a": "계정 설정에서 계정 삭제를 선택하고 2단계 인증 또는 사용 가능한 이메일 방식으로 본인 확인을 하세요. 로그아웃되고 프로필이 숨겨집니다. 15일 뒤 영구 삭제되지만 그전에 로그인해 인증을 완료하면 취소됩니다. 구매 기록은 계정 연결 없이 유지됩니다.",
         "href": "/account?tab=settings",
         "action": "설정"
       },
@@ -609,9 +638,41 @@
         "id": "account-password",
         "category": "accountSecurity",
         "q": "비밀번호를 변경하거나 재설정하려면 어떻게 하나요?",
-        "a": "내 계정 → 비밀번호에서 다른 곳에서 사용하지 않는 12~128자 비밀번호를 설정하세요. 비밀번호를 확인하고 요청 시 이메일 인증 코드를 받으세요. 로그인할 수 없다면 로그인 창에서 비밀번호 찾기를 선택하고 이메일 링크를 같은 브라우저에서 여세요.",
+        "a": "내 계정 → 보안에서 12~128자 비밀번호를 설정하세요. 확인하고 필요한 경우 인증 코드를 요청하세요. 로그인할 수 없다면 비밀번호 찾기를 선택하고 같은 브라우저에서 이메일로 받은 복구 링크를 여세요.",
         "href": "/account?tab=password",
         "action": "비밀번호 관리"
+      },
+      {
+        "id": "owned-ranks",
+        "category": "storeRanks",
+        "q": "하위 등급이 보유 중으로 표시되는 이유는 무엇인가요?",
+        "a": "유료 등급은 자기 등급과 모든 하위 등급을 포함합니다. 순서는 VIP, VIP+, VIP++, MVP, MVP+, MVP++입니다. VIP는 VIP만, 독립적인 Booster는 Booster만 보유합니다. 자신을 위해 다시 구매할 수 없지만 다른 플레이어에게 선물할 수 있습니다.",
+        "href": "/store",
+        "action": "스토어"
+      },
+      {
+        "id": "subscriptions",
+        "category": "storeRanks",
+        "q": "구독은 어디서 관리하나요?",
+        "a": "내 계정 → 구독을 여세요. 구독 관리는 Tebex 고객 포털에서 대상 정기 구매를 조회하거나 취소할 수 있게 합니다. 내 주문에서는 사이트의 구매 요청을 볼 수 있습니다.",
+        "href": "/account?tab=subscriptions",
+        "action": "구독"
+      },
+      {
+        "id": "switch-account",
+        "category": "accountSecurity",
+        "q": "계정은 어떻게 전환하나요?",
+        "a": "계정 메뉴에서 계정 전환에 마우스를 올리거나 클릭하고, 저장된 계정이나 계정 추가를 선택하세요. 다른 저장 계정은 로그아웃되지 않습니다. 2단계 인증이 켜진 계정은 전환할 때도 인증해야 합니다.",
+        "href": "/account",
+        "action": "내 계정"
+      },
+      {
+        "id": "unlink-account",
+        "category": "accountSecurity",
+        "q": "계정 연결은 어떻게 해제하나요?",
+        "a": "내 계정 → 연결된 계정에서 연결 해제를 선택하세요. 해제 전에 2단계 인증이나 사용 가능한 이메일 방식으로 확인하세요. 접근 권한을 유지하려면 다른 로그인 방법을 남겨 두세요.",
+        "href": "/account?tab=connections",
+        "action": "연결된 계정"
       }
     ],
     "clearSearch": "검색 지우기",
@@ -870,7 +931,8 @@
     },
     "applicationDetails": "지원 양식에 연락 가능한 이메일, Minecraft와 Discord 이름, 선택한 플랫폼의 프로필 링크를 입력하세요. 콘텐츠와 지원 이유를 정확하게 설명해 주세요. 동의하면 지원서가 Discord를 통해 Zo7al 팀에 전달됩니다. 전달 확인 후 표시되는 지원 번호를 보관하세요. 지원은 구매나 자동 등급 지급이 아닙니다. 자격과 승인 여부는 팀이 결정하며 검토 기간이나 추가 혜택은 보장되지 않습니다.",
     "notificationPending": "신청이 저장되었습니다. Discord 알림은 대기 중이며 팀이 다시 보낼 수 있습니다.",
-    "applied": "신청 완료"
+    "applied": "신청 완료",
+    "website": "웹사이트"
   },
   "hub": {
     "latest": "Zo7al 새 소식",
@@ -911,7 +973,7 @@
     "accessCode": "개인 접근 코드",
     "track": "신청 상태 확인",
     "trackingHelp": "접수 번호와 개인 접근 코드를 입력하거나 저장된 신청을 선택하세요.",
-    "savedRequests": "Your account requests",
+    "savedRequests": "내 계정의 요청",
     "noSavedRequests": "아직 이 섹션에 요청이 없습니다.",
     "notFound": "해당 신청을 찾을 수 없습니다. 접수 번호와 접근 코드를 확인하세요.",
     "consent": "이 정보를 Discord를 통해 Zo7al Network 팀과 공유하는 데 동의합니다.",
@@ -1029,7 +1091,7 @@
     "activity": "내 주문 및 신청",
     "activityIntro": "요청과 게시물은 계정에 저장됩니다.",
     "commonErrorsIntro": "연결, 상점, 모드팩에서 자주 발생하는 문제의 빠른 해결 방법.",
-    "viewMore": "View more",
+    "viewMore": "더 보기",
     "copyLink": "이 링크 복사",
     "coverImage": "커버 이미지",
     "uploadImage": "이미지 업로드",
@@ -1079,7 +1141,8 @@
     "pollQuestion": "투표 질문",
     "pollOptions": "선택지 · 한 줄에 하나씩",
     "pollEnds": "투표 종료일",
-    "pollImmutable": "투표가 등록된 후에는 선택지를 바꿀 수 없습니다."
+    "pollImmutable": "투표가 등록된 후에는 선택지를 바꿀 수 없습니다.",
+    "website": "웹사이트"
   },
   "dashboard": {
     "dashboard": "대시보드",
@@ -1880,5 +1943,41 @@
     "versions": "버전",
     "files": "파일",
     "dependencies": "의존성"
+  },
+  "platformTerms": {
+    "mod": "모드",
+    "modpack": "모드팩",
+    "plugin": "플러그인",
+    "resourcepack": "리소스 팩",
+    "shader": "셰이더",
+    "datapack": "데이터 팩",
+    "server": "서버",
+    "approved": "승인됨",
+    "archived": "보관됨",
+    "rejected": "거부됨",
+    "draft": "초안",
+    "unlisted": "목록에 없음",
+    "processing": "처리 중",
+    "withheld": "보류됨",
+    "scheduled": "예약됨",
+    "private": "비공개",
+    "public": "공개",
+    "unknown": "알 수 없음",
+    "required": "필수",
+    "optional": "선택",
+    "unsupported": "미지원",
+    "release": "정식 버전",
+    "beta": "베타",
+    "alpha": "알파",
+    "incompatible": "호환되지 않음",
+    "embedded": "내장됨",
+    "owner": "소유자",
+    "member": "회원",
+    "admin": "관리자",
+    "moderator": "중재자"
+  },
+  "metadata": {
+    "homeTitle": "Zo7al Projects — 게임의 세계",
+    "homeDescription": "Zo7al은 Minecraft 네트워크, 모드팩, 포트나이트 크리에이티브 맵과 실험적인 게임 프로젝트를 만드는 게임 콘텐츠 크리에이터입니다."
   }
 }

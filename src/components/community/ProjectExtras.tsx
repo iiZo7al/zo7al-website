@@ -1,4 +1,5 @@
 "use client";
+import MarkdownContent from "@/components/ui/MarkdownContent";
 import Link from 'next/link';
 import { useLocale } from 'next-intl';
 import { Flag,History,Layers } from 'lucide-react';
@@ -11,5 +12,5 @@ export function ProjectStatus({projectKey}:{projectKey:string}){
 export default function ProjectExtras({projectKey,title,version}:{projectKey:string;title:string;version?:string}){
  const c=communityCopy(useLocale()),locale=useLocale(),{entries}=useCommunity(),updates=entries.filter(e=>e.kind==='changelog'&&e.projectKey===projectKey).slice(0,10);
  const query=new URLSearchParams({project:projectKey,projectTitle:title,...(version?{version}:{})});
- return <div className="community-project-extras"><div className="hub-actions"><ProjectStatus projectKey={projectKey}/><Link href={'/support?'+query} className="hub-button" data-cursor="button"><Flag size={16} aria-hidden="true"/>{c.reportProject}</Link></div>{updates.length>0&&<section className="community-changelog"><h3><History size={18} aria-hidden="true"/>{c.updates}</h3><ol>{updates.map(e=><li key={e.id}><span className="community-timeline-dot"/><div><div className="community-update-meta"><span><Layers size={14} aria-hidden="true"/>{String(e.payload.version)}</span><time dateTime={e.createdAt}>{new Intl.DateTimeFormat(locale,{dateStyle:'medium'}).format(new Date(e.createdAt))}</time></div><h4 dir="auto">{e.title}</h4><p dir="auto">{e.body}</p></div></li>)}</ol></section>}</div>;
+ return <div className="community-project-extras"><div className="hub-actions"><ProjectStatus projectKey={projectKey}/><Link href={'/support?'+query} className="hub-button" data-cursor="button"><Flag size={16} aria-hidden="true"/>{c.reportProject}</Link></div>{updates.length>0&&<section className="community-changelog"><h3><History size={18} aria-hidden="true"/>{c.updates}</h3><ol>{updates.map(e=><li key={e.id}><span className="community-timeline-dot"/><div><div className="community-update-meta"><span><Layers size={14} aria-hidden="true"/>{String(e.payload.version)}</span><time dateTime={e.createdAt}>{new Intl.DateTimeFormat(locale,{dateStyle:'medium'}).format(new Date(e.createdAt))}</time></div><h4 dir="auto"><MarkdownContent inline>{e.title}</MarkdownContent></h4><MarkdownContent>{e.body}</MarkdownContent></div></li>)}</ol></section>}</div>;
 }

@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import {localizedPageMetadata} from "@/lib/server/page-metadata";
 import { getTranslations } from "next-intl/server";
 import SolidIcon from "@/components/ui/SolidIcon";
 import BrandIcon from "@/components/ui/BrandIcon";
@@ -6,10 +6,7 @@ import PageHero from "@/components/ui/PageHero";
 import SocialGrid from "@/components/socials/SocialGrid";
 import { getSyncedSocials, getSyncedGamesSocials } from "@/lib/sync/socials";
 
-export const metadata: Metadata = {
-  title: "Socials",
-  description: "Follow the journey.",
-};
+export async function generateMetadata(){return localizedPageMetadata("nav.socials","socials.text");}
 
 export const revalidate = 21600; // 6 hours
 

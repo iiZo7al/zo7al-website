@@ -1,4 +1,5 @@
 "use client";
+import MarkdownTextarea from "@/components/ui/MarkdownTextarea";
 import { useRef, useState, type FormEvent } from "react";
 import Link from "next/link";
 import {useRouter} from "next/navigation";
@@ -106,8 +107,8 @@ function ApplicationForm({ platform, onClose }: { platform: Platform; username: 
         <SubmissionIdentity next="/store"/><p>{t("intro")}</p>
         <div className="creator-fields">{([ ["channel", "url", 500], ["followers", "number", 10] ] as const).map(([name, type, max]) => <label key={name} htmlFor={`creator-${name}`}>{t(name)}<input id={`creator-${name}`} name={name} type={type} required maxLength={max}  min={type === "number" ? 0 : undefined} max={type === "number" ? 1000000000 : undefined} step={type === "number" ? 1 : undefined} autoComplete="off" dir="ltr" placeholder={name === "channel" ? { youtube: "https://www.youtube.com/@yourchannel", twitch: "https://www.twitch.tv/yourchannel", tiktok: "https://www.tiktok.com/@yourchannel" }[platform] : undefined}/></label>)}</div>
         <label htmlFor="creator-content">{t("content")}<input id="creator-content" name="content" required maxLength={500}/></label>
-        <label htmlFor="creator-reason">{t("reason")}<textarea id="creator-reason" name="reason" required minLength={20} maxLength={1000} rows={4}/><small>{t("reasonHint")}</small></label>
-        <div className="creator-honey" aria-hidden="true"><label>Website<input name="website" tabIndex={-1} autoComplete="off"/></label></div>
+        <label htmlFor="creator-reason">{t("reason")}<MarkdownTextarea id="creator-reason" name="reason" required minLength={20} maxLength={1000} rows={4}/><small>{t("reasonHint")}</small></label>
+        <div className="creator-honey" aria-hidden="true"><label>{t("website")}<input name="website" tabIndex={-1} autoComplete="off"/></label></div>
         <label className="creator-consent"><input name="consent" type="checkbox" required/><span>{t("consent")}</span></label>
         {status && <p role="alert" className="creator-error">{t(status)}</p>}
         <button className="store-action store-action-primary" type="submit" disabled={busy||!account.minecraft||!account.providers.some(p=>p.provider==='discord')}>{busy && <LoaderCircle className="animate-spin" size={18}/>}<span>{t(busy ? "sending" : "submit")}</span></button>

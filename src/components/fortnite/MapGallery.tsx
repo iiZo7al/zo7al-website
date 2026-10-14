@@ -1,4 +1,5 @@
 "use client";
+import MarkdownContent from "@/components/ui/MarkdownContent";
 
 import { useLocale, useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -23,6 +24,7 @@ export default function MapGallery({ maps: providedMaps }: { maps: FortniteMap[]
   const store = useTranslations("store");
   const t = useTranslations("fortnite"), tc = useTranslations("common"), ui = useTranslations("ui");
   const categoryLabel = (cat: string) => cat === "All" ? tc("all") : ui.has(`cat_${cat.replace(/\W/g, "")}`) ? ui(`cat_${cat.replace(/\W/g, "")}`) : cat;
+  const tagLabel=(tag:string)=>{const key=tag.toLowerCase().trim().replace(/[ -]+/g,"_");return t.has("tagLabels."+key)?t("tagLabels."+key):tag;};
   const maps = useMemo(() => [...providedMaps].sort((a, b) => Number(!!b.spotlight) - Number(!!a.spotlight)), [providedMaps]);
   const categories = useMemo(
     () => ["All", ...Array.from(new Set(maps.map((m) => m.category)))],
@@ -116,8 +118,8 @@ export default function MapGallery({ maps: providedMaps }: { maps: FortniteMap[]
                 <ProjectStatus projectKey={'fortnite:'+map.code}/>
                 <p className="mt-1 text-xs text-[var(--text-muted)]">{t("byZo7al")}</p>
                 {map.spotlight && <>
-                  <p dir="auto" className="fortnite-map-summary">{(t.has(`descriptions.${map.code}`) ? t(`descriptions.${map.code}`) : map.description)?.split("\n").filter(Boolean).slice(1).join("\n")}</p>
-                  {!!map.tags?.length && <ul className="fortnite-map-tags" aria-label={t("tags")}>{map.tags.map(tag => <li key={tag}>{tag}</li>)}</ul>}
+                  <MarkdownContent className="fortnite-map-summary">{(t.has(`descriptions.${map.code}`) ? t(`descriptions.${map.code}`) : map.description)?.split("\n").filter(Boolean).slice(1).join("\n")}</MarkdownContent>
+                  {!!map.tags?.length && <ul className="fortnite-map-tags" aria-label={t("tags")}>{map.tags.map(tag => <li key={tag}>{tagLabel(tag)}</li>)}</ul>}
                 </>}
 
                 <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
@@ -161,9 +163,9 @@ export default function MapGallery({ maps: providedMaps }: { maps: FortniteMap[]
               <div><p className="mb-1 text-xs text-[var(--text-muted)]">{t("islandCode")}</p><code dir="ltr">{details.code}</code></div>
               <button type="button" className="store-action" onClick={() => copyCode(details.id, details.code)}>{t(copiedId === details.id ? "copied" : "copyCode")}</button>
             </div>
-            <p dir="auto" className="whitespace-pre-line text-sm leading-7 text-[var(--text-muted)]">{t.has(`descriptions.${details.code}`) ? t(`descriptions.${details.code}`) : details.description || t("detailsUnavailable")}</p>
+            <MarkdownContent className="text-sm leading-7 text-[var(--text-muted)]">{t.has(`descriptions.${details.code}`) ? t(`descriptions.${details.code}`) : details.description || t("detailsUnavailable")}</MarkdownContent>
             <div className="hub-actions"><ShareButton path={"/fortnite?map="+details.code}/>{mapPlayerCount(details)&&<span className="hub-muted">{hub("players")}: {mapPlayerCount(details)}</span>}</div>
-            {!!details.tags?.length && <ul aria-label={t("tags")} className="flex flex-wrap gap-2">{details.tags.map(tag => <li key={tag} dir="auto" className="rounded-full border border-[var(--border)] px-3 py-1.5 text-xs font-semibold">{tag}</li>)}</ul>}
+            {!!details.tags?.length && <ul aria-label={t("tags")} className="flex flex-wrap gap-2">{details.tags.map(tag => <li key={tag} dir="auto" className="rounded-full border border-[var(--border)] px-3 py-1.5 text-xs font-semibold">{tagLabel(tag)}</li>)}</ul>}
             <ProjectExtras projectKey={'fortnite:'+details.code} title={details.title}/>
             <a href={islandCodeUrl(details.code, locale)} target="_blank" rel="noopener noreferrer" className="store-action">{t("viewOnFortnite")}<SolidIcon name="arrow-up-right" size={16} /></a>
           </div>

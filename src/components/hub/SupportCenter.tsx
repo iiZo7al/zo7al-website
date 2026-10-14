@@ -1,4 +1,5 @@
 "use client";
+import MarkdownTextarea from "@/components/ui/MarkdownTextarea";
 import Link from 'next/link';
 import { useCallback,useEffect,useRef,useState } from 'react';
 import { useLocale,useTranslations } from 'next-intl';
@@ -34,7 +35,7 @@ export default function SupportCenter(){
    {project&&<><div className="community-meta"><Flag size={17} aria-hidden="true"/><strong dir="auto">{projectTitle||project}</strong></div><label>{c.project}<input name="project" value={project} readOnly dir="ltr"/><input name="projectTitle" value={projectTitle} type="hidden" readOnly/></label><label>{c.version}<input name="version" value={version} onChange={event=>setVersion(event.target.value)} maxLength={64} dir="auto"/></label></>}
    <label>{t('reportType')}<select name="type" value={type} onChange={event=>setType(event.target.value)}>{['technical','player','order'].map(value=><option key={value} value={value}>{t('report_'+value)}</option>)}</select></label>
    <label>{creator('email')}<input name="email" type="email" required maxLength={254} defaultValue={account?.email}/></label><label>{creator('minecraft')}<input name="username" dir="ltr" maxLength={32} defaultValue={account?.minecraft?.username}/></label><label>{t('orderReference')}<input name="order" dir="ltr" value={order} onChange={event=>setOrder(event.target.value)} maxLength={128}/></label>
-   <label>{t('subject')}<input name="subject" required minLength={3} maxLength={160} value={subject} onChange={event=>setSubject(event.target.value)}/></label><label>{t('message')}<textarea name="message" required minLength={20} maxLength={3000} rows={6}/></label>
-   <label className="hub-honey" aria-hidden="true">Website<input name="website" tabIndex={-1} autoComplete="off"/></label><label className="hub-consent"><input type="checkbox" name="consent" required/>{t('consent')}</label><p className="hub-muted">{t('webhookNote')}</p>{error&&<p role="alert" className="hub-error">{t(error)}</p>}<button className="hub-button" disabled={busy}>{t(busy?'sending':'send')}</button>
+   <label>{t('subject')}<input name="subject" required minLength={3} maxLength={160} value={subject} onChange={event=>setSubject(event.target.value)}/></label><label>{t('message')}<MarkdownTextarea name="message" required minLength={20} maxLength={3000} rows={6}/></label>
+   <label className="hub-honey" aria-hidden="true">{t('website')}<input name="website" tabIndex={-1} autoComplete="off"/></label><label className="hub-consent"><input type="checkbox" name="consent" required/>{t('consent')}</label><p className="hub-muted">{t('webhookNote')}</p>{error&&<p role="alert" className="hub-error">{t(error)}</p>}<button className="hub-button" disabled={busy}>{t(busy?'sending':'send')}</button>
   </form></AccountSubmission>}</div>}</>;
 }

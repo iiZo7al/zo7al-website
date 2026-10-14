@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import {localizedPageMetadata} from "@/lib/server/page-metadata";
 import { getLocale, getTranslations } from "next-intl/server";
 import PageHero from "@/components/ui/PageHero";
 import SectionHeader from "@/components/ui/SectionHeader";
@@ -9,10 +9,7 @@ import { FORTNITE_PROFILE_URL } from "@/lib/data/fortnite";
 import { fortniteLocale } from "@/lib/sync/fortnite-parser";
 import { getSyncedFortniteMaps } from "@/lib/sync/fortnite";
 
-export const metadata: Metadata = {
-  title: "Fortnite Creative",
-  description: "Maps and experiences built by Zo7al.",
-};
+export async function generateMetadata(){return localizedPageMetadata("nav.fortnite","fortnite.text");}
 
 export const revalidate = 21600; // 6 hours
 

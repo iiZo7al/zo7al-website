@@ -1,4 +1,5 @@
 "use client";
+import MarkdownContent from "@/components/ui/MarkdownContent";
 import AccountSubmission from "@/components/account/AccountSubmission";
 import { useAccount } from "@/components/account/AccountProvider";
 import Link from "next/link";
@@ -186,9 +187,7 @@ export default function TrackingPanel({ kind }: { kind: ReceiptKind }) {
                 </time>
               </p>
               {result.note && (
-                <p className="requests-result-note" dir="auto">
-                  {result.note}
-                </p>
+                <MarkdownContent className="requests-result-note">{result.note}</MarkdownContent>
               )}
               {kind === "order" && (
                 <>

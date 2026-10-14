@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 import { ArrowUpRight, Gamepad2, History } from "lucide-react";
 import BrandIcon from "@/components/ui/BrandIcon";
 import SolidIcon from "@/components/ui/SolidIcon";
+import CommerceIcon from "@/components/ui/CommerceIcon";
 import { SOCIALS } from "@/lib/data/site";
 
 export type MenuKey = "minecraft" | "fortnite" | "socials" | "support";
@@ -30,9 +31,9 @@ export default function NavigationMenu({
   const socials = useTranslations("socials");
   const fortnite = useTranslations("fortnite");
   const intro = menu === "fortnite" ? fortnite("text") : menu === "minecraft" ? minecraft("text") : menu === "socials" ? socials("text") : hub("supportIntro");
-  const links: {href:string;label:string;description:string;icon:"cube"|"box"|"map"|"headset"|null;external?:boolean}[] = menu === "fortnite" ? [
-    {href:'/fortnite',label:'Zo7al Maps',description:fortnite('text'),icon:'map'},
-    {href:'https://www.fortnite.com/item-shop',label:'Use Code : Zo7al',description:fortnite('itemShopCode'),icon:null,external:true},
+  const links: {href:string;label:string;description:string;icon:"cube"|"box"|"map"|"headset"|"store"|null;external?:boolean}[] = menu === "fortnite" ? [
+    {href:'/fortnite',label:fortnite('mapsNav'),description:fortnite('text'),icon:'map'},
+    {href:'https://www.fortnite.com/item-shop',label:fortnite('codeNav',{code:'Zo7al'}),description:fortnite('itemShopCode'),icon:'store',external:true},
   ] : menu === "minecraft" ? [
     { href: "/minecraft", label: minecraft("title"), description: minecraft("connectText"), icon: "cube" as const },
     { href: "/modpacks", label: nav("modpacks"), description: modpacks("text"), icon: "box" as const },
@@ -62,7 +63,7 @@ export default function NavigationMenu({
           </a>
         </li>) : links.map(item => <li key={item.href}>
           <Link href={item.href} target={item.external?'_blank':undefined} rel={item.external?'noopener noreferrer':undefined} onClick={onNavigate} aria-current={pathname === item.href ? "page" : undefined} className="navigation-menu-link" data-cursor="link">
-            <span className="navigation-link-icon">{item.icon ? <SolidIcon name={item.icon} size={23}/> : <History size={23} aria-hidden="true"/>}</span>
+            <span className="navigation-link-icon">{item.icon === "store" ? <CommerceIcon name="shopping-bag" size={23}/> : item.icon ? <SolidIcon name={item.icon} size={23}/> : <History size={23} aria-hidden="true"/>}</span>
             <span className="navigation-link-copy"><span className="navigation-link-title">{item.label}</span><span className="navigation-link-description">{item.description}</span></span>
             <ArrowUpRight size={17} className="navigation-link-arrow" aria-hidden="true"/>
           </Link>

@@ -1,8 +1,9 @@
+import "@/components/ui/markdown.css";
 import type { Metadata, Viewport } from "next";
 import { GeistSans } from "geist/font/sans";
 import { MotionConfig } from "framer-motion";
 import { NextIntlClientProvider } from "next-intl";
-import { getLocale, getMessages } from "next-intl/server";
+import { getLocale, getMessages, getTranslations } from "next-intl/server";
 import "./globals.css";
 import "@/components/hub/hub.css";
 import CommandSearch from "@/components/hub/CommandSearch";
@@ -20,19 +21,19 @@ import { isRtl } from "@/i18n/config";
 
 export const viewport: Viewport = { width: "device-width", initialScale: 1, viewportFit: "cover", themeColor: "#07080b" };
 
-export const metadata: Metadata = {
+const baseMetadata: Metadata = {
   applicationName: "Zo7al Game",
   manifest: "/site.webmanifest",
   appleWebApp: { capable: true, title: "Zo7al Game", statusBarStyle: "black-translucent" },
   icons: { icon: [{ url: "/icon.svg", type: "image/svg+xml" }], apple: [{ url: "/assets/app/icon-180.png", sizes: "180x180", type: "image/png" }] },
   metadataBase: new URL("https://zo7al.is-a.dev"),
-  title: {
-    default: "Zo7al Projects — Gaming Universe",
-    template: "%s — Zo7al Projects",
-  },
-  description:
-    "Zo7al is a gaming creator building Minecraft networks, modpacks, Fortnite Creative maps and experimental gaming projects.",
+
 };
+
+export async function generateMetadata():Promise<Metadata>{
+  const t=await getTranslations('metadata');
+  return {...baseMetadata,title:{default:t('homeTitle'),template:'%s — Zo7al Projects'},description:t('homeDescription')};
+}
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const locale = await getLocale();

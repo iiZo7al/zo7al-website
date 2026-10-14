@@ -1,4 +1,5 @@
 "use client";
+import MarkdownTextarea from "@/components/ui/MarkdownTextarea";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -212,7 +213,7 @@ export default function MemberProfiles({
           >
             <label>
               {t("banReason")}
-              <textarea name="reason" maxLength={500} rows={3} />
+              <MarkdownTextarea name="reason" maxLength={500} rows={3} />
             </label>
             <label>
               {t("temporaryBan")}

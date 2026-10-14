@@ -1,14 +1,11 @@
+import {getTranslations} from "next-intl/server";
 import type { Metadata } from "next";
 import { HomeUpdates } from "@/components/hub/ContentFeed";
 import Hero from "@/components/home/Hero";
 import UniverseShowcase from "@/components/home/UniverseShowcase";
 import FaqSection from "@/components/faq/FaqSection";
 
-export const metadata: Metadata = {
-  title: { absolute: "Zo7al Projects — Gaming Universe" },
-  description:
-    "Minecraft servers, Fortnite maps, modpacks and gaming projects by Zo7al.",
-};
+export async function generateMetadata():Promise<Metadata>{const t=await getTranslations('metadata');return {title:{absolute:t('homeTitle')},description:t('homeDescription')};}
 
 export default function HomePage() {
   return (

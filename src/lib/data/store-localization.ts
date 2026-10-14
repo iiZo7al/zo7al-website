@@ -90,3 +90,14 @@ const sourcePhrases: Record<string, string> = {
   "If all boosts expire or are removed, the Booster Rank and its benefits will also be removed.": "boostEnd",
   "🚀 In-Game Benefits:": "game"
 };
+
+/** Translate recognized shop phrases without losing Markdown block boundaries. */
+export function localizedMarkdownDescription(description: string, translate: Translator): string {
+  let fenced = false;
+  return description.replace(/^[ \t]*[•●][ \t]*\n\s*/gm, "• ").split("\n").map(line => {
+    if (/^\s*(```|~~~)/.test(line)) { fenced = !fenced; return line; }
+    if (fenced || !line.trim()) return line;
+    const translated = localizedDescription(line, translate)[0];
+    return translated === line.trim() ? line : translated;
+  }).join("\n");
+}

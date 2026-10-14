@@ -1,4 +1,5 @@
 "use client";
+import MarkdownContent from "@/components/ui/MarkdownContent";
 
 import { useEffect, useState, type CSSProperties } from "react";
 import { useFormatter, useTranslations } from "next-intl";
@@ -51,7 +52,7 @@ export default function SocialDetails({ social, description, games, onClose }: {
           <h3 dir="auto" className="text-xl font-bold">{title}</h3>
           {social.handle && <p dir="auto" className="mt-1 text-sm text-[var(--text-muted)]">{social.handle}</p>}
           <p className="mt-4 text-xs font-semibold text-[var(--accent)]">{t("accountDescription")}</p>
-          <p dir="auto" className="mt-2 whitespace-pre-line text-sm leading-relaxed text-[var(--text-muted)]">{preview?.description || description}</p>
+          <MarkdownContent className="mt-2 whitespace-pre-line text-sm leading-relaxed text-[var(--text-muted)]">{preview?.description || description}</MarkdownContent>
           <h4 className="mt-6 border-t border-[var(--border)] pt-5 text-sm font-semibold">{t(social.platform === "x" && !items.length ? "recentPosts" : headings[social.platform] || "recentPosts")}</h4>
           {!!preview?.stats?.length && <dl className="mt-4 grid grid-cols-2 gap-3">{preview.stats.map(stat => <div key={stat.key} className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4"><dt className="text-xs text-[var(--text-muted)]">{t(stat.key)}</dt><dd className="mt-2 text-xl font-bold text-[var(--accent)]">{format.number(stat.value)}</dd></div>)}</dl>}
           <div className="mt-4 space-y-4">{items.map(item => {

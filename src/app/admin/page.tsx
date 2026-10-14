@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import {localizedPageMetadata} from "@/lib/server/page-metadata";
 import { redirect } from "next/navigation";
-export const metadata:Metadata={title:"Dashboard",robots:{index:false,follow:false}};
+export async function generateMetadata(){return localizedPageMetadata("dashboard.dashboard",undefined,{index:false,follow:false});}
 export default function Page(){redirect("/dashboard");}

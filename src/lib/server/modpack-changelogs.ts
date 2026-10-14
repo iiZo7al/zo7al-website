@@ -1,6 +1,6 @@
 import "server-only";
 import { MODRINTH_API_URL, MODRINTH_FALLBACK } from "../data/modrinth";
-import { changelogText, curseForgeFileUrls, parseCurseForgeFilePage, parseCurseForgeFiles, parseModrinthReleases, type ChangelogSource, type ChangelogStatus, type ModpackChangelogData, type ModpackChangelogProject } from "../data/modpack-changelog";
+import { changelogMarkdown, curseForgeFileUrls, parseCurseForgeFilePage, parseCurseForgeFiles, parseModrinthReleases, type ChangelogSource, type ChangelogStatus, type ModpackChangelogData, type ModpackChangelogProject } from "../data/modpack-changelog";
 import type { CurseForgeProject } from "../data/curseforge";
 import { getSyncedCurseForgeProjects } from "../sync/curseforge";
 import { fetchExternal } from "../sync/next-data";
@@ -86,7 +86,7 @@ async function curseForgeProject(project: CurseForgeProject, apiKey?: string): P
         try {
           const result = await json(`https://api.curseforge.com/v1/mods/${mod.id}/files/${release.url.split("/").pop()}/changelog`, apiKey) as { data?: unknown };
           if (typeof result.data !== "string") throw Error("UPSTREAM");
-          return { ...release, changelog: changelogText(result.data.slice(0, 100000)) };
+          return { ...release, changelog: changelogMarkdown(result.data.slice(0, 100000)) };
         } catch {
           const publicFile = await fetchExternal(release.url, REFRESH_SECONDS).then(html => parseCurseForgeFilePage(html, release.url)).catch(() => null);
           if (!publicFile) partial = true;

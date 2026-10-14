@@ -1,4 +1,5 @@
 "use client";
+import MarkdownContent from "@/components/ui/MarkdownContent";
 
 import { useEffect, useId, useState } from "react";
 import { useFormatter, useTranslations } from "next-intl";
@@ -66,7 +67,7 @@ export default function ModpackChangelog() {
               <span className="modpack-changelog-summary"><span className="text-label">{project.source}</span><strong dir="auto">{project.title}</strong><span className="modpack-changelog-meta"><span dir="auto">{release.version}</span>{release.published && <time dateTime={release.published}>{format.dateTime(new Date(release.published), { year: "numeric", month: "short", day: "numeric", timeZone: "UTC" })}</time>}</span></span>
               <ChevronDown size={18} className="modpack-changelog-chevron" aria-hidden="true" />
             </summary>
-            <div className="modpack-changelog-body"><p dir="auto">{release.changelog}</p><a href={release.url} target="_blank" rel="noopener noreferrer" className="hub-button" data-cursor="link">{t("changelogViewSource", { source: project.source })}<SolidIcon name="arrow-up-right" /></a></div>
+            <div className="modpack-changelog-body"><MarkdownContent>{release.changelog}</MarkdownContent><a href={release.url} target="_blank" rel="noopener noreferrer" className="hub-button" data-cursor="link">{t("changelogViewSource", { source: project.source })}<SolidIcon name="arrow-up-right" /></a></div>
           </details>)}
         </div> : status === "ready" && !affected.length && <div className="community-empty"><History size={22} aria-hidden="true" /><p>{t("changelogEmpty")}</p></div>}
         {releases.length > limit && <div className="hub-actions justify-center mt-8"><button type="button" className="hub-button" data-cursor="button" onClick={() => setLimit(value => value + 6)}>{hub("viewMore")}<ChevronDown size={16} aria-hidden="true" /></button></div>}

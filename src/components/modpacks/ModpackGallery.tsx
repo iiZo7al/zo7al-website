@@ -1,4 +1,5 @@
 "use client";
+import MarkdownContent from "@/components/ui/MarkdownContent";
 
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
@@ -31,6 +32,7 @@ type RawProject = {
 export default function ModpackGallery() {
   const t = useTranslations("modpacks");
   const tc = useTranslations("common");
+  const terms = useTranslations("platformTerms");
   const [projects, setProjects] = useState<ModrinthProject[] | null>(null);
   const [source, setSource] = useState<"live" | "fallback">("fallback");
 
@@ -125,14 +127,12 @@ export default function ModpackGallery() {
                   <p className="font-semibold">{project.title}</p>
                   <ProjectStatus projectKey={'modrinth:'+project.slug}/>
                   <p className="text-xs uppercase tracking-wide text-[var(--text-muted)]">
-                    {project.projectType}
+                    {terms.has(project.projectType) ? terms(project.projectType) : project.projectType}
                   </p>
                 </div>
               </div>
 
-              <p className="mt-4 flex-1 text-sm leading-relaxed text-[var(--text-muted)]">
-                {project.description}
-              </p>
+              <MarkdownContent className="mt-4 flex-1 text-sm leading-relaxed text-[var(--text-muted)]">{project.description}</MarkdownContent>
 
               <div className="mt-5 flex flex-wrap items-center gap-2">
                 {project.categories.slice(0, 3).map((cat) => (

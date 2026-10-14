@@ -1,13 +1,15 @@
 "use client";
+import MarkdownTextarea from "@/components/ui/MarkdownTextarea";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { ImagePlus, UserRound, ExternalLink } from "lucide-react";
-import { PROFILE_SOCIALS } from "@/lib/data/member-profile";
+import { PROFILE_SOCIALS,PROFILE_SOCIAL_LABELS } from "@/lib/data/member-profile";
 import BrandIcon from "@/components/ui/BrandIcon";
 import { useAccount, accountAction } from "./AccountProvider";
 export default function ProfileEditor() {
+  const common=useTranslations("common");
   const t = useTranslations("account"),
     { account, refresh } = useAccount();
   const [busy, setBusy] = useState(false),
@@ -125,7 +127,7 @@ export default function ProfileEditor() {
         </div>
         <label>
           {t("bio")}
-          <textarea
+          <MarkdownTextarea
             name="bio"
             defaultValue={account.bio}
             maxLength={500}
@@ -141,10 +143,8 @@ export default function ProfileEditor() {
                 <span className="flex items-center gap-2">
                   <BrandIcon slug={key} size={17} />
                   {key === "website"
-                    ? "Website"
-                    : key === "github"
-                      ? "GitHub"
-                      : key}
+                    ? common("website")
+                    : PROFILE_SOCIAL_LABELS[key]??key}
                 </span>
                 <input
                   name={key}

@@ -1,22 +1,25 @@
 "use client";
+import MarkdownContent from "@/components/ui/MarkdownContent";
 
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { useFormatter, useTranslations } from "next-intl";
-import { Check } from "lucide-react";
 import ShareButton from "@/components/ui/ShareButton";
 import QueryObserver from "@/components/hub/QueryObserver";
 import InstallationGuide from "@/components/hub/InstallationGuide";
 import ProjectExtras from "@/components/community/ProjectExtras";
 import DetailsIcon from "@/components/ui/DetailsIcon";
 import SolidIcon from "@/components/ui/SolidIcon";
-import { modrinthDetails, readableDescription, type ModpackDetails } from "@/lib/data/modpack-details";
+import { modrinthDetails, type ModpackDetails } from "@/lib/data/modpack-details";
 import type { ModpackChangelogData } from "@/lib/data/modpack-changelog";
 import "@/components/store/store.css";
+import { markdownSource } from "@/lib/data/markdown";
 
 type Project = ModpackDetails & { title: string; description: string; iconUrl: string | null; url: string; categories: string[]; downloads: number; id?: string; slug?: string; projectType?: string };
 
 export default function ModpackDetailsButton({ project, source }: { project: Project; source: "Modrinth" | "CurseForge" }) {
   const t = useTranslations("modpacks"), store = useTranslations("store"), common = useTranslations("common");
+  const terms=useTranslations("platformTerms");
+  const releaseType=(value:string)=>terms.has(value)?terms(value):value;
   const format = useFormatter();
   const hub = useTranslations("hub");
   const projectKey=source === "Modrinth" ? "modrinth:"+project.slug : "curseforge:"+project.id;
@@ -88,9 +91,9 @@ export default function ModpackDetailsButton({ project, source }: { project: Pro
           <dl className="card-glow grid grid-cols-1 gap-4 rounded-xl border border-[var(--border)] p-4 sm:grid-cols-2">
             {[[t("gameVersions"), details.gameVersions?.join(", ")], [t("loaders"), details.loaders?.join(", ")], [t("updated"), details.updated ? date(details.updated) : undefined], [t("license"), details.license]].map(([label, value]) => <div key={label}><dt className="mb-1 text-xs text-[var(--text-muted)]">{label}</dt><dd dir="auto" className="break-words text-sm">{value || t("notListed")}</dd></div>)}
           </dl>
-          <section><h3 className="mb-3 font-semibold">{t("description")}</h3><div className="space-y-3 text-sm leading-7 text-[var(--text-muted)]">{readableDescription(details.body || project.description).split("\n").filter(Boolean).map((line, index) => /^[*•-]\s/.test(line) ? <p key={index} className="flex items-start gap-2"><Check size={16} className="mt-1 shrink-0 text-[var(--accent)]" aria-hidden="true" /><span dir="auto">{line.replace(/^[*•-]\s+/, "")}</span></p> : <p key={index} dir="auto" className="break-words">{line}</p>)}</div></section>
+          <section><h3 className="mb-3 font-semibold">{t("description")}</h3><MarkdownContent className="text-sm leading-7 text-[var(--text-muted)]">{markdownSource(details.body || project.description)}</MarkdownContent></section>
           {!!project.categories.length && <ul className="flex flex-wrap gap-2">{project.categories.map(category => <li key={category} dir="auto" className="rounded-full border border-[var(--border)] px-3 py-1 text-xs">{category}</li>)}</ul>}
-          <section><h3 className="mb-3 font-semibold">{t("releases")}</h3>{details.releases?.length ? <ul className="space-y-3">{details.releases.map(release => <li key={release.url} className="card-glow rounded-xl border border-[var(--border)] p-4"><a href={release.url} target="_blank" rel="noopener noreferrer" className="flex items-center justify-between gap-3 text-sm font-semibold hover:text-[var(--accent)]"><span dir="auto">{release.name}</span><SolidIcon name="arrow-up-right" /></a><p className="mt-2 text-xs text-[var(--text-muted)]" dir="auto">{release.version}{release.type && ` · ${release.type}`}{release.published && ` · ${date(release.published)}`}{release.size ? ` · ${format.number(release.size / 1048576, { maximumFractionDigits: 1 })} MB` : ""}</p>{release.changelog&&<details name={titleId + "-releases"} open={openRelease === release.url} className="mt-3"><summary className="text-sm font-semibold" data-cursor="button" onClick={event => { event.preventDefault(); setOpenRelease(value => value === release.url ? null : release.url); }}>{hub("changelog")}</summary><p className="mt-2 whitespace-pre-line text-sm leading-7 text-[var(--text-muted)]" dir="auto">{readableDescription(release.changelog)}</p></details>}</li>)}</ul> : <p className="text-sm text-[var(--text-muted)]">{t("noRelease")}</p>}</section>
+          <section><h3 className="mb-3 font-semibold">{t("releases")}</h3>{details.releases?.length ? <ul className="space-y-3">{details.releases.map(release => <li key={release.url} className="card-glow rounded-xl border border-[var(--border)] p-4"><a href={release.url} target="_blank" rel="noopener noreferrer" className="flex items-center justify-between gap-3 text-sm font-semibold hover:text-[var(--accent)]"><span dir="auto">{release.name}</span><SolidIcon name="arrow-up-right" /></a><p className="mt-2 text-xs text-[var(--text-muted)]" dir="auto">{release.version}{release.type && ` · ${releaseType(release.type)}`}{release.published && ` · ${date(release.published)}`}{release.size ? ` · ${format.number(release.size / 1048576, { maximumFractionDigits: 1 })} MB` : ""}</p>{release.changelog&&<details name={titleId + "-releases"} open={openRelease === release.url} className="mt-3"><summary className="text-sm font-semibold" data-cursor="button" onClick={event => { event.preventDefault(); setOpenRelease(value => value === release.url ? null : release.url); }}>{hub("changelog")}</summary><MarkdownContent className="mt-2 text-sm leading-7 text-[var(--text-muted)]">{markdownSource(release.changelog)}</MarkdownContent></details>}</li>)}</ul> : <p className="text-sm text-[var(--text-muted)]">{t("noRelease")}</p>}</section>
           <ProjectExtras projectKey={projectKey} title={project.title} version={details.releases?.[0]?.version}/>
           <a href={project.url} target="_blank" rel="noopener noreferrer" className="store-action">{common("viewProject")}<SolidIcon name="arrow-up-right" /></a>
         </div>

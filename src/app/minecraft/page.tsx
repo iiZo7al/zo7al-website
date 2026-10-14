@@ -1,7 +1,7 @@
+import {localizedPageMetadata} from "@/lib/server/page-metadata";
 import MinecraftCommunity from "@/components/hub/MinecraftCommunity";
 import ProjectExtras,{ProjectStatus} from "@/components/community/ProjectExtras";
 import LinkHub from "@/components/hub/MinecraftHubLinks";
-import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import PageHero from "@/components/ui/PageHero";
 import SectionHeader from "@/components/ui/SectionHeader";
@@ -14,10 +14,7 @@ import MagneticButton from "@/components/cursor/MagneticButton";
 import Link from "next/link";
 import Image from "next/image";
 
-export const metadata: Metadata = {
-  title: "Minecraft",
-  description: "Your next Minecraft adventure starts here.",
-};
+export async function generateMetadata(){return localizedPageMetadata("nav.minecraft","minecraft.text");}
 
 export default async function MinecraftPage() {
   const t = await getTranslations("minecraft");
