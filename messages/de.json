@@ -558,7 +558,7 @@
         "id": "two-factor",
         "category": "accountSecurity",
         "q": "Wie aktiviere ich 2FA?",
-        "a": "Öffne Mein Konto → Sicherheit, scanne den QR-Code mit einer Authenticator-App und bestätige ihren sechsstelligen Code. Weitere Anmeldungen benötigen die Bestätigung.",
+        "a": "Öffne Mein Konto → Sicherheit, scanne den QR-Code mit einer Authenticator-App und bestätige ihren sechsstelligen Code. Weitere Anmeldungen benötigen die Bestätigung. Wenn du den QR-Code nicht scannen kannst, gib den Einrichtungsschlüssel manuell in der App ein. Halte ihn geheim.",
         "href": "/account?tab=security",
         "action": "Sicherheit"
       },
@@ -593,6 +593,30 @@
         "a": "Öffne nach der Minecraft-Verknüpfung Kontoeinstellungen oder Spielerprofil. Unterstützte Server-Bridges melden Grund und Ablauf; fehlende oder veraltete Synchronisierung wird angezeigt.",
         "href": "/account?tab=player",
         "action": "Sperren auf Minecraft-Servern"
+      },
+      {
+        "id": "delete-account",
+        "category": "accountSecurity",
+        "q": "Wie lösche ich mein Konto?",
+        "a": "Du wirst abgemeldet und dein Profil ausgeblendet. Nach 15 Tagen wird das Konto dauerhaft gelöscht. Eine Anmeldung mit 2FA innerhalb dieser Frist bricht die Löschung ab. Profil, Anfragen und Verknüpfungen werden entfernt; Käufe bleiben anonymisiert erhalten.",
+        "href": "/account?tab=settings",
+        "action": "Einstellungen"
+      },
+      {
+        "id": "account-password",
+        "category": "accountSecurity",
+        "q": "Wie ändere ich mein Passwort oder setze es zurück?",
+        "a": "Öffne Mein Konto → Passwort und wähle ein einzigartiges Passwort mit 12–128 Zeichen. Bestätige es und fordere bei Bedarf einen Bestätigungscode per E-Mail an. Wenn du dich nicht anmelden kannst, wähle Passwort vergessen im Anmeldefenster und öffne den E-Mail-Link im selben Browser.",
+        "href": "/account?tab=password",
+        "action": "Passwort verwalten"
+      },
+      {
+        "id": "dashboard-access",
+        "category": "accountSecurity",
+        "q": "Kann ich mich mit meinem verknüpften Konto im Dashboard anmelden?",
+        "a": "Nur ein vom Eigentümer autorisiertes Konto erhält Zugriff auf das Dashboard. Melde dich mit einer Methode an, die mit diesem Konto verknüpft ist, und bestätige die Zwei-Faktor-Authentifizierung, falls sie aktiviert ist. Das Verknüpfen von Google, Microsoft, Discord oder Modrinth allein erteilt keine Administrationsrechte.",
+        "href": "/account",
+        "action": "Mein Konto öffnen"
       }
     ],
     "clearSearch": "Suche löschen",
@@ -865,8 +889,8 @@
     "newsIntro": "Neuigkeiten zum Netzwerk, Kartenupdates und Modpack-Veröffentlichungen.",
     "eventsIntro": "Kommende Veranstaltungen und Turniere der Community.",
     "playerIntro": "Dein Minecraft-Charakter, dein aktueller Rang und deine Serverstatistiken.",
-    "ordersIntro": "View status and updates saved to your account.",
-    "applicationsIntro": "View status and updates saved to your account.",
+    "ordersIntro": "Sieh den Status und die in deinem Konto gespeicherten Updates an.",
+    "applicationsIntro": "Sieh den Status und die in deinem Konto gespeicherten Updates an.",
     "supportIntro": "Finde Antworten oder sende eine Meldung an das Team von Zo7al Projects.",
     "newsEmpty": "Es wurden noch keine Neuigkeiten veröffentlicht.",
     "eventsEmpty": "Es sind noch keine Veranstaltungen geplant. Schau für die nächste Ankündigung wieder vorbei.",
@@ -886,13 +910,13 @@
     "register": "Anmelden",
     "eventLink": "Veranstaltungslink",
     "received": "Deine Anfrage ist eingegangen",
-    "receiptHelp": "Requests are saved to your account across your devices.",
+    "receiptHelp": "Deine Anfragen werden in deinem Konto gespeichert und sind auf allen deinen Geräten verfügbar.",
     "reference": "Referenz",
     "accessCode": "Privater Zugangscode",
     "track": "Anfrage verfolgen",
     "trackingHelp": "Gib deine Referenz und deinen privaten Zugangscode ein oder wähle eine gespeicherte Anfrage.",
     "savedRequests": "Your account requests",
-    "noSavedRequests": "No requests in this section yet.",
+    "noSavedRequests": "In diesem Bereich gibt es noch keine Anfragen.",
     "notFound": "Keine passende Anfrage gefunden. Prüfe Referenz und Zugangscode.",
     "consent": "Ich stimme zu, diese Angaben über Discord mit dem Zo7al-Network-Team zu teilen.",
     "webhookNote": "Deine Anfrage wird dem Team auf Discord zugestellt.",
@@ -1007,7 +1031,7 @@
       }
     ],
     "activity": "Meine Bestellungen und Bewerbungen",
-    "activityIntro": "Your requests and submissions are saved to your account.",
+    "activityIntro": "Deine Anfragen und Beiträge werden in deinem Konto gespeichert.",
     "commonErrorsIntro": "Schnelle Lösungen für häufige Verbindungs-, Shop- und Modpack-Probleme.",
     "viewMore": "View more",
     "copyLink": "Diesen Link kopieren",
@@ -1052,7 +1076,7 @@
     "epic": "Epic-Games-Anzeigename",
     "allGames": "Alle Spiele",
     "mySubmissions": "Meine Beiträge",
-    "submissionsIntro": "Verfolge Status und Neuigkeiten über dein Konto.",
+    "submissionsIntro": "Sieh den Status und die in deinem Konto gespeicherten Updates an.",
     "status_approved": "Angenommen",
     "profiles": "Profile",
     "addPoll": "Abstimmung zu dieser Nachricht hinzufügen",
@@ -1139,7 +1163,7 @@
     "privateWorkspace": "Privater Arbeitsbereich",
     "loginTitle": "Ein Zuhause für dein Universum",
     "loginHint": "Verwalte Projekte, prüfe Community-Anfragen und verbinde deinen Spielserver.",
-    "signInHint": "Melde dich mit deinem bestehenden Dashboard-Passwort an.",
+    "signInHint": "Melde dich beim Inhaberkonto über das verknüpfte Google, Microsoft, Discord oder Modrinth an.",
     "sessionProtected": "Geschützte Sitzung · Private Verwaltung",
     "pelicanTitle": "Dein Server in Zo7al",
     "connectPelican": "Pelican verbinden",
@@ -1703,8 +1727,9 @@
       "USERNAME_TAKEN": "Benutzername bereits vergeben",
       "DISCORD_REQUIRED": "Verknüpfe zuerst Discord",
       "ACCOUNT_BANNED": "Dieses Konto ist gesperrt",
-      "ACCOUNT_DELETED": "Dieses Profil wurde gelöscht",
-      "IDENTITY_LINKED": "Dieses Discord-Konto gehört zu einem anderen Zo7al-Konto. Melde dich damit an, statt es hier zu verknüpfen."
+      "ACCOUNT_DELETED": "Dieses Konto wurde gelöscht",
+      "IDENTITY_LINKED": "Dieses Discord-Konto gehört zu einem anderen Zo7al-Konto. Melde dich damit an, statt es hier zu verknüpfen.",
+      "OWNER_PROTECTED": "Das Konto des aktuellen Dashboard-Inhabers kann nicht gelöscht werden."
     },
     "security": {
       "title": "Zwei-Faktor-Authentifizierung",
@@ -1766,10 +1791,10 @@
     "profiles": "Profile",
     "banAccount": "Konto sperren",
     "unbanAccount": "Sperre aufheben",
-    "deleteAccount": "Profil löschen",
+    "deleteAccount": "Konto endgültig löschen",
     "temporaryBan": "Zeitlich begrenzte Sperre",
     "searchMembers": "Profile suchen",
-    "confirmDelete": "Dieses Profil löschen? Es wird ausgeblendet und der Website-Zugang gesperrt.",
+    "confirmDelete": "Anmeldekonto, Profil, Verknüpfungen und Anfragen endgültig löschen. Anonymisierte Käufe bleiben erhalten. Dies ist unwiderruflich. Bestätigen?",
     "deleted": "Gelöscht",
     "profileNotFound": "Profil nicht gefunden",
     "passkeys": "Passkeys",
@@ -1788,6 +1813,14 @@
     "identityLinked": "Dieses Discord-Konto gehört zu einem anderen Zo7al-Konto. Melde dich damit an, statt es hier zu verknüpfen.",
     "linkMinecraft": "Minecraft verknüpfen",
     "minecraftRequired": "Verknüpfe dein Minecraft-Konto vor der Bewerbung.",
-    "useLinkedDiscord": "Beim mit Discord verknüpften Konto anmelden"
+    "useLinkedDiscord": "Beim mit Discord verknüpften Konto anmelden",
+    "deletion": {
+      "title": "Mein Konto löschen",
+      "hint": "Du wirst abgemeldet und dein Profil ausgeblendet. Nach 15 Tagen wird das Konto dauerhaft gelöscht. Eine Anmeldung mit 2FA innerhalb dieser Frist bricht die Löschung ab. Profil, Anfragen und Verknüpfungen werden entfernt; Käufe bleiben anonymisiert erhalten.",
+      "request": "Kontolöschung beantragen",
+      "confirmTitle": "Möchtest du dein Konto wirklich löschen?",
+      "acknowledge": "Ich verstehe die Frist von 15 Tagen und die anschließende endgültige Löschung.",
+      "scheduled": "Löschung beantragt. Melde dich innerhalb von 15 Tagen an, um sie abzubrechen."
+    }
   }
 }

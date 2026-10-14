@@ -1,0 +1,65 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import ts from 'typescript';
+import {PGlite} from '@electric-sql/pglite';
+import {SITE_SCHEMA} from '../src/lib/server/site-schema.ts';
+import {COMMUNITY_SCHEMA} from '../src/lib/server/community-schema.ts';
+import {ACCOUNT_SCHEMA} from '../src/lib/server/account-schema.ts';
+import {authenticatorQR} from '../src/lib/data/authenticator-qr.ts';
+const stub=s=>'data:text/javascript;base64,'+Buffer.from(s).toString('base64');
+function mod(path,replacements={}){let s=readFileSync(new URL('../'+path,import.meta.url),'utf8').replace("import 'server-only';",'');for(const [a,b] of Object.entries(replacements))s=s.replaceAll(a,b);return stub(ts.transpileModule(s,{compilerOptions:{module:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ES2022}}).outputText);}
+const engine=new PGlite();await engine.exec(SITE_SCHEMA+COMMUNITY_SCHEMA+ACCOUNT_SCHEMA);
+const pool={query:async(sql,args)=>engine.query(sql,args),connect:async()=>({query:pool.query,release(){}})};globalThis.__lifecycle={pool};
+const db=stub('export async function siteDatabase(){return globalThis.__lifecycle.pool;}'),security=mod('src/lib/server/site-security.ts'),data=mod('src/lib/data/account.ts');
+const authURL=mod('src/lib/server/account-auth.ts',{'./site-db':db,'./site-security':security,'../data/account':data}),auth=await import(authURL);
+const ownerURL=mod('src/lib/server/admin-account.ts',{'./account-auth':authURL,'./site-security':security}),owner=await import(ownerURL);
+const adminURL=mod('src/lib/server/account-admin.ts',{'./account-auth':authURL});
+const deletionURL=mod('src/lib/server/account-deletion.ts',{'./site-db':db,'./site-security':security,'./account-auth':authURL,'./account-admin':adminURL,'./admin-account':ownerURL}),deletion=await import(deletionURL);
+const deletionRoute=await import(mod('src/app/api/account/deletion/route.ts',{'@/lib/server/account-auth':authURL,'@/lib/server/site-security':security,'@/lib/server/account-deletion':deletionURL}));
+const cron=await import(mod('src/app/api/cron/account-deletions/route.ts',{'@/lib/server/account-deletion':deletionURL}));
+const ownerId='a1234567-1234-1234-1234-123456789abc',memberId='b1234567-1234-1234-1234-123456789abc';
+const keys=['SUPABASE_URL','SUPABASE_PUBLISHABLE_KEY','SUPABASE_SECRET_KEY','DATABASE_URL','ZO7AL_SITE_URL','ZO7AL_ADMIN_ACCOUNT_IDS','ZO7AL_ADMIN_PASSWORD_HASH','CRON_SECRET'];const saved=Object.fromEntries(keys.map(k=>[k,process.env[k]]));Object.assign(process.env,{SUPABASE_URL:'https://auth.zo7al.test',SUPABASE_PUBLISHABLE_KEY:'public-test',SUPABASE_SECRET_KEY:'private-auth-test',DATABASE_URL:'test',ZO7AL_SITE_URL:'https://zo7al.test',ZO7AL_ADMIN_ACCOUNT_IDS:ownerId,CRON_SECRET:'private-cron-test'});delete process.env.ZO7AL_ADMIN_PASSWORD_HASH;
+let activeId=memberId,factors=[],upstreamFails=false,deleteCalls=[],aal='aal1';
+const originalFetch=globalThis.fetch;globalThis.fetch=async(url,options={})=>{if(url.endsWith('/user'))return Response.json({id:activeId,email:'owner@example.com',user_metadata:{name:'Owner',role:'admin'},factors});if(url.includes('/admin/users/')&&options.method==='DELETE'){deleteCalls.push(url);return upstreamFails?new Response(null,{status:503}):Response.json({});}throw Error('Unexpected upstream');};
+const token=()=> 'jwt.'+Buffer.from(JSON.stringify({sub:activeId,aal})).toString('base64url')+'.mac';
+const req=(body,origin='https://zo7al.test')=>new Request('https://zo7al.test/api/account/deletion',{method:body?'POST':'GET',headers:{origin,'content-type':'application/json',cookie:auth.ACCOUNT_ACCESS+'='+token()},...(body?{body:JSON.stringify(body)}:{})});
+for(const id of [ownerId,memberId])await pool.query('INSERT INTO site_accounts(id,name,username) VALUES($1,$2,$3)',[id,'Test Member',id===ownerId?'Owner':'Member']);
+test.after(async()=>{globalThis.fetch=originalFetch;for(const [k,v] of Object.entries(saved))if(v===undefined)delete process.env[k];else process.env[k]=v;await engine.close();});
+test('QR accepts native SVG/data forms and rejects remote/executable sources',()=>{
+ for(const svg of ['<svg xmlns="http://www.w3.org/2000/svg"></svg>','<?xml version="1.0"?>\n<svg></svg>'])assert.ok(authenticatorQR(svg).startsWith('data:image/svg+xml;'));
+ assert.equal(authenticatorQR('data:image/png;base64,dGVzdA=='),'data:image/png;base64,dGVzdA==');
+ for(const bad of ['https://evil.test/qr','javascript:alert(1)','<svg>','x'.repeat(100001),null])assert.equal(authenticatorQR(bad),'');
+});
+test('dashboard authorizes immutable owner ID and enforces MFA, ban and deletion',async()=>{
+ activeId=memberId;assert.equal(await owner.hasAdminSession(req()),false);
+ activeId=ownerId;assert.equal(await owner.hasAdminSession(req()),true);
+ factors=[{id:memberId,factor_type:'totp',status:'verified'}];assert.equal(await owner.hasAdminSession(req()),false);aal='aal2';assert.equal(await owner.hasAdminSession(req()),true);
+ await pool.query("UPDATE site_accounts SET banned_until=now()+interval '1 hour' WHERE id=$1",[ownerId]);assert.equal(await owner.hasAdminSession(req()),false);await pool.query('UPDATE site_accounts SET banned_until=NULL WHERE id=$1',[ownerId]);
+ factors=[];aal='aal1';activeId=memberId;
+});
+test('self deletion requires explicit same-origin confirmation and protects owner',async()=>{
+ assert.equal((await deletionRoute.POST(req({confirm:true},'https://evil.test'))).status,403);
+ assert.equal((await deletionRoute.POST(req({confirm:false}))).status,400);
+ activeId=ownerId;assert.equal((await deletionRoute.POST(req({confirm:true}))).status,403);activeId=memberId;
+ const response=await deletionRoute.POST(req({confirm:true}));assert.equal(response.status,200);const result=await response.json();assert.ok(Date.parse(result.dueAt)>Date.now()+14.9*86400000);assert.ok(response.headers.getSetCookie().some(c=>c.includes('Max-Age=0')));
+ await auth.cancelAccountDeletion(memberId);assert.equal((await pool.query('SELECT deletion_due_at FROM site_accounts WHERE id=$1',[memberId])).rows[0].deletion_due_at,null);
+});
+test('a new authenticated sign-in cancels before the deadline; expired requests cannot revive',async()=>{
+ await deletion.scheduleAccountDeletion(memberId);await pool.query("UPDATE site_accounts SET deletion_due_at=now()-interval '1 second' WHERE id=$1",[memberId]);await assert.rejects(()=>auth.cancelAccountDeletion(memberId),/ACCOUNT_DELETED/);
+ await assert.rejects(()=>deletion.permanentlyDeleteAccount(ownerId),/OWNER_PROTECTED/);
+});
+test('permanent cleanup revokes immediately, retries upstream failure and anonymizes purchases',async()=>{
+ await pool.query("INSERT INTO site_member_modrinth_identities(user_id,provider_id,name) VALUES($1,'LinkedMember','Test')",[memberId]);
+ await pool.query("INSERT INTO site_orders(id,user_id,token_hash,basket_ident,username,items,discord_payload) VALUES($1,$2,$3,'test-basket','Player','[]','{\"email\":\"private@example.com\"}')",[ownerId,memberId,'a'.repeat(64)]);
+ upstreamFails=true;await assert.rejects(()=>deletion.permanentlyDeleteAccount(memberId,true),/UNAVAILABLE/);await assert.rejects(()=>auth.assertAccountAllowed(memberId),/ACCOUNT_DELETED/);
+ assert.equal((await pool.query('SELECT count(*) AS n FROM site_member_modrinth_identities WHERE user_id=$1',[memberId])).rows[0].n,0);
+ const order=(await pool.query('SELECT user_id,username,discord_payload,token_hash FROM site_orders WHERE id=$1',[ownerId])).rows[0];assert.equal(order.user_id,null);assert.equal(order.username,'Deleted');assert.equal(order.discord_payload,null);assert.notEqual(order.token_hash,'a'.repeat(64));
+ assert.equal((await pool.query('SELECT auth_delete_pending FROM site_accounts WHERE id=$1',[memberId])).rows[0].auth_delete_pending,true);
+ upstreamFails=false;const result=await deletion.deleteExpiredAccounts();assert.deepEqual(result,{deleted:1,failed:0});assert.equal((await pool.query('SELECT auth_delete_pending FROM site_accounts WHERE id=$1',[memberId])).rows[0].auth_delete_pending,false);assert.equal(deleteCalls.length,2);
+});
+test('daily deletion job rejects unauthenticated callers and accepts its private credential',async()=>{
+ assert.equal((await cron.GET(new Request('https://zo7al.test/api/cron/account-deletions'))).status,401);
+ assert.equal((await cron.GET(new Request('https://zo7al.test/api/cron/account-deletions',{headers:{authorization:'Bearer wrong'}}))).status,401);
+ const response=await cron.GET(new Request('https://zo7al.test/api/cron/account-deletions',{headers:{authorization:'Bearer '+process.env.CRON_SECRET}}));assert.equal(response.status,200);assert.deepEqual(await response.json(),{deleted:0,failed:0});
+});

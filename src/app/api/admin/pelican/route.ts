@@ -1,4 +1,5 @@
-import { hasAdminSession, privateHeaders, readJSON, sameOrigin } from "@/lib/server/site-security";
+import { hasAdminSession } from "@/lib/server/admin-account";
+import {  privateHeaders, readJSON, sameOrigin } from "@/lib/server/site-security";
 import { readConnections } from "@/lib/server/dashboard-connections";
 import { pelicanRequest, pelicanServer, pelicanWebsocket } from "@/lib/server/pelican";
 import { validConsoleCommand } from "@/lib/data/pelican";
@@ -7,7 +8,7 @@ import { limitAttempt } from "@/lib/server/site-content";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 export async function GET(request: Request) {
-  if (!hasAdminSession(request)) return Response.json({error:"UNAUTHORIZED"},{status:401,headers:privateHeaders});
+  if (!await hasAdminSession(request)) return Response.json({error:"UNAUTHORIZED"},{status:401,headers:privateHeaders});
   try {
     const server=new URL(request.url).searchParams.get("server");
     if (server !== null && !validServerId(server)) return Response.json({error:"INVALID"},{status:400,headers:privateHeaders});
@@ -18,7 +19,7 @@ export async function GET(request: Request) {
   } catch(error) { return Response.json({error:error instanceof SyntaxError || (error instanceof Error && error.message==="INVALID") ? "INVALID":"PELICAN_UNAVAILABLE"},{status:error instanceof SyntaxError || (error instanceof Error && error.message==="INVALID")?400:502,headers:privateHeaders}); }
 }
 export async function POST(request: Request) {
-  if (!hasAdminSession(request)) return Response.json({error:"UNAUTHORIZED"},{status:401,headers:privateHeaders});
+  if (!await hasAdminSession(request)) return Response.json({error:"UNAUTHORIZED"},{status:401,headers:privateHeaders});
   if (!sameOrigin(request)) return Response.json({error:"INVALID"},{status:403,headers:privateHeaders});
   try {
     const input = await readJSON(request,4096) as {action?:string;command?:unknown;signal?:string;server?:unknown;confirm?:boolean};

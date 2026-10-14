@@ -1,4 +1,5 @@
-import { hasAdminSession, privateHeaders, readJSON, sameOrigin } from "@/lib/server/site-security";
+import { hasAdminSession } from "@/lib/server/admin-account";
+import {  privateHeaders, readJSON, sameOrigin } from "@/lib/server/site-security";
 import { validConnection } from "@/lib/data/dashboard";
 import { connectionMetadata, saveConnection } from "@/lib/server/dashboard-connections";
 import { clearPlatformCache, fetchPlatform } from "@/lib/server/dashboard-platforms";
@@ -8,12 +9,12 @@ import { pelicanRead } from "@/lib/data/pelican-management";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 export async function GET(request: Request) {
-  if (!hasAdminSession(request)) return Response.json({ error: "UNAUTHORIZED" },{ status: 401, headers: privateHeaders });
+  if (!await hasAdminSession(request)) return Response.json({ error: "UNAUTHORIZED" },{ status: 401, headers: privateHeaders });
   try { return Response.json({ connections: await connectionMetadata() },{ headers: privateHeaders }); }
   catch { return Response.json({ error: "UNAVAILABLE" },{ status: 503, headers: privateHeaders }); }
 }
 export async function POST(request: Request) {
-  if (!hasAdminSession(request)) return Response.json({ error: "UNAUTHORIZED" },{ status: 401, headers: privateHeaders });
+  if (!await hasAdminSession(request)) return Response.json({ error: "UNAUTHORIZED" },{ status: 401, headers: privateHeaders });
   if (!sameOrigin(request)) return Response.json({ error: "INVALID" },{ status: 403, headers: privateHeaders });
   try {
     const input = validConnection(await readJSON(request,4096));

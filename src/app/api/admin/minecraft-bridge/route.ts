@@ -1,13 +1,14 @@
+import { hasAdminSession } from "@/lib/server/admin-account";
 import { randomBytes, randomUUID } from "node:crypto";
 import { siteDatabase } from "@/lib/server/site-db";
 import { limitAttempt } from "@/lib/server/site-content";
-import { hasAdminSession, privateHeaders, readJSON, sameOrigin, tokenHash } from "@/lib/server/site-security";
+import {  privateHeaders, readJSON, sameOrigin, tokenHash } from "@/lib/server/site-security";
 import { bridgeId, bridgeName } from "@/lib/data/minecraft-bridge";
 import { validateVisibleStats, visiblePlayerStats } from "@/lib/data/player-statistics";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 export async function GET(request: Request) {
-  if (!hasAdminSession(request)) return Response.json({ error: "UNAUTHORIZED" }, { status: 401, headers: privateHeaders });
+  if (!await hasAdminSession(request)) return Response.json({ error: "UNAUTHORIZED" }, { status: 401, headers: privateHeaders });
   try {
     const rows = (await (await siteDatabase()).query('SELECT b.id,b.name,b.enabled,b.visible_stats AS "visibleStats",b.created_at AS "createdAt",b.last_sync AS "lastSync",count(p.uuid)::int AS players FROM minecraft_profile_bridges b LEFT JOIN minecraft_player_profiles p ON p.bridge_id=b.id GROUP BY b.id ORDER BY b.created_at DESC LIMIT 20')).rows;
     const bridges = rows.map(row => ({ ...row, visibleStats: visiblePlayerStats(row.visibleStats) }));
@@ -15,7 +16,7 @@ export async function GET(request: Request) {
   } catch { return Response.json({ error: "UNAVAILABLE" }, { status: 503, headers: privateHeaders }); }
 }
 export async function POST(request: Request) {
-  if (!hasAdminSession(request)) return Response.json({ error: "UNAUTHORIZED" }, { status: 401, headers: privateHeaders });
+  if (!await hasAdminSession(request)) return Response.json({ error: "UNAUTHORIZED" }, { status: 401, headers: privateHeaders });
   if (!sameOrigin(request)) return Response.json({ error: "INVALID" }, { status: 403, headers: privateHeaders });
   try {
     const v = await readJSON(request, 4000) as { action?: string; id?: unknown; name?: unknown; confirm?: unknown; visibleStats?: unknown };

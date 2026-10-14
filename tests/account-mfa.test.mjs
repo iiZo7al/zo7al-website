@@ -7,14 +7,15 @@ import {PGlite} from '@electric-sql/pglite';
 import {SITE_SCHEMA} from '../src/lib/server/site-schema.ts';
 import {ACCOUNT_SCHEMA} from '../src/lib/server/account-schema.ts';
 const stub=s=>'data:text/javascript;base64,'+Buffer.from(s).toString('base64');
-function moduleURL(path,replacements={}){let source=readFileSync(new URL('../'+path,import.meta.url),'utf8').replaceAll("import 'server-only';",'');for(const [a,b] of Object.entries(replacements))source=source.replaceAll(a,b);return stub(ts.transpileModule(source,{compilerOptions:{module:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ES2022}}).outputText);}
+function moduleURL(path,replacements={}){
+ if(replacements["@/lib/server/site-security"]&&!replacements["@/lib/server/admin-account"])replacements["@/lib/server/admin-account"]=replacements["@/lib/server/site-security"];let source=readFileSync(new URL('../'+path,import.meta.url),'utf8').replaceAll("import 'server-only';",'');for(const [a,b] of Object.entries(replacements))source=source.replaceAll(a,b);return stub(ts.transpileModule(source,{compilerOptions:{module:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ES2022}}).outputText);}
 const engine=new PGlite();await engine.exec(SITE_SCHEMA+ACCOUNT_SCHEMA);
 const pool={query:async(sql,args=[])=>{const r=await engine.query(sql,args);return {...r,rowCount:r.affectedRows??r.rows.length};}};
 globalThis.__mfaTests={pool,allowed:true};
 const db=stub('export async function siteDatabase(){return globalThis.__mfaTests.pool;}'),security=moduleURL('src/lib/server/site-security.ts'),data=moduleURL('src/lib/data/account.ts');
 const authURL=moduleURL('src/lib/server/account-auth.ts',{'./site-db':db,'./site-security':security,'../data/account':data}),auth=await import(authURL);
 const limit=stub('export async function limitAttempt(){return globalThis.__mfaTests.allowed;}');
-const replacements={'@/lib/server/account-auth':authURL,'@/lib/server/site-security':security,'@/lib/server/site-content':limit,'@/lib/server/site-db':db};
+const replacements={'@/lib/server/member-modrinth':stub('export async function startMemberModrinth(){throw Error("NOT_USED");}'),'@/lib/server/account-auth':authURL,'@/lib/server/site-security':security,'@/lib/server/site-content':limit,'@/lib/server/site-db':db};
 const mfa=await import(moduleURL('src/app/api/account/mfa/route.ts',replacements));
 const account=await import(moduleURL('src/app/api/account/route.ts',{...replacements,'@/lib/server/site-db':db,'@/lib/data/member-profile':moduleURL('src/lib/data/member-profile.ts'),'@/lib/data/account':data,'@/i18n/config':moduleURL('src/i18n/config.ts')}));
 const receipts=await import(moduleURL('src/app/api/account/receipts/route.ts',{...replacements,'@/lib/server/site-db':db}));

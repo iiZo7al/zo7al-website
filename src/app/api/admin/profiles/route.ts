@@ -1,5 +1,7 @@
+import { AccountError } from "@/lib/server/account-auth";
+import { permanentlyDeleteAccount } from "@/lib/server/account-deletion";
+import { hasAdminSession } from "@/lib/server/admin-account";
 import {
-  hasAdminSession,
   sameOrigin,
   readJSON,
   privateHeaders,
@@ -9,7 +11,7 @@ import { bridgeId } from "@/lib/data/minecraft-bridge";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 export async function GET(request: Request) {
-  if (!hasAdminSession(request))
+  if (!await hasAdminSession(request))
     return Response.json(
       { error: "UNAUTHORIZED" },
       { status: 401, headers: privateHeaders },
@@ -34,7 +36,7 @@ export async function GET(request: Request) {
   }
 }
 export async function POST(request: Request) {
-  if (!hasAdminSession(request))
+  if (!await hasAdminSession(request))
     return Response.json(
       { error: "UNAUTHORIZED" },
       { status: 401, headers: privateHeaders },
@@ -56,6 +58,7 @@ export async function POST(request: Request) {
       !["ban", "unban", "delete"].includes(body.action ?? "")
     )
       throw Error("INVALID");
+    if(body.action === "delete") {await permanentlyDeleteAccount(body.id);return Response.json({ok:true},{headers:privateHeaders});}
     const reason = typeof body.reason === "string" ? body.reason.trim() : "";
     if (reason.length > 500) throw Error("INVALID");
     let until: string | null = null;
@@ -80,28 +83,7 @@ export async function POST(request: Request) {
         )
       ).rows[0];
       if (!row) throw Error("NOT_FOUND");
-      if (body.action === "delete") {
-        await client.query(
-          "UPDATE site_accounts SET name='Deleted',username=NULL,avatar=NULL,banner=NULL,bio='',socials='{}',deleted_at=now(),updated_at=now() WHERE id=$1",
-          [body.id],
-        );
-        await client.query("DELETE FROM site_profile_images WHERE user_id=$1", [
-          body.id,
-        ]);
-        await client.query(
-          "UPDATE community_entries SET published=false WHERE user_id=$1",
-          [body.id],
-        );
-        await client.query(
-          "DELETE FROM site_minecraft_link_codes WHERE user_id=$1",
-          [body.id],
-        );
-        await client.query(
-          "DELETE FROM site_minecraft_links WHERE user_id=$1",
-          [body.id],
-        );
-      } else
-        await client.query(
+      await client.query(
           "UPDATE site_accounts SET banned_until=$2,ban_reason=$3,updated_at=now() WHERE id=$1",
           [body.id, until, body.action === "unban" ? "" : reason],
         );
@@ -121,14 +103,14 @@ export async function POST(request: Request) {
     return Response.json(
       {
         error:
-          error instanceof Error &&
+          error instanceof AccountError ? error.code : error instanceof Error &&
           ["INVALID", "NOT_FOUND"].includes(error.message)
             ? error.message
             : "UNAVAILABLE",
       },
       {
         status:
-          error instanceof Error && error.message === "INVALID"
+          error instanceof AccountError ? error.status : error instanceof Error && error.message === "INVALID"
             ? 400
             : error instanceof Error && error.message === "NOT_FOUND"
               ? 404

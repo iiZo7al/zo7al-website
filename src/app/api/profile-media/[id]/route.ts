@@ -13,13 +13,13 @@ export async function GET(
       await (
         await siteDatabase()
       ).query(
-        `SELECT i.bytes,i.user_id,a.avatar,a.banner,a.username,a.deleted_at,a.banned_until FROM site_profile_images i JOIN site_accounts a ON a.id=i.user_id WHERE i.id=$1`,
+        `SELECT i.bytes,i.user_id,a.avatar,a.banner,a.username,a.deleted_at,a.banned_until,a.deletion_due_at FROM site_profile_images i JOIN site_accounts a ON a.id=i.user_id WHERE i.id=$1`,
         [id],
       )
     ).rows[0];
     if (
       !row ||
-      row.deleted_at ||
+      row.deleted_at || row.deletion_due_at ||
       (row.banned_until && new Date(row.banned_until).getTime() > Date.now())
     )
       return new Response(null, { status: 404 });

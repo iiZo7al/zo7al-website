@@ -3,6 +3,7 @@ import {AccountError,accountHeaders,accountOrigin,accountRequiresMFA,authRequest
 import {readJSON,tokenHash} from '@/lib/server/site-security';
 import {siteDatabase} from '@/lib/server/site-db';
 import {limitAttempt} from '@/lib/server/site-content';
+import {cancelAccountDeletion} from '@/lib/server/account-auth';
 export const runtime='nodejs';
 export const dynamic='force-dynamic';
 const uuid=(value:unknown):value is string=>typeof value==='string'&&/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i.test(value);
@@ -34,7 +35,7 @@ async function verifyCode(user:AuthUser,access:string,body:Record<string,unknown
  if(!tokens.access_token||!tokens.refresh_token)throw new AccountError('AUTH_EXPIRED',401);
  const confirmed=await authRequest('/user','GET',undefined,tokens.access_token) as AuthUser;
  if(confirmed.id!==user.id||accountRequiresMFA(confirmed,tokens.access_token))throw new AccountError('AUTH_EXPIRED',401);
- setAccountTokens(tokens,headers);return tokens;
+ setAccountTokens(tokens,headers);await cancelAccountDeletion(user.id);return tokens;
 }
 export async function GET(request:Request) {
  const headers=accountHeaders();

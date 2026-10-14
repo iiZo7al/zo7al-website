@@ -2,7 +2,7 @@ import 'server-only';
 import { createHash, randomBytes } from 'node:crypto';
 import { siteDatabase } from './site-db';
 import { tokenHash } from './site-security';
-import { accountNext, safeAccountName, type SiteAccount } from '../data/account';
+import { accountEmail, accountNext, safeAccountName, type SiteAccount } from '../data/account';
 
 const secure = process.env.NODE_ENV === 'production';
 export const ACCOUNT_ACCESS = secure ? '__Host-zo7al-access' : 'zo7al-access';
@@ -75,8 +75,8 @@ export async function requireAccountSession(request:Request,headers:Headers) {
 }
 export async function requireAccount(request: Request, headers?: Headers) { const user = await accountUser(request, headers); if (!user || !/^[a-f0-9-]{36}$/i.test(user.id)) throw new AccountError('LOGIN_REQUIRED', 401); return user; }
 export async function assertAccountAllowed(id:string) {
- const row=(await (await siteDatabase()).query('SELECT deleted_at,banned_until FROM site_accounts WHERE id=$1',[id])).rows[0];
- if(row?.deleted_at)throw new AccountError('ACCOUNT_DELETED',403);
+ const row=(await (await siteDatabase()).query('SELECT deleted_at,banned_until,deletion_due_at FROM site_accounts WHERE id=$1',[id])).rows[0];
+ if(row?.deleted_at || row?.deletion_due_at && new Date(row.deletion_due_at).getTime()<=Date.now())throw new AccountError('ACCOUNT_DELETED',403);
  if(row?.banned_until && new Date(row.banned_until).getTime()>Date.now())throw new AccountError('ACCOUNT_BANNED',403);
 }
 export async function accountView(user: AuthUser): Promise<SiteAccount> {
@@ -84,11 +84,15 @@ export async function accountView(user: AuthUser): Promise<SiteAccount> {
   const fallback = safeAccountName(user.user_metadata?.full_name) ?? safeAccountName(user.user_metadata?.name) ?? user.email?.split('@')[0]?.slice(0,64) ?? 'Zo7al';
   await db.query('INSERT INTO site_accounts(id,name) VALUES($1,$2) ON CONFLICT(id) DO NOTHING', [user.id, fallback]);
   const row = (await db.query('SELECT a.name,a.username AS handle,a.avatar,a.banner,a.bio,a.socials,l.uuid,l.username,l.linked_at FROM site_accounts a LEFT JOIN site_minecraft_links l ON l.user_id=a.id WHERE a.id=$1',[user.id])).rows[0];
+  const modrinth=(await db.query('SELECT provider_id,name FROM site_member_modrinth_identities WHERE user_id=$1',[user.id])).rows[0];
+  const internalEmail=user.email?.endsWith('@modrinth.accounts.zo7al.is-a.dev');
+  // Linked provider contact details are never used to select/merge an authentication subject.
+  const contactEmail=internalEmail?(user.identities??[]).map(v=>accountEmail(v.identity_data?.email)).find(v=>v&&!v.endsWith('@modrinth.accounts.zo7al.is-a.dev'))??'':user.email??'';
   await assertAccountAllowed(user.id);
   const rawAvatar = row.avatar ?? user.user_metadata?.avatar_url;
   let avatar: string | null = typeof rawAvatar==='string'&&/^\/api\/profile-media\/[a-f0-9-]{36}$/.test(rawAvatar)?rawAvatar:null;
   if (typeof rawAvatar === 'string' && rawAvatar.length < 1024) { try { const url = new URL(rawAvatar); if (url.protocol === 'https:' && !url.username && !url.password) avatar = url.href; } catch {} }
-  return { id: user.id, name: row.name, username:row.handle??null, banner:row.banner??null, bio:row.bio??'', socials:row.socials??{}, email: user.email ?? '', avatar, providers: (user.identities ?? []).map(v => ({ id: v.identity_id ?? v.id, provider: v.provider, ...(v.provider==='discord'?{name:safeAccountName(v.identity_data?.full_name)??safeAccountName(v.identity_data?.name)??'Discord'}:{}) })), minecraft: row.uuid ? { uuid: row.uuid, username: row.username, linkedAt: new Date(row.linked_at).toISOString() } : null };
+  return { id: user.id, name: row.name, username:row.handle??null, banner:row.banner??null, bio:row.bio??'', socials:row.socials??{}, email: contactEmail, avatar, providers: [...(user.identities ?? []).filter(v=>!(v.provider==='email'&&user.email?.endsWith('@modrinth.accounts.zo7al.is-a.dev'))).map(v => ({ id: v.identity_id ?? v.id, provider: v.provider, ...(v.provider==='discord'?{name:safeAccountName(v.identity_data?.full_name)??safeAccountName(v.identity_data?.name)??'Discord'}:{}) })),...(modrinth?[{id:'modrinth:'+modrinth.provider_id,provider:'modrinth',name:modrinth.name}]:[])], minecraft: row.uuid ? { uuid: row.uuid, username: row.username, linkedAt: new Date(row.linked_at).toISOString() } : null };
 }
 export async function startAccountFlow(request: Request, headers: Headers, purpose: string, next: unknown, userId: string | null = null) {
   const browser = randomBytes(32).toString('hex'), verifier = randomBytes(48).toString('base64url');
@@ -107,11 +111,16 @@ export async function finishAccountFlow(request: Request, headers: Headers, code
   if (!user?.id || flow.user_id && flow.user_id !== user.id) throw new AccountError('AUTH_EXPIRED', 401);
   await accountView(user); setAccountTokens(result, headers);
   if(accountRequiresMFA(user,result.access_token!))return '/account?mfa=1&next='+encodeURIComponent(flow.purpose==='recover'?'/account?tab=password&recovery=1':accountNext(flow.next_path));
+  await cancelAccountDeletion(user.id);
   return flow.purpose === 'recover' ? '/account?tab=password&recovery=1' : accountNext(flow.next_path);
 }
 
 export function accountProviderEnabled(provider:string,settings:AuthResult) {
-  if(provider==='custom:modrinth')return process.env.ZO7AL_ACCOUNT_MODRINTH_ENABLED==='true'&&!!process.env.MODRINTH_MEMBER_CLIENT_ID&&!!process.env.MODRINTH_MEMBER_CLIENT_SECRET;
+  if(provider==='modrinth')return process.env.ZO7AL_ACCOUNT_MODRINTH_ENABLED==='true'&&!!process.env.MODRINTH_MEMBER_CLIENT_ID&&!!process.env.MODRINTH_MEMBER_CLIENT_SECRET&&!!process.env.SUPABASE_SECRET_KEY;
   return settings.external?.[provider]===true;
 }
 export async function accountPasskeysEnabled() { return (await authRequest('/settings')).passkeys_enabled===true; }
+export async function cancelAccountDeletion(id:string) {
+ await assertAccountAllowed(id);
+ await (await siteDatabase()).query('UPDATE site_accounts SET deletion_due_at=NULL WHERE id=$1 AND deletion_due_at>now() AND deleted_at IS NULL',[id]);
+}

@@ -20,7 +20,7 @@ export default async function MemberProfile({
   const db = await siteDatabase();
   const member = (
     await db.query(
-      `SELECT a.id,a.name,a.username,a.avatar,a.banner,a.bio,a.socials,l.username AS minecraft FROM site_accounts a LEFT JOIN site_minecraft_links l ON l.user_id=a.id WHERE lower(a.username)=lower($1) AND a.deleted_at IS NULL AND (a.banned_until IS NULL OR a.banned_until<=now())`,
+      `SELECT a.id,a.name,a.username,a.avatar,a.banner,a.bio,a.socials,l.username AS minecraft FROM site_accounts a LEFT JOIN site_minecraft_links l ON l.user_id=a.id WHERE lower(a.username)=lower($1) AND a.deleted_at IS NULL AND a.deletion_due_at IS NULL AND (a.banned_until IS NULL OR a.banned_until<=now())`,
       [username],
     )
   ).rows[0];

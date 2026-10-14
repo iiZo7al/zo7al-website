@@ -1,6 +1,7 @@
 "use client";
 import {useEffect,useState} from 'react';
 import Image from 'next/image';
+import {authenticatorQR} from '@/lib/data/authenticator-qr';
 import {useTranslations} from 'next-intl';
 import {ShieldCheck,Copy,Download,LoaderCircle} from 'lucide-react';
 import {useAccount,accountAction} from './AccountProvider';
@@ -52,7 +53,7 @@ export default function AccountSecurity() {
    await reload();if(action==='confirm')setMessage(t('security.enabled'));if(action==='remove')setMessage(t('security.removed'));
   }catch(error){fail(error);}finally{setBusy(false);}
  };
- const qr=enrollment?.qr.startsWith('<svg')?'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(enrollment.qr):enrollment?.qr.startsWith('data:image/')?enrollment.qr:'';
+ const qr=authenticatorQR(enrollment?.qr);
  return <section className="account-card account-security"><div className="account-security-heading"><ShieldCheck size={26} aria-hidden="true"/><div><h2>{t('security.title')}</h2><p className="account-help">{t('security.intro')}</p></div>{status&&<span className="account-security-badge" data-enabled={status.enabled}>{t('security.'+(status.enabled?'enabled':'disabled'))}</span>}</div>
   {error&&<p role="alert" className="account-error">{error}</p>}{message&&<p role="status" className="account-notice">{message}</p>}
   {!status&&!error&&<LoaderCircle className="animate-spin" aria-label={t('loading')}/>}

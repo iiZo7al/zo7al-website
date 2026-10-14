@@ -1,4 +1,5 @@
-import { hasAdminSession, privateHeaders, readJSON, sameOrigin } from "@/lib/server/site-security";
+import { hasAdminSession } from "@/lib/server/admin-account";
+import {  privateHeaders, readJSON, sameOrigin } from "@/lib/server/site-security";
 import { limitAttempt } from "@/lib/server/site-content";
 import { modrinthStatus, saveModrinthApp, startModrinthOAuth, disconnectModrinth } from "@/lib/server/modrinth-auth";
 import { clearPlatformCache } from "@/lib/server/dashboard-platforms";
@@ -10,14 +11,14 @@ function failed(error: unknown) {
   return json({ error: code }, code === "INVALID" ? 400 : code === "MR_UNAVAILABLE" ? 503 : 409);
 }
 export async function GET(request: Request) {
-  if (!hasAdminSession(request)) return json({ error: "UNAUTHORIZED" }, 401);
+  if (!await hasAdminSession(request)) return json({ error: "UNAUTHORIZED" }, 401);
   try {
     if (!await limitAttempt("modrinth-oauth-read", 60, 60)) return json({ error: "RATE_LIMIT" }, 429);
     return json(await modrinthStatus(request));
   } catch (error) { return failed(error); }
 }
 export async function POST(request: Request) {
-  if (!hasAdminSession(request)) return json({ error: "UNAUTHORIZED" }, 401);
+  if (!await hasAdminSession(request)) return json({ error: "UNAUTHORIZED" }, 401);
   if (!sameOrigin(request)) return json({ error: "INVALID" }, 403);
   try {
     const body = await readJSON(request, 4000) as { action?: string; input?: unknown };

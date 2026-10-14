@@ -1,11 +1,12 @@
-import { hasAdminSession, privateHeaders, readJSON, sameOrigin } from "@/lib/server/site-security";
+import { hasAdminSession } from "@/lib/server/admin-account";
+import {  privateHeaders, readJSON, sameOrigin } from "@/lib/server/site-security";
 import { siteDatabase } from "@/lib/server/site-db";
 import { saveContent, retryOrderNotification, retryApplicationNotification, limitAttempt } from "@/lib/server/site-content";
 import { validReview } from "@/lib/data/hub-validation";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 export async function GET(request: Request) {
-  if (!hasAdminSession(request)) return Response.json({error:"UNAUTHORIZED"},{status:401,headers:privateHeaders});
+  if (!await hasAdminSession(request)) return Response.json({error:"UNAUTHORIZED"},{status:401,headers:privateHeaders});
   try {
     const db = await siteDatabase();
     const [content,requests,orders] = await Promise.all([
@@ -17,7 +18,7 @@ export async function GET(request: Request) {
   } catch { return Response.json({error:"UNAVAILABLE"},{status:503,headers:privateHeaders}); }
 }
 export async function POST(request: Request) {
-  if (!hasAdminSession(request)) return Response.json({error:"UNAUTHORIZED"},{status:401,headers:privateHeaders});
+  if (!await hasAdminSession(request)) return Response.json({error:"UNAUTHORIZED"},{status:401,headers:privateHeaders});
   if (!sameOrigin(request)) return Response.json({error:"INVALID"},{status:403,headers:privateHeaders});
   try {
     const body = await readJSON(request,64000) as {action?:string;value?:unknown;id?:unknown};

@@ -558,7 +558,7 @@
         "id": "two-factor",
         "category": "accountSecurity",
         "q": "二要素認証を有効にするには？",
-        "a": "マイアカウント → セキュリティで認証アプリにQRを読み込み、6桁のコードを確認します。以降のログインでは確認が必要です。",
+        "a": "マイアカウント → セキュリティで認証アプリにQRを読み込み、6桁のコードを確認します。以降のログインでは確認が必要です。 QRコードを読み取れない場合は、設定キーをアプリに手動で入力してください。キーは他の人に共有しないでください。",
         "href": "/account?tab=security",
         "action": "セキュリティ"
       },
@@ -593,6 +593,30 @@
         "a": "Minecraft連携後にアカウント設定やプレイヤープロフィールを開きます。対応ブリッジが理由と期限を報告し、同期情報がない場合や古い場合は表示されます。",
         "href": "/account?tab=player",
         "action": "Minecraftサーバーの利用停止"
+      },
+      {
+        "id": "delete-account",
+        "category": "accountSecurity",
+        "q": "アカウントを削除するには？",
+        "a": "ログアウトされ、プロフィールは非表示になります。15日後にアカウントを完全に削除します。期間内にログインして2FAを完了すると削除は取り消されます。プロフィール、申請、連携は削除され、購入記録は匿名化して保持されます。",
+        "href": "/account?tab=settings",
+        "action": "設定"
+      },
+      {
+        "id": "account-password",
+        "category": "accountSecurity",
+        "q": "パスワードを変更または再設定するには？",
+        "a": "マイアカウント → パスワードで、他で使っていない12～128文字のパスワードを設定してください。確認入力を行い、必要に応じてメール認証コードを送信してください。ログインできない場合はログイン画面でパスワードを忘れた場合を選び、メールのリンクを同じブラウザで開いてください。",
+        "href": "/account?tab=password",
+        "action": "パスワードを管理"
+      },
+      {
+        "id": "dashboard-access",
+        "category": "accountSecurity",
+        "q": "連携したアカウントでダッシュボードに入れますか？",
+        "a": "ダッシュボードにアクセスできるのは、オーナーが許可したアカウントだけです。そのアカウントに連携した方法でログインし、2段階認証が有効な場合は認証を完了してください。Google、Microsoft、Discord、Modrinthを連携するだけでは管理権限は付与されません。",
+        "href": "/account",
+        "action": "マイアカウントを開く"
       }
     ],
     "clearSearch": "検索をクリア",
@@ -865,8 +889,8 @@
     "newsIntro": "ネットワークのニュース、マップの更新、モッドパックの新バージョン。",
     "eventsIntro": "開催予定のコミュニティイベントや大会。",
     "playerIntro": "Minecraftのキャラクター、現在のランク、サーバーの統計を確認できます。",
-    "ordersIntro": "View status and updates saved to your account.",
-    "applicationsIntro": "View status and updates saved to your account.",
+    "ordersIntro": "アカウントに保存された状況や更新情報を確認できます。",
+    "applicationsIntro": "アカウントに保存された状況や更新情報を確認できます。",
     "supportIntro": "回答を探したり、Zo7al Projectsチームに問題を報告したりできます。",
     "newsEmpty": "まだニュースは公開されていません。",
     "eventsEmpty": "現在予定されているイベントはありません。次のお知らせをお待ちください。",
@@ -886,13 +910,13 @@
     "register": "参加を申し込む",
     "eventLink": "イベントのリンク",
     "received": "送信を受け付けました",
-    "receiptHelp": "Requests are saved to your account across your devices.",
+    "receiptHelp": "リクエストはアカウントに保存され、各デバイスから確認できます。",
     "reference": "受付番号",
     "accessCode": "専用アクセスコード",
     "track": "状況を確認",
     "trackingHelp": "受付番号と専用アクセスコードを入力するか、保存済みの申請を選択してください。",
     "savedRequests": "Your account requests",
-    "noSavedRequests": "No requests in this section yet.",
+    "noSavedRequests": "このセクションにはまだリクエストがありません。",
     "notFound": "該当する申請が見つかりません。受付番号とアクセスコードを確認してください。",
     "consent": "この情報をDiscord経由でZo7al Networkチームに共有することに同意します。",
     "webhookNote": "送信内容はDiscordでチームに届きます。",
@@ -1007,7 +1031,7 @@
       }
     ],
     "activity": "注文と申請",
-    "activityIntro": "Your requests and submissions are saved to your account.",
+    "activityIntro": "リクエストや投稿はアカウントに保存されます。",
     "commonErrorsIntro": "接続、ストア、Modパックでよくある問題の解決方法。",
     "viewMore": "View more",
     "copyLink": "このリンクをコピー",
@@ -1052,7 +1076,7 @@
     "epic": "Epic Gamesの表示名",
     "allGames": "すべてのゲーム",
     "mySubmissions": "自分の投稿",
-    "submissionsIntro": "アカウントから状態や更新を確認できます。",
+    "submissionsIntro": "アカウントに保存された状況や更新情報を確認できます。",
     "status_approved": "承認済み",
     "profiles": "プロフィール",
     "addPoll": "このニュースに投票を追加",
@@ -1139,7 +1163,7 @@
     "privateWorkspace": "非公開ワークスペース",
     "loginTitle": "すべての世界を一か所に",
     "loginHint": "プロジェクトを管理し、申請を確認してゲームサーバーを接続します。",
-    "signInHint": "現在のダッシュボード用パスワードでログインしてください。",
+    "signInHint": "所有者アカウントに連携済みのGoogle、Microsoft、Discord、Modrinthでログインしてください。",
     "sessionProtected": "保護されたセッション · 非公開管理",
     "pelicanTitle": "Zo7al内のサーバー",
     "connectPelican": "Pelicanを接続",
@@ -1703,8 +1727,9 @@
       "USERNAME_TAKEN": "ユーザー名は使用されています",
       "DISCORD_REQUIRED": "先にDiscordを連携してください",
       "ACCOUNT_BANNED": "このアカウントは利用停止中です",
-      "ACCOUNT_DELETED": "このプロフィールは削除されました",
-      "IDENTITY_LINKED": "このDiscordは別のZo7alアカウントに連携されています。ここで連携せず、そのアカウントでログインしてください。"
+      "ACCOUNT_DELETED": "このアカウントは削除されました",
+      "IDENTITY_LINKED": "このDiscordは別のZo7alアカウントに連携されています。ここで連携せず、そのアカウントでログインしてください。",
+      "OWNER_PROTECTED": "現在のダッシュボード所有者のアカウントは削除できません。"
     },
     "security": {
       "title": "二要素認証",
@@ -1766,10 +1791,10 @@
     "profiles": "プロフィール",
     "banAccount": "アカウントを利用停止",
     "unbanAccount": "利用停止を解除",
-    "deleteAccount": "プロフィールを削除",
+    "deleteAccount": "アカウントを完全に削除",
     "temporaryBan": "一時的な利用停止",
     "searchMembers": "プロフィールを検索",
-    "confirmDelete": "このプロフィールを削除しますか？非公開になり、サイトへのアクセスが取り消されます。",
+    "confirmDelete": "ログインアカウント、プロフィール、連携、申請を完全に削除します。匿名化した購入記録は保持します。取り消しはできません。続行しますか？",
     "deleted": "削除済み",
     "profileNotFound": "プロフィールが見つかりません",
     "passkeys": "パスキー",
@@ -1788,6 +1813,14 @@
     "identityLinked": "このDiscordは別のZo7alアカウントに連携されています。ここで連携せず、そのアカウントでログインしてください。",
     "linkMinecraft": "Minecraftを連携",
     "minecraftRequired": "応募前にMinecraftアカウントを連携してください。",
-    "useLinkedDiscord": "Discordに連携されたアカウントでログイン"
+    "useLinkedDiscord": "Discordに連携されたアカウントでログイン",
+    "deletion": {
+      "title": "アカウントを削除",
+      "hint": "ログアウトされ、プロフィールは非表示になります。15日後にアカウントを完全に削除します。期間内にログインして2FAを完了すると削除は取り消されます。プロフィール、申請、連携は削除され、購入記録は匿名化して保持されます。",
+      "request": "削除を申請",
+      "confirmTitle": "アカウントを削除しますか？",
+      "acknowledge": "15日間の猶予と、その後の削除が取り消せないことを理解しています。",
+      "scheduled": "削除を申請しました。15日以内にログインすると取り消せます。"
+    }
   }
 }

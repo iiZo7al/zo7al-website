@@ -558,7 +558,7 @@
         "id": "two-factor",
         "category": "accountSecurity",
         "q": "如何启用双重验证？",
-        "a": "打开我的账户 → 安全，用验证器应用扫描二维码并确认六位代码。以后登录需要验证。",
+        "a": "打开我的账户 → 安全，用验证器应用扫描二维码并确认六位代码。以后登录需要验证。 如果无法扫描二维码，请在验证器应用中手动输入设置密钥。请妥善保密。",
         "href": "/account?tab=security",
         "action": "安全"
       },
@@ -593,6 +593,30 @@
         "a": "关联 Minecraft 后打开账户设置或玩家资料。支持的服务器桥接会报告原因和截止时间；未同步或信息过期时会明确提示。",
         "href": "/account?tab=player",
         "action": "Minecraft 服务器封禁"
+      },
+      {
+        "id": "delete-account",
+        "category": "accountSecurity",
+        "q": "如何删除我的账户？",
+        "a": "你将退出登录，个人资料会被隐藏。15天后账号将被永久删除。在期限内登录并完成双重验证即可取消删除。资料、申请和关联将移除，购买记录会匿名保留。",
+        "href": "/account?tab=settings",
+        "action": "设置"
+      },
+      {
+        "id": "account-password",
+        "category": "accountSecurity",
+        "q": "如何更改或重置密码？",
+        "a": "打开“我的账户 → 密码”，设置一个未在其他地方使用过的12至128个字符的密码。确认密码，并在需要时请求邮件验证码。如果无法登录，请在登录窗口选择“忘记密码”，然后在同一浏览器中打开邮件链接。",
+        "href": "/account?tab=password",
+        "action": "管理密码"
+      },
+      {
+        "id": "dashboard-access",
+        "category": "accountSecurity",
+        "q": "可以用已关联的账户进入管理面板吗？",
+        "a": "只有获得所有者授权的账户才能进入管理面板。请使用关联到同一账户的登录方式，并在启用双重验证时完成验证。关联Google、Microsoft、Discord或Modrinth本身不会授予管理权限。",
+        "href": "/account",
+        "action": "打开我的账户"
       }
     ],
     "clearSearch": "清除搜索",
@@ -865,8 +889,8 @@
     "newsIntro": "服务器新闻、地图更新和模组包新版本。",
     "eventsIntro": "即将举办的社区活动和比赛。",
     "playerIntro": "查看你的Minecraft角色、当前等级和服务器统计数据。",
-    "ordersIntro": "View status and updates saved to your account.",
-    "applicationsIntro": "View status and updates saved to your account.",
+    "ordersIntro": "查看保存在账户中的状态和更新。",
+    "applicationsIntro": "查看保存在账户中的状态和更新。",
     "supportIntro": "查找解答或向Zo7al Projects团队提交问题。",
     "newsEmpty": "暂无已发布的新闻。",
     "eventsEmpty": "暂无已安排的活动，请关注下一次公告。",
@@ -886,13 +910,13 @@
     "register": "报名",
     "eventLink": "活动链接",
     "received": "提交已收到",
-    "receiptHelp": "Requests are saved to your account across your devices.",
+    "receiptHelp": "请求保存在你的账户中，可在各个设备上查看。",
     "reference": "编号",
     "accessCode": "专属访问码",
     "track": "查询进度",
     "trackingHelp": "请输入编号和专属访问码，或选择已保存的申请。",
     "savedRequests": "Your account requests",
-    "noSavedRequests": "No requests in this section yet.",
+    "noSavedRequests": "此部分暂无请求。",
     "notFound": "未找到匹配的申请，请检查编号和访问码。",
     "consent": "我同意通过Discord向Zo7al Network团队分享这些信息。",
     "webhookNote": "提交内容会发送至Discord上的团队。",
@@ -1007,7 +1031,7 @@
       }
     ],
     "activity": "我的订单与申请",
-    "activityIntro": "Your requests and submissions are saved to your account.",
+    "activityIntro": "你的请求和投稿都保存在账户中。",
     "commonErrorsIntro": "快速解决常见的连接、商店和整合包问题。",
     "viewMore": "View more",
     "copyLink": "复制此链接",
@@ -1052,7 +1076,7 @@
     "epic": "Epic Games显示名称",
     "allGames": "所有游戏",
     "mySubmissions": "我的投稿",
-    "submissionsIntro": "通过账户查看状态和更新。",
+    "submissionsIntro": "查看保存在账户中的状态和更新。",
     "status_approved": "已通过",
     "profiles": "个人资料",
     "addPoll": "为此新闻添加投票",
@@ -1139,7 +1163,7 @@
     "privateWorkspace": "私人工作区",
     "loginTitle": "所有项目尽在一处",
     "loginHint": "管理项目、审核社区请求并连接游戏服务器。",
-    "signInHint": "使用现有控制面板密码登录。",
+    "signInHint": "请使用所有者账号关联的Google、Microsoft、Discord或Modrinth登录。",
     "sessionProtected": "受保护会话 · 私人管理",
     "pelicanTitle": "Zo7al 内的服务器",
     "connectPelican": "连接 Pelican",
@@ -1703,8 +1727,9 @@
       "USERNAME_TAKEN": "用户名已被使用",
       "DISCORD_REQUIRED": "请先关联 Discord",
       "ACCOUNT_BANNED": "此账户已被封禁",
-      "ACCOUNT_DELETED": "此个人资料已删除",
-      "IDENTITY_LINKED": "此 Discord 已关联其他 Zo7al 账户。请使用该账户登录，而不是在这里关联。"
+      "ACCOUNT_DELETED": "此账户已被删除",
+      "IDENTITY_LINKED": "此 Discord 已关联其他 Zo7al 账户。请使用该账户登录，而不是在这里关联。",
+      "OWNER_PROTECTED": "无法删除当前控制面板所有者的账号。"
     },
     "security": {
       "title": "双重验证",
@@ -1766,10 +1791,10 @@
     "profiles": "个人资料",
     "banAccount": "封禁账户",
     "unbanAccount": "解除封禁",
-    "deleteAccount": "删除个人资料",
+    "deleteAccount": "永久删除账户",
     "temporaryBan": "临时封禁",
     "searchMembers": "搜索个人资料",
-    "confirmDelete": "确定删除此个人资料吗？资料将被隐藏，网站访问权限将被撤销。",
+    "confirmDelete": "永久删除登录账号、资料、关联和申请。匿名购买记录将保留。此操作不可撤销。确定继续？",
     "deleted": "已删除",
     "profileNotFound": "未找到个人资料",
     "passkeys": "通行密钥",
@@ -1788,6 +1813,14 @@
     "identityLinked": "此 Discord 已关联其他 Zo7al 账户。请使用该账户登录，而不是在这里关联。",
     "linkMinecraft": "关联 Minecraft",
     "minecraftRequired": "申请前请关联 Minecraft 账户。",
-    "useLinkedDiscord": "登录已关联 Discord 的账户"
+    "useLinkedDiscord": "登录已关联 Discord 的账户",
+    "deletion": {
+      "title": "删除我的账号",
+      "hint": "你将退出登录，个人资料会被隐藏。15天后账号将被永久删除。在期限内登录并完成双重验证即可取消删除。资料、申请和关联将移除，购买记录会匿名保留。",
+      "request": "申请删除账号",
+      "confirmTitle": "确定要删除账号吗？",
+      "acknowledge": "我了解15天的宽限期及之后删除不可撤销。",
+      "scheduled": "已申请删除。15天内登录即可取消。"
+    }
   }
 }

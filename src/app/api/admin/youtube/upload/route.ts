@@ -1,4 +1,5 @@
-import { hasAdminSession, privateHeaders, readJSON, sameOrigin } from "@/lib/server/site-security";
+import { hasAdminSession } from "@/lib/server/admin-account";
+import {  privateHeaders, readJSON, sameOrigin } from "@/lib/server/site-security";
 import { limitAttempt } from "@/lib/server/site-content";
 import { startYoutubeUpload, checkYoutubeUpload, sendYoutubeChunk, youtubeBody } from "@/lib/server/youtube-upload";
 import { youtubeObject, YOUTUBE_UPLOAD_CHUNK } from "@/lib/data/youtube-studio";
@@ -13,7 +14,7 @@ function failure(error: unknown) {
   return json({ error: code }, code === "INVALID" ? 400 : code === "YT_UNAVAILABLE" ? 503 : 409);
 }
 async function guard(request: Request) {
-  if (!hasAdminSession(request)) return json({ error: "UNAUTHORIZED" }, 401);
+  if (!await hasAdminSession(request)) return json({ error: "UNAUTHORIZED" }, 401);
   if (!sameOrigin(request)) return json({ error: "INVALID" }, 403);
   if (!await limitAttempt("youtube-studio-upload", 240, 60)) return json({ error: "YT_QUOTA" }, 429);
 }

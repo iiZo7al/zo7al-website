@@ -558,7 +558,7 @@
         "id": "two-factor",
         "category": "accountSecurity",
         "q": "How do I enable two-factor authentication?",
-        "a": "Open My account → Security, scan the QR code in an authenticator app and confirm its six-digit code. Future sign-ins require verification.",
+        "a": "Open My account → Security, scan the QR code in an authenticator app and confirm its six-digit code. Future sign-ins require verification. If you cannot scan the QR code, enter the setup key manually in the app. Keep the key private.",
         "href": "/account?tab=security",
         "action": "Security"
       },
@@ -593,6 +593,30 @@
         "a": "After linking Minecraft, open your account settings or Player profile. Supported server bridges report the ban reason and expiry. Missing or stale synchronization is shown explicitly.",
         "href": "/account?tab=player",
         "action": "Minecraft server bans"
+      },
+      {
+        "id": "delete-account",
+        "category": "accountSecurity",
+        "q": "How do I delete my account?",
+        "a": "You will be signed out and your profile hidden. The account is permanently deleted after 15 days. Signing in and completing 2FA within that period cancels deletion. Profile data, requests and links are removed; purchase records remain unlinked from your account.",
+        "href": "/account?tab=settings",
+        "action": "Settings"
+      },
+      {
+        "id": "account-password",
+        "category": "accountSecurity",
+        "q": "How do I change or reset my password?",
+        "a": "Open My account → Password to set a unique password of 12–128 characters. Confirm it and request an email verification code if prompted. If you cannot sign in, choose Forgot password in the sign-in window and open the emailed link in the same browser.",
+        "href": "/account?tab=password",
+        "action": "Manage password"
+      },
+      {
+        "id": "dashboard-access",
+        "category": "accountSecurity",
+        "q": "Can I enter the dashboard with my linked account?",
+        "a": "Only an account authorized by the owner can enter the dashboard. Sign in with a method linked to that same account and complete 2FA if enabled. Linking Google, Microsoft, Discord or Modrinth does not grant administration access by itself.",
+        "href": "/account",
+        "action": "Open my account"
       }
     ],
     "clearSearch": "Clear search",
@@ -1139,7 +1163,7 @@
     "privateWorkspace": "Private workspace",
     "loginTitle": "One home for your universe",
     "loginHint": "Manage your projects, review community requests, and connect your game server.",
-    "signInHint": "Sign in with your existing dashboard password.",
+    "signInHint": "Sign in to the owner account using its linked Google, Microsoft, Discord or Modrinth.",
     "sessionProtected": "Protected session · Private administration",
     "pelicanTitle": "Your server, inside Zo7al",
     "connectPelican": "Connect Pelican",
@@ -1703,8 +1727,9 @@
       "USERNAME_TAKEN": "Username already taken",
       "DISCORD_REQUIRED": "Link Discord first",
       "ACCOUNT_BANNED": "This account is banned",
-      "ACCOUNT_DELETED": "This profile has been deleted",
-      "IDENTITY_LINKED": "This Discord identity belongs to another Zo7al account. Sign in with it instead of linking it here."
+      "ACCOUNT_DELETED": "This account has been deleted",
+      "IDENTITY_LINKED": "This Discord identity belongs to another Zo7al account. Sign in with it instead of linking it here.",
+      "OWNER_PROTECTED": "The current dashboard owner account cannot be deleted."
     },
     "security": {
       "title": "Two-factor authentication",
@@ -1766,10 +1791,10 @@
     "profiles": "Profiles",
     "banAccount": "Ban account",
     "unbanAccount": "Remove ban",
-    "deleteAccount": "Delete profile",
+    "deleteAccount": "Permanently delete account",
     "temporaryBan": "Temporary ban",
     "searchMembers": "Search profiles",
-    "confirmDelete": "Delete this profile? It will be hidden and site access revoked.",
+    "confirmDelete": "Permanently delete the login account, profile, links and requests. Anonymized purchase records remain. This cannot be undone. Are you sure?",
     "deleted": "Deleted",
     "profileNotFound": "Profile not found",
     "passkeys": "Passkeys",
@@ -1788,6 +1813,14 @@
     "identityLinked": "This Discord identity belongs to another Zo7al account. Sign in with it instead of linking it here.",
     "linkMinecraft": "Link Minecraft",
     "minecraftRequired": "Link your Minecraft account before applying.",
-    "useLinkedDiscord": "Sign in to the account linked to Discord"
+    "useLinkedDiscord": "Sign in to the account linked to Discord",
+    "deletion": {
+      "title": "Delete my account",
+      "hint": "You will be signed out and your profile hidden. The account is permanently deleted after 15 days. Signing in and completing 2FA within that period cancels deletion. Profile data, requests and links are removed; purchase records remain unlinked from your account.",
+      "request": "Request account deletion",
+      "confirmTitle": "Are you sure you want to delete your account?",
+      "acknowledge": "I understand the 15-day grace period and that deletion is permanent afterward.",
+      "scheduled": "Deletion requested. Sign in within 15 days to cancel it."
+    }
   }
 }

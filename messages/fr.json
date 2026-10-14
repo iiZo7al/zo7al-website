@@ -558,7 +558,7 @@
         "id": "two-factor",
         "category": "accountSecurity",
         "q": "Comment activer la double authentification ?",
-        "a": "Ouvrez Mon compte → Sécurité, scannez le QR avec une application d’authentification et confirmez son code à six chiffres. Les prochaines connexions demanderont une vérification.",
+        "a": "Ouvrez Mon compte → Sécurité, scannez le QR avec une application d’authentification et confirmez son code à six chiffres. Les prochaines connexions demanderont une vérification. Si vous ne pouvez pas scanner le code QR, saisissez manuellement la clé de configuration dans l’application. Gardez-la secrète.",
         "href": "/account?tab=security",
         "action": "Sécurité"
       },
@@ -593,6 +593,30 @@
         "a": "Après l’association Minecraft, ouvrez les paramètres ou le profil joueur. Les passerelles serveur compatibles donnent motif et expiration ; toute synchronisation absente ou ancienne est indiquée.",
         "href": "/account?tab=player",
         "action": "Bannissements des serveurs Minecraft"
+      },
+      {
+        "id": "delete-account",
+        "category": "accountSecurity",
+        "q": "Comment supprimer mon compte ?",
+        "a": "Vous serez déconnecté et votre profil masqué. Le compte sera supprimé définitivement après 15 jours. Une connexion avec validation 2FA pendant ce délai annule la suppression. Le profil, les demandes et les liens sont supprimés ; les achats restent anonymisés.",
+        "href": "/account?tab=settings",
+        "action": "Paramètres"
+      },
+      {
+        "id": "account-password",
+        "category": "accountSecurity",
+        "q": "Comment modifier ou réinitialiser mon mot de passe ?",
+        "a": "Ouvrez Mon compte → Mot de passe et choisissez un mot de passe unique de 12 à 128 caractères. Confirmez-le et demandez un code par e-mail si nécessaire. Si vous ne pouvez pas vous connecter, choisissez Mot de passe oublié dans la fenêtre de connexion et ouvrez le lien reçu dans le même navigateur.",
+        "href": "/account?tab=password",
+        "action": "Gérer le mot de passe"
+      },
+      {
+        "id": "dashboard-access",
+        "category": "accountSecurity",
+        "q": "Puis-je accéder au tableau de bord avec mon compte lié ?",
+        "a": "Seul un compte autorisé par le propriétaire peut accéder au tableau de bord. Connectez-vous avec une méthode liée à ce même compte et effectuez la vérification à deux facteurs si elle est activée. Lier Google, Microsoft, Discord ou Modrinth ne donne pas automatiquement un accès administrateur.",
+        "href": "/account",
+        "action": "Ouvrir mon compte"
       }
     ],
     "clearSearch": "Effacer la recherche",
@@ -865,8 +889,8 @@
     "newsIntro": "Actualités du réseau, mises à jour des cartes et versions des modpacks.",
     "eventsIntro": "Prochains événements et tournois de la communauté.",
     "playerIntro": "Votre personnage Minecraft, votre grade actuel et vos statistiques sur le serveur.",
-    "ordersIntro": "View status and updates saved to your account.",
-    "applicationsIntro": "View status and updates saved to your account.",
+    "ordersIntro": "Consultez le statut et les mises à jour enregistrés dans votre compte.",
+    "applicationsIntro": "Consultez le statut et les mises à jour enregistrés dans votre compte.",
     "supportIntro": "Trouvez des réponses ou envoyez un signalement à l'équipe Zo7al Projects.",
     "newsEmpty": "Aucune actualité n'a encore été publiée.",
     "eventsEmpty": "Aucun événement n'est prévu pour le moment. Revenez pour la prochaine annonce.",
@@ -886,13 +910,13 @@
     "register": "S'inscrire",
     "eventLink": "Lien de l'événement",
     "received": "Votre demande a été reçue",
-    "receiptHelp": "Requests are saved to your account across your devices.",
+    "receiptHelp": "Vos demandes sont enregistrées dans votre compte et disponibles sur tous vos appareils.",
     "reference": "Référence",
     "accessCode": "Code d'accès privé",
     "track": "Suivre la demande",
     "trackingHelp": "Saisissez votre référence et votre code d'accès privé, ou choisissez une demande enregistrée.",
     "savedRequests": "Your account requests",
-    "noSavedRequests": "No requests in this section yet.",
+    "noSavedRequests": "Aucune demande dans cette section pour le moment.",
     "notFound": "Demande introuvable. Vérifiez la référence et le code d'accès.",
     "consent": "J'accepte de partager ces informations avec l'équipe Zo7al Network via Discord.",
     "webhookNote": "Votre demande est envoyée à l'équipe sur Discord.",
@@ -1007,7 +1031,7 @@
       }
     ],
     "activity": "Mes commandes et candidatures",
-    "activityIntro": "Your requests and submissions are saved to your account.",
+    "activityIntro": "Vos demandes et contributions sont enregistrées dans votre compte.",
     "commonErrorsIntro": "Des solutions rapides aux problèmes courants de connexion, de boutique et de modpacks.",
     "viewMore": "View more",
     "copyLink": "Copiez ce lien",
@@ -1052,7 +1076,7 @@
     "epic": "Nom affiché Epic Games",
     "allGames": "Tous les jeux",
     "mySubmissions": "Mes contributions",
-    "submissionsIntro": "Suivez le statut et les mises à jour depuis votre compte.",
+    "submissionsIntro": "Consultez le statut et les mises à jour enregistrés dans votre compte.",
     "status_approved": "Acceptée",
     "profiles": "Profils",
     "addPoll": "Ajouter un vote à cette actualité",
@@ -1139,7 +1163,7 @@
     "privateWorkspace": "Espace privé",
     "loginTitle": "Tout votre univers au même endroit",
     "loginHint": "Gérez vos projets, examinez les demandes et connectez votre serveur.",
-    "signInHint": "Utilisez votre mot de passe actuel du tableau de bord.",
+    "signInHint": "Connectez-vous au compte propriétaire avec Google, Microsoft, Discord ou Modrinth associé.",
     "sessionProtected": "Session protégée · Administration privée",
     "pelicanTitle": "Votre serveur dans Zo7al",
     "connectPelican": "Connecter Pelican",
@@ -1703,8 +1727,9 @@
       "USERNAME_TAKEN": "Nom d’utilisateur déjà utilisé",
       "DISCORD_REQUIRED": "Associez d’abord Discord",
       "ACCOUNT_BANNED": "Ce compte est banni",
-      "ACCOUNT_DELETED": "Ce profil a été supprimé",
-      "IDENTITY_LINKED": "Ce compte Discord appartient à un autre compte Zo7al. Connectez-vous avec celui-ci au lieu de l’associer ici."
+      "ACCOUNT_DELETED": "Ce compte a été supprimé",
+      "IDENTITY_LINKED": "Ce compte Discord appartient à un autre compte Zo7al. Connectez-vous avec celui-ci au lieu de l’associer ici.",
+      "OWNER_PROTECTED": "Le compte du propriétaire du tableau de bord ne peut pas être supprimé."
     },
     "security": {
       "title": "Authentification à deux facteurs",
@@ -1766,10 +1791,10 @@
     "profiles": "Profils",
     "banAccount": "Bannir le compte",
     "unbanAccount": "Lever le bannissement",
-    "deleteAccount": "Supprimer le profil",
+    "deleteAccount": "Supprimer définitivement le compte",
     "temporaryBan": "Bannissement temporaire",
     "searchMembers": "Rechercher des profils",
-    "confirmDelete": "Supprimer ce profil ? Il sera masqué et l’accès au site sera révoqué.",
+    "confirmDelete": "Supprimer définitivement le compte, le profil, les liens et les demandes. Les achats anonymisés restent conservés. Cette action est irréversible. Confirmer ?",
     "deleted": "Supprimé",
     "profileNotFound": "Profil introuvable",
     "passkeys": "Clés d’accès",
@@ -1788,6 +1813,14 @@
     "identityLinked": "Ce compte Discord appartient à un autre compte Zo7al. Connectez-vous avec celui-ci au lieu de l’associer ici.",
     "linkMinecraft": "Associer Minecraft",
     "minecraftRequired": "Associez votre compte Minecraft avant de postuler.",
-    "useLinkedDiscord": "Se connecter au compte associé à Discord"
+    "useLinkedDiscord": "Se connecter au compte associé à Discord",
+    "deletion": {
+      "title": "Supprimer mon compte",
+      "hint": "Vous serez déconnecté et votre profil masqué. Le compte sera supprimé définitivement après 15 jours. Une connexion avec validation 2FA pendant ce délai annule la suppression. Le profil, les demandes et les liens sont supprimés ; les achats restent anonymisés.",
+      "request": "Demander la suppression",
+      "confirmTitle": "Voulez-vous vraiment supprimer votre compte ?",
+      "acknowledge": "Je comprends le délai de 15 jours et le caractère définitif de la suppression.",
+      "scheduled": "Suppression demandée. Connectez-vous sous 15 jours pour l’annuler."
+    }
   }
 }

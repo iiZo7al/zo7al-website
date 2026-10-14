@@ -1,12 +1,13 @@
+import { hasAdminSession } from "@/lib/server/admin-account";
 import { communityEntries,saveCommunity,notifyCommunity } from "@/lib/server/community";
-import { hasAdminSession,sameOrigin,readJSON,privateHeaders } from "@/lib/server/site-security";
+import { sameOrigin,readJSON,privateHeaders } from "@/lib/server/site-security";
 import { siteDatabase } from "@/lib/server/site-db";
 import { isUUID } from "@/lib/data/community";
 export const runtime='nodejs';
 export const dynamic='force-dynamic';
-export async function GET(request:Request){if(!hasAdminSession(request))return Response.json({error:'UNAUTHORIZED'},{status:401,headers:privateHeaders});try{return Response.json({entries:await communityEntries('en',true)},{headers:privateHeaders});}catch{return Response.json({error:'UNAVAILABLE'},{status:503,headers:privateHeaders});}}
+export async function GET(request:Request){if(!await hasAdminSession(request))return Response.json({error:'UNAUTHORIZED'},{status:401,headers:privateHeaders});try{return Response.json({entries:await communityEntries('en',true)},{headers:privateHeaders});}catch{return Response.json({error:'UNAVAILABLE'},{status:503,headers:privateHeaders});}}
 export async function POST(request:Request){
- if(!hasAdminSession(request))return Response.json({error:'UNAUTHORIZED'},{status:401,headers:privateHeaders});
+ if(!await hasAdminSession(request))return Response.json({error:'UNAUTHORIZED'},{status:401,headers:privateHeaders});
  if(!sameOrigin(request))return Response.json({error:'INVALID'},{status:403,headers:privateHeaders});
  try{const body=await readJSON(request,64000) as {action?:string;value?:unknown;id?:unknown};
   if(body.action==='save')return Response.json({ok:true,id:await saveCommunity(body.value)},{headers:privateHeaders});

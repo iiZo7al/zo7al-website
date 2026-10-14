@@ -1,4 +1,5 @@
-import { hasAdminSession, privateHeaders, readJSON, sameOrigin } from "@/lib/server/site-security";
+import { hasAdminSession } from "@/lib/server/admin-account";
+import {  privateHeaders, readJSON, sameOrigin } from "@/lib/server/site-security";
 import { readConnections } from "@/lib/server/dashboard-connections";
 import { pelicanOperation, PelicanError } from "@/lib/server/pelican";
 import { pelicanRead, pelicanWrite, object } from "@/lib/data/pelican-management";
@@ -22,7 +23,7 @@ async function connectionFor(server: unknown) {
   return connection && server ? {...connection,account:String(server)} : connection;
 }
 export async function GET(request: Request) {
-  if (!hasAdminSession(request)) return json({error:"UNAUTHORIZED"},401);
+  if (!await hasAdminSession(request)) return json({error:"UNAUTHORIZED"},401);
   try {
     const input=Object.fromEntries(new URL(request.url).searchParams);
     const operation=pelicanRead(input.resource,input);
@@ -34,7 +35,7 @@ export async function GET(request: Request) {
   } catch(error) { return failure(error); }
 }
 export async function POST(request: Request) {
-  if (!hasAdminSession(request)) return json({error:"UNAUTHORIZED"},401);
+  if (!await hasAdminSession(request)) return json({error:"UNAUTHORIZED"},401);
   if (!sameOrigin(request)) return json({error:"INVALID"},403);
   try {
     const input=object(await readJSON(request,2100000));

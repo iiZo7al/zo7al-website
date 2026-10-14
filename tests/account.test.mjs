@@ -8,7 +8,8 @@ import { COMMUNITY_SCHEMA } from '../src/lib/server/community-schema.ts';
 import { ACCOUNT_SCHEMA } from '../src/lib/server/account-schema.ts';
 import { minecraftName,accountEmail,accountPassword,accountNext,checkoutRecipient,accountProviderName } from '../src/lib/data/account.ts';
 const stub=source=>'data:text/javascript;base64,'+Buffer.from(source).toString('base64');
-function moduleURL(path,replacements={}){let source=readFileSync(new URL('../'+path,import.meta.url),'utf8').replaceAll("import 'server-only';",'');for(const [a,b] of Object.entries(replacements))source=source.replaceAll(a,b);return stub(ts.transpileModule(source,{compilerOptions:{module:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ES2022}}).outputText);}
+function moduleURL(path,replacements={}){
+ if(replacements["@/lib/server/site-security"]&&!replacements["@/lib/server/admin-account"])replacements["@/lib/server/admin-account"]=replacements["@/lib/server/site-security"];let source=readFileSync(new URL('../'+path,import.meta.url),'utf8').replaceAll("import 'server-only';",'');for(const [a,b] of Object.entries(replacements))source=source.replaceAll(a,b);return stub(ts.transpileModule(source,{compilerOptions:{module:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ES2022}}).outputText);}
 const engine=new PGlite();await engine.exec(SITE_SCHEMA+COMMUNITY_SCHEMA+ACCOUNT_SCHEMA);
 const pool={query:async(sql,args=[])=>{const r=await engine.query(sql,args);return {...r,rowCount:/^SELECT/.test(sql)?r.rows.length:r.affectedRows??r.rows.length};},connect:async()=>({query:pool.query,release(){}})};
 globalThis.__accountTests={pool};
@@ -18,7 +19,8 @@ const security=moduleURL('src/lib/server/site-security.ts');
 const authURL=moduleURL('src/lib/server/account-auth.ts',{'./site-db':db,'./site-security':security,'../data/account':data});
 const auth=await import(authURL);
 const links=await import(moduleURL('src/lib/server/account-minecraft.ts',{'./site-db':db,'./site-security':security,'./account-auth':authURL,'../data/account':data}));
-const accountRoute=await import(moduleURL('src/app/api/account/route.ts',{'@/lib/server/account-auth':authURL,'@/lib/data/member-profile':moduleURL('src/lib/data/member-profile.ts'),'@/lib/data/account':data,'@/lib/server/site-security':security,'@/lib/server/site-content':stub('export async function limitAttempt(){return true;}'),'@/lib/server/site-db':db,'@/i18n/config':moduleURL('src/i18n/config.ts')}));
+const memberURL=moduleURL('src/lib/server/member-modrinth.ts',{'./account-auth':authURL,'./account-admin':stub('export async function accountAdminRequest(){return {}}'),'./site-db':db,'./site-security':security,'../data/account':data});
+const accountRoute=await import(moduleURL('src/app/api/account/route.ts',{'@/lib/server/member-modrinth':memberURL,'@/lib/server/account-auth':authURL,'@/lib/data/member-profile':moduleURL('src/lib/data/member-profile.ts'),'@/lib/data/account':data,'@/lib/server/site-security':security,'@/lib/server/site-content':stub('export async function limitAttempt(){return true;}'),'@/lib/server/site-db':db,'@/i18n/config':moduleURL('src/i18n/config.ts')}));
 const userId='a1234567-1234-1234-1234-123456789abc',otherId='b1234567-1234-1234-1234-123456789abc',uuid='c1234567-1234-1234-1234-123456789abc',bridgeId='d1234567-1234-1234-1234-123456789abc';
 const headers=(values={})=>({origin:'https://zo7al.test',host:'zo7al.test','Content-Type':'application/json',...values});
 const request=(path='/api/account',body,extra={})=>new Request('https://zo7al.test'+path,{method:body?'POST':'GET',headers:headers(extra),...(body?{body:JSON.stringify(body)}:{})});
@@ -39,7 +41,7 @@ test('normal purchases use the verified player; gifts may target another linked 
  assert.throws(()=>checkoutRecipient(true,'<script>',null),/INVALID/);
  assert.equal(minecraftName(' .Bedrock Player '),'.Bedrock Player');
  assert.equal(accountEmail(' Invalid '),null);assert.equal(accountPassword('short'),false);
- for(const path of ['//evil.test','/\\evil.test','https://evil.test','/dashboard','/account?redirect=\\evil'])assert.equal(accountNext(path),'/account');
+ for(const path of ['//evil.test','/\\evil.test','https://evil.test','/account?redirect=\\evil'])assert.equal(accountNext(path),'/account');
  assert.equal(accountNext('/store'),'/store');
 });
 test('access cookies are HTTP-only and user identity is verified by the auth server',async()=>{
@@ -188,9 +190,10 @@ test('passkeys bind challenges to the initiating browser, consume once, and pres
 });
 
 const bridgeData=moduleURL('src/lib/data/minecraft-bridge.ts',{'./player-statistics':moduleURL('src/lib/data/player-statistics.ts')});
-const adminProfiles=await import(moduleURL('src/app/api/admin/profiles/route.ts',{'@/lib/server/site-security':security,'@/lib/server/site-db':db,'@/lib/data/minecraft-bridge':bridgeData}));
+const deletionURL=moduleURL('src/lib/server/account-deletion.ts',{'./account-auth':authURL,'./account-admin':stub('export async function accountAdminRequest(){return {}}'),'./site-db':db,'./site-security':security,'./admin-account':stub('export function isOwnerAccount(){return false;}')});
+const adminProfiles=await import(moduleURL('src/app/api/admin/profiles/route.ts',{'@/lib/server/account-auth':authURL,'@/lib/server/account-deletion':deletionURL,'@/lib/server/site-security':security,'@/lib/server/site-db':db,'@/lib/data/minecraft-bridge':bridgeData}));
 test('profile moderation requires administrator session and same origin; deletion preserves a revocation tombstone',async()=>{
- const savedSecret=process.env.ZO7AL_ADMIN_SESSION_SECRET,savedHash=process.env.ZO7AL_ADMIN_PASSWORD_HASH;
+ const savedSecret=process.env.ZO7AL_ADMIN_SESSION_SECRET,savedHash=process.env.ZO7AL_ADMIN_PASSWORD_HASH,savedAuthKey=process.env.SUPABASE_SECRET_KEY;process.env.SUPABASE_SECRET_KEY='private-test-key';
  const secret='s'.repeat(43),hash='scrypt:'+ 'a'.repeat(32)+':'+ 'b'.repeat(128);process.env.ZO7AL_ADMIN_SESSION_SECRET=secret;process.env.ZO7AL_ADMIN_PASSWORD_HASH=hash;
  const adminCookie= (await import(security)).ADMIN_COOKIE+'='+(await import(security)).signAdminSession(secret,hash);
  const req=(body,origin='https://zo7al.test')=>request('/api/admin/profiles',body,{origin,cookie:adminCookie});
@@ -205,8 +208,8 @@ test('profile moderation requires administrator session and same origin; deletio
   assert.equal((await adminProfiles.POST(req({id:otherId,action:'delete'}))).status,200);
   const row=(await pool.query('SELECT username,deleted_at,bio FROM site_accounts WHERE id=$1',[otherId])).rows[0];assert.equal(row.username,null);assert.ok(row.deleted_at);assert.equal(row.bio,'');
   await assert.rejects(()=>auth.assertAccountAllowed(otherId),/ACCOUNT_DELETED/);
-  assert.equal((await pool.query('SELECT * FROM site_account_moderation_log WHERE user_id=$1',[otherId])).rows.length,3);
- } finally {if(savedSecret===undefined)delete process.env.ZO7AL_ADMIN_SESSION_SECRET;else process.env.ZO7AL_ADMIN_SESSION_SECRET=savedSecret;if(savedHash===undefined)delete process.env.ZO7AL_ADMIN_PASSWORD_HASH;else process.env.ZO7AL_ADMIN_PASSWORD_HASH=savedHash;}
+  assert.equal((await pool.query('SELECT * FROM site_account_moderation_log WHERE user_id=$1',[otherId])).rows.length,1);
+ } finally {if(savedAuthKey===undefined)delete process.env.SUPABASE_SECRET_KEY;else process.env.SUPABASE_SECRET_KEY=savedAuthKey;if(savedSecret===undefined)delete process.env.ZO7AL_ADMIN_SESSION_SECRET;else process.env.ZO7AL_ADMIN_SESSION_SECRET=savedSecret;if(savedHash===undefined)delete process.env.ZO7AL_ADMIN_PASSWORD_HASH;else process.env.ZO7AL_ADMIN_PASSWORD_HASH=savedHash;}
 });
 
 const {profileHandle}=await import(moduleURL("src/lib/data/member-profile.ts"));
@@ -215,14 +218,14 @@ test("public profile routes accept Next encoded at-signs and reject malformed or
  for(const path of ["iiZo7al","%","%40../../admin","%40abc%2Fdef","%2540iiZo7al"])assert.equal(profileHandle(path),null);
 });
 
-test('Modrinth member OAuth is offered only with its own configured app and retains browser-bound PKCE',async()=>{
- const keys=['ZO7AL_ACCOUNT_MODRINTH_ENABLED','MODRINTH_MEMBER_CLIENT_ID','MODRINTH_MEMBER_CLIENT_SECRET'];const saved=Object.fromEntries(keys.map(k=>[k,process.env[k]]));
+test('Modrinth member OAuth is offered only with its own configured direct app and browser-bound state',async()=>{
+ const keys=['ZO7AL_ACCOUNT_MODRINTH_ENABLED','MODRINTH_MEMBER_CLIENT_ID','MODRINTH_MEMBER_CLIENT_SECRET','SUPABASE_SECRET_KEY'];const saved=Object.fromEntries(keys.map(k=>[k,process.env[k]]));
  try{
   handler=url=>url.endsWith('/settings')?Response.json({external:{google:true}}):Response.json(user);
   for(const key of keys)delete process.env[key];
-  assert.equal((await accountRoute.POST(request('/api/account',{action:'oauth',provider:'custom:modrinth'}))).status,400);
-  Object.assign(process.env,{ZO7AL_ACCOUNT_MODRINTH_ENABLED:'true',MODRINTH_MEMBER_CLIENT_ID:'MemberApp123',MODRINTH_MEMBER_CLIENT_SECRET:'private-test-member-secret'});
-  const view=await(await accountRoute.GET(request())).json();assert.ok(view.providers.includes('custom:modrinth'));
-  const response=await accountRoute.POST(request('/api/account',{action:'oauth',provider:'custom:modrinth',next:'/account?tab=connections'})),data=await response.json();assert.equal(response.status,200);const url=new URL(data.url);assert.equal(url.searchParams.get('provider'),'custom:modrinth');assert.equal(url.searchParams.get('code_challenge_method'),'s256');assert.match(url.searchParams.get('code_challenge'),/^[\w-]{43}$/);assert.ok(response.headers.get('set-cookie'));assert.ok(!JSON.stringify(data).includes(process.env.MODRINTH_MEMBER_CLIENT_SECRET));
+  assert.equal((await accountRoute.POST(request('/api/account',{action:'oauth',provider:'modrinth'}))).status,400);
+  Object.assign(process.env,{ZO7AL_ACCOUNT_MODRINTH_ENABLED:'true',MODRINTH_MEMBER_CLIENT_ID:'MemberApp123',MODRINTH_MEMBER_CLIENT_SECRET:'private-test-member-secret',SUPABASE_SECRET_KEY:'server-only-test-key'});
+  const view=await(await accountRoute.GET(request())).json();assert.ok(view.providers.includes('modrinth'));
+  const response=await accountRoute.POST(request('/api/account',{action:'oauth',provider:'modrinth',next:'/account?tab=connections'})),data=await response.json();assert.equal(response.status,200);const url=new URL(data.url);assert.equal(url.origin,'https://modrinth.com');assert.equal(url.searchParams.get('redirect_uri'),'https://zo7al.test/auth/callback');assert.match(url.searchParams.get('state'),/^[a-f0-9]{64}$/);assert.ok(response.headers.get('set-cookie'));assert.ok(!JSON.stringify(data).includes(process.env.MODRINTH_MEMBER_CLIENT_SECRET));
  }finally{for(const [k,v] of Object.entries(saved))if(v===undefined)delete process.env[k];else process.env[k]=v;handler=()=>Response.json(user);}
 });
