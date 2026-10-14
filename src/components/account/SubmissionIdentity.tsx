@@ -1,6 +1,6 @@
 "use client";
 import Link from 'next/link';
-import GrassBlockIcon from '@/components/ui/GrassBlockIcon';
+import SolidIcon from '@/components/ui/SolidIcon';
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { UserRound } from "lucide-react";
@@ -61,7 +61,7 @@ export default function SubmissionIdentity({ next }: { next: string }) {
           </button>
         )}
       </div>
-      <div className="submission-discord"><GrassBlockIcon size={22}/>{account.minecraft?<span dir="ltr">{account.minecraft.username}</span>:<Link className="hub-button" href={'/account?tab=connections&next='+encodeURIComponent(next)}>{t('linkMinecraft')}</Link>}</div>
+      <div className="submission-discord"><SolidIcon name="cube" size={22}/>{account.minecraft?<span dir="ltr">{account.minecraft.username}</span>:<Link className="hub-button" href={'/account?tab=connections&next='+encodeURIComponent(next)}>{t('linkMinecraft')}</Link>}</div>
       {error && (
         <p role="alert" className="account-error">
           {error}

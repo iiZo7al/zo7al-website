@@ -198,7 +198,8 @@
     "savedContent": "Contenido público guardado; la fuente en directo no está disponible.",
     "noContent": "No se encontró contenido público de este tipo.",
     "contentUnavailable": "No se pudo obtener el contenido más reciente. Abre la cuenta para verlo en la plataforma.",
-    "viewContent": "Ver contenido en la plataforma"
+    "viewContent": "Ver contenido en la plataforma",
+    "repositories": "Repositorios públicos"
   },
   "store": {
     "coinsTitle": "Monedas",

@@ -11,7 +11,7 @@ import PlatformEmbed from "./PlatformEmbed";
 import type { SyncedSocial } from "@/lib/sync/socials";
 import type { SocialPreview } from "@/lib/sync/social-preview-data";
 
-const headings: Record<string, string> = { youtube: "latestLongVideo", x: "latestPost", threads: "latestPost", bluesky: "latestPost", instagram: "recentPosts", tiktok: "recentVideos", snapchat: "stories", twitch: "latestBroadcast", kick: "latestBroadcast", discord: "community", modrinth: "latestProjects", curseforge: "releases", fortnite: "islands", epicgames: "games", roblox: "games", linktree: "accountLinks" };
+const headings: Record<string, string> = { github: "latestProjects", youtube: "latestLongVideo", x: "latestPost", threads: "latestPost", bluesky: "latestPost", instagram: "recentPosts", tiktok: "recentVideos", snapchat: "stories", twitch: "latestBroadcast", kick: "latestBroadcast", discord: "community", modrinth: "latestProjects", curseforge: "releases", fortnite: "islands", epicgames: "games", roblox: "games", linktree: "accountLinks" };
 const embedded = new Set(["x", "instagram", "tiktok", "snapchat"]);
 
 export default function SocialDetails({ social, description, games, onClose }: { social: SyncedSocial; description: string; games: boolean; onClose: () => void }) {

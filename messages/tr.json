@@ -198,7 +198,8 @@
     "savedContent": "Kaydedilmiş herkese açık içerik; canlı kaynak şu anda kullanılamıyor.",
     "noContent": "Bu türde herkese açık içerik bulunamadı.",
     "contentUnavailable": "En yeni içerik alınamadı. Platformda görmek için hesabı aç.",
-    "viewContent": "İçeriği platformda gör"
+    "viewContent": "İçeriği platformda gör",
+    "repositories": "Herkese açık depolar"
   },
   "store": {
     "coinsTitle": "Coinler",

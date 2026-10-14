@@ -198,7 +198,8 @@
     "savedContent": "Contenu public sauvegardé ; la source en direct est indisponible.",
     "noContent": "Aucun contenu public de ce type trouvé.",
     "contentUnavailable": "Impossible de récupérer le dernier contenu. Ouvre le compte pour le voir sur la plateforme.",
-    "viewContent": "Voir le contenu sur la plateforme"
+    "viewContent": "Voir le contenu sur la plateforme",
+    "repositories": "Dépôts publics"
   },
   "store": {
     "coinsTitle": "Pièces",

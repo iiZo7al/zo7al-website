@@ -198,7 +198,8 @@
     "savedContent": "已保存的公开内容；实时来源暂不可用。",
     "noContent": "未找到此类公开内容。",
     "contentUnavailable": "无法获取最新内容，请打开账号在平台上查看。",
-    "viewContent": "前往平台查看内容"
+    "viewContent": "前往平台查看内容",
+    "repositories": "公开仓库"
   },
   "store": {
     "coinsTitle": "金币",

@@ -2,16 +2,16 @@ import { getSyncedCurseForgeProjects } from "./curseforge";
 import { parseCreatorIslands } from "./fortnite-parser";
 import { FORTNITE_MAPS } from "@/lib/data/fortnite";
 import { extractNextData, findLinkObjects } from "./next-data";
-import { allowedPreviewUrl, parseSocialMetadata, latestYoutubeVideo, structuredPosts, type SocialPreview } from "./social-preview-data";
+import { allowedPreviewUrl, parseSocialMetadata, latestYoutubeVideo, structuredPosts, githubPreview, type SocialPreview } from "./social-preview-data";
 export type { SocialPreview } from "./social-preview-data";
 
 // Only public social origins; validate every redirect, not just the initial URL.
-async function publicPage(url: string): Promise<string> {
+async function publicPage(url: string, accept = "text/html,application/xml"): Promise<string> {
   for (let hop = 0; hop < 4; hop++) {
     if (!allowedPreviewUrl(url)) throw new Error("Unsupported preview origin");
     const response = await fetch(url, {
       redirect: "manual", signal: AbortSignal.timeout(5000), next: { revalidate: 900 },
-      headers: { Accept: "text/html,application/xml", "User-Agent": "Mozilla/5.0 (compatible; Zo7alPreview/1.0)" },
+      headers: { Accept: accept, "User-Agent": "Mozilla/5.0 (compatible; Zo7alPreview/1.0)" },
     });
     if ([301, 302, 303, 307, 308].includes(response.status)) {
       const location = response.headers.get("location");
@@ -41,7 +41,7 @@ async function publicPage(url: string): Promise<string> {
 
 const imageUrl = (value: unknown): string | undefined => typeof value === "string" && value.startsWith("https://") ? value : undefined;
 const string = (value: unknown): string | undefined => typeof value === "string" ? value.slice(0, 2000) : undefined;
-const json = async (url: string) => JSON.parse(await publicPage(url));
+const json = async (url: string) => JSON.parse(await publicPage(url, "application/json"));
 
 // App-owned credentials stay on the server; public-page fallback works without them.
 async function twitchArchive(login: string): Promise<SocialPreview | null> {
@@ -87,6 +87,14 @@ export async function getSocialPreview(url: string): Promise<SocialPreview | nul
   const page = new URL(url), host = page.hostname.replace(/^www\./, "");
   const segments = page.pathname.split("/").filter(Boolean);
   try {
+    if (host === "github.com" && segments.length === 1 && /^[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,37}[a-zA-Z0-9])?$/.test(segments[0])) {
+      const actor = encodeURIComponent(segments[0]);
+      const [profile, repositories] = await Promise.allSettled([
+        json(`https://api.github.com/users/${actor}`),
+        json(`https://api.github.com/users/${actor}/repos?type=owner&sort=pushed&direction=desc&per_page=3`),
+      ]);
+      if (profile.status === "fulfilled") return githubPreview(profile.value, repositories.status === "fulfilled" ? repositories.value : undefined);
+    }
     if (host === "twitch.tv" && /^[\w]+$/.test(segments[0] ?? "")) {
       const archive = await twitchArchive(segments[0]).catch(() => null);
       if (archive) return archive;

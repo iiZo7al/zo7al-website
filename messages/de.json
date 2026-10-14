@@ -198,7 +198,8 @@
     "savedContent": "Gespeicherte öffentliche Inhalte; die Live-Quelle ist derzeit nicht verfügbar.",
     "noContent": "Keine öffentlichen Inhalte dieser Art gefunden.",
     "contentUnavailable": "Die neuesten Inhalte konnten nicht abgerufen werden. Öffne das Konto auf der Plattform.",
-    "viewContent": "Inhalte auf der Plattform ansehen"
+    "viewContent": "Inhalte auf der Plattform ansehen",
+    "repositories": "Öffentliche Repositories"
   },
   "store": {
     "coinsTitle": "Münzen",

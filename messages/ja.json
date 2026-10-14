@@ -198,7 +198,8 @@
     "savedContent": "保存済みの公開コンテンツです。現在ライブソースを利用できません。",
     "noContent": "この種類の公開コンテンツは見つかりませんでした。",
     "contentUnavailable": "最新のコンテンツを取得できませんでした。アカウントを開いてご確認ください。",
-    "viewContent": "プラットフォームで見る"
+    "viewContent": "プラットフォームで見る",
+    "repositories": "公開リポジトリ"
   },
   "store": {
     "coinsTitle": "コイン",
