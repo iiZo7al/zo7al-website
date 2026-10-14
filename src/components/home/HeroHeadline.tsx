@@ -13,11 +13,11 @@ const WORDS = [
 const FINAL = WORDS[WORDS.length - 1];
 
 export default function HeroHeadline() {
-  const [frame, setFrame] = useState<{ text: string; color: string; complete: boolean }>({ text: "Projects", color: FINAL.color, complete: false });
+  const [frame, setFrame] = useState<{ text: string; color: string; complete: boolean }>({ text: "Games", color: WORDS[0].color, complete: false });
 
   useEffect(() => {
     const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
-    let timer: ReturnType<typeof setTimeout>, index = 0, length = 0, deleting = false;
+    let timer: ReturnType<typeof setTimeout>, index = 0, length = WORDS[0].text.length, deleting = true;
     const finish = () => { clearTimeout(timer); setFrame({ ...FINAL, complete: true }); };
     const step = () => {
       const word = WORDS[index];

@@ -231,20 +231,24 @@ test('Modrinth member OAuth is offered only with its own configured direct app a
  }finally{for(const [k,v] of Object.entries(saved))if(v===undefined)delete process.env[k];else process.env[k]=v;handler=()=>Response.json(user);}
 });
 
-test('GitHub, Twitch and X are offered only when enabled; X uses the configured native provider',async()=>{
- for(const provider of ['github','twitch','x']){
+test('GitHub and Twitch are offered only when enabled',async()=>{
+ for(const provider of ['github','twitch']){
   handler=url=>url.endsWith('/settings')?Response.json({external:{[provider]:true}}):Response.json(user);
   assert.deepEqual((await(await accountRoute.GET(request())).json()).providers,[provider]);
   const result=await accountRoute.POST(request('/api/account',{action:'oauth',provider}));assert.equal(result.status,200);assert.equal(new URL((await result.json()).url).searchParams.get('provider'),provider);
  }
  handler=url=>url.endsWith('/settings')?Response.json({external:{twitter:true}}):Response.json(user);
- const legacy=await accountRoute.POST(request('/api/account',{action:'oauth',provider:'x'}));assert.equal(new URL((await legacy.json()).url).searchParams.get('provider'),'twitter');
+ const legacy=await accountRoute.POST(request('/api/account',{action:'oauth',provider:'x'}));assert.equal(legacy.status,400);assert.equal((await legacy.json()).error,'INVALID');
  handler=()=>Response.json({external:{}});assert.equal((await accountRoute.POST(request('/api/account',{action:'oauth',provider:'twitch'}))).status,400);
 });
 test('switch-account OAuth requests a provider account choice without bypassing PKCE',async()=>{
  handler=url=>url.endsWith('/settings')?Response.json({external:{google:true}}):Response.json(user);
  const result=await accountRoute.POST(request('/api/account',{action:'oauth',provider:'google',chooseAccount:true})),url=new URL((await result.json()).url);assert.equal(url.searchParams.get('prompt'),'select_account');assert.equal(url.searchParams.get('code_challenge_method'),'s256');
 });
-test('modern X remains selectable when older native settings omit the x flag',async()=>{
- const saved=process.env.ZO7AL_ACCOUNT_X_ENABLED;try{process.env.ZO7AL_ACCOUNT_X_ENABLED='true';handler=url=>url.endsWith('/settings')?Response.json({external:{twitter:true}}):Response.json(user);assert.ok((await(await accountRoute.GET(request())).json()).providers.includes('x'));const result=await accountRoute.POST(request('/api/account',{action:'oauth',provider:'x'}));assert.equal(new URL((await result.json()).url).searchParams.get('provider'),'x');}finally{if(saved===undefined)delete process.env.ZO7AL_ACCOUNT_X_ENABLED;else process.env.ZO7AL_ACCOUNT_X_ENABLED=saved;}
+test('cancelled X cannot be offered or used for sign-in/linking even if old environment and native flags remain enabled',async()=>{
+ const saved=process.env.ZO7AL_ACCOUNT_X_ENABLED;
+ try{process.env.ZO7AL_ACCOUNT_X_ENABLED='true';handler=url=>url.endsWith('/settings')?Response.json({external:{x:true,twitter:true}}):Response.json(user);
+  assert.ok(!(await(await accountRoute.GET(request())).json()).providers.includes('x'));
+  for(const action of ['oauth','link'])for(const provider of ['x','twitter']){const response=await accountRoute.POST(request('/api/account',{action,provider},{cookie:auth.ACCOUNT_ACCESS+'=verified-access'}));assert.equal(response.status,400);assert.equal((await response.json()).error,'INVALID');assert.equal(response.headers.get('set-cookie'),null);}
+ }finally{if(saved===undefined)delete process.env.ZO7AL_ACCOUNT_X_ENABLED;else process.env.ZO7AL_ACCOUNT_X_ENABLED=saved;}
 });

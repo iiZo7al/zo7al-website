@@ -8,10 +8,10 @@ import BrandIcon from "@/components/ui/BrandIcon";
 import SolidIcon from "@/components/ui/SolidIcon";
 import { SOCIALS } from "@/lib/data/site";
 
-export type MenuKey = "minecraft" | "socials" | "support";
-export const MENU_ICONS = { minecraft: "cube", socials: "share", support: "headset" } as const;
+export type MenuKey = "minecraft" | "fortnite" | "socials" | "support";
+export const MENU_ICONS = { minecraft: "cube", fortnite: "map", socials: "share", support: "headset" } as const;
 export function hasSubmenu(key: string): key is MenuKey {
-  return key === "minecraft" || key === "socials" || key === "support";
+  return key === "minecraft" || key === "fortnite" || key === "socials" || key === "support";
 }
 
 export default function NavigationMenu({
@@ -28,8 +28,12 @@ export default function NavigationMenu({
   const minecraft = useTranslations("minecraft");
   const modpacks = useTranslations("modpacks");
   const socials = useTranslations("socials");
-  const intro = menu === "minecraft" ? minecraft("text") : menu === "socials" ? socials("text") : hub("supportIntro");
-  const links = menu === "minecraft" ? [
+  const fortnite = useTranslations("fortnite");
+  const intro = menu === "fortnite" ? fortnite("text") : menu === "minecraft" ? minecraft("text") : menu === "socials" ? socials("text") : hub("supportIntro");
+  const links: {href:string;label:string;description:string;icon:"cube"|"box"|"map"|"headset"|null;external?:boolean}[] = menu === "fortnite" ? [
+    {href:'/fortnite',label:'Zo7al Maps',description:fortnite('text'),icon:'map'},
+    {href:'https://www.fortnite.com/item-shop',label:'Use Code : Zo7al',description:fortnite('itemShopCode'),icon:null,external:true},
+  ] : menu === "minecraft" ? [
     { href: "/minecraft", label: minecraft("title"), description: minecraft("connectText"), icon: "cube" as const },
     { href: "/modpacks", label: nav("modpacks"), description: modpacks("text"), icon: "box" as const },
   ] : [
@@ -57,7 +61,7 @@ export default function NavigationMenu({
             <ArrowUpRight size={14} className="navigation-link-arrow" aria-hidden="true"/>
           </a>
         </li>) : links.map(item => <li key={item.href}>
-          <Link href={item.href} onClick={onNavigate} aria-current={pathname === item.href ? "page" : undefined} className="navigation-menu-link" data-cursor="link">
+          <Link href={item.href} target={item.external?'_blank':undefined} rel={item.external?'noopener noreferrer':undefined} onClick={onNavigate} aria-current={pathname === item.href ? "page" : undefined} className="navigation-menu-link" data-cursor="link">
             <span className="navigation-link-icon">{item.icon ? <SolidIcon name={item.icon} size={23}/> : <History size={23} aria-hidden="true"/>}</span>
             <span className="navigation-link-copy"><span className="navigation-link-title">{item.label}</span><span className="navigation-link-description">{item.description}</span></span>
             <ArrowUpRight size={17} className="navigation-link-arrow" aria-hidden="true"/>

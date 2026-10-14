@@ -7,6 +7,7 @@ export const PROFILE_SOCIALS = [
   "instagram",
   "x",
   "website",
+  "threads","bluesky","snapchat","facebook","telegram","whatsapp","kick","reddit","linkedin","pinterest","steam","spotify","roblox","playstation","epicgames","modrinth","curseforge","patreon","linktree","fortnite",
 ] as const;
 export type MemberProfile = {
   username: string | null;

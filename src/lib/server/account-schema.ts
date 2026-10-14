@@ -55,6 +55,8 @@ CREATE TABLE IF NOT EXISTS site_passkey_flows (
 CREATE TABLE IF NOT EXISTS site_profile_images (
  id uuid PRIMARY KEY, user_id uuid NOT NULL REFERENCES site_accounts(id) ON DELETE CASCADE, bytes bytea NOT NULL, created_at timestamptz NOT NULL DEFAULT now()
 );
+CREATE TABLE IF NOT EXISTS site_badges(id uuid PRIMARY KEY,name varchar(64) NOT NULL,image_id uuid NOT NULL REFERENCES site_content_images(id),archived boolean NOT NULL DEFAULT false,created_at timestamptz NOT NULL DEFAULT now());
+CREATE TABLE IF NOT EXISTS site_member_badges(user_id uuid NOT NULL REFERENCES site_accounts(id) ON DELETE CASCADE,badge_id uuid NOT NULL REFERENCES site_badges(id) ON DELETE CASCADE,awarded_at timestamptz NOT NULL DEFAULT now(),PRIMARY KEY(user_id,badge_id));
 CREATE TABLE IF NOT EXISTS site_account_moderation_log (
  id bigserial PRIMARY KEY, user_id uuid NOT NULL, action varchar(16) NOT NULL, reason varchar(500) NOT NULL DEFAULT '', created_at timestamptz NOT NULL DEFAULT now()
 );

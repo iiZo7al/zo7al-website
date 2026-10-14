@@ -53,7 +53,7 @@ export async function POST(request:Request) {
       if(body.provider==='modrinth')return Response.json({url:await startMemberModrinth(request,headers,body.action as 'oauth'|'link',body.next)},{headers});
       const user=body.action==='link'?await requireAccount(request):null;
       const flow=await startAccountFlow(request,headers,body.action,body.next,user?.id??null);
-      const nativeProvider=body.provider==='x'&&process.env.ZO7AL_ACCOUNT_X_ENABLED!=='true'&&settings.external?.x!==true&&settings.external?.twitter===true?'twitter':String(body.provider);
+      const nativeProvider=String(body.provider);
       const params=new URLSearchParams({provider:nativeProvider,redirect_to:flow.redirectTo,code_challenge:flow.code_challenge,code_challenge_method:flow.code_challenge_method,...(body.action==='link'?{skip_http_redirect:'true'}:{})});
       if(body.provider==='azure')params.set('scopes','email');
       if(body.chooseAccount===true&&['google','azure'].includes(String(body.provider)))params.set('prompt','select_account');

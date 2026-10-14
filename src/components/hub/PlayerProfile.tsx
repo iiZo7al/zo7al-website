@@ -39,16 +39,16 @@ export default function PlayerProfile({linkedUsername}:{linkedUsername?:string} 
     setUsername(player);void lookup(player,server===NETWORK_PROFILE_ID||isUUID(server)?server:undefined);
   },[setUsername,lookup,linkedUsername]);
   const date = (value: string) => new Intl.DateTimeFormat(locale, { dateStyle: "medium", timeStyle: "short" }).format(new Date(value));
-  return <div className="hub-grid">
+  return <div className={linkedUsername?"hub-grid hub-player-linked":"hub-grid"}>
     <QueryObserver param="player" onChange={queryChanged}/>
     <QueryObserver param="server" onChange={queryChanged}/>
-    <form className="hub-card hub-form" onSubmit={event => { event.preventDefault(); void lookup(username.trim()); }}>
+    {!linkedUsername&&<form className="hub-card hub-form" onSubmit={event => { event.preventDefault(); void lookup(username.trim()); }}>
       {linkedUsername?<strong className="store-character-name" dir="ltr">{linkedUsername}</strong>:<PlayerIdentity id="profile-username" username={username} onChange={setUsername} required allowCharacterPreview={false} />}
       <p className="hub-muted">{t("profileHelp")}</p>
       <button className="hub-button" disabled={busy}>{t(busy ? "loading" : "viewProfile")}</button>
       <div className="hub-actions"><Link href="/requests?tab=orders" className="hub-button">{t("activity")}</Link></div>
       {error && <p className="hub-error" role="alert">{t("unavailable")}</p>}
-    </form>
+    </form>}
     {name && <div className="hub-card">
       {profile?.servers && profile.servers.length > 1 && <div className="hub-form"><label htmlFor="profile-server">{t("profileServer")}<select id="profile-server" value={profile.serverId} disabled={busy} onChange={event => void lookup(name, event.target.value)}>{profile.servers.map(server => <option key={server.id} value={server.id}>{server.name}</option>)}</select></label></div>}
       <CharacterPreview key={name + ":" + (profile?.serverId ?? "")} id="profile-character" username={name} profileServer={profile?.serverId} currentRank={profile?.rank ?? null} />

@@ -43,7 +43,15 @@ export async function saveContent(value: unknown) {
 }
 export async function createTrackedRequest(kind: "application" | "support" | "event", payload: unknown, id: string = randomUUID(), userId: string | null = null) {
   const token = randomBytes(32).toString("hex");
-  await (await siteDatabase()).query("INSERT INTO site_requests(id,kind,token_hash,payload,status,user_id) VALUES($1,$2,$3,$4,$5,$6)", [id,kind,tokenHash(token),JSON.stringify(payload),kind === "support" ? "open" : "pending",userId]);
+  const db=await siteDatabase(),platform=kind==='application'&&payload&&typeof payload==='object'?'platform' in payload?String(payload.platform):'':'';
+  const insert="INSERT INTO site_requests(id,kind,token_hash,payload,status,user_id) VALUES($1,$2,$3,$4,$5,$6)",args=[id,kind,tokenHash(token),JSON.stringify(payload),kind === "support" ? "open" : "pending",userId];
+  if(kind==='application'&&userId){
+   const client=await db.connect();
+   try{await client.query('BEGIN');await client.query('SELECT pg_advisory_xact_lock(hashtext($1))',['application:'+userId+':'+platform]);
+    if((await client.query("SELECT id FROM site_requests WHERE user_id=$1 AND kind='application' AND payload->>'platform'=$2 LIMIT 1",[userId,platform])).rows.length)throw Error('ALREADY_APPLIED');
+    await client.query(insert,args);await client.query('COMMIT');
+   }catch(error){await client.query('ROLLBACK').catch(()=>{});throw error;}finally{client.release();}
+  }else await db.query(insert,args);
   return { reference: id, token };
 }
 export async function createOrderReceipt(ident: string, username: string, items: {packageId:number;quantity:number}[], products: {id:number;name:string}[] = [], ownership?: {userId:string;gift:boolean}) {

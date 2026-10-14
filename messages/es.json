@@ -159,7 +159,8 @@
       "4162-0323-5737": "🧡🌹 Dale a Me gusta y añade a favoritos para apoyarme\n\n🏰 Doomspire Brickbattle\n💥 Torres destructibles y explosiones\n🔫 6 armas clásicas\n🎮 Batallas rápidas por equipos\n🏆 100 rondas\n🛒 Tienda dentro del juego\n🪜 Torres y escaleras escalables\n😎 Creado con UEFN",
       "8238-8280-9827": "🧡🌹 Dale a Me gusta y añade a favoritos para apoyarme\n\n🏰 Doomspire Brickbattle\n💥 Torres destructibles y explosiones\n🔫 6 armas clásicas\n🎮 Batallas rápidas por equipos\n🏆 100 rondas\n🛒 Tienda dentro del juego\n🔫 Sin recargar\n🪜 Torres y escaleras escalables\n😎 Creado con UEFN"
     },
-    "newMap": "¡¡Nuevo!!"
+    "newMap": "¡¡Nuevo!!",
+    "itemShopCode": "Usa el código de creador Zo7al en la tienda de Fortnite."
   },
   "socials": {
     "eyebrow": "Comunidad",
@@ -244,7 +245,8 @@
     "supportText": "Tu compra ayuda a mantener el servidor y su comunidad.",
     "helpTitle": "¿Necesitas ayuda?",
     "helpText": "Únete a nuestra comunidad de Discord para obtener ayuda con tus compras.",
-    "checkoutNote": "Los impuestos finales, la moneda y las opciones de pago se muestran al finalizar la compra."
+    "checkoutNote": "Los impuestos finales, la moneda y las opciones de pago se muestran al finalizar la compra.",
+    "owned": "En propiedad"
   },
   "faq": {
     "eyebrow": "¿Necesitas ayuda?",
@@ -415,7 +417,7 @@
         "id": "one-rank",
         "category": "storeRanks",
         "q": "¿Puedo añadir varios rangos al carrito?",
-        "a": "Solo se admite un rango de pago a la vez. Elimínalo antes de elegir otro. Puedes añadir Coins junto al rango y cambiar su cantidad.",
+        "a": "Solo se admite un rango de pago a la vez. Elimínalo antes de elegir otro. Puedes añadir Coins junto al rango y cambiar su cantidad. Un rango de pago incluye todos los niveles inferiores (VIP, VIP+, VIP++, MVP, MVP+, MVP++). Booster es independiente. No puedes volver a comprarlos para ti; los regalos siguen disponibles.",
         "href": "/store",
         "action": "Abrir tienda"
       },
@@ -423,7 +425,7 @@
         "id": "rank-preview",
         "category": "storeRanks",
         "q": "¿Cómo previsualizo un rango en mi personaje?",
-        "a": "Pulsa el ojo junto a Detalles en la tarjeta o el carrito. Introduce tu nombre de Minecraft si se solicita para ver tu personaje 3D, nombre y rango seleccionado.",
+        "a": "Inicia sesión y vincula tu jugador de Minecraft al servidor. Después pulsa el icono del ojo en una tarjeta de rango o en el carrito. La vista previa usa tu jugador verificado y el rango seleccionado.",
         "href": "/store",
         "action": "Abrir tienda"
       },
@@ -610,14 +612,6 @@
         "a": "Abre Mi cuenta → Contraseña y elige una contraseña única de 12 a 128 caracteres. Confírmala y solicita un código por correo si se te pide. Si no puedes iniciar sesión, elige ¿Olvidaste tu contraseña? en la ventana de acceso y abre el enlace del correo en el mismo navegador.",
         "href": "/account?tab=password",
         "action": "Gestionar contraseña"
-      },
-      {
-        "id": "dashboard-access",
-        "category": "accountSecurity",
-        "q": "¿Puedo entrar al panel con mi cuenta vinculada?",
-        "a": "Solo una cuenta autorizada por el propietario puede entrar al panel. Inicia sesión con un método vinculado a esa misma cuenta y completa la verificación en dos pasos si está activada. Vincular Google, Microsoft, Discord o Modrinth no concede acceso administrativo por sí solo.",
-        "href": "/account",
-        "action": "Abrir mi cuenta"
       }
     ],
     "clearSearch": "Borrar búsqueda",
@@ -875,7 +869,8 @@
       "tiktok": "El rango TIKTOK está dirigido a creadores de Minecraft en TikTok. Presenta tu perfil y tus vídeos cortos, como momentos divertidos, consejos y retos. Indica seguidores, frecuencia de publicación y cómo compartirías tu experiencia en Zo7al Network."
     },
     "applicationDetails": "Abre el formulario y proporciona un correo accesible, tus usuarios de Minecraft y Discord y el perfil de la plataforma elegida. Describe tu contenido y motivación con información correcta. Con tu consentimiento, la solicitud se envía al equipo de Zo7al mediante Discord. Conserva la referencia tras el envío confirmado. Solicitar no es comprar ni recibir automáticamente un rango: el equipo decide la elegibilidad y aceptación, sin garantizar plazos ni beneficios adicionales.",
-    "notificationPending": "Tu solicitud está guardada. La notificación de Discord está pendiente y el equipo puede reenviarla."
+    "notificationPending": "Tu solicitud está guardada. La notificación de Discord está pendiente y el equipo puede reenviarla.",
+    "applied": "Solicitud enviada"
   },
   "hub": {
     "latest": "Novedades de Zo7al",
@@ -1210,7 +1205,10 @@
     "averagePlaytime": "Tiempo de juego medio",
     "fortnitePeriods": "Las partidas y jugadores únicos abarcan las últimas 24 horas; los minutos y el máximo son históricos. La fuente redondea algunas cifras.",
     "connection_cached": "Últimos datos guardados",
-    "fortniteCachedHint": "No se pudo actualizar Fortnite.GG. Se muestran las últimas cifras verificadas con su fecha. Se ocultan los jugadores antiguos y las métricas de días anteriores."
+    "fortniteCachedHint": "No se pudo actualizar Fortnite.GG. Se muestran las últimas cifras verificadas con su fecha. Se ocultan los jugadores antiguos y las métricas de días anteriores.",
+    "badges": "Insignias",
+    "markPageRead": "Marcar como leído",
+    "pageRead": "Leído"
   },
   "pelican": {
     "title": "Gestión del servidor",
@@ -1835,7 +1833,12 @@
     },
     "dashboard": "Panel de control",
     "switchAccount": "Cambiar de cuenta",
-    "addAccount": "Añadir cuenta"
+    "addAccount": "Añadir cuenta",
+    "subscriptions": "Suscripciones",
+    "subscriptionsHint": "Gestiona las suscripciones y pagos de la tienda en el portal de clientes de Tebex.",
+    "manageSubscriptions": "Gestionar suscripciones",
+    "orders": "Mis pedidos",
+    "badges": "Insignias"
   },
   "systemNotifications": {
     "title": "Notificaciones del dispositivo",
@@ -1846,5 +1849,36 @@
     "enable": "Activar notificaciones",
     "test": "Enviar una notificación de prueba",
     "testBody": "Las notificaciones de Zo7al funcionan en tu dispositivo."
+  },
+  "badges": {
+    "title": "Insignias de perfil",
+    "intro": "Sube una insignia y otórgala a los miembros. Las insignias archivadas se pueden restaurar.",
+    "name": "Nombre de la insignia",
+    "image": "Imagen de la insignia",
+    "create": "Crear insignia",
+    "archive": "Archivar",
+    "restore": "Restaurar",
+    "assign": "Otorgar insignias"
+  },
+  "modrinthDetails": {
+    "title": "Proyectos de Modrinth",
+    "downloads": "Descargas",
+    "followers": "Seguidores",
+    "type": "Tipo de proyecto",
+    "status": "Estado",
+    "client": "Compatibilidad del cliente",
+    "server": "Compatibilidad del servidor",
+    "published": "Publicado",
+    "updated": "Actualizado",
+    "license": "Licencia",
+    "issues": "Problemas",
+    "source": "Código fuente",
+    "wiki": "Wiki",
+    "discord": "Discord",
+    "description": "Descripción",
+    "team": "Equipo",
+    "versions": "Versiones",
+    "files": "Archivos",
+    "dependencies": "Dependencias"
   }
 }

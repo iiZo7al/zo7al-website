@@ -24,6 +24,7 @@ import {
   siFacebook,
   siThreads,
   siPatreon,
+  siReddit,siPinterest,siSpotify,siSteam,
   type SimpleIcon,
 } from "simple-icons";
 import { Link2 } from "lucide-react";
@@ -53,6 +54,7 @@ export const BRAND_ICONS: Record<string, SimpleIcon> = {
   facebook: siFacebook,
   threads: siThreads,
   patreon: siPatreon,
+  reddit:siReddit,pinterest:siPinterest,spotify:siSpotify,steam:siSteam,
 };
 
 const DISPLAY_COLORS: Record<string, string> = { github: "#FFFFFF", instagram: "#E1306C", fortnite: "#87CEFA", x: "#FFFFFF", twitter: "#FFFFFF", threads: "#FFFFFF", epicgames: "#FFFFFF", tiktok: "#FFFFFF", roblox: "#FFFFFF" };
@@ -129,6 +131,7 @@ export default function BrandIcon({
   if (slug === "google") {
     return <Image src="/assets/site/google-g.png" alt="" width={size} height={size} className={className} aria-hidden="true" />;
   }
+  if(slug==="linkedin")return <svg width={size} height={size} viewBox="0 0 24 24" fill={color??"#0A66C2"} className={className} aria-hidden="true"><path d="M20.45 2H3.55C2.69 2 2 2.68 2 3.52v16.96c0 .84.69 1.52 1.55 1.52h16.9c.86 0 1.55-.68 1.55-1.52V3.52c0-.84-.69-1.52-1.55-1.52ZM8 19H5V9h3v10ZM6.5 7.7A1.7 1.7 0 1 1 6.5 4a1.7 1.7 0 0 1 0 3.7ZM19 19h-3v-5.3c0-1.3-.03-2.97-1.8-2.97-1.8 0-2.08 1.4-2.08 2.88V19h-3V9H12v1.36h.04c.4-.76 1.38-1.56 2.83-1.56C17.9 8.8 19 10.8 19 13.4V19Z"/></svg>;
   if (!icon) {
     // Graceful fallback for a platform we don't have a brand mark for yet.
     return <Link2 size={size} className={className} aria-hidden="true" />;

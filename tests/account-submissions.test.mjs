@@ -64,6 +64,7 @@ test('submissions belong to the validated account even when a different owner is
  const unlinked=await applications.POST(req('/api/creator-applications',appBody));assert.equal(unlinked.status,400);assert.equal((await unlinked.json()).error,'LINK_REQUIRED');
  await pool.query('INSERT INTO site_minecraft_links(user_id,uuid,username,username_key) VALUES($1,$2,$3,$4)',[owner,'c1234567-1234-1234-1234-123456789abc','VerifiedPlayer','verifiedplayer']);
  const a=await applications.POST(req('/api/creator-applications',appBody));assert.equal(a.status,200);applicationId=(await a.json()).reference;
+ const duplicate=await applications.POST(req('/api/creator-applications',appBody));assert.equal(duplicate.status,409);assert.equal((await duplicate.json()).error,'ALREADY_APPLIED');
  const saved=(await pool.query('SELECT payload FROM site_requests WHERE id=$1',[applicationId])).rows[0].payload;assert.equal(saved.minecraft,'VerifiedPlayer');assert.equal(saved.discord,'Verified Discord');assert.equal(saved.email,'owner@example.com');
  assert.equal((await pool.query('SELECT user_id FROM community_entries WHERE id=$1',[galleryId])).rows[0].user_id,owner);
  assert.deepEqual((await pool.query('SELECT user_id FROM site_requests ORDER BY created_at')).rows.map(r=>r.user_id),[owner,owner]);

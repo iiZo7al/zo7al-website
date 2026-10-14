@@ -48,7 +48,7 @@ export async function startModrinthOAuth(request: Request) {
   return { url: url.href, cookie: oauthCookie(browser) };
 }
 export async function modrinthJSON(path: string, accessToken: string) {
-  if (!/^\/v2\/(?:user(?:\/[A-Za-z0-9_-]{1,128}\/projects)?)$/.test(path)) throw Error("INVALID");
+  if (!/^\/v2\/(?:user(?:\/[A-Za-z0-9_-]{1,128}\/projects)?|project\/[A-Za-z0-9_-]{1,128}(?:\/(?:version|members))?)$/.test(path)) throw Error("INVALID");
   const response = await fetch("https://api.modrinth.com" + path, { headers: { Authorization: accessToken, Accept: "application/json", "User-Agent": "Zo7alProjects/1.0 (zo7al.is-a.dev)" }, cache: "no-store", redirect: "error", signal: AbortSignal.timeout(12000) });
   if (response.status === 401 || response.status === 403) throw Error("MR_RECONNECT");
   if (!response.ok) throw Error("MR_UNAVAILABLE");

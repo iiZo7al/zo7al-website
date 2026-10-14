@@ -72,3 +72,5 @@
 .search-dialog .hub-command-item small { margin-inline-start:auto; font-size:11px; }
 
 .search-dialog .hub-command-item { flex-direction:row; text-align:start; min-height:54px; }.search-dialog .hub-command-item>span:not(.search-result-symbol) { flex:1; }.search-dialog .hub-command-list { overflow-y:auto; }
+
+.hub-player-linked { grid-template-columns:minmax(0,1fr); }
