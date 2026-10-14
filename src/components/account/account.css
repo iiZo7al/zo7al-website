@@ -8,6 +8,16 @@
 .account-menu-heading small{color:var(--text-muted);font-size:12px}
 .account-menu>a,.account-menu>button{display:flex;align-items:center;gap:12px;width:100%;padding:12px 14px;min-height:44px;border-radius:12px;text-align:start;font-size:14px;transition:background .2s,color .2s}
 .account-menu>a:hover,.account-menu>button:hover{background:var(--surface-elevated);color:var(--accent)}
+.account-menu>.account-signout,.account-menu>.account-signout:hover{color:#ff4f70}
+.account-switch-trigger,.account-switch-list button{display:flex;align-items:center;gap:12px;width:100%;padding:12px 14px;min-height:44px;border-radius:12px;text-align:start;font-size:14px}
+.account-switch-trigger>span{flex:1}.account-switch-trigger:hover,.account-switch-list button:hover{background:var(--surface-elevated)}
+.account-switch-trigger>svg:last-child{transition:transform .18s}[dir=rtl] .account-switch-trigger>svg:last-child{transform:rotate(180deg)}
+.account-switch-trigger[aria-expanded=true]{background:var(--surface-elevated)}
+.account-switch-list{margin:6px 4px 10px;padding:4px;border:1px solid var(--border);border-radius:14px;background:var(--surface)}
+.account-switch-list img{border-radius:50%;object-fit:cover}.account-switch-list strong{overflow-wrap:anywhere;font-weight:600}
+.account-switch-radio{width:15px;height:15px;flex-shrink:0;border:1.5px solid var(--text-muted);border-radius:50%}.account-switch-list button[aria-pressed=true] .account-switch-radio{border-color:#2be37b;box-shadow:inset 0 0 0 3px var(--surface);background:#2be37b}
+.account-switch-list>.account-switch-add{border-top:1px solid var(--border);border-radius:0;margin-top:6px}.account-switch-list>.animate-spin{margin:8px auto}.account-switch-list>.account-error{font-size:12px;padding:10px;margin:6px}
+.account-switcher button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .account-dialog-body{padding:24px;display:grid;gap:22px;min-width:0;overflow-x:hidden}
 .account-help{font-size:14px;line-height:1.9;color:var(--text-muted)}
 .account-provider-buttons{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.account-passkey-row{grid-column:1/-1}.account-passkey-row>button{width:100%}.account-provider-buttons>button:last-of-type:nth-of-type(odd){grid-column:1/-1}

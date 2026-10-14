@@ -245,3 +245,6 @@ test('switch-account OAuth requests a provider account choice without bypassing 
  handler=url=>url.endsWith('/settings')?Response.json({external:{google:true}}):Response.json(user);
  const result=await accountRoute.POST(request('/api/account',{action:'oauth',provider:'google',chooseAccount:true})),url=new URL((await result.json()).url);assert.equal(url.searchParams.get('prompt'),'select_account');assert.equal(url.searchParams.get('code_challenge_method'),'s256');
 });
+test('modern X remains selectable when older native settings omit the x flag',async()=>{
+ const saved=process.env.ZO7AL_ACCOUNT_X_ENABLED;try{process.env.ZO7AL_ACCOUNT_X_ENABLED='true';handler=url=>url.endsWith('/settings')?Response.json({external:{twitter:true}}):Response.json(user);assert.ok((await(await accountRoute.GET(request())).json()).providers.includes('x'));const result=await accountRoute.POST(request('/api/account',{action:'oauth',provider:'x'}));assert.equal(new URL((await result.json()).url).searchParams.get('provider'),'x');}finally{if(saved===undefined)delete process.env.ZO7AL_ACCOUNT_X_ENABLED;else process.env.ZO7AL_ACCOUNT_X_ENABLED=saved;}
+});

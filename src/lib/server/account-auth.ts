@@ -7,6 +7,7 @@ import { accountEmail, accountNext, safeAccountName, type SiteAccount } from '..
 const secure = process.env.NODE_ENV === 'production';
 export const ACCOUNT_ACCESS = secure ? '__Host-zo7al-access' : 'zo7al-access';
 export const ACCOUNT_REFRESH = secure ? '__Host-zo7al-refresh' : 'zo7al-refresh';
+export const ACCOUNT_DEVICE = secure ? '__Host-zo7al-accounts' : 'zo7al-accounts';
 const FLOW_COOKIE = secure ? '__Host-zo7al-account-flow' : 'zo7al-account-flow';
 export type AuthFactor = { id: string; factor_type: string; status: string; friendly_name?: string };
 export type AuthUser = { id: string; email?: string; email_confirmed_at?: string; user_metadata?: Record<string, unknown>; app_metadata?: Record<string, unknown>; identities?: { id: string; identity_id?: string; provider: string; identity_data?:Record<string,unknown> }[]; factors?: AuthFactor[] };
@@ -27,6 +28,7 @@ export function setAccountCookie(headers: Headers, name: string, value: string, 
   headers.append('Set-Cookie', `${name}=${value}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${age}${secure ? '; Secure' : ''}`);
 }
 export function accountHeaders() { return new Headers({ 'Cache-Control': 'private, no-store', 'Referrer-Policy': 'no-referrer', 'X-Robots-Tag': 'noindex, nofollow' }); }
+export async function forgetSavedAccount(request:Request,id:string){const device=requestCookie(request,ACCOUNT_DEVICE);if(/^[a-f0-9]{64}$/.test(device))await(await siteDatabase()).query('DELETE FROM site_account_saved_sessions WHERE device_hash=$1 AND user_id=$2',[tokenHash(device),id]);}
 export function clearAccount(headers: Headers) { setAccountCookie(headers, SECOND_FACTOR, '', 0); setAccountCookie(headers, ACCOUNT_ACCESS, '', 0); setAccountCookie(headers, ACCOUNT_REFRESH, '', 0); }
 export function setAccountTokens(result: AuthResult, headers: Headers) {
   if (!result.access_token || !result.refresh_token || !Number.isFinite(result.expires_in)) throw new AccountError('AUTH_EXPIRED', 401);
@@ -134,7 +136,7 @@ export async function finishAccountFlow(request: Request, headers: Headers, code
 
 export function accountProviderEnabled(provider:string,settings:AuthResult) {
   if(provider==='modrinth')return process.env.ZO7AL_ACCOUNT_MODRINTH_ENABLED==='true'&&!!process.env.MODRINTH_MEMBER_CLIENT_ID&&!!process.env.MODRINTH_MEMBER_CLIENT_SECRET&&!!process.env.SUPABASE_SECRET_KEY;
-  if(provider==='x')return settings.external?.x===true||settings.external?.twitter===true;
+  if(provider==='x')return process.env.ZO7AL_ACCOUNT_X_ENABLED==='true'||settings.external?.x===true||settings.external?.twitter===true;
   return settings.external?.[provider]===true;
 }
 export async function accountPasskeysEnabled() { return (await authRequest('/settings')).passkeys_enabled===true; }

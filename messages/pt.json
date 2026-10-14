@@ -1172,7 +1172,7 @@
     "connect_curseforge": "Use uma chave CurseForge API para obter as transferências dos modpacks publicados.",
     "connect_pelican": "Liga o painel HTTP / HTTPS e uma chave Client API para descobrir servidores.",
     "description_minecraft": "Estado e jogadores de Minecraft em direto. CPU, memória, registos e comandos ficam disponíveis através do Pelican após a ligação.",
-    "description_fortnite": "Estatísticas públicas dos últimos 7 dias através de Epic Games Data API. Algumas ilhas ou intervalos podem não ter dados.",
+    "description_fortnite": "Estatísticas dos mapas Zo7al no Fortnite.GG, com data de atualização e período de cada métrica.",
     "description_youtube": "Estatísticas públicas de YouTube Data API. Abra YouTube Studio para análises privadas, receitas e gestão de vídeos.",
     "description_modrinth": "Projetos, transferências e seguidores em direto pela API oficial Modrinth.",
     "description_curseforge": "Transferências dos modpacks CurseForge com uma chave API autorizada.",
@@ -1208,7 +1208,9 @@
     "last24Hours": "Últimas 24 horas",
     "uniquePlayers": "Jogadores únicos",
     "averagePlaytime": "Tempo médio de jogo",
-    "fortnitePeriods": "Partidas e jogadores únicos abrangem as últimas 24 horas; minutos e pico são históricos. A fonte arredonda alguns valores."
+    "fortnitePeriods": "Partidas e jogadores únicos abrangem as últimas 24 horas; minutos e pico são históricos. A fonte arredonda alguns valores.",
+    "connection_cached": "Últimos dados guardados",
+    "fortniteCachedHint": "Não foi possível atualizar Fortnite.GG. Estes são os últimos valores verificados, com a data indicada. Contagens antigas ao vivo e métricas do dia anterior ficam ocultas."
   },
   "pelican": {
     "title": "Gestão do servidor",
@@ -1832,7 +1834,8 @@
       "scheduled": "Exclusão solicitada. Entre em até 15 dias para cancelar."
     },
     "dashboard": "Painel de controle",
-    "switchAccount": "Trocar de conta"
+    "switchAccount": "Trocar de conta",
+    "addAccount": "Adicionar conta"
   },
   "systemNotifications": {
     "title": "Notificações do dispositivo",

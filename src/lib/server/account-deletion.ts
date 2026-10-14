@@ -37,7 +37,7 @@ export async function permanentlyDeleteAccount(id:string,dueOnly=false) {
   await client.query('DELETE FROM site_member_modrinth_flows WHERE user_id=$1',[id]);
   await client.query('DELETE FROM site_account_auth_flows WHERE user_id=$1',[id]);
   await client.query('DELETE FROM site_passkey_flows WHERE user_id=$1',[id]);
-  for(const table of ['site_account_recovery_codes','site_account_second_factors','site_account_action_proofs','site_account_email_challenges'])await client.query('DELETE FROM '+table+' WHERE user_id=$1',[id]);
+  for(const table of ['site_account_recovery_codes','site_account_second_factors','site_account_action_proofs','site_account_email_challenges','site_account_saved_sessions'])await client.query('DELETE FROM '+table+' WHERE user_id=$1',[id]);
   await client.query('DELETE FROM site_account_mfa_attempts WHERE user_id=$1',[id]);
   await client.query('DELETE FROM site_account_moderation_log WHERE user_id=$1',[id]);
   await client.query("INSERT INTO site_account_moderation_log(user_id,action,reason) VALUES($1,'delete','')",[id]);

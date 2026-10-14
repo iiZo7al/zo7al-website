@@ -1172,7 +1172,7 @@
     "connect_curseforge": "CurseForge API 키를 사용해 게시된 모드팩의 다운로드 통계를 불러옵니다.",
     "connect_pelican": "HTTP / HTTPS 패널과 Client API 키를 연결하여 서버를 자동으로 찾습니다.",
     "description_minecraft": "Minecraft 상태와 온라인 플레이어 수입니다. CPU, 메모리, 로그, 명령은 Pelican 연결 후 사용할 수 있습니다.",
-    "description_fortnite": "Epic Games Data API의 최근 7일 공개 통계입니다. 일부 섬이나 구간에는 데이터가 없을 수 있습니다.",
+    "description_fortnite": "Fortnite.GG의 Zo7al 맵 통계와 업데이트 시간, 지표별 기간을 표시합니다.",
     "description_youtube": "YouTube Data API 공개 통계입니다. 비공개 분석, 수익, 영상 관리는 YouTube Studio에서 확인하세요.",
     "description_modrinth": "공식 Modrinth API의 실시간 프로젝트, 다운로드, 팔로워 통계입니다.",
     "description_curseforge": "허가된 API 키를 통해 CurseForge 모드팩 다운로드 통계를 가져옵니다.",
@@ -1208,7 +1208,9 @@
     "last24Hours": "지난 24시간",
     "uniquePlayers": "고유 플레이어",
     "averagePlaytime": "평균 플레이 시간",
-    "fortnitePeriods": "플레이 횟수와 고유 플레이어는 지난 24시간 기준이며 플레이 분수와 최대 인원은 전체 기간 기준입니다. 일부 수치는 반올림됩니다."
+    "fortnitePeriods": "플레이 횟수와 고유 플레이어는 지난 24시간 기준이며 플레이 분수와 최대 인원은 전체 기간 기준입니다. 일부 수치는 반올림됩니다.",
+    "connection_cached": "최근 저장 데이터",
+    "fortniteCachedHint": "Fortnite.GG를 새로 고치지 못했습니다. 표시된 시점의 마지막 확인 데이터입니다. 오래된 접속자 수와 전날 지표는 숨깁니다."
   },
   "pelican": {
     "title": "서버 관리",
@@ -1832,7 +1834,8 @@
       "scheduled": "삭제가 요청되었습니다. 15일 내 로그인하면 취소됩니다."
     },
     "dashboard": "관리 화면",
-    "switchAccount": "계정 전환"
+    "switchAccount": "계정 전환",
+    "addAccount": "계정 추가"
   },
   "systemNotifications": {
     "title": "기기 알림",

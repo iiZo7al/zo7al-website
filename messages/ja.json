@@ -1172,7 +1172,7 @@
     "connect_curseforge": "CurseForge APIキーを使って公開済みModパックのダウンロード統計を取得します。",
     "connect_pelican": "HTTP / HTTPSパネルとClient APIキーを接続してサーバーを自動検出します。",
     "description_minecraft": "Minecraftの稼働状態とプレイヤー数を表示します。CPU、メモリ、ログ、コマンドはPelican接続後に利用できます。",
-    "description_fortnite": "Epic Games Data APIによる過去7日間の公開統計です。一部の島や期間にはデータがありません。",
+    "description_fortnite": "Fortnite.GGのZo7alマップ統計。更新時刻と各指標の期間を表示します。",
     "description_youtube": "YouTube Data APIの公開統計です。非公開分析、収益、動画管理はYouTube Studioを開いてください。",
     "description_modrinth": "公式Modrinth APIからプロジェクト、ダウンロード、フォロワーの最新統計を取得します。",
     "description_curseforge": "認証済みAPIキーを使ってCurseForge Modパックのダウンロード統計を取得します。",
@@ -1208,7 +1208,9 @@
     "last24Hours": "過去24時間",
     "uniquePlayers": "ユニークプレイヤー",
     "averagePlaytime": "平均プレイ時間",
-    "fortnitePeriods": "プレイ回数とユニークプレイヤーは過去24時間、プレイ分数と最大同時人数は全期間の値です。一部の数値は丸められています。"
+    "fortnitePeriods": "プレイ回数とユニークプレイヤーは過去24時間、プレイ分数と最大同時人数は全期間の値です。一部の数値は丸められています。",
+    "connection_cached": "最後に保存したデータ",
+    "fortniteCachedHint": "Fortnite.GGを更新できませんでした。表示時刻の確認済みデータです。古いオンライン人数と前日の指標は非表示になります。"
   },
   "pelican": {
     "title": "サーバー管理",
@@ -1832,7 +1834,8 @@
       "scheduled": "削除を申請しました。15日以内にログインすると取り消せます。"
     },
     "dashboard": "管理画面",
-    "switchAccount": "アカウントを切り替え"
+    "switchAccount": "アカウントを切り替え",
+    "addAccount": "アカウントを追加"
   },
   "systemNotifications": {
     "title": "端末の通知",

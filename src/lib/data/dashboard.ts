@@ -6,7 +6,7 @@ export type MetricKey = "players" | "capacity" | "projects" | "downloads" | "fol
 export type PlatformItem = { id: string; title: string; url: string; metrics: Partial<Record<MetricKey, number | null>>; updatedAt?: string };
 export type PlatformData = {
   id: PlatformId;
-  status: "connected" | "setup" | "unavailable";
+  status: "connected" | "cached" | "setup" | "unavailable";
   sourceName?: string;
   period?: "mixed";
   source: "public" | "api" | "catalog" | "none";

@@ -9,6 +9,7 @@ export type CommunityEntry = {
   projectKey: string; title: string; body: string; payload: Record<string, unknown>;
   published: boolean; moderation: "draft" | "pending" | "approved" | "rejected";
   author: string; image?: { id: string; width: number; height: number } | null;
+  authorProfile?: {username:string;name:string;avatar:string|null}|null;
   createdAt: string; updatedAt: string; votes?: number[]; myVote?: number | null; contactEmail?: string; discordReceipt?: string | null;
 };
 export const isUUID = (v: unknown): v is string => typeof v === "string" && /^[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}$/i.test(v);
