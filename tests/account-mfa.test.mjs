@@ -3,21 +3,25 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {createHash,randomUUID} from 'node:crypto';
 import ts from 'typescript';
+import sharp from 'sharp';
+import jsQR from 'jsqr';
 import {PGlite} from '@electric-sql/pglite';
 import {SITE_SCHEMA} from '../src/lib/server/site-schema.ts';
 import {ACCOUNT_SCHEMA} from '../src/lib/server/account-schema.ts';
 const stub=s=>'data:text/javascript;base64,'+Buffer.from(s).toString('base64');
 function moduleURL(path,replacements={}){
- if(replacements["@/lib/server/site-security"]&&!replacements["@/lib/server/admin-account"])replacements["@/lib/server/admin-account"]=replacements["@/lib/server/site-security"];let source=readFileSync(new URL('../'+path,import.meta.url),'utf8').replaceAll("import 'server-only';",'');for(const [a,b] of Object.entries(replacements))source=source.replaceAll(a,b);return stub(ts.transpileModule(source,{compilerOptions:{module:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ES2022}}).outputText);}
+ if(replacements["@/lib/server/site-security"]&&!replacements["@/lib/server/admin-account"])replacements["@/lib/server/admin-account"]=replacements["@/lib/server/site-security"];let source=readFileSync(new URL('../'+path,import.meta.url),'utf8').replaceAll("import 'server-only';",'');for(const [a,b] of Object.entries(replacements))source=source.replaceAll(a,b);source=source.replaceAll("from 'qrcode'","from '"+new URL('../node_modules/qrcode/lib/index.js',import.meta.url).href+"'");return stub(ts.transpileModule(source,{compilerOptions:{module:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ES2022}}).outputText);}
 const engine=new PGlite();await engine.exec(SITE_SCHEMA+ACCOUNT_SCHEMA);
-const pool={query:async(sql,args=[])=>{const r=await engine.query(sql,args);return {...r,rowCount:r.affectedRows??r.rows.length};}};
+const pool={query:async(sql,args=[])=>{const r=await engine.query(sql,args);return {...r,rowCount:r.affectedRows??r.rows.length};},connect:async()=>({query:pool.query,release(){}})};
 globalThis.__mfaTests={pool,allowed:true};
 const db=stub('export async function siteDatabase(){return globalThis.__mfaTests.pool;}'),security=moduleURL('src/lib/server/site-security.ts'),data=moduleURL('src/lib/data/account.ts');
 const authURL=moduleURL('src/lib/server/account-auth.ts',{'./site-db':db,'./site-security':security,'../data/account':data}),auth=await import(authURL);
+const verificationURL=moduleURL('src/lib/server/account-verification.ts',{'./account-auth':authURL,'./site-db':db,'./site-security':security}),verification=await import(verificationURL);
 const limit=stub('export async function limitAttempt(){return globalThis.__mfaTests.allowed;}');
-const replacements={'@/lib/server/member-modrinth':stub('export async function startMemberModrinth(){throw Error("NOT_USED");}'),'@/lib/server/account-auth':authURL,'@/lib/server/site-security':security,'@/lib/server/site-content':limit,'@/lib/server/site-db':db};
+const replacements={'@/lib/server/account-verification':verificationURL,'@/lib/server/admin-account':moduleURL('src/lib/server/admin-account.ts',{'./account-auth':authURL,'./site-security':security}),'@/lib/server/member-modrinth':stub('export async function startMemberModrinth(){throw Error("NOT_USED");}'),'@/lib/server/account-auth':authURL,'@/lib/server/site-security':security,'@/lib/server/site-content':limit,'@/lib/server/site-db':db};
 const mfa=await import(moduleURL('src/app/api/account/mfa/route.ts',replacements));
 const account=await import(moduleURL('src/app/api/account/route.ts',{...replacements,'@/lib/server/site-db':db,'@/lib/data/member-profile':moduleURL('src/lib/data/member-profile.ts'),'@/lib/data/account':data,'@/i18n/config':moduleURL('src/i18n/config.ts')}));
+const verificationRoute=await import(moduleURL('src/app/api/account/verification/route.ts',replacements));
 const receipts=await import(moduleURL('src/app/api/account/receipts/route.ts',{...replacements,'@/lib/server/site-db':db}));
 const envKeys=['SUPABASE_URL','SUPABASE_PUBLISHABLE_KEY','DATABASE_URL','ZO7AL_SITE_URL','ZO7AL_ACCOUNT_MFA_ENABLED'];
 const savedEnv=Object.fromEntries(envKeys.map(k=>[k,process.env[k]]));
@@ -25,8 +29,8 @@ Object.assign(process.env,{SUPABASE_URL:'https://auth.zo7al.test',SUPABASE_PUBLI
 const originalFetch=globalThis.fetch,userId='a1234567-1234-1234-1234-123456789abc';
 let user,factors,tokens,refreshes,calls,used,backupHashes,backupFactor,sequence,backupEnabled=true;
 const hash=s=>createHash('sha256').update(s.replace(/[\s-]/g,'').toLowerCase()).digest('hex');
-function mint(aal='aal1') {const access='eyJhbGciOiJIUzI1NiJ9.'+Buffer.from(JSON.stringify({sub:userId,aal,nonce:++sequence})).toString('base64url')+'.trusted',refresh='refresh-'+sequence;tokens.set(access,{aal});refreshes.set(refresh,access);return {access_token:access,refresh_token:refresh,expires_in:3600};}
-function reset() {backupEnabled=true;factors=[];tokens=new Map();refreshes=new Map();calls=[];used=new Set();backupHashes=new Set();backupFactor=null;sequence=0;user={id:userId,email:'private@example.com',user_metadata:{full_name:'Private Member',aal:'aal2'},identities:[{id:'google',provider:'google'},{id:'discord',provider:'discord'}]};globalThis.__mfaTests.allowed=true;process.env.ZO7AL_ACCOUNT_MFA_ENABLED='true';return mint();}
+function mint(aal='aal1') {const access='eyJhbGciOiJIUzI1NiJ9.'+Buffer.from(JSON.stringify({sub:userId,aal,nonce:++sequence,session_id:userId})).toString('base64url')+'.trusted',refresh='refresh-'+sequence;tokens.set(access,{aal});refreshes.set(refresh,access);return {access_token:access,refresh_token:refresh,expires_in:3600};}
+function reset() {backupEnabled=true;factors=[];tokens=new Map();refreshes=new Map();calls=[];used=new Set();backupHashes=new Set();backupFactor=null;sequence=0;user={id:userId,email:'private@example.com',email_confirmed_at:'2026-10-01T00:00:00Z',user_metadata:{full_name:'Private Member',aal:'aal2'},identities:[{id:'google',provider:'google'},{id:'discord',provider:'discord'}]};globalThis.__mfaTests.allowed=true;process.env.ZO7AL_ACCOUNT_MFA_ENABLED='true';return mint();}
 const view=()=>({...user,factors:[...factors,...(backupFactor?[backupFactor]:[])]});
 const bad=(error_code,status=422)=>Response.json({error_code},{status});
 globalThis.fetch=async(url,options={})=>{
@@ -37,6 +41,8 @@ globalThis.fetch=async(url,options={})=>{
   if(query.includes('grant_type=password')||query.includes('grant_type=pkce'))return Response.json(mint('aal1'));
   const current=refreshes.get(body.refresh_token);return current&&tokens.has(current)?Response.json(mint(tokens.get(current).aal)):bad('bad_jwt',401);
  }
+ if(path==='/otp')return Response.json({});
+ if(path==='/verify'&&body.type==='email'){if(body.token!=='654321'||body.email!==user.email)return bad('otp_expired');return Response.json(mint('aal1'));}
  if(!session)return bad('bad_jwt',401);
  if(path==='/user')return Response.json(view());
  if(path==='/factors'&&options.method==='POST') {const f={id:randomUUID(),status:'unverified',factor_type:'totp',friendly_name:body.friendly_name};factors.push(f);return Response.json({id:f.id,totp:{qr_code:'<svg xmlns="http://www.w3.org/2000/svg"></svg>',secret:'JBSWY3DPEHPK3PXP'}});}
@@ -58,7 +64,7 @@ globalThis.fetch=async(url,options={})=>{
  if(factor&&options.method==='DELETE') {if(factor.status==='verified'&&session.aal!=='aal2')return bad('insufficient_aal');factors=factors.filter(f=>f.id!==factor.id);return Response.json({id:factor.id});}
  return bad('validation_failed',400);
 };
-const cookie=h=>h.getSetCookie().filter(v=>v.startsWith(auth.ACCOUNT_ACCESS+'=')||v.startsWith(auth.ACCOUNT_REFRESH+'=')).map(v=>v.split(';')[0]).join('; ');
+const cookie=h=>h.getSetCookie().map(v=>v.split(';')[0]).join('; ');
 const request=(path,body,access,extra={})=>new Request('https://zo7al.test'+path,{method:body?'POST':'GET',headers:{host:'zo7al.test',origin:'https://zo7al.test','Content-Type':'application/json',...(access?{cookie:typeof access==='string'?auth.ACCOUNT_ACCESS+'='+access:cookie(access)}:{}),...extra},...(body?{body:JSON.stringify(body)}:{})});
 const post=(body,access,extra)=>mfa.POST(request('/api/account/mfa',body,access,extra));
 const verifiedFactor=()=>{const f={id:randomUUID(),factor_type:'totp',status:'verified',friendly_name:'My App'};factors.push(f);return f;};
@@ -73,13 +79,13 @@ test('first-factor sessions cannot view member data, mutate accounts, link ident
  const list=await receipts.GET(request('/api/account/receipts',null,initial.access_token));assert.equal(list.status,403);
  const pending=await (await account.GET(request('/api/account',null,initial.access_token))).json();assert.equal(pending.account,null);assert.equal(pending.mfaRequired,true);assert.ok(!JSON.stringify(pending).includes('private@example'));
  const status=await (await mfa.GET(request('/api/account/mfa',null,initial.access_token))).json();assert.equal(status.required,true);assert.deepEqual(status.factors,[{id:f.id,name:'My App'}]);
- const forged=initial.access_token.replace(Buffer.from(JSON.stringify({sub:userId,aal:'aal1',nonce:1})).toString('base64url'),Buffer.from(JSON.stringify({sub:userId,aal:'aal2',nonce:1})).toString('base64url'));
+ const forged=initial.access_token.replace(Buffer.from(JSON.stringify({sub:userId,aal:'aal1',nonce:1,session_id:userId})).toString('base64url'),Buffer.from(JSON.stringify({sub:userId,aal:'aal2',nonce:1,session_id:userId})).toString('base64url'));
  assert.equal(await auth.accountUser(request('/account',null,forged)),null);
 });
 test('enrollment needs a correct app code; activation returns backups once, only in a private response',async()=>{
  const initial=reset();delete process.env.ZO7AL_ACCOUNT_MFA_ENABLED;
 
- const start=await post({action:'enroll'},initial.access_token),enrollment=await start.json();assert.equal(start.status,200);assert.equal(start.headers.get('cache-control'),'private, no-store');assert.ok(enrollment.secret);
+ const start=await post({action:'enroll'},initial.access_token),enrollment=await start.json();assert.equal(start.status,200);assert.equal(start.headers.get('cache-control'),'private, no-store');assert.ok(enrollment.secret);assert.match(enrollment.qr,/^data:image\/png;base64,/);const png=Buffer.from(enrollment.qr.split(',')[1],'base64'),pixels=await sharp(png).ensureAlpha().raw().toBuffer({resolveWithObject:true}),decoded=jsQR(new Uint8ClampedArray(pixels.data),pixels.info.width,pixels.info.height);assert.ok(decoded?.data.startsWith('otpauth://totp/'));assert.equal(new URL(decoded.data).searchParams.get('secret'),enrollment.secret);
  const wrong=await post({action:'confirm',factorId:enrollment.id,code:'000000'},initial.access_token);assert.equal((await wrong.json()).error,'MFA_CODE');assert.equal(factors[0].status,'unverified');assert.equal(wrong.headers.get('set-cookie'),null);
  const confirmed=await post({action:'confirm',factorId:enrollment.id,code:'123456'},initial.access_token),data=await confirmed.json();assert.equal(confirmed.status,200);assert.equal(data.codes.length,10);assert.match(data.codes[0],/^[A-Z0-9]{4}(-[A-Z0-9]{4}){3}$/);assert.match(confirmed.headers.get('set-cookie'),/HttpOnly/);
  const publicView=await (await account.GET(request('/api/account',null,confirmed.headers))).json();assert.equal(publicView.account.id,userId);assert.equal(publicView.mfaRequired,false);assert.ok(!JSON.stringify(publicView).includes(enrollment.secret));assert.ok(!JSON.stringify(publicView).includes(data.codes[0]));
@@ -134,11 +140,40 @@ test('password and OAuth completion enter the challenge; token refresh cannot sk
 });
 
 test("TOTP enrollment and challenge remain usable when native backup codes are unavailable",async()=>{
- const initial=reset();backupEnabled=false;delete process.env.ZO7AL_ACCOUNT_MFA_ENABLED;
- const before=await(await mfa.GET(request("/api/account/mfa",null,initial.access_token))).json();assert.equal(before.enabled,false);assert.equal(before.recovery.available,false);
+ const initial=reset();backupEnabled=false;user.email_confirmed_at='2026-10-01T00:00:00Z';delete process.env.ZO7AL_ACCOUNT_MFA_ENABLED;
+ const before=await(await mfa.GET(request("/api/account/mfa",null,initial.access_token))).json();assert.equal(before.enabled,false);assert.equal(before.recovery.available,true);
  const start=await post({action:"enroll"},initial.access_token),enrollment=await start.json();assert.equal(start.status,200);
- const confirmed=await post({action:"confirm",factorId:enrollment.id,code:"987654"},initial.access_token),data=await confirmed.json();assert.equal(confirmed.status,200);assert.equal(data.recoveryError,"MFA_UNAVAILABLE");
+ const confirmed=await post({action:"confirm",factorId:enrollment.id,code:"987654"},initial.access_token),data=await confirmed.json();assert.equal(confirmed.status,200);assert.equal(data.codes.length,10);assert.match(data.codes[0],/^[A-F0-9]{4}(?:-[A-F0-9]{4}){7}$/);
  const status=await mfa.GET(request("/api/account/mfa",null,confirmed.headers));assert.equal(status.status,200);assert.equal((await status.json()).enabled,true);
  const blocked=await account.GET(request("/api/account",null,initial.access_token));assert.equal((await blocked.json()).mfaRequired,true);
  const verified=await post({action:"verify",factorId:enrollment.id,code:"876543"},initial.access_token);assert.equal(verified.status,200);
+});
+
+test('local backup codes are single-use, hashed, bound to the session and invalidated on regeneration',async()=>{
+ const initial=reset(),factor=verifiedFactor();backupEnabled=false;await pool.query('DELETE FROM site_account_recovery_codes WHERE user_id=$1',[userId]);
+ const issued=await post({action:'codes',factorId:factor.id,code:'111222'},mint('aal2').access_token),codes=(await issued.json()).codes;assert.equal(codes.length,10);
+ const stored=(await pool.query('SELECT code_hash FROM site_account_recovery_codes WHERE user_id=$1',[userId])).rows;assert.ok(!JSON.stringify(stored).includes(codes[0].replaceAll('-','')));
+ const recovered=await post({action:'verify',method:'recovery',code:codes[0]},initial.access_token);assert.equal(recovered.status,200);
+ const combined=auth.ACCOUNT_ACCESS+'='+initial.access_token+'; '+cookie(recovered.headers),req=request('/api/account',null,null,{cookie:combined});assert.equal((await(await account.GET(req)).json()).mfaRequired,false);
+ const otherSession='eyJ.'+Buffer.from(JSON.stringify({sub:userId,aal:'aal1',session_id:randomUUID()})).toString('base64url')+'.trusted';tokens.set(otherSession,{aal:'aal1'});assert.equal(await auth.hasAccountSecondFactor(request('/account',null,null,{cookie:cookie(recovered.headers)}),view(),otherSession),false);
+ assert.equal((await post({action:'verify',method:'recovery',code:codes[0]},initial.access_token)).status,400);
+ await post({action:'codes',factorId:factor.id,code:'222333'},mint('aal2').access_token);assert.equal((await post({action:'verify',method:'recovery',code:codes[1]},initial.access_token)).status,400);
+});
+test('action proofs bind user, native session, purpose and identity, expire and consume once',async()=>{
+ const initial=reset();const proof=await verification.issueActionProof(user,initial.access_token,'unlink-identity',userId);
+ await assert.rejects(()=>verification.requireActionProof(user,initial.access_token,proof,'delete-account'),/VERIFICATION_REQUIRED/);
+ await assert.rejects(()=>verification.requireActionProof(user,initial.access_token,proof,'unlink-identity','wrong'),/VERIFICATION_REQUIRED/);
+ await verification.requireActionProof(user,initial.access_token,proof,'unlink-identity',userId);
+ await assert.rejects(()=>verification.requireActionProof(user,initial.access_token,proof,'unlink-identity',userId),/VERIFICATION_REQUIRED/);
+ const expired=await verification.issueActionProof(user,initial.access_token,'delete-account','');await pool.query("UPDATE site_account_action_proofs SET expires_at=now()-interval '1 second'");await assert.rejects(()=>verification.requireActionProof(user,initial.access_token,expired,'delete-account'),/VERIFICATION_REQUIRED/);
+});
+test('email alternative targets only the verified account and browser-bound challenge; cannot skip MFA or replay',async()=>{
+ const initial=reset();verifiedFactor();
+ const send=await verificationRoute.POST(request('/api/account/verification',{action:'send-email',purpose:'login',email:'attacker@example.com'},initial.access_token));assert.equal(send.status,200);assert.equal(calls.find(c=>c.path==='/otp').body.email,user.email);assert.equal(calls.find(c=>c.path==='/otp').body.create_user,false);
+ const noCookie=await verificationRoute.POST(request('/api/account/verification',{action:'verify-email',code:'654321'},initial.access_token));assert.equal(noCookie.status,400);
+ const browserCookie=auth.ACCOUNT_ACCESS+'='+initial.access_token+'; '+cookie(send.headers);
+ const verified=await verificationRoute.POST(request('/api/account/verification',{action:'verify-email',code:'654321'},null,{cookie:browserCookie}));assert.equal(verified.status,200);
+ const complete=request('/api/account',null,verified.headers);assert.equal((await(await account.GET(complete)).json()).mfaRequired,false);
+ const replay=await verificationRoute.POST(request('/api/account/verification',{action:'verify-email',code:'654321'},null,{cookie:browserCookie}));assert.equal(replay.status,400);
+ user.email_confirmed_at=undefined;assert.equal((await verificationRoute.POST(request('/api/account/verification',{action:'send-email'},initial.access_token))).status,400);
 });

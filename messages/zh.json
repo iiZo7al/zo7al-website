@@ -1204,7 +1204,11 @@
     "start": "启动",
     "stop": "停止",
     "restart": "重启",
-    "powerConfirm": "确认对服务器执行{action}？此操作会改变实际服务器状态。"
+    "powerConfirm": "确认对服务器执行{action}？此操作会改变实际服务器状态。",
+    "last24Hours": "过去24小时",
+    "uniquePlayers": "独立玩家",
+    "averagePlaytime": "平均游玩时间",
+    "fortnitePeriods": "游玩次数和独立玩家为过去24小时数据；游玩分钟和最高人数为历史累计数据。来源中的部分数字经过取整。"
   },
   "pelican": {
     "title": "服务器管理",
@@ -1730,7 +1734,9 @@
       "ACCOUNT_BANNED": "此账户已被封禁",
       "ACCOUNT_DELETED": "此账户已被删除",
       "IDENTITY_LINKED": "此 Discord 已关联其他 Zo7al 账户。请使用该账户登录，而不是在这里关联。",
-      "OWNER_PROTECTED": "无法删除当前控制面板所有者的账号。"
+      "OWNER_PROTECTED": "无法删除当前控制面板所有者的账号。",
+      "EMAIL_UNAVAILABLE": "没有可用的已验证邮箱。请使用验证器应用。",
+      "VERIFICATION_REQUIRED": "请先验证身份后再执行此操作。"
     },
     "security": {
       "title": "双重验证",
@@ -1766,7 +1772,9 @@
       "generateCodes": "生成备用代码",
       "changeApp": "更换验证器应用",
       "setup": "设置2FA",
-      "backupsUnavailable": "登录服务目前不提供备用代码。验证器应用仍可正常使用。"
+      "backupsUnavailable": "登录服务目前不提供备用代码。验证器应用仍可正常使用。",
+      "emailAlternative": "或通过发送到邮箱的验证码验证。",
+      "confirmAction": "使用验证器或已验证邮箱的新验证码确认此操作。"
     },
     "submissionLogin": "登录后可将投稿、申请和支持请求关联到你的账户，并跟踪处理进度。",
     "publicProfile": "公开个人资料",
@@ -1822,6 +1830,18 @@
       "confirmTitle": "确定要删除账号吗？",
       "acknowledge": "我了解15天的宽限期及之后删除不可撤销。",
       "scheduled": "已申请删除。15天内登录即可取消。"
-    }
+    },
+    "dashboard": "控制面板",
+    "switchAccount": "切换账号"
+  },
+  "systemNotifications": {
+    "title": "设备通知",
+    "hint": "网站打开时，即使最小化也能收到通知。",
+    "unsupported": "此浏览器不支持设备通知。",
+    "enabled": "设备通知已启用。",
+    "blocked": "通知已被阻止。请在浏览器网站设置和Windows中允许通知。",
+    "enable": "启用设备通知",
+    "test": "发送测试通知",
+    "testBody": "您的设备可以收到Zo7al通知。"
   }
 }

@@ -1204,7 +1204,11 @@
     "start": "Start",
     "stop": "Stop",
     "restart": "Restart",
-    "powerConfirm": "Confirm {action} for this server? This changes the live server state."
+    "powerConfirm": "Confirm {action} for this server? This changes the live server state.",
+    "last24Hours": "Last 24 hours",
+    "uniquePlayers": "Unique players",
+    "averagePlaytime": "Average playtime",
+    "fortnitePeriods": "Plays and unique players cover the last 24 hours; minutes and peak players are all-time. The source rounds some figures."
   },
   "pelican": {
     "title": "Server management",
@@ -1730,7 +1734,9 @@
       "ACCOUNT_BANNED": "This account is banned",
       "ACCOUNT_DELETED": "This account has been deleted",
       "IDENTITY_LINKED": "This Discord identity belongs to another Zo7al account. Sign in with it instead of linking it here.",
-      "OWNER_PROTECTED": "The current dashboard owner account cannot be deleted."
+      "OWNER_PROTECTED": "The current dashboard owner account cannot be deleted.",
+      "EMAIL_UNAVAILABLE": "No verified email is available. Use your authenticator app.",
+      "VERIFICATION_REQUIRED": "Verify your identity for this action first."
     },
     "security": {
       "title": "Two-factor authentication",
@@ -1766,7 +1772,9 @@
       "generateCodes": "Generate backup codes",
       "changeApp": "Change authenticator app",
       "setup": "Set up 2FA",
-      "backupsUnavailable": "Backup codes are currently unavailable from the sign-in provider. Authenticator app verification remains available."
+      "backupsUnavailable": "Backup codes are currently unavailable from the sign-in provider. Authenticator app verification remains available.",
+      "emailAlternative": "Or verify with a code sent to your email.",
+      "confirmAction": "Confirm this action with a new authenticator or verified email code."
     },
     "submissionLogin": "Sign in to save your submissions, applications and support requests to your account and follow their progress.",
     "publicProfile": "Public profile",
@@ -1822,6 +1830,18 @@
       "confirmTitle": "Are you sure you want to delete your account?",
       "acknowledge": "I understand the 15-day grace period and that deletion is permanent afterward.",
       "scheduled": "Deletion requested. Sign in within 15 days to cancel it."
-    }
+    },
+    "dashboard": "Dashboard",
+    "switchAccount": "Switch account"
+  },
+  "systemNotifications": {
+    "title": "Device notifications",
+    "hint": "Notifications arrive while the site is open, including when minimized.",
+    "unsupported": "This browser does not support device notifications.",
+    "enabled": "Device notifications are enabled.",
+    "blocked": "Notifications are blocked. Allow them in browser site settings and Windows.",
+    "enable": "Enable device notifications",
+    "test": "Send a test notification",
+    "testBody": "Zo7al notifications work on your device."
   }
 }

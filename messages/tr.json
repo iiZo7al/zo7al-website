@@ -1204,7 +1204,11 @@
     "start": "Başlat",
     "stop": "Durdur",
     "restart": "Yeniden başlat",
-    "powerConfirm": "Bu sunucu için {action} işlemini onaylıyor musun? Canlı sunucu durumunu değiştirir."
+    "powerConfirm": "Bu sunucu için {action} işlemini onaylıyor musun? Canlı sunucu durumunu değiştirir.",
+    "last24Hours": "Son 24 saat",
+    "uniquePlayers": "Benzersiz oyuncular",
+    "averagePlaytime": "Ortalama oyun süresi",
+    "fortnitePeriods": "Oyunlar ve benzersiz oyuncular son 24 saati; dakikalar ve en yüksek oyuncu sayısı tüm zamanı kapsar. Kaynak bazı sayıları yuvarlar."
   },
   "pelican": {
     "title": "Sunucu yönetimi",
@@ -1730,7 +1734,9 @@
       "ACCOUNT_BANNED": "Bu hesap yasaklı",
       "ACCOUNT_DELETED": "Bu hesap silindi",
       "IDENTITY_LINKED": "Bu Discord hesabı başka bir Zo7al hesabına bağlı. Buraya bağlamak yerine onunla giriş yap.",
-      "OWNER_PROTECTED": "Mevcut kontrol paneli sahibinin hesabı silinemez."
+      "OWNER_PROTECTED": "Mevcut kontrol paneli sahibinin hesabı silinemez.",
+      "EMAIL_UNAVAILABLE": "Doğrulanmış e-posta yok. Doğrulayıcı uygulamanı kullan.",
+      "VERIFICATION_REQUIRED": "Önce bu işlem için kimliğini doğrula."
     },
     "security": {
       "title": "İki faktörlü kimlik doğrulama",
@@ -1766,7 +1772,9 @@
       "generateCodes": "Yedek kod oluştur",
       "changeApp": "Doğrulayıcıyı değiştir",
       "setup": "2FA’yı kur",
-      "backupsUnavailable": "Giriş sağlayıcısında yedek kodlar şu anda kullanılamıyor. Doğrulama uygulamasıyla doğrulama devam eder."
+      "backupsUnavailable": "Giriş sağlayıcısında yedek kodlar şu anda kullanılamıyor. Doğrulama uygulamasıyla doğrulama devam eder.",
+      "emailAlternative": "Ya da e-postana gönderilen kodla doğrula.",
+      "confirmAction": "Bu işlemi doğrulayıcı uygulamadan veya doğrulanmış e-postadan yeni bir kodla onayla."
     },
     "submissionLogin": "Paylaşımlarınızı, başvurularınızı ve destek taleplerinizi hesabınıza bağlamak ve durumlarını takip etmek için giriş yapın.",
     "publicProfile": "Herkese açık profil",
@@ -1822,6 +1830,18 @@
       "confirmTitle": "Hesabını silmek istediğine emin misin?",
       "acknowledge": "15 günlük süreyi ve sonrasındaki silmenin kalıcı olduğunu anlıyorum.",
       "scheduled": "Silme talebi alındı. İptal etmek için 15 gün içinde giriş yap."
-    }
+    },
+    "dashboard": "Kontrol paneli",
+    "switchAccount": "Hesap değiştir"
+  },
+  "systemNotifications": {
+    "title": "Cihaz bildirimleri",
+    "hint": "Site açıkken, küçültülmüş olsa bile bildirimler gelir.",
+    "unsupported": "Bu tarayıcı cihaz bildirimlerini desteklemiyor.",
+    "enabled": "Cihaz bildirimleri etkin.",
+    "blocked": "Bildirimler engellendi. Tarayıcının site ayarlarında ve Windows’ta izin ver.",
+    "enable": "Cihaz bildirimlerini etkinleştir",
+    "test": "Test bildirimi gönder",
+    "testBody": "Zo7al bildirimleri cihazında çalışıyor."
   }
 }

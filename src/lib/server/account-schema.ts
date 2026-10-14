@@ -40,6 +40,11 @@ ALTER TABLE site_accounts ADD COLUMN IF NOT EXISTS ban_reason varchar(500) NOT N
 ALTER TABLE site_accounts ADD COLUMN IF NOT EXISTS deleted_at timestamptz;
 ALTER TABLE site_accounts ADD COLUMN IF NOT EXISTS deletion_due_at timestamptz;
 ALTER TABLE site_accounts ADD COLUMN IF NOT EXISTS auth_delete_pending boolean NOT NULL DEFAULT false;
+ALTER TABLE site_accounts ADD COLUMN IF NOT EXISTS auth_purged_at timestamptz;
+CREATE TABLE IF NOT EXISTS site_account_recovery_codes(user_id uuid NOT NULL REFERENCES site_accounts(id) ON DELETE CASCADE,code_hash char(64) NOT NULL,used_at timestamptz,PRIMARY KEY(user_id,code_hash));
+CREATE TABLE IF NOT EXISTS site_account_second_factors(token_hash char(64) PRIMARY KEY,user_id uuid NOT NULL,session_id uuid NOT NULL,factor_hash char(64) NOT NULL,expires_at timestamptz NOT NULL);
+CREATE TABLE IF NOT EXISTS site_account_action_proofs(token_hash char(64) PRIMARY KEY,user_id uuid NOT NULL,session_id uuid NOT NULL,purpose varchar(32) NOT NULL,target varchar(160) NOT NULL,expires_at timestamptz NOT NULL);
+CREATE TABLE IF NOT EXISTS site_account_email_challenges(browser_hash char(64) PRIMARY KEY,user_id uuid NOT NULL,session_id uuid NOT NULL,email varchar(254) NOT NULL,attempts integer NOT NULL DEFAULT 0,purpose varchar(32) NOT NULL,target varchar(160) NOT NULL,expires_at timestamptz NOT NULL);
 CREATE INDEX IF NOT EXISTS site_account_deletions_due ON site_accounts(deletion_due_at) WHERE deletion_due_at IS NOT NULL;
 CREATE UNIQUE INDEX IF NOT EXISTS site_account_usernames ON site_accounts(lower(username)) WHERE username IS NOT NULL;
 CREATE TABLE IF NOT EXISTS site_passkey_flows (

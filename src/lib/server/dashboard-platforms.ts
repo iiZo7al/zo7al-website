@@ -1,9 +1,9 @@
+import {parseFortniteGGCreator} from '../data/fortnite-gg';
 import "server-only";
 import { MINECRAFT_SERVER } from "../data/minecraft";
-import { FORTNITE_MAPS } from "../data/fortnite";
 import { CURSEFORGE_PROJECTS } from "../data/curseforge";
 import { MODRINTH_API_URL } from "../data/modrinth";
-import { metricNumber, parseMinecraftStatus, parseModrinthProjects, parseYoutubeChannel, parseFortniteMetrics, sumMetric, safeDate, type ConnectionInput, type PlatformData, type PlatformId, type PlatformItem } from "../data/dashboard";
+import { metricNumber, parseMinecraftStatus, parseModrinthProjects, parseYoutubeChannel, sumMetric, safeDate, type ConnectionInput, type PlatformData, type PlatformId } from "../data/dashboard";
 import { youtubeAuth } from "./youtube-auth";
 import { modrinthAuth, modrinthJSON } from "./modrinth-auth";
 
@@ -64,28 +64,12 @@ export async function fetchPlatform(id: PlatformId, connection?: ConnectionInput
     }));
     return { ...base(id,"api"), items, metrics: { projects: items.length, downloads: sumMetric(items,"downloads") } };
   }
-  const items: PlatformItem[] = [];
-  let responses = 0;
-  const queue = [...FORTNITE_MAPS];
-  await Promise.all(Array.from({ length: Math.min(4,queue.length) }, async () => {
-    for (let island = queue.shift(); island; island = queue.shift()) {
-      let metrics: PlatformItem["metrics"] = { plays: null, minutesPlayed: null, peakPlayers: null };
-      try {
-        // Use Epic's default seven-day window and complete daily response. Avoid
-        // undocumented date/filter encodings that make the entire request fail.
-        metrics = parseFortniteMetrics(await json("https://api.fortnite.com/ecosystem/v1/islands/" + island.code + "/metrics/day"));
-        responses++;
-      } catch { /* Ineligible islands and missing intervals stay unavailable, not zero. */ }
-      items.push({ id: island.code, title: island.title, url: "https://www.fortnite.com/@zo7al/" + island.code, metrics });
-    }
-  }));
-  const available = items.filter(item => typeof item.metrics.plays === "number");
-  // Valid privacy-suppressed intervals are a working API connection, not an outage.
-  return { ...base(id,"public"), status: responses ? "connected" : "unavailable",
-    items: items.sort((a,b) => (b.metrics.plays ?? -1) - (a.metrics.plays ?? -1)),
-    metrics: { projects: items.length, plays: available.length ? sumMetric(available,"plays") : null,
-      minutesPlayed: available.length ? sumMetric(available,"minutesPlayed") : null },
-    coverage: { available: available.length, total: items.length } };
+  const response=await fetch('https://fortnite.gg/creator/zo7al',{cache:'no-store',redirect:'error',signal:AbortSignal.timeout(12000),headers:{Accept:'text/html','User-Agent':'Zo7alProjects/1.0 (zo7al.is-a.dev)'}});
+  if(!response.ok)throw Error('UPSTREAM');
+  const reader=response.body?.getReader();if(!reader)throw Error('UPSTREAM');const chunks:Uint8Array[]=[];let size=0;
+  try{while(true){const part=await reader.read();if(part.done)break;size+=part.value.length;if(size>2000000)throw Error('UPSTREAM');chunks.push(part.value);}}finally{await reader.cancel();}
+  const items=parseFortniteGGCreator(Buffer.concat(chunks).toString('utf8'));
+  return {...base(id,'public'),sourceName:'Fortnite.GG',period:'mixed',items,metrics:{projects:items.length,players:sumMetric(items,'players'),plays:sumMetric(items,'plays'),minutesPlayed:sumMetric(items,'minutesPlayed')},coverage:{available:items.filter(item=>item.metrics.plays!==null&&item.metrics.plays!==undefined).length,total:items.length}};
 }
 
 const cache = new Map<PlatformId,{ expires: number; promise: Promise<PlatformData> }>();

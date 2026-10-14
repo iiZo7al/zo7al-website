@@ -2,11 +2,13 @@ export const platformIds = ["minecraft", "fortnite", "youtube", "modrinth", "cur
 export type PlatformId = typeof platformIds[number];
 export const connectionProviders = ["youtube", "curseforge", "pelican"] as const;
 export type ConnectionProvider = typeof connectionProviders[number];
-export type MetricKey = "players" | "capacity" | "projects" | "downloads" | "followers" | "subscribers" | "views" | "videos" | "plays" | "minutesPlayed" | "peakPlayers";
+export type MetricKey = "players" | "capacity" | "projects" | "downloads" | "followers" | "subscribers" | "views" | "videos" | "plays" | "minutesPlayed" | "peakPlayers" | "uniquePlayers" | "averagePlaytime";
 export type PlatformItem = { id: string; title: string; url: string; metrics: Partial<Record<MetricKey, number | null>>; updatedAt?: string };
 export type PlatformData = {
   id: PlatformId;
   status: "connected" | "setup" | "unavailable";
+  sourceName?: string;
+  period?: "mixed";
   source: "public" | "api" | "catalog" | "none";
   metrics: Partial<Record<MetricKey, number | null>>;
   items: PlatformItem[];

@@ -1204,7 +1204,11 @@
     "start": "Starten",
     "stop": "Stoppen",
     "restart": "Neustarten",
-    "powerConfirm": "{action} für diesen Server bestätigen? Das verändert den Zustand des aktiven Servers."
+    "powerConfirm": "{action} für diesen Server bestätigen? Das verändert den Zustand des aktiven Servers.",
+    "last24Hours": "Letzte 24 Stunden",
+    "uniquePlayers": "Einzelne Spieler",
+    "averagePlaytime": "Durchschnittliche Spielzeit",
+    "fortnitePeriods": "Spiele und einzelne Spieler beziehen sich auf die letzten 24 Stunden; Minuten und Spitzenwerte auf den gesamten Zeitraum. Einige Werte sind gerundet."
   },
   "pelican": {
     "title": "Serververwaltung",
@@ -1730,7 +1734,9 @@
       "ACCOUNT_BANNED": "Dieses Konto ist gesperrt",
       "ACCOUNT_DELETED": "Dieses Konto wurde gelöscht",
       "IDENTITY_LINKED": "Dieses Discord-Konto gehört zu einem anderen Zo7al-Konto. Melde dich damit an, statt es hier zu verknüpfen.",
-      "OWNER_PROTECTED": "Das Konto des aktuellen Dashboard-Inhabers kann nicht gelöscht werden."
+      "OWNER_PROTECTED": "Das Konto des aktuellen Dashboard-Inhabers kann nicht gelöscht werden.",
+      "EMAIL_UNAVAILABLE": "Keine bestätigte E-Mail verfügbar. Verwende deine Authentifizierungs-App.",
+      "VERIFICATION_REQUIRED": "Bestätige zuerst deine Identität für diese Aktion."
     },
     "security": {
       "title": "Zwei-Faktor-Authentifizierung",
@@ -1766,7 +1772,9 @@
       "generateCodes": "Ersatzcodes erstellen",
       "changeApp": "Authenticator-App wechseln",
       "setup": "2FA einrichten",
-      "backupsUnavailable": "Ersatzcodes sind beim Anmeldedienst derzeit nicht verfügbar. Die Authenticator-App bleibt nutzbar."
+      "backupsUnavailable": "Ersatzcodes sind beim Anmeldedienst derzeit nicht verfügbar. Die Authenticator-App bleibt nutzbar.",
+      "emailAlternative": "Oder bestätige mit einem Code per E-Mail.",
+      "confirmAction": "Bestätige diese Aktion mit einem neuen Code aus der Authentifizierungs-App oder deiner bestätigten E-Mail."
     },
     "submissionLogin": "Melde dich an, um Beiträge, Bewerbungen und Supportanfragen mit deinem Konto zu verknüpfen und ihren Status zu verfolgen.",
     "publicProfile": "Öffentliches Profil",
@@ -1822,6 +1830,18 @@
       "confirmTitle": "Möchtest du dein Konto wirklich löschen?",
       "acknowledge": "Ich verstehe die Frist von 15 Tagen und die anschließende endgültige Löschung.",
       "scheduled": "Löschung beantragt. Melde dich innerhalb von 15 Tagen an, um sie abzubrechen."
-    }
+    },
+    "dashboard": "Dashboard",
+    "switchAccount": "Konto wechseln"
+  },
+  "systemNotifications": {
+    "title": "Gerätebenachrichtigungen",
+    "hint": "Benachrichtigungen kommen an, solange die Website geöffnet ist, auch minimiert.",
+    "unsupported": "Dieser Browser unterstützt keine Gerätebenachrichtigungen.",
+    "enabled": "Gerätebenachrichtigungen sind aktiviert.",
+    "blocked": "Benachrichtigungen sind blockiert. Erlaube sie in den Website-Einstellungen des Browsers und in Windows.",
+    "enable": "Gerätebenachrichtigungen aktivieren",
+    "test": "Testbenachrichtigung senden",
+    "testBody": "Zo7al-Benachrichtigungen funktionieren auf deinem Gerät."
   }
 }

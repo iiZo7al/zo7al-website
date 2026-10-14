@@ -5,32 +5,17 @@ import {authenticatorQR} from '@/lib/data/authenticator-qr';
 import {useTranslations} from 'next-intl';
 import {ShieldCheck,Copy,Download,LoaderCircle} from 'lucide-react';
 import {useAccount,accountAction} from './AccountProvider';
+import {EmailVerification} from './AccountVerification';
 import {accountNext} from '@/lib/data/account';
-type Status={enabled:boolean;required:boolean;factors:{id:string;name:string}[];recovery:{available?:boolean;enrolled:boolean;remaining:number;total:number}};
-type Enrollment={id:string;qr:string;secret:string};
-type Proof={method:string;factorId:string;code:string};
-async function mfaAction(action:string,input:Record<string,unknown>={}) {
- const response=await fetch('/api/account/mfa',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action,...input})});
- const data=await response.json();if(!response.ok)throw Error(data.error??'UNAVAILABLE');return data;
-}
-async function getStatus():Promise<Status> {
- const response=await fetch('/api/account/mfa',{cache:'no-store'}),data=await response.json();if(!response.ok)throw Error(data.error??'UNAVAILABLE');return data;
-}
-function ProofForm({factors,recovery,busy,onVerify,label}:{factors:Status['factors'];recovery:boolean;busy:boolean;onVerify:(proof:Proof)=>void;label:string}) {
- const t=useTranslations('account'),[method,setMethod]=useState('totp');
- return <form className="hub-form account-login-form" onSubmit={event=>{event.preventDefault();const fields=new FormData(event.currentTarget);onVerify({method,factorId:String(fields.get('factorId')??factors[0]?.id??''),code:String(fields.get('code')??'')});}}>
-  {recovery&&<div className="account-auth-tabs">{(['totp','recovery'] as const).map(value=><button type="button" key={value} disabled={busy} aria-pressed={method===value} onClick={()=>setMethod(value)}>{t('security.'+(value==='totp'?'app':'backupCode'))}</button>)}</div>}
-  {method==='totp'&&factors.length>1&&<label>{t('security.app')}<select name="factorId" disabled={busy}>{factors.map(f=><option key={f.id} value={f.id}>{f.name}</option>)}</select></label>}
-  <label>{t('security.'+(method==='totp'?'appCode':'backupCode'))}<input key={method} name="code" type="text" autoComplete="one-time-code" autoCapitalize="none" spellCheck={false} dir="ltr" inputMode={method==='totp'?'numeric':'text'} pattern={method==='totp'?'[0-9]{6}':undefined} minLength={method==='totp'?6:16} maxLength={method==='totp'?6:24} required disabled={busy}/></label>
-  <button className="hub-button hub-button-primary" disabled={busy} aria-busy={busy}>{busy&&<LoaderCircle size={17} className="animate-spin"/>}{label}</button>
- </form>;
-}
+import {ProofForm,getStatus,type Status,type Enrollment} from './AccountProof';
+import {mfaAction} from './AccountProof';
 export function AccountMFAChallenge({next='/account',onComplete}:{next?:string;onComplete?:()=>void}) {
  const t=useTranslations('account'),{refresh}=useAccount(),[status,setStatus]=useState<Status|null>(null),[busy,setBusy]=useState(false),[error,setError]=useState('');
  const fail=(error:unknown)=>{const code=error instanceof Error?error.message:'UNAVAILABLE';setError(t.has('errors.'+code)?t('errors.'+code):t('errors.UNAVAILABLE'));};
  useEffect(()=>{let active=true;getStatus().then(value=>{if(active)setStatus(value);}).catch(error=>{if(active){const key=error instanceof Error?error.message:'UNAVAILABLE';setError(t.has('errors.'+key)?t('errors.'+key):t('errors.UNAVAILABLE'));}});return()=>{active=false;};},[t]);
  return <div className="account-security"><ShieldCheck size={32} aria-hidden="true"/><h2>{t('security.title')}</h2><p className="account-help">{t('security.challenge')}</p>
   {status&&<ProofForm factors={status.factors} recovery={status.recovery.enrolled} busy={busy} label={t('security.verify')} onVerify={async proof=>{setBusy(true);setError('');try{await mfaAction('verify',proof);await refresh();if(onComplete)onComplete();else window.location.assign(accountNext(next));}catch(error){fail(error);}finally{setBusy(false);}}}/>}
+  {status?.emailAvailable&&<EmailVerification onVerified={async()=>{await refresh();if(onComplete)onComplete();else window.location.assign(accountNext(next));}}/>}
   {!status&&!error&&<LoaderCircle className="animate-spin" aria-label={t('loading')}/>}
   {error&&<p role="alert" className="account-error">{error}</p>}
   <button type="button" className="account-text-button" disabled={busy} onClick={async()=>{setBusy(true);try{await accountAction('signout');await refresh();onComplete?.();}catch(error){fail(error);}finally{setBusy(false);}}}>{t('security.otherAccount')}</button>
