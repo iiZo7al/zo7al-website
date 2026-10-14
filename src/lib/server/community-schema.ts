@@ -16,6 +16,8 @@ CREATE TABLE IF NOT EXISTS community_votes (
  option_index integer NOT NULL CHECK(option_index>=0 AND option_index<8), created_at timestamptz NOT NULL DEFAULT now(),
  PRIMARY KEY(poll_id,visitor_hash)
 );
+ALTER TABLE site_content ADD COLUMN IF NOT EXISTS poll_id uuid REFERENCES community_entries(id) ON DELETE SET NULL;
+CREATE UNIQUE INDEX IF NOT EXISTS site_news_poll ON site_content(poll_id) WHERE poll_id IS NOT NULL;
 CREATE TABLE IF NOT EXISTS community_installations (
  id text PRIMARY KEY, installed_at timestamptz NOT NULL DEFAULT now()
 );

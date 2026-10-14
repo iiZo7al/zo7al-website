@@ -258,7 +258,8 @@
       "fortnite": "堡垒之夜",
       "modpacks": "整合包",
       "community": "社区",
-      "support": "支持与申请"
+      "support": "支持与申请",
+      "accountSecurity": "账户与安全"
     },
     "items": [
       {
@@ -300,7 +301,7 @@
       {
         "category": "storeRanks",
         "q": "如何购买等级？",
-        "a": "在/store将等级加入购物车，在购物车输入准确的Minecraft用户名，核对商品后通过Tebex付款。Booster通过助力Discord服务器获得。",
+        "a": "购买前请登录并关联 Minecraft。普通购买使用已验证玩家，礼物模式可以指定收件人。核对购物车后通过 Tebex 付款。",
         "id": "buy",
         "href": "/store",
         "action": "打开商店"
@@ -358,7 +359,7 @@
       {
         "category": "support",
         "q": "如何报告问题？",
-        "a": "在/support查看常见错误或提交支持请求。项目详情的反馈按钮会附上项目和版本。请保存凭据，以便在/requests跟进。",
+        "a": "登录后从支持中心提交报告。使用同一账户可在任意设备的“我的请求”中查看进展。",
         "id": "report",
         "href": "/support?tab=report",
         "action": "打开支持中心"
@@ -396,7 +397,7 @@
       {
         "category": "storeRanks",
         "q": "如何申请创作者等级？",
-        "a": "在 /store 的 Coins 下方选择 YouTube、Twitch 或 TikTok，填写邮箱、Minecraft 和 Discord 用户名、频道链接和内容介绍。团队将审核申请，提交后不会自动获得等级。",
+        "a": "请登录、关联 Discord 并验证 Minecraft。选择创作者等级后填写频道和内容资料，关联账户信息会自动填入。申请需要团队审核。",
         "id": "creator-apply",
         "href": "/store",
         "action": "打开商店"
@@ -429,7 +430,7 @@
         "id": "player-profile",
         "category": "minecraft",
         "q": "在哪里查看Minecraft玩家资料？",
-        "a": "在服务器内验证 Minecraft 账户，即可查看资料并为自己购买。 使用此用户名进入 Zo7al，然后执行以下命令。 验证码 10 分钟后失效，请勿分享。",
+        "a": "通过服务器命令验证 Minecraft 后，打开我的账户 → 玩家资料，查看已同步的服务器信息。",
         "href": "/account?tab=player",
         "action": "玩家资料"
       },
@@ -461,15 +462,15 @@
         "id": "polls",
         "category": "community",
         "q": "社区投票如何参与？",
-        "a": "投票与文章一起显示在各游戏的新闻栏目中。在开放的投票中选择一个选项并提交。投票及结果会保存，同一浏览器刷新后会恢复你的选择。每个浏览器标识在每项投票中只能投一次。",
-        "href": "/minecraft#community-polls",
+        "a": "新闻可以包含可选投票。选择答案并提交，投票会保存。每个浏览器身份在每次投票中可参与一次。",
+        "href": "/minecraft#news",
         "action": "查看投票"
       },
       {
         "id": "gallery",
         "category": "community",
         "q": "如何提交图片或视频？",
-        "a": "在Minecraft或Fortnite社区作品区选择提交作品，附上图片或支持的视频链接、姓名和联系邮箱。审核批准前保持私密，邮箱不会公开。",
+        "a": "登录后在画廊提交图片或支持的视频及说明。账户自动显示，投稿在审核通过前保持私密。",
         "href": "/minecraft#community-gallery",
         "action": "查看作品"
       },
@@ -477,7 +478,7 @@
         "id": "notifications",
         "category": "community",
         "q": "如何管理网站通知？",
-        "a": "打开铃铛并在偏好中选择分类。偏好与已读状态按此浏览器身份保存在服务器。私密请求通知使用已保存的凭据。更换浏览器或清除Cookie会产生不同身份。",
+        "a": "从铃铛选择分类。公开通知的已读和偏好跟随浏览器，私密请求跟随账户。清除 Cookie 会改变浏览器身份。",
         "href": "/support",
         "action": "打开支持中心"
       },
@@ -485,7 +486,7 @@
         "id": "requests",
         "category": "support",
         "q": "在哪里跟进订单和申请？",
-        "a": "从支持菜单打开/requests。订单、创作者申请、支持和活动各有标签页。换浏览器时，使用凭据里的参考编号和私密跟踪码恢复请求。",
+        "a": "登录并打开我的请求。订单、申请、支持、活动和投稿有独立标签。通过同一账户可跨设备查看，无需追踪编号或代码。",
         "href": "/requests",
         "action": "我的申请"
       },
@@ -493,7 +494,7 @@
         "id": "news-events",
         "category": "community",
         "q": "新闻和活动在哪里发布？",
-        "a": "Minecraft和Fortnite各有独立的新闻栏目，汇集新闻与社区投票。活动和作品展仍在各自栏目中。已发布新闻也会显示在首页。点击“查看更多”可查看其他活动；报名时按活动要求填写Minecraft或Epic Games名称。",
+        "a": "每个游戏都有新闻区，新闻可以附带可选投票。已发布新闻也会显示在首页。活动和画廊仍保持独立。",
         "href": "/minecraft#events",
         "action": "查看活动"
       },
@@ -509,8 +510,8 @@
         "id": "permanent-features",
         "category": "community",
         "q": "新社区功能会永久保留吗？",
-        "a": "会。内容、投票、选票、作品提交、目标和通知设置都保存在数据库，部署更新后仍然保留。团队可以编辑或取消发布。排行和成就继续使用真实同步统计。",
-        "href": "/minecraft#community-polls",
+        "a": "新闻、文章内投票、票数、投稿和通知偏好保存在服务器。团队可以编辑或隐藏内容，统计数据来自实际服务器同步。",
+        "href": "/minecraft#news",
         "action": "查看投票"
       },
       {
@@ -528,6 +529,70 @@
         "a": "在整合包页面或详情中打开更新日志，选择项目及Modrinth或CurseForge以阅读已发布的版本说明。打开一个版本会关闭上一个。如果来源没有发布日志，会显示相应状态，而不会编造内容。",
         "href": "/modpacks#changelog",
         "action": "查看更新日志"
+      },
+      {
+        "id": "account-login",
+        "category": "accountSecurity",
+        "q": "如何登录或关联其他账户？",
+        "a": "使用已启用的邮箱、Discord、Google、Microsoft 或 Modrinth 选项。在我的账户 → 关联账户中添加方式，并保留可用的登录方式。",
+        "href": "/account",
+        "action": "登录"
+      },
+      {
+        "id": "public-profile",
+        "category": "accountSecurity",
+        "q": "如何创建公开个人资料？",
+        "a": "在我的账户 → 公开个人资料中选择用户名，编辑头像、横幅、简介和社交链接。地址为 /@username，只显示审核通过且已发布的投稿。",
+        "href": "/account?tab=profile",
+        "action": "公开个人资料"
+      },
+      {
+        "id": "minecraft-link",
+        "category": "accountSecurity",
+        "q": "如何验证 Minecraft 账户？",
+        "a": "在关联账户中生成代码，用同一玩家进入服务器并执行 /zo7allink CODE。代码有效期为十分钟，仅输入名字不能证明所有权。",
+        "href": "/account?tab=connections",
+        "action": "关联 Minecraft 账户"
+      },
+      {
+        "id": "two-factor",
+        "category": "accountSecurity",
+        "q": "如何启用双重验证？",
+        "a": "打开我的账户 → 安全，用验证器应用扫描二维码并确认六位代码。以后登录需要验证。",
+        "href": "/account?tab=security",
+        "action": "安全"
+      },
+      {
+        "id": "passkeys",
+        "category": "accountSecurity",
+        "q": "人脸或指纹登录如何工作？",
+        "a": "在支持的设备上从安全设置添加通行密钥。设备通过人脸、指纹或安全密钥确认身份，生物识别数据留在设备上。",
+        "href": "/account?tab=security",
+        "action": "通行密钥"
+      },
+      {
+        "id": "backup-codes",
+        "category": "accountSecurity",
+        "q": "如何使用备用代码？",
+        "a": "如果登录服务支持，请在安全设置生成并保存代码。每个代码仅能使用一次，重新生成会使旧代码失效。不支持时会明确提示。",
+        "href": "/account?tab=security",
+        "action": "安全"
+      },
+      {
+        "id": "discord-account-conflict",
+        "category": "accountSecurity",
+        "q": "为什么 Discord 提示已关联？",
+        "a": "它属于另一个 Zo7al 账户。用 Discord 登录该账户，先添加其他登录方式再解除关联，然后关联到目标账户。",
+        "href": "/account?tab=connections",
+        "action": "关联账户"
+      },
+      {
+        "id": "minecraft-bans",
+        "category": "accountSecurity",
+        "q": "在哪里查看 Minecraft 服务器封禁？",
+        "a": "关联 Minecraft 后打开账户设置或玩家资料。支持的服务器桥接会报告原因和截止时间；未同步或信息过期时会明确提示。",
+        "href": "/account?tab=player",
+        "action": "Minecraft 服务器封禁"
       }
     ],
     "clearSearch": "清除搜索",
@@ -686,7 +751,8 @@
     "cat_1v1v1": "1对1对1",
     "cat_RedvsBlue": "红蓝对战",
     "gamesAccount": "Zo7al Games 的 {platform} 账号。",
-    "cat_TeamBattle": "团队战斗"
+    "cat_TeamBattle": "团队战斗",
+    "social_github": "GitHub 上的代码和编程项目。"
   },
   "lost": {
     "eyebrow": "迷失太空",
@@ -986,9 +1052,14 @@
     "epic": "Epic Games显示名称",
     "allGames": "所有游戏",
     "mySubmissions": "我的投稿",
-    "submissionsIntro": "View status and updates saved to your account.",
+    "submissionsIntro": "通过账户查看状态和更新。",
     "status_approved": "已通过",
-    "profiles": "Profiles"
+    "profiles": "个人资料",
+    "addPoll": "为此新闻添加投票",
+    "pollQuestion": "投票问题",
+    "pollOptions": "选项 · 每行一个",
+    "pollEnds": "投票截止时间",
+    "pollImmutable": "有人投票后无法更改选项。"
   },
   "dashboard": {
     "dashboard": "控制面板",
@@ -1604,7 +1675,7 @@
     "accountIntro": "管理你的资料和关联账户。",
     "passwordHint": "使用 12–128 个字符的独立密码。",
     "emailSent": "请检查邮箱，并在当前浏览器中打开链接。",
-    "connectionsHint": "关联 Discord、Google、Microsoft 和 Minecraft，并至少保留一种登录方式。",
+    "connectionsHint": "关联 Discord、Google、Microsoft、Modrinth 和 Minecraft 玩家，并保留可用的登录方式。",
     "reauthHint": "如需验证，请在修改密码前向注册邮箱发送验证码。",
     "linkIntro": "在服务器内验证 Minecraft 账户，即可查看资料并为自己购买。",
     "linkInstructions": "使用此用户名进入 Zo7al，然后执行以下命令。",
@@ -1629,10 +1700,11 @@
       "MFA_CODE": "代码无效、已过期或已使用。",
       "MFA_UNAVAILABLE": "2FA设置或备用代码暂不可用，请稍后重试。",
       "MFA_APP_REQUIRED": "移除最后一个应用需要验证其代码。如已丢失，请先用备用代码添加新应用。",
-      "USERNAME_TAKEN": "Username already taken",
-      "DISCORD_REQUIRED": "Link Discord first",
-      "ACCOUNT_BANNED": "This account is banned",
-      "ACCOUNT_DELETED": "This profile has been deleted"
+      "USERNAME_TAKEN": "用户名已被使用",
+      "DISCORD_REQUIRED": "请先关联 Discord",
+      "ACCOUNT_BANNED": "此账户已被封禁",
+      "ACCOUNT_DELETED": "此个人资料已删除",
+      "IDENTITY_LINKED": "此 Discord 已关联其他 Zo7al 账户。请使用该账户登录，而不是在这里关联。"
     },
     "security": {
       "title": "双重验证",
@@ -1667,48 +1739,55 @@
       "regenerate": "重新生成代码",
       "generateCodes": "生成备用代码",
       "changeApp": "更换验证器应用",
-      "setup": "设置2FA"
+      "setup": "设置2FA",
+      "backupsUnavailable": "登录服务目前不提供备用代码。验证器应用仍可正常使用。"
     },
     "submissionLogin": "登录后可将投稿、申请和支持请求关联到你的账户，并跟踪处理进度。",
-    "publicProfile": "Public profile",
-    "username": "Username",
-    "avatar": "Profile picture",
-    "banner": "Banner",
-    "bio": "Bio",
-    "socialLinks": "Social links",
-    "submissions": "My submissions",
-    "profileIntro": "Choose your public username and personalize your profile.",
-    "linkDiscord": "Link Discord",
-    "imageURL": "HTTPS image URL",
-    "uploadImage": "Upload image",
-    "profileSaved": "Profile saved",
-    "banned": "Banned",
-    "permanent": "Permanent",
-    "banUntil": "Until",
-    "banReason": "Reason",
-    "banStatus": "Minecraft server bans",
-    "banUnknown": "No ban information synced yet",
-    "noBans": "No active bans reported by your servers",
-    "viewProfile": "View profile",
-    "profiles": "Profiles",
-    "banAccount": "Ban account",
-    "unbanAccount": "Remove ban",
-    "deleteAccount": "Delete profile",
-    "temporaryBan": "Temporary ban",
-    "searchMembers": "Search profiles",
-    "confirmDelete": "Delete this profile? It will be hidden and site access revoked.",
-    "deleted": "Deleted",
-    "profileNotFound": "Profile not found",
-    "passkeys": "Passkeys",
-    "passkeyIntro": "Sign in using your device’s fingerprint, face recognition, or security key.",
-    "addPasskey": "Add passkey",
-    "signinPasskey": "Sign in with a passkey",
-    "removePasskey": "Remove",
-    "passkeyUnavailable": "Passkeys are not enabled yet.",
-    "passkeyCancelled": "The request was cancelled or could not be completed.",
-    "noSubmissions": "No published submissions yet",
-    "emptyPermanent": "Leave the date empty for a permanent ban.",
-    "durationUnknown": "Ban duration unavailable",
-    "banStale": "Last synced state; it may have changed."
+    "publicProfile": "公开个人资料",
+    "username": "用户名",
+    "avatar": "头像",
+    "banner": "横幅",
+    "bio": "个人简介",
+    "socialLinks": "社交链接",
+    "submissions": "我的投稿",
+    "profileIntro": "选择公开用户名并自定义个人资料。",
+    "linkDiscord": "关联 Discord",
+    "imageURL": "图片 HTTPS 地址",
+    "uploadImage": "上传图片",
+    "profileSaved": "个人资料已保存",
+    "banned": "已封禁",
+    "permanent": "永久",
+    "banUntil": "截止时间",
+    "banReason": "原因",
+    "banStatus": "Minecraft 服务器封禁",
+    "banUnknown": "尚未同步封禁信息",
+    "noBans": "服务器未报告有效封禁",
+    "viewProfile": "查看个人资料",
+    "profiles": "个人资料",
+    "banAccount": "封禁账户",
+    "unbanAccount": "解除封禁",
+    "deleteAccount": "删除个人资料",
+    "temporaryBan": "临时封禁",
+    "searchMembers": "搜索个人资料",
+    "confirmDelete": "确定删除此个人资料吗？资料将被隐藏，网站访问权限将被撤销。",
+    "deleted": "已删除",
+    "profileNotFound": "未找到个人资料",
+    "passkeys": "通行密钥",
+    "passkeyIntro": "使用设备的指纹、人脸识别或安全密钥登录。",
+    "addPasskey": "添加通行密钥",
+    "signinPasskey": "使用通行密钥登录",
+    "removePasskey": "移除",
+    "passkeyUnavailable": "尚未启用通行密钥。",
+    "passkeyCancelled": "请求已取消或无法完成。",
+    "noSubmissions": "暂无已发布的投稿",
+    "emptyPermanent": "永久封禁请留空日期。",
+    "durationUnknown": "无法获取封禁时长",
+    "banStale": "这是上次同步的状态，可能已经改变。",
+    "profile": "公开个人资料",
+    "securityTab": "安全",
+    "identityLinked": "此 Discord 已关联其他 Zo7al 账户。请使用该账户登录，而不是在这里关联。",
+    "linkMinecraft": "关联 Minecraft",
+    "minecraftRequired": "申请前请关联 Minecraft 账户。",
+    "useLinkedDiscord": "登录已关联 Discord 的账户"
   }
 }

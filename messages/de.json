@@ -258,7 +258,8 @@
       "fortnite": "Fortnite",
       "modpacks": "Modpakete",
       "community": "Community",
-      "support": "Support und Anfragen"
+      "support": "Support und Anfragen",
+      "accountSecurity": "Konto & Sicherheit"
     },
     "items": [
       {
@@ -300,7 +301,7 @@
       {
         "category": "storeRanks",
         "q": "Wie kaufe ich einen Rang?",
-        "a": "Lege unter /store einen Rang in den Warenkorb. Gib dort deinen genauen Minecraft-Namen ein, prüfe die Produkte und bezahle über Tebex. Booster erhältst du durch einen Discord-Server-Boost.",
+        "a": "Melde dich an und verknüpfe Minecraft vor dem Kauf. Normale Käufe verwenden deinen bestätigten Spieler; im Geschenkmodus wählst du den Empfänger. Bezahle nach Prüfung über Tebex.",
         "id": "buy",
         "href": "/store",
         "action": "Shop öffnen"
@@ -358,7 +359,7 @@
       {
         "category": "support",
         "q": "Wie melde ich ein Problem?",
-        "a": "Unter /support findest du häufige Fehler und ein Anfrageformular. Problem melden in den Projektdetails übernimmt Projekt und Version. Bewahre den Beleg für die Verfolgung unter /requests auf.",
+        "a": "Melde dich an und sende einen Bericht im Support. Unter Meine Anfragen kannst du ihn mit demselben Konto auf jedem Gerät verfolgen.",
         "id": "report",
         "href": "/support?tab=report",
         "action": "Support öffnen"
@@ -396,7 +397,7 @@
       {
         "category": "storeRanks",
         "q": "Wie bewerbe ich mich für einen Creator-Rang?",
-        "a": "Öffne /store und wähle unter Coins einen Creator-Rang für YouTube, Twitch oder TikTok. Gib E-Mail, Minecraft- und Discord-Namen, Kanallink und Inhaltsdetails an. Das Team prüft die Bewerbung; der Rang wird nicht automatisch vergeben.",
+        "a": "Melde dich an, verknüpfe Discord und bestätige Minecraft. Wähle einen Creator-Rang und ergänze Kanal und Inhaltsdetails; verknüpfte Kontodaten werden automatisch übernommen. Das Team prüft Bewerbungen.",
         "id": "creator-apply",
         "href": "/store",
         "action": "Shop öffnen"
@@ -429,7 +430,7 @@
         "id": "player-profile",
         "category": "minecraft",
         "q": "Wo finde ich mein Minecraft-Profil?",
-        "a": "Bestätige Minecraft im Server, um dein Profil zu sehen und für dich einzukaufen. Betritt Zo7al mit diesem Namen und führe diesen Befehl aus. Der Code läuft nach 10 Minuten ab. Teile ihn nicht.",
+        "a": "Öffne Mein Konto → Spielerprofil nach der Minecraft-Bestätigung per Serverbefehl. Dort erscheinen synchronisierte Serverdaten.",
         "href": "/account?tab=player",
         "action": "Spielerprofil"
       },
@@ -461,15 +462,15 @@
         "id": "polls",
         "category": "community",
         "q": "Wie funktionieren Abstimmungen?",
-        "a": "Abstimmungen stehen zusammen mit Neuigkeiten im Nachrichtenbereich des jeweiligen Spiels. Wähle bei einer offenen Abstimmung eine Option und gib deine Stimme ab. Stimmen und Ergebnisse werden gespeichert; nach dem Neuladen im selben Browser erscheint deine Auswahl wieder. Jede Browseridentität kann je Abstimmung einmal wählen.",
-        "href": "/minecraft#community-polls",
+        "a": "Eine Nachricht kann eine optionale Abstimmung enthalten. Wähle eine Option; Stimmen werden gespeichert. Jede Browseridentität darf einmal pro Abstimmung wählen.",
+        "href": "/minecraft#news",
         "action": "Abstimmungen ansehen"
       },
       {
         "id": "gallery",
         "category": "community",
         "q": "Wie reiche ich ein Bild oder Video ein?",
-        "a": "Nutze Werk einreichen in der Minecraft- oder Fortnite-Galerie. Füge Bild oder unterstützten Videolink, Namen und E-Mail hinzu. Beiträge bleiben bis zur Freigabe privat; deine E-Mail wird nicht veröffentlicht.",
+        "a": "Melde dich an und reiche in der Galerie ein Bild oder unterstütztes Video mit Details ein. Dein Konto erscheint automatisch; Beiträge bleiben bis zur Freigabe privat.",
         "href": "/minecraft#community-gallery",
         "action": "Galerie ansehen"
       },
@@ -477,7 +478,7 @@
         "id": "notifications",
         "category": "community",
         "q": "Wie verwalte ich Benachrichtigungen?",
-        "a": "Öffne die Glocke und wähle Kategorien in den Einstellungen. Einstellungen und Lesestatus werden für diesen Browser auf dem Server gespeichert. Private Anfragen nutzen gespeicherte Belege. Browserwechsel oder gelöschte Cookies erzeugen eine andere Identität.",
+        "a": "Wähle Kategorien über die Glocke. Öffentliche Lesemarkierungen und Einstellungen folgen der Browseridentität, private Anfragen deinem Konto. Gelöschte Cookies ändern die Browseridentität.",
         "href": "/support",
         "action": "Support öffnen"
       },
@@ -485,7 +486,7 @@
         "id": "requests",
         "category": "support",
         "q": "Wo verfolge ich Bestellungen und Bewerbungen?",
-        "a": "Öffne /requests über Support. Tabs trennen Bestellungen, Bewerbungen, Support und Events. Mit Referenz und privatem Code aus dem Beleg kannst du eine Anfrage in einem anderen Browser wiederherstellen.",
+        "a": "Melde dich an und öffne Meine Anfragen. Bestellungen, Bewerbungen, Support, Veranstaltungen und Beiträge haben eigene Tabs. Sie folgen deinem Konto geräteübergreifend, ohne Referenz oder Trackingcode.",
         "href": "/requests",
         "action": "Meine Anfragen"
       },
@@ -493,7 +494,7 @@
         "id": "news-events",
         "category": "community",
         "q": "Wo erscheinen Neuigkeiten und Events?",
-        "a": "Minecraft und Fortnite haben eigene Nachrichtenbereiche mit Neuigkeiten und Abstimmungen. Veranstaltungen und Galerien bleiben getrennt. Veröffentlichte Neuigkeiten erscheinen auch auf der Startseite. Weitere Veranstaltungen findest du über Mehr anzeigen; zur Anmeldung wird je nach Veranstaltung dein Minecraft- oder Epic Games-Name benötigt.",
+        "a": "Jedes Spiel hat einen Nachrichtenbereich; Nachrichten können Abstimmungen enthalten. Veröffentlichte Nachrichten erscheinen auch auf der Startseite. Veranstaltungen und Galerien bleiben getrennt.",
         "href": "/minecraft#events",
         "action": "Events ansehen"
       },
@@ -509,8 +510,8 @@
         "id": "permanent-features",
         "category": "community",
         "q": "Bleiben die neuen Funktionen dauerhaft?",
-        "a": "Ja. Inhalte, Abstimmungen, Stimmen, Einreichungen, Ziele und Einstellungen bleiben nach Deployments in der Datenbank. Das Team kann Inhalte ändern oder zurückziehen. Ranglisten und Erfolge nutzen echte Statistiken.",
-        "href": "/minecraft#community-polls",
+        "a": "Nachrichten, eingebettete Abstimmungen, Stimmen, Beiträge und Benachrichtigungseinstellungen werden auf dem Server gespeichert. Das Team kann Inhalte ändern oder ausblenden; Statistiken stammen aus echter Serversynchronisierung.",
+        "href": "/minecraft#news",
         "action": "Abstimmungen ansehen"
       },
       {
@@ -528,6 +529,70 @@
         "a": "Öffne das Änderungsprotokoll auf der Modpack-Seite oder in den Modpack-Details. Wähle ein Projekt und Modrinth oder CurseForge, um veröffentlichte Versionshinweise zu lesen. Beim Öffnen einer Version wird die vorherige geschlossen. Fehlende Hinweise werden als solche angezeigt und nicht erfunden.",
         "href": "/modpacks#changelog",
         "action": "Änderungsprotokoll ansehen"
+      },
+      {
+        "id": "account-login",
+        "category": "accountSecurity",
+        "q": "Wie melde ich mich an oder verknüpfe ein weiteres Konto?",
+        "a": "Nutze die aktivierten Optionen für E-Mail, Discord, Google, Microsoft oder Modrinth. Weitere Methoden verknüpfst du unter Mein Konto → Verknüpfte Konten. Behalte eine nutzbare Anmeldemethode.",
+        "href": "/account",
+        "action": "Anmelden"
+      },
+      {
+        "id": "public-profile",
+        "category": "accountSecurity",
+        "q": "Wie erstelle ich mein öffentliches Profil?",
+        "a": "Wähle unter Mein Konto → Öffentliches Profil einen Benutzernamen und bearbeite Bild, Banner, Beschreibung und soziale Links. Deine Adresse ist /@username; nur freigegebene veröffentlichte Beiträge erscheinen.",
+        "href": "/account?tab=profile",
+        "action": "Öffentliches Profil"
+      },
+      {
+        "id": "minecraft-link",
+        "category": "accountSecurity",
+        "q": "Wie bestätige ich mein Minecraft-Konto?",
+        "a": "Erstelle einen Code unter Verknüpfte Konten, betritt den Server als dieser Spieler und führe /zo7allink CODE aus. Der Code gilt zehn Minuten; ein eingegebener Name beweist kein Eigentum.",
+        "href": "/account?tab=connections",
+        "action": "Minecraft-Konto verknüpfen"
+      },
+      {
+        "id": "two-factor",
+        "category": "accountSecurity",
+        "q": "Wie aktiviere ich 2FA?",
+        "a": "Öffne Mein Konto → Sicherheit, scanne den QR-Code mit einer Authenticator-App und bestätige ihren sechsstelligen Code. Weitere Anmeldungen benötigen die Bestätigung.",
+        "href": "/account?tab=security",
+        "action": "Sicherheit"
+      },
+      {
+        "id": "passkeys",
+        "category": "accountSecurity",
+        "q": "Wie funktioniert die Anmeldung per Gesicht oder Fingerabdruck?",
+        "a": "Füge unter Sicherheit auf einem unterstützten Gerät einen Passkey hinzu. Das Gerät bestätigt dich per Fingerabdruck, Gesicht oder Sicherheitsschlüssel; biometrische Daten bleiben auf dem Gerät.",
+        "href": "/account?tab=security",
+        "action": "Passkeys"
+      },
+      {
+        "id": "backup-codes",
+        "category": "accountSecurity",
+        "q": "Wie verwende ich Ersatzcodes?",
+        "a": "Wenn der Anmeldedienst sie unterstützt, erstelle und sichere Codes unter Sicherheit. Jeder funktioniert einmal; neue Codes machen alte ungültig. Nicht verfügbare Codes werden klar angezeigt.",
+        "href": "/account?tab=security",
+        "action": "Sicherheit"
+      },
+      {
+        "id": "discord-account-conflict",
+        "category": "accountSecurity",
+        "q": "Warum ist Discord bereits verknüpft?",
+        "a": "Es gehört zu einem anderen Zo7al-Konto. Melde dich dort mit Discord an, ergänze vor dem Lösen eine andere Anmeldemethode und verknüpfe Discord danach mit dem gewünschten Konto.",
+        "href": "/account?tab=connections",
+        "action": "Verknüpfte Konten"
+      },
+      {
+        "id": "minecraft-bans",
+        "category": "accountSecurity",
+        "q": "Wo sehe ich eine Minecraft-Serversperre?",
+        "a": "Öffne nach der Minecraft-Verknüpfung Kontoeinstellungen oder Spielerprofil. Unterstützte Server-Bridges melden Grund und Ablauf; fehlende oder veraltete Synchronisierung wird angezeigt.",
+        "href": "/account?tab=player",
+        "action": "Sperren auf Minecraft-Servern"
       }
     ],
     "clearSearch": "Suche löschen",
@@ -686,7 +751,8 @@
     "cat_1v1v1": "1 gegen 1 gegen 1",
     "cat_RedvsBlue": "Rot gegen Blau",
     "gamesAccount": "Zo7al Games auf {platform}.",
-    "cat_TeamBattle": "Teamkampf"
+    "cat_TeamBattle": "Teamkampf",
+    "social_github": "Code und Programmierprojekte auf GitHub."
   },
   "lost": {
     "eyebrow": "Im Weltall verloren",
@@ -986,9 +1052,14 @@
     "epic": "Epic-Games-Anzeigename",
     "allGames": "Alle Spiele",
     "mySubmissions": "Meine Beiträge",
-    "submissionsIntro": "View status and updates saved to your account.",
+    "submissionsIntro": "Verfolge Status und Neuigkeiten über dein Konto.",
     "status_approved": "Angenommen",
-    "profiles": "Profiles"
+    "profiles": "Profile",
+    "addPoll": "Abstimmung zu dieser Nachricht hinzufügen",
+    "pollQuestion": "Frage der Abstimmung",
+    "pollOptions": "Optionen · eine pro Zeile",
+    "pollEnds": "Ende der Abstimmung",
+    "pollImmutable": "Nach dem ersten Stimmabgeben können Optionen nicht mehr geändert werden."
   },
   "dashboard": {
     "dashboard": "Dashboard",
@@ -1604,7 +1675,7 @@
     "accountIntro": "Verwalte dein Profil und verknüpfte Konten.",
     "passwordHint": "Verwende ein eigenes Passwort mit 12–128 Zeichen.",
     "emailSent": "Prüfe deine E-Mails und öffne den Link in diesem Browser.",
-    "connectionsHint": "Verknüpfe Discord, Google, Microsoft und Minecraft. Behalte mindestens eine Anmeldemethode.",
+    "connectionsHint": "Verknüpfe Discord, Google, Microsoft, Modrinth und deinen Minecraft-Spieler. Behalte eine nutzbare Anmeldemethode.",
     "reauthHint": "Sende bei Bedarf vor der Passwortänderung einen Code an deine E-Mail.",
     "linkIntro": "Bestätige Minecraft im Server, um dein Profil zu sehen und für dich einzukaufen.",
     "linkInstructions": "Betritt Zo7al mit diesem Namen und führe diesen Befehl aus.",
@@ -1629,10 +1700,11 @@
       "MFA_CODE": "Der Code ist ungültig, abgelaufen oder bereits benutzt.",
       "MFA_UNAVAILABLE": "2FA-Einrichtung oder Ersatzcodes sind nicht verfügbar. Versuche es später erneut.",
       "MFA_APP_REQUIRED": "Bestätige mit dem Code der letzten App, um sie zu entfernen. Bei Verlust zuerst mit einem Ersatzcode eine neue App hinzufügen.",
-      "USERNAME_TAKEN": "Username already taken",
-      "DISCORD_REQUIRED": "Link Discord first",
-      "ACCOUNT_BANNED": "This account is banned",
-      "ACCOUNT_DELETED": "This profile has been deleted"
+      "USERNAME_TAKEN": "Benutzername bereits vergeben",
+      "DISCORD_REQUIRED": "Verknüpfe zuerst Discord",
+      "ACCOUNT_BANNED": "Dieses Konto ist gesperrt",
+      "ACCOUNT_DELETED": "Dieses Profil wurde gelöscht",
+      "IDENTITY_LINKED": "Dieses Discord-Konto gehört zu einem anderen Zo7al-Konto. Melde dich damit an, statt es hier zu verknüpfen."
     },
     "security": {
       "title": "Zwei-Faktor-Authentifizierung",
@@ -1667,48 +1739,55 @@
       "regenerate": "Codes erneuern",
       "generateCodes": "Ersatzcodes erstellen",
       "changeApp": "Authenticator-App wechseln",
-      "setup": "2FA einrichten"
+      "setup": "2FA einrichten",
+      "backupsUnavailable": "Ersatzcodes sind beim Anmeldedienst derzeit nicht verfügbar. Die Authenticator-App bleibt nutzbar."
     },
     "submissionLogin": "Melde dich an, um Beiträge, Bewerbungen und Supportanfragen mit deinem Konto zu verknüpfen und ihren Status zu verfolgen.",
-    "publicProfile": "Public profile",
-    "username": "Username",
-    "avatar": "Profile picture",
+    "publicProfile": "Öffentliches Profil",
+    "username": "Benutzername",
+    "avatar": "Profilbild",
     "banner": "Banner",
-    "bio": "Bio",
-    "socialLinks": "Social links",
-    "submissions": "My submissions",
-    "profileIntro": "Choose your public username and personalize your profile.",
-    "linkDiscord": "Link Discord",
-    "imageURL": "HTTPS image URL",
-    "uploadImage": "Upload image",
-    "profileSaved": "Profile saved",
-    "banned": "Banned",
-    "permanent": "Permanent",
-    "banUntil": "Until",
-    "banReason": "Reason",
-    "banStatus": "Minecraft server bans",
-    "banUnknown": "No ban information synced yet",
-    "noBans": "No active bans reported by your servers",
-    "viewProfile": "View profile",
-    "profiles": "Profiles",
-    "banAccount": "Ban account",
-    "unbanAccount": "Remove ban",
-    "deleteAccount": "Delete profile",
-    "temporaryBan": "Temporary ban",
-    "searchMembers": "Search profiles",
-    "confirmDelete": "Delete this profile? It will be hidden and site access revoked.",
-    "deleted": "Deleted",
-    "profileNotFound": "Profile not found",
+    "bio": "Über mich",
+    "socialLinks": "Soziale Links",
+    "submissions": "Meine Beiträge",
+    "profileIntro": "Wähle deinen öffentlichen Benutzernamen und gestalte dein Profil.",
+    "linkDiscord": "Discord verknüpfen",
+    "imageURL": "HTTPS-Bildadresse",
+    "uploadImage": "Bild hochladen",
+    "profileSaved": "Profil gespeichert",
+    "banned": "Gesperrt",
+    "permanent": "Dauerhaft",
+    "banUntil": "Bis",
+    "banReason": "Grund",
+    "banStatus": "Sperren auf Minecraft-Servern",
+    "banUnknown": "Noch keine Sperrinformationen synchronisiert",
+    "noBans": "Keine aktiven Sperren von deinen Servern gemeldet",
+    "viewProfile": "Profil ansehen",
+    "profiles": "Profile",
+    "banAccount": "Konto sperren",
+    "unbanAccount": "Sperre aufheben",
+    "deleteAccount": "Profil löschen",
+    "temporaryBan": "Zeitlich begrenzte Sperre",
+    "searchMembers": "Profile suchen",
+    "confirmDelete": "Dieses Profil löschen? Es wird ausgeblendet und der Website-Zugang gesperrt.",
+    "deleted": "Gelöscht",
+    "profileNotFound": "Profil nicht gefunden",
     "passkeys": "Passkeys",
-    "passkeyIntro": "Sign in using your device’s fingerprint, face recognition, or security key.",
-    "addPasskey": "Add passkey",
-    "signinPasskey": "Sign in with a passkey",
-    "removePasskey": "Remove",
-    "passkeyUnavailable": "Passkeys are not enabled yet.",
-    "passkeyCancelled": "The request was cancelled or could not be completed.",
-    "noSubmissions": "No published submissions yet",
-    "emptyPermanent": "Leave the date empty for a permanent ban.",
-    "durationUnknown": "Ban duration unavailable",
-    "banStale": "Last synced state; it may have changed."
+    "passkeyIntro": "Melde dich mit Fingerabdruck, Gesichtserkennung oder Sicherheitsschlüssel deines Geräts an.",
+    "addPasskey": "Passkey hinzufügen",
+    "signinPasskey": "Mit Passkey anmelden",
+    "removePasskey": "Entfernen",
+    "passkeyUnavailable": "Passkeys sind noch nicht aktiviert.",
+    "passkeyCancelled": "Die Anfrage wurde abgebrochen oder konnte nicht abgeschlossen werden.",
+    "noSubmissions": "Noch keine veröffentlichten Beiträge",
+    "emptyPermanent": "Lass das Datum für eine dauerhafte Sperre leer.",
+    "durationUnknown": "Sperrdauer nicht verfügbar",
+    "banStale": "Zuletzt synchronisierter Stand; er kann sich geändert haben.",
+    "profile": "Öffentliches Profil",
+    "securityTab": "Sicherheit",
+    "identityLinked": "Dieses Discord-Konto gehört zu einem anderen Zo7al-Konto. Melde dich damit an, statt es hier zu verknüpfen.",
+    "linkMinecraft": "Minecraft verknüpfen",
+    "minecraftRequired": "Verknüpfe dein Minecraft-Konto vor der Bewerbung.",
+    "useLinkedDiscord": "Beim mit Discord verknüpften Konto anmelden"
   }
 }

@@ -22,10 +22,10 @@ const envKeys=['SUPABASE_URL','SUPABASE_PUBLISHABLE_KEY','DATABASE_URL','ZO7AL_S
 const savedEnv=Object.fromEntries(envKeys.map(k=>[k,process.env[k]]));
 Object.assign(process.env,{SUPABASE_URL:'https://auth.zo7al.test',SUPABASE_PUBLISHABLE_KEY:'sb_publishable_test',DATABASE_URL:'test',ZO7AL_ACCOUNT_MFA_ENABLED:'true'});delete process.env.ZO7AL_SITE_URL;
 const originalFetch=globalThis.fetch,userId='a1234567-1234-1234-1234-123456789abc';
-let user,factors,tokens,refreshes,calls,used,backupHashes,backupFactor,sequence;
+let user,factors,tokens,refreshes,calls,used,backupHashes,backupFactor,sequence,backupEnabled=true;
 const hash=s=>createHash('sha256').update(s.replace(/[\s-]/g,'').toLowerCase()).digest('hex');
 function mint(aal='aal1') {const access='eyJhbGciOiJIUzI1NiJ9.'+Buffer.from(JSON.stringify({sub:userId,aal,nonce:++sequence})).toString('base64url')+'.trusted',refresh='refresh-'+sequence;tokens.set(access,{aal});refreshes.set(refresh,access);return {access_token:access,refresh_token:refresh,expires_in:3600};}
-function reset() {factors=[];tokens=new Map();refreshes=new Map();calls=[];used=new Set();backupHashes=new Set();backupFactor=null;sequence=0;user={id:userId,email:'private@example.com',user_metadata:{full_name:'Private Member',aal:'aal2'},identities:[{id:'google',provider:'google'},{id:'discord',provider:'discord'}]};globalThis.__mfaTests.allowed=true;process.env.ZO7AL_ACCOUNT_MFA_ENABLED='true';return mint();}
+function reset() {backupEnabled=true;factors=[];tokens=new Map();refreshes=new Map();calls=[];used=new Set();backupHashes=new Set();backupFactor=null;sequence=0;user={id:userId,email:'private@example.com',user_metadata:{full_name:'Private Member',aal:'aal2'},identities:[{id:'google',provider:'google'},{id:'discord',provider:'discord'}]};globalThis.__mfaTests.allowed=true;process.env.ZO7AL_ACCOUNT_MFA_ENABLED='true';return mint();}
 const view=()=>({...user,factors:[...factors,...(backupFactor?[backupFactor]:[])]});
 const bad=(error_code,status=422)=>Response.json({error_code},{status});
 globalThis.fetch=async(url,options={})=>{
@@ -39,6 +39,7 @@ globalThis.fetch=async(url,options={})=>{
  if(!session)return bad('bad_jwt',401);
  if(path==='/user')return Response.json(view());
  if(path==='/factors'&&options.method==='POST') {const f={id:randomUUID(),status:'unverified',factor_type:'totp',friendly_name:body.friendly_name};factors.push(f);return Response.json({id:f.id,totp:{qr_code:'<svg xmlns="http://www.w3.org/2000/svg"></svg>',secret:'JBSWY3DPEHPK3PXP'}});}
+ if(path.startsWith('/factors/recovery-codes')&&!backupEnabled)return bad('mfa_recovery_codes_not_enabled',404);
  if(path==='/factors/recovery-codes/verify') {
   const key=hash(body.code);if(!backupHashes.delete(key))return bad('mfa_verification_failed');return Response.json(mint('aal2'));
  }
@@ -76,7 +77,7 @@ test('first-factor sessions cannot view member data, mutate accounts, link ident
 });
 test('enrollment needs a correct app code; activation returns backups once, only in a private response',async()=>{
  const initial=reset();delete process.env.ZO7AL_ACCOUNT_MFA_ENABLED;
- assert.equal((await post({action:'enroll'},initial.access_token)).status,503);process.env.ZO7AL_ACCOUNT_MFA_ENABLED='true';
+
  const start=await post({action:'enroll'},initial.access_token),enrollment=await start.json();assert.equal(start.status,200);assert.equal(start.headers.get('cache-control'),'private, no-store');assert.ok(enrollment.secret);
  const wrong=await post({action:'confirm',factorId:enrollment.id,code:'000000'},initial.access_token);assert.equal((await wrong.json()).error,'MFA_CODE');assert.equal(factors[0].status,'unverified');assert.equal(wrong.headers.get('set-cookie'),null);
  const confirmed=await post({action:'confirm',factorId:enrollment.id,code:'123456'},initial.access_token),data=await confirmed.json();assert.equal(confirmed.status,200);assert.equal(data.codes.length,10);assert.match(data.codes[0],/^[A-Z0-9]{4}(-[A-Z0-9]{4}){3}$/);assert.match(confirmed.headers.get('set-cookie'),/HttpOnly/);
@@ -129,4 +130,14 @@ test('password and OAuth completion enter the challenge; token refresh cannot sk
  const expired=request('/api/account',null,null,{cookie:auth.ACCOUNT_ACCESS+'=expired; '+auth.ACCOUNT_REFRESH+'='+initial.refresh_token});
  const view=await account.GET(expired);assert.equal((await view.json()).mfaRequired,true);assert.ok(view.headers.get('set-cookie'));
  const verify=await post({action:'verify',factorId:factors[0].id,code:'123456'},view.headers);assert.equal(verify.status,200);
+});
+
+test("TOTP enrollment and challenge remain usable when native backup codes are unavailable",async()=>{
+ const initial=reset();backupEnabled=false;delete process.env.ZO7AL_ACCOUNT_MFA_ENABLED;
+ const before=await(await mfa.GET(request("/api/account/mfa",null,initial.access_token))).json();assert.equal(before.enabled,false);assert.equal(before.recovery.available,false);
+ const start=await post({action:"enroll"},initial.access_token),enrollment=await start.json();assert.equal(start.status,200);
+ const confirmed=await post({action:"confirm",factorId:enrollment.id,code:"987654"},initial.access_token),data=await confirmed.json();assert.equal(confirmed.status,200);assert.equal(data.recoveryError,"MFA_UNAVAILABLE");
+ const status=await mfa.GET(request("/api/account/mfa",null,confirmed.headers));assert.equal(status.status,200);assert.equal((await status.json()).enabled,true);
+ const blocked=await account.GET(request("/api/account",null,initial.access_token));assert.equal((await blocked.json()).mfaRequired,true);
+ const verified=await post({action:"verify",factorId:enrollment.id,code:"876543"},initial.access_token);assert.equal(verified.status,200);
 });

@@ -10,7 +10,7 @@ export const ACCOUNT_REFRESH = secure ? '__Host-zo7al-refresh' : 'zo7al-refresh'
 const FLOW_COOKIE = secure ? '__Host-zo7al-account-flow' : 'zo7al-account-flow';
 export type AuthFactor = { id: string; factor_type: string; status: string; friendly_name?: string };
 export type AuthUser = { id: string; email?: string; email_confirmed_at?: string; user_metadata?: Record<string, unknown>; app_metadata?: Record<string, unknown>; identities?: { id: string; identity_id?: string; provider: string; identity_data?:Record<string,unknown> }[]; factors?: AuthFactor[] };
-export type AuthResult = { access_token?: string; refresh_token?: string; expires_in?: number; user?: AuthUser; url?: string; external?: Record<string, boolean>; email?: boolean; code?: string; msg?: string; id?: string; type?: string; totp?: {qr_code:string;secret:string;uri:string}; codes?:string[]; total?:number; remaining?:number };
+export type AuthResult = { access_token?: string; refresh_token?: string; expires_in?: number; user?: AuthUser; url?: string; external?: Record<string, boolean>; passkeys_enabled?: boolean; email?: boolean; code?: string; msg?: string; id?: string; type?: string; totp?: {qr_code:string;secret:string;uri:string}; codes?:string[]; total?:number; remaining?:number };
 export class AccountError extends Error { constructor(public code: string, public status = 400) { super(code); } }
 export function accountConfigured() { return !!process.env.SUPABASE_URL && !!process.env.SUPABASE_PUBLISHABLE_KEY && !!process.env.DATABASE_URL; }
 export function publicOrigin(request: Request) {
@@ -41,7 +41,7 @@ export async function authRequest(path: string, method = 'GET', body?: unknown, 
   const data = await response.json().catch(() => ({}));
   if (!response.ok) {
     const reason=data.error_code??data.code;
-    const code = response.status === 429 ? 'RATE_LIMIT' : response.status >= 500 ? 'UNAVAILABLE' : ['invalid_credentials','user_not_found'].includes(reason) ? 'CREDENTIALS' : reason === 'email_not_confirmed' ? 'EMAIL_CONFIRM' : ['weak_password','same_password'].includes(reason) ? 'PASSWORD' : ['provider_disabled','identity_already_exists','manual_linking_disabled'].includes(reason) ? 'PROVIDER' : ['session_not_found','refresh_token_not_found','refresh_token_already_used','bad_jwt'].includes(reason) || response.status === 401 ? 'AUTH_EXPIRED' : path.startsWith('/passkeys')&&(response.status===404||/passkey_disabled|webauthn_/.test(reason??''))?'PASSKEY_UNAVAILABLE':reason==='mfa_factor_not_found'?'MFA_NOT_FOUND':reason==='insufficient_aal'?'MFA_REQUIRED':['mfa_verification_failed','mfa_verification_rejected','mfa_challenge_expired'].includes(reason)?'MFA_CODE':path.startsWith('/factors')&&(response.status===404||/not_enabled|disabled/.test(reason??''))?'MFA_UNAVAILABLE':'INVALID';
+    const code = response.status === 429 ? 'RATE_LIMIT' : response.status >= 500 ? 'UNAVAILABLE' : ['invalid_credentials','user_not_found'].includes(reason) ? 'CREDENTIALS' : reason === 'email_not_confirmed' ? 'EMAIL_CONFIRM' : ['weak_password','same_password'].includes(reason) ? 'PASSWORD' : reason==='identity_already_exists'?'IDENTITY_LINKED':['provider_disabled','manual_linking_disabled'].includes(reason) ? 'PROVIDER' : ['session_not_found','refresh_token_not_found','refresh_token_already_used','bad_jwt'].includes(reason) || response.status === 401 ? 'AUTH_EXPIRED' : path.startsWith('/passkeys')&&(response.status===404||/passkey_disabled|webauthn_/.test(reason??''))?'PASSKEY_UNAVAILABLE':reason==='mfa_factor_not_found'?'MFA_NOT_FOUND':reason==='insufficient_aal'?'MFA_REQUIRED':['mfa_verification_failed','mfa_verification_rejected','mfa_challenge_expired'].includes(reason)?'MFA_CODE':path.startsWith('/factors')&&(response.status===404||/not_enabled|disabled/.test(reason??''))?'MFA_UNAVAILABLE':'INVALID';
     throw new AccountError(code, response.status === 429 ? 429 : response.status >= 500 ? 503 : response.status === 401 ? 401 : 400);
   }
   return data;
@@ -109,3 +109,9 @@ export async function finishAccountFlow(request: Request, headers: Headers, code
   if(accountRequiresMFA(user,result.access_token!))return '/account?mfa=1&next='+encodeURIComponent(flow.purpose==='recover'?'/account?tab=password&recovery=1':accountNext(flow.next_path));
   return flow.purpose === 'recover' ? '/account?tab=password&recovery=1' : accountNext(flow.next_path);
 }
+
+export function accountProviderEnabled(provider:string,settings:AuthResult) {
+  if(provider==='custom:modrinth')return process.env.ZO7AL_ACCOUNT_MODRINTH_ENABLED==='true'&&!!process.env.MODRINTH_MEMBER_CLIENT_ID&&!!process.env.MODRINTH_MEMBER_CLIENT_SECRET;
+  return settings.external?.[provider]===true;
+}
+export async function accountPasskeysEnabled() { return (await authRequest('/settings')).passkeys_enabled===true; }

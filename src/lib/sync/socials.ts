@@ -16,6 +16,7 @@ const LINKTREE_URL = "https://linktr.ee/Zo7al";
 const OWN_SLUG = "zo7al";
 
 const PLATFORM_LABELS: Record<string, string> = {
+  github: "GitHub",
   youtube: "YouTube",
   discord: "Discord",
   tiktok: "TikTok",
@@ -40,6 +41,7 @@ const PLATFORM_LABELS: Record<string, string> = {
 };
 
 const PLATFORM_COLORS: Record<string, string> = {
+  github: "#FFFFFF",
   youtube: "#FF0000",
   discord: "#5865F2",
   tiktok: "#000000",

@@ -258,7 +258,8 @@
       "fortnite": "포트나이트",
       "modpacks": "모드팩",
       "community": "커뮤니티",
-      "support": "지원과 신청"
+      "support": "지원과 신청",
+      "accountSecurity": "계정 및 보안"
     },
     "items": [
       {
@@ -300,7 +301,7 @@
       {
         "category": "storeRanks",
         "q": "등급은 어떻게 구매하나요?",
-        "a": "/store에서 등급을 장바구니에 담으세요. 장바구니에서 정확한 Minecraft 이름을 입력하고 상품을 확인한 뒤 Tebex로 결제합니다. Booster는 Discord 서버 부스트로 얻습니다.",
+        "a": "구매 전 로그인하고 Minecraft를 연결하세요. 일반 구매는 확인된 플레이어를 사용하고 선물 모드에서는 수령인을 선택합니다. 장바구니를 확인한 뒤 Tebex로 결제하세요.",
         "id": "buy",
         "href": "/store",
         "action": "스토어 열기"
@@ -358,7 +359,7 @@
       {
         "category": "support",
         "q": "문제는 어떻게 신고하나요?",
-        "a": "/support에서 일반 오류를 확인하거나 지원 요청을 보내세요. 프로젝트 상세의 문제 신고는 프로젝트와 버전을 포함합니다. 접수 정보를 보관하고 /requests에서 확인하세요.",
+        "a": "로그인하고 지원에서 신고하세요. 같은 계정으로 모든 기기의 내 요청에서 진행 상황을 확인할 수 있습니다.",
         "id": "report",
         "href": "/support?tab=report",
         "action": "지원 열기"
@@ -396,7 +397,7 @@
       {
         "category": "storeRanks",
         "q": "크리에이터 등급은 어떻게 신청하나요?",
-        "a": "/store의 Coins 아래에서 YouTube, Twitch 또는 TikTok을 선택하세요. 이메일, Minecraft와 Discord 이름, 채널 링크, 콘텐츠 정보를 제출하면 팀에서 검토합니다. 등급은 자동 지급되지 않습니다.",
+        "a": "로그인하고 Discord를 연결한 뒤 Minecraft를 인증하세요. 크리에이터 등급을 선택해 채널과 콘텐츠 정보를 넣으면 연결된 계정 정보가 자동 반영됩니다. 팀이 신청을 심사합니다.",
         "id": "creator-apply",
         "href": "/store",
         "action": "스토어 열기"
@@ -429,7 +430,7 @@
         "id": "player-profile",
         "category": "minecraft",
         "q": "Minecraft 프로필은 어디서 보나요?",
-        "a": "서버에서 마인크래프트 계정을 인증하면 내 프로필을 보고 구매할 수 있습니다. 이 이름으로 Zo7al 서버에 접속해 아래 명령어를 실행하세요. 코드는 10분 후 만료됩니다. 공유하지 마세요.",
+        "a": "서버 명령으로 Minecraft를 인증한 후 내 계정 → 플레이어 프로필을 여세요. 동기화된 서버 정보가 표시됩니다.",
         "href": "/account?tab=player",
         "action": "플레이어 프로필"
       },
@@ -461,15 +462,15 @@
         "id": "polls",
         "category": "community",
         "q": "커뮤니티 투표는 어떻게 하나요?",
-        "a": "투표는 각 게임의 소식 섹션에서 기사와 함께 표시됩니다. 진행 중인 투표에서 항목을 선택하고 투표하세요. 투표와 결과가 저장되며 같은 브라우저에서 새로고침하면 선택이 복원됩니다. 브라우저 식별 정보마다 각 투표에 한 번 참여할 수 있습니다.",
-        "href": "/minecraft#community-polls",
+        "a": "뉴스에 선택적으로 투표를 넣을 수 있습니다. 선택지를 고르고 제출하면 투표가 저장됩니다. 브라우저 식별자마다 각 투표에 한 번 참여할 수 있습니다.",
+        "href": "/minecraft#news",
         "action": "투표 보기"
       },
       {
         "id": "gallery",
         "category": "community",
         "q": "이미지나 동영상은 어떻게 제출하나요?",
-        "a": "Minecraft나 Fortnite 갤러리의 작품 제출을 이용하세요. 이미지 또는 지원되는 동영상 링크, 이름과 이메일을 보내면 승인 전까지 비공개로 유지됩니다. 이메일은 공개하지 않습니다.",
+        "a": "로그인하고 갤러리에서 지원하는 이미지 또는 동영상과 설명을 제출하세요. 계정이 자동 표시되며 승인 전까지 게시물은 비공개입니다.",
         "href": "/minecraft#community-gallery",
         "action": "갤러리 보기"
       },
@@ -477,7 +478,7 @@
         "id": "notifications",
         "category": "community",
         "q": "알림은 어떻게 설정하나요?",
-        "a": "종을 열고 설정에서 분류를 선택하세요. 설정과 읽음 상태는 이 브라우저 식별 정보로 서버에 저장합니다. 신청 알림은 저장한 비공개 접수 정보를 사용합니다. 쿠키 삭제나 브라우저 변경은 다른 식별 정보를 만듭니다.",
+        "a": "알림 종에서 카테고리를 선택하세요. 공개 알림의 읽음과 설정은 브라우저를, 비공개 요청은 계정을 따릅니다. 쿠키를 지우면 브라우저 식별자가 바뀝니다.",
         "href": "/support",
         "action": "지원 열기"
       },
@@ -485,7 +486,7 @@
         "id": "requests",
         "category": "support",
         "q": "주문과 신청은 어디서 확인하나요?",
-        "a": "지원에서 /requests를 여세요. 주문, 제작자 신청, 지원, 이벤트 탭이 있습니다. 다른 브라우저에서 복원하려면 접수 정보의 참조 번호와 비공개 추적 코드를 사용하세요.",
+        "a": "로그인하고 내 요청을 여세요. 주문, 신청, 지원, 이벤트, 게시물에는 별도 탭이 있습니다. 추적 번호나 코드 없이 같은 계정으로 모든 기기에서 볼 수 있습니다.",
         "href": "/requests",
         "action": "내 신청"
       },
@@ -493,7 +494,7 @@
         "id": "news-events",
         "category": "community",
         "q": "소식과 이벤트는 어디에 있나요?",
-        "a": "Minecraft와 Fortnite에는 소식과 커뮤니티 투표를 모은 별도의 소식 섹션이 있습니다. 이벤트와 갤러리는 별도 섹션으로 유지됩니다. 게시된 소식은 홈에도 나타납니다. 더 보기를 누르면 다른 이벤트를 확인할 수 있고, 참가 신청 시 이벤트에 따라 Minecraft 또는 Epic Games 이름을 입력합니다.",
+        "a": "각 게임의 뉴스에 선택적으로 투표를 포함할 수 있습니다. 공개된 뉴스는 홈페이지에도 표시됩니다. 이벤트와 갤러리는 별도입니다.",
         "href": "/minecraft#events",
         "action": "이벤트 보기"
       },
@@ -509,8 +510,8 @@
         "id": "permanent-features",
         "category": "community",
         "q": "새 기능은 계속 유지되나요?",
-        "a": "네. 공개 콘텐츠, 투표, 제출물, 목표와 알림 설정은 데이터베이스에 저장되어 배포 후에도 남습니다. 팀은 수정하거나 공개를 중단할 수 있습니다. 순위와 업적은 실제 동기화 통계를 사용합니다.",
-        "href": "/minecraft#community-polls",
+        "a": "뉴스, 뉴스 안의 투표, 투표 결과, 게시물과 알림 설정은 서버에 저장됩니다. 팀이 수정하거나 숨길 수 있으며 통계는 실제 서버 동기화를 사용합니다.",
+        "href": "/minecraft#news",
         "action": "투표 보기"
       },
       {
@@ -528,6 +529,70 @@
         "a": "모드팩 페이지 또는 모드팩 상세 정보에서 변경 내역을 여세요. 프로젝트와 Modrinth 또는 CurseForge를 선택하면 게시된 릴리스 설명을 볼 수 있습니다. 한 버전을 열면 이전 버전은 닫힙니다. 제공처에 설명이 없으면 내용을 만들어 내지 않고 해당 상태를 표시합니다.",
         "href": "/modpacks#changelog",
         "action": "변경 내역 보기"
+      },
+      {
+        "id": "account-login",
+        "category": "accountSecurity",
+        "q": "로그인하거나 다른 계정을 연결하려면?",
+        "a": "활성화된 이메일, Discord, Google, Microsoft 또는 Modrinth 옵션을 사용하세요. 내 계정 → 연결된 계정에서 방법을 추가하고 사용할 수 있는 로그인 방법을 남겨 두세요.",
+        "href": "/account",
+        "action": "로그인"
+      },
+      {
+        "id": "public-profile",
+        "category": "accountSecurity",
+        "q": "공개 프로필을 만들려면?",
+        "a": "내 계정 → 공개 프로필에서 사용자 이름을 정하고 사진, 배너, 소개, 소셜 링크를 수정하세요. 주소는 /@username이며 승인된 공개 게시물만 표시됩니다.",
+        "href": "/account?tab=profile",
+        "action": "공개 프로필"
+      },
+      {
+        "id": "minecraft-link",
+        "category": "accountSecurity",
+        "q": "Minecraft 계정을 인증하려면?",
+        "a": "연결된 계정에서 코드를 생성하고 같은 플레이어로 서버에 접속해 /zo7allink CODE를 실행하세요. 코드는 10분간 유효하며 이름 입력만으로 소유권이 입증되지는 않습니다.",
+        "href": "/account?tab=connections",
+        "action": "마인크래프트 계정 연결"
+      },
+      {
+        "id": "two-factor",
+        "category": "accountSecurity",
+        "q": "2단계 인증을 활성화하려면?",
+        "a": "내 계정 → 보안에서 인증 앱으로 QR을 스캔하고 6자리 코드를 확인하세요. 이후 로그인에는 인증이 필요합니다.",
+        "href": "/account?tab=security",
+        "action": "보안"
+      },
+      {
+        "id": "passkeys",
+        "category": "accountSecurity",
+        "q": "얼굴이나 지문 로그인은 어떻게 작동하나요?",
+        "a": "지원 기기의 보안에서 패스키를 추가하세요. 기기가 얼굴, 지문 또는 보안 키로 확인하며 생체 정보는 기기에 남습니다.",
+        "href": "/account?tab=security",
+        "action": "패스키"
+      },
+      {
+        "id": "backup-codes",
+        "category": "accountSecurity",
+        "q": "백업 코드를 사용하려면?",
+        "a": "로그인 제공업체가 지원하면 보안에서 코드를 생성하고 보관하세요. 각 코드는 한 번만 작동하며 재생성하면 이전 코드는 무효입니다. 사용할 수 없으면 안내됩니다.",
+        "href": "/account?tab=security",
+        "action": "보안"
+      },
+      {
+        "id": "discord-account-conflict",
+        "category": "accountSecurity",
+        "q": "Discord가 이미 연결되었다고 하는 이유는?",
+        "a": "다른 Zo7al 계정에 연결되어 있습니다. Discord로 해당 계정에 로그인하고 다른 로그인 방법을 추가한 뒤 연결을 해제하여 원하는 계정에 연결하세요.",
+        "href": "/account?tab=connections",
+        "action": "연결된 계정"
+      },
+      {
+        "id": "minecraft-bans",
+        "category": "accountSecurity",
+        "q": "Minecraft 서버 이용 정지는 어디서 확인하나요?",
+        "a": "Minecraft 연결 후 계정 설정 또는 플레이어 프로필을 여세요. 지원되는 서버 브리지가 사유와 종료일을 보고하며 동기화가 없거나 오래되면 안내됩니다.",
+        "href": "/account?tab=player",
+        "action": "Minecraft 서버 이용 정지"
       }
     ],
     "clearSearch": "검색 지우기",
@@ -686,7 +751,8 @@
     "cat_1v1v1": "1대1대1",
     "cat_RedvsBlue": "레드 대 블루",
     "gamesAccount": "{platform}의 Zo7al Games.",
-    "cat_TeamBattle": "팀 전투"
+    "cat_TeamBattle": "팀 전투",
+    "social_github": "GitHub의 코드와 프로그래밍 프로젝트."
   },
   "lost": {
     "eyebrow": "우주에서 길을 잃었어요",
@@ -986,9 +1052,14 @@
     "epic": "Epic Games 표시 이름",
     "allGames": "모든 게임",
     "mySubmissions": "내 게시물",
-    "submissionsIntro": "View status and updates saved to your account.",
+    "submissionsIntro": "계정에서 상태와 업데이트를 확인하세요.",
     "status_approved": "승인됨",
-    "profiles": "Profiles"
+    "profiles": "프로필",
+    "addPoll": "이 뉴스에 투표 추가",
+    "pollQuestion": "투표 질문",
+    "pollOptions": "선택지 · 한 줄에 하나씩",
+    "pollEnds": "투표 종료일",
+    "pollImmutable": "투표가 등록된 후에는 선택지를 바꿀 수 없습니다."
   },
   "dashboard": {
     "dashboard": "대시보드",
@@ -1604,7 +1675,7 @@
     "accountIntro": "프로필과 연결된 계정을 관리하세요.",
     "passwordHint": "12~128자의 고유한 비밀번호를 사용하세요.",
     "emailSent": "이메일을 확인하고 이 브라우저에서 링크를 여세요.",
-    "connectionsHint": "Discord, Google, Microsoft, 마인크래프트를 연결하고 로그인 수단을 하나 이상 유지하세요.",
+    "connectionsHint": "Discord, Google, Microsoft, Modrinth와 Minecraft 플레이어를 연결하세요. 사용할 수 있는 로그인 방법을 남겨 두세요.",
     "reauthHint": "필요한 경우 비밀번호 변경 전에 등록 이메일로 인증 코드를 보내세요.",
     "linkIntro": "서버에서 마인크래프트 계정을 인증하면 내 프로필을 보고 구매할 수 있습니다.",
     "linkInstructions": "이 이름으로 Zo7al 서버에 접속해 아래 명령어를 실행하세요.",
@@ -1629,10 +1700,11 @@
       "MFA_CODE": "코드가 잘못되었거나 만료되었거나 이미 사용되었습니다.",
       "MFA_UNAVAILABLE": "2FA 설정이나 백업 코드를 사용할 수 없습니다. 나중에 다시 시도하세요.",
       "MFA_APP_REQUIRED": "마지막 앱을 제거하려면 해당 코드로 확인하세요. 분실했다면 백업 코드로 새 앱을 먼저 추가하세요.",
-      "USERNAME_TAKEN": "Username already taken",
-      "DISCORD_REQUIRED": "Link Discord first",
-      "ACCOUNT_BANNED": "This account is banned",
-      "ACCOUNT_DELETED": "This profile has been deleted"
+      "USERNAME_TAKEN": "이미 사용 중인 사용자 이름입니다",
+      "DISCORD_REQUIRED": "먼저 Discord를 연결하세요",
+      "ACCOUNT_BANNED": "이 계정은 이용 정지되었습니다",
+      "ACCOUNT_DELETED": "이 프로필은 삭제되었습니다",
+      "IDENTITY_LINKED": "이 Discord 계정은 다른 Zo7al 계정에 연결되어 있습니다. 여기서 연결하는 대신 해당 계정으로 로그인하세요."
     },
     "security": {
       "title": "2단계 인증",
@@ -1667,48 +1739,55 @@
       "regenerate": "코드 재발급",
       "generateCodes": "백업 코드 생성",
       "changeApp": "인증 앱 변경",
-      "setup": "2FA 설정"
+      "setup": "2FA 설정",
+      "backupsUnavailable": "로그인 제공업체에서 현재 백업 코드를 지원하지 않습니다. 인증 앱 확인은 계속 사용할 수 있습니다."
     },
     "submissionLogin": "로그인하여 게시물, 신청 및 지원 요청을 계정에 연결하고 진행 상황을 확인하세요.",
-    "publicProfile": "Public profile",
-    "username": "Username",
-    "avatar": "Profile picture",
-    "banner": "Banner",
-    "bio": "Bio",
-    "socialLinks": "Social links",
-    "submissions": "My submissions",
-    "profileIntro": "Choose your public username and personalize your profile.",
-    "linkDiscord": "Link Discord",
-    "imageURL": "HTTPS image URL",
-    "uploadImage": "Upload image",
-    "profileSaved": "Profile saved",
-    "banned": "Banned",
-    "permanent": "Permanent",
-    "banUntil": "Until",
-    "banReason": "Reason",
-    "banStatus": "Minecraft server bans",
-    "banUnknown": "No ban information synced yet",
-    "noBans": "No active bans reported by your servers",
-    "viewProfile": "View profile",
-    "profiles": "Profiles",
-    "banAccount": "Ban account",
-    "unbanAccount": "Remove ban",
-    "deleteAccount": "Delete profile",
-    "temporaryBan": "Temporary ban",
-    "searchMembers": "Search profiles",
-    "confirmDelete": "Delete this profile? It will be hidden and site access revoked.",
-    "deleted": "Deleted",
-    "profileNotFound": "Profile not found",
-    "passkeys": "Passkeys",
-    "passkeyIntro": "Sign in using your device’s fingerprint, face recognition, or security key.",
-    "addPasskey": "Add passkey",
-    "signinPasskey": "Sign in with a passkey",
-    "removePasskey": "Remove",
-    "passkeyUnavailable": "Passkeys are not enabled yet.",
-    "passkeyCancelled": "The request was cancelled or could not be completed.",
-    "noSubmissions": "No published submissions yet",
-    "emptyPermanent": "Leave the date empty for a permanent ban.",
-    "durationUnknown": "Ban duration unavailable",
-    "banStale": "Last synced state; it may have changed."
+    "publicProfile": "공개 프로필",
+    "username": "사용자 이름",
+    "avatar": "프로필 사진",
+    "banner": "배너",
+    "bio": "소개",
+    "socialLinks": "소셜 링크",
+    "submissions": "내 게시물",
+    "profileIntro": "공개 사용자 이름을 선택하고 프로필을 꾸미세요.",
+    "linkDiscord": "Discord 연결",
+    "imageURL": "이미지 HTTPS URL",
+    "uploadImage": "이미지 업로드",
+    "profileSaved": "프로필이 저장되었습니다",
+    "banned": "이용 정지됨",
+    "permanent": "영구",
+    "banUntil": "종료일",
+    "banReason": "사유",
+    "banStatus": "Minecraft 서버 이용 정지",
+    "banUnknown": "아직 동기화된 이용 정지 정보가 없습니다",
+    "noBans": "서버에서 활성 이용 정지를 보고하지 않았습니다",
+    "viewProfile": "프로필 보기",
+    "profiles": "프로필",
+    "banAccount": "계정 이용 정지",
+    "unbanAccount": "이용 정지 해제",
+    "deleteAccount": "프로필 삭제",
+    "temporaryBan": "임시 이용 정지",
+    "searchMembers": "프로필 검색",
+    "confirmDelete": "이 프로필을 삭제할까요? 숨김 처리되고 사이트 접근 권한이 취소됩니다.",
+    "deleted": "삭제됨",
+    "profileNotFound": "프로필을 찾을 수 없습니다",
+    "passkeys": "패스키",
+    "passkeyIntro": "기기의 지문, 얼굴 인식 또는 보안 키로 로그인하세요.",
+    "addPasskey": "패스키 추가",
+    "signinPasskey": "패스키로 로그인",
+    "removePasskey": "제거",
+    "passkeyUnavailable": "패스키가 아직 활성화되지 않았습니다.",
+    "passkeyCancelled": "요청이 취소되었거나 완료되지 않았습니다.",
+    "noSubmissions": "아직 공개된 게시물이 없습니다",
+    "emptyPermanent": "영구 이용 정지를 적용하려면 날짜를 비워 두세요.",
+    "durationUnknown": "이용 정지 기간을 확인할 수 없습니다",
+    "banStale": "마지막 동기화 상태이며 이후 변경되었을 수 있습니다.",
+    "profile": "공개 프로필",
+    "securityTab": "보안",
+    "identityLinked": "이 Discord 계정은 다른 Zo7al 계정에 연결되어 있습니다. 여기서 연결하는 대신 해당 계정으로 로그인하세요.",
+    "linkMinecraft": "Minecraft 연결",
+    "minecraftRequired": "신청 전에 Minecraft 계정을 연결하세요.",
+    "useLinkedDiscord": "Discord에 연결된 계정으로 로그인"
   }
 }

@@ -9,7 +9,7 @@ export async function GET(request: Request) {
   try {
     const db = await siteDatabase();
     const [content,requests,orders] = await Promise.all([
-      db.query('SELECT c.id,c.kind,c.topic,c.locale,c.title,c.body,c.published,c.created_at AS "createdAt",c.starts_at AS "startsAt",c.registration_url AS "registrationUrl",CASE WHEN i.id IS NOT NULL THEN json_build_object(\'id\',i.id,\'width\',i.width,\'height\',i.height) ELSE NULL END AS image FROM site_content c LEFT JOIN site_content_images i ON i.id=c.image_id ORDER BY c.created_at DESC LIMIT 100'),
+      db.query(`SELECT c.poll_id AS "pollId",CASE WHEN p.id IS NOT NULL THEN json_build_object('question',p.title,'options',p.payload->'options','endsAt',p.payload->'endsAt') ELSE NULL END AS poll,c.id,c.kind,c.topic,c.locale,c.title,c.body,c.published,c.created_at AS "createdAt",c.starts_at AS "startsAt",c.registration_url AS "registrationUrl",CASE WHEN i.id IS NOT NULL THEN json_build_object('id',i.id,'width',i.width,'height',i.height) ELSE NULL END AS image FROM site_content c LEFT JOIN community_entries p ON p.id=c.poll_id LEFT JOIN site_content_images i ON i.id=c.image_id ORDER BY c.created_at DESC LIMIT 100`),
       db.query('SELECT id,kind,payload,status,public_note AS "note",created_at AS "createdAt",discord_receipt AS "discordReceipt" FROM site_requests ORDER BY created_at DESC LIMIT 100'),
       db.query('SELECT id,username,items,discord_receipt AS "discordReceipt",created_at AS "createdAt" FROM site_orders ORDER BY created_at DESC LIMIT 100')
     ]);
@@ -34,9 +34,9 @@ export async function POST(request: Request) {
       return Response.json({ok:true},{headers:privateHeaders});
     }
     if (body?.action === "delete" && typeof body.id === "string" && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(body.id)) {
-      await (await siteDatabase()).query("DELETE FROM site_content WHERE id=$1",[body.id]);
+      await (await siteDatabase()).query("WITH removed AS (DELETE FROM site_content WHERE id=$1 RETURNING poll_id) UPDATE community_entries SET published=false,updated_at=now() WHERE id IN (SELECT poll_id FROM removed)",[body.id]);
       return Response.json({ok:true},{headers:privateHeaders});
     }
     throw new Error("INVALID");
-  } catch(error) { return Response.json({error:error instanceof Error && error.message === "INVALID" ? "INVALID":"UNAVAILABLE"},{status:error instanceof Error && error.message === "INVALID" ? 400:503,headers:privateHeaders}); }
+  } catch(error) { return Response.json({error:error instanceof Error && ['INVALID','POLL_LOCKED'].includes(error.message)?error.message:'UNAVAILABLE'},{status:error instanceof Error && ['INVALID','POLL_LOCKED'].includes(error.message)?400:503,headers:privateHeaders}); }
 }

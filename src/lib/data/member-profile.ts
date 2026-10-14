@@ -15,8 +15,8 @@ export type MemberProfile = {
   socials: Record<string, string>;
 };
 export function profileUsername(value: unknown): string | null {
-  return typeof value === "string" && /^[a-zA-Z0-9_]{3,32}$/.test(value)
-    ? value
+  return typeof value === "string" && /^[a-zA-Z0-9_]{3,32}$/.test(value.trim().replace(/^@/, ""))
+    ? value.trim().replace(/^@/, "")
     : null;
 }
 export function profileURL(value: unknown): string | null {
@@ -66,4 +66,8 @@ export function profileSettings(value: Record<string, unknown>) {
     bio: value.bio.trim(),
     socials,
   };
+}
+
+export function profileHandle(value:string):string|null {
+ try { const decoded=decodeURIComponent(value);return decoded.startsWith("@")?profileUsername(decoded):null; } catch { return null; }
 }

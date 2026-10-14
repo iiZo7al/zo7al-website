@@ -14,7 +14,15 @@ export function validateContent(value: unknown) {
   if (imageId !== null && (v.kind === "rule" || typeof imageId !== "string" || !uuid.test(imageId))) return null;
   let registrationUrl: string | null = null;
   if (v.registrationUrl) { try { const u = new URL(String(v.registrationUrl)); if (u.protocol !== "https:" || u.username || u.password || u.href.length > 1000) return null; registrationUrl = u.href; } catch { return null; } }
-  return { id: v.id as string | undefined, kind: v.kind as "news" | "event" | "rule", topic: topic as HubTopic, locale: String(v.locale), title: v.title.trim(), body: v.body.trim(), published: v.published, startsAt: v.kind === "event" ? new Date(String(v.startsAt)).toISOString() : null, registrationUrl, imageId };
+  let poll:{question:string;options:string[];endsAt:string|null}|null=null;
+  if(v.poll!==undefined&&v.poll!==null){
+   if(v.kind!=='news'||typeof v.poll!=='object'||Array.isArray(v.poll))return null;
+   const p=v.poll as Record<string,unknown>;
+   if(!clean(p.question,1,160)||!Array.isArray(p.options)||p.options.length<2||p.options.length>8||!p.options.every(x=>clean(x,1,120))||new Set(p.options.map(x=>String(x).trim())).size!==p.options.length)return null;
+   if(p.endsAt!==null&&p.endsAt!==undefined&&(typeof p.endsAt!=='string'||!Number.isFinite(Date.parse(p.endsAt))))return null;
+   poll={question:p.question.trim(),options:p.options.map(x=>String(x).trim()),endsAt:p.endsAt?new Date(String(p.endsAt)).toISOString():null};
+  }
+  return {poll, id: v.id as string | undefined, kind: v.kind as "news" | "event" | "rule", topic: topic as HubTopic, locale: String(v.locale), title: v.title.trim(), body: v.body.trim(), published: v.published, startsAt: v.kind === "event" ? new Date(String(v.startsAt)).toISOString() : null, registrationUrl, imageId };
 }
 export function eventPlayer(value: Record<string, unknown>, topic: HubTopic) {
   if (topic === "fortnite") return clean(value.epic, 3, 32) ? { epic: value.epic.trim() } : null;

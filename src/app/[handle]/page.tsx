@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { getTranslations, getLocale } from "next-intl/server";
 import { UserRound, Gamepad2, Images } from "lucide-react";
 import { siteDatabase } from "@/lib/server/site-db";
-import { profileUsername } from "@/lib/data/member-profile";
+import { profileHandle } from "@/lib/data/member-profile";
 import BrandIcon from "@/components/ui/BrandIcon";
 import ContentImage from "@/components/hub/ContentImage";
 import "@/components/account/account.css";
@@ -15,9 +15,7 @@ export default async function MemberProfile({
   params: Promise<{ handle: string }>;
 }) {
   const { handle } = await params;
-  const username = handle.startsWith("@")
-    ? profileUsername(handle.slice(1))
-    : null;
+  const username = profileHandle(handle);
   if (!username) notFound();
   const db = await siteDatabase();
   const member = (

@@ -1,6 +1,7 @@
 import { randomBytes } from "node:crypto";
 import {
   AccountError,
+  accountPasskeysEnabled,
   accountHeaders,
   accountOrigin,
   accountRequiresMFA,
@@ -21,7 +22,7 @@ const FLOW =
   process.env.NODE_ENV === "production"
     ? "__Host-zo7al-passkey"
     : "zo7al-passkey";
-const enabled = () => process.env.ZO7AL_ACCOUNT_PASSKEY_ENABLED === "true";
+const enabled = accountPasskeysEnabled;
 function failed(error: unknown, headers: Headers) {
   return Response.json(
     { error: error instanceof AccountError ? error.code : "UNAVAILABLE" },
@@ -37,7 +38,7 @@ async function session(request: Request, headers: Headers) {
 export async function GET(request: Request) {
   const headers = accountHeaders();
   try {
-    if (!enabled())
+    if (!(await enabled()))
       return Response.json({ enabled: false, passkeys: [] }, { headers });
     const s = await session(request, headers);
     const data = await authRequest("/passkeys", "GET", undefined, s.access);
@@ -50,7 +51,7 @@ export async function POST(request: Request) {
   const headers = accountHeaders();
   try {
     if (!accountOrigin(request)) throw new AccountError("INVALID", 403);
-    if (!enabled()) throw new AccountError("PASSKEY_UNAVAILABLE", 503);
+    if (!(await enabled())) throw new AccountError("PASSKEY_UNAVAILABLE", 503);
     const body = (await readJSON(request, 16000)) as Record<string, unknown>;
     if (
       ![

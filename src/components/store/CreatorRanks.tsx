@@ -73,7 +73,7 @@ function CreatorText({ text }: { text: string }) {
     part.startsWith("`") ? <code dir="ltr" key={index}>{part.slice(1, -1)}</code> : part
   )}</>;
 }
-function ApplicationForm({ platform, username, onClose }: { platform: Platform; username: string; onClose: () => void }) {
+function ApplicationForm({ platform, onClose }: { platform: Platform; username: string; onClose: () => void }) {
   const t = useTranslations("creators");
   const {account,refresh}=useAccount();
   const [busy, setBusy] = useState(false);
@@ -100,13 +100,13 @@ function ApplicationForm({ platform, username, onClose }: { platform: Platform; 
       <Image src={`/assets/site/rank-${platform}.png`} width={667} height={375} alt={platform.toUpperCase()} className="creator-modal-image"/>
       {status === "success" ? <div role="status" className="creator-success"><Check size={30}/><h3>{t("success")}</h3><p>{t("review")}</p>{discordPending && <p>{t("notificationPending")}</p>}{token&&<Receipt kind="application" reference={reference} token={token} onTrack={onClose}/>}</div> : <form onSubmit={submit} className="creator-form">
         <SubmissionIdentity next="/store"/><p>{t("intro")}</p>
-        <div className="creator-fields">{([ ["minecraft", "text", 32], ["channel", "url", 500], ["followers", "number", 10] ] as const).map(([name, type, max]) => <label key={name} htmlFor={`creator-${name}`}>{t(name)}<input id={`creator-${name}`} name={name} type={type} required maxLength={max} defaultValue={name === "minecraft" ? account.minecraft?.username ?? username : undefined} min={type === "number" ? 0 : undefined} max={type === "number" ? 1000000000 : undefined} step={type === "number" ? 1 : undefined} autoComplete="off" dir="ltr" placeholder={name === "channel" ? { youtube: "https://www.youtube.com/@yourchannel", twitch: "https://www.twitch.tv/yourchannel", tiktok: "https://www.tiktok.com/@yourchannel" }[platform] : undefined}/></label>)}</div>
+        <div className="creator-fields">{([ ["channel", "url", 500], ["followers", "number", 10] ] as const).map(([name, type, max]) => <label key={name} htmlFor={`creator-${name}`}>{t(name)}<input id={`creator-${name}`} name={name} type={type} required maxLength={max}  min={type === "number" ? 0 : undefined} max={type === "number" ? 1000000000 : undefined} step={type === "number" ? 1 : undefined} autoComplete="off" dir="ltr" placeholder={name === "channel" ? { youtube: "https://www.youtube.com/@yourchannel", twitch: "https://www.twitch.tv/yourchannel", tiktok: "https://www.tiktok.com/@yourchannel" }[platform] : undefined}/></label>)}</div>
         <label htmlFor="creator-content">{t("content")}<input id="creator-content" name="content" required maxLength={500}/></label>
         <label htmlFor="creator-reason">{t("reason")}<textarea id="creator-reason" name="reason" required minLength={20} maxLength={1000} rows={4}/><small>{t("reasonHint")}</small></label>
         <div className="creator-honey" aria-hidden="true"><label>Website<input name="website" tabIndex={-1} autoComplete="off"/></label></div>
         <label className="creator-consent"><input name="consent" type="checkbox" required/><span>{t("consent")}</span></label>
         {status && <p role="alert" className="creator-error">{t(status)}</p>}
-        <button className="store-action store-action-primary" type="submit" disabled={busy}>{busy && <LoaderCircle className="animate-spin" size={18}/>}<span>{t(busy ? "sending" : "submit")}</span></button>
+        <button className="store-action store-action-primary" type="submit" disabled={busy||!account.minecraft||!account.providers.some(p=>p.provider==='discord')}>{busy && <LoaderCircle className="animate-spin" size={18}/>}<span>{t(busy ? "sending" : "submit")}</span></button>
       </form>}
     </div>
   </DetailsDialog>;
