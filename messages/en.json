@@ -198,7 +198,8 @@
     "savedContent": "Saved public content; the live source is currently unavailable.",
     "noContent": "No public content of this type was found.",
     "contentUnavailable": "The latest content could not be retrieved. Open the account to view it on the platform.",
-    "viewContent": "View content on the platform"
+    "viewContent": "View content on the platform",
+    "repositories": "Public repositories"
   },
   "store": {
     "coinsTitle": "Coins",

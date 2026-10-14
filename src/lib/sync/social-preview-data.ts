@@ -1,7 +1,32 @@
 export type SocialItem = { kind: "video" | "post" | "broadcast" | "project" | "island" | "game" | "link"; title: string; url: string; image?: string; detail?: string; publishedAt?: string };
-export type SocialPreview = { title: string; image?: string; description?: string; items?: SocialItem[]; stats?: { key: "members" | "online" | "followers" | "downloads"; value: number }[]; contentStatus?: "live" | "empty" | "unavailable"; saved?: boolean };
+export type SocialPreview = { title: string; image?: string; description?: string; items?: SocialItem[]; stats?: { key: "members" | "online" | "followers" | "downloads" | "repositories"; value: number }[]; contentStatus?: "live" | "empty" | "unavailable"; saved?: boolean };
 
-const hosts = ["youtube.com", "youtu.be", "discord.com", "discord.gg", "tiktok.com", "instagram.com", "x.com", "twitter.com", "twitch.tv", "modrinth.com", "curseforge.com", "fortnite.com", "epicgames.com", "kick.com", "snapchat.com", "t.me", "telegram.me", "whatsapp.com", "wa.me", "roblox.com", "bsky.app", "playstation.com", "linktr.ee", "facebook.com", "threads.com", "threads.net", "patreon.com"];
+const hosts = ["github.com", "youtube.com", "youtu.be", "discord.com", "discord.gg", "tiktok.com", "instagram.com", "x.com", "twitter.com", "twitch.tv", "modrinth.com", "curseforge.com", "fortnite.com", "epicgames.com", "kick.com", "snapchat.com", "t.me", "telegram.me", "whatsapp.com", "wa.me", "roblox.com", "bsky.app", "playstation.com", "linktr.ee", "facebook.com", "threads.com", "threads.net", "patreon.com"];
+
+/** Public API data only: never expose email, credentials, private repositories or API URLs. */
+export function githubPreview(profile: unknown, repositories: unknown): SocialPreview | null {
+  if (!profile || typeof profile !== "object") return null;
+  const user = profile as Record<string, unknown>;
+  if (typeof user.login !== "string" || !/^[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,37}[a-zA-Z0-9])?$/.test(user.login)) return null;
+  const login = user.login;
+  const text = (value: unknown) => typeof value === "string" ? value.slice(0, 2000) : undefined;
+  const stats: NonNullable<SocialPreview["stats"]> = [];
+  for (const [field, key] of [["followers", "followers"], ["public_repos", "repositories"]] as const) {
+    if (typeof user[field] === "number" && Number.isSafeInteger(user[field]) && user[field] >= 0) stats.push({ key, value: user[field] });
+  }
+  let image: string | undefined;
+  try {
+    const avatar = new URL(String(user.avatar_url));
+    if (avatar.protocol === "https:" && avatar.hostname === "avatars.githubusercontent.com" && !avatar.username && !avatar.password && !avatar.port) image = avatar.href;
+  } catch { /* Use the platform icon if the avatar is unavailable. */ }
+  const items: SocialItem[] = Array.isArray(repositories) ? repositories.filter(repo =>
+    repo && repo.private === false && typeof repo.name === "string" && /^[\w.-]{1,100}$/.test(repo.name) && ![".", ".."].includes(repo.name) && typeof repo.owner?.login === "string" && repo.owner.login.toLowerCase() === login.toLowerCase()
+  ).sort((a, b) => (Date.parse(b.pushed_at) || 0) - (Date.parse(a.pushed_at) || 0)).slice(0, 3).map(repo => ({
+    kind: "project", title: repo.name, detail: text(repo.description), url: `https://github.com/${login}/${repo.name}`,
+    publishedAt: typeof repo.pushed_at === "string" && Number.isFinite(Date.parse(repo.pushed_at)) ? repo.pushed_at : undefined,
+  })) : [];
+  return { title: text(user.name) || login, description: text(user.bio), image, stats, items, contentStatus: !Array.isArray(repositories) ? "unavailable" : items.length ? "live" : "empty" };
+}
 export function allowedPreviewUrl(value: string): boolean {
   try {
     const url = new URL(value);

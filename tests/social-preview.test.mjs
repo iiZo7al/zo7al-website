@@ -1,10 +1,26 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { allowedPreviewUrl, parseSocialMetadata } from '../src/lib/sync/social-preview-data.ts';
+import { allowedPreviewUrl, parseSocialMetadata, githubPreview } from '../src/lib/sync/social-preview-data.ts';
 
 test('only public HTTPS social origins are eligible, including redirect destinations', () => {
   for (const url of ['http://youtube.com/a', 'https://youtube.com.evil.test/a', 'https://localhost/a', 'https://127.0.0.1/a', 'https://youtube.com:8443/a', 'https://user:secret@youtube.com/a', 'file:///etc/passwd']) assert.equal(allowedPreviewUrl(url), false, url);
-  for (const url of ['https://www.youtube.com/@iiZo7al', 'https://youtube.com/@Zo7alGames', 'https://discord.gg/nxScVYrSXq']) assert.equal(allowedPreviewUrl(url), true, url);
+  for (const url of ['https://www.youtube.com/@iiZo7al', 'https://youtube.com/@Zo7alGames', 'https://discord.gg/nxScVYrSXq', 'https://github.com/iiZo7al', 'https://api.github.com/users/iiZo7al']) assert.equal(allowedPreviewUrl(url), true, url);
+});
+test('GitHub preview shows public profile and recent owned repositories without exposing private fields', () => {
+ const profile={login:'iiZo7al',name:'Zo7al',bio:'Gaming projects',avatar_url:'https://avatars.githubusercontent.com/u/161727874?v=4',followers:12,public_repos:3,email:'private@example.test',token:'private-token'};
+ const repo=(name,pushed_at,extra={})=>({name,pushed_at,private:false,owner:{login:'iizo7al'},description:'Project description',html_url:'https://evil.test/',...extra});
+ const result=githubPreview(profile,[repo('old','2026-09-01'),repo('new','2026-10-14'),repo('hidden','2026-10-15',{private:true}),repo('other','2026-10-16',{owner:{login:'another-user'}}),repo('..','2026-10-17')]);
+ assert.equal(result.title,'Zo7al');assert.equal(result.description,'Gaming projects');assert.equal(result.contentStatus,'live');
+ assert.deepEqual(result.stats,[{key:'followers',value:12},{key:'repositories',value:3}]);
+ assert.deepEqual(result.items.map(item=>item.url),['https://github.com/iiZo7al/new','https://github.com/iiZo7al/old']);
+ for(const value of ['private@example.test','private-token','evil.test','hidden','another-user'])assert.ok(!JSON.stringify(result).includes(value));
+});
+test('GitHub profile survives a feed failure and empty or invalid metadata is reported correctly', () => {
+ const profile={login:'iiZo7al',bio:null,avatar_url:'javascript:alert(1)',followers:-1,public_repos:'12'};
+ assert.equal(githubPreview(profile,undefined).contentStatus,'unavailable');
+ const empty=githubPreview(profile,[]);assert.equal(empty.contentStatus,'empty');assert.equal(empty.image,undefined);assert.deepEqual(empty.stats,[]);
+ for(const invalid of [null,{login:'../token'},{login:'x?token=secret'}])assert.equal(githubPreview(invalid,[]),null);
+ assert.equal(allowedPreviewUrl('https://github.com.evil.test/iiZo7al'),false);
 });
 test('Open Graph handles reversed attributes, entities and safe relative images', () => {
   assert.deepEqual(parseSocialMetadata(`<meta content='Zo7al &amp; Games' property='og:title'><meta content='/photo.png?a=1&amp;b=2' property='og:image'>`, 'https://youtube.com/@Zo7alGames'), { title: 'Zo7al & Games', image: 'https://youtube.com/photo.png?a=1&b=2', description: undefined });
