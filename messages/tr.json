@@ -159,7 +159,8 @@
       "4162-0323-5737": "🧡🌹 Destek olmak için beğen ve favorilere ekle\n\n🏰 Doomspire Brickbattle\n💥 Yıkılabilir kuleler ve patlamalar\n🔫 6 klasik silah\n🎮 Hızlı takım savaşları\n🏆 100 tur\n🛒 Oyun içi mağaza\n🪜 Tırmanılabilir kuleler ve merdivenler\n😎 UEFN ile yapıldı",
       "8238-8280-9827": "🧡🌹 Destek olmak için beğen ve favorilere ekle\n\n🏰 Doomspire Brickbattle\n💥 Yıkılabilir kuleler ve patlamalar\n🔫 6 klasik silah\n🎮 Hızlı takım savaşları\n🏆 100 tur\n🛒 Oyun içi mağaza\n🔫 Yeniden doldurma yok\n🪜 Tırmanılabilir kuleler ve merdivenler\n😎 UEFN ile yapıldı"
     },
-    "newMap": "Yeni!!"
+    "newMap": "Yeni!!",
+    "itemShopCode": "Fortnite Eşya Mağazasında Zo7al içerik üreticisi kodunu kullanın."
   },
   "socials": {
     "eyebrow": "Topluluk",
@@ -244,7 +245,8 @@
     "supportText": "Satın alımınız sunucuyu ve topluluğunu destekler.",
     "helpTitle": "Yardım mı gerekiyor?",
     "helpText": "Satın alma desteği için Discord topluluğumuza katılın.",
-    "checkoutNote": "Son vergiler, para birimi ve ödeme seçenekleri ödeme sırasında gösterilir."
+    "checkoutNote": "Son vergiler, para birimi ve ödeme seçenekleri ödeme sırasında gösterilir.",
+    "owned": "Sahip olunan"
   },
   "faq": {
     "eyebrow": "Yardıma mı ihtiyacın var?",
@@ -415,7 +417,7 @@
         "id": "one-rank",
         "category": "storeRanks",
         "q": "Sepete birden fazla rütbe ekleyebilir miyim?",
-        "a": "Sepette aynı anda bir ücretli rütbe bulunabilir. Başkasını seçmeden önce onu kaldırın. Rütbenin yanına Coins ekleyip miktarlarını değiştirebilirsiniz.",
+        "a": "Sepette aynı anda bir ücretli rütbe bulunabilir. Başkasını seçmeden önce onu kaldırın. Rütbenin yanına Coins ekleyip miktarlarını değiştirebilirsiniz. Ücretli bir rütbe tüm alt seviyeleri kapsar (VIP, VIP+, VIP++, MVP, MVP+, MVP++). Booster bağımsızdır. Sahip olduğunuz rütbeleri kendiniz için tekrar alamazsınız; hediyeler kullanılabilir.",
         "href": "/store",
         "action": "Mağazayı aç"
       },
@@ -423,7 +425,7 @@
         "id": "rank-preview",
         "category": "storeRanks",
         "q": "Rütbeyi karakterimde nasıl önizlerim?",
-        "a": "Kartta veya sepette Ayrıntılar yanındaki göze basın. Gerekirse Minecraft adınızı girin; 3B karakteriniz, adınız ve seçilen rütbe gösterilir.",
+        "a": "Oturum açıp Minecraft oyuncunuzu sunucuya bağlayın. Ardından rütbe kartındaki veya sepetteki göz simgesine basın. Önizleme doğrulanmış oyuncunuzu ve seçilen rütbeyi kullanır.",
         "href": "/store",
         "action": "Mağazayı aç"
       },
@@ -610,14 +612,6 @@
         "a": "Hesabım → Parola bölümünde 12–128 karakterlik benzersiz bir parola belirle. Parolayı onayla ve istenirse e-posta doğrulama kodu gönder. Giriş yapamıyorsan giriş penceresindeki Parolamı unuttum seçeneğini kullan ve e-postadaki bağlantıyı aynı tarayıcıda aç.",
         "href": "/account?tab=password",
         "action": "Parolayı yönet"
-      },
-      {
-        "id": "dashboard-access",
-        "category": "accountSecurity",
-        "q": "Bağlı hesabımla yönetim paneline girebilir miyim?",
-        "a": "Yönetim paneline yalnızca sahibin yetkilendirdiği hesap girebilir. Aynı hesaba bağlı bir yöntemle giriş yap ve etkinse iki adımlı doğrulamayı tamamla. Google, Microsoft, Discord veya Modrinth hesabı bağlamak tek başına yönetici yetkisi vermez.",
-        "href": "/account",
-        "action": "Hesabımı aç"
       }
     ],
     "clearSearch": "Aramayı temizle",
@@ -875,7 +869,8 @@
       "tiktok": "TIKTOK rütbesi, TikTok’ta Minecraft içeriği üretenler içindir. Profilini ve eğlenceli anlar, ipuçları veya meydan okumalar gibi kısa videolarını tanıt. Takipçi sayını, paylaşım sıklığını ve Zo7al Network deneyimini nasıl paylaşacağını anlat."
     },
     "applicationDetails": "Başvuru formuna ulaşılabilir bir e-posta, Minecraft ve Discord adlarını ve seçilen platformdaki profil bağlantını yaz. İçerik ve başvuru nedenini doğru bilgilerle açıkla. Onayınla başvuru Discord üzerinden Zo7al ekibine iletilir. Teslimat onaylandıktan sonra gösterilen başvuru numarasını sakla. Başvuru bir satın alma veya otomatik rütbe kazanımı değildir. Uygunluk ve kabul kararını ekip verir; inceleme süresi veya ek avantajlar garanti edilmez.",
-    "notificationPending": "Başvurun kaydedildi. Discord bildirimi bekliyor ve ekip yeniden gönderebilir."
+    "notificationPending": "Başvurun kaydedildi. Discord bildirimi bekliyor ve ekip yeniden gönderebilir.",
+    "applied": "Başvuru gönderildi"
   },
   "hub": {
     "latest": "Zo7al'dan yenilikler",
@@ -1210,7 +1205,10 @@
     "averagePlaytime": "Ortalama oyun süresi",
     "fortnitePeriods": "Oyunlar ve benzersiz oyuncular son 24 saati; dakikalar ve en yüksek oyuncu sayısı tüm zamanı kapsar. Kaynak bazı sayıları yuvarlar.",
     "connection_cached": "Son kaydedilen veriler",
-    "fortniteCachedHint": "Fortnite.GG güncellenemedi. Gösterilen zamanda doğrulanan son değerler gösterilir. Eski canlı oyuncu sayıları ve önceki günün verileri gizlenir."
+    "fortniteCachedHint": "Fortnite.GG güncellenemedi. Gösterilen zamanda doğrulanan son değerler gösterilir. Eski canlı oyuncu sayıları ve önceki günün verileri gizlenir.",
+    "badges": "Rozetler",
+    "markPageRead": "Okundu olarak işaretle",
+    "pageRead": "Okundu"
   },
   "pelican": {
     "title": "Sunucu yönetimi",
@@ -1835,7 +1833,12 @@
     },
     "dashboard": "Kontrol paneli",
     "switchAccount": "Hesap değiştir",
-    "addAccount": "Hesap ekle"
+    "addAccount": "Hesap ekle",
+    "subscriptions": "Abonelikler",
+    "subscriptionsHint": "Mağaza aboneliklerini ve ödemelerini Tebex müşteri portalından yönetin.",
+    "manageSubscriptions": "Abonelikleri yönet",
+    "orders": "Siparişlerim",
+    "badges": "Rozetler"
   },
   "systemNotifications": {
     "title": "Cihaz bildirimleri",
@@ -1846,5 +1849,36 @@
     "enable": "Cihaz bildirimlerini etkinleştir",
     "test": "Test bildirimi gönder",
     "testBody": "Zo7al bildirimleri cihazında çalışıyor."
+  },
+  "badges": {
+    "title": "Profil rozetleri",
+    "intro": "Bir rozet yükleyip üyelere verin. Arşivlenen rozetler geri yüklenebilir.",
+    "name": "Rozet adı",
+    "image": "Rozet resmi",
+    "create": "Rozet oluştur",
+    "archive": "Arşivle",
+    "restore": "Geri yükle",
+    "assign": "Rozet ver"
+  },
+  "modrinthDetails": {
+    "title": "Modrinth projeleri",
+    "downloads": "İndirmeler",
+    "followers": "Takipçiler",
+    "type": "Proje türü",
+    "status": "Durum",
+    "client": "İstemci desteği",
+    "server": "Sunucu desteği",
+    "published": "Yayımlandı",
+    "updated": "Güncellendi",
+    "license": "Lisans",
+    "issues": "Sorunlar",
+    "source": "Kaynak kod",
+    "wiki": "Wiki",
+    "discord": "Discord",
+    "description": "Açıklama",
+    "team": "Ekip",
+    "versions": "Sürümler",
+    "files": "Dosyalar",
+    "dependencies": "Bağımlılıklar"
   }
 }

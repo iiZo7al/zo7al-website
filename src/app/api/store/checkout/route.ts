@@ -4,6 +4,8 @@ import { createOrderReceipt } from "@/lib/server/site-content";
 import { isIP } from "node:net";
 import { getStoreCatalog, ownsStorePackage, tebexRequest, tebexToken, tebexPrivateKey, TebexConfigurationError, TebexRequestError } from "@/lib/server/tebex";
 import { parseCartItems, isCoinProduct, isRankProduct } from "@/lib/data/store-cart";
+import {memberOwnsRank} from '@/lib/server/store-ownership';
+import type {SiteAccount} from '@/lib/data/account';
 export const runtime = "nodejs";
 const attempts = new Map<string, { count: number; expires: number }>();
 export async function POST(request: Request) {
@@ -19,12 +21,12 @@ export async function POST(request: Request) {
   catch { return Response.json({ error: "INVALID" }, { status: 400 }); }
   const items = parseCartItems(body.items ?? (Array.isArray(body.packageIds) ? body.packageIds.map(packageId => ({ packageId, quantity: 1 })) : [{ packageId: body.packageId, quantity: 1 }]));
   if (!items?.length || typeof body.username !== "string" || !/^[.a-zA-Z0-9_ ]{3,32}$/.test(body.username.trim())) return Response.json({ error: "INVALID" }, { status: 400 });
-  let buyerId: string, recipient: string;
+  let buyerId: string, recipient: string,member:SiteAccount;
   try {
     if (!accountConfigured()) throw new AccountError("CONFIGURATION",503);
     const buyer = await requireAccount(request);
     buyerId = buyer.id;
-    recipient = checkoutRecipient(body.gift, body.username, (await accountView(buyer)).minecraft);
+    member=await accountView(buyer);recipient = checkoutRecipient(body.gift, body.username, member.minecraft);
   } catch(error) { const code = error instanceof Error ? error.message : "UNAVAILABLE"; return Response.json({error:code},{status:error instanceof AccountError ? error.status : code==="LINK_REQUIRED" ? 409 : 400,headers:{"Cache-Control":"private, no-store"}}); }
   const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "";
   if (!isIP(ip)) return Response.json({ error: "UNAVAILABLE" }, { status: 503 });
@@ -42,6 +44,7 @@ export async function POST(request: Request) {
     if (products.some(product => !product)) return Response.json({ error: "INVALID" }, { status: 400 });
     if (products.filter(product => isRankProduct(product!)).length > 1) return Response.json({ error: "ONE_RANK_ONLY" }, { status: 400 });
     if (products.some((product, index) => !isCoinProduct(product!) && items[index].quantity !== 1)) return Response.json({ error: "INVALID" }, { status: 400 });
+    if(body.gift!==true)for(const product of products)if(isRankProduct(product!)&&await memberOwnsRank(member!,product!.name))return Response.json({error:'ALREADY_OWNED',packageId:product!.id},{status:409,headers:{'Cache-Control':'private, no-store'}});
     stage = "CREATE";
     const result = await tebexRequest(`accounts/${encodeURIComponent(token)}/baskets`, { username: recipient, ip_address: ip, complete_url: `${origin}/store?checkout=complete`, cancel_url: `${origin}/store`, complete_auto_redirect: false }, true);
     const ident = result.data?.ident;

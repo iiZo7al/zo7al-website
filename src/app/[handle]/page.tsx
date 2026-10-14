@@ -7,6 +7,7 @@ import { siteDatabase } from "@/lib/server/site-db";
 import { profileHandle } from "@/lib/data/member-profile";
 import BrandIcon from "@/components/ui/BrandIcon";
 import ContentImage from "@/components/hub/ContentImage";
+import {contentImageUrl} from '@/lib/data/content-media';
 import "@/components/account/account.css";
 export const dynamic = "force-dynamic";
 export default async function MemberProfile({
@@ -25,6 +26,7 @@ export default async function MemberProfile({
     )
   ).rows[0];
   if (!member) notFound();
+  const badges=(await db.query("SELECT b.id,b.name,json_build_object('id',i.id,'width',i.width,'height',i.height) AS image FROM site_member_badges m JOIN site_badges b ON b.id=m.badge_id JOIN site_content_images i ON i.id=b.image_id WHERE m.user_id=$1 AND NOT b.archived ORDER BY m.awarded_at LIMIT 30",[member.id])).rows;
   const entries = (
     await db.query(
       `SELECT e.id,e.title,e.body,e.payload,e.created_at,CASE WHEN i.id IS NOT NULL THEN json_build_object('id',i.id,'width',i.width,'height',i.height) ELSE NULL END AS image FROM community_entries e LEFT JOIN site_content_images i ON i.id=e.image_id WHERE e.user_id=$1 AND e.kind='gallery' AND e.published AND e.moderation='approved' ORDER BY e.created_at DESC LIMIT 24`,
@@ -62,6 +64,7 @@ export default async function MemberProfile({
             <p className="account-help" dir="ltr">
               @{member.username}
             </p>
+            {badges.length>0&&<div className='member-profile-badges' aria-label={t('badges')}>{badges.map(b=><span key={b.id} className='member-badge' title={b.name} tabIndex={0}><Image src={contentImageUrl(b.image)} width={30} height={30} unoptimized alt={b.name}/><span className='member-badge-tooltip' aria-hidden='true'>{b.name}</span></span>)}</div>}
           </div>
         </header>
         {member.bio && (
@@ -69,7 +72,7 @@ export default async function MemberProfile({
             {member.bio}
           </p>
         )}
-        <div className="hub-actions">
+        <div className="hub-actions member-profile-socials">
           {Object.entries(member.socials as Record<string, string>).map(
             ([platform, url]) => (
               <a
@@ -78,9 +81,10 @@ export default async function MemberProfile({
                 className="hub-button"
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label={platform}
+                title={platform}
               >
                 <BrandIcon slug={platform} size={19} />
-                {platform === "github" ? "GitHub" : platform}
               </a>
             ),
           )}

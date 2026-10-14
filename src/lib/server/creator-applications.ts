@@ -89,7 +89,7 @@ export function createApplicationHandler(getWebhook: () => string | undefined, s
     let token: string | undefined;
     if (storage) {
       try { token = (await storage.save(a, reference)).token; }
-      catch { return reply("UNAVAILABLE", 503); }
+      catch (error) { return error instanceof Error&&error.message==='ALREADY_APPLIED'?reply("ALREADY_APPLIED",409):reply("UNAVAILABLE", 503); }
     }
     try {
       const receipt = await sendApplicationNotification(a, reference, getWebhook(), send);

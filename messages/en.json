@@ -159,7 +159,8 @@
       "4162-0323-5737": "🧡🌹 Press Like & Favorite To Support Me\n\n🏰 Doomspire Brickbattle\n💥 Destructive Towers & Explosions\n🔫 6 Classic Weapons\n🎮 Fast-Paced Team Battles\n🏆 100 Rounds\n🛒 In-Game Shop\n🪜 Climbable Towers & Ladders\n😎 Made In UEFN",
       "8238-8280-9827": "🧡🌹 Press Like & Favorite To Support Me\n\n🏰 Doomspire Brickbattle\n💥 Destructive Towers & Explosions\n🔫 6 Classic Weapons\n🎮 Fast-Paced Team Battles\n🏆 100 Rounds\n🛒 In-Game Shop\n🔫 Without Reload\n🪜 Climbable Towers & Ladders\n😎 Made In UEFN"
     },
-    "newMap": "New!!"
+    "newMap": "New!!",
+    "itemShopCode": "Use creator code Zo7al in the Fortnite Item Shop."
   },
   "socials": {
     "eyebrow": "Community",
@@ -244,7 +245,8 @@
     "supportText": "Your purchase helps support the server and its community.",
     "helpTitle": "Need help?",
     "helpText": "Join our Discord community for purchase support.",
-    "checkoutNote": "Final taxes, currency and payment options are shown at checkout."
+    "checkoutNote": "Final taxes, currency and payment options are shown at checkout.",
+    "owned": "Owned"
   },
   "faq": {
     "eyebrow": "Need help?",
@@ -415,7 +417,7 @@
         "id": "one-rank",
         "category": "storeRanks",
         "q": "Can I put several ranks in the cart?",
-        "a": "The cart accepts one paid rank at a time. Remove it before choosing another. You can add Coins alongside the rank and change Coins quantities.",
+        "a": "The cart accepts one paid rank at a time. Remove it before choosing another. You can add Coins alongside the rank and change Coins quantities. An owned paid rank also owns every lower paid tier (VIP, VIP+, VIP++, MVP, MVP+, MVP++). Booster is independent. Owned ranks cannot be purchased again for yourself; gifts remain available.",
         "href": "/store",
         "action": "Open the store"
       },
@@ -423,7 +425,7 @@
         "id": "rank-preview",
         "category": "storeRanks",
         "q": "How do I preview a rank on my character?",
-        "a": "Press the eye icon beside Details on a rank card or in the cart. Enter your Minecraft username if requested; the preview shows your 3D character, name and selected rank.",
+        "a": "Sign in and link your Minecraft player to the server first. Then press the eye icon on a rank card or in the cart. The preview uses your verified player and the selected rank.",
         "href": "/store",
         "action": "Open the store"
       },
@@ -610,14 +612,6 @@
         "a": "Open My account → Password to set a unique password of 12–128 characters. Confirm it and request an email verification code if prompted. If you cannot sign in, choose Forgot password in the sign-in window and open the emailed link in the same browser.",
         "href": "/account?tab=password",
         "action": "Manage password"
-      },
-      {
-        "id": "dashboard-access",
-        "category": "accountSecurity",
-        "q": "Can I enter the dashboard with my linked account?",
-        "a": "Only an account authorized by the owner can enter the dashboard. Sign in with a method linked to that same account and complete 2FA if enabled. Linking Google, Microsoft, Discord or Modrinth does not grant administration access by itself.",
-        "href": "/account",
-        "action": "Open my account"
       }
     ],
     "clearSearch": "Clear search",
@@ -875,7 +869,8 @@
       "tiktok": "One clip can tell a whole adventure. The TIKTOK rank is for Minecraft creators who share entertaining moments and quick ideas in their own style, from standout plays and challenges to tips and creative edits. Introduce your profile and your vision for the content you want to create about Zo7al Network."
     },
     "applicationDetails": "To apply, open the application form and provide a reachable email, your Minecraft and Discord usernames, and your profile link on the selected platform. Give accurate content details and explain why you want the rank. With your consent, the application is sent to the Zo7al team through Discord for review. Keep the reference shown after successful delivery. Applying is not a purchase or an automatic rank grant; eligibility and acceptance are decided by the team, with no guaranteed review time or additional benefits.",
-    "notificationPending": "Your application is saved. The Discord notification is pending and the team can retry it."
+    "notificationPending": "Your application is saved. The Discord notification is pending and the team can retry it.",
+    "applied": "Application submitted"
   },
   "hub": {
     "latest": "New at Zo7al",
@@ -1210,7 +1205,10 @@
     "averagePlaytime": "Average playtime",
     "fortnitePeriods": "Plays and unique players cover the last 24 hours; minutes and peak players are all-time. The source rounds some figures.",
     "connection_cached": "Last saved data",
-    "fortniteCachedHint": "Fortnite.GG could not refresh. These are the last verified figures at the shown time. Old live counts and previous-day metrics are hidden."
+    "fortniteCachedHint": "Fortnite.GG could not refresh. These are the last verified figures at the shown time. Old live counts and previous-day metrics are hidden.",
+    "badges": "Badges",
+    "markPageRead": "Mark as read",
+    "pageRead": "Read"
   },
   "pelican": {
     "title": "Server management",
@@ -1835,7 +1833,12 @@
     },
     "dashboard": "Dashboard",
     "switchAccount": "Switch account",
-    "addAccount": "Add account"
+    "addAccount": "Add account",
+    "subscriptions": "Subscriptions",
+    "subscriptionsHint": "Manage your store subscriptions and payments in the Tebex customer portal.",
+    "manageSubscriptions": "Manage subscriptions",
+    "orders": "My orders",
+    "badges": "Badges"
   },
   "systemNotifications": {
     "title": "Device notifications",
@@ -1846,5 +1849,36 @@
     "enable": "Enable device notifications",
     "test": "Send a test notification",
     "testBody": "Zo7al notifications work on your device."
+  },
+  "badges": {
+    "title": "Profile badges",
+    "intro": "Upload a badge and award it to members. Archived badges can be restored.",
+    "name": "Badge name",
+    "image": "Badge image",
+    "create": "Create badge",
+    "archive": "Archive",
+    "restore": "Restore",
+    "assign": "Award badges"
+  },
+  "modrinthDetails": {
+    "title": "Modrinth projects",
+    "downloads": "Downloads",
+    "followers": "Followers",
+    "type": "Project type",
+    "status": "Status",
+    "client": "Client support",
+    "server": "Server support",
+    "published": "Published",
+    "updated": "Updated",
+    "license": "License",
+    "issues": "Issues",
+    "source": "Source code",
+    "wiki": "Wiki",
+    "discord": "Discord",
+    "description": "Description",
+    "team": "Team",
+    "versions": "Versions",
+    "files": "Files",
+    "dependencies": "Dependencies"
   }
 }

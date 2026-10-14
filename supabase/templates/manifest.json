@@ -1,0 +1,80 @@
+[
+  {
+    "key": "confirmation",
+    "file": "confirm-signup.html",
+    "subject": "Zo7al • تأكيد بريدك الإلكتروني | Confirm your email",
+    "kind": "authentication"
+  },
+  {
+    "key": "invite",
+    "file": "invite.html",
+    "subject": "Zo7al • دعوتك جاهزة | You are invited",
+    "kind": "authentication"
+  },
+  {
+    "key": "magic_link",
+    "file": "magic-link.html",
+    "subject": "Zo7al • رمز التحقق | Your verification code",
+    "kind": "authentication"
+  },
+  {
+    "key": "email_change",
+    "file": "email-change.html",
+    "subject": "Zo7al • تأكيد تغيير البريد | Confirm your email change",
+    "kind": "authentication"
+  },
+  {
+    "key": "recovery",
+    "file": "reset-password.html",
+    "subject": "Zo7al • استعادة كلمة المرور | Reset your password",
+    "kind": "authentication"
+  },
+  {
+    "key": "reauthentication",
+    "file": "reauthentication.html",
+    "subject": "Zo7al • تأكيد هويتك | Confirm your identity",
+    "kind": "authentication"
+  },
+  {
+    "key": "password_changed_notification",
+    "file": "password-changed.html",
+    "subject": "Zo7al • تم تغيير كلمة المرور | Your password was changed",
+    "kind": "notification"
+  },
+  {
+    "key": "email_changed_notification",
+    "file": "email-changed.html",
+    "subject": "Zo7al • تم تغيير بريد الحساب | Your email address was changed",
+    "kind": "notification"
+  },
+  {
+    "key": "phone_changed_notification",
+    "file": "phone-changed.html",
+    "subject": "Zo7al • تم تغيير رقم الهاتف | Your phone number was changed",
+    "kind": "notification"
+  },
+  {
+    "key": "identity_linked_notification",
+    "file": "identity-linked.html",
+    "subject": "Zo7al • تم ربط طريقة تسجيل دخول | A sign-in method was linked",
+    "kind": "notification"
+  },
+  {
+    "key": "identity_unlinked_notification",
+    "file": "identity-unlinked.html",
+    "subject": "Zo7al • تم إزالة طريقة تسجيل دخول | A sign-in method was removed",
+    "kind": "notification"
+  },
+  {
+    "key": "mfa_factor_enrolled_notification",
+    "file": "mfa-added.html",
+    "subject": "Zo7al • تمت إضافة وسيلة تحقق | A verification method was added",
+    "kind": "notification"
+  },
+  {
+    "key": "mfa_factor_unenrolled_notification",
+    "file": "mfa-removed.html",
+    "subject": "Zo7al • تمت إزالة وسيلة تحقق | A verification method was removed",
+    "kind": "notification"
+  }
+]

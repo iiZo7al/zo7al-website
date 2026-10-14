@@ -159,7 +159,8 @@
       "4162-0323-5737": "🧡🌹 点赞并收藏来支持我\n\n🏰 Doomspire Brickbattle\n💥 可摧毁的高塔与爆炸\n🔫 6种经典武器\n🎮 快节奏团队战斗\n🏆 100回合\n🛒 游戏内商店\n🪜 可攀爬的高塔与梯子\n😎 使用UEFN制作",
       "8238-8280-9827": "🧡🌹 点赞并收藏来支持我\n\n🏰 Doomspire Brickbattle\n💥 可摧毁的高塔与爆炸\n🔫 6种经典武器\n🎮 快节奏团队战斗\n🏆 100回合\n🛒 游戏内商店\n🔫 无需换弹\n🪜 可攀爬的高塔与梯子\n😎 使用UEFN制作"
     },
-    "newMap": "全新!!"
+    "newMap": "全新!!",
+    "itemShopCode": "在 Fortnite 道具商店使用创作者代码 Zo7al。"
   },
   "socials": {
     "eyebrow": "社区",
@@ -244,7 +245,8 @@
     "supportText": "您的购买将帮助支持服务器及其社区。",
     "helpTitle": "需要帮助？",
     "helpText": "加入我们的 Discord 社区，获取购买相关帮助。",
-    "checkoutNote": "最终税费、币种和付款方式将在结账时显示。"
+    "checkoutNote": "最终税费、币种和付款方式将在结账时显示。",
+    "owned": "已拥有"
   },
   "faq": {
     "eyebrow": "需要帮助？",
@@ -415,7 +417,7 @@
         "id": "one-rank",
         "category": "storeRanks",
         "q": "购物车能同时加入多个等级吗？",
-        "a": "一次只能加入一个付费等级。选择其他等级前请先删除现有等级。可以同时加入Coins礼包并调整数量。",
+        "a": "一次只能加入一个付费等级。选择其他等级前请先删除现有等级。可以同时加入Coins礼包并调整数量。 拥有付费等级也会拥有所有更低等级（VIP、VIP+、VIP++、MVP、MVP+、MVP++）。Booster 独立计算。不能为自己重复购买已拥有的等级，但仍可赠送礼物。",
         "href": "/store",
         "action": "打开商店"
       },
@@ -423,7 +425,7 @@
         "id": "rank-preview",
         "category": "storeRanks",
         "q": "如何在角色上预览等级？",
-        "a": "点击等级卡片或购物车中详情旁的眼睛图标。如有提示，请输入Minecraft用户名；随后显示你的3D角色、名字和所选等级。",
+        "a": "先登录并将 Minecraft 玩家与服务器关联。然后点击等级卡片或购物车中的眼睛图标，即可预览已验证的玩家和所选等级。",
         "href": "/store",
         "action": "打开商店"
       },
@@ -610,14 +612,6 @@
         "a": "打开“我的账户 → 密码”，设置一个未在其他地方使用过的12至128个字符的密码。确认密码，并在需要时请求邮件验证码。如果无法登录，请在登录窗口选择“忘记密码”，然后在同一浏览器中打开邮件链接。",
         "href": "/account?tab=password",
         "action": "管理密码"
-      },
-      {
-        "id": "dashboard-access",
-        "category": "accountSecurity",
-        "q": "可以用已关联的账户进入管理面板吗？",
-        "a": "只有获得所有者授权的账户才能进入管理面板。请使用关联到同一账户的登录方式，并在启用双重验证时完成验证。关联Google、Microsoft、Discord或Modrinth本身不会授予管理权限。",
-        "href": "/account",
-        "action": "打开我的账户"
       }
     ],
     "clearSearch": "清除搜索",
@@ -875,7 +869,8 @@
       "tiktok": "TIKTOK 等级面向在 TikTok 制作 Minecraft 内容的创作者。请介绍账号及短视频风格，例如有趣片段、技巧和挑战。说明粉丝数量、更新频率，以及希望如何与观众分享 Zo7al Network 的体验。"
     },
     "applicationDetails": "打开申请表，填写可以联系到的邮箱、Minecraft 和 Discord 用户名，以及所选平台的个人主页链接。请准确介绍内容并说明申请理由。经你同意，申请将通过 Discord 发送给 Zo7al 团队审核。送达确认后请保存申请编号。提交申请不等于购买或自动获得等级；资格和批准由团队决定，不保证审核时间或额外权益。",
-    "notificationPending": "申请已保存。Discord 通知等待发送，团队可以重试。"
+    "notificationPending": "申请已保存。Discord 通知等待发送，团队可以重试。",
+    "applied": "已提交申请"
   },
   "hub": {
     "latest": "Zo7al最新动态",
@@ -1210,7 +1205,10 @@
     "averagePlaytime": "平均游玩时间",
     "fortnitePeriods": "游玩次数和独立玩家为过去24小时数据；游玩分钟和最高人数为历史累计数据。来源中的部分数字经过取整。",
     "connection_cached": "最近保存的数据",
-    "fortniteCachedHint": "无法刷新Fortnite.GG。此处显示标注时间的最近核实数据。过时的在线人数和前一天指标会隐藏。"
+    "fortniteCachedHint": "无法刷新Fortnite.GG。此处显示标注时间的最近核实数据。过时的在线人数和前一天指标会隐藏。",
+    "badges": "徽章",
+    "markPageRead": "标为已读",
+    "pageRead": "已读"
   },
   "pelican": {
     "title": "服务器管理",
@@ -1835,7 +1833,12 @@
     },
     "dashboard": "控制面板",
     "switchAccount": "切换账号",
-    "addAccount": "添加账号"
+    "addAccount": "添加账号",
+    "subscriptions": "订阅",
+    "subscriptionsHint": "在 Tebex 客户门户管理商店订阅和付款。",
+    "manageSubscriptions": "管理订阅",
+    "orders": "我的订单",
+    "badges": "徽章"
   },
   "systemNotifications": {
     "title": "设备通知",
@@ -1846,5 +1849,36 @@
     "enable": "启用设备通知",
     "test": "发送测试通知",
     "testBody": "您的设备可以收到Zo7al通知。"
+  },
+  "badges": {
+    "title": "个人资料徽章",
+    "intro": "上传徽章图片并授予成员。已归档的徽章可以恢复。",
+    "name": "徽章名称",
+    "image": "徽章图片",
+    "create": "创建徽章",
+    "archive": "归档",
+    "restore": "恢复",
+    "assign": "授予徽章"
+  },
+  "modrinthDetails": {
+    "title": "Modrinth 项目",
+    "downloads": "下载量",
+    "followers": "关注者",
+    "type": "项目类型",
+    "status": "状态",
+    "client": "客户端支持",
+    "server": "服务器支持",
+    "published": "发布日期",
+    "updated": "更新日期",
+    "license": "许可证",
+    "issues": "问题反馈",
+    "source": "源代码",
+    "wiki": "维基",
+    "discord": "Discord",
+    "description": "描述",
+    "team": "团队",
+    "versions": "版本",
+    "files": "文件",
+    "dependencies": "依赖项"
   }
 }

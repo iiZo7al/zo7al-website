@@ -11,6 +11,7 @@ import { cartCopy } from "@/lib/data/cart-copy";
 import { useAccount } from "@/components/account/AccountProvider";
 import AccountLogin from "@/components/account/AccountLogin";
 import Link from "next/link";
+import {useRouter} from "next/navigation";
 import PlayerIdentity, { usePlayerName } from "./PlayerIdentity";
 import RankComparison from "./RankComparison";
 import RankName from "./RankName";
@@ -54,6 +55,7 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
     window.addEventListener("focus", refresh);
     return () => { controller.abort(); clearInterval(timer); window.removeEventListener("focus", refresh); };
   }, [initialLive]);
+  const router=useRouter();
   const t = useTranslations("store"), locale = useLocale();
   const creatorT = useTranslations("creators");
   const descriptionT = useTranslations("storeDescription");
@@ -69,6 +71,9 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
   const { account, ready: accountReady } = useAccount();
   const accountT = useTranslations("account");
   const [gift, setGift] = useState(false), [giftName, setGiftName] = useState(""), [login, setLogin] = useState(false), [accountError, setAccountError] = useState("");
+  const [ownership,setOwnership]=useState<{userId:string;owned:number[];booster:boolean;applications:string[]}>({userId:'',owned:[],booster:false,applications:[]});
+  useEffect(()=>{if(!account)return;const controller=new AbortController();const load=()=>{void fetch('/api/account/store',{cache:'no-store',signal:controller.signal}).then(async r=>r.ok?r.json():null).then(d=>{if(d&&!controller.signal.aborted)setOwnership({userId:account.id,...d});}).catch(()=>{});};load();const timer=setInterval(load,60000);window.addEventListener('focus',load);window.addEventListener('zo7al-receipts',load);return()=>{controller.abort();clearInterval(timer);window.removeEventListener('focus',load);window.removeEventListener('zo7al-receipts',load);};},[account?.id,account?.minecraft?.username,account]);
+  const ownsProduct=(product:StoreProduct)=>ownership.userId===account?.id&&(product.id===BOOSTER_PRODUCT.id?ownership.booster:ownership.owned.includes(product.id));
   const username = gift ? giftName : account?.minecraft?.username ?? legacyName.username;
   const setUsername = (value: string) => { if (gift) setGiftName(value); else if (!account?.minecraft) legacyName.setUsername(value); };
   const canCheckout = !!account && (gift ? /^[.a-zA-Z0-9_ ]{3,32}$/.test(giftName.trim()) : !!account.minecraft);
@@ -198,7 +203,6 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
   const categoryLabel = (name?: string) => /^(ranks?|الرتب)$/i.test(name?.trim() ?? "") ? t("ranksTitle") : /^(coins?|العملات)$/i.test(name?.trim() ?? "") ? t("coinsTitle") : name || t("productsTitle");
   const cartProducts = cartIds.map(id => products.find(product => product.id === id));
   const cartRank = cartProducts.find(product => product && product.id === cartRankView?.packageId && isRankProduct(product));
-  const validPreviewName = /^[.a-zA-Z0-9_ ]{3,32}$/.test(username.trim());
   const cartUnavailable = !live || cartProducts.some(product => !product?.available);
   const totals = new Map<string, number>();
   for (const product of cartProducts) if (product?.price != null) totals.set(product.currency, (totals.get(product.currency) ?? 0) + product.price * (cartItems.find(item => item.packageId === product.id)?.quantity ?? 1));
@@ -227,9 +231,9 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
       </div>
       <div className="store-rank-grid">
       {group.products.map((product, index) => {
-        const booster = product.id === BOOSTER_PRODUCT.id;
+        const booster = product.id === BOOSTER_PRODUCT.id, owned=ownsProduct(product);
         const quantity = cartItems.find(item => item.packageId === product.id)?.quantity ?? 0;
-        const rankBlocked = isRankProduct(product) && hasRank && !quantity;
+        const rankBlocked = !gift&&ownsProduct(product)||isRankProduct(product) && hasRank && !quantity;
         // Tebex package IDs: MVP+ and the 100,000 Coins package.
         const featured = product.id === 7312784 || product.id === 7692129;
         const lines = describe(product);
@@ -243,17 +247,17 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
           <h3 className="text-display store-rank-name"><bdi dir="ltr">{isCoinProduct(product) ? <RankName name={product.name} variant="coins"/> : isRankProduct(product) || booster ? <RankName name={product.name}/> : product.name}</bdi></h3>
           <p className={`store-rank-price${product.price === null ? " store-price-pending" : ""}`}>{price(product)}</p>
           {perks.length ? <ul className="store-rank-perks">{perks.map((perk, index) => <li key={index}><Check size={15} aria-hidden="true" /><span dir="auto">{perk}</span></li>)}</ul> : <p dir="auto" className="store-rank-description store-description-preview">{lines.join("\n") || t("descriptionUnavailable")}</p>}
-          <div className="store-rank-actions">{booster ? <a href={DISCORD_LINK} target="_blank" rel="noopener noreferrer" data-cursor="button" className="store-action"><span>{t("getRank")} <bdi dir="ltr">Booster</bdi></span><ArrowRight size={16} className="store-direction" aria-hidden="true" /></a> : isCoinProduct(product) && quantity > 0 ? <QuantityControl name={product.name} quantity={quantity} disabled={!live || !product.available || !cartReady} decrease={copy.decrease} increase={copy.increase} onChange={delta => changeQuantity(product.id, delta)} removeLabel={copy.remove} onRemove={() => remove(product.id)}/> : <button title={rankBlocked ? copy.oneRank : undefined} disabled={rankBlocked || !live || !product.available || !cartReady || (cartIds.length >= 20 && !cartIds.includes(product.id))} onClick={() => { if (cartIds.includes(product.id)) setCartOpen(true); else { add(product.id, isRankProduct(product) ? rankIds : []); setToast({ product, key: Date.now() }); } }} data-cursor="button" className={`store-action${featured ? " store-action-primary" : ""}`}>
+          <div className="store-rank-actions">{owned ? <div className="store-action store-owned" role="status"><ShieldCheck size={17}/>{t("owned")}</div> : booster ? <a href={DISCORD_LINK} target="_blank" rel="noopener noreferrer" data-cursor="button" className="store-action"><span>{t("getRank")} <bdi dir="ltr">Booster</bdi></span><ArrowRight size={16} className="store-direction" aria-hidden="true" /></a> : isCoinProduct(product) && quantity > 0 ? <QuantityControl name={product.name} quantity={quantity} disabled={!live || !product.available || !cartReady} decrease={copy.decrease} increase={copy.increase} onChange={delta => changeQuantity(product.id, delta)} removeLabel={copy.remove} onRemove={() => remove(product.id)}/> : <button title={rankBlocked ? copy.oneRank : undefined} disabled={rankBlocked || !live || !product.available || !cartReady || (cartIds.length >= 20 && !cartIds.includes(product.id))} onClick={() => { if (cartIds.includes(product.id)) setCartOpen(true); else { add(product.id, isRankProduct(product) ? rankIds : []); setToast({ product, key: Date.now() }); } }} data-cursor="button" className={`store-action${featured ? " store-action-primary" : ""}`}>
             <span>{cartIds.includes(product.id) ? copy.added : <>{copy.add.split("{name}")[0]}<bdi dir="ltr">{product.name}</bdi>{copy.add.split("{name}")[1]}</>}</span>{cartIds.includes(product.id) ? <Check size={16} aria-hidden="true"/> : <CommerceIcon name="shopping-cart" size={16} aria-hidden="true"/>}
           </button>}
-          <div className="store-rank-tools">{!booster && <button type="button" className="store-action store-details-button" aria-label={accountT("giftProduct", {name: product.name})} title={accountT("giftProduct", {name: product.name})} disabled={rankBlocked || !live || !product.available || !cartReady} onClick={() => {setGift(true);setAccountError("");if(!cartIds.includes(product.id))add(product.id,isRankProduct(product)?rankIds:[]);setCartOpen(true);}} data-cursor="button"><Gift size={18} aria-hidden="true"/></button>}{isRankProduct(product) && quantity > 0 && <button type="button" className="store-action store-details-button" disabled={busy} aria-label={`${copy.remove} — ${product.name}`} title={copy.remove} onClick={() => { remove(product.id); setCartRankView(current => current?.packageId === product.id ? null : current); setToast(null); setError(null); }}><CommerceIcon name="trash" size={18}/></button>}<button type="button" className="store-action store-details-button" onClick={() => setDetails(product)} data-cursor="button" aria-haspopup="dialog" aria-label={`${t("details")} — ${product.name}`} title={t("details")}><DetailsIcon /></button>
+          <div className="store-rank-tools">{!booster && <button type="button" className="store-action store-details-button" aria-label={accountT("giftProduct", {name: product.name})} title={accountT("giftProduct", {name: product.name})} disabled={(isRankProduct(product)&&hasRank&&!quantity) || !live || !product.available || !cartReady} onClick={() => {setGift(true);setAccountError("");if(!cartIds.includes(product.id))add(product.id,isRankProduct(product)?rankIds:[]);setCartOpen(true);}} data-cursor="button"><Gift size={18} aria-hidden="true"/></button>}{isRankProduct(product) && quantity > 0 && <button type="button" className="store-action store-details-button" disabled={busy} aria-label={`${copy.remove} — ${product.name}`} title={copy.remove} onClick={() => { remove(product.id); setCartRankView(current => current?.packageId === product.id ? null : current); setToast(null); setError(null); }}><CommerceIcon name="trash" size={18}/></button>}<button type="button" className="store-action store-details-button" onClick={() => setDetails(product)} data-cursor="button" aria-haspopup="dialog" aria-label={`${t("details")} — ${product.name}`} title={t("details")}><DetailsIcon /></button>
           {(isRankProduct(product) || booster) && <button type="button" className="store-action store-details-button" aria-haspopup="dialog" aria-label={`${experience.preview} — ${product.name}`} title={experience.preview} onClick={() => setRankPreview(product)}><EyeIcon/></button>}</div></div>
         </article></motion.div>;
       })}
       </div>
     </section></Fragment>)}
     {login && <AccountLogin next="/store" onClose={()=>setLogin(false)}/>}
-    {showCreators && <CreatorRanks query={query} showEmpty={!visibleGroups.length} username={username} onNameChange={setUsername}/>}
+    {showCreators && <CreatorRanks query={query} showEmpty={!visibleGroups.length} username={username} onNameChange={setUsername} applied={ownership.userId===account?.id?ownership.applications:[]}/>}
     {rankPreview && <RankPreviewDialog rankName={rankPreview.name} username={username} onNameChange={setUsername} onClose={() => setRankPreview(null)}/>}
     {comparing && <RankComparison products={products.filter(isRankProduct)} price={price} describe={describe} onClose={() => setComparing(false)}/>}
     {cartReady && createPortal(<AnimatePresence>{toast && !cartOpen && <motion.aside key={toast.key} className="store-cart-toast" initial={reduceMotion ? false : { opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: reduceMotion ? 0 : 12 }} role="status" aria-live="polite" aria-atomic="true" data-accent="store">
@@ -282,7 +286,7 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
             return <li key={id}>
               {product?.image ? <Image unoptimized src={product.image} alt="" width={80} height={64}/> : <CommerceIcon name="shopping-cart" size={30} aria-hidden="true"/>}
               <div><h3 dir="auto">{product && isCoinProduct(product) ? <RankName name={product.name} variant="coins"/> : product && isRankProduct(product) ? <RankName name={product.name}/> : product?.name ?? `#${id}`}</h3><p>{product ? <>{price(product)} <span>× {cartItems[index].quantity}</span></> : t("checkoutUnavailable")}</p>{product && isCoinProduct(product) && <QuantityControl name={product.name} quantity={cartItems[index].quantity} disabled={busy} decrease={copy.decrease} increase={copy.increase} onChange={delta => { changeQuantity(id, delta); setError(null); }}/>}{product && isRankProduct(product) && <div className="store-cart-rank-tools">
-                <button type="button" className="store-cart-rank-tool" aria-label={`${experience.preview} — ${product.name}`} title={experience.preview} aria-expanded={cartRankView?.packageId === product.id && cartRankView.mode === "preview"} aria-controls={`cart-rank-panel-${product.id}`} onClick={() => toggleCartRankView(product.id, "preview")}><EyeIcon/></button>
+                <button type="button" className="store-cart-rank-tool" aria-label={`${experience.preview} — ${product.name}`} title={experience.preview} aria-expanded={cartRankView?.packageId === product.id && cartRankView.mode === "preview"} aria-controls={`cart-rank-panel-${product.id}`} onClick={() => {if(!account){setLogin(true);return;}if(!account.minecraft){router.push("/account?tab=connections");return;}toggleCartRankView(product.id,"preview");}}><EyeIcon/></button>
                 <button type="button" className="store-cart-rank-tool" aria-label={`${t("details")} — ${product.name}`} title={t("details")} aria-expanded={cartRankView?.packageId === product.id && cartRankView.mode === "details"} aria-controls={`cart-rank-panel-${product.id}`} onClick={() => toggleCartRankView(product.id, "details")}><DetailsIcon/></button>
               </div>}{product && !product.available && <small>{t("checkoutUnavailable")}</small>}</div>
               <button type="button" disabled={busy} className="store-close" aria-label={`${copy.remove} — ${product?.name ?? id}`} title={copy.remove} onClick={() => { remove(id); setCartRankView(current => current?.packageId === id ? null : current); setError(null); }}><CommerceIcon name="trash" size={18} aria-hidden="true"/></button>
@@ -291,7 +295,7 @@ export default function StoreRanks({ products: initialProducts, live: initialLiv
           {cartOpen && cartRank && cartRankView && <section key={`${cartRank.id}:${cartRankView.mode}`} id={`cart-rank-panel-${cartRank.id}`} aria-labelledby="cart-rank-panel-title" className="store-cart-rank-panel">
             <div className="store-preview-heading"><h3 id="cart-rank-panel-title">{cartRankView.mode === "preview" ? experience.rankPreview : t("details")} · <bdi dir="ltr"><RankName name={cartRank.name}/></bdi></h3><button type="button" className="store-close" aria-label={t("close")} onClick={() => setCartRankView(null)}><X size={18} aria-hidden="true"/></button></div>
             {cartRankView.mode === "preview" ? (
-              validPreviewName ? <CharacterPreview key={`${cartRank.id}:${username.trim()}`} id="cart-rank-character" username={username.trim()} previewRank={cartRank.name}/> : <button type="button" className="store-action" onClick={() => document.getElementById("store-username")?.focus()}>{experience.previewName}</button>
+              account?.minecraft ? <CharacterPreview key={`${cartRank.id}:${account.minecraft.uuid}`} id="cart-rank-character" username={account.minecraft.username} previewRank={cartRank.name}/> : <Link className="store-action" href="/account?tab=connections">{accountT("connectMinecraft")}</Link>
             ) : <div className="store-full-description">
               {cartRank.image && <Image unoptimized src={cartRank.image} alt={cartRank.name} width={480} height={320} className="store-details-image"/>}
               {cartRank.description ? describe(cartRank).map((line, index) => line.startsWith("• ") ? <p className="store-detail-perk" key={index}><Check size={16} aria-hidden="true"/><span dir="auto">{line.slice(2)}</span></p> : <p dir="auto" key={index}>{line}</p>) : <p>{t("descriptionUnavailable")}</p>}

@@ -1,7 +1,7 @@
 export type MinecraftLink = { uuid: string; username: string; linkedAt: string };
 import type { MemberProfile } from "./member-profile";
 export type SiteAccount = MemberProfile & { id: string; name: string; email: string; avatar: string | null; providers: { id: string; provider: string; name?:string }[]; minecraft: MinecraftLink | null };
-export const ACCOUNT_PROVIDERS = ['discord', 'google', 'azure', 'github', 'twitch', 'x', 'modrinth'] as const;
+export const ACCOUNT_PROVIDERS = ['discord', 'google', 'azure', 'github', 'modrinth', 'twitch'] as const;
 export function accountProviderName(provider: string) { return (provider==='x'||provider==='twitter')?'X':provider==='twitch'?'Twitch':provider==='github'?'GitHub':provider==='modrinth'?'Modrinth':provider === 'azure' ? 'Microsoft' : provider === 'google' ? 'Google' : provider === 'discord' ? 'Discord' : provider; }
 export function minecraftName(value: unknown): string | null {
   return typeof value === 'string' && /^[.a-zA-Z0-9_ ]{3,32}$/.test(value.trim()) ? value.trim() : null;

@@ -136,7 +136,7 @@ export async function finishAccountFlow(request: Request, headers: Headers, code
 
 export function accountProviderEnabled(provider:string,settings:AuthResult) {
   if(provider==='modrinth')return process.env.ZO7AL_ACCOUNT_MODRINTH_ENABLED==='true'&&!!process.env.MODRINTH_MEMBER_CLIENT_ID&&!!process.env.MODRINTH_MEMBER_CLIENT_SECRET&&!!process.env.SUPABASE_SECRET_KEY;
-  if(provider==='x')return process.env.ZO7AL_ACCOUNT_X_ENABLED==='true'||settings.external?.x===true||settings.external?.twitter===true;
+  if(provider==='x'||provider==='twitter')return false;
   return settings.external?.[provider]===true;
 }
 export async function accountPasskeysEnabled() { return (await authRequest('/settings')).passkeys_enabled===true; }

@@ -5,7 +5,7 @@ import ts from 'typescript';
 
 function moduleUrl(path, replacements = {}) {
  if(replacements["@/lib/server/site-security"]&&!replacements["@/lib/server/admin-account"])replacements["@/lib/server/admin-account"]=replacements["@/lib/server/site-security"];
-  let source = readFileSync(new URL('../' + path, import.meta.url), 'utf8').replace('import "server-only";', '');
+  let source = readFileSync(new URL('../' + path, import.meta.url), 'utf8').replace('import "server-only";', '').replace("import 'server-only';", '');
   for (const [name, replacement] of Object.entries(replacements)) source = source.replaceAll(name, replacement);
   return 'data:text/javascript;base64,' + Buffer.from(ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022 } }).outputText).toString('base64');
 }
@@ -16,7 +16,9 @@ const cartRules = moduleUrl('src/lib/data/store-cart.ts');
 const trackingStub = 'data:text/javascript;base64,' + Buffer.from('export async function createOrderReceipt(){return null;}').toString('base64');
 const accountStub = 'data:text/javascript;base64,' + Buffer.from(`export class AccountError extends Error{};export function accountConfigured(){return true;}export async function requireAccount(){return {id:'12345678-1234-1234-1234-123456789abc'};}export async function accountView(){return {minecraft:{username:'Player',uuid:'12345678-1234-1234-1234-123456789abd'}};}`).toString('base64');
 const accountRules=moduleUrl('src/lib/data/account.ts');
-const {POST} = await import(moduleUrl('src/app/api/store/checkout/route.ts', {'@/lib/server/account-auth':accountStub,'@/lib/data/account':accountRules,'@/lib/server/tebex': backend, '@/lib/data/store-cart': cartRules, '@/lib/server/site-content': trackingStub}));
+const syncedProfileStub='data:text/javascript;base64,'+Buffer.from('export async function readSyncedProfile(){return globalThis.__checkoutRankProfile??null;}').toString('base64');
+const serverOwnership=moduleUrl('src/lib/server/store-ownership.ts',{'./minecraft-bridge':syncedProfileStub,'../data/rank-ownership':moduleUrl('src/lib/data/rank-ownership.ts')});
+const {POST} = await import(moduleUrl('src/app/api/store/checkout/route.ts', {'@/lib/server/store-ownership':serverOwnership,'@/lib/server/account-auth':accountStub,'@/lib/data/account':accountRules,'@/lib/server/tebex': backend, '@/lib/data/store-cart': cartRules, '@/lib/server/site-content': trackingStub}));
 const {GET: paymentStatus} = await import(moduleUrl('src/app/api/store/status/route.ts', {'@/lib/server/tebex': backend}));
 const request = (body, origin = 'https://zo7al.test', ip = '203.0.113.5') => new Request('https://zo7al.test/api/store/checkout', {method:'POST', headers:{origin,'x-forwarded-for':ip},body:JSON.stringify(body)});
 
@@ -67,6 +69,17 @@ test('checkout validates catalog, preserves Tebex prices and fails closed', asyn
     calls.length=0;
     assert.equal((await POST(request({packageId:7312779,username:'Gift_Recipient',gift:true},undefined,'203.0.113.20'))).status,200);
     assert.equal(calls.find(call=>call.url.endsWith('/baskets')).body.username,'Gift_Recipient');
+    globalThis.__checkoutRankProfile={uuid:'12345678-1234-1234-1234-123456789abd',rank:'MVP'};
+    calls.length=0;
+    const lowerRank=await POST(request({packageId:7312779,username:'Player'},undefined,'203.0.113.21'));
+    assert.equal(lowerRank.status,409);assert.equal((await lowerRank.json()).error,'ALREADY_OWNED');assert.ok(!calls.some(call=>call.url.endsWith('/baskets')));
+    assert.equal((await POST(request({packageId:7312779,username:'Gift_Recipient',gift:true},undefined,'203.0.113.22'))).status,200);
+    globalThis.__checkoutRankProfile={uuid:'12345678-1234-1234-1234-123456789abd',rank:'Booster'};
+    assert.equal((await POST(request({packageId:7312779,username:'Player'},undefined,'203.0.113.23'))).status,200);
+    globalThis.__checkoutRankProfile={uuid:'different-uuid',rank:'MVP++'};
+    assert.equal((await POST(request({packageId:7312779,username:'Player'},undefined,'203.0.113.24'))).status,200);
+    delete globalThis.__checkoutRankProfile;
+
     const validFetch = globalThis.fetch;
     process.env.TEBEX_PLUGIN_SECRET = 'test-game-secret';
     globalThis.fetch = async (url,options) => {

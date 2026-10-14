@@ -159,7 +159,8 @@
       "4162-0323-5737": "🧡🌹 좋아요와 즐겨찾기로 응원해 주세요\n\n🏰 Doomspire Brickbattle\n💥 파괴 가능한 타워와 폭발\n🔫 클래식 무기 6종\n🎮 빠른 팀 전투\n🏆 100라운드\n🛒 게임 내 상점\n🪜 오를 수 있는 타워와 사다리\n😎 UEFN으로 제작",
       "8238-8280-9827": "🧡🌹 좋아요와 즐겨찾기로 응원해 주세요\n\n🏰 Doomspire Brickbattle\n💥 파괴 가능한 타워와 폭발\n🔫 클래식 무기 6종\n🎮 빠른 팀 전투\n🏆 100라운드\n🛒 게임 내 상점\n🔫 재장전 없음\n🪜 오를 수 있는 타워와 사다리\n😎 UEFN으로 제작"
     },
-    "newMap": "신규!!"
+    "newMap": "신규!!",
+    "itemShopCode": "포트나이트 아이템 상점에서 크리에이터 코드 Zo7al을 사용하세요."
   },
   "socials": {
     "eyebrow": "커뮤니티",
@@ -244,7 +245,8 @@
     "supportText": "구매를 통해 서버와 커뮤니티를 지원할 수 있습니다.",
     "helpTitle": "도움이 필요하신가요?",
     "helpText": "구매 관련 도움이 필요하면 Discord 커뮤니티에 참여하세요.",
-    "checkoutNote": "최종 세금, 통화 및 결제 수단은 결제 시 표시됩니다."
+    "checkoutNote": "최종 세금, 통화 및 결제 수단은 결제 시 표시됩니다.",
+    "owned": "보유 중"
   },
   "faq": {
     "eyebrow": "도움이 필요하신가요?",
@@ -415,7 +417,7 @@
         "id": "one-rank",
         "category": "storeRanks",
         "q": "여러 등급을 장바구니에 담을 수 있나요?",
-        "a": "유료 등급은 한 번에 하나만 담을 수 있습니다. 다른 등급을 선택하기 전에 기존 등급을 삭제하세요. Coins는 함께 담고 수량을 바꿀 수 있습니다.",
+        "a": "유료 등급은 한 번에 하나만 담을 수 있습니다. 다른 등급을 선택하기 전에 기존 등급을 삭제하세요. Coins는 함께 담고 수량을 바꿀 수 있습니다. 유료 등급을 보유하면 모든 하위 등급(VIP, VIP+, VIP++, MVP, MVP+, MVP++)도 보유한 것으로 처리됩니다. Booster는 독립적입니다. 자신을 위해 다시 구매할 수 없지만 선물은 가능합니다.",
         "href": "/store",
         "action": "스토어 열기"
       },
@@ -423,7 +425,7 @@
         "id": "rank-preview",
         "category": "storeRanks",
         "q": "내 캐릭터에서 등급을 미리 보려면?",
-        "a": "카드나 장바구니의 상세 옆 눈 아이콘을 누르세요. 필요한 경우 Minecraft 이름을 입력하면 3D 캐릭터, 이름과 선택한 등급을 보여줍니다.",
+        "a": "로그인하고 Minecraft 플레이어를 서버에 연결하세요. 이후 등급 카드나 장바구니의 눈 아이콘을 누르면 인증된 플레이어와 선택한 등급을 미리 볼 수 있습니다.",
         "href": "/store",
         "action": "스토어 열기"
       },
@@ -610,14 +612,6 @@
         "a": "내 계정 → 비밀번호에서 다른 곳에서 사용하지 않는 12~128자 비밀번호를 설정하세요. 비밀번호를 확인하고 요청 시 이메일 인증 코드를 받으세요. 로그인할 수 없다면 로그인 창에서 비밀번호 찾기를 선택하고 이메일 링크를 같은 브라우저에서 여세요.",
         "href": "/account?tab=password",
         "action": "비밀번호 관리"
-      },
-      {
-        "id": "dashboard-access",
-        "category": "accountSecurity",
-        "q": "연결된 계정으로 대시보드에 들어갈 수 있나요?",
-        "a": "소유자가 승인한 계정만 대시보드에 접근할 수 있습니다. 해당 계정에 연결된 방법으로 로그인하고 2단계 인증이 활성화되어 있으면 인증을 완료하세요. Google, Microsoft, Discord 또는 Modrinth 계정을 연결하는 것만으로 관리자 권한이 부여되지는 않습니다.",
-        "href": "/account",
-        "action": "내 계정 열기"
       }
     ],
     "clearSearch": "검색 지우기",
@@ -875,7 +869,8 @@
       "tiktok": "TIKTOK 등급은 TikTok에서 Minecraft 콘텐츠를 만드는 크리에이터를 위한 등급입니다. 재미있는 장면, 팁, 챌린지 등 프로필과 짧은 영상 스타일을 소개해 주세요. 팔로워 수, 게시 빈도와 Zo7al Network 경험을 공유할 방법을 알려 주세요."
     },
     "applicationDetails": "지원 양식에 연락 가능한 이메일, Minecraft와 Discord 이름, 선택한 플랫폼의 프로필 링크를 입력하세요. 콘텐츠와 지원 이유를 정확하게 설명해 주세요. 동의하면 지원서가 Discord를 통해 Zo7al 팀에 전달됩니다. 전달 확인 후 표시되는 지원 번호를 보관하세요. 지원은 구매나 자동 등급 지급이 아닙니다. 자격과 승인 여부는 팀이 결정하며 검토 기간이나 추가 혜택은 보장되지 않습니다.",
-    "notificationPending": "신청이 저장되었습니다. Discord 알림은 대기 중이며 팀이 다시 보낼 수 있습니다."
+    "notificationPending": "신청이 저장되었습니다. Discord 알림은 대기 중이며 팀이 다시 보낼 수 있습니다.",
+    "applied": "신청 완료"
   },
   "hub": {
     "latest": "Zo7al 새 소식",
@@ -1210,7 +1205,10 @@
     "averagePlaytime": "평균 플레이 시간",
     "fortnitePeriods": "플레이 횟수와 고유 플레이어는 지난 24시간 기준이며 플레이 분수와 최대 인원은 전체 기간 기준입니다. 일부 수치는 반올림됩니다.",
     "connection_cached": "최근 저장 데이터",
-    "fortniteCachedHint": "Fortnite.GG를 새로 고치지 못했습니다. 표시된 시점의 마지막 확인 데이터입니다. 오래된 접속자 수와 전날 지표는 숨깁니다."
+    "fortniteCachedHint": "Fortnite.GG를 새로 고치지 못했습니다. 표시된 시점의 마지막 확인 데이터입니다. 오래된 접속자 수와 전날 지표는 숨깁니다.",
+    "badges": "배지",
+    "markPageRead": "읽음으로 표시",
+    "pageRead": "읽음"
   },
   "pelican": {
     "title": "서버 관리",
@@ -1835,7 +1833,12 @@
     },
     "dashboard": "관리 화면",
     "switchAccount": "계정 전환",
-    "addAccount": "계정 추가"
+    "addAccount": "계정 추가",
+    "subscriptions": "구독",
+    "subscriptionsHint": "Tebex 고객 포털에서 스토어 구독과 결제를 관리하세요.",
+    "manageSubscriptions": "구독 관리",
+    "orders": "내 주문",
+    "badges": "배지"
   },
   "systemNotifications": {
     "title": "기기 알림",
@@ -1846,5 +1849,36 @@
     "enable": "기기 알림 켜기",
     "test": "테스트 알림 보내기",
     "testBody": "기기에서 Zo7al 알림을 받을 수 있습니다."
+  },
+  "badges": {
+    "title": "프로필 배지",
+    "intro": "배지 이미지를 업로드하여 회원에게 지급하세요. 보관한 배지는 복원할 수 있습니다.",
+    "name": "배지 이름",
+    "image": "배지 이미지",
+    "create": "배지 만들기",
+    "archive": "보관",
+    "restore": "복원",
+    "assign": "배지 지급"
+  },
+  "modrinthDetails": {
+    "title": "Modrinth 프로젝트",
+    "downloads": "다운로드",
+    "followers": "팔로워",
+    "type": "프로젝트 유형",
+    "status": "상태",
+    "client": "클라이언트 지원",
+    "server": "서버 지원",
+    "published": "게시일",
+    "updated": "업데이트일",
+    "license": "라이선스",
+    "issues": "문제",
+    "source": "소스 코드",
+    "wiki": "위키",
+    "discord": "Discord",
+    "description": "설명",
+    "team": "팀",
+    "versions": "버전",
+    "files": "파일",
+    "dependencies": "의존성"
   }
 }

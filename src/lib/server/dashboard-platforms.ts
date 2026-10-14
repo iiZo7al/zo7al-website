@@ -80,6 +80,6 @@ export function cachedPlatform(id: PlatformId, connection?: ConnectionInput): Pr
   const promise = fetchPlatform(id,connection).catch((): PlatformData => ({
     ...base(id,"none"), status: "unavailable", updatedAt: null,
   }));
-  cache.set(id,{ expires: Date.now()+60000, promise });
+  cache.set(id,{ expires: Date.now()+(id==='fortnite'?20000:60000), promise });
   return promise;
 }

@@ -1,5 +1,7 @@
 "use client";
 import { useRef, useState, type FormEvent } from "react";
+import Link from "next/link";
+import {useRouter} from "next/navigation";
 import Image from "next/image";
 import Receipt from "@/components/hub/Receipt";
 import RankName from "./RankName";
@@ -19,7 +21,8 @@ import {useAccount} from '@/components/account/AccountProvider';
 
 const platforms = ["youtube", "twitch", "tiktok"] as const;
 type Platform = typeof platforms[number];
-export default function CreatorRanks({ query = "", showEmpty = false, username = "", onNameChange }: { query?: string; showEmpty?: boolean; username?: string; onNameChange: (name: string) => void }) {
+export default function CreatorRanks({ query = "", showEmpty = false, username = "", onNameChange,applied=[] }: { query?: string; showEmpty?: boolean; username?: string; onNameChange: (name: string) => void;applied?:string[] }) {
+  const router=useRouter();
   const t = useTranslations("creators");
   const ui = useTranslations("store");
   const [preview, setPreview] = useState<Platform | null>(null);
@@ -43,7 +46,7 @@ export default function CreatorRanks({ query = "", showEmpty = false, username =
       <p className="text-label">{t("title")}</p><h3 className="text-display store-rank-name" dir="ltr"><RankName name={platform.toUpperCase()}/></h3>
       <p className="store-rank-price">{getCreatorRankContent(locale, platform).free}</p>
       <ul className="store-rank-perks">{getCreatorRankContent(locale, platform).preview.map(perk => <li key={perk}><Check size={15} aria-hidden="true"/><span><CreatorText text={perk}/></span></li>)}</ul>
-      <div className="store-rank-actions"><button type="button" className="store-action" data-cursor="button" aria-haspopup="dialog" onClick={() => setSelected(platform)}><span>{t("apply")}</span><ArrowRight size={16} className="store-direction" aria-hidden="true"/></button>
+      <div className="store-rank-actions">{applied.includes(platform)?<Link href="/requests?tab=applications" className="store-action"><Check size={16}/>{t("applied")}</Link>:<button type="button" className="store-action" data-cursor="button" aria-haspopup="dialog" onClick={() => setSelected(platform)}><span>{t("apply")}</span><ArrowRight size={16} className="store-direction" aria-hidden="true"/></button>}
       <div className="store-rank-tools"><button type="button" className="store-action store-details-button" data-cursor="button" aria-haspopup="dialog" aria-label={`${ui("details")} — ${platform.toUpperCase()}`} title={ui("details")} onClick={() => setDetails(platform)}><DetailsIcon/></button>
       <button type="button" className="store-action store-details-button" aria-haspopup="dialog" aria-label={`${experience.preview} — ${platform.toUpperCase()}`} title={experience.preview} onClick={() => setPreview(platform)}><EyeIcon/></button></div></div>
       </article>
@@ -61,7 +64,7 @@ export default function CreatorRanks({ query = "", showEmpty = false, username =
           </section>)}
           <dl>{detailContent.summary.map(([label, value]) => <div key={label}><dt>{label}:</dt><dd>{value}</dd></div>)}</dl>
         </div>}
-        <button type="button" className="store-action store-action-primary" data-cursor="button" onClick={() => { setDetails(null); setSelected(details); }}><span>{t("apply")}</span><ArrowRight size={16} className="store-direction" aria-hidden="true"/></button>
+        <button type="button" className="store-action store-action-primary" data-cursor="button" onClick={() => { setDetails(null); if(applied.includes(details)){router.push("/requests?tab=applications");return;}setSelected(details); }}><span>{t(applied.includes(details)?"applied":"apply")}</span><ArrowRight size={16} className="store-direction" aria-hidden="true"/></button>
       </div>
     </DetailsDialog>}
     {selected && <ApplicationForm platform={selected} username={username} onClose={() => setSelected(null)}/>}
@@ -74,6 +77,7 @@ function CreatorText({ text }: { text: string }) {
   )}</>;
 }
 function ApplicationForm({ platform, onClose }: { platform: Platform; username: string; onClose: () => void }) {
+  const router=useRouter();
   const t = useTranslations("creators");
   const {account,refresh}=useAccount();
   const [busy, setBusy] = useState(false);
@@ -90,7 +94,7 @@ function ApplicationForm({ platform, onClose }: { platform: Platform; username: 
       const response = await fetch("/api/creator-applications", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...Object.fromEntries(data), platform, consent: data.get("consent") === "on" }) });
       const result = await response.json();
       if (response.ok && result.ok === true) { setReference(result.reference);if(result.token){window.dispatchEvent(new Event("zo7al-receipts"));setToken(result.token);} setDiscordPending(result.discordPending === true); setStatus("success"); }
-      else {if(['LOGIN_REQUIRED','MFA_REQUIRED'].includes(result.error))await refresh();setStatus(result.error === "RATE_LIMIT" ? "rateLimit" : result.error === "INVALID" ? "invalid" : result.error === "UNAVAILABLE" ? "unavailable" : "failed");}
+      else {if(result.error==='ALREADY_APPLIED'){router.push("/requests?tab=applications");return;}if(['LOGIN_REQUIRED','MFA_REQUIRED'].includes(result.error))await refresh();setStatus(result.error === "RATE_LIMIT" ? "rateLimit" : result.error === "INVALID" ? "invalid" : result.error === "UNAVAILABLE" ? "unavailable" : "failed");}
     } catch { setStatus("failed"); }
     finally { lock.current = false; setBusy(false); }
   }

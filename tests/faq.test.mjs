@@ -16,8 +16,9 @@ test('FAQ search finds Arabic diacritics, spelling variants, Latin accents and m
 });
 test('all FAQs cover the same durable features and only use existing internal destinations',()=>{
  const base=catalogs.en.items.map(item=>item.id);
+ assert.ok(!base.includes('dashboard-access'));assert.ok(base.includes('project-updates'));
  for(const faq of Object.values(catalogs)){
-  assert.equal(faq.items.length,46);assert.equal(new Set(faq.items.map(item=>item.id )).size,46);
+  assert.equal(faq.items.length,45);assert.equal(new Set(faq.items.map(item=>item.id )).size,45);
   assert.deepEqual(faq.items.map(item=>item.id),base);
   assert.deepEqual(Object.keys(faq.categories),Object.keys(catalogs.en.categories));
   assert.ok(faq.clearSearch&&faq.filterLabel&&faq.resetFilters);
@@ -27,7 +28,7 @@ test('all FAQs cover the same durable features and only use existing internal de
   }
  }
  assert.ok(catalogs.ar.items.find(item=>item.id==='requests').a.includes('بحسابك'));
- for(const id of ['account-login','public-profile','minecraft-link','two-factor','passkeys','backup-codes','discord-account-conflict','minecraft-bans','delete-account','account-password','dashboard-access'])assert.ok(base.includes(id));
+ for(const id of ['account-login','public-profile','minecraft-link','two-factor','passkeys','backup-codes','discord-account-conflict','minecraft-bans','delete-account','account-password'])assert.ok(base.includes(id));
  for(const faq of Object.values(catalogs))assert.ok(!faq.items.some(item=>item.href?.includes('community-polls')));
  assert.ok(catalogs.en.items.find(item=>item.id==='notifications').a.includes('Clearing site cookies'));
 });

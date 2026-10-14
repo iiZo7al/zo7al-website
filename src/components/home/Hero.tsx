@@ -85,7 +85,7 @@ export default function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: gameActive ? 0 : 1 }}
         transition={{ delay: 1, duration: 0.8 }}
-        className="pointer-events-none absolute bottom-10 left-1/2 z-10 -translate-x-1/2 text-[var(--text-muted)]"
+        className="hidden md:block pointer-events-none absolute bottom-10 left-1/2 z-10 -translate-x-1/2 text-[var(--text-muted)]"
       >
         <div className="flex flex-col items-center gap-2">
           <span className="text-label">{t("scroll")}</span>
