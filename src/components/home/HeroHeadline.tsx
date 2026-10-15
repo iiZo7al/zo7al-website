@@ -15,7 +15,7 @@ const FINAL = WORDS[WORDS.length - 1];
 
 export default function HeroHeadline() {
   const router = useRouter();
-  const [input, setInput] = useState(FINAL.text);
+  const [input, setInput] = useState<string>(FINAL.text);
   const [frame, setFrame] = useState<{ text: string; color: string; complete: boolean }>({ text: WORDS[0].text, color: WORDS[0].color, complete: false });
 
   useEffect(() => {
