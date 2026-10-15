@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import "./hero.css";
 
@@ -17,7 +17,36 @@ export default function HeroHeadline() {
   const router = useRouter();
   const [input, setInput] = useState<string>(FINAL.text);
   const resetting = useRef(false);
+  const idleTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const resetTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const animateReset = useCallback((startingValue: string) => {
+    if (idleTimer.current) clearTimeout(idleTimer.current);
+    if (resetTimer.current) clearTimeout(resetTimer.current);
+    resetting.current = true;
+    let value = startingValue;
+    const erase = () => {
+      value = value.slice(0, -1);
+      setInput(value);
+      if (value.length) {
+        resetTimer.current = setTimeout(erase, 45);
+        return;
+      }
+      let position = 0;
+      const type = () => {
+        position += 1;
+        value = FINAL.text.slice(0, position);
+        setInput(value);
+        if (position < FINAL.text.length) {
+          resetTimer.current = setTimeout(type, 90);
+        } else {
+          resetting.current = false;
+          resetTimer.current = null;
+        }
+      };
+      resetTimer.current = setTimeout(type, 90);
+    };
+    erase();
+  }, []);
   const [frame, setFrame] = useState<{ text: string; color: string; complete: boolean }>({ text: WORDS[0].text, color: WORDS[0].color, complete: false });
 
   useEffect(() => {
@@ -43,36 +72,15 @@ export default function HeroHeadline() {
 
   useEffect(() => {
     if (!frame.complete || input === FINAL.text || resetting.current) return;
-    const idleTimer = setTimeout(() => {
-      resetting.current = true;
-      let value = input;
-      const erase = () => {
-        value = value.slice(0, -1);
-        setInput(value);
-        if (value.length) {
-          resetTimer.current = setTimeout(erase, 45);
-          return;
-        }
-        let position = 0;
-        const type = () => {
-          position += 1;
-          value = FINAL.text.slice(0, position);
-          setInput(value);
-          if (position < FINAL.text.length) {
-            resetTimer.current = setTimeout(type, 90);
-          } else {
-            resetting.current = false;
-            resetTimer.current = null;
-          }
-        };
-        resetTimer.current = setTimeout(type, 90);
-      };
-      erase();
-    }, 1800);
-    return () => clearTimeout(idleTimer);
-  }, [frame.complete, input]);
+    idleTimer.current = setTimeout(() => animateReset(input), 5000);
+    return () => {
+      if (idleTimer.current) clearTimeout(idleTimer.current);
+      idleTimer.current = null;
+    };
+  }, [animateReset, frame.complete, input]);
 
   useEffect(() => () => {
+    if (idleTimer.current) clearTimeout(idleTimer.current);
     if (resetTimer.current) clearTimeout(resetTimer.current);
   }, []);
 
@@ -98,7 +106,7 @@ export default function HeroHeadline() {
       }
       if (event.key === "Escape") {
         cancelReset();
-        setInput(FINAL.text);
+        animateReset(input);
         return;
       }
       if (event.key === "Enter") {
@@ -107,7 +115,7 @@ export default function HeroHeadline() {
         const word = input.toLowerCase();
         if (word === "maps") router.push("/fortnite");
         else if (word === "network") router.push("/minecraft");
-        else setInput(FINAL.text);
+        else animateReset(input);
         return;
       }
       if (event.key.length === 1 && !event.ctrlKey && !event.metaKey && !event.altKey) {
@@ -118,7 +126,7 @@ export default function HeroHeadline() {
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [frame.complete, input, router]);
+  }, [animateReset, frame.complete, input, router]);
 
   return <>
     <span className="sr-only">Zo7al Projects</span>
