@@ -57,10 +57,11 @@ export default function HeroHeadline() {
         return;
       }
       if (event.key === "Enter") {
+        event.preventDefault();
         const word = input.toLowerCase();
         if (word === "maps") router.push("/fortnite");
         else if (word === "network") router.push("/minecraft");
-        else setInput("");
+        else setInput(FINAL.text);
         return;
       }
       if (/^[a-z]$/i.test(event.key) && !event.ctrlKey && !event.metaKey && !event.altKey) {
