@@ -15,7 +15,7 @@ const FINAL = WORDS[WORDS.length - 1];
 
 export default function HeroHeadline() {
   const router = useRouter();
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState(FINAL.text);
   const [frame, setFrame] = useState<{ text: string; color: string; complete: boolean }>({ text: WORDS[0].text, color: WORDS[0].color, complete: false });
 
   useEffect(() => {
@@ -53,7 +53,7 @@ export default function HeroHeadline() {
         return;
       }
       if (event.key === "Escape") {
-        setInput("");
+        setInput(FINAL.text);
         return;
       }
       if (event.key === "Enter") {
@@ -78,7 +78,7 @@ export default function HeroHeadline() {
       <span>ZO7AL</span>
       <span className="hero-typewriter" style={{ color: frame.complete ? WORDS.find((word) => word.text.toLowerCase() === input.toLowerCase())?.color ?? "var(--accent)" : frame.color }}>
         <span className="hero-typewriter-reserve">Modpacks<span className="hero-typewriter-caret" /></span>
-        <span className="hero-typewriter-line"><span className="hero-typewriter-word">{(frame.complete ? input || FINAL.text : frame.text).toUpperCase()}</span><span className={"hero-typewriter-caret" + (frame.complete && !input ? " is-complete" : "")} /></span>
+        <span className="hero-typewriter-line"><span className="hero-typewriter-word">{(frame.complete ? input : frame.text).toUpperCase()}</span><span className={"hero-typewriter-caret" + (frame.complete && !input ? " is-complete" : "")} /></span>
       </span>
     </span>
   </>;
