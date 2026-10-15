@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAccount } from "@/components/account/AccountProvider";
-import { DISCORD_LINK } from "@/lib/data/site";
+import { SOCIALS } from "@/lib/data/site";
 import "./hero.css";
 
 const WORDS = [
@@ -51,6 +51,9 @@ export default function HeroHeadline() {
     erase();
   }, []);
   const [frame, setFrame] = useState<{ text: string; color: string; complete: boolean }>({ text: WORDS[0].text, color: WORDS[0].color, complete: false });
+  const normalizedInput = input.trim().toLowerCase();
+  const matchingSocial = SOCIALS.find((social) => social.id.toLowerCase() === normalizedInput || social.label.toLowerCase() === normalizedInput);
+  const matchingWord = WORDS.find((word) => word.text.toLowerCase() === normalizedInput);
 
   useEffect(() => {
     const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -137,16 +140,16 @@ export default function HeroHeadline() {
           requests: "/requests",
           tracking: "/tracking",
         };
-        if (word === "dashboard" && canDashboard) router.push("/dashboard");
+        if (matchingSocial) {
+          window.open(matchingSocial.url, "_blank", "noopener,noreferrer");
+          animateReset(input);
+        } else if (word === "dashboard" && canDashboard) router.push("/dashboard");
         else if (word === "account" && account) router.push("/account");
         else if (word === "profile" && account) router.push("/account?tab=profile");
         else if (word === "settings" && account) router.push("/account?tab=settings");
         else if (word === "security" && account) router.push("/account?tab=security");
         else if (word === "subscriptions" && account) router.push("/account?tab=subscriptions");
-        else if (word === "discord") {
-          window.open(DISCORD_LINK, "_blank", "noopener,noreferrer");
-          animateReset(input);
-        } else if (destinations[word]) router.push(destinations[word]);
+        else if (destinations[word]) router.push(destinations[word]);
         else animateReset(input);
         return;
       }
@@ -158,13 +161,13 @@ export default function HeroHeadline() {
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [animateReset, frame.complete, input, router]);
+  }, [animateReset, frame.complete, input, matchingSocial, router]);
 
   return <>
     <span className="sr-only">Zo7al Projects</span>
     <span className="hero-brand" dir="ltr" aria-hidden="true">
       <span>ZO7AL</span>
-      <span className="hero-typewriter" style={{ color: frame.complete ? WORDS.find((word) => word.text.toLowerCase() === input.toLowerCase())?.color ?? "var(--accent)" : frame.color }}>
+      <span className="hero-typewriter" style={{ color: frame.complete ? matchingSocial?.color ?? matchingWord?.color ?? "var(--accent)" : frame.color }}>
         <span className="hero-typewriter-reserve">Modpacks<span className="hero-typewriter-caret" /></span>
         <span className="hero-typewriter-line"><span className="hero-typewriter-word">
           {frame.complete && input.trim().toUpperCase() === "& MIKU" ? <>
