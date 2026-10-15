@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import "./hero.css";
 
@@ -16,6 +16,8 @@ const FINAL = WORDS[WORDS.length - 1];
 export default function HeroHeadline() {
   const router = useRouter();
   const [input, setInput] = useState<string>(FINAL.text);
+  const resetting = useRef(false);
+  const resetTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [frame, setFrame] = useState<{ text: string; color: string; complete: boolean }>({ text: WORDS[0].text, color: WORDS[0].color, complete: false });
 
   useEffect(() => {
@@ -40,23 +42,67 @@ export default function HeroHeadline() {
   }, []);
 
   useEffect(() => {
+    if (!frame.complete || input === FINAL.text || resetting.current) return;
+    const idleTimer = setTimeout(() => {
+      resetting.current = true;
+      let value = input;
+      const erase = () => {
+        value = value.slice(0, -1);
+        setInput(value);
+        if (value.length) {
+          resetTimer.current = setTimeout(erase, 45);
+          return;
+        }
+        let position = 0;
+        const type = () => {
+          position += 1;
+          value = FINAL.text.slice(0, position);
+          setInput(value);
+          if (position < FINAL.text.length) {
+            resetTimer.current = setTimeout(type, 90);
+          } else {
+            resetting.current = false;
+            resetTimer.current = null;
+          }
+        };
+        resetTimer.current = setTimeout(type, 90);
+      };
+      erase();
+    }, 1800);
+    return () => clearTimeout(idleTimer);
+  }, [frame.complete, input]);
+
+  useEffect(() => () => {
+    if (resetTimer.current) clearTimeout(resetTimer.current);
+  }, []);
+
+  useEffect(() => {
     if (!frame.complete) return;
     const desktop = window.matchMedia("(min-width: 768px)");
+    const cancelReset = () => {
+      if (!resetting.current) return;
+      if (resetTimer.current) clearTimeout(resetTimer.current);
+      resetTimer.current = null;
+      resetting.current = false;
+    };
     const handleKeyDown = (event: KeyboardEvent) => {
       if (!desktop.matches) return;
       const target = event.target as HTMLElement | null;
       if (target?.isContentEditable || ["INPUT", "TEXTAREA", "SELECT"].includes(target?.tagName ?? "")) return;
 
       if (event.key === "Backspace") {
+        cancelReset();
         event.preventDefault();
         setInput((value) => value.slice(0, -1));
         return;
       }
       if (event.key === "Escape") {
+        cancelReset();
         setInput(FINAL.text);
         return;
       }
       if (event.key === "Enter") {
+        cancelReset();
         event.preventDefault();
         const word = input.toLowerCase();
         if (word === "maps") router.push("/fortnite");
@@ -64,9 +110,10 @@ export default function HeroHeadline() {
         else setInput(FINAL.text);
         return;
       }
-      if (/^[a-z]$/i.test(event.key) && !event.ctrlKey && !event.metaKey && !event.altKey) {
+      if (event.key.length === 1 && !event.ctrlKey && !event.metaKey && !event.altKey) {
+        cancelReset();
         event.preventDefault();
-        setInput((value) => value.length < 8 ? value + event.key : value);
+        setInput((value) => value.length < 24 ? value + event.key : value);
       }
     };
     window.addEventListener("keydown", handleKeyDown);
