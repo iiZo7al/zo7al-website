@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import "./hero.css";
 
 const WORDS = [
-  { text: "Games", color: "var(--accent-secondary)" },
   { text: "Network", color: "var(--accent)" },
+  { text: "Games", color: "var(--accent-secondary)" },
   { text: "Maps", color: "var(--purple)" },
   { text: "Modpacks", color: "var(--green)" },
   { text: "Projects", color: "var(--accent)" },
@@ -13,7 +13,7 @@ const WORDS = [
 const FINAL = WORDS[WORDS.length - 1];
 
 export default function HeroHeadline() {
-  const [frame, setFrame] = useState<{ text: string; color: string; complete: boolean }>({ text: "Games", color: WORDS[0].color, complete: false });
+  const [frame, setFrame] = useState<{ text: string; color: string; complete: boolean }>({ text: WORDS[0].text, color: WORDS[0].color, complete: false });
 
   useEffect(() => {
     const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
