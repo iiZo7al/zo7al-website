@@ -1,12 +1,12 @@
 import MarkdownContent from "@/components/ui/MarkdownContent";
 import Image from "next/image";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getTranslations, getLocale } from "next-intl/server";
-import { UserRound, Gamepad2, Images } from "lucide-react";
+import { UserRound, Images } from "lucide-react";
 import { siteDatabase } from "@/lib/server/site-db";
 import { profileHandle,PROFILE_SOCIAL_LABELS } from "@/lib/data/member-profile";
 import BrandIcon from "@/components/ui/BrandIcon";
+import MemberPlayerButton from "@/components/community/MemberPlayerButton";
 import ContentImage from "@/components/hub/ContentImage";
 import {contentImageUrl} from '@/lib/data/content-media';
 import "@/components/account/account.css";
@@ -87,15 +87,7 @@ export default async function MemberProfile({
               </a>
             ),
           )}
-          {member.minecraft && (
-            <Link
-              href={"/player?username=" + encodeURIComponent(member.minecraft)}
-              className="hub-button"
-            >
-              <Gamepad2 size={18} />
-              {member.minecraft}
-            </Link>
-          )}
+          <MemberPlayerButton linkedUsername={member.minecraft} />
         </div>
         <section className="mt-12">
           <h2 className="text-2xl font-semibold mb-6">{t("submissions")}</h2>
