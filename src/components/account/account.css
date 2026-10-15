@@ -58,7 +58,7 @@
 .account-notice{color:var(--text-muted)}.account-error{color:#ff9a9a;border-color:#ff9a9a55}
 .account-text-button{color:var(--accent);font-size:14px;padding:8px;min-height:40px;text-align:start}
 .account-layout{display:grid;gap:28px;padding-block:36px 80px}
-.account-layout .account-tabs{margin-bottom:4px}
+.account-layout .account-tabs{margin-bottom:4px;justify-content:center}
 .account-card{padding:26px;border:1px solid var(--border);border-radius:22px;background:var(--surface);min-width:0}
 .account-card h2{font-size:21px;font-weight:650;margin-bottom:16px}.account-card .hub-form{margin-top:22px}
 .account-card small{display:block;color:var(--text-muted);font-size:12px;line-height:1.8;margin-top:6px}
