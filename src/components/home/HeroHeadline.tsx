@@ -2,6 +2,8 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useAccount } from "@/components/account/AccountProvider";
+import { DISCORD_LINK } from "@/lib/data/site";
 import "./hero.css";
 
 const WORDS = [
@@ -15,6 +17,7 @@ const FINAL = WORDS[WORDS.length - 1];
 
 export default function HeroHeadline() {
   const router = useRouter();
+  const { account, canDashboard } = useAccount();
   const [input, setInput] = useState<string>(FINAL.text);
   const resetting = useRef(false);
   const idleTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -112,9 +115,38 @@ export default function HeroHeadline() {
       if (event.key === "Enter") {
         cancelReset();
         event.preventDefault();
-        const word = input.toLowerCase();
-        if (word === "maps") router.push("/fortnite");
-        else if (word === "network") router.push("/minecraft");
+        const word = input.trim().toLowerCase();
+        const destinations: Record<string, string> = {
+          home: "/",
+          games: "/game",
+          maps: "/fortnite",
+          fortnite: "/fortnite",
+          network: "/minecraft",
+          minecraft: "/minecraft",
+          modpacks: "/modpacks",
+          support: "/support",
+          store: "/store",
+          shop: "/store",
+          socials: "/socials",
+          applications: "/applications",
+          events: "/events",
+          game: "/game",
+          news: "/news",
+          orders: "/orders",
+          player: "/player",
+          requests: "/requests",
+          tracking: "/tracking",
+        };
+        if (word === "dashboard" && canDashboard) router.push("/dashboard");
+        else if (word === "account" && account) router.push("/account");
+        else if (word === "profile" && account) router.push("/account?tab=profile");
+        else if (word === "settings" && account) router.push("/account?tab=settings");
+        else if (word === "security" && account) router.push("/account?tab=security");
+        else if (word === "subscriptions" && account) router.push("/account?tab=subscriptions");
+        else if (word === "discord") {
+          window.open(DISCORD_LINK, "_blank", "noopener,noreferrer");
+          animateReset(input);
+        } else if (destinations[word]) router.push(destinations[word]);
         else animateReset(input);
         return;
       }
