@@ -161,7 +161,7 @@ export default function HeroHeadline() {
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [animateReset, frame.complete, input, matchingSocial, router]);
+  }, [account, animateReset, canDashboard, frame.complete, input, matchingSocial, router]);
 
   return <>
     <span className="sr-only">Zo7al Projects</span>
