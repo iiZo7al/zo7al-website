@@ -126,7 +126,12 @@ export default function HeroHeadline() {
       <span>ZO7AL</span>
       <span className="hero-typewriter" style={{ color: frame.complete ? WORDS.find((word) => word.text.toLowerCase() === input.toLowerCase())?.color ?? "var(--accent)" : frame.color }}>
         <span className="hero-typewriter-reserve">Modpacks<span className="hero-typewriter-caret" /></span>
-        <span className="hero-typewriter-line"><span className="hero-typewriter-word">{(frame.complete ? input : frame.text).toUpperCase()}</span><span className={"hero-typewriter-caret" + (frame.complete && !input ? " is-complete" : "")} /></span>
+        <span className="hero-typewriter-line"><span className="hero-typewriter-word">
+          {frame.complete && input.trim().toUpperCase() === "& MIKU" ? <>
+            <span style={{ color: "#ff5ca8" }}>&amp;</span>{" "}
+            <span style={{ color: "#62e7ff" }}>MIKU</span>
+          </> : (frame.complete ? input : frame.text).toUpperCase()}
+        </span><span className={"hero-typewriter-caret" + (frame.complete && !input ? " is-complete" : "")} /></span>
       </span>
     </span>
   </>;
