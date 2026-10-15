@@ -42,6 +42,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
   return (
     <html lang={locale} dir={dir} className={`${GeistSans.variable} h-full`}>
+      <head>
+        <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/4.0.0/uicons-solid-rounded/css/uicons-solid-rounded.css" />
+      </head>
       <body className="min-h-full flex flex-col antialiased">
         <NextIntlClientProvider messages={messages}>
           <AccountProvider><CommunityProvider><CartProvider><MotionConfig reducedMotion="user">
