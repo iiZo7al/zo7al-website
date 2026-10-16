@@ -386,39 +386,3 @@ body, body * {
 /* Keep the lost-page 404 screen clear of the shared footer and its artwork. */
 .website-shell:has(.lost-page) > .site-footer-horizon,
 .website-shell:has(.lost-page) > .site-footer { display: none; }
-
-.site-footer-horizon {
-  position: fixed;
-  z-index: 1;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: clamp(190px, 31vw, 350px);
-  overflow: hidden;
-  pointer-events: none;
-  background: #07080b;
-}
-.site-footer { position: relative; z-index: 2; }
-.site-footer-horizon-image {
-  position: absolute;
-  inset: 0;
-  background: url("/assets/site/footer-rise.svg") center 66% / cover no-repeat;
-  filter: brightness(.68) saturate(.72);
-  transform: translate3d(0, 105%, 0);
-  transition: transform 2.8s cubic-bezier(.22,.61,.36,1);
-  will-change: transform;
-}
-.site-footer-horizon::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: linear-gradient(180deg, #07080b30 0%, transparent 38%, #07080b80 100%);
-}
-.site-footer-horizon.is-rising .site-footer-horizon-image {
-  transform: translate3d(0, 0, 0);
-}
-@media (prefers-reduced-motion: reduce) {
-  .site-footer-horizon-image { transition: none; }
-}
