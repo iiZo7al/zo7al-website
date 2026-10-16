@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useLocale } from "next-intl";
+import { createPortal } from "react-dom";
 import { X, RotateCcw, Pause, Play } from "lucide-react";
 import "./snake.css";
 
@@ -13,6 +14,7 @@ const STEP_MS = 118;
 
 export default function SnakeGame({ onExit }: { onExit: () => void }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [portalRoot, setPortalRoot] = useState<HTMLElement | null>(null);
   const locale = useLocale();
   const isArabic = locale.toLowerCase().startsWith("ar");
   const [score, setScore] = useState(0);
@@ -31,6 +33,11 @@ export default function SnakeGame({ onExit }: { onExit: () => void }) {
   const impactImageRef = useRef<HTMLImageElement | null>(null);
 
   useEffect(() => {
+    setPortalRoot(document.body);
+  }, []);
+
+  useEffect(() => {
+    if (!portalRoot) return;
     const canvas = canvasRef.current;
     const ctx = canvas?.getContext("2d");
     if (!canvas || !ctx) return;
@@ -81,7 +88,7 @@ export default function SnakeGame({ onExit }: { onExit: () => void }) {
 
     const reset = () => {
       const centerX = Math.floor(cols / 2);
-      const centerY = Math.floor(rows * 0.62);
+      const centerY = Math.floor(rows * 0.82);
       snakeRef.current = [
         { x: centerX, y: centerY },
         { x: centerX - 1, y: centerY },
@@ -283,9 +290,11 @@ export default function SnakeGame({ onExit }: { onExit: () => void }) {
       impactImageRef.current = null;
     };
     // Game state is held in refs so the animation loop stays stable.
-  }, [onExit]);
+  }, [onExit, portalRoot]);
 
-  return (
+  if (!portalRoot) return null;
+
+  return createPortal(
     <div className="snake-game-overlay" dir={isArabic ? "rtl" : "ltr"} role="application" aria-label={isArabic ? "لعبة الثعبان" : "Snake game"}>
       <canvas ref={canvasRef} className="snake-game-canvas" aria-hidden="true" />
       <section className="snake-game-hud">
@@ -314,6 +323,7 @@ export default function SnakeGame({ onExit }: { onExit: () => void }) {
           <button type="button" onClick={() => window.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter" }))} className="snake-game-restart">{isArabic ? "العب مرة ثانية" : "PLAY AGAIN"}</button>
         </div>
       )}
-    </div>
+    </div>,
+    portalRoot
   );
 }
