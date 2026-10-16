@@ -19,6 +19,7 @@ export default function FaqAccordion({
   initiallyOpen = true,
   initialVisibleCount,
   showMoreLabel,
+  showMoreHref,
 }: {
   items: FaqItem[];
   categories: Record<string, string>;
@@ -28,6 +29,7 @@ export default function FaqAccordion({
   initiallyOpen?: boolean;
   initialVisibleCount?: number;
   showMoreLabel?: string;
+  showMoreHref?: string;
 }) {
   const t = useTranslations("faq");
   const [query, setQuery] = useState("");
@@ -134,14 +136,20 @@ export default function FaqAccordion({
           )}
           {previewItem && showMoreLabel && (
             <div className="mt-5 flex justify-center">
-              <button
-                type="button"
-                className="hub-button"
-                data-cursor="button"
-                onClick={() => setShowAll(true)}
-              >
-                {showMoreLabel}
-              </button>
+              {showMoreHref ? (
+                <Link href={showMoreHref} className="hub-button" data-cursor="link">
+                  {showMoreLabel}
+                </Link>
+              ) : (
+                <button
+                  type="button"
+                  className="hub-button"
+                  data-cursor="button"
+                  onClick={() => setShowAll(true)}
+                >
+                  {showMoreLabel}
+                </button>
+              )}
             </div>
           )}
         </div>
