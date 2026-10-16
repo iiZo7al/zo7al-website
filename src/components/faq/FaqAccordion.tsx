@@ -19,6 +19,7 @@ export default function FaqAccordion({
   initiallyOpen = true,
   initialVisibleCount,
   showMoreLabel,
+  showMoreHref,
 }: {
   items: FaqItem[];
   categories: Record<string, string>;
@@ -28,16 +29,16 @@ export default function FaqAccordion({
   initiallyOpen?: boolean;
   initialVisibleCount?: number;
   showMoreLabel?: string;
+  showMoreHref?: string;
 }) {
   const t = useTranslations("faq");
   const [query, setQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState<string>("all");
   const [openKeys, setOpenKeys] = useState<Set<number>>(new Set(initiallyOpen ? [0] : []));
-  const [showAll, setShowAll] = useState(false);
 
   const filtered = useMemo(() => filterFaqItems(items, query, activeCategory), [items, query, activeCategory]);
-  const visibleItems = initialVisibleCount && !showAll ? filtered.slice(0, initialVisibleCount) : filtered;
-  const previewItem = initialVisibleCount && !showAll ? filtered[initialVisibleCount] : undefined;
+  const visibleItems = initialVisibleCount ? filtered.slice(0, initialVisibleCount) : filtered;
+  const previewItem = initialVisibleCount ? filtered[initialVisibleCount] : undefined;
   const visibleCategories = Object.entries(categories).filter(([key]) => items.some(item => item.category === key));
 
   const toggle = (index: number) => {
@@ -134,14 +135,9 @@ export default function FaqAccordion({
           )}
           {previewItem && showMoreLabel && (
             <div className="mt-5 flex justify-center">
-              <button
-                type="button"
-                className="hub-button"
-                data-cursor="button"
-                onClick={() => setShowAll(true)}
-              >
+              <Link href={showMoreHref ?? "/support?tab=faq#faq"} className="hub-button" data-cursor="link">
                 {showMoreLabel}
-              </button>
+              </Link>
             </div>
           )}
         </div>
