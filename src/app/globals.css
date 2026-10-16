@@ -388,12 +388,18 @@ body, body * {
 .website-shell:has(.lost-page) > .site-footer { display: none; }
 
 .site-footer-horizon {
-  position: relative;
+  position: fixed;
+  z-index: 1;
+  right: 0;
+  bottom: 0;
+  left: 0;
   width: 100%;
   height: clamp(190px, 31vw, 350px);
   overflow: hidden;
+  pointer-events: none;
   background: #07080b;
 }
+.site-footer { position: relative; z-index: 2; }
 .site-footer-horizon-image {
   position: absolute;
   inset: 0;
