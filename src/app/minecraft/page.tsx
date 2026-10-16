@@ -18,12 +18,18 @@ import Image from "next/image";
 export async function generateMetadata(){return localizedPageMetadata("nav.minecraft","minecraft.text");}
 
 export default async function MinecraftPage() {
-  const [t, common, faq] = await Promise.all([
+  const [t, common, faq, hub] = await Promise.all([
     getTranslations("minecraft"),
     getTranslations("common"),
     getTranslations("faq"),
+    getTranslations("hub"),
   ]);
-  const commonErrorItems = t.raw("errors.items") as FaqItem[];
+  const commonErrorItems = hub.raw("commonErrors") as FaqItem[];
+  const commonErrorCategories = {
+    connection: hub("connection"),
+    store: hub("store"),
+    modpacks: hub("modpacks"),
+  };
 
   return (
     <main data-accent="minecraft">
@@ -73,7 +79,7 @@ export default async function MinecraftPage() {
           <div className="mt-14">
             <FaqAccordion
               items={commonErrorItems}
-              categories={{}}
+              categories={commonErrorCategories}
               searchPlaceholder={faq("searchPlaceholder")}
               noResults={faq("noResults")}
               allLabel={common("all")}
