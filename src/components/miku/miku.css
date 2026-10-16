@@ -291,3 +291,13 @@
   .miku-scroll-cue { transition: none; }
   .miku-book-leaf { transform: none !important; }
 }
+
+.miku-art-image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.miku-art-panel.has-illustration { background: #222; filter: none; }
+.miku-art-panel.has-illustration .miku-art-halftone { opacity: .18; mix-blend-mode: multiply; }
+.miku-art-panel.has-illustration .miku-art-moon,
+.miku-art-panel.has-illustration .miku-art-light,
+.miku-art-panel.has-illustration .miku-cityline,
+.miku-art-panel.has-illustration .miku-character,
+.miku-art-panel.has-illustration .miku-sound-lines { display: none; }
+.miku-art-panel.has-illustration .miku-art-scene { color: #171716; background: #f7f5ed; border: 2px solid #171716; }
