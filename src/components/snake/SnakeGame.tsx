@@ -114,17 +114,12 @@ export default function SnakeGame({ onExit }: { onExit: () => void }) {
       elapsed = 0;
     };
 
-    const roundedRect = (x: number, y: number, w: number, h: number, radius: number) => {
-      ctx.beginPath();
-      ctx.roundRect(x, y, w, h, radius);
-      ctx.fill();
-    };
+
 
     const draw = (now = performance.now()) => {
       ctx.clearRect(0, 0, width, height);
       const snake = snakeRef.current;
       if (!snake.length) return;
-      const head = snake[0];
 
       // Build the snake from the user's uploaded Google Snake eye and body sprites.
       const direction = directionRef.current;
@@ -149,7 +144,7 @@ export default function SnakeGame({ onExit }: { onExit: () => void }) {
             ctx.fill();
           }
         } else if (spriteLoaded) {
-          ctx.drawImage(sprite, centerX - CELL * 0.43, centerY - CELL * 0.43, CELL * 0.86, CELL * 0.86);
+          ctx.drawImage(sprite, centerX - CELL * 0.52, centerY - CELL * 0.52, CELL * 1.04, CELL * 1.04);
         } else {
           ctx.fillStyle = "#f58b24";
           ctx.beginPath();
