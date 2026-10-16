@@ -16,7 +16,30 @@ export default async function Footer() {
   ]);
 
   return (
-    <footer className="relative border-t" style={{ borderColor: "var(--border)" }}>
+    <>
+      <div
+        className="site-footer-horizon relative w-full overflow-hidden"
+        aria-hidden="true"
+        style={{ height: "clamp(190px, 31vw, 350px)", background: "#07080b" }}
+      >
+        <svg className="absolute inset-0 h-full w-full" viewBox="0 0 1440 320" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="footer-horizon-far" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stopColor="#15171c" stopOpacity=".48" />
+              <stop offset="1" stopColor="#0b0d11" stopOpacity=".82" />
+            </linearGradient>
+            <linearGradient id="footer-horizon-near" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stopColor="#171a20" stopOpacity=".72" />
+              <stop offset="1" stopColor="#0c0e13" stopOpacity=".96" />
+            </linearGradient>
+          </defs>
+          <path d="M0 170 C190 145 360 137 520 105 C690 70 810 67 970 87 C1150 110 1305 147 1440 169 V320 H0 Z" fill="url(#footer-horizon-far)" />
+          <path d="M0 207 C188 181 355 193 520 157 C694 119 842 127 1006 148 C1191 171 1300 189 1440 211 V320 H0 Z" fill="#0d0f14" fillOpacity=".86" />
+          <path d="M0 250 C205 225 343 238 523 211 C706 183 840 192 1003 208 C1184 226 1310 246 1440 260 V320 H0 Z" fill="url(#footer-horizon-near)" />
+          <path d="M0 282 C182 263 335 269 501 252 C709 231 849 242 1030 256 C1192 269 1314 282 1440 291 V320 H0 Z" fill="#101217" fillOpacity=".88" />
+        </svg>
+      </div>
+      <footer className="site-footer relative border-t" style={{ borderColor: "var(--border)" }}>
       <div className="mx-auto max-w-[1600px] px-6 py-16 grid gap-12 md:grid-cols-2 lg:grid-cols-[1.2fr_.7fr_1fr_1fr]">
         <div>
           <div className="flex items-center gap-2 text-lg font-bold tracking-tight">
@@ -113,6 +136,7 @@ export default async function Footer() {
         <a href="https://www.flaticon.com/uicons" target="_blank" rel="noopener noreferrer" className="underline underline-offset-4">{t("footer.iconCredit")}</a>
       </div>
     </footer>
+    </>
   );
 }
 
