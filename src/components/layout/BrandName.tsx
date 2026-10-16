@@ -3,7 +3,8 @@
 import { usePathname } from "next/navigation";
 
 export default function BrandName({ name }: { name: string }) {
-  if (usePathname() !== "/miku") return name;
+  const pathname = usePathname();
+  if (pathname !== "/miku") return name;
   return (
     <span className="miku-context-brand" dir="ltr">
       <span>Zo7al</span>
