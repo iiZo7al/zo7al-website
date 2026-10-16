@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocale } from "next-intl";
 import { X, RotateCcw, Pause, Play } from "lucide-react";
+import "./snake.css";
 
 type Point = { x: number; y: number };
 type Impact = { x: number; y: number; until: number };
@@ -17,7 +18,6 @@ export default function SnakeGame({ onExit }: { onExit: () => void }) {
   const [score, setScore] = useState(0);
   const [paused, setPaused] = useState(false);
   const [gameOver, setGameOver] = useState(false);
-  const [impactLabel, setImpactLabel] = useState("");
   const pausedRef = useRef(false);
   const gameOverRef = useRef(false);
   const scoreRef = useRef(0);
@@ -209,8 +209,6 @@ export default function SnakeGame({ onExit }: { onExit: () => void }) {
       if (hitCooldown === 0 && hitsVisibleText(next)) {
         impactRef.current = { x: next.x * CELL + CELL / 2, y: next.y * CELL + CELL / 2, until: performance.now() + 650 };
         hitCooldown = 4;
-        setImpactLabel((value) => value ? "" : " ");
-        window.setTimeout(() => setImpactLabel(""), 620);
       }
     };
 
@@ -295,7 +293,6 @@ export default function SnakeGame({ onExit }: { onExit: () => void }) {
           </button>
         </div>
       </section>
-      {impactLabel && <div className="snake-game-impact-label" aria-hidden="true">{isArabic ? "أوتش!" : "OUCH!"}</div>}
       {gameOver && (
         <div className="snake-game-over" role="status">
           <span className="snake-game-over-spark">💫</span>
