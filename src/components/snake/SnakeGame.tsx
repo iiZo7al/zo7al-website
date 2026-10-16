@@ -161,7 +161,7 @@ export default function SnakeGame({ onExit }: { onExit: () => void }) {
         ctx.globalCompositeOperation = "screen";
         const size = 88;
         if (impactImage.complete && impactImage.naturalWidth) {
-          ctx.drawImage(impactImage, impact.x - size / 2, impact.y - size / 2, size, size);
+          ctx.drawImage(impactImage, impact.x - size / 2, impact.y - 53, size, 106);
         }
         ctx.restore();
         ctx.font = "700 26px system-ui, sans-serif";
@@ -176,7 +176,7 @@ export default function SnakeGame({ onExit }: { onExit: () => void }) {
       const x = point.x * CELL + CELL / 2;
       const y = point.y * CELL + CELL / 2;
       const hit = document.elementFromPoint(x, y);
-      if (!hit || canvas.contains(hit)) return false;
+      if (!hit || canvas.contains(hit) || hit.closest(".snake-game-overlay")) return false;
       const textNode = hit.closest("h1,h2,h3,h4,p,a,button,label,li,span,strong");
       return Boolean(textNode?.textContent?.trim());
     };
