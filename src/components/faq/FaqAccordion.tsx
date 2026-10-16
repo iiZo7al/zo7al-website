@@ -17,6 +17,8 @@ export default function FaqAccordion({
   noResults,
   allLabel,
   initiallyOpen = true,
+  initialVisibleCount,
+  showMoreLabel,
 }: {
   items: FaqItem[];
   categories: Record<string, string>;
@@ -24,13 +26,18 @@ export default function FaqAccordion({
   noResults: string;
   allLabel: string;
   initiallyOpen?: boolean;
+  initialVisibleCount?: number;
+  showMoreLabel?: string;
 }) {
   const t = useTranslations("faq");
   const [query, setQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState<string>("all");
   const [openKeys, setOpenKeys] = useState<Set<number>>(new Set(initiallyOpen ? [0] : []));
+  const [showAll, setShowAll] = useState(false);
 
   const filtered = useMemo(() => filterFaqItems(items, query, activeCategory), [items, query, activeCategory]);
+  const visibleItems = initialVisibleCount && !showAll ? filtered.slice(0, initialVisibleCount) : filtered;
+  const previewItem = initialVisibleCount && !showAll ? filtered[initialVisibleCount] : undefined;
   const visibleCategories = Object.entries(categories).filter(([key]) => items.some(item => item.category === key));
 
   const toggle = (index: number) => {
@@ -109,7 +116,7 @@ export default function FaqAccordion({
         </div>
       ) : (
         <div className="flex flex-col gap-3">
-          {filtered.map(({ item, index }, i) => (
+          {visibleItems.map(({ item, index }, i) => (
             <Reveal key={item.id ?? index} delay={Math.min(i, 8) * 0.03}>
               <FaqRow
                 item={item}
@@ -118,6 +125,25 @@ export default function FaqAccordion({
               />
             </Reveal>
           ))}
+          {previewItem && (
+            <div className="relative" aria-hidden="true" inert>
+              <div className="pointer-events-none select-none blur-[5px] opacity-60">
+                <FaqRow item={previewItem.item} open={false} onToggle={() => {}} />
+              </div>
+            </div>
+          )}
+          {previewItem && showMoreLabel && (
+            <div className="mt-5 flex justify-center">
+              <button
+                type="button"
+                className="hub-button"
+                data-cursor="button"
+                onClick={() => setShowAll(true)}
+              >
+                {showMoreLabel}
+              </button>
+            </div>
+          )}
         </div>
       )}
     </div>
