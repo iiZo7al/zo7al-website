@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import SectionHeader from "@/components/ui/SectionHeader";
 import FaqAccordion, { type FaqItem } from "./FaqAccordion";
@@ -29,14 +28,15 @@ export default async function FaqSection() {
         />
         <div className="mt-14">
           <FaqAccordion
-            items={items.slice(0, Math.ceil(items.length / 4))}
+            items={items}
+            initialVisibleCount={4}
+            showMoreLabel={tc("viewMore")}
             categories={categories}
             searchPlaceholder={t("searchPlaceholder")}
             noResults={t("noResults")}
             allLabel={tc("all")}
           />
         </div>
-        <div className="mt-8 flex justify-center"><Link href="/support?tab=faq#faq" className="hub-button" data-cursor="link">{tc("viewMore")}</Link></div>
       </div>
     </section>
   );
