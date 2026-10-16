@@ -4,6 +4,7 @@ import { NAV_LINKS, SITE, STORE_LINK } from "@/lib/data/site";
 import BrandIcon, { brandLabelStyle } from "@/components/ui/BrandIcon";
 import SolidIcon from "@/components/ui/SolidIcon";
 import { getSyncedSocials, getSyncedGamesSocials } from "@/lib/sync/socials";
+import BrandName from "./BrandName";
 
 const FOOTER_ICONS = { home: "home", minecraft: "cube", modpacks: "box", fortnite: "map", socials: "share", support: "headset", store: "shopping-bag" } as const;
 
@@ -23,7 +24,7 @@ export default async function Footer() {
               className="inline-block h-2 w-2 rounded-full"
               style={{ background: "var(--accent)" }}
             />
-            {SITE.name}
+            <BrandName name={SITE.name} />
           </div>
           <p className="mt-4 max-w-xs text-sm leading-relaxed text-[var(--text-muted)]">
             {t("footer.tagline")}
