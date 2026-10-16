@@ -5,7 +5,6 @@ import BrandIcon, { brandLabelStyle } from "@/components/ui/BrandIcon";
 import SolidIcon from "@/components/ui/SolidIcon";
 import { getSyncedSocials, getSyncedGamesSocials } from "@/lib/sync/socials";
 import BrandName from "./BrandName";
-import FooterHorizon from "./FooterHorizon";
 
 const FOOTER_ICONS = { home: "home", minecraft: "cube", modpacks: "box", fortnite: "map", socials: "share", support: "headset", store: "shopping-bag" } as const;
 
@@ -137,7 +136,6 @@ export default async function Footer() {
         <a href="https://www.flaticon.com/uicons" target="_blank" rel="noopener noreferrer" className="underline underline-offset-4">{t("footer.iconCredit")}</a>
       </div>
     </footer>
-      <FooterHorizon />
     </>
   );
 }
