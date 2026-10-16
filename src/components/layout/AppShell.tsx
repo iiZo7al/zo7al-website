@@ -13,7 +13,7 @@ export default function AppShell({ children, navigation, footer }: { children: R
   useEffect(() => {
     const standalone = window.matchMedia("(display-mode: standalone)").matches ||
       (navigator as Navigator & { standalone?: boolean }).standalone === true;
-    if (standalone && pathname !== "/game") window.location.replace("/game");
+    if (standalone && pathname !== "/game" && pathname !== "/miku") window.location.replace("/game");
   }, [pathname]);
   if (pathname === "/game" || pathname === "/admin" || pathname === "/dashboard") return children;
   return <div data-accent={pathname === "/miku" ? "miku" : undefined} className="website-shell flex min-h-screen flex-col">{navigation}{children}{footer}</div>;
