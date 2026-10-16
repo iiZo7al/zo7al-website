@@ -17,7 +17,8 @@
 .snake-game-hud {
   position: absolute;
   z-index: 2;
-  top: max(.9rem, env(safe-area-inset-top));
+  top: auto;
+  bottom: max(.9rem, env(safe-area-inset-bottom));
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -114,7 +115,8 @@
 @keyframes snake-pop { from { opacity: 0; scale: .92; } to { opacity: 1; scale: 1; } }
 @media (max-width: 520px) {
   .snake-game-hud {
-    top: max(.55rem, env(safe-area-inset-top));
+    top: auto;
+    bottom: max(.55rem, env(safe-area-inset-bottom));
     width: calc(100vw - 1rem);
     justify-content: space-between;
     gap: .55rem;
