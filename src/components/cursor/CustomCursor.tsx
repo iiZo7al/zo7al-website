@@ -1,6 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
+import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 type CursorMode = "default" | "link" | "button" | "project" | "image" | "copy";
@@ -26,6 +27,7 @@ const RING_SIZE: Record<CursorMode, number> = {
  */
 export default function CustomCursor() {
   const t = useTranslations("ui"), tc = useTranslations("common");
+  const isMikuPage = usePathname() === "/miku";
   const layerRef = useRef<HTMLDivElement>(null);
   const dotRef = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
@@ -185,23 +187,23 @@ export default function CustomCursor() {
 
   return (
     <div ref={layerRef} popover="manual" className="cursor-layer" aria-hidden="true">
-      <div ref={glowRef} className="cursor-glow" style={{ opacity: active ? 0.7 : 0.35 }} />
+      <div ref={glowRef} className="cursor-glow" style={{ opacity: active ? 0.7 : 0.35, background: isMikuPage ? "radial-gradient(circle, rgba(25,217,255,.35) 0%, transparent 70%)" : undefined }} />
       <div
         ref={ringRef}
         className="cursor-ring"
         style={{
           width: size,
           height: size,
-          borderColor: active ? "var(--accent)" : "rgba(255,255,255,0.45)",
+          borderColor: active ? (isMikuPage ? "#19d9ff" : "var(--accent)") : "rgba(255,255,255,0.45)",
           background: active ? "rgba(255,255,255,0.04)" : "transparent",
-          boxShadow: active ? "0 0 24px var(--glow)" : "none",
+          boxShadow: active ? (isMikuPage ? "0 0 24px rgba(25,217,255,.35)" : "0 0 24px var(--glow)") : "none",
         }}
       >
         <span ref={labelRef} style={{ opacity: label ? 1 : 0 }}>
           {label}
         </span>
       </div>
-      <div ref={dotRef} className="cursor-dot" style={{ opacity: active ? 0 : 1 }} />
+      <div ref={dotRef} className="cursor-dot" style={{ opacity: active ? 0 : 1, background: isMikuPage ? "#19d9ff" : undefined }} />
     </div>
   );
 }

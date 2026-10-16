@@ -54,6 +54,7 @@ export default function HeroHeadline() {
   const normalizedInput = input.trim().toLowerCase();
   const matchingSocial = SOCIALS.find((social) => social.id.toLowerCase() === normalizedInput || social.label.toLowerCase() === normalizedInput);
   const matchingWord = WORDS.find((word) => word.text.toLowerCase() === normalizedInput);
+  const mikuPhrase = ["& MIKU", "ZO7AL & MIKU"].includes(input.trim().toUpperCase());
 
   useEffect(() => {
     const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -131,6 +132,7 @@ export default function HeroHeadline() {
           store: "/store",
           shop: "/store",
           socials: "/socials",
+          "zo7al & miku": "/miku",
           applications: "/applications",
           events: "/events",
           game: "/game",
@@ -170,7 +172,7 @@ export default function HeroHeadline() {
       <span className="hero-typewriter" style={{ color: frame.complete ? matchingSocial?.color ?? matchingWord?.color ?? "var(--accent)" : frame.color }}>
         <span className="hero-typewriter-reserve">Modpacks<span className="hero-typewriter-caret" /></span>
         <span className="hero-typewriter-line"><span className="hero-typewriter-word">
-          {frame.complete && input.trim().toUpperCase() === "& MIKU" ? <>
+          {frame.complete && mikuPhrase ? <>
             <span style={{ color: "#ff5ca8" }}>&amp;</span>{" "}
             <span style={{ color: "#62e7ff" }}>MIKU</span>
           </> : (frame.complete ? input : frame.text).toUpperCase()}

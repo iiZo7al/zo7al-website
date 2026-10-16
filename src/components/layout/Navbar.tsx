@@ -9,6 +9,7 @@ import { ChevronDown } from "lucide-react";
 import SolidIcon from "@/components/ui/SolidIcon";
 import BrandIcon from "@/components/ui/BrandIcon";
 import { NAV_LINKS, DISCORD_LINK, SITE } from "@/lib/data/site";
+import BrandName from "./BrandName";
 import { SearchTrigger } from "@/components/hub/CommandSearch";
 import StoreNavAction from "@/components/store/StoreNavAction";
 import AccountMenu from "@/components/account/AccountMenu";
@@ -139,7 +140,7 @@ export default function Navbar() {
     }}>
     <div className="site-navigation-bar">
       <nav className="site-navigation-inner" aria-label={SITE.name}>
-        <Link href="/" onClick={closeAll} className="site-navigation-brand" data-cursor="link"><span aria-hidden="true"/>{SITE.name}</Link>
+        <Link href="/" onClick={closeAll} className="site-navigation-brand" data-cursor="link"><span aria-hidden="true"/><BrandName name={SITE.name} /></Link>
         <ul className="site-navigation-links">
           <li><SearchTrigger/></li>
           {TOP_LINKS.map(link => {

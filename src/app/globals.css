@@ -86,6 +86,20 @@ html {
   scroll-behavior: smooth;
 }
 
+[data-accent="miku"] {
+  --accent: #19d9ff;
+  --accent-secondary: #ff5ca8;
+  --glow: rgba(25, 217, 255, 0.34);
+}
+
+.miku-context-brand {
+  display: inline-flex;
+  align-items: baseline;
+  gap: .22em;
+}
+.miku-context-brand .miku-context-amp { color: #ff5ca8; }
+.miku-context-brand .miku-context-name { color: #19d9ff; }
+
 @media (prefers-reduced-motion: reduce) {
 
   html {
