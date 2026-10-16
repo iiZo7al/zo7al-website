@@ -10,5 +10,5 @@ export default function AppShell({ children, navigation, footer }: { children: R
     if (standalone && pathname !== "/game") window.location.replace("/game");
   }, [pathname]);
   if (pathname === "/game" || pathname === "/admin" || pathname === "/dashboard") return children;
-  return <div className="website-shell flex min-h-screen flex-col">{navigation}{children}{footer}</div>;
+  return <div data-accent={pathname === "/miku" ? "miku" : undefined} className="website-shell flex min-h-screen flex-col">{navigation}{children}{footer}</div>;
 }
