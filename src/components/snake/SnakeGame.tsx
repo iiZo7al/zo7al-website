@@ -6,7 +6,7 @@ import { X, RotateCcw, Pause, Play } from "lucide-react";
 import "./snake.css";
 
 type Point = { x: number; y: number };
-type Impact = { x: number; y: number; until: number };
+type Impact = { x: number; y: number; started: number; until: number };
 
 const CELL = 26;
 const STEP_MS = 118;
@@ -170,9 +170,9 @@ export default function SnakeGame({ onExit }: { onExit: () => void }) {
       if (impact && impact.until > now) {
         ctx.save();
         ctx.globalCompositeOperation = "screen";
-        const size = 88;
+        const frameIndex = Math.min(20, Math.floor((now - impact.started) / 30));
         if (impactImage.complete && impactImage.naturalWidth) {
-          ctx.drawImage(impactImage, impact.x - size / 2, impact.y - 53, size, 106);
+          ctx.drawImage(impactImage, frameIndex * 98 + 6, 0, 90, 135, impact.x - 44, impact.y - 53, 88, 106);
         }
         ctx.restore();
         ctx.font = "700 26px system-ui, sans-serif";
@@ -188,8 +188,8 @@ export default function SnakeGame({ onExit }: { onExit: () => void }) {
       const y = point.y * CELL + CELL / 2;
       const hit = document.elementFromPoint(x, y);
       if (!hit || canvas.contains(hit) || hit.closest(".snake-game-overlay")) return false;
-      const textNode = hit.closest("h1,h2,h3,h4,p,a,button,label,li,span,strong");
-      return Boolean(textNode?.textContent?.trim());
+      const target = hit.closest('h1,h2,h3,h4,p,a,button,label,li,span,strong,img,svg,video,canvas,[role="button"],[data-cursor]');
+      return Boolean(target && (target.matches("img,svg,video,canvas") || target.textContent?.trim()));
     };
 
     const step = () => {
@@ -218,7 +218,8 @@ export default function SnakeGame({ onExit }: { onExit: () => void }) {
 
       if (hitCooldown > 0) hitCooldown -= 1;
       if (hitCooldown === 0 && hitsVisibleText(next)) {
-        impactRef.current = { x: next.x * CELL + CELL / 2, y: next.y * CELL + CELL / 2, until: performance.now() + 650 };
+        const started = performance.now();
+        impactRef.current = { x: next.x * CELL + CELL / 2, y: next.y * CELL + CELL / 2, started, until: started + 650 };
         hitCooldown = 4;
       }
     };
