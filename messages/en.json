@@ -104,22 +104,6 @@
       ]
     }
   },
-  "miku": {
-    "description": "An original manga story starring Zo7al and Hatsune Miku on a musical adventure.",
-    "intro": "On a quiet night, a cyan signal led Zo7al to Miku. Their adventure began with a single note.",
-    "scrollHint": "Scroll to turn the story pages",
-    "pageLabel": "Page",
-    "endingTitle": "A melody that brings us together",
-    "endingText": "Every page began a new tune. And this story is still going.",
-    "pages": [
-      { "title": "A signal in the sky", "scene": "City rooftop — midnight", "caption": "Zo7al was checking on a project when a cyan light appeared in the sky.", "zo7al": "Who sent that signal?", "miku": "It's me, Miku! I need your help to finish my song." },
-      { "title": "An unfinished song", "scene": "Among the city lights", "caption": "Miku arrived with a beautiful melody, but its final notes were scattered across the city.", "zo7al": "We'll find them together. Follow the rhythm!", "miku": "Once we find the notes, the song will be whole again." },
-      { "title": "Chasing the notes", "scene": "A path made of light", "caption": "Every light blinked with Zo7al's steps, and every tune from Miku drew a new path.", "zo7al": "I found the first note by the bridge!", "miku": "Great! Let's follow it before the trail disappears." },
-      { "title": "A sudden silence", "scene": "Inside the storm", "caption": "Darkness covered the city and Miku's voice faded. One small note still glowed in Zo7al's hands.", "zo7al": "I won't let you face this alone.", "miku": "And I know we can bring the sound back together." },
-      { "title": "The melody returns", "scene": "Above the city towers", "caption": "Zo7al raised the note toward the sky, and Miku sang with it. Light returned to the city, page by page.", "zo7al": "Ready? This is our note!", "miku": "One, two… sing with us!" },
-      { "title": "A world made of music", "scene": "Onstage — together", "caption": "The melody was complete, and the city became one big stage. Zo7al and Miku stood side by side and began a new song.", "zo7al": "This is the beginning, not the end.", "miku": "Then let's write the next page together." }
-    ]
-  },
   "modpacks": {
     "eyebrow": "Modpacks",
     "title": "MINECRAFT, REIMAGINED.",
