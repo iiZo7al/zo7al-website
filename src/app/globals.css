@@ -382,3 +382,7 @@ body, body * {
     scale: .96;
   }
 }
+
+/* Keep the lost-page 404 screen clear of the shared footer and its artwork. */
+.website-shell:has(.lost-page) > .site-footer-horizon,
+.website-shell:has(.lost-page) > .site-footer { display: none; }
