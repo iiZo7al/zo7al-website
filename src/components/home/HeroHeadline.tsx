@@ -54,6 +54,7 @@ export default function HeroHeadline() {
   const normalizedInput = input.trim().toLowerCase();
   const matchingSocial = SOCIALS.find((social) => social.id.toLowerCase() === normalizedInput || social.label.toLowerCase() === normalizedInput);
   const matchingWord = WORDS.find((word) => word.text.toLowerCase() === normalizedInput);
+  const mikuPhrase = ["& MIKU", "ZO7AL & MIKU"].includes(input.trim().toUpperCase());
 
   useEffect(() => {
     const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
