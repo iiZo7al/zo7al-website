@@ -5,6 +5,7 @@ import LinkHub from "@/components/hub/MinecraftHubLinks";
 import { getTranslations } from "next-intl/server";
 import PageHero from "@/components/ui/PageHero";
 import SectionHeader from "@/components/ui/SectionHeader";
+import FaqAccordion, { type FaqItem } from "@/components/faq/FaqAccordion";
 import Reveal from "@/components/ui/Reveal";
 import ServerStatus from "@/components/minecraft/ServerStatus";
 import ServerConnect from "@/components/minecraft/ServerConnect";
@@ -17,7 +18,12 @@ import Image from "next/image";
 export async function generateMetadata(){return localizedPageMetadata("nav.minecraft","minecraft.text");}
 
 export default async function MinecraftPage() {
-  const t = await getTranslations("minecraft");
+  const [t, common, faq] = await Promise.all([
+    getTranslations("minecraft"),
+    getTranslations("common"),
+    getTranslations("faq"),
+  ]);
+  const commonErrorItems = t.raw("errors.items") as FaqItem[];
 
   return (
     <main data-accent="minecraft">
@@ -53,6 +59,29 @@ export default async function MinecraftPage() {
           <div className="mt-14">
             <ServerConnect />
             <ProjectExtras projectKey="minecraft:network" title="Zo7al Network"/>
+          </div>
+        </div>
+      </section>
+
+      <section className="relative border-t py-24 sm:py-32" style={{ borderColor: "var(--border)" }}>
+        <div className="mx-auto max-w-[1180px] px-6">
+          <SectionHeader
+            eyebrow={t("errors.eyebrow")}
+            title={t("errors.title")}
+            text={t("errors.text")}
+          />
+          <div className="mt-14">
+            <FaqAccordion
+              items={commonErrorItems}
+              categories={{}}
+              searchPlaceholder={faq("searchPlaceholder")}
+              noResults={faq("noResults")}
+              allLabel={common("all")}
+              initiallyOpen={false}
+              initialVisibleCount={4}
+              showMoreLabel={common("viewMore")}
+              showMoreHref="/support?tab=faq#faq"
+            />
           </div>
         </div>
       </section>
