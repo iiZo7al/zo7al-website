@@ -1,0 +1,134 @@
+.snake-game-overlay {
+  position: fixed;
+  z-index: 10000;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  isolation: isolate;
+  background: rgba(6, 7, 10, .08);
+  animation: snake-overlay-in .25s ease-out both;
+}
+.snake-game-canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  pointer-events: none;
+}
+.snake-game-hud {
+  position: absolute;
+  z-index: 2;
+  top: max(.9rem, env(safe-area-inset-top));
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-height: 58px;
+  max-width: calc(100vw - 1.25rem);
+  padding: .55rem .7rem .55rem 1rem;
+  pointer-events: auto;
+  color: #fff;
+  background: rgba(13, 15, 19, .92);
+  border: 1px solid rgba(255, 145, 25, .58);
+  border-radius: 1rem;
+  box-shadow: 0 12px 42px rgba(0,0,0,.38), 0 0 24px rgba(255,122,0,.17);
+  backdrop-filter: blur(16px);
+}
+.snake-game-score {
+  display: grid;
+  gap: .05rem;
+  min-width: 54px;
+}
+.snake-game-score-label {
+  color: #ffad52;
+  font-size: .58rem;
+  font-weight: 900;
+  letter-spacing: .12em;
+}
+.snake-game-score strong {
+  color: #fff;
+  font-size: 1.2rem;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.snake-game-hint {
+  color: #bec1c9;
+  font-size: .65rem;
+  font-weight: 750;
+  letter-spacing: .045em;
+  white-space: nowrap;
+}
+.snake-game-actions { display: flex; align-items: center; gap: .3rem; }
+.snake-game-icon-button {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  color: #ffd5a6;
+  background: rgba(255, 122, 0, .09);
+  border: 1px solid rgba(255, 145, 25, .22);
+  border-radius: .65rem;
+  cursor: pointer;
+  transition: color .16s ease, background .16s ease, transform .16s ease;
+}
+.snake-game-icon-button:hover {
+  color: #17100a;
+  background: #ff982b;
+  transform: translateY(-1px);
+}
+.snake-game-over {
+  position: absolute;
+  z-index: 3;
+  inset: 50% auto auto 50%;
+  transform: translate(-50%, -50%);
+  display: grid;
+  justify-items: center;
+  gap: .65rem;
+  width: min(340px, calc(100vw - 2rem));
+  padding: 1.7rem 1.4rem;
+  pointer-events: auto;
+  text-align: center;
+  color: #fff;
+  background: rgba(14, 15, 18, .96);
+  border: 1px solid rgba(255, 145, 25, .62);
+  border-radius: 1.25rem;
+  box-shadow: 0 22px 80px rgba(0,0,0,.6), 0 0 45px rgba(255,122,0,.15);
+  animation: snake-pop .25s cubic-bezier(.16,1,.3,1) both;
+}
+.snake-game-over-spark { font-size: 2.3rem; line-height: 1; }
+.snake-game-over h2 { margin: 0; color: #ff9d33; font-size: 1.1rem; font-weight: 950; letter-spacing: .04em; }
+.snake-game-over p { margin: 0; color: #d4d6dc; }
+.snake-game-restart {
+  margin-top: .4rem;
+  padding: .65rem 1rem;
+  color: #1a1106;
+  background: linear-gradient(135deg,#ffae48,#ff7a00);
+  border: 0;
+  border-radius: .7rem;
+  font-weight: 900;
+  cursor: pointer;
+  transition: transform .16s ease, filter .16s ease;
+}
+.snake-game-restart:hover { transform: translateY(-2px); filter: brightness(1.08); }
+@keyframes snake-overlay-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes snake-pop { from { opacity: 0; scale: .92; } to { opacity: 1; scale: 1; } }
+@media (max-width: 520px) {
+  .snake-game-hud {
+    top: max(.55rem, env(safe-area-inset-top));
+    width: calc(100vw - 1rem);
+    justify-content: space-between;
+    gap: .55rem;
+    padding: .45rem .55rem .45rem .75rem;
+  }
+  .snake-game-hint {
+    max-width: 10.7rem;
+    overflow: hidden;
+    font-size: .58rem;
+    text-overflow: ellipsis;
+  }
+  .snake-game-icon-button { width: 31px; height: 31px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .snake-game-overlay,.snake-game-over { animation: none; }
+  .snake-game-icon-button,.snake-game-restart { transition: none; }
+}
