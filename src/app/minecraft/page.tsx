@@ -80,7 +80,7 @@ export default async function MinecraftPage() {
               initiallyOpen={false}
               initialVisibleCount={4}
               showMoreLabel={common("viewMore")}
-              showMoreHref="/support?tab=faq#faq"
+              showMoreHref="/support?tab=errors#common-errors"
             />
           </div>
         </div>
