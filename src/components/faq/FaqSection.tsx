@@ -31,6 +31,7 @@ export default async function FaqSection() {
             items={items}
             initialVisibleCount={4}
             showMoreLabel={tc("viewMore")}
+            showMoreHref="/support?tab=faq#faq"
             categories={categories}
             searchPlaceholder={t("searchPlaceholder")}
             noResults={t("noResults")}
