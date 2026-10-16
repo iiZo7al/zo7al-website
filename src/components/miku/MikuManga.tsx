@@ -80,8 +80,8 @@ export default function MikuManga({
               <span className="miku-page-number-line" />
             </div>
             <div className="miku-book-spread">
-              <div className={`miku-art-panel miku-art-panel-${index % 6}`} aria-hidden="true">
-                <div className="miku-art-halftone" />
+              <div className={`miku-art-panel miku-art-panel-${index % 6}${index === 0 ? " has-illustration" : ""}`} aria-hidden="true">
+                {index === 0 && <img className="miku-art-image" src="/miku/manga-01.svg" alt="" loading="lazy" />}\n                <div className="miku-art-halftone" />
                 <div className="miku-art-scene">{page.scene}</div>
                 <div className="miku-art-moon" />
                 <div className="miku-art-light miku-art-light-one" />
