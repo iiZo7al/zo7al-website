@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import MikuManga, { type MikuChapter } from "@/components/miku/MikuManga";
+import "@/components/miku/miku.css";
 
 export const metadata: Metadata = {
   title: "Zo7al & Miku",
