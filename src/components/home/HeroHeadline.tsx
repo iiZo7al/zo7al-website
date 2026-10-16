@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAccount } from "@/components/account/AccountProvider";
 import { SOCIALS } from "@/lib/data/site";
+import SnakeGame from "@/components/snake/SnakeGame";
 import "./hero.css";
 
 const WORDS = [
@@ -19,6 +20,8 @@ export default function HeroHeadline() {
   const router = useRouter();
   const { account, canDashboard } = useAccount();
   const [input, setInput] = useState<string>(FINAL.text);
+  const [snakeActive, setSnakeActive] = useState(false);
+  const exitSnake = useCallback(() => setSnakeActive(false), []);
   const resetting = useRef(false);
   const idleTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const resetTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -100,7 +103,7 @@ export default function HeroHeadline() {
       resetting.current = false;
     };
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (!desktop.matches) return;
+      if (snakeActive || !desktop.matches) return;
       const target = event.target as HTMLElement | null;
       if (target?.isContentEditable || ["INPUT", "TEXTAREA", "SELECT"].includes(target?.tagName ?? "")) return;
 
@@ -140,7 +143,10 @@ export default function HeroHeadline() {
           requests: "/requests",
           tracking: "/tracking",
         };
-        if (matchingSocial) {
+        if (word === "snake") {
+          setInput(FINAL.text);
+          setSnakeActive(true);
+        } else if (matchingSocial) {
           window.open(matchingSocial.url, "_blank", "noopener,noreferrer");
           animateReset(input);
         } else if (word === "dashboard" && canDashboard) router.push("/dashboard");
@@ -161,9 +167,10 @@ export default function HeroHeadline() {
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [account, animateReset, canDashboard, frame.complete, input, matchingSocial, router]);
+  }, [account, animateReset, canDashboard, frame.complete, input, matchingSocial, router, snakeActive]);
 
   return <>
+    {snakeActive && <SnakeGame onExit={exitSnake} />}
     <span className="sr-only">Zo7al Projects</span>
     <span className="hero-brand" dir="ltr" aria-hidden="true">
       <span>ZO7AL</span>
