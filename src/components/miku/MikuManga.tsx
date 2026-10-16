@@ -3,7 +3,6 @@
 import { useRef, useState } from "react";
 import { motion, useScroll, useSpring } from "framer-motion";
 import { ArrowDown, Music2 } from "lucide-react";
-import "./miku.css";
 
 export type MikuChapter = {
   title: string;
