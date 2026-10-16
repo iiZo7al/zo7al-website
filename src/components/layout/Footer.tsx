@@ -17,6 +17,7 @@ export default async function Footer() {
 
   return (
     <>
+      {/* Preserve the artwork and placement from pull request #111. */}
       <div
         className="site-footer-horizon relative w-full overflow-hidden"
         aria-hidden="true"
