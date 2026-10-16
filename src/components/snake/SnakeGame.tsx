@@ -29,7 +29,8 @@ export default function SnakeGame({ onExit }: { onExit: () => void }) {
   const appleRef = useRef<Point>({ x: 0, y: 0 });
   const impactRef = useRef<Impact | null>(null);
   const appleImageRef = useRef<HTMLImageElement | null>(null);
-  const snakeEyeImageRef = useRef<HTMLImageElement | null>(null);
+  const snakeHeadImageRef = useRef<HTMLImageElement | null>(null);
+  const snakeBodyImageRef = useRef<HTMLImageElement | null>(null);
   const impactImageRef = useRef<HTMLImageElement | null>(null);
 
   useEffect(() => {
@@ -45,9 +46,12 @@ export default function SnakeGame({ onExit }: { onExit: () => void }) {
     const appleImage = new Image();
     appleImage.src = "/snake/apple.svg";
     appleImageRef.current = appleImage;
-    const snakeEyeImage = new Image();
-    snakeEyeImage.src = "/snake/eye.svg";
-    snakeEyeImageRef.current = snakeEyeImage;
+    const snakeHeadImage = new Image();
+    snakeHeadImage.src = "/snake/head.svg";
+    snakeHeadImageRef.current = snakeHeadImage;
+    const snakeBodyImage = new Image();
+    snakeBodyImage.src = "/snake/body.svg";
+    snakeBodyImageRef.current = snakeBodyImage;
     const impactImage = new Image();
     impactImage.src = "/snake/impact.svg";
     impactImageRef.current = impactImage;
@@ -110,58 +114,45 @@ export default function SnakeGame({ onExit }: { onExit: () => void }) {
       elapsed = 0;
     };
 
-    const roundedRect = (x: number, y: number, w: number, h: number, radius: number) => {
-      ctx.beginPath();
-      ctx.roundRect(x, y, w, h, radius);
-      ctx.fill();
-    };
+
 
     const draw = (now = performance.now()) => {
       ctx.clearRect(0, 0, width, height);
       const snake = snakeRef.current;
       if (!snake.length) return;
-      const head = snake[0];
 
-      // Soft orange trail makes the free-roaming snake easy to follow over the page.
+      // Build the snake from the user's uploaded Google Snake eye and body sprites.
+      const direction = directionRef.current;
       snake.forEach((part, index) => {
-        const inset = index === 0 ? 2 : 3 + Math.min(index * 0.035, 2);
-        const x = part.x * CELL + inset;
-        const y = part.y * CELL + inset;
-        const size = CELL - inset * 2;
-        const shade = Math.max(0, 24 - index * 1.1);
-        ctx.fillStyle = index === 0
-          ? "#ff9f2f"
-          : `hsl(${31 - Math.min(index * 0.1, 5)} 96% ${Math.max(43, 58 - shade * 0.45)}%)`;
-        ctx.shadowColor = index === 0 ? "rgba(255,145,25,.55)" : "rgba(255,122,0,.22)";
-        ctx.shadowBlur = index === 0 ? 13 : 6;
-        roundedRect(x, y, size, size, Math.min(9, size * 0.32));
-      });
-      ctx.shadowBlur = 0;
-
-      // Draw eyes facing the current direction.
-      const headX = head.x * CELL;
-      const headY = head.y * CELL;
-      const dir = directionRef.current;
-      const eyePositions = dir.x !== 0
-        ? [{ x: headX + CELL / 2 + dir.x * 4, y: headY + CELL / 2 - 5 }, { x: headX + CELL / 2 + dir.x * 4, y: headY + CELL / 2 + 5 }]
-        : [{ x: headX + CELL / 2 - 5, y: headY + CELL / 2 + dir.y * 4 }, { x: headX + CELL / 2 + 5, y: headY + CELL / 2 + dir.y * 4 }];
-      if (snakeEyeImage.complete && snakeEyeImage.naturalWidth) {
+        const centerX = part.x * CELL + CELL / 2;
+        const centerY = part.y * CELL + CELL / 2;
+        const sprite = index === 0 ? snakeHeadImage : snakeBodyImage;
+        const spriteLoaded = sprite?.complete && sprite.naturalWidth;
         ctx.save();
         ctx.filter = "hue-rotate(170deg) saturate(1.15)";
-        eyePositions.forEach((eye) => ctx.drawImage(snakeEyeImage, eye.x - 5.5, eye.y - 4, 11, 8));
+        ctx.shadowColor = index === 0 ? "rgba(255,145,25,.58)" : "rgba(255,122,0,.28)";
+        ctx.shadowBlur = index === 0 ? 12 : 6;
+        if (index === 0) {
+          ctx.translate(centerX, centerY);
+          ctx.rotate(Math.atan2(direction.y, direction.x));
+          if (spriteLoaded) {
+            ctx.drawImage(sprite, -CELL * 0.55, -CELL * 0.55, CELL * 1.1, CELL * 1.1);
+          } else {
+            ctx.fillStyle = "#ff9f2f";
+            ctx.beginPath();
+            ctx.arc(0, 0, CELL * 0.44, 0, Math.PI * 2);
+            ctx.fill();
+          }
+        } else if (spriteLoaded) {
+          ctx.drawImage(sprite, centerX - CELL * 0.52, centerY - CELL * 0.52, CELL * 1.04, CELL * 1.04);
+        } else {
+          ctx.fillStyle = "#f58b24";
+          ctx.beginPath();
+          ctx.arc(centerX, centerY, CELL * 0.4, 0, Math.PI * 2);
+          ctx.fill();
+        }
         ctx.restore();
-      } else {
-        eyePositions.forEach((eye) => {
-          ctx.fillStyle = "#fff8e9";
-          ctx.beginPath();
-          ctx.arc(eye.x, eye.y, 3.1, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.fillStyle = "#2c1606";
-          ctx.beginPath();
-          ctx.arc(eye.x + dir.x * 1.2, eye.y + dir.y * 1.2, 1.45, 0, Math.PI * 2);
-          ctx.fill();
-        });
-      }
+      });
 
       const apple = appleRef.current;
       if (appleImage.complete && appleImage.naturalWidth) {
@@ -286,7 +277,8 @@ export default function SnakeGame({ onExit }: { onExit: () => void }) {
       window.removeEventListener("resize", resize);
       window.removeEventListener("keydown", onKeyDown);
       appleImageRef.current = null;
-      snakeEyeImageRef.current = null;
+      snakeHeadImageRef.current = null;
+      snakeBodyImageRef.current = null;
       impactImageRef.current = null;
     };
     // Game state is held in refs so the animation loop stays stable.
