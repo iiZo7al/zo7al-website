@@ -90,7 +90,19 @@
     "bedrockTutorial": "How to join — Bedrock",
     "javaInstructions": "Open Minecraft Java → Multiplayer → Add Server. Enter {address} as the server address, save and join.",
     "bedrockInstructions": "Open Minecraft Bedrock → Play → Servers → Add Server. Enter {address} as the address and {port} as the port, then save and join.",
-    "bedrockPortNotice": "Use the current Bedrock port: {port}. The video shows a different port."
+    "bedrockPortNotice": "Use the current Bedrock port: {port}. The video shows a different port.",
+    "errors": {
+      "eyebrow": "HELP",
+      "title": "Common issues",
+      "text": "Quick fixes for connection and joining problems on the Zo7al network.",
+      "items": [
+        { "id": "server-address", "category": "connection", "q": "What is the server address?", "a": "For Java and Bedrock, use **zo7al.play-mc.fun**. On Bedrock, also enter port **25807**." },
+        { "id": "bedrock-port", "category": "connection", "q": "Minecraft Bedrock cannot connect. What should I do?", "a": "Check that the address is **zo7al.play-mc.fun** and the port is **25807**." },
+        { "id": "server-not-listed", "category": "connection", "q": "The server does not appear in the list", "a": "Add it manually from the Servers tab: choose Add Server, enter the address, and save it." },
+        { "id": "version-mismatch", "category": "connection", "q": "I get an incompatible game version message", "a": "Use one of the Minecraft versions listed in the Supported versions section." },
+        { "id": "still-cannot-join", "category": "connection", "q": "I still cannot join after checking the address and port", "a": "Check your internet connection and the server status, then try again. If the issue continues, contact support." }
+      ]
+    }
   },
   "modpacks": {
     "eyebrow": "Modpacks",
