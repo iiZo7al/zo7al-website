@@ -27,6 +27,7 @@ export default function SnakeGame({ onExit }: { onExit: () => void }) {
   const appleRef = useRef<Point>({ x: 0, y: 0 });
   const impactRef = useRef<Impact | null>(null);
   const appleImageRef = useRef<HTMLImageElement | null>(null);
+  const snakeEyeImageRef = useRef<HTMLImageElement | null>(null);
   const impactImageRef = useRef<HTMLImageElement | null>(null);
 
   useEffect(() => {
@@ -37,6 +38,9 @@ export default function SnakeGame({ onExit }: { onExit: () => void }) {
     const appleImage = new Image();
     appleImage.src = "/snake/apple.svg";
     appleImageRef.current = appleImage;
+    const snakeEyeImage = new Image();
+    snakeEyeImage.src = "/snake/eye.svg";
+    snakeEyeImageRef.current = snakeEyeImage;
     const impactImage = new Image();
     impactImage.src = "/snake/impact.svg";
     impactImageRef.current = impactImage;
@@ -134,16 +138,23 @@ export default function SnakeGame({ onExit }: { onExit: () => void }) {
       const eyePositions = dir.x !== 0
         ? [{ x: headX + CELL / 2 + dir.x * 4, y: headY + CELL / 2 - 5 }, { x: headX + CELL / 2 + dir.x * 4, y: headY + CELL / 2 + 5 }]
         : [{ x: headX + CELL / 2 - 5, y: headY + CELL / 2 + dir.y * 4 }, { x: headX + CELL / 2 + 5, y: headY + CELL / 2 + dir.y * 4 }];
-      eyePositions.forEach((eye) => {
-        ctx.fillStyle = "#fff8e9";
-        ctx.beginPath();
-        ctx.arc(eye.x, eye.y, 3.1, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.fillStyle = "#2c1606";
-        ctx.beginPath();
-        ctx.arc(eye.x + dir.x * 1.2, eye.y + dir.y * 1.2, 1.45, 0, Math.PI * 2);
-        ctx.fill();
-      });
+      if (snakeEyeImage.complete && snakeEyeImage.naturalWidth) {
+        ctx.save();
+        ctx.filter = "hue-rotate(170deg) saturate(1.15)";
+        eyePositions.forEach((eye) => ctx.drawImage(snakeEyeImage, eye.x - 5.5, eye.y - 4, 11, 8));
+        ctx.restore();
+      } else {
+        eyePositions.forEach((eye) => {
+          ctx.fillStyle = "#fff8e9";
+          ctx.beginPath();
+          ctx.arc(eye.x, eye.y, 3.1, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = "#2c1606";
+          ctx.beginPath();
+          ctx.arc(eye.x + dir.x * 1.2, eye.y + dir.y * 1.2, 1.45, 0, Math.PI * 2);
+          ctx.fill();
+        });
+      }
 
       const apple = appleRef.current;
       if (appleImage.complete && appleImage.naturalWidth) {
@@ -267,6 +278,7 @@ export default function SnakeGame({ onExit }: { onExit: () => void }) {
       window.removeEventListener("resize", resize);
       window.removeEventListener("keydown", onKeyDown);
       appleImageRef.current = null;
+      snakeEyeImageRef.current = null;
       impactImageRef.current = null;
     };
     // Game state is held in refs so the animation loop stays stable.
