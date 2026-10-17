@@ -30,10 +30,24 @@ function discover(id: "saturn" | "miku") {
   }
 }
 
-function playDistantWhistle() {
+let preparedAudioContext: AudioContext | null = null;
+
+function prepareDistantWhistle() {
   if (typeof window === "undefined" || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   try {
-    const context = new AudioContext();
+    preparedAudioContext ??= new AudioContext();
+    void preparedAudioContext.resume();
+  } catch {
+    preparedAudioContext = null;
+  }
+}
+
+export function playMikuFlybyWhistle() {
+  if (typeof window === "undefined" || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const context = preparedAudioContext;
+  preparedAudioContext = null;
+  if (!context || context.state === "closed") return;
+  try {
     const oscillator = context.createOscillator();
     const gain = context.createGain();
     const pan = context.createStereoPanner();
@@ -52,9 +66,8 @@ function playDistantWhistle() {
     oscillator.onended = () => { void context.close(); };
     oscillator.start(start);
     oscillator.stop(start + 2.82);
-    void context.resume();
   } catch {
-    // Keep the visual Easter egg available when audio is blocked or unavailable.
+    void context.close();
   }
 }
 
@@ -78,7 +91,7 @@ export function discoverMikuEasterEgg() {
   const isNew = discover("miku");
   if (typeof window !== "undefined") {
     window.dispatchEvent(new Event(MIKU_FLYBY_EVENT));
-    playDistantWhistle();
+    prepareDistantWhistle();
   }
   return isNew;
 }
