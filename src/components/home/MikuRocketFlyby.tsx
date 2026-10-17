@@ -4,6 +4,8 @@ import { Suspense, useMemo, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { useGLTF } from "@react-three/drei";
 import { SkeletonUtils } from "three/addons/utils/SkeletonUtils.js";
+import { useReducedMotion } from "framer-motion";
+import { playMikuFlybyWhistle } from "@/lib/data/easter-eggs";
 import * as THREE from "three";
 
 const ROCKET_URL = "/assets/models/rocket-v101/Rocket.glb";
@@ -21,7 +23,8 @@ function centeredClone(source: THREE.Object3D, height: number, skeleton = false)
   return clone;
 }
 
-function FlybyScene({ onComplete }: { onComplete: () => void }) {
+function FlybyScene({ onComplete, reducedMotion }: { onComplete: () => void; reducedMotion: boolean }) {
+  useEffect(() => { playMikuFlybyWhistle(); }, []);
   const flight = useRef<THREE.Group>(null);
   const startTime = useRef<number | null>(null);
   const completed = useRef(false);
@@ -38,12 +41,13 @@ function FlybyScene({ onComplete }: { onComplete: () => void }) {
   useFrame((state) => {
     if (!flight.current || completed.current) return;
     if (startTime.current === null) startTime.current = state.clock.elapsedTime;
-    const progress = THREE.MathUtils.clamp((state.clock.elapsedTime - startTime.current) / 3.4, 0, 1);
+    const duration = reducedMotion ? 0.6 : 3.4;
+    const progress = THREE.MathUtils.clamp((state.clock.elapsedTime - startTime.current) / duration, 0, 1);
     const camera = state.camera as THREE.PerspectiveCamera;
     const aspect = state.size.width / Math.max(1, state.size.height);
     const halfWidth = camera.position.z * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * aspect;
     const eased = progress * progress * (3 - 2 * progress);
-    flight.current.position.x = THREE.MathUtils.lerp(-halfWidth - 3.4, halfWidth + 3.4, eased);
+    flight.current.position.x = reducedMotion ? 0 : THREE.MathUtils.lerp(-halfWidth - 3.4, halfWidth + 3.4, eased);
     flight.current.position.y = 0.1 + Math.sin(progress * Math.PI) * 0.16;
     if (progress >= 1) {
       completed.current = true;
@@ -68,11 +72,12 @@ function FlybyScene({ onComplete }: { onComplete: () => void }) {
 }
 
 export default function MikuRocketFlyby({ onComplete }: { onComplete: () => void }) {
+  const reducedMotion = useReducedMotion() ?? false;
   return (
     <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-[1] overflow-hidden">
       <Canvas camera={{ position: [0, 0, 10], fov: 45 }} gl={{ alpha: true, antialias: true, powerPreference: "low-power" }} dpr={[1, 1.25]} style={{ background: "transparent", pointerEvents: "none" }}>
         <Suspense fallback={null}>
-          <FlybyScene onComplete={onComplete} />
+          <FlybyScene onComplete={onComplete} reducedMotion={reducedMotion} />
         </Suspense>
       </Canvas>
     </div>
