@@ -147,9 +147,6 @@ export default function HeroHeadline() {
         } else if (word === "creeper") {
           discoverCreeperEasterEgg();
           router.push("/easter-eggs");
-        } else if (word === "creeper") {
-          discoverCreeperEasterEgg();
-          router.push("/easter-eggs");
         } else if (matchingSocial) {
           window.open(matchingSocial.url, "_blank", "noopener,noreferrer");
           animateReset(input);
