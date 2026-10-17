@@ -4,21 +4,33 @@ import { useEffect, useState } from "react";
 import { useLocale } from "next-intl";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { ArrowUpRight, Sparkles } from "lucide-react";
-import { hasFoundFirstEasterEgg } from "@/lib/data/easter-eggs";
+import { ArrowUpRight, Blocks, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import { EASTER_EGG_CHANGE_EVENT, hasFoundCreeperEasterEgg, hasFoundFirstEasterEgg } from "@/lib/data/easter-eggs";
 
 export default function EasterEggsPage() {
   const locale = useLocale();
   const router = useRouter();
   const [checked, setChecked] = useState(false);
   const [unlocked, setUnlocked] = useState(false);
+  const [foundCreeper, setFoundCreeper] = useState(false);
   const isArabic = locale === "ar";
 
   useEffect(() => {
-    const found = hasFoundFirstEasterEgg();
-    setUnlocked(found);
-    setChecked(true);
-    if (!found) router.replace("/");
+    const update = () => {
+      const found = hasFoundFirstEasterEgg();
+      setUnlocked(found);
+      setFoundCreeper(hasFoundCreeperEasterEgg());
+      setChecked(true);
+      if (!found) router.replace("/");
+    };
+    update();
+    window.addEventListener(EASTER_EGG_CHANGE_EVENT, update);
+    window.addEventListener("storage", update);
+    return () => {
+      window.removeEventListener(EASTER_EGG_CHANGE_EVENT, update);
+      window.removeEventListener("storage", update);
+    };
   }, [router]);
 
   if (!checked || !unlocked) return null;
@@ -40,10 +52,26 @@ export default function EasterEggsPage() {
           </span>
           <div className="min-w-0 flex-1">
             <p className="text-label mb-2">{isArabic ? "السر الأول" : "FIRST DISCOVERY"}</p>
-            <h2 className="text-xl font-semibold">{isArabic ? "بداية مجموعة الأسرار" : "The beginning of the collection"}</h2>
-            <p className="mt-2 text-sm leading-7 text-[var(--text-muted)]">{isArabic ? "تم فتح هذا الأرشيف بعد اكتشاف أول Easter Egg." : "This archive unlocked after discovering your first Easter Egg."}</p>
+            <h2 className="text-xl font-semibold">{isArabic ? "انفجار زحل" : "Saturn's explosion"}</h2>
+            <p className="mt-2 text-sm leading-7 text-[var(--text-muted)]">{isArabic ? "أدخلت تسلسلًا سريًا واكتشفت أول سر." : "You entered a hidden sequence and found the first secret."}</p>
           </div>
-          <span className="shrink-0 rounded-full border border-[var(--border-strong)] px-3 py-1 text-xs text-[var(--text-muted)]">1 / 1</span>
+          <span className="shrink-0 rounded-full border border-[var(--border-strong)] px-3 py-1 text-xs text-[var(--text-muted)]">1 / 2</span>
+        </article>
+        <article className="card-glow mt-5 flex items-center gap-5 rounded-3xl border border-[var(--border-strong)] bg-[var(--surface)] p-6 sm:p-8">
+          <motion.span
+            className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl text-emerald-300"
+            style={{ background: "rgba(52,211,153,.12)" }}
+            animate={foundCreeper ? undefined : { y: [0, -7, 0], rotate: [0, -7, 7, 0] }}
+            transition={{ duration: 2.2, repeat: foundCreeper ? 0 : Infinity, ease: "easeInOut" }}
+          >
+            <Blocks size={27} aria-hidden="true" />
+          </motion.span>
+          <div className="min-w-0 flex-1">
+            <p className="text-label mb-2">{isArabic ? "السر التالي" : "NEXT SECRET"}</p>
+            <h2 className="text-xl font-semibold">{foundCreeper ? (isArabic ? "كريبر!" : "Creeper!") : (isArabic ? "شيء أخضر يختبئ في الكتابة" : "Something green is hiding in the typewriter")}</h2>
+            <p className="mt-2 text-sm leading-7 text-[var(--text-muted)]">{foundCreeper ? (isArabic ? "اكتشفت السر الثاني." : "You found the second secret.") : (isArabic ? "التلميح يتحرك باتجاه السر. اكتب CREEPER في كتابة الصفحة الرئيسية واضغط Enter." : "Follow the moving hint. Type CREEPER into the homepage typewriter and press Enter.")}</p>
+          </div>
+          <span className="shrink-0 rounded-full border border-[var(--border-strong)] px-3 py-1 text-xs text-[var(--text-muted)]">{foundCreeper ? "2 / 2" : "? / 2"}</span>
         </article>
         <Link href="/" className="mt-8 inline-flex items-center gap-2 text-sm text-[var(--text-muted)] transition-colors hover:text-[var(--text)]">
           {isArabic ? "العودة للرئيسية" : "Back to home"}

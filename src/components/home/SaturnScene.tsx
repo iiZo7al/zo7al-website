@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useFrame, useThree, type ThreeEvent } from "@react-three/fiber";
 import { PerspectiveCamera } from "@react-three/drei";
 import * as THREE from "three";
+import { discoverFirstEasterEgg } from "@/lib/data/easter-eggs";
 
 interface SaturnSceneProps {
   isTransitioning?: boolean;
@@ -20,10 +21,22 @@ const RING_TILT = -Math.PI / 2.5;
 const CAMERA_FOV = 45;
 const ORBIT_NORMAL = new THREE.Vector3(0, -Math.sin(RING_TILT), Math.cos(RING_TILT));
 const ORBIT_AXIS = new THREE.Vector3(0, Math.cos(RING_TILT), Math.sin(RING_TILT));
+const KONAMI_CODE = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a"];
+const DEBRIS_DIRECTIONS = Array.from({ length: 20 }, (_, index) => {
+  const phi = Math.acos(1 - 2 * (index + 0.5) / 20);
+  const theta = index * Math.PI * (3 - Math.sqrt(5));
+  return new THREE.Vector3(Math.cos(theta) * Math.sin(phi), Math.cos(phi), Math.sin(theta) * Math.sin(phi));
+});
 
 export default function SaturnScene({ isTransitioning }: SaturnSceneProps) {
   const moonRef = useRef<THREE.Group>(null);
   const groupRef = useRef<THREE.Group>(null);
+  const planetRef = useRef<THREE.Group>(null);
+  const debrisRefs = useRef<Array<THREE.Mesh | null>>([]);
+  const explosionLightRef = useRef<THREE.PointLight>(null);
+  const explosionStart = useRef<number | null>(null);
+  const sequence = useRef<string[]>([]);
+  const [explosionId, setExplosionId] = useState(0);
   const cameraRef = useRef<THREE.PerspectiveCamera>(null);
   const size = useThree((state) => state.size);
   const canvas = useThree((state) => state.gl.domElement);
@@ -48,6 +61,41 @@ export default function SaturnScene({ isTransitioning }: SaturnSceneProps) {
     activePointer.current = null;
     cameraRef.current?.position.set(0, 0, cameraDistance);
   }, [isTransitioning, cameraDistance]);
+
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.repeat || isTransitioning) { sequence.current = []; return; }
+      const target = event.target;
+      if (target instanceof HTMLElement && target.closest("input, textarea, select, [contenteditable]")) {
+        sequence.current = [];
+        return;
+      }
+      const key = event.key.length === 1 ? event.key.toLowerCase() : event.key;
+      const expected = KONAMI_CODE[sequence.current.length];
+      if (key === expected) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        sequence.current.push(key);
+        if (sequence.current.length === KONAMI_CODE.length) {
+          sequence.current = [];
+          discoverFirstEasterEgg();
+          setExplosionId((value) => value + 1);
+        }
+      } else {
+        sequence.current = key === KONAMI_CODE[0] ? [key] : [];
+        if (sequence.current.length) {
+          event.preventDefault();
+          event.stopImmediatePropagation();
+        }
+      }
+    };
+    window.addEventListener("keydown", onKeyDown, true);
+    return () => window.removeEventListener("keydown", onKeyDown, true);
+  }, [isTransitioning]);
+
+  useEffect(() => {
+    if (explosionId > 0) explosionStart.current = performance.now();
+  }, [explosionId]);
 
   useEffect(() => {
     const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -102,6 +150,44 @@ export default function SaturnScene({ isTransitioning }: SaturnSceneProps) {
   useFrame((state, frameDelta) => {
     const delta = Math.min(frameDelta, 0.05);
     if (!moonRef.current) return;
+
+    if (planetRef.current && explosionStart.current !== null) {
+      const elapsed = (performance.now() - explosionStart.current) / 1000;
+      if (elapsed >= 2.2) {
+        explosionStart.current = null;
+        planetRef.current.visible = true;
+        planetRef.current.scale.setScalar(1);
+        if (explosionLightRef.current) explosionLightRef.current.intensity = 0;
+        debrisRefs.current.forEach((mesh) => { if (mesh) mesh.visible = false; });
+      } else {
+        const planet = planetRef.current;
+        if (elapsed < 0.22) {
+          planet.visible = true;
+          planet.scale.setScalar(1 + elapsed / 0.22 * 0.2);
+        } else if (elapsed < 0.62) {
+          planet.scale.setScalar(1.2 * (1 - (elapsed - 0.22) / 0.4));
+        } else if (elapsed < 1.3) {
+          planet.visible = false;
+        } else {
+          planet.visible = true;
+          const reform = THREE.MathUtils.clamp((elapsed - 1.3) / 0.75, 0, 1);
+          planet.scale.setScalar(reform * reform * (3 - 2 * reform));
+        }
+        if (explosionLightRef.current) {
+          explosionLightRef.current.intensity = Math.max(0, 1 - elapsed / 0.5) * 32;
+        }
+        debrisRefs.current.forEach((mesh, index) => {
+          if (!mesh) return;
+          const debrisAge = elapsed - 0.12;
+          mesh.visible = debrisAge > 0 && debrisAge < 1.25;
+          if (mesh.visible) {
+            const distance = 1.5 + debrisAge * 5;
+            mesh.position.copy(DEBRIS_DIRECTIONS[index]).multiplyScalar(distance);
+            mesh.scale.setScalar(Math.max(0.04, 0.24 * (1 - debrisAge / 1.35)));
+          }
+        });
+      }
+    }
 
     if (activePointer.current === null) {
       angle.current += ((reducedMotion.current ? 0 : 0.12) + velocity.current) * delta;
@@ -175,6 +261,7 @@ export default function SaturnScene({ isTransitioning }: SaturnSceneProps) {
     <>
     <PerspectiveCamera ref={cameraRef} makeDefault fov={CAMERA_FOV} position={[0, 0, cameraDistance]} />
     <group ref={groupRef}>
+      <group ref={planetRef}>
       {/* Saturn Body */}
       <mesh position={[0, 0, 0]}>
         <sphereGeometry args={[2, 64, 64]} />
@@ -196,6 +283,15 @@ export default function SaturnScene({ isTransitioning }: SaturnSceneProps) {
           side={THREE.DoubleSide}
         />
       </mesh>
+
+      </group>
+
+      {/* Debris briefly scatters outward before Saturn reforms. */}
+      {DEBRIS_DIRECTIONS.map((_, index) => <mesh key={index} ref={(mesh) => { debrisRefs.current[index] = mesh; }} visible={false}>
+        <icosahedronGeometry args={[0.18, 0]} />
+        <meshStandardMaterial color={index % 2 ? "#ffb86b" : "#ff7a00"} emissive="#ff6a00" emissiveIntensity={1.8} />
+      </mesh>)}
+      <pointLight ref={explosionLightRef} position={[0, 0, 0]} intensity={0} color="#ff9a32" distance={24} />
 
       {/* The visible moon stays the same size; a clear hit area makes it easier to grab on touchscreens. */}
       <group
