@@ -21,7 +21,7 @@ const RING_TILT = -Math.PI / 2.5;
 const CAMERA_FOV = 45;
 const ORBIT_NORMAL = new THREE.Vector3(0, -Math.sin(RING_TILT), Math.cos(RING_TILT));
 const ORBIT_AXIS = new THREE.Vector3(0, Math.cos(RING_TILT), Math.sin(RING_TILT));
-const KONAMI_CODE = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a"];
+const KONAMI_CODE = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "KeyB", "KeyA"];
 const DEBRIS_DIRECTIONS = Array.from({ length: 20 }, (_, index) => {
   const phi = Math.acos(1 - 2 * (index + 0.5) / 20);
   const theta = index * Math.PI * (3 - Math.sqrt(5));
@@ -70,7 +70,7 @@ export default function SaturnScene({ isTransitioning }: SaturnSceneProps) {
         sequence.current = [];
         return;
       }
-      const key = event.key.length === 1 ? event.key.toLowerCase() : event.key;
+      const key = event.code;
       const expected = KONAMI_CODE[sequence.current.length];
       if (key === expected) {
         event.preventDefault();
