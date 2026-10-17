@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useFrame, useThree, type ThreeEvent } from "@react-three/fiber";
 import { PerspectiveCamera } from "@react-three/drei";
 import * as THREE from "three";
+import { discoverFirstEasterEgg } from "@/lib/data/easter-eggs";
 
 interface SaturnSceneProps {
   isTransitioning?: boolean;
@@ -20,10 +21,22 @@ const RING_TILT = -Math.PI / 2.5;
 const CAMERA_FOV = 45;
 const ORBIT_NORMAL = new THREE.Vector3(0, -Math.sin(RING_TILT), Math.cos(RING_TILT));
 const ORBIT_AXIS = new THREE.Vector3(0, Math.cos(RING_TILT), Math.sin(RING_TILT));
+const KONAMI_CODE = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a"];
+const DEBRIS_DIRECTIONS = Array.from({ length: 20 }, (_, index) => {
+  const phi = Math.acos(1 - 2 * (index + 0.5) / 20);
+  const theta = index * Math.PI * (3 - Math.sqrt(5));
+  return new THREE.Vector3(Math.cos(theta) * Math.sin(phi), Math.cos(phi), Math.sin(theta) * Math.sin(phi));
+});
 
 export default function SaturnScene({ isTransitioning }: SaturnSceneProps) {
   const moonRef = useRef<THREE.Group>(null);
   const groupRef = useRef<THREE.Group>(null);
+  const planetRef = useRef<THREE.Group>(null);
+  const debrisRefs = useRef<Array<THREE.Mesh | null>>([]);
+  const explosionLightRef = useRef<THREE.PointLight>(null);
+  const explosionStart = useRef<number | null>(null);
+  const sequence = useRef<string[]>([]);
+  const [explosionId, setExplosionId] = useState(0);
   const cameraRef = useRef<THREE.PerspectiveCamera>(null);
   const size = useThree((state) => state.size);
   const canvas = useThree((state) => state.gl.domElement);
@@ -197,7 +210,7 @@ export default function SaturnScene({ isTransitioning }: SaturnSceneProps) {
         />
       </mesh>
 
-      {/* The visible moon stays the same size; a clear hit area makes it easier to grab on touchscreens. */}
+      </group>\n\n      {/* Debris briefly scatters outward before Saturn reforms. */}\n      {DEBRIS_DIRECTIONS.map((_, index) => <mesh key={index} ref={(mesh) => { debrisRefs.current[index] = mesh; }} visible={false}>\n        <icosahedronGeometry args={[0.18, 0]} />\n        <meshStandardMaterial color={index % 2 ? "#ffb86b" : "#ff7a00"} emissive="#ff6a00" emissiveIntensity={1.8} />\n      </mesh>)}\n      <pointLight ref={explosionLightRef} position={[0, 0, 0]} intensity={0} color="#ff9a32" distance={24} />\n\n      {/* The visible moon stays the same size; a clear hit area makes it easier to grab on touchscreens. */}
       <group
         ref={moonRef}
         onPointerDown={handlePointerDown}
