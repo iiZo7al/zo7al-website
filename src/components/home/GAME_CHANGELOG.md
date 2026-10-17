@@ -1,5 +1,8 @@
 # Space Run
 
+## 1.0.13
+- Match Konami Code letter keys by physical keyboard code so the secret works with Arabic or English keyboard layouts.
+
 ## 1.0.12
 - Add the Konami Code Saturn explosion discovery and an animated clue for the next homepage Easter egg.
 
