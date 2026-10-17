@@ -144,7 +144,13 @@ export default function HeroHeadline() {
         if (word === "easter" || word === "easter egg") {
           discoverFirstEasterEgg();
           router.push("/easter-eggs");
-        } else if (word === "creeper") {\n          discoverCreeperEasterEgg();\n          router.push("/easter-eggs");\n        } else if (matchingSocial) {
+        } else if (word === "creeper") {
+          discoverCreeperEasterEgg();
+          router.push("/easter-eggs");
+        } else if (word === "creeper") {
+          discoverCreeperEasterEgg();
+          router.push("/easter-eggs");
+        } else if (matchingSocial) {
           window.open(matchingSocial.url, "_blank", "noopener,noreferrer");
           animateReset(input);
         } else if (word === "dashboard" && canDashboard) router.push("/dashboard");
