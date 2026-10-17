@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAccount } from "@/components/account/AccountProvider";
-import { discoverCreeperEasterEgg, discoverFirstEasterEgg } from "@/lib/data/easter-eggs";
+import { discoverFirstEasterEgg, discoverMikuEasterEgg } from "@/lib/data/easter-eggs";
 import { SOCIALS } from "@/lib/data/site";
 import "./hero.css";
 
@@ -55,6 +55,7 @@ export default function HeroHeadline() {
   const normalizedInput = input.trim().toLowerCase();
   const matchingSocial = SOCIALS.find((social) => social.id.toLowerCase() === normalizedInput || social.label.toLowerCase() === normalizedInput);
   const matchingWord = WORDS.find((word) => word.text.toLowerCase() === normalizedInput);
+  const isMikuPhrase = frame.complete && normalizedInput === "& miku";
 
   useEffect(() => {
     const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -144,9 +145,8 @@ export default function HeroHeadline() {
         if (word === "easter" || word === "easter egg") {
           discoverFirstEasterEgg();
           router.push("/easter-eggs");
-        } else if (word === "creeper") {
-          discoverCreeperEasterEgg();
-          router.push("/easter-eggs");
+        } else if (word === "& miku") {
+          discoverMikuEasterEgg();
         } else if (matchingSocial) {
           window.open(matchingSocial.url, "_blank", "noopener,noreferrer");
           animateReset(input);
@@ -177,7 +177,9 @@ export default function HeroHeadline() {
       <span className="hero-typewriter" style={{ color: frame.complete ? matchingSocial?.color ?? matchingWord?.color ?? "var(--accent)" : frame.color }}>
         <span className="hero-typewriter-reserve">Modpacks<span className="hero-typewriter-caret" /></span>
         <span className="hero-typewriter-line"><span className="hero-typewriter-word">
-          {(frame.complete ? input : frame.text).toUpperCase()}
+          {isMikuPhrase
+            ? <><span style={{ color: "#f779ba" }}>&amp;</span><span style={{ color: "#7de3ff" }}> MIKU</span></>
+            : (frame.complete ? input : frame.text).toUpperCase()}
         </span><span className={"hero-typewriter-caret" + (frame.complete && !input ? " is-complete" : "")} /></span>
       </span>
     </span>

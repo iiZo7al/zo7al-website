@@ -4,11 +4,13 @@ import Link from "next/link";
 import { ArrowDown } from "lucide-react";
 import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import SpaceExperience, { type SpaceExperienceHandle } from "./SpaceExperience";
 import GameLaunchButton from "./GameLaunchButton";
 import MagneticButton from "@/components/cursor/MagneticButton";
 import HeroHeadline from "./HeroHeadline";
+import MikuRocketFlyby from "./MikuRocketFlyby";
+import { MIKU_FLYBY_EVENT } from "@/lib/data/easter-eggs";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -24,12 +26,27 @@ const item = {
 export default function Hero() {
   const t = useTranslations("home");
   const [gameActive, setGameActive] = useState(false);
+  const [mikuFlybyRun, setMikuFlybyRun] = useState(0);
   const space = useRef<SpaceExperienceHandle>(null);
   const onGameStateChange = useCallback((state: string) => setGameActive(state !== "SATURN"), []);
+
+  useEffect(() => {
+    const handleMikuFlyby = () => {
+      if (!gameActive) setMikuFlybyRun((run) => run + 1);
+    };
+    window.addEventListener(MIKU_FLYBY_EVENT, handleMikuFlyby);
+    return () => window.removeEventListener(MIKU_FLYBY_EVENT, handleMikuFlyby);
+  }, [gameActive]);
 
   return (
     <section className="hero-orbit-section relative flex min-h-[100svh] items-center justify-center pb-28 pt-[calc(var(--nav-height)+1.5rem)] sm:pb-32 sm:pt-[calc(var(--nav-height)+3rem)]">
       <SpaceExperience ref={space} onGameStateChange={onGameStateChange} />
+      {mikuFlybyRun > 0 && !gameActive && (
+        <MikuRocketFlyby
+          key={mikuFlybyRun}
+          onComplete={() => setMikuFlybyRun((run) => run === mikuFlybyRun ? 0 : run)}
+        />
+      )}
 
       <motion.div
         variants={container}
