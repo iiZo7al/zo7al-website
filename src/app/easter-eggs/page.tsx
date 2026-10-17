@@ -14,7 +14,6 @@ export default function EasterEggsPage() {
   const [checked, setChecked] = useState(false);
   const [unlocked, setUnlocked] = useState(false);
   const [foundCreeper, setFoundCreeper] = useState(false);
-  const [foundCreeper, setFoundCreeper] = useState(false);
   const isArabic = locale === "ar";
 
   useEffect(() => {
@@ -56,7 +55,7 @@ export default function EasterEggsPage() {
             <h2 className="text-xl font-semibold">{isArabic ? "انفجار زحل" : "Saturn's explosion"}</h2>
             <p className="mt-2 text-sm leading-7 text-[var(--text-muted)]">{isArabic ? "أدخلت تسلسلًا سريًا واكتشفت أول سر." : "You entered a hidden sequence and found the first secret."}</p>
           </div>
-          <span className="shrink-0 rounded-full border border-[var(--border-strong)] px-3 py-1 text-xs text-[var(--text-muted)]">1 / {foundCreeper ? 2 : 1}</span>
+          <span className="shrink-0 rounded-full border border-[var(--border-strong)] px-3 py-1 text-xs text-[var(--text-muted)]">1 / 2</span>
         </article>
         <article className="card-glow mt-5 flex items-center gap-5 rounded-3xl border border-[var(--border-strong)] bg-[var(--surface)] p-6 sm:p-8">
           <motion.span
