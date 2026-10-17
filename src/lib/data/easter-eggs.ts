@@ -35,12 +35,4 @@ export function discoverFirstEasterEgg() {
   return discover("saturn");
 }
 
-export function hasFoundCreeperEasterEgg() {
-  return foundEggs().includes("creeper");
-}
-
-export function discoverCreeperEasterEgg() {
-  return discover("creeper");
-}
-
 export const EASTER_EGG_CHANGE_EVENT = EASTER_EGG_EVENT;
