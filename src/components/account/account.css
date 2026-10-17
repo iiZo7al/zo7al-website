@@ -102,3 +102,6 @@
 .member-player-dialog{width:min(760px,calc(100vw - 24px));max-height:calc(100dvh - 24px);overflow-y:auto}
 
 .account-deletion{border-color:#ff4f7066}.account-deletion h2{color:#ff4f70}.account-delete-button{border-color:#ff4f70;color:#ff4f70}.account-delete-button:hover{background:#ff4f7018;border-color:#ff4f70;color:#ff4f70}
+
+/* Match the compact desktop account popover on mobile instead of stretching it across the screen. */
+@media(max-width:640px){.account-menu{inset-inline:12px auto;right:auto;width:min(290px,calc(100vw - 24px));border-radius:22px}}
