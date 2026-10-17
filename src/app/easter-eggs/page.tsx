@@ -11,7 +11,7 @@ export default function EasterEggsPage() {
   const locale = useLocale();
   const router = useRouter();
   const [checked, setChecked] = useState(false);
-  const [unlocked, setUnlocked] = useState(false);
+  const [unlocked, setUnlocked] = useState(false);\n  const [foundCreeper, setFoundCreeper] = useState(false);
   const isArabic = locale === "ar";
 
   useEffect(() => {
@@ -40,10 +40,10 @@ export default function EasterEggsPage() {
           </span>
           <div className="min-w-0 flex-1">
             <p className="text-label mb-2">{isArabic ? "السر الأول" : "FIRST DISCOVERY"}</p>
-            <h2 className="text-xl font-semibold">{isArabic ? "بداية مجموعة الأسرار" : "The beginning of the collection"}</h2>
-            <p className="mt-2 text-sm leading-7 text-[var(--text-muted)]">{isArabic ? "تم فتح هذا الأرشيف بعد اكتشاف أول Easter Egg." : "This archive unlocked after discovering your first Easter Egg."}</p>
+            <h2 className="text-xl font-semibold">{isArabic ? "انفجار زحل" : "Saturn's explosion"}</h2>
+            <p className="mt-2 text-sm leading-7 text-[var(--text-muted)]">{isArabic ? "أدخلت تسلسلًا سريًا واكتشفت أول سر." : "You entered a hidden sequence and found the first secret."}</p>
           </div>
-          <span className="shrink-0 rounded-full border border-[var(--border-strong)] px-3 py-1 text-xs text-[var(--text-muted)]">1 / 1</span>
+          <span className="shrink-0 rounded-full border border-[var(--border-strong)] px-3 py-1 text-xs text-[var(--text-muted)]">1 / {foundCreeper ? 2 : 1}</span>
         </article>
         <Link href="/" className="mt-8 inline-flex items-center gap-2 text-sm text-[var(--text-muted)] transition-colors hover:text-[var(--text)]">
           {isArabic ? "العودة للرئيسية" : "Back to home"}
