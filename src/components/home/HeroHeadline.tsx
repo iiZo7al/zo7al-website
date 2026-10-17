@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAccount } from "@/components/account/AccountProvider";
-import { discoverFirstEasterEgg } from "@/lib/data/easter-eggs";
+import { discoverCreeperEasterEgg, discoverFirstEasterEgg } from "@/lib/data/easter-eggs";
 import { SOCIALS } from "@/lib/data/site";
 import "./hero.css";
 
@@ -144,7 +144,7 @@ export default function HeroHeadline() {
         if (word === "easter" || word === "easter egg") {
           discoverFirstEasterEgg();
           router.push("/easter-eggs");
-        } else if (matchingSocial) {
+        } else if (word === "creeper") {\n          discoverCreeperEasterEgg();\n          router.push("/easter-eggs");\n        } else if (matchingSocial) {
           window.open(matchingSocial.url, "_blank", "noopener,noreferrer");
           animateReset(input);
         } else if (word === "dashboard" && canDashboard) router.push("/dashboard");
