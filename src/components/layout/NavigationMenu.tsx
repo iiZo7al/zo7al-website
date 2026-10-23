@@ -2,17 +2,18 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { ArrowUpRight, Gamepad2, History } from "lucide-react";
 import BrandIcon from "@/components/ui/BrandIcon";
 import SolidIcon from "@/components/ui/SolidIcon";
 import CommerceIcon from "@/components/ui/CommerceIcon";
 import { SOCIALS } from "@/lib/data/site";
+import { getTeamCopy } from "@/lib/data/team-copy";
 
-export type MenuKey = "minecraft" | "fortnite" | "socials" | "support";
-export const MENU_ICONS = { minecraft: "cube", fortnite: "map", socials: "share", support: "headset" } as const;
+export type MenuKey = "minecraft" | "fortnite" | "team" | "socials" | "support";
+export const MENU_ICONS = { minecraft: "cube", fortnite: "map", team: "share", socials: "share", support: "headset" } as const;
 export function hasSubmenu(key: string): key is MenuKey {
-  return key === "minecraft" || key === "fortnite" || key === "socials" || key === "support";
+  return key === "minecraft" || key === "fortnite" || key === "team" || key === "socials" || key === "support";
 }
 
 export default function NavigationMenu({
@@ -25,13 +26,18 @@ export default function NavigationMenu({
   compact?: boolean;
 }) {
   const nav = useTranslations("nav");
+  const locale = useLocale();
+  const { copy: team } = getTeamCopy(locale);
   const hub = useTranslations("hub");
   const minecraft = useTranslations("minecraft");
   const modpacks = useTranslations("modpacks");
   const socials = useTranslations("socials");
   const fortnite = useTranslations("fortnite");
-  const intro = menu === "fortnite" ? fortnite("text") : menu === "minecraft" ? minecraft("text") : menu === "socials" ? socials("text") : hub("supportIntro");
-  const links: {href:string;label:string;description:string;icon:"cube"|"box"|"map"|"headset"|"store"|null;external?:boolean}[] = menu === "fortnite" ? [
+  const intro = menu === "team" ? `${team.menuTeam} · Solar System E-Sports` : menu === "fortnite" ? fortnite("text") : menu === "minecraft" ? minecraft("text") : menu === "socials" ? socials("text") : hub("supportIntro");
+  const links: {href:string;label:string;description:string;icon:"cube"|"box"|"map"|"headset"|"store"|null;external?:boolean}[] = menu === "team" ? [
+    { href: "/team", label: team.menuTeam, description: team.menuTeamText, icon: "map" },
+    { href: "/team#esports", label: "Solar System E-Sports", description: team.menuEsportsText, icon: "cube" },
+  ] : menu === "fortnite" ? [
     {href:'/fortnite',label:fortnite('mapsNav'),description:fortnite('text'),icon:'map'},
     {href:'https://www.fortnite.com/item-shop',label:fortnite('codeNav',{code:'Zo7al'}),description:fortnite('itemShopCode'),icon:'store',external:true},
   ] : menu === "minecraft" ? [
@@ -49,11 +55,11 @@ export default function NavigationMenu({
           {menu === "minecraft" ? <Image src="/assets/site/server-logo.png" width={72} height={72} alt=""/> : <SolidIcon name={MENU_ICONS[menu]} size={32}/>}
         </span>
         <p className="text-label">ZO7AL PROJECTS</p>
-        <h2 id={`${id}-title`}>{nav(menu)}</h2>
+        <h2 id={`${id}-title`}>{menu === "team" ? team.menuTeam : nav(menu)}</h2>
         <p>{intro}</p>
         {menu === "socials" && <Link href="/socials#games-socials-title" onClick={onNavigate} className="navigation-games-link" data-cursor="link"><Gamepad2 size={18} aria-hidden="true"/>Zo7al Games<ArrowUpRight size={14} aria-hidden="true"/></Link>}
       </aside>}
-      {compact && <h3 id={`${id}-title`} className="sr-only">{nav(menu)}</h3>}
+      {compact && <h3 id={`${id}-title`} className="sr-only">{menu === "team" ? team.menuTeam : nav(menu)}</h3>}
       <ul className="navigation-menu-links">
         {menu === "socials" ? (compact ? SOCIALS.filter(s => s.id !== "github").slice(0,4) : SOCIALS).map(social => <li key={social.id}>
           <a href={social.url} target="_blank" rel="noopener noreferrer" onClick={onNavigate} className="navigation-menu-link navigation-platform" data-cursor="link">

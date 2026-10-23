@@ -1,19 +1,22 @@
 import Link from "next/link";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import { NAV_LINKS, SITE, STORE_LINK } from "@/lib/data/site";
 import BrandIcon, { brandLabelStyle } from "@/components/ui/BrandIcon";
 import SolidIcon from "@/components/ui/SolidIcon";
 import { getSyncedSocials, getSyncedGamesSocials } from "@/lib/sync/socials";
 import BrandName from "./BrandName";
+import { getTeamCopy } from "@/lib/data/team-copy";
 
-const FOOTER_ICONS = { home: "home", minecraft: "cube", modpacks: "box", fortnite: "map", socials: "share", support: "headset", store: "shopping-bag" } as const;
+const FOOTER_ICONS = { home: "home", minecraft: "cube", modpacks: "box", fortnite: "map", team: "share", socials: "share", support: "headset", store: "shopping-bag" } as const;
 
 export default async function Footer() {
-  const [t, { items: socials }, { items: gamesSocials }] = await Promise.all([
+  const [t, { items: socials }, { items: gamesSocials }, locale] = await Promise.all([
     getTranslations(),
     getSyncedSocials(),
     getSyncedGamesSocials(),
+    getLocale(),
   ]);
+  const { copy: team } = getTeamCopy(locale);
 
   return (
     <>
@@ -65,7 +68,7 @@ export default async function Footer() {
                   className="flex items-center gap-2 text-sm text-[var(--text-muted)] hover:text-[var(--text)] transition-colors"
                 >
                   <SolidIcon name={FOOTER_ICONS[l.key]} size={15} className="shrink-0" />
-                  {t(`nav.${l.key}`)}
+                  {l.key === "team" ? team.menuTeam : t(`nav.${l.key}`)}
                 </Link>
               </li>
             ))}

@@ -20,7 +20,7 @@ import NavigationMenu, { hasSubmenu, type MenuKey } from "./NavigationMenu";
 import "./navigation.css";
 
 const TOP_LINKS = NAV_LINKS.filter(link => link.key !== "modpacks");
-const ICONS = { home: "home", minecraft: "cube", fortnite: "map", socials: "share", support: "headset", modpacks: "box" } as const;
+const ICONS = { home: "home", minecraft: "cube", fortnite: "map", team: "share", socials: "share", support: "headset", modpacks: "box" } as const;
 const FOCUSABLE = 'a[href], button:not([disabled])';
 const EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -34,7 +34,7 @@ function MenuSurface({ children, mobile = false }: { children: ReactNode; mobile
 }
 
 function activeSection(key: string, href: string, pathname: string) {
-  return pathname === href || (key === "minecraft" && pathname === "/modpacks") || (key === "support" && pathname === "/requests");
+  return pathname === href || (key === "minecraft" && pathname === "/modpacks") || (key === "support" && pathname === "/requests") || (key === "team" && pathname.startsWith("/team"));
 }
 
 export default function Navbar() {
@@ -146,12 +146,13 @@ export default function Navbar() {
           {TOP_LINKS.map(link => {
             const menu = hasSubmenu(link.key) ? link.key : null;
             const active = activeSection(link.key, link.href, pathname);
+            const label = link.key === "team" ? "Solar System" : nav(link.key);
             return <li key={link.key} className="site-navigation-group" data-navigation-group={link.key}
               onMouseEnter={() => { if (menu) openDesktop(menu); else { cancelClose(); setDesktopMenu(null); } }}
               onMouseLeave={() => { if (menu) scheduleClose(menu); }}>
               <div className={`site-navigation-item${active ? " is-active" : ""}${desktopMenu === menu && menu ? " is-expanded" : ""}`}>
                 <Link href={link.href} aria-current={pathname === link.href ? "page" : undefined} onClick={closeAll} onKeyDown={event => { if (menu) menuKeyDown(event, menu); }} data-cursor="link">
-                  <SolidIcon name={ICONS[link.key]} size={14}/><span>{nav(link.key)}</span>
+                  <SolidIcon name={ICONS[link.key]} size={14}/><span>{label}</span>
                 </Link>
                 {menu && <button type="button" className="navigation-disclosure" ref={node => { desktopTriggers.current[menu] = node; }}
                   aria-label={`${ui(desktopMenu === menu ? "closeMenu" : "openMenu")}: ${nav(menu)}`} aria-expanded={desktopMenu === menu} aria-controls={`navigation-desktop-${menu}`} data-cursor="button"
@@ -176,7 +177,7 @@ export default function Navbar() {
             const menu = hasSubmenu(link.key) ? link.key : null;
             return <li key={link.key}>
               <div className={`navigation-mobile-row${activeSection(link.key, link.href, pathname) ? " is-active" : ""}`}>
-                <Link href={link.href} onClick={closeAll} aria-current={pathname === link.href ? "page" : undefined} data-cursor="link"><SolidIcon name={ICONS[link.key]} size={18}/>{nav(link.key)}</Link>
+                <Link href={link.href} onClick={closeAll} aria-current={pathname === link.href ? "page" : undefined} data-cursor="link"><SolidIcon name={ICONS[link.key]} size={18}/>{link.key === "team" ? "Solar System" : nav(link.key)}</Link>
                 {menu && <button ref={node => { mobileTriggers.current[menu] = node; }} type="button" className="navigation-disclosure" aria-label={`${ui(mobileGroup === menu ? "closeMenu" : "openMenu")}: ${nav(menu)}`} aria-expanded={mobileGroup === menu} aria-controls={`navigation-mobile-${menu}`} data-cursor="button" onClick={() => setMobileGroup(mobileGroup === menu ? null : menu)}><ChevronDown size={18} aria-hidden="true"/></button>}
               </div>
               {menu && mobileGroup === menu && <NavigationMenu compact id={`navigation-mobile-${menu}`} menu={menu} pathname={pathname} onNavigate={closeAll}/>}
