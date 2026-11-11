@@ -90,7 +90,44 @@
     "bedrockTutorial": "Como entrar — Bedrock",
     "javaInstructions": "Abra Minecraft Java → Multijogador → Adicionar servidor. Digite {address} como endereço do servidor, salve e entre.",
     "bedrockInstructions": "Abra Minecraft Bedrock → Jogar → Servidores → Adicionar servidor. Digite {address} como endereço e {port} como porta, salve e entre.",
-    "bedrockPortNotice": "Use a porta atual do Bedrock: {port}. O vídeo mostra outra porta."
+    "bedrockPortNotice": "Use a porta atual do Bedrock: {port}. O vídeo mostra outra porta.",
+    "errors": {
+      "eyebrow": "AJUDA",
+      "title": "Problemas comuns",
+      "text": "Soluções rápidas para problemas de conexão e entrada na rede Zo7al.",
+      "items": [
+        {
+          "id": "server-address",
+          "category": "connection",
+          "q": "Qual é o endereço do servidor?",
+          "a": "Para Java e Bedrock, use **zo7al.play-mc.fun**. No Bedrock, digite também a porta **25807**."
+        },
+        {
+          "id": "bedrock-port",
+          "category": "connection",
+          "q": "O Minecraft Bedrock não consegue conectar. O que devo fazer?",
+          "a": "Verifique se o endereço é **zo7al.play-mc.fun** e a porta é **25807**."
+        },
+        {
+          "id": "server-not-listed",
+          "category": "connection",
+          "q": "O servidor não aparece na lista",
+          "a": "Adicione manualmente pela aba Servidores: escolha Adicionar Servidor, digite o endereço e salve."
+        },
+        {
+          "id": "version-mismatch",
+          "category": "connection",
+          "q": "Recebo uma mensagem de versão de jogo incompatível",
+          "a": "Use uma das versões do Minecraft listadas na seção de versões suportadas."
+        },
+        {
+          "id": "still-cannot-join",
+          "category": "connection",
+          "q": "Ainda não consigo entrar após verificar o endereço e a porta",
+          "a": "Verifique sua conexão de internet e o status do servidor e tente novamente. Se o problema continuar, entre em contato com o suporte."
+        }
+      ]
+    }
   },
   "modpacks": {
     "eyebrow": "Pacotes de mods",

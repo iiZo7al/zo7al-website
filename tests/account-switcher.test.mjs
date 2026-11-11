@@ -16,7 +16,7 @@ const route=await import(moduleURL('src/app/api/account/accounts/route.ts',{'@/l
 const envNames=['SUPABASE_URL','SUPABASE_PUBLISHABLE_KEY','DATABASE_URL','ZO7AL_ADMIN_SESSION_SECRET'],saved=Object.fromEntries(envNames.map(k=>[k,process.env[k]])),originalFetch=globalThis.fetch;
 process.env.SUPABASE_URL='https://auth.zo7al.test';process.env.SUPABASE_PUBLISHABLE_KEY='test';process.env.DATABASE_URL='test';process.env.ZO7AL_ADMIN_SESSION_SECRET='test-secret-'.repeat(6);
 const ids=['a1234567-1234-1234-1234-123456789abc','b1234567-1234-1234-1234-123456789abc'];let active=0,factors=[],wrongSubject=false,calls=[];
-globalThis.fetch=async(url,options)=>{calls.push(String(url));if(String(url).includes('refresh_token'))return Response.json({access_token:'refreshed-access',refresh_token:'rotated-refresh',expires_in:3600});return Response.json({id:ids[wrongSubject?1:active],email:'member@example.com',user_metadata:{name:'Member '+active},factors});};
+globalThis.fetch=async(url)=>{calls.push(String(url));if(String(url).includes('refresh_token'))return Response.json({access_token:'refreshed-access',refresh_token:'rotated-refresh',expires_in:3600});return Response.json({id:ids[wrongSubject?1:active],email:'member@example.com',user_metadata:{name:'Member '+active},factors});};
 const cookies=h=>h.getSetCookie().map(c=>c.split(';')[0]).join('; ');
 const req=(body,cookie='',origin='https://zo7al.test')=>new Request('https://zo7al.test/api/account/accounts',{method:'POST',headers:{origin,host:'zo7al.test','Content-Type':'application/json',cookie},body:JSON.stringify(body)});
 const session=auth.ACCOUNT_ACCESS+'=current-access; '+auth.ACCOUNT_REFRESH+'=current-refresh';let device;
