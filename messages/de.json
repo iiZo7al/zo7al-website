@@ -90,7 +90,44 @@
     "bedrockTutorial": "So trittst du bei — Bedrock",
     "javaInstructions": "Öffne Minecraft Java → Mehrspieler → Server hinzufügen. Gib {address} als Serveradresse ein, speichere und tritt bei.",
     "bedrockInstructions": "Öffne Minecraft Bedrock → Spielen → Server → Server hinzufügen. Gib {address} als Adresse und {port} als Port ein, speichere und tritt bei.",
-    "bedrockPortNotice": "Verwende den aktuellen Bedrock-Port: {port}. Im Video wird ein anderer Port gezeigt."
+    "bedrockPortNotice": "Verwende den aktuellen Bedrock-Port: {port}. Im Video wird ein anderer Port gezeigt.",
+    "errors": {
+      "eyebrow": "HILFE",
+      "title": "Häufige Probleme",
+      "text": "Schnelle Lösungen für Verbindungs- und Beitrittsprobleme im Zo7al-Netzwerk.",
+      "items": [
+        {
+          "id": "server-address",
+          "category": "connection",
+          "q": "Wie lautet die Serveradresse?",
+          "a": "Für Java und Bedrock verwende **zo7al.play-mc.fun**. Auf Bedrock gib zusätzlich den Port **25807** ein."
+        },
+        {
+          "id": "bedrock-port",
+          "category": "connection",
+          "q": "Minecraft Bedrock kann keine Verbindung herstellen. Was soll ich tun?",
+          "a": "Überprüfe, ob die Adresse **zo7al.play-mc.fun** und der Port **25807** lauten."
+        },
+        {
+          "id": "server-not-listed",
+          "category": "connection",
+          "q": "Der Server erscheint nicht in der Liste",
+          "a": "Füge ihn manuell über den Server-Tab hinzu: Wähle Server hinzufügen, gib die Adresse ein und speichere."
+        },
+        {
+          "id": "version-mismatch",
+          "category": "connection",
+          "q": "Ich erhalte eine Meldung über eine inkompatible Spielversion",
+          "a": "Verwende eine der im Bereich Unterstützte Versionen aufgeführten Minecraft-Versionen."
+        },
+        {
+          "id": "still-cannot-join",
+          "category": "connection",
+          "q": "Ich kann nach Überprüfung von Adresse und Port immer noch nicht beitreten",
+          "a": "Überprüfe deine Internetverbindung und den Serverstatus und versuche es erneut. Falls das Problem weiterhin besteht, kontaktiere den Support."
+        }
+      ]
+    }
   },
   "modpacks": {
     "eyebrow": "Modpakete",

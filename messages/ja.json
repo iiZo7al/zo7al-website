@@ -90,7 +90,44 @@
     "bedrockTutorial": "参加方法 — Bedrock",
     "javaInstructions": "Minecraft Java → マルチプレイ → サーバーを追加を開きます。サーバーアドレスに {address} を入力し、保存して参加してください。",
     "bedrockInstructions": "Minecraft Bedrock → 遊ぶ → サーバー → サーバーを追加を開きます。アドレスに {address}、ポートに {port} を入力し、保存して参加してください。",
-    "bedrockPortNotice": "現在の Bedrock ポート {port} を使用してください。動画では別のポートが表示されています。"
+    "bedrockPortNotice": "現在の Bedrock ポート {port} を使用してください。動画では別のポートが表示されています。",
+    "errors": {
+      "eyebrow": "ヘルプ",
+      "title": "よくある問題",
+      "text": "Zo7alネットワークへの接続と参加に関する問題の迅速な解決策。",
+      "items": [
+        {
+          "id": "server-address",
+          "category": "connection",
+          "q": "サーバーのアドレスは何ですか？",
+          "a": "Javaと統合版(Bedrock)では **zo7al.play-mc.fun** を使用してください。統合版ではポート **25807** も入力してください。"
+        },
+        {
+          "id": "bedrock-port",
+          "category": "connection",
+          "q": "Minecraft統合版が接続できません。どうすればいいですか？",
+          "a": "アドレスが **zo7al.play-mc.fun** で、ポートが **25807** であることを確認してください。"
+        },
+        {
+          "id": "server-not-listed",
+          "category": "connection",
+          "q": "サーバーがリストに表示されません",
+          "a": "サーバータブから手動で追加してください。「サーバーを追加」を選び、アドレスを入力して保存します。"
+        },
+        {
+          "id": "version-mismatch",
+          "category": "connection",
+          "q": "互換性のないゲームバージョンのメッセージが表示されます",
+          "a": "サポートされているバージョン一覧に記載されているMinecraftのバージョンを使用してください。"
+        },
+        {
+          "id": "still-cannot-join",
+          "category": "connection",
+          "q": "アドレスとポートを確認しても参加できません",
+          "a": "インターネット接続とサーバーの状態を確認してから再試行してください。問題が続く場合はサポートにお問い合わせください。"
+        }
+      ]
+    }
   },
   "modpacks": {
     "eyebrow": "Modpack",

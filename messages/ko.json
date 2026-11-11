@@ -90,7 +90,44 @@
     "bedrockTutorial": "접속 방법 — Bedrock",
     "javaInstructions": "Minecraft Java → 멀티플레이 → 서버 추가를 여세요. 서버 주소에 {address}를 입력하고 저장한 뒤 접속하세요.",
     "bedrockInstructions": "Minecraft Bedrock → 플레이 → 서버 → 서버 추가를 여세요. 주소에 {address}, 포트에 {port}를 입력하고 저장한 뒤 접속하세요.",
-    "bedrockPortNotice": "현재 Bedrock 포트 {port}를 사용하세요. 동영상에는 다른 포트가 표시됩니다."
+    "bedrockPortNotice": "현재 Bedrock 포트 {port}를 사용하세요. 동영상에는 다른 포트가 표시됩니다.",
+    "errors": {
+      "eyebrow": "도움말",
+      "title": "자주 발생하는 문제",
+      "text": "Zo7al 네트워크 연결 및 접속 문제에 대한 빠른 해결 방법입니다.",
+      "items": [
+        {
+          "id": "server-address",
+          "category": "connection",
+          "q": "서버 주소가 무엇인가요?",
+          "a": "자바 및 베드락 버전 모두 **zo7al.play-mc.fun**을 사용하세요. 베드락의 경우 포트 **25807**도 함께 입력하세요."
+        },
+        {
+          "id": "bedrock-port",
+          "category": "connection",
+          "q": "마인크래프트 베드락 에디션 연결이 안 됩니다. 어떻게 해야 하나요?",
+          "a": "주소가 **zo7al.play-mc.fun**이고 포트가 **25807**인지 확인하세요."
+        },
+        {
+          "id": "server-not-listed",
+          "category": "connection",
+          "q": "서버 목록에 서버가 나타나지 않습니다",
+          "a": "서버 탭에서 수동으로 추가하세요. '서버 추가'를 선택하고 주소를 입력한 뒤 저장합니다."
+        },
+        {
+          "id": "version-mismatch",
+          "category": "connection",
+          "q": "호환되지 않는 게임 버전이라는 메시지가 표시됩니다",
+          "a": "지원되는 버전 목록에 안내된 마인크래프트 버전 중 하나를 사용하세요."
+        },
+        {
+          "id": "still-cannot-join",
+          "category": "connection",
+          "q": "주소와 포트를 확인한 후에도 접속할 수 없습니다",
+          "a": "인터넷 연결과 서버 상태를 확인한 후 다시 시도해 보세요. 문제가 지속되면 고객지원에 문의하세요."
+        }
+      ]
+    }
   },
   "modpacks": {
     "eyebrow": "모드팩",

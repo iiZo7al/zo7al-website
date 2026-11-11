@@ -90,7 +90,44 @@
     "bedrockTutorial": "Cómo entrar — Bedrock",
     "javaInstructions": "Abre Minecraft Java → Multijugador → Añadir servidor. Introduce {address} como dirección del servidor, guarda y entra.",
     "bedrockInstructions": "Abre Minecraft Bedrock → Jugar → Servidores → Añadir servidor. Introduce {address} como dirección y {port} como puerto, guarda y entra.",
-    "bedrockPortNotice": "Usa el puerto actual de Bedrock: {port}. El vídeo muestra otro puerto."
+    "bedrockPortNotice": "Usa el puerto actual de Bedrock: {port}. El vídeo muestra otro puerto.",
+    "errors": {
+      "eyebrow": "AYUDA",
+      "title": "Problemas comunes",
+      "text": "Soluciones rápidas para problemas de conexión y entrada a la red de Zo7al.",
+      "items": [
+        {
+          "id": "server-address",
+          "category": "connection",
+          "q": "¿Cuál es la dirección del servidor?",
+          "a": "Para Java y Bedrock, usa **zo7al.play-mc.fun**. En Bedrock, introduce también el puerto **25807**."
+        },
+        {
+          "id": "bedrock-port",
+          "category": "connection",
+          "q": "Minecraft Bedrock no se puede conectar. ¿Qué debo hacer?",
+          "a": "Verifica que la dirección sea **zo7al.play-mc.fun** y el puerto sea **25807**."
+        },
+        {
+          "id": "server-not-listed",
+          "category": "connection",
+          "q": "El servidor no aparece en la lista",
+          "a": "Añádelo manualmente desde la pestaña Servidores: elige Añadir servidor, introduce la dirección y guárdalo."
+        },
+        {
+          "id": "version-mismatch",
+          "category": "connection",
+          "q": "Recibo un mensaje de versión de juego incompatible",
+          "a": "Usa una de las versiones de Minecraft indicadas en la sección de versiones compatibles."
+        },
+        {
+          "id": "still-cannot-join",
+          "category": "connection",
+          "q": "Aún no puedo entrar tras verificar la dirección y el puerto",
+          "a": "Comprueba tu conexión a internet y el estado del servidor, luego inténtalo de nuevo. Si el problema continúa, contacta al soporte."
+        }
+      ]
+    }
   },
   "modpacks": {
     "eyebrow": "Paquetes de mods",

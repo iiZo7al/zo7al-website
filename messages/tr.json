@@ -90,7 +90,44 @@
     "bedrockTutorial": "Nasıl katılınır — Bedrock",
     "javaInstructions": "Minecraft Java → Çok Oyunculu → Sunucu Ekle yolunu aç. Sunucu adresi olarak {address} yaz, kaydet ve katıl.",
     "bedrockInstructions": "Minecraft Bedrock → Oyna → Sunucular → Sunucu Ekle yolunu aç. Adres olarak {address}, port olarak {port} yaz, kaydet ve katıl.",
-    "bedrockPortNotice": "Güncel Bedrock portunu kullan: {port}. Videoda farklı bir port gösteriliyor."
+    "bedrockPortNotice": "Güncel Bedrock portunu kullan: {port}. Videoda farklı bir port gösteriliyor.",
+    "errors": {
+      "eyebrow": "YARDIM",
+      "title": "Yaygın sorunlar",
+      "text": "Zo7al ağındaki bağlantı ve katılma sorunları için hızlı çözümler.",
+      "items": [
+        {
+          "id": "server-address",
+          "category": "connection",
+          "q": "Sunucu adresi nedir?",
+          "a": "Java ve Bedrock için **zo7al.play-mc.fun** adresini kullanın. Bedrock üzerinde **25807** portunu da girin."
+        },
+        {
+          "id": "bedrock-port",
+          "category": "connection",
+          "q": "Minecraft Bedrock bağlanamıyor. Ne yapmalıyım?",
+          "a": "Adresin **zo7al.play-mc.fun** ve portun **25807** olduğunu kontrol edin."
+        },
+        {
+          "id": "server-not-listed",
+          "category": "connection",
+          "q": "Sunucu listede görünmüyor",
+          "a": "Sunucular sekmesinden manuel olarak ekleyin: Sunucu Ekle'yi seçin, adresi girin ve kaydedin."
+        },
+        {
+          "id": "version-mismatch",
+          "category": "connection",
+          "q": "Uyumsuz oyun sürümü mesajı alıyorum",
+          "a": "Desteklenen sürümler bölümünde listelenen Minecraft sürümlerinden birini kullanın."
+        },
+        {
+          "id": "still-cannot-join",
+          "category": "connection",
+          "q": "Adresi ve portu kontrol ettikten sonra hâlâ katılamıyorum",
+          "a": "İnternet bağlantınızı ve sunucu durumunu kontrol edip tekrar deneyin. Sorun devam ederse destek ekibiyle iletişime geçin."
+        }
+      ]
+    }
   },
   "modpacks": {
     "eyebrow": "Modpack'ler",

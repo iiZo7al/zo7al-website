@@ -41,8 +41,10 @@ test('all store descriptions and new UI messages exist in every locale with iden
   for(const ns of ['storeDescription','store','minecraft','modpacks']){
    assert.deepEqual(Object.keys(messages[locale][ns]).sort(),Object.keys(en[ns]).sort(),`${locale}.${ns}`);
    for(const [key,value] of Object.entries(en[ns])){
-    assert.equal(typeof messages[locale][ns][key],'string');
-    assert.deepEqual((messages[locale][ns][key].match(/\{\w+\}/g)||[]).sort(),(value.match(/\{\w+\}/g)||[]).sort(),`${locale}.${ns}.${key}`);
+    assert.equal(typeof messages[locale][ns][key],typeof value);
+    if(typeof value==='string'){
+     assert.deepEqual((messages[locale][ns][key].match(/\{\w+\}/g)||[]).sort(),(value.match(/\{\w+\}/g)||[]).sort(),`${locale}.${ns}.${key}`);
+    }
    }
   }
  }

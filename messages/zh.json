@@ -90,7 +90,44 @@
     "bedrockTutorial": "加入方法 — 基岩版",
     "javaInstructions": "打开 Minecraft Java 版 → 多人游戏 → 添加服务器。在服务器地址中输入 {address}，保存后加入。",
     "bedrockInstructions": "打开 Minecraft 基岩版 → 游戏 → 服务器 → 添加服务器。地址填写 {address}，端口填写 {port}，保存后加入。",
-    "bedrockPortNotice": "请使用当前基岩版端口 {port}。视频中显示的端口不同。"
+    "bedrockPortNotice": "请使用当前基岩版端口 {port}。视频中显示的端口不同。",
+    "errors": {
+      "eyebrow": "帮助",
+      "title": "常见问题",
+      "text": "Zo7al网络连接和加入问题的快速解决方案。",
+      "items": [
+        {
+          "id": "server-address",
+          "category": "connection",
+          "q": "服务器地址是什么？",
+          "a": "对于Java版和基岩版，请使用 **zo7al.play-mc.fun**。在基岩版上，还需输入端口 **25807**。"
+        },
+        {
+          "id": "bedrock-port",
+          "category": "connection",
+          "q": "我的世界基岩版无法连接，我该怎么办？",
+          "a": "请检查地址是否为 **zo7al.play-mc.fun** 且端口是否为 **25807**。"
+        },
+        {
+          "id": "server-not-listed",
+          "category": "connection",
+          "q": "服务器未显示在列表中",
+          "a": "请从服务器标签页手动添加：选择“添加服务器”，输入地址并保存。"
+        },
+        {
+          "id": "version-mismatch",
+          "category": "connection",
+          "q": "我收到游戏版本不兼容的提示",
+          "a": "请使用支持版本部分中列出的Minecraft版本之一。"
+        },
+        {
+          "id": "still-cannot-join",
+          "category": "connection",
+          "q": "核对地址和端口后仍无法加入",
+          "a": "请检查您的网络连接和服务器状态，然后重试。如果问题仍然存在，请联系客服支持。"
+        }
+      ]
+    }
   },
   "modpacks": {
     "eyebrow": "整合包",

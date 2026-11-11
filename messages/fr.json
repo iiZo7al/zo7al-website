@@ -90,7 +90,44 @@
     "bedrockTutorial": "Comment rejoindre — Bedrock",
     "javaInstructions": "Ouvre Minecraft Java → Multijoueur → Ajouter un serveur. Saisis {address} comme adresse du serveur, enregistre et rejoins-le.",
     "bedrockInstructions": "Ouvre Minecraft Bedrock → Jouer → Serveurs → Ajouter un serveur. Saisis {address} comme adresse et {port} comme port, enregistre et rejoins-le.",
-    "bedrockPortNotice": "Utilise le port Bedrock actuel : {port}. La vidéo affiche un autre port."
+    "bedrockPortNotice": "Utilise le port Bedrock actuel : {port}. La vidéo affiche un autre port.",
+    "errors": {
+      "eyebrow": "AIDE",
+      "title": "Problèmes fréquents",
+      "text": "Solutions rapides aux problèmes de connexion et d'accès au réseau Zo7al.",
+      "items": [
+        {
+          "id": "server-address",
+          "category": "connection",
+          "q": "Quelle est l'adresse du serveur ?",
+          "a": "Pour Java et Bedrock, utilisez **zo7al.play-mc.fun**. Sur Bedrock, entrez également le port **25807**."
+        },
+        {
+          "id": "bedrock-port",
+          "category": "connection",
+          "q": "Minecraft Bedrock ne parvient pas à se connecter. Que faire ?",
+          "a": "Vérifiez que l'adresse est **zo7al.play-mc.fun** et que le port est **25807**."
+        },
+        {
+          "id": "server-not-listed",
+          "category": "connection",
+          "q": "Le serveur n'apparaît pas dans la liste",
+          "a": "Ajoutez-le manuellement depuis l'onglet Serveurs : choisissez Ajouter un serveur, entrez l'adresse et enregistrez."
+        },
+        {
+          "id": "version-mismatch",
+          "category": "connection",
+          "q": "J'obtiens un message de version de jeu incompatible",
+          "a": "Utilisez l'une des versions de Minecraft répertoriées dans la section des versions prises en charge."
+        },
+        {
+          "id": "still-cannot-join",
+          "category": "connection",
+          "q": "Je ne peux toujours pas me connecter après avoir vérifié l'adresse et le port",
+          "a": "Vérifiez votre connexion internet et l'état du serveur, puis réessayez. Si le problème persiste, contactez le support."
+        }
+      ]
+    }
   },
   "modpacks": {
     "eyebrow": "Packs de mods",

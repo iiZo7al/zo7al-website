@@ -17,7 +17,7 @@ const db=stub('export async function siteDatabase(){return globalThis.__accountT
 const data=moduleURL('src/lib/data/account.ts');
 const security=moduleURL('src/lib/server/site-security.ts');
 const authURL=moduleURL('src/lib/server/account-auth.ts',{'./site-db':db,'./site-security':security,'../data/account':data});
-const verificationURL=moduleURL('src/lib/server/account-verification.ts',{'./account-auth':authURL,'./site-db':db,'./site-security':security}),verification=await import(verificationURL);
+const verificationURL=moduleURL('src/lib/server/account-verification.ts',{'./account-auth':authURL,'./site-db':db,'./site-security':security});
 const auth=await import(authURL);
 const links=await import(moduleURL('src/lib/server/account-minecraft.ts',{'./site-db':db,'./site-security':security,'./account-auth':authURL,'../data/account':data}));
 const memberURL=moduleURL('src/lib/server/member-modrinth.ts',{'./account-auth':authURL,'./account-admin':stub('export async function accountAdminRequest(){return {}}'),'./site-db':db,'./site-security':security,'../data/account':data});
