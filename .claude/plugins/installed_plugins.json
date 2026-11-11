@@ -1,0 +1,65 @@
+{
+  "version": 2,
+  "plugins": {
+    "typescript-lsp@claude-plugins-official": [
+      {
+        "scope": "user",
+        "installPath": "C:\\Users\\khloo\\.claude\\plugins\\cache\\claude-plugins-official\\typescript-lsp\\1.0.0",
+        "version": "1.0.0",
+        "installedAt": "2026-11-11T14:00:57.783Z",
+        "lastUpdated": "2026-11-11T14:00:57.783Z",
+        "gitCommitSha": "43fd1f9db0941b2b83cb62268e35970d4a67c202"
+      }
+    ],
+    "security-guidance@claude-plugins-official": [
+      {
+        "scope": "user",
+        "installPath": "C:\\Users\\khloo\\.claude\\plugins\\cache\\claude-plugins-official\\security-guidance\\2.0.19",
+        "version": "2.0.19",
+        "installedAt": "2026-11-11T14:01:05.918Z",
+        "lastUpdated": "2026-11-11T14:01:05.918Z",
+        "gitCommitSha": "43fd1f9db0941b2b83cb62268e35970d4a67c202"
+      }
+    ],
+    "code-review@claude-plugins-official": [
+      {
+        "scope": "user",
+        "installPath": "C:\\Users\\khloo\\.claude\\plugins\\cache\\claude-plugins-official\\code-review\\1.0.1",
+        "version": "1.0.1",
+        "installedAt": "2026-11-11T14:01:07.241Z",
+        "lastUpdated": "2026-11-11T14:01:07.241Z",
+        "gitCommitSha": "43fd1f9db0941b2b83cb62268e35970d4a67c202"
+      }
+    ],
+    "code-simplifier@claude-plugins-official": [
+      {
+        "scope": "user",
+        "installPath": "C:\\Users\\khloo\\.claude\\plugins\\cache\\claude-plugins-official\\code-simplifier\\1.0.0",
+        "version": "1.0.0",
+        "installedAt": "2026-11-11T14:01:08.513Z",
+        "lastUpdated": "2026-11-11T14:01:08.513Z",
+        "gitCommitSha": "43fd1f9db0941b2b83cb62268e35970d4a67c202"
+      }
+    ],
+    "context7@claude-plugins-official": [
+      {
+        "scope": "user",
+        "installPath": "C:\\Users\\khloo\\.claude\\plugins\\cache\\claude-plugins-official\\context7\\43fd1f9db094",
+        "version": "43fd1f9db094",
+        "installedAt": "2026-11-11T14:01:09.815Z",
+        "lastUpdated": "2026-11-11T14:01:09.815Z",
+        "gitCommitSha": "43fd1f9db0941b2b83cb62268e35970d4a67c202"
+      }
+    ],
+    "claude-seo@agricidaniel-claude-seo": [
+      {
+        "scope": "user",
+        "installPath": "C:\\Users\\khloo\\.claude\\plugins\\cache\\agricidaniel-claude-seo\\claude-seo\\2.6.0",
+        "version": "2.6.0",
+        "installedAt": "2026-11-11T14:28:32.361Z",
+        "lastUpdated": "2026-11-11T14:28:32.361Z",
+        "gitCommitSha": "734998e5fdbb16cd96dbaafe2da24eee6fb0d291"
+      }
+    ]
+  }
+}

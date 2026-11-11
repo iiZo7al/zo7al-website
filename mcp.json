@@ -1,0 +1,70 @@
+{
+    "mcpServers": {
+        "Spline": {
+            "command": "C:\\Users\\khloo\\AppData\\Local\\Programs\\Spline\\Spline.exe",
+            "args": [
+                "C:\\Users\\khloo\\AppData\\Local\\Programs\\Spline\\resources\\spline-mcp.cjs"
+            ],
+            "env": {
+                "ELECTRON_RUN_AS_NODE": "1"
+            }
+        },
+        "context7": {
+            "type": "http",
+            "url": "https://mcp.context7.com/mcp"
+        },
+        "higgsfield": {
+            "type": "http",
+            "url": "https://mcp.higgsfield.ai/mcp"
+        },
+        "motion": {
+            "type": "http",
+            "url": "https://mcp.motion.so/mcp",
+            "headers": {
+                "Authorization": "Bearer "
+            }
+        },
+        "playwright": {
+            "command": "cmd.exe",
+            "args": [
+                "/c",
+                "npx",
+                "-y",
+                "@playwright/mcp@latest"
+            ]
+        },
+        "chrome-devtools": {
+            "command": "cmd.exe",
+            "args": [
+                "/c",
+                "npx",
+                "-y",
+                "chrome-devtools-mcp@latest"
+            ]
+        },
+        "firecrawl": {
+            "command": "cmd.exe",
+            "args": [
+                "/c",
+                "npx",
+                "-y",
+                "firecrawl-mcp"
+            ],
+            "env": {
+                "FIRECRAWL_API_KEY": ""
+            }
+        },
+        "github": {
+            "command": "cmd.exe",
+            "args": [
+                "/c",
+                "npx",
+                "-y",
+                "@modelcontextprotocol/server-github"
+            ],
+            "env": {
+                "GITHUB_PERSONAL_ACCESS_TOKEN": ""
+            }
+        }
+    }
+}

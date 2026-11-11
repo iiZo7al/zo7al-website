@@ -1,0 +1,10 @@
+{
+    "enabledPlugins": [
+        "typescript-lsp@claude-plugins-official",
+        "security-guidance@claude-plugins-official",
+        "code-review@claude-plugins-official",
+        "code-simplifier@claude-plugins-official",
+        "context7@claude-plugins-official",
+        "claude-seo@agricidaniel-claude-seo"
+    ]
+}
