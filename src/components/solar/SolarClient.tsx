@@ -2,25 +2,30 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import PageHero from "@/components/ui/PageHero";
 import SectionHeader from "@/components/ui/SectionHeader";
 import MagneticButton from "@/components/cursor/MagneticButton";
 import SolidIcon from "@/components/ui/SolidIcon";
 import BrandIcon from "@/components/ui/BrandIcon";
+import FaqAccordion from "@/components/faq/FaqAccordion";
 import SolarRoster from "./SolarRoster";
 import SolarSponsor from "./SolarSponsor";
 import SolarMapCard from "./SolarMapCard";
 import SolarSocials from "./SolarSocials";
 import SolarApplyModal from "./SolarApplyModal";
 import { solarCopy } from "@/lib/data/solar-copy";
+import { getSolarFaq } from "@/lib/data/solar-faq";
 import type { SolarAdminSubType, SolarRole } from "@/lib/data/solar";
 import "@/components/fortnite/fortnite.css";
 import "@/components/store/store.css";
 
 export default function SolarClient() {
   const locale = useLocale();
+  const faqT = useTranslations("faq");
+  const commonT = useTranslations("common");
   const t = solarCopy(locale);
+  const solarFaq = getSolarFaq(locale);
   const [applyOpen, setApplyOpen] = useState(false);
   const [selectedRole, setSelectedRole] = useState<SolarRole>("creator");
   const [settings, setSettings] = useState<{
@@ -186,6 +191,33 @@ export default function SolarClient() {
             </a>
           </div>
           <SolarSocials />
+        </div>
+      </section>
+
+      {/* Section 5: Solar FAQ Section (Matching /minecraft Common Errors Accordion) */}
+      <section
+        className="relative border-t py-24 sm:py-32"
+        style={{ borderColor: "var(--border)" }}
+        id="faq"
+      >
+        <div className="mx-auto max-w-[1180px] px-6">
+          <SectionHeader
+            eyebrow={solarFaq.eyebrow}
+            title={solarFaq.title}
+            text={solarFaq.text}
+          />
+          <div className="mt-14">
+            <FaqAccordion
+              items={solarFaq.items}
+              categories={solarFaq.categories}
+              searchPlaceholder={faqT("searchPlaceholder")}
+              noResults={faqT("noResults")}
+              allLabel={commonT("all")}
+              initiallyOpen={false}
+              initialVisibleCount={4}
+              showMoreLabel={commonT("viewMore")}
+            />
+          </div>
         </div>
       </section>
 
