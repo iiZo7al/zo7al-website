@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, type CSSProperties } from "react";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import BrandIcon, { brandDisplayColor } from "@/components/ui/BrandIcon";
 import SolidIcon from "@/components/ui/SolidIcon";
 import DetailsIcon from "@/components/ui/DetailsIcon";
@@ -12,6 +12,7 @@ import { SOLAR_SOCIALS } from "@/lib/data/solar";
 
 export default function SolarSocials() {
   const store = useTranslations("store");
+  const locale = useLocale();
   const [selected, setSelected] = useState<{
     social: SyncedSocial;
     description: string;
@@ -19,7 +20,10 @@ export default function SolarSocials() {
 
   return (
     <>
-      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3" dir="rtl">
+      <div
+        className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3"
+        dir={locale === "ar" ? "rtl" : "ltr"}
+      >
         {SOLAR_SOCIALS.map((item, i) => {
           const brandColor =
             item.id === "whatsapp"

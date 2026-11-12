@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { useLocale } from "next-intl";
 import PageHero from "@/components/ui/PageHero";
 import SectionHeader from "@/components/ui/SectionHeader";
 import MagneticButton from "@/components/cursor/MagneticButton";
@@ -12,11 +13,14 @@ import SolarSponsor from "./SolarSponsor";
 import SolarMapCard from "./SolarMapCard";
 import SolarSocials from "./SolarSocials";
 import SolarApplyModal from "./SolarApplyModal";
+import { solarCopy } from "@/lib/data/solar-copy";
 import type { SolarRole } from "@/lib/data/solar";
 import "@/components/fortnite/fortnite.css";
 import "@/components/store/store.css";
 
 export default function SolarClient() {
+  const locale = useLocale();
+  const t = solarCopy(locale);
   const [applyOpen, setApplyOpen] = useState(false);
   const [selectedRole, setSelectedRole] = useState<SolarRole>("creator");
   const [settings, setSettings] = useState<{
@@ -38,9 +42,9 @@ export default function SolarClient() {
     <main data-accent="solar">
       {/* Standard Site Page Hero with Clan Logo */}
       <PageHero
-        eyebrow="كلان سولار • CLAN RECRUITMENT & COMMUNITY"
-        title="Solar System Team"
-        text="الصفحة الرسمية لكلان Solar System Team بقيادة زحل Zo7al. انضم لنخبة صناع المحتوى واللاعبين التنافسيين وطاقم الإشراف والمونتاج، وتحدّ في ماب الكلان الرسمي."
+        eyebrow={t.heroEyebrow}
+        title={t.heroTitle}
+        text={t.heroText}
       >
         <div className="space-y-6">
           {/* Official Clan 3D Logo */}
@@ -82,7 +86,7 @@ export default function SolarClient() {
                 style={{ background: "var(--accent)", color: "#07080B" }}
               >
                 <SolidIcon name="trophy" size={14} />
-                {settings && !settings.isOpen ? "التقديم مغلق حالياً" : "قدّم للانضمام للكلان"}
+                {settings && !settings.isOpen ? t.applyClosedBtn : t.applyBtn}
               </button>
             </MagneticButton>
 
@@ -92,7 +96,7 @@ export default function SolarClient() {
               className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] px-6 py-3.5 text-sm font-medium text-[var(--text-muted)] hover:text-[var(--text)] hover:border-[var(--border-strong)] transition-colors"
             >
               <SolidIcon name="map" size={14} />
-              ماب الكلان
+              {t.mapBtn}
             </a>
 
             <a
@@ -101,7 +105,7 @@ export default function SolarClient() {
               className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] px-6 py-3.5 text-sm font-medium text-[var(--text-muted)] hover:text-[var(--text)] hover:border-[var(--border-strong)] transition-colors"
             >
               <SolidIcon name="headset" size={14} />
-              راعي الكلان
+              {t.sponsorBtn}
             </a>
 
             <a
@@ -110,7 +114,7 @@ export default function SolarClient() {
               className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] px-6 py-3.5 text-sm font-medium text-[var(--text-muted)] hover:text-[var(--text)] hover:border-[var(--border-strong)] transition-colors"
             >
               <SolidIcon name="share" size={14} />
-              حسابات الكلان
+              {t.socialsBtn}
             </a>
           </div>
         </div>
@@ -120,8 +124,8 @@ export default function SolarClient() {
       <section className="relative pb-24 sm:pb-32" id="divisions">
         <div className="mx-auto max-w-[1180px] px-6">
           <SectionHeader
-            eyebrow="الهيكل الإداري والتنافسي"
-            title="أقسام الكلان"
+            eyebrow={t.divisionsEyebrow}
+            title={t.divisionsTitle}
           />
           <div className="mt-14">
             <SolarRoster
@@ -138,8 +142,8 @@ export default function SolarClient() {
       <section className="relative pb-24 sm:pb-32" id="sponsor">
         <div className="mx-auto max-w-[1180px] px-6">
           <SectionHeader
-            eyebrow="الشريك والراعي الرسمي"
-            title="راعي الكلان"
+            eyebrow={t.sponsorEyebrow}
+            title={t.sponsorTitle}
           />
           <div className="mt-14">
             <SolarSponsor />
@@ -151,8 +155,8 @@ export default function SolarClient() {
       <section className="relative pb-24 sm:pb-32" id="clan-map">
         <div className="mx-auto max-w-[1180px] px-6">
           <SectionHeader
-            eyebrow="الماب الرسمي • UEFN"
-            title="ماب حرب الكلانات"
+            eyebrow={t.mapEyebrow}
+            title={t.mapTitle}
           />
           <div className="mt-14">
             <SolarMapCard />
@@ -166,7 +170,7 @@ export default function SolarClient() {
           <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
             <p className="text-label flex items-center gap-2">
               <SolidIcon name="share" size={16} />
-              حسابات وقنوات الكلان الرسمية
+              {t.socialsEyebrow}
             </p>
             <a
               href="https://linktr.ee/SolarSystemTeam"
@@ -176,7 +180,7 @@ export default function SolarClient() {
               className="flex items-center gap-2 text-sm font-medium text-[var(--text-muted)] hover:text-[var(--text)] transition-colors"
             >
               <BrandIcon slug="linktree" size={16} />
-              عرض على Linktree
+              {t.viewOnLinktree}
               <SolidIcon name="arrow-up-right" size={12} />
             </a>
           </div>
