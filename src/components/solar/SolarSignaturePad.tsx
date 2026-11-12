@@ -176,19 +176,6 @@ export default function SolarSignaturePad({
       <div className="flex items-center gap-2 border-b border-[var(--border)] pb-2 text-xs">
         <button
           type="button"
-          onClick={() => setMode("upload")}
-          className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 font-medium transition-colors ${
-            mode === "upload"
-              ? "bg-[var(--accent)] text-[#07080b] font-semibold"
-              : "text-[var(--text-muted)] hover:text-[var(--text)]"
-          }`}
-        >
-          <Upload size={13} />
-          رفع الصورة الموقّعة
-        </button>
-
-        <button
-          type="button"
           onClick={() => setMode("draw")}
           className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 font-medium transition-colors ${
             mode === "draw"
@@ -197,7 +184,20 @@ export default function SolarSignaturePad({
           }`}
         >
           <PenTool size={13} />
-          أو وقّع رقمياً هنا
+          التوقيع الرقمي (الأساسي)
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setMode("upload")}
+          className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 font-medium transition-colors ${
+            mode === "upload"
+              ? "bg-[var(--accent)] text-[#07080b] font-semibold"
+              : "text-[var(--text-muted)] hover:text-[var(--text)]"
+          }`}
+        >
+          <Upload size={13} />
+          أو رفع الصورة الموقّعة
         </button>
       </div>
 

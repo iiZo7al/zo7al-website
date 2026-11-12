@@ -1,11 +1,38 @@
 import "server-only";
 import { siteDatabase } from "@/lib/server/site-db";
-import type { SolarRole } from "@/lib/data/solar";
+import type { SolarAdminSubType, SolarRole } from "@/lib/data/solar";
+
+const VALID_ROLES: SolarRole[] = [
+  "admin",
+  "creator",
+  "streamer",
+  "writer",
+  "editor",
+  "designer",
+  "player",
+];
+
+const VALID_ADMIN_SUBTYPES: SolarAdminSubType[] = [
+  "president",
+  "vice_president",
+  "exec_supervisor",
+  "dept_supervisor",
+  "general_admin",
+  "admin_monitor",
+  "creators_supervisor",
+  "creators_admin",
+  "designers_supervisor",
+  "players_supervisor",
+  "players_admin",
+  "editors_supervisor",
+  "streamers_supervisor",
+];
 
 export type SolarSettings = {
   isOpen: boolean;
   announcement: string;
   closedRoles: SolarRole[];
+  closedAdminSubTypes: SolarAdminSubType[];
   requirements: string;
   updatedAt: string;
 };
@@ -14,6 +41,7 @@ export const DEFAULT_SOLAR_SETTINGS: SolarSettings = {
   isOpen: true,
   announcement: "",
   closedRoles: [],
+  closedAdminSubTypes: [],
   requirements: "",
   updatedAt: new Date(0).toISOString(),
 };
@@ -32,12 +60,17 @@ export async function getSolarSettings(): Promise<SolarSettings> {
       isOpen: typeof payload.isOpen === "boolean" ? payload.isOpen : true,
       announcement: typeof payload.announcement === "string" ? payload.announcement.slice(0, 500) : "",
       closedRoles: Array.isArray(payload.closedRoles)
-        ? (payload.closedRoles.filter((r): r is SolarRole =>
-            ["admin", "creator", "streamer", "writer", "editor", "designer", "player"].includes(String(r))
-          ))
+        ? payload.closedRoles.filter((r): r is SolarRole => VALID_ROLES.includes(r))
+        : [],
+      closedAdminSubTypes: Array.isArray(payload.closedAdminSubTypes)
+        ? payload.closedAdminSubTypes.filter((s): s is SolarAdminSubType =>
+            VALID_ADMIN_SUBTYPES.includes(s)
+          )
         : [],
       requirements: typeof payload.requirements === "string" ? payload.requirements.slice(0, 2000) : "",
-      updatedAt: result.rows[0].updatedAt ? new Date(result.rows[0].updatedAt).toISOString() : new Date().toISOString(),
+      updatedAt: result.rows[0].updatedAt
+        ? new Date(result.rows[0].updatedAt).toISOString()
+        : new Date().toISOString(),
     };
   } catch {
     return DEFAULT_SOLAR_SETTINGS;
@@ -48,13 +81,22 @@ export async function saveSolarSettings(input: Partial<SolarSettings>): Promise<
   const current = await getSolarSettings();
   const next: SolarSettings = {
     isOpen: typeof input.isOpen === "boolean" ? input.isOpen : current.isOpen,
-    announcement: typeof input.announcement === "string" ? input.announcement.trim().slice(0, 500) : current.announcement,
+    announcement:
+      typeof input.announcement === "string"
+        ? input.announcement.trim().slice(0, 500)
+        : current.announcement,
     closedRoles: Array.isArray(input.closedRoles)
-      ? input.closedRoles.filter((r): r is SolarRole =>
-          ["admin", "creator", "streamer", "writer", "editor", "designer", "player"].includes(String(r))
-        )
+      ? input.closedRoles.filter((r): r is SolarRole => VALID_ROLES.includes(r))
       : current.closedRoles,
-    requirements: typeof input.requirements === "string" ? input.requirements.trim().slice(0, 2000) : current.requirements,
+    closedAdminSubTypes: Array.isArray(input.closedAdminSubTypes)
+      ? input.closedAdminSubTypes.filter((s): s is SolarAdminSubType =>
+          VALID_ADMIN_SUBTYPES.includes(s)
+        )
+      : current.closedAdminSubTypes,
+    requirements:
+      typeof input.requirements === "string"
+        ? input.requirements.trim().slice(0, 2000)
+        : current.requirements,
     updatedAt: new Date().toISOString(),
   };
 

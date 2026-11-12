@@ -18,11 +18,13 @@ import {
   Trash2,
   Eye,
   FileCheck,
+  FileSpreadsheet,
 } from "lucide-react";
 import MarkdownContent from "@/components/ui/MarkdownContent";
 import SolarContractViewerModal from "./SolarContractViewerModal";
+import SolarExcelSheet from "./SolarExcelSheet";
 import type { DashboardData, Mutate, RequestRow } from "./types";
-import type { SolarRole } from "@/lib/data/solar";
+import type { SolarAdminSubType, SolarRole } from "@/lib/data/solar";
 import type { SolarSettings } from "@/lib/server/solar-settings";
 
 const ROLE_LABELS: Record<string, string> = {
@@ -47,6 +49,8 @@ const CONTRACT_LABELS: Record<string, string> = {
 };
 
 const SUBTYPE_LABELS: Record<string, string> = {
+  president: "الرئيس",
+  vice_president: "نائب الرئيس",
   exec_supervisor: "مشرف تنفيذي",
   dept_supervisor: "مشرف أقسام",
   general_admin: "إدارة عامة",
@@ -77,6 +81,22 @@ const ALL_ROLES: { id: SolarRole; label: string }[] = [
   { id: "writer", label: "كتاب الأفكار" },
 ];
 
+const ALL_ADMIN_SUBTYPES: { id: SolarAdminSubType; label: string }[] = [
+  { id: "president", label: "الرئيس" },
+  { id: "vice_president", label: "نائب الرئيس" },
+  { id: "exec_supervisor", label: "مشرف تنفيذي" },
+  { id: "dept_supervisor", label: "مشرف أقسام" },
+  { id: "general_admin", label: "إدارة عامة" },
+  { id: "admin_monitor", label: "مراقب إدارة" },
+  { id: "creators_supervisor", label: "مشرف صناع محتوى" },
+  { id: "creators_admin", label: "إداري صناع محتوى" },
+  { id: "designers_supervisor", label: "مشرف مصممين" },
+  { id: "players_supervisor", label: "مشرف لاعبين" },
+  { id: "players_admin", label: "إداري لاعبين" },
+  { id: "editors_supervisor", label: "مشرف ممنتجين" },
+  { id: "streamers_supervisor", label: "مشرف ستريمرز" },
+];
+
 export default function SolarManagement({
   data,
   busy,
@@ -90,7 +110,7 @@ export default function SolarManagement({
   onExpired: () => void;
   onReload: () => void;
 }) {
-  const [activeTab, setActiveTab] = useState<"applicants" | "settings">("applicants");
+  const [activeTab, setActiveTab] = useState<"applicants" | "excel" | "settings">("applicants");
   const [query, setQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("");
   const [roleFilter, setRoleFilter] = useState<string>("");
@@ -235,11 +255,11 @@ export default function SolarManagement({
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <button
               type="button"
               onClick={() => setActiveTab("applicants")}
-              className={`inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all ${
+              className={`inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all cursor-pointer ${
                 activeTab === "applicants"
                   ? "bg-[var(--accent)] text-[#07080b]"
                   : "border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text)]"
@@ -251,8 +271,21 @@ export default function SolarManagement({
 
             <button
               type="button"
+              onClick={() => setActiveTab("excel")}
+              className={`inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all cursor-pointer ${
+                activeTab === "excel"
+                  ? "bg-[var(--accent)] text-[#07080b]"
+                  : "border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text)]"
+              }`}
+            >
+              <FileSpreadsheet size={16} />
+              جدول Excel والأعضاء
+            </button>
+
+            <button
+              type="button"
               onClick={() => setActiveTab("settings")}
-              className={`inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all ${
+              className={`inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all cursor-pointer ${
                 activeTab === "settings"
                   ? "bg-[var(--accent)] text-[#07080b]"
                   : "border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text)]"
@@ -273,6 +306,11 @@ export default function SolarManagement({
           </div>
         </div>
       </section>
+
+      {/* Tab: Excel Sheet & Members */}
+      {activeTab === "excel" && (
+        <SolarExcelSheet rows={solarApplications} busy={busy} mutate={mutate} />
+      )}
 
       {/* Tab 1: Applicants Review */}
       {activeTab === "applicants" && (
@@ -553,6 +591,66 @@ export default function SolarManagement({
                           }`}
                         >
                           {isClosed ? "مغلق" : "متاح للتقديم"}
+                        </span>
+                      </label>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Per-Admin-Rank Toggles */}
+              <div className="rounded-xl border border-[var(--border)] bg-black/20 p-5 space-y-4">
+                <div>
+                  <h3 className="font-semibold text-base text-[var(--text)]">
+                    التحكم في رتب الإدارة (تظهر للمتقدم ولكن لا تنضغط إذا كانت مغلقة)
+                  </h3>
+                  <p className="text-xs text-[var(--text-muted)] mt-1">
+                    عند إغلاق أي رتبة إدارية مثل الرئيس أو نائب الرئيس، ستظهر في قائمة التقديم كخيار غير قابل للاختيار ومغلق مؤقتاً.
+                  </p>
+                </div>
+
+                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                  {ALL_ADMIN_SUBTYPES.map((sub) => {
+                    const closedSubs = settings.closedAdminSubTypes ?? [];
+                    const isClosed = closedSubs.includes(sub.id);
+                    return (
+                      <label
+                        key={sub.id}
+                        className={`flex items-center justify-between rounded-xl border p-3.5 transition-all cursor-pointer ${
+                          isClosed
+                            ? "border-[var(--border)] bg-zinc-900/40 opacity-75"
+                            : "border-[var(--accent)]/40 bg-[var(--surface)]"
+                        }`}
+                      >
+                        <div className="flex items-center gap-2.5">
+                          <input
+                            type="checkbox"
+                            checked={!isClosed}
+                            onChange={(e) => {
+                              const checked = e.target.checked;
+                              const updatedClosed = checked
+                                ? closedSubs.filter((s) => s !== sub.id)
+                                : [...closedSubs, sub.id];
+                              setSettings({
+                                ...settings,
+                                closedAdminSubTypes: updatedClosed,
+                              });
+                            }}
+                            className="h-4 w-4 rounded accent-[var(--accent)]"
+                          />
+                          <span className="text-xs font-semibold text-[var(--text)]">
+                            {sub.label}
+                          </span>
+                        </div>
+
+                        <span
+                          className={`text-[11px] px-2 py-0.5 rounded-full font-semibold ${
+                            isClosed
+                              ? "bg-rose-500/10 text-rose-400 border border-rose-500/20"
+                              : "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
+                          }`}
+                        >
+                          {isClosed ? "مغلق (لا ينضغط)" : "متاح"}
                         </span>
                       </label>
                     );

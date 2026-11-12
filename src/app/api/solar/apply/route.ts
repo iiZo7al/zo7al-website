@@ -34,6 +34,8 @@ const contractDurationLabels: Record<string, string> = {
 };
 
 const subTypeLabels: Record<string, string> = {
+  president: "الرئيس",
+  vice_president: "نائب الرئيس",
   exec_supervisor: "مشرف تنفيذي",
   dept_supervisor: "مشرف أقسام",
   general_admin: "إدارة عامة",
@@ -103,7 +105,12 @@ export async function POST(request: Request) {
       );
     }
 
-    if (settings.closedRoles.includes(application.role)) {
+    if (
+      settings.closedRoles.includes(application.role) ||
+      (application.role === "admin" &&
+        application.adminSubType &&
+        settings.closedAdminSubTypes.includes(application.adminSubType))
+    ) {
       return Response.json(
         { error: "ROLE_CLOSED" },
         { status: 403, headers: privateHeaders },

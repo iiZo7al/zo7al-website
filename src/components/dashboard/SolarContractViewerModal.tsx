@@ -2,7 +2,8 @@
 
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
-import { X, Download, ExternalLink, FileCheck, PenTool } from "lucide-react";
+import { Download, ExternalLink, FileCheck, PenTool } from "lucide-react";
+import "@/components/store/store.css";
 
 export default function SolarContractViewerModal({
   isOpen,
@@ -91,7 +92,6 @@ export default function SolarContractViewerModal({
       link.href = canvas.toDataURL("image/png");
       link.click();
     } catch {
-      // Fallback: direct download
       window.open(signatureUrl, "_blank");
     } finally {
       setDownloading(false);
@@ -112,23 +112,17 @@ export default function SolarContractViewerModal({
       ref={dialogRef}
       onCancel={onClose}
       onClose={onClose}
-      className="checkout-shell max-w-2xl bg-[var(--surface-elevated)] border border-[var(--border)] text-[var(--text)] rounded-2xl p-0 shadow-2xl backdrop:bg-black/80"
+      aria-labelledby="solar-contract-viewer-title"
+      className="checkout-shell store-checkout max-w-2xl"
     >
-      {/* Header */}
-      <header className="flex items-center justify-between border-b border-[var(--border)] px-6 py-4" dir="rtl">
-        <div className="flex items-center gap-3">
-          <div
-            className="flex h-10 w-10 items-center justify-center rounded-xl"
-            style={{
-              background: "color-mix(in srgb, var(--accent) 15%, transparent)",
-              color: "var(--accent)",
-              border: "1px solid var(--border)",
-            }}
-          >
+      {/* Header matching site modals */}
+      <header className="store-checkout-header" dir="rtl">
+        <div className="store-checkout-brand">
+          <span className="store-rank-icon">
             <FileCheck size={20} />
-          </div>
+          </span>
           <div>
-            <h3 className="font-bold text-base text-[var(--text)]">
+            <h3 id="solar-contract-viewer-title" className="font-semibold text-base text-[var(--text)]">
               معاينة العقد والتوقيع — {applicantName}
             </h3>
             <p className="text-xs text-[var(--text-muted)]">
@@ -140,15 +134,15 @@ export default function SolarContractViewerModal({
         <button
           type="button"
           onClick={onClose}
-          className="text-[var(--text-muted)] hover:text-[var(--text)] p-2 rounded-lg transition-colors cursor-pointer"
+          className="store-close"
           aria-label="إغلاق"
         >
-          <X size={20} />
+          <span aria-hidden="true">×</span>
         </button>
       </header>
 
-      {/* Body */}
-      <div className="p-6 space-y-5" dir="rtl">
+      {/* Body matching site modals */}
+      <div className="store-checkout-body space-y-5" dir="rtl">
         {/* Tab Controls */}
         <div className="flex items-center justify-center gap-2 border-b border-[var(--border)] pb-4">
           <button
@@ -181,7 +175,7 @@ export default function SolarContractViewerModal({
         {/* View 1: Inside Contract */}
         {activeTab === "contract" && (
           <div className="space-y-4">
-            <div className="relative mx-auto max-w-[420px] aspect-[716/1024] overflow-hidden rounded-xl border border-[var(--border)] shadow-xl bg-black">
+            <div className="relative mx-auto max-w-[400px] aspect-[716/1024] overflow-hidden rounded-xl border border-[var(--border)] shadow-xl bg-black">
               {/* Background Contract */}
               <Image
                 src="/assets/site/solar-contract-pledge.png"
@@ -189,7 +183,7 @@ export default function SolarContractViewerModal({
                 fill
                 priority
                 className="object-contain"
-                sizes="(max-width: 640px) 100vw, 420px"
+                sizes="(max-width: 640px) 100vw, 400px"
               />
 
               {/* Signature Overlay Placed Exactly inside Contract */}
@@ -220,8 +214,7 @@ export default function SolarContractViewerModal({
                 type="button"
                 disabled={downloading}
                 onClick={handleDownloadMerged}
-                className="inline-flex items-center gap-2 rounded-xl px-6 py-2.5 text-xs font-bold transition-transform active:scale-95 cursor-pointer"
-                style={{ background: "var(--accent)", color: "#07080b" }}
+                className="store-action store-action-primary"
               >
                 <Download size={14} />
                 {downloading ? "جاري تجهيز الصورة..." : "تحميل العقد مع التوقيع (PNG)"}
@@ -231,7 +224,7 @@ export default function SolarContractViewerModal({
                 href={signatureUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-xl border border-[var(--border)] px-4 py-2.5 text-xs font-medium text-[var(--text-muted)] hover:text-[var(--text)] transition-colors"
+                className="store-action"
               >
                 <ExternalLink size={14} />
                 فتح التوقيع الأصلي
@@ -260,8 +253,7 @@ export default function SolarContractViewerModal({
               <button
                 type="button"
                 onClick={handleDownloadSignatureOnly}
-                className="inline-flex items-center gap-2 rounded-xl px-6 py-2.5 text-xs font-bold transition-transform active:scale-95 cursor-pointer"
-                style={{ background: "var(--accent)", color: "#07080b" }}
+                className="store-action store-action-primary"
               >
                 <Download size={14} />
                 تحميل التوقيع فقط (PNG)
@@ -271,7 +263,7 @@ export default function SolarContractViewerModal({
                 href={signatureUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-xl border border-[var(--border)] px-4 py-2.5 text-xs font-medium text-[var(--text-muted)] hover:text-[var(--text)] transition-colors"
+                className="store-action"
               >
                 <ExternalLink size={14} />
                 فتح برابط مباشر
