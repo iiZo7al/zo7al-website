@@ -20,7 +20,7 @@ import NavigationMenu, { hasSubmenu, type MenuKey } from "./NavigationMenu";
 import "./navigation.css";
 
 const TOP_LINKS = NAV_LINKS.filter(link => link.key !== "modpacks");
-const ICONS = { home: "home", minecraft: "cube", fortnite: "map", socials: "share", support: "headset", modpacks: "box" } as const;
+const ICONS = { home: "home", minecraft: "cube", fortnite: "map", solar: "trophy", socials: "share", support: "headset", modpacks: "box" } as const;
 const FOCUSABLE = 'a[href], button:not([disabled])';
 const EASE = [0.16, 1, 0.3, 1] as const;
 

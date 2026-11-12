@@ -17,6 +17,7 @@ export const NAV_LINKS = [
   { key: "minecraft", label: "Minecraft", href: "/minecraft", icon: "cube" },
   { key: "modpacks", label: "Modpacks", href: "/modpacks", icon: "package" },
   { key: "fortnite", label: "Fortnite", href: "/fortnite", icon: "map" },
+  { key: "solar", label: "Solar", href: "/solar", icon: "trophy" },
   { key: "socials", label: "Socials", href: "/socials", icon: "share-2" },
   { key: "support", label: "Support", href: "/support", icon: "headset" },
 ] as const;
