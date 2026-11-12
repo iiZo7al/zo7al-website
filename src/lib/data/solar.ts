@@ -38,7 +38,7 @@ export const SOLAR_SOCIALS = [
   {
     id: "linktree",
     name: "Linktree",
-    title: "Solar System Team • Linktree",
+    title: "Linktree",
     url: "https://linktr.ee/SolarSystemTeam",
     icon: "link",
     badge: "روابط الكلان الرسمية",
@@ -46,7 +46,7 @@ export const SOLAR_SOCIALS = [
   {
     id: "youtube",
     name: "YouTube",
-    title: "Solar System Team • YouTube",
+    title: "YouTube",
     url: "https://www.youtube.com/@SolarSystemTeam",
     handle: "@SolarSystemTeam",
     icon: "youtube",
@@ -55,7 +55,7 @@ export const SOLAR_SOCIALS = [
   {
     id: "x",
     name: "X (Twitter)",
-    title: "Solar System Team • X",
+    title: "X (Twitter)",
     url: "https://x.com/SolarSystemTeam",
     handle: "@SolarSystemTeam",
     icon: "x",
@@ -64,7 +64,7 @@ export const SOLAR_SOCIALS = [
   {
     id: "tiktok",
     name: "TikTok",
-    title: "Solar System Team • TikTok",
+    title: "TikTok",
     url: "https://www.tiktok.com/@solarsystamteam",
     handle: "@solarsystamteam",
     icon: "tiktok",
@@ -73,7 +73,7 @@ export const SOLAR_SOCIALS = [
   {
     id: "whatsapp",
     name: "WhatsApp",
-    title: "قناة واتساب الرسمية",
+    title: "WhatsApp",
     url: "https://whatsapp.com/channel/0029Vb9b1rSAYlUQEms6gG37",
     icon: "whatsapp",
     badge: "قناة التحديثات المباشرة",
@@ -81,7 +81,7 @@ export const SOLAR_SOCIALS = [
   {
     id: "threads",
     name: "Threads",
-    title: "Solar System Team • Threads",
+    title: "Threads",
     url: "https://www.threads.com/@solarsystemteam",
     handle: "@solarsystemteam",
     icon: "threads",
@@ -90,7 +90,7 @@ export const SOLAR_SOCIALS = [
   {
     id: "snapchat",
     name: "Snapchat",
-    title: "Solar System Team • Snapchat",
+    title: "Snapchat",
     url: "https://www.snapchat.com/@solarsystemteam",
     handle: "@solarsystemteam",
     icon: "snapchat",
@@ -99,7 +99,7 @@ export const SOLAR_SOCIALS = [
   {
     id: "bluesky",
     name: "Bluesky",
-    title: "Solar System Team • Bluesky",
+    title: "Bluesky",
     url: "https://bsky.app/profile/solarsystemteam.bsky.social",
     handle: "@solarsystemteam",
     icon: "bluesky",
@@ -107,12 +107,12 @@ export const SOLAR_SOCIALS = [
   },
   {
     id: "fortnite",
-    name: "Fortnite Island",
-    title: "حرب الكلانات زحل Zo7al",
-    url: "https://www.fortnite.com/@zo7al/6387-4453-1682?lang=ar",
-    code: "6387-4453-1682",
+    name: "Fortnite",
+    title: "Fortnite",
+    url: "https://www.fortnite.com/@zo7al",
+    handle: "@zo7al",
     icon: "fortnite",
-    badge: "ماب الكلان الرسمي",
+    badge: "كل أكواد الجزر في صفحة واحدة",
   },
 ];
 

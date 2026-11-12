@@ -1,12 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import PageHero from "@/components/ui/PageHero";
 import SectionHeader from "@/components/ui/SectionHeader";
 import MagneticButton from "@/components/cursor/MagneticButton";
 import SolidIcon from "@/components/ui/SolidIcon";
 import BrandIcon from "@/components/ui/BrandIcon";
 import SolarRoster from "./SolarRoster";
+import SolarSponsor from "./SolarSponsor";
 import SolarMapCard from "./SolarMapCard";
 import SolarSocials from "./SolarSocials";
 import SolarApplyModal from "./SolarApplyModal";
@@ -20,47 +22,76 @@ export default function SolarClient() {
 
   return (
     <main data-accent="solar">
-      {/* Standard Site Page Hero */}
+      {/* Standard Site Page Hero with Clan Logo */}
       <PageHero
-        eyebrow="كلان سولار • SOLAR SYSTEM TEAM"
-        title="Solar Clan"
-        text="الصفحة الرسمية لكلان Solar System Team بقيادة زحل Zo7al. انضم لنخبة صناع المحتوى واللاعبين التنافسيين والطاقم الإداري، وتحدّ في ماب الكلان الرسمي."
+        eyebrow="كلان سولار • CLAN RECRUITMENT & COMMUNITY"
+        title="Solar System Team"
+        text="الصفحة الرسمية لكلان Solar System Team بقيادة زحل Zo7al. انضم لنخبة صناع المحتوى واللاعبين التنافسيين وطاقم الإشراف والمونتاج، وتحدّ في ماب الكلان الرسمي."
       >
-        <div className="flex flex-wrap items-center gap-3">
-          <MagneticButton>
-            <button
-              type="button"
-              onClick={() => {
-                setSelectedRole("creator");
-                setApplyOpen(true);
-              }}
-              data-cursor="button"
-              className="inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-sm font-semibold"
-              style={{ background: "var(--accent)", color: "#07080B" }}
+        <div className="space-y-6">
+          {/* Official Clan 3D Logo */}
+          <div className="flex items-center gap-4">
+            <div className="relative h-20 w-20 sm:h-24 sm:w-24 shrink-0 overflow-hidden drop-shadow-[0_12px_24px_rgba(255,122,0,0.35)]">
+              <Image
+                src="/assets/site/solar-clan-logo.png"
+                alt="Solar System Team Logo"
+                width={96}
+                height={96}
+                priority
+                className="h-full w-full object-contain"
+              />
+            </div>
+          </div>
+
+          {/* Action buttons with icons (NO emojis) */}
+          <div className="flex flex-wrap items-center gap-3">
+            <MagneticButton>
+              <button
+                type="button"
+                onClick={() => {
+                  setSelectedRole("creator");
+                  setApplyOpen(true);
+                }}
+                data-cursor="button"
+                className="inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-sm font-semibold"
+                style={{ background: "var(--accent)", color: "#07080B" }}
+              >
+                <SolidIcon name="trophy" size={14} />
+                قدّم للانضمام للكلان
+              </button>
+            </MagneticButton>
+
+            <a
+              href="#clan-map"
+              data-cursor="link"
+              className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] px-6 py-3.5 text-sm font-medium text-[var(--text-muted)] hover:text-[var(--text)] hover:border-[var(--border-strong)] transition-colors"
             >
-              قدّم للانضمام للكلان ⚡
-            </button>
-          </MagneticButton>
+              <SolidIcon name="map" size={14} />
+              ماب الكلان
+            </a>
 
-          <a
-            href="#clan-map"
-            data-cursor="link"
-            className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] px-6 py-3.5 text-sm font-medium text-[var(--text-muted)] hover:text-[var(--text)] hover:border-[var(--border-strong)] transition-colors"
-          >
-            ماب الكلان 🎮
-          </a>
+            <a
+              href="#sponsor"
+              data-cursor="link"
+              className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] px-6 py-3.5 text-sm font-medium text-[var(--text-muted)] hover:text-[var(--text)] hover:border-[var(--border-strong)] transition-colors"
+            >
+              <SolidIcon name="headset" size={14} />
+              راعي الكلان
+            </a>
 
-          <a
-            href="#socials"
-            data-cursor="link"
-            className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] px-6 py-3.5 text-sm font-medium text-[var(--text-muted)] hover:text-[var(--text)] hover:border-[var(--border-strong)] transition-colors"
-          >
-            حسابات الكلان
-          </a>
+            <a
+              href="#socials"
+              data-cursor="link"
+              className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] px-6 py-3.5 text-sm font-medium text-[var(--text-muted)] hover:text-[var(--text)] hover:border-[var(--border-strong)] transition-colors"
+            >
+              <SolidIcon name="share" size={14} />
+              حسابات الكلان
+            </a>
+          </div>
         </div>
       </PageHero>
 
-      {/* Divisions Section */}
+      {/* Section 1: Divisions Section */}
       <section className="relative pb-24 sm:pb-32" id="divisions">
         <div className="mx-auto max-w-[1180px] px-6">
           <SectionHeader
@@ -78,7 +109,20 @@ export default function SolarClient() {
         </div>
       </section>
 
-      {/* Featured Clan Map Section (Spotlight layout matching /fortnite) */}
+      {/* Section 2: Clan Sponsor Section */}
+      <section className="relative pb-24 sm:pb-32" id="sponsor">
+        <div className="mx-auto max-w-[1180px] px-6">
+          <SectionHeader
+            eyebrow="الشريك والراعي الرسمي"
+            title="راعي الكلان"
+          />
+          <div className="mt-14">
+            <SolarSponsor />
+          </div>
+        </div>
+      </section>
+
+      {/* Section 3: Featured Clan Map Section (Matching /fortnite spotlight) */}
       <section className="relative pb-24 sm:pb-32" id="clan-map">
         <div className="mx-auto max-w-[1180px] px-6">
           <SectionHeader
@@ -91,7 +135,7 @@ export default function SolarClient() {
         </div>
       </section>
 
-      {/* Clan Socials Section (Matching /socials) */}
+      {/* Section 4: Clan Socials Section (Matching /socials) */}
       <section className="relative pb-24 sm:pb-32" id="socials">
         <div className="mx-auto max-w-[1180px] px-6">
           <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
@@ -100,7 +144,7 @@ export default function SolarClient() {
               حسابات وقنوات الكلان الرسمية
             </p>
             <a
-              href="https://linktr.ee/SolarClan"
+              href="https://linktr.ee/SolarSystemTeam"
               target="_blank"
               rel="noopener noreferrer"
               data-cursor="link"
@@ -112,34 +156,6 @@ export default function SolarClient() {
             </a>
           </div>
           <SolarSocials />
-        </div>
-      </section>
-
-      {/* CTA Join Section */}
-      <section className="border-t border-[var(--border)] py-20 sm:py-28">
-        <div className="mx-auto max-w-[1180px] px-6 text-center">
-          <p className="text-label text-[var(--accent)]">انضم إلى الفريق</p>
-          <h2 className="mt-3 text-4xl font-bold sm:text-5xl">
-            مستعد لتكون جزءاً من Solar؟
-          </h2>
-          <p className="mx-auto mt-4 max-w-xl text-[var(--text-muted)]">
-            نفتح باب الانضمام لصناع المحتوى، الستريمرز، اللاعبين التنافسيين، المصممين، الممنتجين، والإداريين.
-          </p>
-          <div className="mt-8 flex justify-center">
-            <MagneticButton>
-              <button
-                type="button"
-                onClick={() => {
-                  setSelectedRole("creator");
-                  setApplyOpen(true);
-                }}
-                className="inline-flex items-center gap-2 rounded-full px-8 py-4 text-base font-semibold"
-                style={{ background: "var(--accent)", color: "#07080B" }}
-              >
-                فتح استمارة التقديم ⚡
-              </button>
-            </MagneticButton>
-          </div>
         </div>
       </section>
 

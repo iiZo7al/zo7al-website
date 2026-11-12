@@ -161,7 +161,7 @@ export default function SolarApplyModal({
             </div>
             <div>
               <h3 className="text-xl font-bold text-[var(--text)]">
-                تم استلام طلبك بنجاح! 🚀
+                تم استلام طلبك بنجاح!
               </h3>
               <p className="mt-2 text-sm text-[var(--text-muted)] max-w-md mx-auto leading-relaxed">
                 شكراً لاهتمامك بالانضمام لكلان Solar. ستتم مراجعة طلبك من قبل
@@ -403,7 +403,7 @@ export default function SolarApplyModal({
                 disabled={busy}
                 className="store-action store-action-primary w-full"
               >
-                {busy ? "جاري الإرسال..." : "إرسال طلب الانضمام ⚡"}
+                {busy ? "جاري الإرسال..." : "إرسال طلب الانضمام"}
               </button>
             </div>
           </form>
