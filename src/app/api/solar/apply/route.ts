@@ -14,11 +14,23 @@ export const runtime = "nodejs";
 
 const roleLabels: Record<string, string> = {
   admin: "إداري (Staff)",
+  player: "لاعب تنافسي (Competitive Player)",
   creator: "صانع محتوى (Content Creator)",
   streamer: "ستريمر (Streamer)",
   writer: "كاتب أفكار (Idea Writer)",
   editor: "ممنتج (Video Editor)",
   designer: "مصمم (Designer)",
+};
+
+const contractDurationLabels: Record<string, string> = {
+  "2_months": "شهرين",
+  "3_months": "ثلاثة شهور",
+  "4_months": "اربع شهور",
+  "5_months": "خمسة شهور",
+  "6_months": "ستة شهور",
+  "1_year": "سنة",
+  "2_years": "سنتين",
+  other: "أخرى",
 };
 
 const subTypeLabels: Record<string, string> = {
@@ -82,7 +94,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const body = await readJSON(request, 16000);
+    const body = await readJSON(request, 64000);
     const application = validateSolarApplication(body);
     if (!application) {
       return Response.json(
@@ -129,7 +141,21 @@ export async function POST(request: Request) {
     if (webhook) {
       try {
         const fields = [
-          { name: "👤 الاسم واللقب", value: application.name, inline: true },
+          {
+            name: "👤 الاسم واللقب",
+            value: `${application.name}${application.nickname ? ` (${application.nickname})` : ""}`,
+            inline: true,
+          },
+          {
+            name: "🎂 العمر",
+            value: application.age ? String(application.age) : "غير محدد",
+            inline: true,
+          },
+          {
+            name: "📍 من وين؟",
+            value: application.country || "غير محدد",
+            inline: true,
+          },
           {
             name: "💬 حساب الديسكورد",
             value: application.discord,
@@ -141,7 +167,7 @@ export async function POST(request: Request) {
             inline: true,
           },
           {
-            name: "👑 الرتبة المطلوبة",
+            name: "👑 التخصص / وش تقدم؟",
             value: roleLabels[application.role] || application.role,
             inline: true,
           },
@@ -159,12 +185,36 @@ export async function POST(request: Request) {
           ...(application.game
             ? [
                 {
-                  name: "🎮 اللعبة التنافسية",
+                  name: "🎮 اللعبة",
                   value: gameLabels[application.game] || application.game,
                   inline: true,
                 },
               ]
             : []),
+          {
+            name: "⏳ مدة الخبرة في التخصص",
+            value: application.experienceDuration || "غير محدد",
+            inline: true,
+          },
+          {
+            name: "🛡️ خبرة سابقة في الكلانات؟",
+            value: application.hasPreviousClans ? "نعم" : "لا",
+            inline: true,
+          },
+          {
+            name: "📜 مدة العقد المطلوبة",
+            value:
+              contractDurationLabels[application.contractDuration || ""] ||
+              application.contractDurationCustom ||
+              application.contractDuration ||
+              "شهرين",
+            inline: true,
+          },
+          {
+            name: "✍️ التعهد وتوقيع العقد",
+            value: `${application.pledgeAgreed ? "✅ موافق على التعهد" : "⚠️ لم يؤكد"}${application.signedContractUrl ? ` • [عرض صورة العقد الموقّع](${application.signedContractUrl})` : ""}`,
+            inline: false,
+          },
           ...(application.channelUrl
             ? [
                 {
@@ -193,8 +243,8 @@ export async function POST(request: Request) {
               ]
             : []),
           {
-            name: "📝 نبذة وسبب الانضمام",
-            value: application.bio,
+            name: "📝 لماذا ترغب بالانضمام إلى Solar System؟",
+            value: application.whyJoin || application.bio,
             inline: false,
           },
         ];

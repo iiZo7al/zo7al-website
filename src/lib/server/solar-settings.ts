@@ -33,7 +33,7 @@ export async function getSolarSettings(): Promise<SolarSettings> {
       announcement: typeof payload.announcement === "string" ? payload.announcement.slice(0, 500) : "",
       closedRoles: Array.isArray(payload.closedRoles)
         ? (payload.closedRoles.filter((r): r is SolarRole =>
-            ["admin", "creator", "streamer", "writer", "editor", "designer"].includes(String(r))
+            ["admin", "creator", "streamer", "writer", "editor", "designer", "player"].includes(String(r))
           ))
         : [],
       requirements: typeof payload.requirements === "string" ? payload.requirements.slice(0, 2000) : "",
@@ -51,7 +51,7 @@ export async function saveSolarSettings(input: Partial<SolarSettings>): Promise<
     announcement: typeof input.announcement === "string" ? input.announcement.trim().slice(0, 500) : current.announcement,
     closedRoles: Array.isArray(input.closedRoles)
       ? input.closedRoles.filter((r): r is SolarRole =>
-          ["admin", "creator", "streamer", "writer", "editor", "designer"].includes(String(r))
+          ["admin", "creator", "streamer", "writer", "editor", "designer", "player"].includes(String(r))
         )
       : current.closedRoles,
     requirements: typeof input.requirements === "string" ? input.requirements.trim().slice(0, 2000) : current.requirements,
