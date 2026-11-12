@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
-import { Check, X } from "lucide-react";
+import SolidIcon from "@/components/ui/SolidIcon";
+import { Check } from "lucide-react";
 import type {
   SolarRole,
   SolarAdminSubType,
@@ -13,22 +14,24 @@ import type {
 export default function SolarApplyModal({
   isOpen,
   onClose,
+  initialRole = "creator",
 }: {
   isOpen: boolean;
   onClose: () => void;
+  initialRole?: SolarRole;
 }) {
+  const dialog = useRef<HTMLDialogElement>(null);
   const [name, setName] = useState("");
   const [discord, setDiscord] = useState("");
   const [whatsapp, setWhatsapp] = useState("");
   const [bio, setBio] = useState("");
-  const [role, setRole] = useState<SolarRole>("creator");
+  const [role, setRole] = useState<SolarRole>(initialRole);
   const [adminSubType, setAdminSubType] =
-    useState<SolarAdminSubType>("general_admin");
+    useState<SolarAdminSubType>("dept_supervisor");
   const [game, setGame] = useState<SolarGame>("fortnite");
   const [channelUrl, setChannelUrl] = useState("");
   const [streamUrl, setStreamUrl] = useState("");
   const [portfolioUrl, setPortfolioUrl] = useState("");
-
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<{
@@ -36,37 +39,22 @@ export default function SolarApplyModal({
     token: string;
   } | null>(null);
 
-  if (!isOpen) return null;
+  useEffect(() => {
+    if (!isOpen) {
+      dialog.current?.close();
+      return;
+    }
+    dialog.current?.showModal();
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previous;
+    };
+  }, [isOpen]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
-
-    if (!name.trim()) {
-      setError("يرجى كتابة الاسم واللقب");
-      return;
-    }
-    if (!discord.trim()) {
-      setError("يرجى إدخال حساب الديسكورد");
-      return;
-    }
-    if (!whatsapp.trim()) {
-      setError("يرجى إدخال رقم هاتف الواتساب للتواصل");
-      return;
-    }
-    if (!bio.trim() || bio.trim().length < 10) {
-      setError("يرجى كتابة نبذة كافية عن خبراتك وسبب رغبتك بالانضمام");
-      return;
-    }
-
-    if (role === "creator" && !channelUrl.trim()) {
-      setError("يرجى وضع رابط قناتك على اليوتيوب");
-      return;
-    }
-    if (role === "streamer" && !streamUrl.trim()) {
-      setError("يرجى وضع رابط حساب البث (تيك توك، تويتش، أو كيك)");
-      return;
-    }
 
     const payload: SolarApplicationInput = {
       name: name.trim(),
@@ -74,20 +62,19 @@ export default function SolarApplyModal({
       whatsapp: whatsapp.trim(),
       bio: bio.trim(),
       role,
-      ...(role === "admin"
-        ? {
-            adminSubType,
-            ...(adminSubType === "players_supervisor" ||
-            adminSubType === "players_admin"
-              ? { game }
-              : {}),
-          }
-        : {}),
-      ...(role === "creator" ? { channelUrl: channelUrl.trim() } : {}),
-      ...(role === "streamer" ? { streamUrl: streamUrl.trim() } : {}),
-      ...(role === "editor" || role === "designer" || role === "writer"
-        ? { portfolioUrl: portfolioUrl.trim() }
-        : {}),
+      adminSubType: role === "admin" ? adminSubType : undefined,
+      game:
+        role === "admin" &&
+        (adminSubType === "players_supervisor" ||
+          adminSubType === "players_admin")
+          ? game
+          : undefined,
+      channelUrl: role === "creator" ? channelUrl.trim() : undefined,
+      streamUrl: role === "streamer" ? streamUrl.trim() : undefined,
+      portfolioUrl:
+        role === "writer" || role === "editor" || role === "designer"
+          ? portfolioUrl.trim()
+          : undefined,
     };
 
     setBusy(true);
@@ -116,157 +103,198 @@ export default function SolarApplyModal({
     }
   };
 
-  return (
-    <div className="solar-modal-backdrop" onClick={onClose} role="dialog" aria-modal="true">
-      <div
-        className="solar-modal p-6 sm:p-8"
-        onClick={(e) => e.stopPropagation()}
-        dir="rtl"
-      >
-        <header className="flex items-center justify-between border-b border-[var(--border)] pb-4 mb-6">
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="solar-badge">Solar Recruitment</span>
-            </div>
-            <h2 className="mt-2 text-xl sm:text-2xl font-bold text-white">
-              تقديم طلب انضمام لكلان Solar ☀️
-            </h2>
-            <p className="mt-1 text-xs sm:text-sm text-[var(--text-muted)]">
-              انضم إلى عائلة ونخبة مبدعي وإداريي كلان Solar System Team.
-            </p>
-          </div>
-          <button
-            type="button"
-            onClick={onClose}
-            className="rounded-full p-2 text-[var(--text-muted)] hover:text-white hover:bg-white/5 transition-colors"
-            aria-label="إغلاق"
-          >
-            <X size={20} />
-          </button>
-        </header>
+  const handleReset = () => {
+    setName("");
+    setDiscord("");
+    setWhatsapp("");
+    setBio("");
+    setChannelUrl("");
+    setStreamUrl("");
+    setPortfolioUrl("");
+    setError(null);
+    setSuccess(null);
+    onClose();
+  };
 
+  return (
+    <dialog
+      ref={dialog}
+      onCancel={onClose}
+      onClose={onClose}
+      aria-labelledby="solar-apply-dialog-title"
+      className="checkout-shell store-checkout"
+    >
+      <header className="store-checkout-header" dir="rtl">
+        <div className="store-checkout-brand">
+          <span className="store-rank-icon">
+            <SolidIcon name="trophy" size={20} />
+          </span>
+          <div>
+            <h2 id="solar-apply-dialog-title" className="font-semibold text-lg">
+              طلب انضمام • كلان Solar
+            </h2>
+            <p className="text-xs text-[var(--text-muted)]">Solar System Team</p>
+          </div>
+        </div>
+        <button
+          type="button"
+          className="store-close"
+          onClick={onClose}
+          aria-label="إغلاق"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </header>
+
+      <div className="store-checkout-body" dir="rtl">
         {success ? (
-          <div className="space-y-6 text-center py-6">
-            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/30">
-              <Check size={32} />
+          <div className="space-y-6 text-center py-4">
+            <div
+              className="mx-auto flex h-14 w-14 items-center justify-center rounded-full"
+              style={{
+                background: "color-mix(in srgb, var(--accent) 15%, transparent)",
+                color: "var(--accent)",
+                border: "1px solid var(--border)",
+              }}
+            >
+              <Check size={28} />
             </div>
             <div>
-              <h3 className="text-xl font-bold text-white">
+              <h3 className="text-xl font-bold text-[var(--text)]">
                 تم استلام طلبك بنجاح! 🚀
               </h3>
-              <p className="mt-2 text-sm text-[var(--text-muted)] max-w-md mx-auto">
+              <p className="mt-2 text-sm text-[var(--text-muted)] max-w-md mx-auto leading-relaxed">
                 شكراً لاهتمامك بالانضمام لكلان Solar. ستتم مراجعة طلبك من قبل
                 الإدارة والتواصل معك عبر الديسكورد أو الواتساب.
               </p>
             </div>
-            <div className="rounded-xl border border-[var(--solar-border)] bg-black/40 p-4 max-w-sm mx-auto">
+            <div
+              className="card-glow rounded-xl border p-4 max-w-sm mx-auto"
+              style={{ background: "var(--surface)", borderColor: "var(--border)" }}
+            >
               <p className="text-xs text-[var(--text-muted)]">رقم التتبع الخاص بطلبك</p>
-              <code dir="ltr" className="mt-1 block text-sm font-bold text-amber-400">
+              <code dir="ltr" className="mt-1 block text-sm font-bold text-[var(--accent)]">
                 {success.reference}
               </code>
             </div>
             <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
               <Link
-                href={`/tracking?reference=${success.reference}`}
-                className="solar-btn-primary"
+                href={`/tracking?reference=${encodeURIComponent(success.reference)}`}
+                className="store-action store-action-primary"
               >
-                تتبع حالة الطلب
+                تتبع حالة الطلب ↗
               </Link>
               <button
                 type="button"
-                onClick={onClose}
-                className="solar-btn-secondary"
+                onClick={handleReset}
+                className="store-action"
               >
-                إغلاق النافذة
+                إغلاق
               </button>
             </div>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-4">
             {error && (
-              <div className="rounded-xl border border-red-500/40 bg-red-500/10 p-3.5 text-xs sm:text-sm text-red-400">
-                ⚠️ {error}
+              <div
+                className="rounded-xl border p-3 text-sm text-red-400"
+                style={{
+                  background: "rgba(239, 68, 68, 0.1)",
+                  borderColor: "rgba(239, 68, 68, 0.25)",
+                }}
+              >
+                {error}
               </div>
             )}
 
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
                 <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1.5">
-                  الاسم واللقب *
+                  الاسم واللقب <span className="text-red-400">*</span>
                 </label>
                 <input
                   type="text"
                   required
-                  placeholder="مثال: أحمد (Z7_Sniper)"
+                  maxLength={64}
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="solar-input"
+                  placeholder="مثال: أحمد (Zo7al)"
+                  className="w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] px-3.5 py-2.5 text-sm text-[var(--text)] outline-none transition-colors focus:border-[var(--accent)]"
                 />
               </div>
 
               <div>
                 <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1.5">
-                  حساب الديسكورد (Discord) *
+                  حساب الديسكورد <span className="text-red-400">*</span>
                 </label>
                 <input
                   type="text"
                   required
-                  placeholder="مثال: zo7al أو zo7al#0001"
+                  maxLength={40}
+                  dir="ltr"
                   value={discord}
                   onChange={(e) => setDiscord(e.target.value)}
-                  className="solar-input"
-                  dir="ltr"
+                  placeholder="username أو username#0000"
+                  className="w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] px-3.5 py-2.5 text-sm text-[var(--text)] outline-none transition-colors focus:border-[var(--accent)] text-right"
                 />
               </div>
             </div>
 
-            <div>
-              <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1.5">
-                رقم هاتف الواتساب للتواصل (WhatsApp) *
-              </label>
-              <input
-                type="tel"
-                required
-                placeholder="مثال: +966 50 123 4567"
-                value={whatsapp}
-                onChange={(e) => setWhatsapp(e.target.value)}
-                className="solar-input"
-                dir="ltr"
-              />
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div>
+                <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1.5">
+                  رقم الواتساب للتواصل <span className="text-red-400">*</span>
+                </label>
+                <input
+                  type="tel"
+                  required
+                  maxLength={24}
+                  dir="ltr"
+                  value={whatsapp}
+                  onChange={(e) => setWhatsapp(e.target.value)}
+                  placeholder="+966 5x xxx xxxx"
+                  className="w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] px-3.5 py-2.5 text-sm text-[var(--text)] outline-none transition-colors focus:border-[var(--accent)] text-right"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1.5">
+                  الرتبة / التخصص المطلوب <span className="text-red-400">*</span>
+                </label>
+                <select
+                  value={role}
+                  onChange={(e) => setRole(e.target.value as SolarRole)}
+                  className="w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] px-3.5 py-2.5 text-sm text-[var(--text)] outline-none transition-colors focus:border-[var(--accent)]"
+                >
+                  <option value="creator">صانع محتوى (Content Creator)</option>
+                  <option value="streamer">ستريمر (Streamer)</option>
+                  <option value="admin">إداري / مشرف (Staff)</option>
+                  <option value="writer">كاتب أفكار (Idea Writer)</option>
+                  <option value="editor">ممنتج (Video Editor)</option>
+                  <option value="designer">مصمم (Graphic Designer)</option>
+                </select>
+              </div>
             </div>
 
-            {/* Role Selection */}
-            <div>
-              <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1.5">
-                الرتبة / المجال المطلوب *
-              </label>
-              <select
-                value={role}
-                onChange={(e) => setRole(e.target.value as SolarRole)}
-                className="solar-select"
-              >
-                <option value="creator">صانع محتوى (Content Creator)</option>
-                <option value="streamer">ستريمر (Streamer)</option>
-                <option value="admin">إداري (Staff / Management)</option>
-                <option value="editor">ممنتج (Video Editor)</option>
-                <option value="designer">مصمم (Graphic Designer)</option>
-                <option value="writer">كاتب أفكار وسيناريوهات (Idea Writer)</option>
-              </select>
-            </div>
-
-            {/* Dynamic Admin Sub-types */}
+            {/* Dynamic Role Subfields */}
             {role === "admin" && (
-              <div className="rounded-xl border border-[var(--solar-border)] bg-amber-500/5 p-4 space-y-4">
+              <div
+                className="space-y-4 rounded-xl border p-4"
+                style={{
+                  background: "var(--surface-elevated)",
+                  borderColor: "var(--border)",
+                }}
+              >
                 <div>
-                  <label className="block text-xs font-semibold text-amber-300 mb-1.5">
-                    نوع الإشراف / الرتبة الإدارية *
+                  <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1.5">
+                    نوع الإشراف / الرتبة الإدارية <span className="text-red-400">*</span>
                   </label>
                   <select
                     value={adminSubType}
                     onChange={(e) =>
                       setAdminSubType(e.target.value as SolarAdminSubType)
                     }
-                    className="solar-select"
+                    className="w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] px-3.5 py-2.5 text-sm text-[var(--text)] outline-none transition-colors focus:border-[var(--accent)]"
                   >
                     <option value="exec_supervisor">مشرف تنفيذي</option>
                     <option value="dept_supervisor">مشرف أقسام</option>
@@ -275,23 +303,23 @@ export default function SolarApplyModal({
                     <option value="creators_supervisor">مشرف صناع محتوى</option>
                     <option value="creators_admin">إداري صناع محتوى</option>
                     <option value="designers_supervisor">مشرف مصممين</option>
-                    <option value="editors_supervisor">مشرف ممنتجين</option>
-                    <option value="streamers_supervisor">مشرف ستريمرز</option>
                     <option value="players_supervisor">مشرف لاعبين</option>
                     <option value="players_admin">إداري لاعبين</option>
+                    <option value="editors_supervisor">مشرف ممنتجين</option>
+                    <option value="streamers_supervisor">مشرف ستريمرز</option>
                   </select>
                 </div>
 
                 {(adminSubType === "players_supervisor" ||
                   adminSubType === "players_admin") && (
                   <div>
-                    <label className="block text-xs font-semibold text-amber-300 mb-1.5">
-                      حدد قسم اللعبة التنافسية *
+                    <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1.5">
+                      اختيار اللعبة التنافسية <span className="text-red-400">*</span>
                     </label>
                     <select
                       value={game}
                       onChange={(e) => setGame(e.target.value as SolarGame)}
-                      className="solar-select"
+                      className="w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] px-3.5 py-2.5 text-sm text-[var(--text)] outline-none transition-colors focus:border-[var(--accent)]"
                     >
                       <option value="fortnite">فورتنايت (Fortnite)</option>
                       <option value="rocket">روكيت ليق (Rocket League)</option>
@@ -303,20 +331,19 @@ export default function SolarApplyModal({
               </div>
             )}
 
-            {/* Dynamic Creator / Streamer / Media Links */}
             {role === "creator" && (
               <div>
                 <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1.5">
-                  رابط قناتك على اليوتيوب (YouTube Channel) *
+                  رابط قناة اليوتيوب <span className="text-red-400">*</span>
                 </label>
                 <input
                   type="url"
                   required
-                  placeholder="https://www.youtube.com/@yourchannel"
+                  dir="ltr"
                   value={channelUrl}
                   onChange={(e) => setChannelUrl(e.target.value)}
-                  className="solar-input"
-                  dir="ltr"
+                  placeholder="https://youtube.com/@channel"
+                  className="w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] px-3.5 py-2.5 text-sm text-[var(--text)] outline-none transition-colors focus:border-[var(--accent)] text-right"
                 />
               </div>
             )}
@@ -324,71 +351,64 @@ export default function SolarApplyModal({
             {role === "streamer" && (
               <div>
                 <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1.5">
-                  رابط قناة البث (تيك توك أو تويتش أو كيك) *
+                  رابط منصة البث (تيك توك / تويتش / كيك) <span className="text-red-400">*</span>
                 </label>
                 <input
                   type="url"
                   required
-                  placeholder="https://twitch.tv/username أو https://tiktok.com/@user"
+                  dir="ltr"
                   value={streamUrl}
                   onChange={(e) => setStreamUrl(e.target.value)}
-                  className="solar-input"
-                  dir="ltr"
+                  placeholder="https://twitch.tv/... أو tiktok.com/@..."
+                  className="w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] px-3.5 py-2.5 text-sm text-[var(--text)] outline-none transition-colors focus:border-[var(--accent)] text-right"
                 />
               </div>
             )}
 
-            {(role === "editor" || role === "designer" || role === "writer") && (
+            {(role === "writer" || role === "editor" || role === "designer") && (
               <div>
                 <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1.5">
-                  رابط معرض الأعمال أو نماذج العمل (Portfolio / Drive / Behance)
+                  رابط معرض الأعمال / البورتفوليو <span className="text-red-400">*</span>
                 </label>
                 <input
                   type="url"
-                  placeholder="https://behance.net/username أو رابط Google Drive"
+                  required
+                  dir="ltr"
                   value={portfolioUrl}
                   onChange={(e) => setPortfolioUrl(e.target.value)}
-                  className="solar-input"
-                  dir="ltr"
+                  placeholder="Drive, Behance, YouTube, etc."
+                  className="w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] px-3.5 py-2.5 text-sm text-[var(--text)] outline-none transition-colors focus:border-[var(--accent)] text-right"
                 />
               </div>
             )}
 
-            {/* Bio & Reason */}
             <div>
               <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1.5">
-                نبذة عنك، خبراتك السابقة، ولماذا ترغب بالانضمام لكلان Solar؟ *
+                نبذة، خبرات سابقة، وسبب الرغبة في الانضمام <span className="text-red-400">*</span>
               </label>
               <textarea
                 required
                 rows={4}
-                placeholder="تحدث بإيجاز عن مهاراتك، إنجازاتك، بطولاتك أو كلانات سابقة كنت فيها، وكيف يمكنك إفادة الكلان..."
+                maxLength={2000}
                 value={bio}
                 onChange={(e) => setBio(e.target.value)}
-                className="solar-input resize-none"
+                placeholder="تحدث عن نفسك، أهدافك، وماذا ستقدم للكلان..."
+                className="w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] px-3.5 py-2.5 text-sm text-[var(--text)] outline-none transition-colors focus:border-[var(--accent)] leading-relaxed"
               />
             </div>
 
-            <div className="flex flex-wrap items-center justify-end gap-3 pt-3">
-              <button
-                type="button"
-                onClick={onClose}
-                className="solar-btn-secondary"
-                disabled={busy}
-              >
-                إلغاء
-              </button>
+            <div className="pt-2">
               <button
                 type="submit"
-                className="solar-btn-primary"
                 disabled={busy}
+                className="store-action store-action-primary w-full"
               >
-                {busy ? "جاري الإرسال..." : "إرسال طلب الانضمام 🚀"}
+                {busy ? "جاري الإرسال..." : "إرسال طلب الانضمام ⚡"}
               </button>
             </div>
           </form>
         )}
       </div>
-    </div>
+    </dialog>
   );
 }
