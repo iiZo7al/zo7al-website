@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 import { AnimatePresence, motion, useIsPresent, useReducedMotion } from "framer-motion";
@@ -151,7 +152,11 @@ export default function Navbar() {
               onMouseLeave={() => { if (menu) scheduleClose(menu); }}>
               <div className={`site-navigation-item${active ? " is-active" : ""}${desktopMenu === menu && menu ? " is-expanded" : ""}`}>
                 <Link href={link.href} aria-current={pathname === link.href ? "page" : undefined} onClick={closeAll} onKeyDown={event => { if (menu) menuKeyDown(event, menu); }} data-cursor="link">
-                  <SolidIcon name={ICONS[link.key]} size={14}/><span>{nav(link.key)}</span>
+                  {link.key === "solar" ? (
+                    <Image src="/assets/site/solar-clan-logo.png" width={16} height={16} alt="" className="inline-block object-contain" />
+                  ) : (
+                    <SolidIcon name={ICONS[link.key]} size={14}/>
+                  )}<span>{nav(link.key)}</span>
                 </Link>
                 {menu && <button type="button" className="navigation-disclosure" ref={node => { desktopTriggers.current[menu] = node; }}
                   aria-label={`${ui(desktopMenu === menu ? "closeMenu" : "openMenu")}: ${nav(menu)}`} aria-expanded={desktopMenu === menu} aria-controls={`navigation-desktop-${menu}`} data-cursor="button"
@@ -176,7 +181,14 @@ export default function Navbar() {
             const menu = hasSubmenu(link.key) ? link.key : null;
             return <li key={link.key}>
               <div className={`navigation-mobile-row${activeSection(link.key, link.href, pathname) ? " is-active" : ""}`}>
-                <Link href={link.href} onClick={closeAll} aria-current={pathname === link.href ? "page" : undefined} data-cursor="link"><SolidIcon name={ICONS[link.key]} size={18}/>{nav(link.key)}</Link>
+                <Link href={link.href} onClick={closeAll} aria-current={pathname === link.href ? "page" : undefined} data-cursor="link">
+                  {link.key === "solar" ? (
+                    <Image src="/assets/site/solar-clan-logo.png" width={18} height={18} alt="" className="inline-block object-contain" />
+                  ) : (
+                    <SolidIcon name={ICONS[link.key]} size={18}/>
+                  )}
+                  {nav(link.key)}
+                </Link>
                 {menu && <button ref={node => { mobileTriggers.current[menu] = node; }} type="button" className="navigation-disclosure" aria-label={`${ui(mobileGroup === menu ? "closeMenu" : "openMenu")}: ${nav(menu)}`} aria-expanded={mobileGroup === menu} aria-controls={`navigation-mobile-${menu}`} data-cursor="button" onClick={() => setMobileGroup(mobileGroup === menu ? null : menu)}><ChevronDown size={18} aria-hidden="true"/></button>}
               </div>
               {menu && mobileGroup === menu && <NavigationMenu compact id={`navigation-mobile-${menu}`} menu={menu} pathname={pathname} onNavigate={closeAll}/>}

@@ -50,7 +50,7 @@ export default function SolarSponsor() {
 
             <div>
               <h3 className="text-2xl sm:text-3xl font-bold text-[var(--text)]">
-                رصانة الخدمات • Rasana
+                رصانة الخدمات X Solar System
               </h3>
               <p className="mt-2 text-sm text-[var(--text-muted)] leading-relaxed">
                 الشريك والراعي الرسمي لكلان Solar System Team. الداعم الأساسي لمسيرة

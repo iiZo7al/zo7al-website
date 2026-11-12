@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 import { NAV_LINKS, SITE, STORE_LINK } from "@/lib/data/site";
 import BrandIcon, { brandLabelStyle } from "@/components/ui/BrandIcon";
@@ -64,7 +65,11 @@ export default async function Footer() {
                   data-cursor="link"
                   className="flex items-center gap-2 text-sm text-[var(--text-muted)] hover:text-[var(--text)] transition-colors"
                 >
-                  <SolidIcon name={FOOTER_ICONS[l.key]} size={15} className="shrink-0" />
+                  {l.key === "solar" ? (
+                    <Image src="/assets/site/solar-clan-logo.png" width={15} height={15} alt="" className="inline-block object-contain shrink-0" />
+                  ) : (
+                    <SolidIcon name={FOOTER_ICONS[l.key]} size={15} className="shrink-0" />
+                  )}
                   {t(`nav.${l.key}`)}
                 </Link>
               </li>
