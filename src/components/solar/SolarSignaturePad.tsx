@@ -14,7 +14,7 @@ export default function SolarSignaturePad({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [hasDrawn, setHasDrawn] = useState(false);
-  const [mode, setMode] = useState<"upload" | "draw">("upload");
+  const [mode, setMode] = useState<"draw" | "upload">("draw");
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
 

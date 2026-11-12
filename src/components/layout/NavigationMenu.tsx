@@ -2,17 +2,18 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useTranslations } from "next-intl";
-import { ArrowUpRight, Gamepad2, History } from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
+import { ArrowUpRight, Award, Gamepad2, History, Users } from "lucide-react";
 import BrandIcon from "@/components/ui/BrandIcon";
 import SolidIcon from "@/components/ui/SolidIcon";
 import CommerceIcon from "@/components/ui/CommerceIcon";
 import { SOCIALS } from "@/lib/data/site";
+import { solarCopy } from "@/lib/data/solar-copy";
 
-export type MenuKey = "minecraft" | "fortnite" | "socials" | "support";
-export const MENU_ICONS = { minecraft: "cube", fortnite: "map", socials: "share", support: "headset" } as const;
+export type MenuKey = "solar" | "minecraft" | "fortnite" | "socials" | "support";
+export const MENU_ICONS = { solar: "trophy", minecraft: "cube", fortnite: "map", socials: "share", support: "headset" } as const;
 export function hasSubmenu(key: string): key is MenuKey {
-  return key === "minecraft" || key === "fortnite" || key === "socials" || key === "support";
+  return key === "solar" || key === "minecraft" || key === "fortnite" || key === "socials" || key === "support";
 }
 
 export default function NavigationMenu({
@@ -24,14 +25,21 @@ export default function NavigationMenu({
   onNavigate: () => void;
   compact?: boolean;
 }) {
+  const locale = useLocale();
+  const sc = solarCopy(locale);
   const nav = useTranslations("nav");
   const hub = useTranslations("hub");
   const minecraft = useTranslations("minecraft");
   const modpacks = useTranslations("modpacks");
   const socials = useTranslations("socials");
   const fortnite = useTranslations("fortnite");
-  const intro = menu === "fortnite" ? fortnite("text") : menu === "minecraft" ? minecraft("text") : menu === "socials" ? socials("text") : hub("supportIntro");
-  const links: {href:string;label:string;description:string;icon:"cube"|"box"|"map"|"headset"|"store"|null;external?:boolean}[] = menu === "fortnite" ? [
+  const intro = menu === "solar" ? sc.heroText : menu === "fortnite" ? fortnite("text") : menu === "minecraft" ? minecraft("text") : menu === "socials" ? socials("text") : hub("supportIntro");
+  const links: {href:string;label:string;description:string;icon:"trophy"|"users"|"award"|"cube"|"box"|"map"|"headset"|"store"|null;external?:boolean}[] = menu === "solar" ? [
+    { href: "/solar", label: sc.heroTitle, description: sc.applyBtn, icon: "trophy" },
+    { href: "/solar#divisions", label: sc.divisionsTitle, description: sc.divisionsEyebrow, icon: "users" },
+    { href: "/solar#sponsor", label: sc.sponsorTitle, description: sc.sponsorName, icon: "award" },
+    { href: "/solar#clan-map", label: sc.mapBtn, description: sc.mapTitle, icon: "map" },
+  ] : menu === "fortnite" ? [
     {href:'/fortnite',label:fortnite('mapsNav'),description:fortnite('text'),icon:'map'},
     {href:'https://www.fortnite.com/item-shop',label:fortnite('codeNav',{code:'Zo7al'}),description:fortnite('itemShopCode'),icon:'store',external:true},
   ] : menu === "minecraft" ? [
@@ -46,12 +54,13 @@ export default function NavigationMenu({
     <div id={id} className={`navigation-menu navigation-menu-${menu}${compact ? " navigation-menu-compact" : ""}`} aria-labelledby={`${id}-title`}>
       {!compact && <aside className="navigation-menu-intro">
         <span className="navigation-menu-symbol" aria-hidden="true">
-          {menu === "minecraft" ? <Image src="/assets/site/server-logo.png" width={72} height={72} alt=""/> : <SolidIcon name={MENU_ICONS[menu]} size={32}/>}
+          {menu === "minecraft" ? <Image src="/assets/site/server-logo.png" width={72} height={72} alt=""/> : menu === "solar" ? <Image src="/assets/site/solar-clan-logo.png" width={72} height={72} alt="" className="rounded-xl"/> : <SolidIcon name={MENU_ICONS[menu]} size={32}/>}
         </span>
-        <p className="text-label">ZO7AL PROJECTS</p>
+        <p className="text-label">{menu === "solar" ? sc.heroEyebrow : "ZO7AL PROJECTS"}</p>
         <h2 id={`${id}-title`}>{nav(menu)}</h2>
         <p>{intro}</p>
         {menu === "socials" && <Link href="/socials#games-socials-title" onClick={onNavigate} className="navigation-games-link" data-cursor="link"><Gamepad2 size={18} aria-hidden="true"/>Zo7al Games<ArrowUpRight size={14} aria-hidden="true"/></Link>}
+        {menu === "solar" && <Link href="/solar#socials" onClick={onNavigate} className="navigation-games-link" data-cursor="link"><SolidIcon name="share" size={16}/>{sc.socialsBtn}<ArrowUpRight size={14} aria-hidden="true"/></Link>}
       </aside>}
       {compact && <h3 id={`${id}-title`} className="sr-only">{nav(menu)}</h3>}
       <ul className="navigation-menu-links">
@@ -63,7 +72,7 @@ export default function NavigationMenu({
           </a>
         </li>) : links.map(item => <li key={item.href}>
           <Link href={item.href} target={item.external?'_blank':undefined} rel={item.external?'noopener noreferrer':undefined} onClick={onNavigate} aria-current={pathname === item.href ? "page" : undefined} className="navigation-menu-link" data-cursor="link">
-            <span className="navigation-link-icon">{item.icon === "store" ? <CommerceIcon name="shopping-bag" size={23}/> : item.icon ? <SolidIcon name={item.icon} size={23}/> : <History size={23} aria-hidden="true"/>}</span>
+            <span className="navigation-link-icon">{item.icon === "store" ? <CommerceIcon name="shopping-bag" size={23}/> : item.icon === "users" ? <Users size={22} aria-hidden="true"/> : item.icon === "award" ? <Award size={22} aria-hidden="true"/> : item.icon ? <SolidIcon name={item.icon} size={23}/> : <History size={23} aria-hidden="true"/>}</span>
             <span className="navigation-link-copy"><span className="navigation-link-title">{item.label}</span><span className="navigation-link-description">{item.description}</span></span>
             <ArrowUpRight size={17} className="navigation-link-arrow" aria-hidden="true"/>
           </Link>
