@@ -2,14 +2,18 @@
 
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
+import { useLocale } from "next-intl";
 import MarkdownContent from "@/components/ui/MarkdownContent";
 import DetailsIcon from "@/components/ui/DetailsIcon";
 import ShareButton from "@/components/ui/ShareButton";
 import SolidIcon from "@/components/ui/SolidIcon";
 import { flashCursor } from "@/components/cursor/CustomCursor";
 import { SOLAR_CLAN_MAP } from "@/lib/data/solar";
+import { solarCopy } from "@/lib/data/solar-copy";
 
 export default function SolarMapCard() {
+  const locale = useLocale();
+  const t = solarCopy(locale);
   const map = SOLAR_CLAN_MAP;
   const [copied, setCopied] = useState(false);
   const [detailsOpen, setDetailsOpen] = useState(false);
@@ -32,7 +36,7 @@ export default function SolarMapCard() {
     try {
       await navigator.clipboard.writeText(map.code);
       setCopied(true);
-      flashCursor("تم النسخ", 1200);
+      flashCursor(t.mapCopied, 1200);
       window.setTimeout(() => setCopied(false), 1400);
     } catch {
       // no-op
@@ -73,9 +77,9 @@ export default function SolarMapCard() {
               color: "var(--accent-secondary)",
             }}
           >
-            {map.category}
+            {t.mapCategory}
           </span>
-          <span className="fortnite-new-badge">ماب الكلان الرسمي</span>
+          <span className="fortnite-new-badge">{t.mapTitle}</span>
         </a>
 
         <div className="fortnite-map-content p-5">
@@ -83,12 +87,12 @@ export default function SolarMapCard() {
             {map.title}
           </p>
           <p className="mt-1 text-xs text-[var(--text-muted)]">
-            بواسطة زحل Zo7al
+            {locale === "ar" ? "بواسطة زحل Zo7al" : "By Zo7al"}
           </p>
           <MarkdownContent className="fortnite-map-summary">
             {map.description}
           </MarkdownContent>
-          <ul className="fortnite-map-tags" aria-label="الوسوم">
+          <ul className="fortnite-map-tags" aria-label={locale === "ar" ? "الوسوم" : "Tags"}>
             {map.tags.map((tag) => (
               <li key={tag}>{tag}</li>
             ))}
@@ -110,15 +114,15 @@ export default function SolarMapCard() {
                   color: copied ? "#07080B" : "var(--text)",
                 }}
               >
-                {copied ? "تم النسخ!" : "نسخ الكود"}
+                {copied ? t.mapCopied : (locale === "ar" ? "نسخ الكود" : "Copy Code")}
               </button>
               <button
                 type="button"
                 className="store-action store-details-button"
                 onClick={() => setDetailsOpen(true)}
                 aria-haspopup="dialog"
-                aria-label={`تفاصيل — ${map.title}`}
-                title="تفاصيل"
+                aria-label={`${t.details} — ${map.title}`}
+                title={t.details}
                 data-cursor="button"
               >
                 <DetailsIcon />
@@ -145,7 +149,7 @@ export default function SolarMapCard() {
             type="button"
             className="store-close"
             onClick={() => setDetailsOpen(false)}
-            aria-label="إغلاق"
+            aria-label={t.close}
           >
             <span aria-hidden="true">×</span>
           </button>
@@ -161,7 +165,9 @@ export default function SolarMapCard() {
           </div>
           <div className="card-glow flex flex-wrap items-center justify-between gap-3 rounded-xl border border-[var(--border)] p-4">
             <div>
-              <p className="mb-1 text-xs text-[var(--text-muted)]">رمز الجزيرة</p>
+              <p className="mb-1 text-xs text-[var(--text-muted)]">
+                {locale === "ar" ? "رمز الجزيرة" : "Island Code"}
+              </p>
               <code dir="ltr">{map.code}</code>
             </div>
             <button
@@ -169,7 +175,7 @@ export default function SolarMapCard() {
               className="store-action"
               onClick={copyCode}
             >
-              {copied ? "تم النسخ!" : "نسخ الكود"}
+              {copied ? t.mapCopied : (locale === "ar" ? "نسخ الكود" : "Copy Code")}
             </button>
           </div>
           <MarkdownContent className="text-sm leading-7 text-[var(--text-muted)]">
@@ -177,9 +183,11 @@ export default function SolarMapCard() {
           </MarkdownContent>
           <div className="hub-actions">
             <ShareButton path="/fortnite?map=6387-4453-1682" />
-            <span className="hub-muted">الوضع: 4 فرق (Zone Wars)</span>
+            <span className="hub-muted">
+              {locale === "ar" ? "الوضع: 4 فرق (Zone Wars)" : "Mode: 4 Teams (Zone Wars)"}
+            </span>
           </div>
-          <ul aria-label="الوسوم" className="flex flex-wrap gap-2">
+          <ul aria-label={locale === "ar" ? "الوسوم" : "Tags"} className="flex flex-wrap gap-2">
             {map.tags.map((tag) => (
               <li
                 key={tag}
@@ -196,7 +204,7 @@ export default function SolarMapCard() {
             rel="noopener noreferrer"
             className="store-action"
           >
-            تشغيل في فورتنايت
+            {locale === "ar" ? "تشغيل في فورتنايت" : "Play in Fortnite"}
             <SolidIcon name="arrow-up-right" size={16} />
           </a>
         </div>

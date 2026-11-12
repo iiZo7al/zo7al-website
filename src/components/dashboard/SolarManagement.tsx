@@ -15,8 +15,12 @@ import {
   Sliders,
   Search,
   RefreshCw,
+  Trash2,
+  Eye,
+  FileCheck,
 } from "lucide-react";
 import MarkdownContent from "@/components/ui/MarkdownContent";
+import SolarContractViewerModal from "./SolarContractViewerModal";
 import type { DashboardData, Mutate, RequestRow } from "./types";
 import type { SolarRole } from "@/lib/data/solar";
 import type { SolarSettings } from "@/lib/server/solar-settings";
@@ -91,6 +95,10 @@ export default function SolarManagement({
   const [statusFilter, setStatusFilter] = useState<string>("");
   const [roleFilter, setRoleFilter] = useState<string>("");
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [viewingContract, setViewingContract] = useState<{
+    signatureUrl: string;
+    name: string;
+  } | null>(null);
 
   // Settings State
   const [settings, setSettings] = useState<SolarSettings | null>(null);
@@ -396,9 +404,22 @@ export default function SolarManagement({
                 onCopy={copyToClipboard}
                 onSave={(value) => mutate("review", value)}
                 onRetry={() => mutate("retryApplication", row.id)}
+                onDelete={() => mutate("deleteRequest", row.id)}
+                onViewContract={(sigUrl, appName) =>
+                  setViewingContract({ signatureUrl: sigUrl, name: appName })
+                }
               />
             ))}
           </div>
+
+          {viewingContract && (
+            <SolarContractViewerModal
+              isOpen={!!viewingContract}
+              onClose={() => setViewingContract(null)}
+              signatureUrl={viewingContract.signatureUrl}
+              applicantName={viewingContract.name}
+            />
+          )}
 
           {!filteredRows.length && (
             <div className="dash-panel card-glow rounded-2xl border border-[var(--border)] p-12 text-center">
@@ -614,6 +635,8 @@ function SolarApplicantCard({
   onCopy,
   onSave,
   onRetry,
+  onDelete,
+  onViewContract,
 }: {
   row: RequestRow;
   busy: boolean;
@@ -621,6 +644,8 @@ function SolarApplicantCard({
   onCopy: (text: string, id: string) => void;
   onSave: (value: unknown) => Promise<boolean>;
   onRetry: () => Promise<boolean>;
+  onDelete: () => Promise<boolean>;
+  onViewContract: (sigUrl: string, name: string) => void;
 }) {
   const t = useTranslations("hub");
   const locale = useLocale();
@@ -628,6 +653,7 @@ function SolarApplicantCard({
   const [status, setStatus] = useState(row.status);
   const [note, setNote] = useState(row.note);
   const [saving, setSaving] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   const payload = row.payload as Record<string, unknown>;
   const name = typeof payload.name === "string" ? payload.name : "متقدم بدون اسم";
@@ -895,17 +921,30 @@ function SolarApplicantCard({
             </div>
           )}
           {signedContractUrl && (
-            <div className="flex items-center justify-between rounded-lg border border-amber-500/30 bg-amber-500/10 p-2.5">
-              <span className="text-[var(--text)] font-semibold">صورة العقد الموقّع:</span>
-              <a
-                href={signedContractUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 text-[var(--accent)] hover:underline font-semibold"
-              >
-                <span>عرض صورة العقد والتوقيع ↗</span>
-                <ExternalLink size={13} />
-              </a>
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 rounded-lg border border-amber-500/30 bg-amber-500/10 p-2.5">
+              <div className="flex items-center gap-2">
+                <FileCheck size={16} className="text-[var(--accent)] shrink-0" />
+                <span className="text-[var(--text)] font-semibold">وثيقة العقد والتوقيع:</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => onViewContract(signedContractUrl, name)}
+                  className="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-bold transition-all active:scale-95 cursor-pointer bg-[var(--accent)] text-[#07080b]"
+                >
+                  <Eye size={13} />
+                  <span>معاينة بالعقد / لحاله</span>
+                </button>
+                <a
+                  href={signedContractUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-[var(--accent)] hover:underline text-xs p-1"
+                  title="فتح الرابط الأصلي"
+                >
+                  <ExternalLink size={13} />
+                </a>
+              </div>
             </div>
           )}
         </div>
@@ -978,10 +1017,33 @@ function SolarApplicantCard({
         </div>
       </div>
 
-      <div className="flex justify-end pt-2">
+      <div className="flex items-center justify-between pt-2">
+        <button
+          type="button"
+          disabled={busy || saving || deleting}
+          onClick={async () => {
+            if (
+              window.confirm(
+                `هل أنت متأكد من حذف طلب "${name}" نهائياً من لوحة التحكم؟ لا يمكن التراجع عن هذا الإجراء.`
+              )
+            ) {
+              setDeleting(true);
+              try {
+                await onDelete();
+              } finally {
+                setDeleting(false);
+              }
+            }
+          }}
+          className="inline-flex items-center gap-1.5 rounded-xl border border-rose-500/30 bg-rose-500/10 px-3.5 py-2 text-xs font-semibold text-rose-400 hover:bg-rose-500/20 transition-all cursor-pointer disabled:opacity-50"
+        >
+          <Trash2 size={13} />
+          <span>{deleting ? "جاري الحذف..." : "حذف الطلب"}</span>
+        </button>
+
         <button
           type="submit"
-          disabled={busy || saving}
+          disabled={busy || saving || deleting}
           className="inline-flex items-center gap-1.5 rounded-xl px-5 py-2 text-xs font-bold transition-all active:scale-95 cursor-pointer"
           style={{ background: "var(--accent)", color: "#07080b" }}
         >

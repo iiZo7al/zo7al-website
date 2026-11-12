@@ -13,9 +13,11 @@ import {
   ArrowLeft,
   ExternalLink,
 } from "lucide-react";
+import { useLocale } from "next-intl";
 import { useAccount } from "@/components/account/AccountProvider";
 import AccountLogin from "@/components/account/AccountLogin";
 import SolarSignaturePad from "./SolarSignaturePad";
+import { solarCopy } from "@/lib/data/solar-copy";
 import type {
   SolarRole,
   SolarAdminSubType,
@@ -40,6 +42,8 @@ export default function SolarApplyModal({
   } | null;
 }) {
   const dialog = useRef<HTMLDialogElement>(null);
+  const locale = useLocale();
+  const t = solarCopy(locale);
   const { account } = useAccount();
   const [showLogin, setShowLogin] = useState(false);
   const [step, setStep] = useState<1 | 2 | 3>(1);
@@ -95,7 +99,7 @@ export default function SolarApplyModal({
     if (!whatsapp.trim()) return "يرجى كتابة رقم جوالك للتواصل";
     if (!experienceDuration.trim()) return "يرجى تحديد مدة خبرتك في التخصص";
     if (role === "creator" && !channelUrl.trim())
-      return "يرجى وضع رابط قناتك على اليوتيوب";
+      return "يرجى وضع رابط قناتك أو حسابك";
     if (role === "streamer" && !streamUrl.trim())
       return "يرجى وضع رابط منصة البث الخاصة بك";
     return null;
@@ -243,7 +247,7 @@ export default function SolarApplyModal({
         </button>
       </header>
 
-      <div className="store-checkout-body" dir="rtl">
+      <div className="store-checkout-body" dir={locale === "ar" ? "rtl" : "ltr"}>
         {success ? (
           <div className="space-y-6 text-center py-4">
             <div
@@ -258,18 +262,17 @@ export default function SolarApplyModal({
             </div>
             <div>
               <h3 className="text-xl font-bold text-[var(--text)]">
-                تم استلام طلبك بنجاح!
+                {t.applicationReceived}
               </h3>
               <p className="mt-2 text-sm text-[var(--text-muted)] max-w-md mx-auto leading-relaxed">
-                شكراً لاهتمامك بالانضمام لفريق Solar System. ستتم مراجعة طلبك وعقدك
-                من قبل الإدارة والتواصل معك عبر الديسكورد أو الواتساب.
+                {t.applicationReceivedDesc}
               </p>
             </div>
             <div
               className="card-glow rounded-xl border p-4 max-w-sm mx-auto"
               style={{ background: "var(--surface)", borderColor: "var(--border)" }}
             >
-              <p className="text-xs text-[var(--text-muted)]">رقم التتبع الخاص بطلبك</p>
+              <p className="text-xs text-[var(--text-muted)]">{t.trackingReference}</p>
               <code dir="ltr" className="mt-1 block text-sm font-bold text-[var(--accent)]">
                 {success.reference}
               </code>
@@ -279,14 +282,14 @@ export default function SolarApplyModal({
                 href={`/tracking?reference=${encodeURIComponent(success.reference)}`}
                 className="store-action store-action-primary"
               >
-                تتبع حالة الطلب ↗
+                {t.trackRequest} ↗
               </Link>
               <button
                 type="button"
                 onClick={handleReset}
                 className="store-action"
               >
-                إغلاق
+                {t.close}
               </button>
             </div>
           </div>
@@ -298,11 +301,13 @@ export default function SolarApplyModal({
 
             <div className="space-y-2 max-w-md mx-auto">
               <h3 className="text-xl sm:text-2xl font-bold text-[var(--text)]">
-                التقديم مغلق حالياً
+                {locale === "ar" ? "التقديم مغلق حالياً" : "Applications Closed"}
               </h3>
               <p className="text-sm text-[var(--text-muted)] leading-relaxed">
                 {settings.announcement ||
-                  "باب الانضمام لكلان Solar System مغلق مؤقتاً في الوقت الحالي. تابع حسابات الكلان للإعلان عن فتح التقديم مجدداً."}
+                  (locale === "ar"
+                    ? "باب الانضمام لكلان Solar System مغلق مؤقتاً في الوقت الحالي. تابع حسابات الكلان للإعلان عن فتح التقديم مجدداً."
+                    : "Solar System clan applications are temporarily closed at this time. Follow official clan channels for announcements.")}
               </p>
             </div>
 
@@ -312,7 +317,7 @@ export default function SolarApplyModal({
                 onClick={onClose}
                 className="inline-flex items-center justify-center rounded-xl border border-[var(--border)] px-7 py-3 text-sm font-medium text-[var(--text-muted)] hover:text-[var(--text)] transition-colors cursor-pointer"
               >
-                إغلاق
+                {t.close}
               </button>
             </div>
           </div>
@@ -331,10 +336,10 @@ export default function SolarApplyModal({
 
             <div className="space-y-2 max-w-md mx-auto">
               <h3 className="text-xl sm:text-2xl font-bold text-[var(--text)]">
-                تسجيل الدخول مطلوب للتقديم
+                {t.loginRequiredTitle}
               </h3>
               <p className="text-sm text-[var(--text-muted)] leading-relaxed">
-                للتقديم على الانضمام لكلان Solar ومتابعة حالة طلبك بشكل مباشر عبر حسابك، يرجى تسجيل الدخول أولاً.
+                {t.loginRequiredDesc}
               </p>
             </div>
 
@@ -346,7 +351,7 @@ export default function SolarApplyModal({
                 style={{ background: "var(--accent)", color: "#07080b" }}
               >
                 <LogIn size={15} />
-                تسجيل الدخول الآن
+                {t.loginNow}
               </button>
 
               <button
@@ -354,7 +359,7 @@ export default function SolarApplyModal({
                 onClick={onClose}
                 className="w-full sm:w-auto inline-flex items-center justify-center rounded-xl border border-[var(--border)] px-6 py-3 text-sm font-medium text-[var(--text-muted)] hover:text-[var(--text)] transition-colors cursor-pointer"
               >
-                إلغاء
+                {t.cancel}
               </button>
             </div>
 
@@ -447,7 +452,7 @@ export default function SolarApplyModal({
                   color: "var(--accent)",
                 }}
               >
-                موثق
+                {t.verifiedAccount}
               </span>
             </div>
 
@@ -728,29 +733,50 @@ export default function SolarApplyModal({
 
                 {/* Subfield if admin */}
                 {role === "admin" && (
-                  <div className="rounded-xl border border-[var(--border)] bg-[var(--surface-elevated)] p-3 space-y-2">
-                    <label className="block text-xs font-semibold text-[var(--text-muted)]">
-                      نوع الإشراف / الرتبة الإدارية <span className="text-red-400">*</span>
-                    </label>
-                    <select
-                      value={adminSubType}
-                      onChange={(e) =>
-                        setAdminSubType(e.target.value as SolarAdminSubType)
-                      }
-                      className="w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--text)] outline-none focus:border-[var(--accent)]"
-                    >
-                      <option value="exec_supervisor">مشرف تنفيذي</option>
-                      <option value="dept_supervisor">مشرف أقسام</option>
-                      <option value="general_admin">إدارة عامة</option>
-                      <option value="admin_monitor">مراقب إدارة</option>
-                      <option value="creators_supervisor">مشرف صناع محتوى</option>
-                      <option value="creators_admin">إداري صناع محتوى</option>
-                      <option value="designers_supervisor">مشرف مصممين</option>
-                      <option value="players_supervisor">مشرف لاعبين</option>
-                      <option value="players_admin">إداري لاعبين</option>
-                      <option value="editors_supervisor">مشرف ممنتجين</option>
-                      <option value="streamers_supervisor">مشرف ستريمرز</option>
-                    </select>
+                  <div className="rounded-xl border border-[var(--border)] bg-[var(--surface-elevated)] p-3 space-y-3">
+                    <div>
+                      <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1">
+                        نوع الإشراف / الرتبة الإدارية <span className="text-red-400">*</span>
+                      </label>
+                      <select
+                        value={adminSubType}
+                        onChange={(e) =>
+                          setAdminSubType(e.target.value as SolarAdminSubType)
+                        }
+                        className="w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--text)] outline-none focus:border-[var(--accent)]"
+                      >
+                        <option value="exec_supervisor">مشرف تنفيذي</option>
+                        <option value="dept_supervisor">مشرف أقسام</option>
+                        <option value="general_admin">إدارة عامة</option>
+                        <option value="admin_monitor">مراقب إدارة</option>
+                        <option value="creators_supervisor">مشرف صناع محتوى</option>
+                        <option value="creators_admin">إداري صناع محتوى</option>
+                        <option value="designers_supervisor">مشرف مصممين</option>
+                        <option value="players_supervisor">مشرف لاعبين</option>
+                        <option value="players_admin">إداري لاعبين</option>
+                        <option value="editors_supervisor">مشرف ممنتجين</option>
+                        <option value="streamers_supervisor">مشرف ستريمرز</option>
+                      </select>
+                    </div>
+
+                    {(adminSubType === "players_supervisor" ||
+                      adminSubType === "players_admin") && (
+                      <div className="pt-2 border-t border-[var(--border)]">
+                        <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1">
+                          اللعبة (فيفا، فورت، أو روكيت) <span className="text-red-400">*</span>
+                        </label>
+                        <select
+                          value={game}
+                          onChange={(e) => setGame(e.target.value as SolarGame)}
+                          className="w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--text)] outline-none focus:border-[var(--accent)]"
+                        >
+                          <option value="fifa">فيفا / FC (FIFA)</option>
+                          <option value="fortnite">فورتنايت (Fortnite)</option>
+                          <option value="rocket">روكيت ليق (Rocket League)</option>
+                          <option value="minecraft">ماينكرافت (Minecraft)</option>
+                        </select>
+                      </div>
+                    )}
                   </div>
                 )}
 
@@ -758,7 +784,7 @@ export default function SolarApplyModal({
                 {(role === "creator" || role === "streamer") && (
                   <div>
                     <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1">
-                      لو اخترت صانع محتوى او ستريمر (حط رابط قناتك) <span className="text-red-400">*</span>
+                      لو اخترت صانع محتوى او ستريمر (حط رابط قناتك أو حسابك) <span className="text-red-400">*</span>
                     </label>
                     <input
                       type="url"
@@ -772,13 +798,14 @@ export default function SolarApplyModal({
                       }
                       placeholder={
                         role === "creator"
-                          ? "https://youtube.com/@channel"
-                          : "https://twitch.tv/... أو tiktok.com/@..."
+                          ? "https://youtube.com/@... أو https://tiktok.com/@..."
+                          : "https://twitch.tv/... أو https://kick.com/..."
                       }
                       className="w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--text)] outline-none focus:border-[var(--accent)] text-right"
                     />
                   </div>
                 )}
+
 
                 {/* Portfolio URL */}
                 {(role === "writer" || role === "editor" || role === "designer") && (

@@ -266,6 +266,22 @@ export function validateSolarApplication(
       validSubTypes.includes(input.adminSubType as unknown as SolarAdminSubType)
     ) {
       adminSubType = input.adminSubType as SolarAdminSubType;
+      if (
+        adminSubType === "players_supervisor" ||
+        adminSubType === "players_admin"
+      ) {
+        const validGames: SolarGame[] = [
+          "fortnite",
+          "rocket",
+          "fifa",
+          "minecraft",
+        ];
+        if (validGames.includes(input.game as unknown as SolarGame)) {
+          game = input.game as SolarGame;
+        } else {
+          game = "fortnite";
+        }
+      }
     }
   } else if (role === "player") {
     const validGames: SolarGame[] = [
@@ -283,10 +299,7 @@ export function validateSolarApplication(
     if (typeof input.channelUrl === "string" && input.channelUrl.trim()) {
       try {
         const u = new URL(input.channelUrl.trim());
-        if (
-          u.protocol === "https:" &&
-          /^(www\.)?(youtube\.com|youtu\.be)$/i.test(u.hostname)
-        ) {
+        if (u.protocol === "https:" || u.protocol === "http:") {
           channelUrl = u.href;
         }
       } catch {

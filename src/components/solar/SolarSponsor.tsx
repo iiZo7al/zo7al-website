@@ -1,11 +1,16 @@
 "use client";
 
 import Image from "next/image";
+import { useLocale } from "next-intl";
 import Reveal from "@/components/ui/Reveal";
 import SolidIcon from "@/components/ui/SolidIcon";
 import { Award, ShieldCheck, Zap } from "lucide-react";
+import { solarCopy } from "@/lib/data/solar-copy";
 
 export default function SolarSponsor() {
+  const locale = useLocale();
+  const t = solarCopy(locale);
+
   return (
     <Reveal>
       <article
@@ -14,14 +19,14 @@ export default function SolarSponsor() {
           background: "var(--surface)",
           borderColor: "var(--border)",
         }}
-        dir="rtl"
+        dir={locale === "ar" ? "rtl" : "ltr"}
       >
         <div className="grid gap-8 lg:grid-cols-[1.25fr_1fr] items-center p-6 sm:p-10">
           {/* Sponsor Banner Image */}
           <div className="relative aspect-video w-full overflow-hidden rounded-xl border border-[var(--border)] bg-black/40">
             <Image
               src="/assets/site/solar-sponsor.png"
-              alt="رصانة الخدمات — راعي كلان Solar System Team"
+              alt={`${t.sponsorName} — ${t.sponsorRole}`}
               width={1024}
               height={576}
               priority
@@ -41,7 +46,7 @@ export default function SolarSponsor() {
                 }}
               >
                 <SolidIcon name="trophy" size={13} />
-                الراعي الرسمي للكلان
+                {t.sponsorBadge}
               </span>
               <span className="rounded-full border border-[var(--border)] px-3 py-1 text-xs text-[var(--text-muted)]">
                 Official Partner
@@ -50,11 +55,10 @@ export default function SolarSponsor() {
 
             <div>
               <h3 className="text-2xl sm:text-3xl font-bold text-[var(--text)]">
-                رصانة الخدمات X Solar System
+                {t.sponsorName}
               </h3>
               <p className="mt-2 text-sm text-[var(--text-muted)] leading-relaxed">
-                الشريك والراعي الرسمي لكلان Solar System Team. الداعم الأساسي لمسيرة
-                الفريق في تنظيم البطولات التنافسية، دعم المبدعين، ورعاية الفعاليات الكبرى.
+                {t.sponsorDesc}
               </p>
             </div>
 
@@ -70,7 +74,7 @@ export default function SolarSponsor() {
                 >
                   <Award size={14} />
                 </span>
-                <span>رعاية ودعم البطولات والسكرمز الدورية للكلان</span>
+                <span>{t.sponsorRole}</span>
               </div>
 
               <div className="flex items-center gap-2.5 text-xs text-[var(--text-muted)]">
@@ -83,7 +87,7 @@ export default function SolarSponsor() {
                 >
                   <Zap size={14} />
                 </span>
-                <span>تمكين صناع المحتوى واللاعبين التنافسيين بأفضل الإمكانيات</span>
+                <span>{locale === "ar" ? "تمكين صناع المحتوى واللاعبين التنافسيين بأفضل الإمكانيات" : "Empowering creators and competitive players with top opportunities"}</span>
               </div>
 
               <div className="flex items-center gap-2.5 text-xs text-[var(--text-muted)]">
@@ -96,7 +100,7 @@ export default function SolarSponsor() {
                 >
                   <ShieldCheck size={14} />
                 </span>
-                <span>شراكة استراتيجية طويلة الأمد لبناء بيئة مجتمعية احترافية</span>
+                <span>{locale === "ar" ? "شراكة استراتيجية طويلة الأمد لبناء بيئة مجتمعية احترافية" : "Long-term strategic partnership building a professional community"}</span>
               </div>
             </div>
           </div>

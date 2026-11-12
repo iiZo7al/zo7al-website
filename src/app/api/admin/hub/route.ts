@@ -38,6 +38,10 @@ export async function POST(request: Request) {
       await (await siteDatabase()).query("WITH removed AS (DELETE FROM site_content WHERE id=$1 RETURNING poll_id) UPDATE community_entries SET published=false,updated_at=now() WHERE id IN (SELECT poll_id FROM removed)",[body.id]);
       return Response.json({ok:true},{headers:privateHeaders});
     }
+    if (body?.action === "deleteRequest" && typeof body.id === "string" && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(body.id)) {
+      await (await siteDatabase()).query("DELETE FROM site_requests WHERE id=$1",[body.id]);
+      return Response.json({ok:true},{headers:privateHeaders});
+    }
     throw new Error("INVALID");
   } catch(error) { return Response.json({error:error instanceof Error && ['INVALID','POLL_LOCKED'].includes(error.message)?error.message:'UNAVAILABLE'},{status:error instanceof Error && ['INVALID','POLL_LOCKED'].includes(error.message)?400:503,headers:privateHeaders}); }
 }
