@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import PageHero from "@/components/ui/PageHero";
 import SectionHeader from "@/components/ui/SectionHeader";
@@ -19,6 +19,20 @@ import "@/components/store/store.css";
 export default function SolarClient() {
   const [applyOpen, setApplyOpen] = useState(false);
   const [selectedRole, setSelectedRole] = useState<SolarRole>("creator");
+  const [settings, setSettings] = useState<{
+    isOpen: boolean;
+    announcement: string;
+    closedRoles: SolarRole[];
+  } | null>(null);
+
+  useEffect(() => {
+    fetch("/api/solar/settings")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => {
+        if (d?.settings) setSettings(d.settings);
+      })
+      .catch(() => {});
+  }, []);
 
   return (
     <main data-accent="solar">
@@ -43,6 +57,17 @@ export default function SolarClient() {
             </div>
           </div>
 
+          {/* Announcement banner if set by admin */}
+          {settings?.announcement && (
+            <div
+              className="inline-flex items-center gap-2 rounded-xl border border-[var(--border)] px-4 py-2.5 text-xs text-[var(--text)]"
+              style={{ background: "color-mix(in srgb, var(--accent) 12%, transparent)" }}
+            >
+              <SolidIcon name="trophy" size={14} className="text-[var(--accent)] shrink-0" />
+              <span>{settings.announcement}</span>
+            </div>
+          )}
+
           {/* Action buttons with icons (NO emojis) */}
           <div className="flex flex-wrap items-center gap-3">
             <MagneticButton>
@@ -57,7 +82,7 @@ export default function SolarClient() {
                 style={{ background: "var(--accent)", color: "#07080B" }}
               >
                 <SolidIcon name="trophy" size={14} />
-                قدّم للانضمام للكلان
+                {settings && !settings.isOpen ? "التقديم مغلق حالياً" : "قدّم للانضمام للكلان"}
               </button>
             </MagneticButton>
 
@@ -161,10 +186,11 @@ export default function SolarClient() {
 
       {/* Apply Modal */}
       <SolarApplyModal
-        key={selectedRole}
+        key={`${selectedRole}:${settings?.isOpen ?? true}`}
         isOpen={applyOpen}
         onClose={() => setApplyOpen(false)}
         initialRole={selectedRole}
+        settings={settings}
       />
     </main>
   );
