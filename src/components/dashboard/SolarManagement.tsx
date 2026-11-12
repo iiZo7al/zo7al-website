@@ -24,10 +24,22 @@ import type { SolarSettings } from "@/lib/server/solar-settings";
 const ROLE_LABELS: Record<string, string> = {
   creator: "صانع محتوى (Content Creator)",
   streamer: "ستريمر (Streamer)",
-  admin: "إداري / تنافسي (Staff & Competitive)",
+  player: "لاعب تنافسي (Competitive Player)",
+  admin: "إداري / إشراف (Staff)",
   writer: "كاتب أفكار (Idea Writer)",
   editor: "ممنتج فيديو (Video Editor)",
   designer: "مصمم جرافيك (Designer)",
+};
+
+const CONTRACT_LABELS: Record<string, string> = {
+  "2_months": "شهرين",
+  "3_months": "ثلاثة شهور",
+  "4_months": "اربع شهور",
+  "5_months": "خمسة شهور",
+  "6_months": "ستة شهور",
+  "1_year": "سنة",
+  "2_years": "سنتين",
+  other: "أخرى",
 };
 
 const SUBTYPE_LABELS: Record<string, string> = {
@@ -54,7 +66,8 @@ const GAME_LABELS: Record<string, string> = {
 const ALL_ROLES: { id: SolarRole; label: string }[] = [
   { id: "creator", label: "صناع المحتوى" },
   { id: "streamer", label: "الستريمرز" },
-  { id: "admin", label: "الإدارة والإشراف / الفريق التنافسي" },
+  { id: "player", label: "لاعبين (الفريق التنافسي)" },
+  { id: "admin", label: "الإدارة والإشراف" },
   { id: "editor", label: "المونتاج" },
   { id: "designer", label: "التصميم" },
   { id: "writer", label: "كتاب الأفكار" },
@@ -364,7 +377,8 @@ export default function SolarManagement({
               <option value="">جميع الأقسام</option>
               <option value="creator">صناع المحتوى</option>
               <option value="streamer">الستريمرز</option>
-              <option value="admin">الإدارة / التنافسي</option>
+              <option value="player">لاعبين (الفريق التنافسي)</option>
+              <option value="admin">الإدارة والإشراف</option>
               <option value="editor">المونتاج</option>
               <option value="designer">التصميم</option>
               <option value="writer">كتاب الأفكار</option>
@@ -617,6 +631,9 @@ function SolarApplicantCard({
 
   const payload = row.payload as Record<string, unknown>;
   const name = typeof payload.name === "string" ? payload.name : "متقدم بدون اسم";
+  const nickname = typeof payload.nickname === "string" ? payload.nickname : null;
+  const age = payload.age ? String(payload.age) : null;
+  const country = typeof payload.country === "string" ? payload.country : null;
   const role = typeof payload.role === "string" ? payload.role : "creator";
   const roleName = ROLE_LABELS[role] || role;
   const adminSubType =
@@ -632,7 +649,41 @@ function SolarApplicantCard({
   const channelUrl = typeof payload.channelUrl === "string" ? payload.channelUrl : "";
   const streamUrl = typeof payload.streamUrl === "string" ? payload.streamUrl : "";
   const portfolioUrl = typeof payload.portfolioUrl === "string" ? payload.portfolioUrl : "";
-  const bio = typeof payload.bio === "string" ? payload.bio : "";
+  const experienceDuration =
+    typeof payload.experienceDuration === "string"
+      ? payload.experienceDuration
+      : null;
+  const hasPreviousClans =
+    typeof payload.hasPreviousClans === "boolean"
+      ? payload.hasPreviousClans
+      : null;
+  const contractDurationRaw =
+    typeof payload.contractDuration === "string"
+      ? payload.contractDuration
+      : "";
+  const contractDurationCustom =
+    typeof payload.contractDurationCustom === "string"
+      ? payload.contractDurationCustom
+      : "";
+  const contractDuration =
+    CONTRACT_LABELS[contractDurationRaw] ||
+    contractDurationCustom ||
+    contractDurationRaw ||
+    null;
+  const signedContractUrl =
+    typeof payload.signedContractUrl === "string"
+      ? payload.signedContractUrl
+      : null;
+  const pledgeAgreed =
+    payload.pledgeAgreed === true ||
+    payload.pledgeAgreed === "true" ||
+    payload.pledgeAgreed === "موافق";
+  const whyJoin =
+    typeof payload.whyJoin === "string"
+      ? payload.whyJoin
+      : typeof payload.bio === "string"
+      ? payload.bio
+      : "";
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -662,6 +713,11 @@ function SolarApplicantCard({
           <div className="flex items-center gap-2">
             <h3 className="font-bold text-lg text-[var(--text)]">
               {name}
+              {nickname && (
+                <span className="text-sm font-normal text-[var(--text-muted)] mr-1.5">
+                  ({nickname})
+                </span>
+              )}
             </h3>
             <span
               className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${
@@ -701,7 +757,7 @@ function SolarApplicantCard({
         </span>
       </div>
 
-      {/* Division & Specifics */}
+      {/* Division, Age, Country & Contract Attributes */}
       <div className="flex flex-wrap gap-2 text-xs">
         <span className="rounded-md border border-[var(--border)] bg-black/20 px-2 py-1 text-[var(--text-muted)]">
           الرتبة: <strong className="text-[var(--text)]">{roleName}</strong>
@@ -716,6 +772,36 @@ function SolarApplicantCard({
             اللعبة: <strong className="text-[var(--text)]">{game}</strong>
           </span>
         )}
+        {age && (
+          <span className="rounded-md border border-[var(--border)] bg-black/20 px-2 py-1 text-[var(--text-muted)]">
+            العمر: <strong className="text-[var(--text)]">{age} سنة</strong>
+          </span>
+        )}
+        {country && (
+          <span className="rounded-md border border-[var(--border)] bg-black/20 px-2 py-1 text-[var(--text-muted)]">
+            من وين: <strong className="text-[var(--text)]">{country}</strong>
+          </span>
+        )}
+        {experienceDuration && (
+          <span className="rounded-md border border-[var(--border)] bg-black/20 px-2 py-1 text-[var(--text-muted)]">
+            مدة الخبرة: <strong className="text-[var(--text)]">{experienceDuration}</strong>
+          </span>
+        )}
+        {hasPreviousClans !== null && (
+          <span className="rounded-md border border-[var(--border)] bg-black/20 px-2 py-1 text-[var(--text-muted)]">
+            كلانات سابقة: <strong className="text-[var(--text)]">{hasPreviousClans ? "نعم" : "لا"}</strong>
+          </span>
+        )}
+        {contractDuration && (
+          <span className="rounded-md border border-[var(--border)] bg-black/20 px-2 py-1 text-[var(--text-muted)]">
+            مدة العقد: <strong className="text-[var(--accent)]">{contractDuration}</strong>
+          </span>
+        )}
+        <span className="rounded-md border border-[var(--border)] bg-black/20 px-2 py-1 text-[var(--text-muted)]">
+          التعهد: <strong className={pledgeAgreed ? "text-emerald-400" : "text-amber-400"}>
+            {pledgeAgreed ? "موافق وملتزم" : "لم يؤكد"}
+          </strong>
+        </span>
       </div>
 
       {/* Contact & Links */}
@@ -763,8 +849,8 @@ function SolarApplicantCard({
         </div>
       </div>
 
-      {/* External URLs */}
-      {(channelUrl || streamUrl || portfolioUrl) && (
+      {/* External URLs & Signed Contract Image */}
+      {(channelUrl || streamUrl || portfolioUrl || signedContractUrl) && (
         <div className="space-y-1.5 text-xs">
           {channelUrl && (
             <div className="flex items-center justify-between rounded-lg border border-[var(--border)] bg-black/20 p-2">
@@ -808,15 +894,31 @@ function SolarApplicantCard({
               </a>
             </div>
           )}
+          {signedContractUrl && (
+            <div className="flex items-center justify-between rounded-lg border border-amber-500/30 bg-amber-500/10 p-2.5">
+              <span className="text-[var(--text)] font-semibold">صورة العقد الموقّع:</span>
+              <a
+                href={signedContractUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-[var(--accent)] hover:underline font-semibold"
+              >
+                <span>عرض صورة العقد والتوقيع ↗</span>
+                <ExternalLink size={13} />
+              </a>
+            </div>
+          )}
         </div>
       )}
 
-      {/* Bio */}
-      {bio && (
+      {/* Why Join */}
+      {whyJoin && (
         <div className="rounded-lg border border-[var(--border)] bg-black/20 p-3 text-xs space-y-1">
-          <p className="font-semibold text-[var(--text-muted)]">نبذة وخبرات سابقة وسبب الانضمام:</p>
+          <p className="font-semibold text-[var(--text-muted)]">
+            لماذا ترغب بالانضمام إلى Solar System؟
+          </p>
           <div className="text-[var(--text)] leading-relaxed whitespace-pre-wrap">
-            <MarkdownContent>{bio}</MarkdownContent>
+            <MarkdownContent>{whyJoin}</MarkdownContent>
           </div>
         </div>
       )}

@@ -4,7 +4,8 @@ export type SolarRole =
   | "streamer"
   | "writer"
   | "editor"
-  | "designer";
+  | "designer"
+  | "player";
 
 export type SolarAdminSubType =
   | "exec_supervisor" // مشرف تنفيذي
@@ -21,17 +22,39 @@ export type SolarAdminSubType =
 
 export type SolarGame = "fortnite" | "rocket" | "minecraft" | "fifa";
 
+export const SOLAR_CONTRACT_DURATIONS: { id: string; label: string }[] = [
+  { id: "2_months", label: "شهرين" },
+  { id: "3_months", label: "ثلاثة شهور" },
+  { id: "4_months", label: "اربع شهور" },
+  { id: "5_months", label: "خمسة شهور" },
+  { id: "6_months", label: "ستة شهور" },
+  { id: "1_year", label: "سنة" },
+  { id: "2_years", label: "سنتين" },
+  { id: "other", label: "أخرى" },
+];
+
 export type SolarApplicationInput = {
-  name: string; // الاسم واللقب
-  discord: string; // حساب الديسكورد
-  whatsapp: string; // رقم هاتف الواتساب
-  bio: string; // نبذة وخبرات سابقة وسبب الانضمام
-  role: SolarRole;
+  name: string; // اسمك؟
+  nickname?: string; // لقبك؟
+  age?: number | string; // عمرك؟
+  country?: string; // من وين؟
+  discord: string; // حسابك ديسكورد؟ (اليوزر)
+  whatsapp: string; // رقم جوالك؟ (للتواصل)
+  role: SolarRole; // وش تقدم؟
   adminSubType?: SolarAdminSubType;
   game?: SolarGame;
-  channelUrl?: string; // لليوتيوب
-  streamUrl?: string; // لتيك توك، تويتش، كيك
-  portfolioUrl?: string; // للمصمم والممنتج وكاتب الأفكار
+  channelUrl?: string; // رابط قناتك
+  streamUrl?: string; // رابط البث
+  portfolioUrl?: string; // رابط أعمالك
+  experienceDuration?: string; // كم مدة خبرتك في الي بتقدم فيه؟
+  hasPreviousClans?: boolean; // هل عندك خبرة سابقة في الكلانات؟
+  contractDuration?: string; // مدة العقد
+  contractDurationCustom?: string;
+  signedContractUrl?: string; // رابط صورة العقد الموقعة
+  signatureDataUrl?: string; // أو التوقيع الرقمي
+  pledgeAgreed?: boolean; // موافق على التعهد
+  whyJoin?: string; // لماذا ترغب بالانضمام إلى Solar System؟
+  bio: string; // نبذة عامة
 };
 
 export const SOLAR_SOCIALS = [
@@ -156,10 +179,26 @@ export function validateSolarApplication(
   const input = value as Record<string, unknown>;
 
   const name = typeof input.name === "string" ? input.name.trim() : "";
+  const nickname =
+    typeof input.nickname === "string" && input.nickname.trim()
+      ? input.nickname.trim()
+      : name;
+  const age =
+    typeof input.age === "number" || typeof input.age === "string"
+      ? String(input.age).trim()
+      : "";
+  const country =
+    typeof input.country === "string" ? input.country.trim() : "";
   const discord = typeof input.discord === "string" ? input.discord.trim() : "";
   const whatsapp =
     typeof input.whatsapp === "string" ? input.whatsapp.trim() : "";
-  const bio = typeof input.bio === "string" ? input.bio.trim() : "";
+  const whyJoin =
+    typeof input.whyJoin === "string"
+      ? input.whyJoin.trim()
+      : typeof input.bio === "string"
+        ? input.bio.trim()
+        : "";
+  const bio = whyJoin;
   const role = input.role as SolarRole;
 
   if (
@@ -185,8 +224,8 @@ export function validateSolarApplication(
     return null;
   if (
     !bio ||
-    bio.length < 10 ||
-    bio.length > 2000 ||
+    bio.length < 2 ||
+    bio.length > 2500 ||
     /[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/.test(bio)
   )
     return null;
@@ -198,6 +237,7 @@ export function validateSolarApplication(
     "writer",
     "editor",
     "designer",
+    "player",
   ];
   if (!validRoles.includes(role)) return null;
 
@@ -222,53 +262,50 @@ export function validateSolarApplication(
       "streamers_supervisor",
     ];
     if (
-      !validSubTypes.includes(
-        input.adminSubType as unknown as SolarAdminSubType,
-      )
-    )
-      return null;
-    adminSubType = input.adminSubType as SolarAdminSubType;
-
-    if (
-      adminSubType === "players_supervisor" ||
-      adminSubType === "players_admin"
+      input.adminSubType &&
+      validSubTypes.includes(input.adminSubType as unknown as SolarAdminSubType)
     ) {
-      const validGames: SolarGame[] = [
-        "fortnite",
-        "rocket",
-        "minecraft",
-        "fifa",
-      ];
-      if (!validGames.includes(input.game as unknown as SolarGame)) return null;
+      adminSubType = input.adminSubType as SolarAdminSubType;
+    }
+  } else if (role === "player") {
+    const validGames: SolarGame[] = [
+      "fortnite",
+      "rocket",
+      "minecraft",
+      "fifa",
+    ];
+    if (validGames.includes(input.game as unknown as SolarGame)) {
       game = input.game as SolarGame;
+    } else {
+      game = "fortnite";
     }
   } else if (role === "creator") {
-    if (typeof input.channelUrl !== "string" || !input.channelUrl.trim())
-      return null;
-    try {
-      const u = new URL(input.channelUrl.trim());
-      if (
-        u.protocol !== "https:" ||
-        !/^(www\.)?(youtube\.com|youtu\.be)$/i.test(u.hostname)
-      )
-        return null;
-      channelUrl = u.href;
-    } catch {
-      return null;
+    if (typeof input.channelUrl === "string" && input.channelUrl.trim()) {
+      try {
+        const u = new URL(input.channelUrl.trim());
+        if (
+          u.protocol === "https:" &&
+          /^(www\.)?(youtube\.com|youtu\.be)$/i.test(u.hostname)
+        ) {
+          channelUrl = u.href;
+        }
+      } catch {
+        /* optional */
+      }
     }
   } else if (role === "streamer") {
-    if (typeof input.streamUrl !== "string" || !input.streamUrl.trim())
-      return null;
-    try {
-      const u = new URL(input.streamUrl.trim());
-      if (
-        u.protocol !== "https:" ||
-        !/^(www\.)?(tiktok\.com|twitch\.tv|kick\.com)$/i.test(u.hostname)
-      )
-        return null;
-      streamUrl = u.href;
-    } catch {
-      return null;
+    if (typeof input.streamUrl === "string" && input.streamUrl.trim()) {
+      try {
+        const u = new URL(input.streamUrl.trim());
+        if (
+          u.protocol === "https:" &&
+          /^(www\.)?(tiktok\.com|twitch\.tv|kick\.com)$/i.test(u.hostname)
+        ) {
+          streamUrl = u.href;
+        }
+      } catch {
+        /* optional */
+      }
     }
   } else if (role === "editor" || role === "designer" || role === "writer") {
     if (typeof input.portfolioUrl === "string" && input.portfolioUrl.trim()) {
@@ -281,16 +318,63 @@ export function validateSolarApplication(
     }
   }
 
+  const experienceDuration =
+    typeof input.experienceDuration === "string"
+      ? input.experienceDuration.trim().slice(0, 200)
+      : "";
+  const hasPreviousClans =
+    typeof input.hasPreviousClans === "boolean"
+      ? input.hasPreviousClans
+      : input.hasPreviousClans === "نعم" || input.hasPreviousClans === "true";
+  const contractDuration =
+    typeof input.contractDuration === "string"
+      ? input.contractDuration.trim().slice(0, 100)
+      : "3_months";
+  const contractDurationCustom =
+    typeof input.contractDurationCustom === "string"
+      ? input.contractDurationCustom.trim().slice(0, 100)
+      : undefined;
+
+  let signedContractUrl: string | undefined;
+  if (
+    typeof input.signedContractUrl === "string" &&
+    input.signedContractUrl.trim()
+  ) {
+    const trimmed = input.signedContractUrl.trim();
+    if (
+      trimmed.startsWith("/api/solar/media/") ||
+      trimmed.startsWith("https://") ||
+      trimmed.startsWith("data:image/")
+    ) {
+      signedContractUrl = trimmed.slice(0, 4000);
+    }
+  }
+
+  const pledgeAgreed =
+    input.pledgeAgreed === true ||
+    input.pledgeAgreed === "موافق" ||
+    input.pledgeAgreed === "true";
+
   return {
     name,
+    nickname: nickname || undefined,
+    age: age || undefined,
+    country: country || undefined,
     discord,
     whatsapp,
-    bio,
     role,
     ...(adminSubType ? { adminSubType } : {}),
     ...(game ? { game } : {}),
     ...(channelUrl ? { channelUrl } : {}),
     ...(streamUrl ? { streamUrl } : {}),
     ...(portfolioUrl ? { portfolioUrl } : {}),
+    experienceDuration: experienceDuration || undefined,
+    hasPreviousClans,
+    contractDuration,
+    ...(contractDurationCustom ? { contractDurationCustom } : {}),
+    ...(signedContractUrl ? { signedContractUrl } : {}),
+    pledgeAgreed,
+    whyJoin,
+    bio,
   };
 }
