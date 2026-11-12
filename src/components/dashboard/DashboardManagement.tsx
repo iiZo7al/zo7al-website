@@ -13,6 +13,20 @@ import type { DashboardData, ManagementTab, Mutate, RequestRow } from "./types";
 import ContentImageField from "./ContentImageField";
 import ContentImage from "@/components/hub/ContentImage";
 
+const FIELD_LABELS: Record<string, string> = {
+  name: "الاسم واللقب",
+  discord: "حساب الديسكورد",
+  whatsapp: "رقم الواتساب",
+  role: "الرتبة",
+  adminSubType: "نوع الإشراف",
+  game: "اللعبة",
+  channelUrl: "رابط القناة",
+  streamUrl: "رابط البث",
+  portfolioUrl: "رابط الأعمال",
+  bio: "نبذة وسبب الانضمام",
+  appliedAt: "وقت التقديم",
+};
+
 export default function DashboardManagement({ data,tab,busy,mutate }: { data:DashboardData; tab:ManagementTab; busy:boolean; mutate:Mutate }) {
   const t = useTranslations("hub"), d = useTranslations("dashboard"), locale = useLocale();
   const [editing,setEditing] = useState<HubContent|null>(null);
@@ -73,7 +87,7 @@ export default function DashboardManagement({ data,tab,busy,mutate }: { data:Das
     {tab === "application" && <div className="dash-application-summary">{["pending", "accepted", "rejected"].map(status => <button key={status} type="button" className="dash-panel card-glow" aria-pressed={statusFilter === status} onClick={() => setStatusFilter(value => value === status ? "" : status)}><span>{t("status_" + status)}</span><strong>{requests.filter(row => row.status === status).length}</strong></button>)}</div>}
     <div className="dash-review-filters"><input className="dash-search" aria-label={d("filter")} placeholder={d("filter")} value={query} onChange={e => setQuery(e.target.value)}/>
       <select aria-label={t("status")} value={statusFilter} onChange={event => setStatusFilter(event.target.value)}><option value="">{t("allStatuses")}</option>{(tab === "support" ? ["open", "reviewing", "closed"] : ["pending", "accepted", "rejected"]).map(status => <option key={status} value={status}>{t("status_" + status)}</option>)}</select>
-      {tab === "application" && <select aria-label={t("platform")} value={platformFilter} onChange={event => setPlatformFilter(event.target.value)}><option value="">{t("allPlatforms")}</option>{["youtube", "twitch", "tiktok"].map(platform => <option key={platform} value={platform}>{platform.toUpperCase()}</option>)}</select>}
+      {tab === "application" && <select aria-label={t("platform")} value={platformFilter} onChange={event => setPlatformFilter(event.target.value)}><option value="">{t("allPlatforms")}</option>{["solar", "youtube", "twitch", "tiktok"].map(platform => <option key={platform} value={platform}>{platform.toUpperCase()}</option>)}</select>}
     </div>
     <div className="dash-review-grid">{rows.map(row => <ReviewCard key={row.id + ":" + row.status + ":" + row.note} row={row} busy={busy} onSave={value => mutate("review",value)} onRetry={() => mutate("retryApplication", row.id)}/>)}</div>
     {!rows.length && <div className="dash-panel card-glow"><Empty icon={tab==="registrations"?<CalendarDays size={30}/>:<Inbox size={30}/>} text={t("empty")}/></div>}
@@ -84,17 +98,29 @@ function ReviewCard({ row,busy,onSave,onRetry }: { row:RequestRow; busy:boolean;
   const t = useTranslations("hub"), locale = useLocale();
   const [status,setStatus] = useState(row.status), [note,setNote] = useState(row.note);
   const statuses = row.kind==="support"?["open","reviewing","closed"]:["pending","accepted","rejected"];
-  const platform = row.kind === "application" && ["youtube", "twitch", "tiktok"].includes(String(row.payload.platform)) ? String(row.payload.platform) : null;
+  const platform = row.kind === "application" && ["solar", "youtube", "twitch", "tiktok"].includes(String(row.payload.platform)) ? String(row.payload.platform) : null;
   const link = (key: string, value: unknown) => {
     if (key === "email" && typeof value === "string" && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return "mailto:" + encodeURIComponent(value);
-    if (key !== "channel" || typeof value !== "string") return null;
-    try { const url = new URL(value); return url.protocol === "https:" && !url.username && !url.password && !url.port && ["youtube.com", "twitch.tv", "tiktok.com"].includes(url.hostname.replace(/^www\./, "")) ? url.href : null; } catch { return null; }
+    if (key === "whatsapp" && typeof value === "string" && /^[0-9+ \-()]{7,20}$/.test(value)) {
+      const digits = value.replace(/[^0-9]/g, "");
+      return `https://wa.me/${digits}`;
+    }
+    if ((key === "channel" || key === "channelUrl" || key === "streamUrl" || key === "portfolioUrl" || key === "link") && typeof value === "string") {
+      try {
+        const url = new URL(value);
+        if (url.protocol === "https:" || url.protocol === "http:") return url.href;
+      } catch {
+        return null;
+      }
+    }
+    return null;
   };
   return <form className="dash-panel card-glow hub-form dash-review" onSubmit={e => { e.preventDefault(); void onSave({id:row.id,kind:row.kind,status,note}); }}>
-    {platform && <div className={"dash-application-banner dash-application-" + platform}><Image src={`/assets/site/rank-${platform}.png`} width={667} height={375} alt={platform.toUpperCase()} /><span className="dash-tag">{platform.toUpperCase()}</span></div>}
-    <div className="dash-section-heading"><h3 dir="auto">{String(row.payload.minecraft??row.payload.epic??row.payload.subject??row.payload.eventTitle??row.id)}</h3><span className="dash-tag">{t("status_"+row.status)}</span></div>
+    {platform && platform !== "solar" && <div className={"dash-application-banner dash-application-" + platform}><Image src={`/assets/site/rank-${platform}.png`} width={667} height={375} alt={platform.toUpperCase()} /><span className="dash-tag">{platform.toUpperCase()}</span></div>}
+    {platform === "solar" && <div className="dash-application-banner" style={{ background: "linear-gradient(135deg, rgba(245, 158, 11, 0.18), rgba(17, 18, 23, 0.85))", border: "1px solid rgba(245, 158, 11, 0.3)" }}><Image src="/assets/site/solar-clan-map.png" width={400} height={200} alt="SOLAR CLAN" style={{ objectFit: "cover", width: "100%", height: "100%" }} /><span className="dash-tag" style={{ background: "#F59E0B", color: "#000", fontWeight: 700 }}>SOLAR CLAN</span></div>}
+    <div className="dash-section-heading"><h3 dir="auto">{String(row.payload.minecraft??row.payload.epic??row.payload.subject??row.payload.eventTitle??row.payload.name??row.id)}</h3><span className="dash-tag">{t("status_"+row.status)}</span></div>
     <p className="dash-help"><time dateTime={row.createdAt}>{new Intl.DateTimeFormat(locale,{dateStyle:"medium",timeStyle:"short",timeZone:"Asia/Riyadh"}).format(new Date(row.createdAt))}</time></p><bdi className="dash-reference">{row.id}</bdi>
-    <dl className="dash-review-fields">{Object.entries(row.payload).filter(([key]) => !["consent","website","platform"].includes(key)).map(([key,value]) => { const href = link(key, value); return <div key={key}><dt>{t.has(key)?t(key):key}</dt><dd dir="auto">{href ? <a href={href} target={key === "channel" ? "_blank" : undefined} rel="noopener noreferrer">{String(value)}<ExternalLink size={13} aria-hidden="true" /></a> : ["message","reason","description","note","body"].includes(key) ? <MarkdownContent>{String(value)}</MarkdownContent> : String(value)}</dd></div>; })}</dl>
+    <dl className="dash-review-fields">{Object.entries(row.payload).filter(([key]) => !["consent","website","platform","subject"].includes(key)).map(([key,value]) => { const href = link(key, value); return <div key={key}><dt>{t.has(key)?t(key):FIELD_LABELS[key]||key}</dt><dd dir="auto">{href ? <a href={href} target="_blank" rel="noopener noreferrer">{String(value)}<ExternalLink size={13} aria-hidden="true" /></a> : ["message","reason","description","note","body","bio"].includes(key) ? <MarkdownContent>{String(value)}</MarkdownContent> : String(value)}</dd></div>; })}</dl>
     <span className={"dash-tag "+(row.discordReceipt?"dash-tag-green":"")}>{t(row.discordReceipt?"discordDelivered":"discordPending")}</span>
     {row.kind === "application" && !row.discordReceipt && <button className="dash-button" type="button" disabled={busy} onClick={() => void onRetry()}><Send size={14}/>{t("retryDiscord")}</button>}
     <label>{t("status")}<select value={status} onChange={e => setStatus(e.target.value)}>{statuses.map(s => <option key={s} value={s}>{t("status_"+s)}</option>)}</select></label>
