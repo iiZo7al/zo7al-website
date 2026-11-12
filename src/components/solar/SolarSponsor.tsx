@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useLocale } from "next-intl";
 import Reveal from "@/components/ui/Reveal";
 import SolidIcon from "@/components/ui/SolidIcon";
-import { Award, ShieldCheck, Zap } from "lucide-react";
+import { Award, ExternalLink, ShieldCheck, Zap } from "lucide-react";
 import { solarCopy } from "@/lib/data/solar-copy";
 
 export default function SolarSponsor() {
@@ -102,6 +102,21 @@ export default function SolarSponsor() {
                 </span>
                 <span>{locale === "ar" ? "شراكة استراتيجية طويلة الأمد لبناء بيئة مجتمعية احترافية" : "Long-term strategic partnership building a professional community"}</span>
               </div>
+            </div>
+
+            {/* Sponsor Website CTA Button */}
+            <div className="pt-2">
+              <a
+                href="https://rasana.com.sa/"
+                target="_blank"
+                rel="noopener noreferrer"
+                data-cursor="button"
+                className="inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition-transform hover:scale-[1.02] active:scale-95"
+                style={{ background: "var(--accent)", color: "#07080B" }}
+              >
+                <span>{locale === "ar" ? "زيارة موقع راعي الكلان" : t.sponsorVisitBtn || "Visit Sponsor Website"}</span>
+                <ExternalLink size={15} />
+              </a>
             </div>
           </div>
         </div>

@@ -8,6 +8,8 @@ export type SolarRole =
   | "player";
 
 export type SolarAdminSubType =
+  | "president" // الرئيس
+  | "vice_president" // نائب الرئيس
   | "exec_supervisor" // مشرف تنفيذي
   | "dept_supervisor" // مشرف أقسام
   | "general_admin" // إدارة عامة
@@ -121,14 +123,6 @@ export const SOLAR_SOCIALS = [
     url: "https://bsky.app/profile/solarsystemteam.bsky.social",
     icon: "bluesky",
     badge: "تحديثات المجتمع",
-  },
-  {
-    id: "fortnite",
-    name: "Fortnite",
-    title: "Fortnite",
-    url: "https://www.fortnite.com/@zo7al",
-    icon: "fortnite",
-    badge: "كل أكواد الجزر في صفحة واحدة",
   },
 ];
 
@@ -249,6 +243,8 @@ export function validateSolarApplication(
 
   if (role === "admin") {
     const validSubTypes: SolarAdminSubType[] = [
+      "president",
+      "vice_president",
       "exec_supervisor",
       "dept_supervisor",
       "general_admin",

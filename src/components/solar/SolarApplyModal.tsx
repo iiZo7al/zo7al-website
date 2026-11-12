@@ -39,6 +39,7 @@ export default function SolarApplyModal({
     isOpen: boolean;
     announcement: string;
     closedRoles: SolarRole[];
+    closedAdminSubTypes?: SolarAdminSubType[];
   } | null;
 }) {
   const dialog = useRef<HTMLDialogElement>(null);
@@ -745,17 +746,30 @@ export default function SolarApplyModal({
                         }
                         className="w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--text)] outline-none focus:border-[var(--accent)]"
                       >
-                        <option value="exec_supervisor">مشرف تنفيذي</option>
-                        <option value="dept_supervisor">مشرف أقسام</option>
-                        <option value="general_admin">إدارة عامة</option>
-                        <option value="admin_monitor">مراقب إدارة</option>
-                        <option value="creators_supervisor">مشرف صناع محتوى</option>
-                        <option value="creators_admin">إداري صناع محتوى</option>
-                        <option value="designers_supervisor">مشرف مصممين</option>
-                        <option value="players_supervisor">مشرف لاعبين</option>
-                        <option value="players_admin">إداري لاعبين</option>
-                        <option value="editors_supervisor">مشرف ممنتجين</option>
-                        <option value="streamers_supervisor">مشرف ستريمرز</option>
+                        {(
+                          [
+                            { id: "president", label: "الرئيس" },
+                            { id: "vice_president", label: "نائب الرئيس" },
+                            { id: "exec_supervisor", label: "مشرف تنفيذي" },
+                            { id: "dept_supervisor", label: "مشرف أقسام" },
+                            { id: "general_admin", label: "إدارة عامة" },
+                            { id: "admin_monitor", label: "مراقب إدارة" },
+                            { id: "creators_supervisor", label: "مشرف صناع محتوى" },
+                            { id: "creators_admin", label: "إداري صناع محتوى" },
+                            { id: "designers_supervisor", label: "مشرف مصممين" },
+                            { id: "players_supervisor", label: "مشرف لاعبين" },
+                            { id: "players_admin", label: "إداري لاعبين" },
+                            { id: "editors_supervisor", label: "مشرف ممنتجين" },
+                            { id: "streamers_supervisor", label: "مشرف ستريمرز" },
+                          ] as { id: SolarAdminSubType; label: string }[]
+                        ).map((sub) => {
+                          const isClosed = settings?.closedAdminSubTypes?.includes(sub.id);
+                          return (
+                            <option key={sub.id} value={sub.id} disabled={isClosed}>
+                              {sub.label} {isClosed ? "— (مغلق مؤقتاً)" : ""}
+                            </option>
+                          );
+                        })}
                       </select>
                     </div>
 

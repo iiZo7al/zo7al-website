@@ -4,4 +4,4 @@ export type OrderRow = { id:string; username:string; items:{ packageId:number; q
 export type DashboardData = { content:HubContent[]; requests:RequestRow[]; orders:OrderRow[] };
 export type ManagementTab = "solar"|"news"|"event"|"rule"|"application"|"support"|"registrations"|"orders";
 export const emptyDashboard: DashboardData = { content:[], requests:[], orders:[] };
-export type Mutate = (action:"content"|"delete"|"review"|"retryDiscord"|"retryApplication"|"deleteRequest",value:unknown) => Promise<boolean>;
+export type Mutate = (action:"content"|"delete"|"review"|"retryDiscord"|"retryApplication"|"deleteRequest"|"importSolar",value:unknown) => Promise<boolean>;

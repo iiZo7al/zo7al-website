@@ -14,7 +14,7 @@ import SolarMapCard from "./SolarMapCard";
 import SolarSocials from "./SolarSocials";
 import SolarApplyModal from "./SolarApplyModal";
 import { solarCopy } from "@/lib/data/solar-copy";
-import type { SolarRole } from "@/lib/data/solar";
+import type { SolarAdminSubType, SolarRole } from "@/lib/data/solar";
 import "@/components/fortnite/fortnite.css";
 import "@/components/store/store.css";
 
@@ -27,6 +27,7 @@ export default function SolarClient() {
     isOpen: boolean;
     announcement: string;
     closedRoles: SolarRole[];
+    closedAdminSubTypes?: SolarAdminSubType[];
   } | null>(null);
 
   useEffect(() => {
