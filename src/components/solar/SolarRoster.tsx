@@ -4,7 +4,19 @@ import Image from "next/image";
 import { useLocale } from "next-intl";
 import Reveal from "@/components/ui/Reveal";
 import SolidIcon from "@/components/ui/SolidIcon";
-import { Check, Crown, Gamepad2, Trophy, Video, Users, Palette } from "lucide-react";
+import {
+  ArrowUpRight,
+  Check,
+  Crown,
+  Film,
+  Gamepad2,
+  Lightbulb,
+  Palette,
+  Radio,
+  ShieldCheck,
+  Trophy,
+  Video,
+} from "lucide-react";
 import type { SolarRole } from "@/lib/data/solar";
 import { solarCopy } from "@/lib/data/solar-copy";
 
@@ -14,6 +26,7 @@ export default function SolarRoster({
   onOpenApply: (role: SolarRole) => void;
 }) {
   const locale = useLocale();
+  const isAr = locale === "ar";
   const t = solarCopy(locale);
 
   const divisions: {
@@ -26,64 +39,92 @@ export default function SolarRoster({
   }[] = [
     {
       role: "creator",
-      title: locale === "ar" ? "صناع المحتوى والستريمرز" : "Creators & Streamers",
-      tag: "Creators & Streamers",
-      desc:
-        locale === "ar"
-          ? "نخبة من صناع المحتوى في اليوتيوب وبثوث التيك توك وتويتش وكيك، يقدمون محتوى ترفيهي وتنافسي."
-          : "Elite creators and streamers on YouTube, TikTok, Twitch, and Kick sharing top gaming moments.",
-      perks:
-        locale === "ar"
-          ? ["دعم القنوات والترويج", "مشاركات وفيديوهات جماعية", "رتب وسيرفر ديسكورد خاص"]
-          : ["Channel promotion & backing", "Group collaborations & videos", "Special Discord ranks"],
+      title: isAr ? "صانع محتوى" : "Content Creator",
+      tag: "Creator",
+      desc: isAr
+        ? "صناعة فيديوهات ومقاطع إبداعية على يوتيوب وتيك توك ومنصات التواصل باسم الكلان."
+        : "Create gaming videos and short-form content on YouTube, TikTok, and social platforms.",
+      perks: isAr
+        ? ["دعم ونشر المحتوى", "تعاونات جماعية", "رتبة خاصة بالديسكورد"]
+        : ["Channel shoutouts", "Group collaborations", "Special Discord rank"],
       icon: Video,
     },
     {
-      role: "player",
-      title: locale === "ar" ? "الفريق التنافسي" : "Competitive Squad",
-      tag: "Competitive Players",
-      desc:
-        locale === "ar"
-          ? "لاعبون محترفون يمثلون كلان Solar في بطولات وسكرمز فورتنايت، روكيت ليق، فيفا وماينكرافت."
-          : "Pro players representing Solar in tournaments and scrims across Fortnite, Rocket League, FIFA, and Minecraft.",
-      perks:
-        locale === "ar"
-          ? ["مشاركة في بطولات رسمية", "تدريب وتطوير مستمر", "سكرمز ومباريات تحدي"]
-          : ["Official tournament entries", "Continuous coaching & skill growth", "Competitive scrims"],
-      icon: Trophy,
+      role: "streamer",
+      title: isAr ? "ستريمر" : "Streamer",
+      tag: "Streamer",
+      desc: isAr
+        ? "تقديم بثوث مباشرة تفاعلية على تويتش أو كيك أو تيك توك بمحتوى ممتع ومنتظم."
+        : "Host engaging live streams on Twitch, Kick, or TikTok representing Solar.",
+      perks: isAr
+        ? ["ترويج البثوث المباشرة", "فعاليات مع المجتمع", "رتبة ستريمر رسمية"]
+        : ["Stream promotion", "Community events", "Official streamer rank"],
+      icon: Radio,
     },
     {
-      role: "admin",
-      title: locale === "ar" ? "الإدارة والإشراف العام" : "Staff & Management",
-      tag: "Staff & Management",
-      desc:
-        locale === "ar"
-          ? "هيكل إداري منظم يشرف على الأقسام، اللاعبين، تنظيم البطولات، ومتابعة انضباط مجتمع الكلان."
-          : "Organized leadership overseeing clan divisions, tournaments, community events, and discipline.",
-      perks:
-        locale === "ar"
-          ? ["صلاحيات إدارية متقدمة", "متابعة وتقييم دوري", "بيئة عمل وتنسيق احترافية"]
-          : ["Staff permissions & tools", "Regular performance reviews", "Professional team environment"],
-      icon: Users,
+      role: "designer",
+      title: isAr ? "مصمم" : "Designer",
+      tag: "Designer",
+      desc: isAr
+        ? "تصميم الصور المصغرة، الشعارات، البانرات والهوية البصرية الخاصة بالكلان وأعضائه."
+        : "Design thumbnails, banners, logos, and visual assets for the clan.",
+      perks: isAr
+        ? ["إبراز أعمالك باسمك", "تطوير الهوية البصرية", "عمل جماعي إبداعي"]
+        : ["Portfolio credit", "Clan visual identity", "Creative teamwork"],
+      icon: Palette,
     },
     {
       role: "editor",
-      title: locale === "ar" ? "المونتاج والتصميم" : "Editing & Design",
-      tag: "Editing & Design",
-      desc:
-        locale === "ar"
-          ? "مبدعو المونتاج الاحترافي، مصممو الجرافيك، وصناع الأفكار والسيناريوهات الذين يبتكرون هوية الكلان."
-          : "Creative video editors, graphic designers, and idea writers shaping the clan visual identity.",
-      perks:
-        locale === "ar"
-          ? ["معرض أعمال رسمي", "مكافآت على المشاريع", "تطوير المهارات الاحترافية"]
-          : ["Official portfolio exposure", "Project-based rewards", "Skill enhancement workflows"],
-      icon: Palette,
+      title: isAr ? "ممنتج" : "Video Editor",
+      tag: "Editor",
+      desc: isAr
+        ? "مونتاج فيديوهات اليوتيوب واللقطات القصيرة بأسلوب احترافي وجذاب."
+        : "Edit YouTube videos, montages, and short clips with clean pacing.",
+      perks: isAr
+        ? ["توثيق اسمك في الأعمال", "مشاريع مستمرة", "تطوير مهارات المونتاج"]
+        : ["Credited edits", "Ongoing clan projects", "Skill growth"],
+      icon: Film,
+    },
+    {
+      role: "player",
+      title: isAr ? "لاعب (روكيت أو فورت أو ماين أو فيفا)" : "Player (Rocket, Fortnite, Minecraft, FIFA)",
+      tag: "Competitive",
+      desc: isAr
+        ? "تمثيل الكلان في البطولات والسكرمز والتحديات في الألعاب المعتمدة."
+        : "Represent Solar in scrims, challenges, and tournaments across supported games.",
+      perks: isAr
+        ? ["مشاركة في البطولات", "تدريبات وسكرمز", "تشكيلة تنافسية"]
+        : ["Clan tournaments", "Team scrims", "Competitive roster"],
+      icon: Gamepad2,
+    },
+    {
+      role: "admin",
+      title: isAr ? "إداري" : "Staff & Admin",
+      tag: "Staff",
+      desc: isAr
+        ? "تنظيم الأقسام، متابعة الأعضاء، إدارة التقديمات، وتنسيق الفعاليات داخل الديسكورد."
+        : "Manage divisions, review applications, and organize Discord events.",
+      perks: isAr
+        ? ["صلاحيات إشرافية", "تنسيق وإدارة الفريق", "خبرة قيادية"]
+        : ["Staff permissions", "Team coordination", "Leadership experience"],
+      icon: ShieldCheck,
+    },
+    {
+      role: "writer",
+      title: isAr ? "كاتب أفكار" : "Idea Writer",
+      tag: "Ideas",
+      desc: isAr
+        ? "ابتكار أفكار فيديوهات، تحديات، وفعاليات إبداعية لصناع المحتوى والكلان."
+        : "Brainstorm creative video concepts, challenges, and clan event ideas.",
+      perks: isAr
+        ? ["تنفيذ أفكارك بالمحتوى", "العمل مع صناع المحتوى", "بيئة إبداعية"]
+        : ["See ideas produced", "Work with creators", "Creative environment"],
+      icon: Lightbulb,
     },
   ];
 
   return (
-    <div className="space-y-8" dir={locale === "ar" ? "rtl" : "ltr"}>
+    <div className="space-y-8" dir={isAr ? "rtl" : "ltr"}>
       {/* Founder / Leader Card */}
       <Reveal>
         <div
@@ -124,17 +165,17 @@ export default function SolarRoster({
               <div className="mt-4 flex flex-wrap items-center justify-center sm:justify-start gap-4 text-xs text-[var(--accent-secondary)]">
                 <span className="inline-flex items-center gap-1.5">
                   <Crown size={13} />
-                  {locale === "ar" ? "قائد الكلان" : "Clan Leader"}
+                  {isAr ? "قائد الكلان" : "Clan Leader"}
                 </span>
                 <span className="text-[var(--text-muted)]">•</span>
                 <span className="inline-flex items-center gap-1.5">
                   <Gamepad2 size={13} />
-                  {locale === "ar" ? "لاعب وصانع محتوى" : "Player & Creator"}
+                  {isAr ? "لاعب وصانع محتوى" : "Player & Creator"}
                 </span>
                 <span className="text-[var(--text-muted)]">•</span>
                 <span className="inline-flex items-center gap-1.5">
                   <Trophy size={13} />
-                  {locale === "ar" ? "إشراف مباشر على الفرق التنافسية" : "Direct Competitive Oversight"}
+                  {isAr ? "إشراف مباشر على الفرق التنافسية" : "Direct Competitive Oversight"}
                 </span>
               </div>
             </div>
@@ -142,49 +183,64 @@ export default function SolarRoster({
         </div>
       </Reveal>
 
-      {/* Divisions Grid */}
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      {/* Divisions Grid — 7 Available Clan Divisions */}
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {divisions.map((div, idx) => {
           const DivIcon = div.icon;
+          const isLastBanner = idx === divisions.length - 1;
           return (
-            <Reveal key={div.title} delay={idx * 0.05}>
+            <Reveal
+              key={div.role}
+              delay={idx * 0.04}
+              className={isLastBanner ? "sm:col-span-2 lg:col-span-3" : ""}
+            >
               <div
-                className="card-glow group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border p-6 transition-all duration-300 hover:-translate-y-1"
-                style={{ background: "var(--surface)", borderColor: "var(--border)" }}
+                className={`group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border p-5 transition-all duration-300 hover:-translate-y-1 hover:border-[var(--accent)]/50 ${
+                  isLastBanner ? "lg:flex-row lg:items-center lg:gap-6" : ""
+                }`}
+                style={{
+                  background: "var(--surface)",
+                  borderColor: "var(--border)",
+                }}
               >
-                <div>
-                  <div className="flex items-center justify-between">
-                    <div
-                      className="inline-flex h-11 w-11 items-center justify-center rounded-xl"
-                      style={{
-                        background: "color-mix(in srgb, var(--accent) 12%, transparent)",
-                        color: "var(--accent)",
-                        border: "1px solid var(--border)",
-                      }}
-                    >
-                      <DivIcon size={20} />
+                <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[var(--accent)]/40 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+
+                <div className={isLastBanner ? "flex-1" : ""}>
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="flex items-center gap-3">
+                      <div
+                        className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl transition-transform duration-300 group-hover:scale-105"
+                        style={{
+                          background: "color-mix(in srgb, var(--accent) 12%, transparent)",
+                          color: "var(--accent)",
+                          border: "1px solid var(--border)",
+                        }}
+                      >
+                        <DivIcon size={19} />
+                      </div>
+                      <h4 className="text-base font-bold text-[var(--text)] leading-snug">
+                        {div.title}
+                      </h4>
                     </div>
-                    <span className="rounded-full border border-[var(--border)] px-2.5 py-0.5 text-[11px] font-semibold text-[var(--text-muted)]">
+                    <span className="shrink-0 rounded-full border border-[var(--border)] bg-black/20 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-[var(--text-muted)]">
                       {div.tag}
                     </span>
                   </div>
-                  <h4 className="mt-4 text-lg font-bold text-[var(--text)]">{div.title}</h4>
-                  <p className="mt-2 text-xs text-[var(--text-muted)] leading-relaxed">
+
+                  <p className="mt-3 text-xs text-[var(--text-muted)] leading-relaxed">
                     {div.desc}
                   </p>
 
-                  <div className="mt-5 space-y-2 border-t border-[var(--border)] pt-4">
-                    <p className="text-xs font-semibold text-[var(--text)]">
-                      {locale === "ar" ? "مميزات الانضمام:" : "Perks & Benefits:"}
-                    </p>
-                    <ul className="space-y-1.5 text-xs text-[var(--text-muted)]">
-                      {div.perks.map((perk) => (
-                        <li key={perk} className="flex items-center gap-2">
-                          <Check size={13} style={{ color: "var(--accent)" }} />
-                          <span>{perk}</span>
-                        </li>
-                      ))}
-                    </ul>
+                  <div className="mt-4 flex flex-wrap gap-1.5">
+                    {div.perks.map((perk) => (
+                      <span
+                        key={perk}
+                        className="inline-flex items-center gap-1 rounded-lg border border-[var(--border)] bg-black/20 px-2.5 py-1 text-[11px] text-[var(--text-muted)]"
+                      >
+                        <Check size={11} style={{ color: "var(--accent)" }} />
+                        {perk}
+                      </span>
+                    ))}
                   </div>
                 </div>
 
@@ -192,9 +248,12 @@ export default function SolarRoster({
                   type="button"
                   onClick={() => onOpenApply(div.role)}
                   data-cursor="button"
-                  className="store-action w-full mt-6 text-xs"
+                  className={`inline-flex items-center justify-center gap-2 rounded-xl border border-[var(--border-strong)] bg-[var(--surface-elevated)] px-4 py-2.5 text-xs font-semibold text-[var(--text)] transition-all hover:border-[var(--accent)] hover:bg-[var(--accent)] hover:text-[#07080b] ${
+                    isLastBanner ? "mt-5 w-full lg:mt-0 lg:w-auto lg:shrink-0 lg:px-6" : "mt-5 w-full"
+                  }`}
                 >
-                  {locale === "ar" ? "تقديم على هذا القسم" : "Apply to this Division"}
+                  <span>{isAr ? "التقديم على هذا القسم" : "Apply to this Division"}</span>
+                  <ArrowUpRight size={14} />
                 </button>
               </div>
             </Reveal>
