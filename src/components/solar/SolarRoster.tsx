@@ -1,24 +1,19 @@
 "use client";
 
-import Image from "next/image";
 import { useLocale } from "next-intl";
 import Reveal from "@/components/ui/Reveal";
-import SolidIcon from "@/components/ui/SolidIcon";
 import {
   ArrowUpRight,
   Check,
-  Crown,
   Film,
   Gamepad2,
   Lightbulb,
   Palette,
   Radio,
   ShieldCheck,
-  Trophy,
   Video,
 } from "lucide-react";
 import type { SolarRole } from "@/lib/data/solar";
-import { solarCopy } from "@/lib/data/solar-copy";
 
 export default function SolarRoster({
   onOpenApply,
@@ -27,7 +22,6 @@ export default function SolarRoster({
 }) {
   const locale = useLocale();
   const isAr = locale === "ar";
-  const t = solarCopy(locale);
 
   const divisions: {
     role: SolarRole;
@@ -124,65 +118,7 @@ export default function SolarRoster({
   ];
 
   return (
-    <div className="space-y-8" dir={isAr ? "rtl" : "ltr"}>
-      {/* Founder / Leader Card */}
-      <Reveal>
-        <div
-          className="card-glow rounded-2xl border p-6 sm:p-8"
-          style={{ background: "var(--surface)", borderColor: "var(--border)" }}
-        >
-          <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6 text-center sm:text-start">
-            <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-2xl border border-[var(--border-strong)] p-2 bg-[var(--surface-elevated)]">
-              <Image
-                src="/assets/site/server-logo.png"
-                alt={t.founderName}
-                width={80}
-                height={80}
-                className="h-full w-full object-contain"
-              />
-            </div>
-            <div className="flex-1">
-              <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
-                <span
-                  className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold"
-                  style={{
-                    background: "color-mix(in srgb, var(--accent) 12%, transparent)",
-                    color: "var(--accent)",
-                    border: "1px solid var(--border)",
-                  }}
-                >
-                  <SolidIcon name="trophy" size={12} />
-                  {t.founderTag}
-                </span>
-                <span className="rounded-full border border-[var(--border)] px-3 py-1 text-xs text-[var(--text-muted)]">
-                  {t.founderRole}
-                </span>
-              </div>
-              <h3 className="mt-2 text-2xl font-bold text-[var(--text)]">{t.founderName}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-[var(--text-muted)] max-w-2xl">
-                {t.founderBio}
-              </p>
-              <div className="mt-4 flex flex-wrap items-center justify-center sm:justify-start gap-4 text-xs text-[var(--accent-secondary)]">
-                <span className="inline-flex items-center gap-1.5">
-                  <Crown size={13} />
-                  {isAr ? "قائد الكلان" : "Clan Leader"}
-                </span>
-                <span className="text-[var(--text-muted)]">•</span>
-                <span className="inline-flex items-center gap-1.5">
-                  <Gamepad2 size={13} />
-                  {isAr ? "لاعب وصانع محتوى" : "Player & Creator"}
-                </span>
-                <span className="text-[var(--text-muted)]">•</span>
-                <span className="inline-flex items-center gap-1.5">
-                  <Trophy size={13} />
-                  {isAr ? "إشراف مباشر على الفرق التنافسية" : "Direct Competitive Oversight"}
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </Reveal>
-
+    <div dir={isAr ? "rtl" : "ltr"}>
       {/* Divisions Grid — 7 Available Clan Divisions */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {divisions.map((div, idx) => {
