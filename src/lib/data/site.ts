@@ -13,8 +13,8 @@ export const SITE = {
 } as const;
 
 export const NAV_LINKS = [
-  { key: "solar", label: "Solar", href: "/solar", icon: "trophy" },
   { key: "home", label: "Home", href: "/", icon: "home" },
+  { key: "solar", label: "Solar", href: "/solar", icon: "trophy" },
   { key: "minecraft", label: "Minecraft", href: "/minecraft", icon: "cube" },
   { key: "modpacks", label: "Modpacks", href: "/modpacks", icon: "package" },
   { key: "fortnite", label: "Fortnite", href: "/fortnite", icon: "map" },
