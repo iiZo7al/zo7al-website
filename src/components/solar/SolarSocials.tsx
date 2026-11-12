@@ -88,15 +88,6 @@ export default function SolarSocials() {
                 </p>
               )}
 
-              {item.code && (
-                <p
-                  dir="ltr"
-                  className="mt-1 text-xs font-mono font-semibold text-[var(--accent-secondary)] text-right"
-                >
-                  Code: {item.code}
-                </p>
-              )}
-
               <p className="mt-2 text-sm text-[var(--text-muted)] leading-relaxed">
                 {item.badge}
               </p>
