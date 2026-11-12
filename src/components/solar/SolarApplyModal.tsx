@@ -3,7 +3,9 @@
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import SolidIcon from "@/components/ui/SolidIcon";
-import { Check } from "lucide-react";
+import { Check, LockKeyhole, UserCheck, LogIn } from "lucide-react";
+import { useAccount } from "@/components/account/AccountProvider";
+import AccountLogin from "@/components/account/AccountLogin";
 import type {
   SolarRole,
   SolarAdminSubType,
@@ -15,13 +17,21 @@ export default function SolarApplyModal({
   isOpen,
   onClose,
   initialRole = "creator",
+  settings,
 }: {
   isOpen: boolean;
   onClose: () => void;
   initialRole?: SolarRole;
+  settings?: {
+    isOpen: boolean;
+    announcement: string;
+    closedRoles: SolarRole[];
+  } | null;
 }) {
   const dialog = useRef<HTMLDialogElement>(null);
-  const [name, setName] = useState("");
+  const { account } = useAccount();
+  const [showLogin, setShowLogin] = useState(false);
+  const [name, setName] = useState(account?.name ?? "");
   const [discord, setDiscord] = useState("");
   const [whatsapp, setWhatsapp] = useState("");
   const [bio, setBio] = useState("");
@@ -86,7 +96,13 @@ export default function SolarApplyModal({
       });
       const data = await res.json();
       if (!res.ok || !data.ok) {
-        if (data.error === "RATE_LIMIT") {
+        if (data.error === "AUTH_REQUIRED") {
+          setError("يجب تسجيل الدخول بحسابك أولاً لإتمام التقديم.");
+        } else if (data.error === "RECRUITMENT_CLOSED") {
+          setError("التقديم على كلان Solar مغلق حالياً من قِبل الإدارة.");
+        } else if (data.error === "ROLE_CLOSED") {
+          setError("التقديم على هذا القسم مغلق مؤقتاً.");
+        } else if (data.error === "RATE_LIMIT") {
           setError("لقد أرسلت طلباً مؤخراً. يرجى الانتظار قليلاً قبل المحاولة مجدداً.");
         } else if (data.error === "ALREADY_APPLIED") {
           setError("لديك طلب انضمام قيد المراجعة بالفعل.");
@@ -193,8 +209,128 @@ export default function SolarApplyModal({
               </button>
             </div>
           </div>
+        ) : settings && !settings.isOpen ? (
+          <div className="space-y-6 text-center py-6">
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl border border-rose-500/30 bg-rose-500/10 text-rose-400">
+              <LockKeyhole size={30} />
+            </div>
+
+            <div className="space-y-2 max-w-md mx-auto">
+              <h3 className="text-xl sm:text-2xl font-bold text-[var(--text)]">
+                التقديم مغلق حالياً
+              </h3>
+              <p className="text-sm text-[var(--text-muted)] leading-relaxed">
+                {settings.announcement ||
+                  "باب الانضمام لكلان Solar System مغلق مؤقتاً في الوقت الحالي. تابع حسابات الكلان للإعلان عن فتح التقديم مجدداً."}
+              </p>
+            </div>
+
+            <div className="flex justify-center pt-2">
+              <button
+                type="button"
+                onClick={onClose}
+                className="inline-flex items-center justify-center rounded-xl border border-[var(--border)] px-7 py-3 text-sm font-medium text-[var(--text-muted)] hover:text-[var(--text)] transition-colors cursor-pointer"
+              >
+                إغلاق
+              </button>
+            </div>
+          </div>
+        ) : !account ? (
+          <div className="space-y-6 text-center py-6">
+            <div
+              className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl border"
+              style={{
+                background: "color-mix(in srgb, var(--accent) 15%, transparent)",
+                borderColor: "color-mix(in srgb, var(--accent) 30%, transparent)",
+                color: "var(--accent)",
+              }}
+            >
+              <LockKeyhole size={30} />
+            </div>
+
+            <div className="space-y-2 max-w-md mx-auto">
+              <h3 className="text-xl sm:text-2xl font-bold text-[var(--text)]">
+                تسجيل الدخول مطلوب للتقديم
+              </h3>
+              <p className="text-sm text-[var(--text-muted)] leading-relaxed">
+                للتقديم على الانضمام لكلان Solar ومتابعة حالة طلبك بشكل مباشر عبر حسابك، يرجى تسجيل الدخول أولاً.
+              </p>
+            </div>
+
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+              <button
+                type="button"
+                onClick={() => setShowLogin(true)}
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl px-7 py-3 text-sm font-semibold transition-transform active:scale-95 cursor-pointer"
+                style={{ background: "var(--accent)", color: "#07080b" }}
+              >
+                <LogIn size={15} />
+                تسجيل الدخول الآن
+              </button>
+
+              <button
+                type="button"
+                onClick={onClose}
+                className="w-full sm:w-auto inline-flex items-center justify-center rounded-xl border border-[var(--border)] px-6 py-3 text-sm font-medium text-[var(--text-muted)] hover:text-[var(--text)] transition-colors cursor-pointer"
+              >
+                إلغاء
+              </button>
+            </div>
+
+            {showLogin && (
+              <AccountLogin
+                next="/solar"
+                onClose={() => setShowLogin(false)}
+              />
+            )}
+          </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Announcement if set */}
+            {settings?.announcement && (
+              <div
+                className="rounded-xl border p-3 text-xs leading-relaxed"
+                style={{
+                  background: "color-mix(in srgb, var(--accent) 12%, transparent)",
+                  borderColor: "var(--border)",
+                  color: "var(--text)",
+                }}
+              >
+                <strong className="text-[var(--accent)] block mb-0.5">تنبيه من إدارة الكلان:</strong>
+                {settings.announcement}
+              </div>
+            )}
+
+            {/* Account Info Badge */}
+            <div className="flex items-center justify-between rounded-xl border border-[var(--border)] bg-black/20 p-3 text-xs">
+              <div className="flex items-center gap-2">
+                <div
+                  className="flex h-7 w-7 items-center justify-center rounded-lg"
+                  style={{
+                    background: "color-mix(in srgb, var(--accent) 15%, transparent)",
+                    color: "var(--accent)",
+                  }}
+                >
+                  <UserCheck size={15} />
+                </div>
+                <div>
+                  <p className="text-[var(--text-muted)]">مقدّم بحساب</p>
+                  <p className="font-semibold text-[var(--text)]">
+                    {account.name || account.username || account.email}
+                  </p>
+                </div>
+              </div>
+              <span
+                className="rounded-full px-2.5 py-0.5 text-[11px] font-medium"
+                style={{
+                  background: "color-mix(in srgb, var(--accent) 12%, transparent)",
+                  color: "var(--accent)",
+                }}
+              >
+                حساب موثق
+              </span>
+            </div>
+
             {error && (
               <div
                 className="rounded-xl border p-3 text-sm text-red-400"
@@ -266,12 +402,24 @@ export default function SolarApplyModal({
                   onChange={(e) => setRole(e.target.value as SolarRole)}
                   className="w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] px-3.5 py-2.5 text-sm text-[var(--text)] outline-none transition-colors focus:border-[var(--accent)]"
                 >
-                  <option value="creator">صانع محتوى (Content Creator)</option>
-                  <option value="streamer">ستريمر (Streamer)</option>
-                  <option value="admin">إداري / مشرف (Staff)</option>
-                  <option value="writer">كاتب أفكار (Idea Writer)</option>
-                  <option value="editor">ممنتج (Video Editor)</option>
-                  <option value="designer">مصمم (Graphic Designer)</option>
+                  <option value="creator" disabled={settings?.closedRoles.includes("creator")}>
+                    صانع محتوى (Content Creator) {settings?.closedRoles.includes("creator") ? "— (مغلق مؤقتاً)" : ""}
+                  </option>
+                  <option value="streamer" disabled={settings?.closedRoles.includes("streamer")}>
+                    ستريمر (Streamer) {settings?.closedRoles.includes("streamer") ? "— (مغلق مؤقتاً)" : ""}
+                  </option>
+                  <option value="admin" disabled={settings?.closedRoles.includes("admin")}>
+                    إداري / مشرف (Staff) {settings?.closedRoles.includes("admin") ? "— (مغلق مؤقتاً)" : ""}
+                  </option>
+                  <option value="writer" disabled={settings?.closedRoles.includes("writer")}>
+                    كاتب أفكار (Idea Writer) {settings?.closedRoles.includes("writer") ? "— (مغلق مؤقتاً)" : ""}
+                  </option>
+                  <option value="editor" disabled={settings?.closedRoles.includes("editor")}>
+                    ممنتج (Video Editor) {settings?.closedRoles.includes("editor") ? "— (مغلق مؤقتاً)" : ""}
+                  </option>
+                  <option value="designer" disabled={settings?.closedRoles.includes("designer")}>
+                    مصمم (Graphic Designer) {settings?.closedRoles.includes("designer") ? "— (مغلق مؤقتاً)" : ""}
+                  </option>
                 </select>
               </div>
             </div>

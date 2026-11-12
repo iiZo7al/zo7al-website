@@ -8,6 +8,7 @@ import {
 } from "@/lib/server/site-security";
 import { validateSolarApplication } from "@/lib/data/solar";
 import { webhookUrl } from "@/lib/server/creator-applications";
+import { getSolarSettings } from "@/lib/server/solar-settings";
 
 export const runtime = "nodejs";
 
@@ -52,13 +53,28 @@ export async function POST(request: Request) {
 
   try {
     const user = await accountUser(request, headers);
+    if (!user) {
+      return Response.json(
+        { error: "AUTH_REQUIRED" },
+        { status: 401, headers: privateHeaders },
+      );
+    }
+
+    const settings = await getSolarSettings();
+    if (!settings.isOpen) {
+      return Response.json(
+        { error: "RECRUITMENT_CLOSED" },
+        { status: 403, headers: privateHeaders },
+      );
+    }
+
     const ip =
       request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
       "unknown";
 
     if (
       !(await limitAttempt("solar-apply:ip:" + ip, 4, 900)) ||
-      (user && !(await limitAttempt("solar-apply:user:" + user.id, 3, 900)))
+      !(await limitAttempt("solar-apply:user:" + user.id, 3, 900))
     ) {
       return Response.json(
         { error: "RATE_LIMIT" },
@@ -75,6 +91,13 @@ export async function POST(request: Request) {
       );
     }
 
+    if (settings.closedRoles.includes(application.role)) {
+      return Response.json(
+        { error: "ROLE_CLOSED" },
+        { status: 403, headers: privateHeaders },
+      );
+    }
+
     const payload = {
       ...application,
       platform: "solar",
@@ -88,7 +111,7 @@ export async function POST(request: Request) {
         "application",
         payload,
         undefined,
-        user?.id ?? null,
+        user.id,
       );
     } catch (err) {
       if (err instanceof Error && err.message === "ALREADY_APPLIED") {

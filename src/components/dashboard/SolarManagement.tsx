@@ -1,0 +1,901 @@
+"use client";
+
+import { useEffect, useState, useMemo } from "react";
+import Image from "next/image";
+import { useLocale, useTranslations } from "next-intl";
+import {
+  Users,
+  CheckCircle2,
+  Clock,
+  XCircle,
+  ExternalLink,
+  Copy,
+  Check,
+  Send,
+  Sliders,
+  Search,
+  RefreshCw,
+} from "lucide-react";
+import MarkdownContent from "@/components/ui/MarkdownContent";
+import type { DashboardData, Mutate, RequestRow } from "./types";
+import type { SolarRole } from "@/lib/data/solar";
+import type { SolarSettings } from "@/lib/server/solar-settings";
+
+const ROLE_LABELS: Record<string, string> = {
+  creator: "صانع محتوى (Content Creator)",
+  streamer: "ستريمر (Streamer)",
+  admin: "إداري / تنافسي (Staff & Competitive)",
+  writer: "كاتب أفكار (Idea Writer)",
+  editor: "ممنتج فيديو (Video Editor)",
+  designer: "مصمم جرافيك (Designer)",
+};
+
+const SUBTYPE_LABELS: Record<string, string> = {
+  exec_supervisor: "مشرف تنفيذي",
+  dept_supervisor: "مشرف أقسام",
+  general_admin: "إدارة عامة",
+  admin_monitor: "مراقب إدارة",
+  creators_supervisor: "مشرف صناع محتوى",
+  creators_admin: "إداري صناع محتوى",
+  designers_supervisor: "مشرف مصممين",
+  players_supervisor: "مشرف لاعبين",
+  players_admin: "إداري لاعبين",
+  editors_supervisor: "مشرف ممنتجين",
+  streamers_supervisor: "مشرف ستريمرز",
+};
+
+const GAME_LABELS: Record<string, string> = {
+  fortnite: "فورتنايت (Fortnite)",
+  rocket: "روكيت ليق (Rocket League)",
+  minecraft: "ماينكرافت (Minecraft)",
+  fifa: "فيفا / FC (FIFA)",
+};
+
+const ALL_ROLES: { id: SolarRole; label: string }[] = [
+  { id: "creator", label: "صناع المحتوى" },
+  { id: "streamer", label: "الستريمرز" },
+  { id: "admin", label: "الإدارة والإشراف / الفريق التنافسي" },
+  { id: "editor", label: "المونتاج" },
+  { id: "designer", label: "التصميم" },
+  { id: "writer", label: "كتاب الأفكار" },
+];
+
+export default function SolarManagement({
+  data,
+  busy,
+  mutate,
+  onExpired,
+  onReload,
+}: {
+  data: DashboardData;
+  busy: boolean;
+  mutate: Mutate;
+  onExpired: () => void;
+  onReload: () => void;
+}) {
+  const [activeTab, setActiveTab] = useState<"applicants" | "settings">("applicants");
+  const [query, setQuery] = useState("");
+  const [statusFilter, setStatusFilter] = useState<string>("");
+  const [roleFilter, setRoleFilter] = useState<string>("");
+  const [copiedId, setCopiedId] = useState<string | null>(null);
+
+  // Settings State
+  const [settings, setSettings] = useState<SolarSettings | null>(null);
+  const [loadingSettings, setLoadingSettings] = useState(true);
+  const [savingSettings, setSavingSettings] = useState(false);
+  const [settingsMessage, setSettingsMessage] = useState<string | null>(null);
+
+  // Filter solar applications
+  const solarApplications = useMemo(() => {
+    return data.requests.filter(
+      (r) =>
+        r.kind === "application" &&
+        (r.payload.platform === "solar" ||
+          (r.payload.subject && String(r.payload.subject).includes("Solar")))
+    );
+  }, [data.requests]);
+
+  // Statistics
+  const stats = useMemo(() => {
+    const total = solarApplications.length;
+    const pending = solarApplications.filter((r) => r.status === "pending").length;
+    const accepted = solarApplications.filter((r) => r.status === "accepted").length;
+    const rejected = solarApplications.filter((r) => r.status === "rejected").length;
+    return { total, pending, accepted, rejected };
+  }, [solarApplications]);
+
+  // Load Settings
+  useEffect(() => {
+    const controller = new AbortController();
+    fetch("/api/admin/solar/settings", { signal: controller.signal, cache: "no-store" })
+      .then((res) => {
+        if (res.status === 401) {
+          onExpired();
+          return null;
+        }
+        if (!res.ok) throw new Error();
+        return res.json();
+      })
+      .then((res) => {
+        if (res?.ok && res.settings) {
+          setSettings(res.settings);
+        }
+      })
+      .catch(() => {})
+      .finally(() => setLoadingSettings(false));
+
+    return () => controller.abort();
+  }, [onExpired]);
+
+  const handleSaveSettings = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!settings || savingSettings) return;
+
+    setSavingSettings(true);
+    setSettingsMessage(null);
+
+    try {
+      const res = await fetch("/api/admin/solar/settings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(settings),
+      });
+
+      if (res.status === 401) {
+        onExpired();
+        return;
+      }
+
+      const resData = await res.json();
+      if (!res.ok || !resData.ok) {
+        throw new Error();
+      }
+
+      setSettings(resData.settings);
+      setSettingsMessage("تم حفظ إعدادات التقديم بنجاح!");
+    } catch {
+      setSettingsMessage("تعذر حفظ الإعدادات، يرجى المحاولة مجدداً.");
+    } finally {
+      setSavingSettings(false);
+    }
+  };
+
+  const copyToClipboard = (text: string, id: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedId(id);
+    setTimeout(() => setCopiedId(null), 2000);
+  };
+
+  const matches = (r: RequestRow) => {
+    const searchString = `${JSON.stringify(r.payload)} ${r.id} ${r.note}`.toLowerCase();
+    const q = query.trim().toLowerCase();
+    const matchesQuery = !q || searchString.includes(q);
+    const matchesStatus = !statusFilter || r.status === statusFilter;
+    const matchesRole = !roleFilter || String(r.payload.role) === roleFilter;
+    return matchesQuery && matchesStatus && matchesRole;
+  };
+
+  const filteredRows = solarApplications.filter(matches);
+
+  return (
+    <div className="space-y-8" dir="rtl">
+      {/* Header Banner */}
+      <section className="dash-panel card-glow p-6 sm:p-8 rounded-2xl border border-[var(--border)] bg-[var(--surface)]">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+          <div className="flex items-center gap-4">
+            <div className="relative h-16 w-16 shrink-0 overflow-hidden drop-shadow-[0_8px_16px_rgba(255,122,0,0.3)]">
+              <Image
+                src="/assets/site/solar-clan-logo.png"
+                alt="Solar System Team Logo"
+                width={64}
+                height={64}
+                priority
+                className="h-full w-full object-contain"
+              />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <h1 className="text-2xl font-bold text-[var(--text)]">
+                  إدارة كلان Solar System
+                </h1>
+                <span
+                  className="rounded-full px-2.5 py-0.5 text-xs font-semibold"
+                  style={{
+                    background: "color-mix(in srgb, var(--accent) 15%, transparent)",
+                    color: "var(--accent)",
+                  }}
+                >
+                  Solar Clan
+                </span>
+              </div>
+              <p className="mt-1 text-sm text-[var(--text-muted)]">
+                مراجعة طلبات الانضمام للكلان، تحديث حالة المتقدمين، وتعديل إعدادات التقديم المتاحة.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setActiveTab("applicants")}
+              className={`inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all ${
+                activeTab === "applicants"
+                  ? "bg-[var(--accent)] text-[#07080b]"
+                  : "border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text)]"
+              }`}
+            >
+              <Users size={16} />
+              طلبات التقديم ({stats.total})
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setActiveTab("settings")}
+              className={`inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all ${
+                activeTab === "settings"
+                  ? "bg-[var(--accent)] text-[#07080b]"
+                  : "border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text)]"
+              }`}
+            >
+              <Sliders size={16} />
+              إعدادات التقديم
+            </button>
+
+            <button
+              type="button"
+              onClick={onReload}
+              title="تحديث البيانات"
+              className="inline-flex items-center justify-center rounded-xl border border-[var(--border)] p-2.5 text-[var(--text-muted)] hover:text-[var(--text)] transition-all cursor-pointer"
+            >
+              <RefreshCw size={16} />
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* Tab 1: Applicants Review */}
+      {activeTab === "applicants" && (
+        <section className="space-y-6">
+          {/* Stats Bar */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <button
+              type="button"
+              onClick={() => setStatusFilter("")}
+              className={`dash-panel card-glow p-4 rounded-xl border text-right transition-all ${
+                statusFilter === "" ? "border-[var(--accent)]" : "border-[var(--border)]"
+              }`}
+            >
+              <div className="flex items-center justify-between text-xs text-[var(--text-muted)]">
+                <span>إجمالي الطلبات</span>
+                <Users size={16} />
+              </div>
+              <strong className="mt-2 block text-2xl font-bold text-[var(--text)]">
+                {stats.total}
+              </strong>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setStatusFilter("pending")}
+              className={`dash-panel card-glow p-4 rounded-xl border text-right transition-all ${
+                statusFilter === "pending"
+                  ? "border-amber-500"
+                  : "border-[var(--border)]"
+              }`}
+            >
+              <div className="flex items-center justify-between text-xs text-amber-400">
+                <span>قيد المراجعة</span>
+                <Clock size={16} />
+              </div>
+              <strong className="mt-2 block text-2xl font-bold text-amber-400">
+                {stats.pending}
+              </strong>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setStatusFilter("accepted")}
+              className={`dash-panel card-glow p-4 rounded-xl border text-right transition-all ${
+                statusFilter === "accepted"
+                  ? "border-emerald-500"
+                  : "border-[var(--border)]"
+              }`}
+            >
+              <div className="flex items-center justify-between text-xs text-emerald-400">
+                <span>تم القبول</span>
+                <CheckCircle2 size={16} />
+              </div>
+              <strong className="mt-2 block text-2xl font-bold text-emerald-400">
+                {stats.accepted}
+              </strong>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setStatusFilter("rejected")}
+              className={`dash-panel card-glow p-4 rounded-xl border text-right transition-all ${
+                statusFilter === "rejected"
+                  ? "border-rose-500"
+                  : "border-[var(--border)]"
+              }`}
+            >
+              <div className="flex items-center justify-between text-xs text-rose-400">
+                <span>مرفوضة</span>
+                <XCircle size={16} />
+              </div>
+              <strong className="mt-2 block text-2xl font-bold text-rose-400">
+                {stats.rejected}
+              </strong>
+            </button>
+          </div>
+
+          {/* Filters Bar */}
+          <div className="flex flex-wrap items-center gap-3">
+            <div className="relative flex-1 min-w-[240px]">
+              <Search
+                size={16}
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[var(--text-muted)]"
+              />
+              <input
+                type="text"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="ابحث بالاسم، الديسكورد، الواتساب أو رقم الطلب..."
+                className="dash-search w-full pr-10"
+              />
+            </div>
+
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              className="rounded-xl border border-[var(--border)] bg-[var(--surface)] px-4 py-2.5 text-sm text-[var(--text)]"
+            >
+              <option value="">جميع الحالات</option>
+              <option value="pending">قيد المراجعة</option>
+              <option value="accepted">تم القبول</option>
+              <option value="rejected">مرفوض</option>
+            </select>
+
+            <select
+              value={roleFilter}
+              onChange={(e) => setRoleFilter(e.target.value)}
+              className="rounded-xl border border-[var(--border)] bg-[var(--surface)] px-4 py-2.5 text-sm text-[var(--text)]"
+            >
+              <option value="">جميع الأقسام</option>
+              <option value="creator">صناع المحتوى</option>
+              <option value="streamer">الستريمرز</option>
+              <option value="admin">الإدارة / التنافسي</option>
+              <option value="editor">المونتاج</option>
+              <option value="designer">التصميم</option>
+              <option value="writer">كتاب الأفكار</option>
+            </select>
+          </div>
+
+          {/* Applications Grid */}
+          <div className="grid gap-5 md:grid-cols-2">
+            {filteredRows.map((row) => (
+              <SolarApplicantCard
+                key={row.id + ":" + row.status + ":" + row.note}
+                row={row}
+                busy={busy}
+                copiedId={copiedId}
+                onCopy={copyToClipboard}
+                onSave={(value) => mutate("review", value)}
+                onRetry={() => mutate("retryApplication", row.id)}
+              />
+            ))}
+          </div>
+
+          {!filteredRows.length && (
+            <div className="dash-panel card-glow rounded-2xl border border-[var(--border)] p-12 text-center">
+              <Users size={36} className="mx-auto text-[var(--text-muted)] opacity-40 mb-3" />
+              <p className="text-base font-medium text-[var(--text)]">
+                لا توجد طلبات تقديم مطابقة للبحث أو الفلتر
+              </p>
+              <p className="text-xs text-[var(--text-muted)] mt-1">
+                طلبات الانضمام الجديدة لكلان Solar ستظهر هنا بمجرد تقديمها عبر الموقع.
+              </p>
+            </div>
+          )}
+        </section>
+      )}
+
+      {/* Tab 2: Recruitment Settings ("حق التقديم") */}
+      {activeTab === "settings" && (
+        <section className="dash-panel card-glow rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 sm:p-8">
+          <div className="border-b border-[var(--border)] pb-5 mb-6">
+            <h2 className="text-xl font-bold text-[var(--text)]">
+              إعدادات وحالة التقديم لكلان Solar
+            </h2>
+            <p className="mt-1 text-sm text-[var(--text-muted)]">
+              تحكم في فتح وإغلاق التقديم العام، وتفعيل أو إيقاف التقديم على أقسام ورتب معينة، وإضافة إعلانات تظهر للمتقدمين.
+            </p>
+          </div>
+
+          {loadingSettings ? (
+            <div className="p-12 text-center text-[var(--text-muted)]">
+              <RefreshCw size={24} className="dash-spinning mx-auto mb-2" />
+              جاري تحميل إعدادات التقديم...
+            </div>
+          ) : !settings ? (
+            <div className="p-8 text-center text-red-400">
+              تعذر تحميل إعدادات التقديم.
+            </div>
+          ) : (
+            <form onSubmit={handleSaveSettings} className="space-y-6">
+              {settingsMessage && (
+                <div
+                  className={`rounded-xl border p-4 text-sm ${
+                    settingsMessage.includes("بنجاح")
+                      ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-400"
+                      : "border-red-500/30 bg-red-500/10 text-red-400"
+                  }`}
+                >
+                  {settingsMessage}
+                </div>
+              )}
+
+              {/* General Toggle */}
+              <div className="flex items-center justify-between rounded-xl border border-[var(--border)] bg-black/20 p-5">
+                <div>
+                  <h3 className="font-semibold text-base text-[var(--text)]">
+                    حالة التقديم العامة للكلان
+                  </h3>
+                  <p className="text-xs text-[var(--text-muted)] mt-1">
+                    عند إغلاق التقديم، لن يتمكن أي زائر من تقديم طلب جديد وسيظهر تنبيه بأن التقديم مغلق.
+                  </p>
+                </div>
+
+                <label className="relative inline-flex items-center cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={settings.isOpen}
+                    onChange={(e) =>
+                      setSettings({ ...settings, isOpen: e.target.checked })
+                    }
+                    className="sr-only peer"
+                  />
+                  <div className="w-14 h-8 bg-zinc-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[4px] after:start-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-[var(--accent)]"></div>
+                  <span className="mr-3 text-sm font-bold">
+                    {settings.isOpen ? (
+                      <span className="text-emerald-400">مفتوح</span>
+                    ) : (
+                      <span className="text-rose-400">مغلق</span>
+                    )}
+                  </span>
+                </label>
+              </div>
+
+              {/* Per-Division Toggles */}
+              <div className="rounded-xl border border-[var(--border)] bg-black/20 p-5 space-y-4">
+                <div>
+                  <h3 className="font-semibold text-base text-[var(--text)]">
+                    التقديم حسب الأقسام والرتب
+                  </h3>
+                  <p className="text-xs text-[var(--text-muted)] mt-1">
+                    حدد الأقسام المتاحة للتقديم حالياً، ويمكنك إغلاق أي قسم مكتمل لا يستقبل أعضاء جدد.
+                  </p>
+                </div>
+
+                <div className="grid gap-3 sm:grid-cols-2">
+                  {ALL_ROLES.map((role) => {
+                    const isClosed = settings.closedRoles.includes(role.id);
+                    return (
+                      <label
+                        key={role.id}
+                        className={`flex items-center justify-between rounded-xl border p-4 transition-all cursor-pointer ${
+                          isClosed
+                            ? "border-[var(--border)] bg-zinc-900/40 opacity-75"
+                            : "border-[var(--accent)]/40 bg-[var(--surface)]"
+                        }`}
+                      >
+                        <div className="flex items-center gap-3">
+                          <input
+                            type="checkbox"
+                            checked={!isClosed}
+                            onChange={(e) => {
+                              const checked = e.target.checked;
+                              const updatedClosed = checked
+                                ? settings.closedRoles.filter((r) => r !== role.id)
+                                : [...settings.closedRoles, role.id];
+                              setSettings({
+                                ...settings,
+                                closedRoles: updatedClosed,
+                              });
+                            }}
+                            className="h-4 w-4 rounded accent-[var(--accent)]"
+                          />
+                          <span className="text-sm font-semibold text-[var(--text)]">
+                            {role.label}
+                          </span>
+                        </div>
+
+                        <span
+                          className={`text-xs px-2.5 py-0.5 rounded-full font-semibold ${
+                            isClosed
+                              ? "bg-rose-500/10 text-rose-400 border border-rose-500/20"
+                              : "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
+                          }`}
+                        >
+                          {isClosed ? "مغلق" : "متاح للتقديم"}
+                        </span>
+                      </label>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Announcement / Message to Applicants */}
+              <div className="space-y-2">
+                <label className="block text-sm font-semibold text-[var(--text)]">
+                  إعلان أو تنبيه التقديم (اختياري)
+                </label>
+                <p className="text-xs text-[var(--text-muted)]">
+                  رسالة تظهر في أعلى نافذة التقديم (مثل: &quot;نبحث حالياً عن لاعبين تنافسيين لفريق فورتنايت ومحرري فيديو&quot;).
+                </p>
+                <input
+                  type="text"
+                  value={settings.announcement}
+                  onChange={(e) =>
+                    setSettings({ ...settings, announcement: e.target.value })
+                  }
+                  maxLength={500}
+                  placeholder="اكتب إعلاناً أو تنبيهاً يظهر للمتقدمين..."
+                  className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] p-3 text-sm text-[var(--text)] focus:border-[var(--accent)] focus:outline-none"
+                />
+              </div>
+
+              {/* Requirements & Guidelines */}
+              <div className="space-y-2">
+                <label className="block text-sm font-semibold text-[var(--text)]">
+                  شروط وملاحظات التقديم
+                </label>
+                <p className="text-xs text-[var(--text-muted)]">
+                  تعليمات توضح شروط القبول ومتطلبات كل رتبة.
+                </p>
+                <textarea
+                  value={settings.requirements}
+                  onChange={(e) =>
+                    setSettings({ ...settings, requirements: e.target.value })
+                  }
+                  maxLength={2000}
+                  rows={4}
+                  placeholder="مثال: يرجى إرفاق رابط القناة أو البث والتأكد من إمكانية التواصل عبر الديسكورد..."
+                  className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] p-3 text-sm text-[var(--text)] focus:border-[var(--accent)] focus:outline-none"
+                />
+              </div>
+
+              <div className="flex items-center gap-3 pt-3">
+                <button
+                  type="submit"
+                  disabled={savingSettings}
+                  className="inline-flex items-center gap-2 rounded-xl px-7 py-3 text-sm font-bold transition-all active:scale-95 cursor-pointer"
+                  style={{ background: "var(--accent)", color: "#07080b" }}
+                >
+                  {savingSettings ? (
+                    <>
+                      <RefreshCw size={16} className="dash-spinning" />
+                      جاري الحفظ...
+                    </>
+                  ) : (
+                    <>
+                      <Check size={16} />
+                      حفظ إعدادات التقديم
+                    </>
+                  )}
+                </button>
+              </div>
+            </form>
+          )}
+        </section>
+      )}
+    </div>
+  );
+}
+
+function SolarApplicantCard({
+  row,
+  busy,
+  copiedId,
+  onCopy,
+  onSave,
+  onRetry,
+}: {
+  row: RequestRow;
+  busy: boolean;
+  copiedId: string | null;
+  onCopy: (text: string, id: string) => void;
+  onSave: (value: unknown) => Promise<boolean>;
+  onRetry: () => Promise<boolean>;
+}) {
+  const t = useTranslations("hub");
+  const locale = useLocale();
+
+  const [status, setStatus] = useState(row.status);
+  const [note, setNote] = useState(row.note);
+  const [saving, setSaving] = useState(false);
+
+  const payload = row.payload as Record<string, unknown>;
+  const name = typeof payload.name === "string" ? payload.name : "متقدم بدون اسم";
+  const role = typeof payload.role === "string" ? payload.role : "creator";
+  const roleName = ROLE_LABELS[role] || role;
+  const adminSubType =
+    typeof payload.adminSubType === "string"
+      ? SUBTYPE_LABELS[payload.adminSubType] || payload.adminSubType
+      : null;
+  const game =
+    typeof payload.game === "string"
+      ? GAME_LABELS[payload.game] || payload.game
+      : null;
+  const discord = typeof payload.discord === "string" ? payload.discord : "";
+  const whatsapp = typeof payload.whatsapp === "string" ? payload.whatsapp : "";
+  const channelUrl = typeof payload.channelUrl === "string" ? payload.channelUrl : "";
+  const streamUrl = typeof payload.streamUrl === "string" ? payload.streamUrl : "";
+  const portfolioUrl = typeof payload.portfolioUrl === "string" ? payload.portfolioUrl : "";
+  const bio = typeof payload.bio === "string" ? payload.bio : "";
+
+  const handleFormSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSaving(true);
+    try {
+      await onSave({
+        id: row.id,
+        kind: row.kind,
+        status,
+        note,
+      });
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const whatsappClean = whatsapp ? whatsapp.replace(/[^0-9]/g, "") : null;
+
+  return (
+    <form
+      onSubmit={handleFormSubmit}
+      className="dash-panel card-glow rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5 space-y-4 text-right"
+    >
+      {/* Header */}
+      <div className="flex items-start justify-between gap-3 border-b border-[var(--border)] pb-3">
+        <div>
+          <div className="flex items-center gap-2">
+            <h3 className="font-bold text-lg text-[var(--text)]">
+              {name}
+            </h3>
+            <span
+              className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${
+                status === "accepted"
+                  ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
+                  : status === "rejected"
+                  ? "bg-rose-500/10 text-rose-400 border border-rose-500/20"
+                  : "bg-amber-500/10 text-amber-400 border border-amber-500/20"
+              }`}
+            >
+              {status === "accepted"
+                ? "مقبول"
+                : status === "rejected"
+                ? "مرفوض"
+                : "قيد المراجعة"}
+            </span>
+          </div>
+
+          <p className="text-xs text-[var(--text-muted)] mt-1">
+            {new Intl.DateTimeFormat(locale, {
+              dateStyle: "medium",
+              timeStyle: "short",
+              timeZone: "Asia/Riyadh",
+            }).format(new Date(row.createdAt))}
+          </p>
+        </div>
+
+        <span
+          className="rounded-lg px-2.5 py-1 text-xs font-bold shrink-0"
+          style={{
+            background: "color-mix(in srgb, var(--accent) 15%, transparent)",
+            color: "var(--accent)",
+            border: "1px solid var(--border)",
+          }}
+        >
+          {roleName.split(" ")[0]}
+        </span>
+      </div>
+
+      {/* Division & Specifics */}
+      <div className="flex flex-wrap gap-2 text-xs">
+        <span className="rounded-md border border-[var(--border)] bg-black/20 px-2 py-1 text-[var(--text-muted)]">
+          الرتبة: <strong className="text-[var(--text)]">{roleName}</strong>
+        </span>
+        {adminSubType && (
+          <span className="rounded-md border border-[var(--border)] bg-black/20 px-2 py-1 text-[var(--text-muted)]">
+            التخصص: <strong className="text-[var(--text)]">{adminSubType}</strong>
+          </span>
+        )}
+        {game && (
+          <span className="rounded-md border border-[var(--border)] bg-black/20 px-2 py-1 text-[var(--text-muted)]">
+            اللعبة: <strong className="text-[var(--text)]">{game}</strong>
+          </span>
+        )}
+      </div>
+
+      {/* Contact & Links */}
+      <div className="grid gap-2 sm:grid-cols-2 text-xs">
+        {/* Discord */}
+        <div className="flex items-center justify-between rounded-lg border border-[var(--border)] bg-black/20 p-2">
+          <span className="text-[var(--text-muted)]">الديسكورد:</span>
+          <div className="flex items-center gap-1.5">
+            <code dir="ltr" className="font-mono font-semibold text-[var(--text)]">
+              {discord || "—"}
+            </code>
+            {discord && (
+              <button
+                type="button"
+                onClick={() => onCopy(discord, `disc-${row.id}`)}
+                className="text-[var(--text-muted)] hover:text-[var(--text)]"
+                title="نسخ اسم الحساب"
+              >
+                {copiedId === `disc-${row.id}` ? (
+                  <Check size={13} className="text-emerald-400" />
+                ) : (
+                  <Copy size={13} />
+                )}
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* WhatsApp */}
+        <div className="flex items-center justify-between rounded-lg border border-[var(--border)] bg-black/20 p-2">
+          <span className="text-[var(--text-muted)]">الواتساب:</span>
+          {whatsappClean ? (
+            <a
+              href={`https://wa.me/${whatsappClean}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 text-emerald-400 hover:underline font-mono"
+            >
+              <span dir="ltr">{whatsapp}</span>
+              <ExternalLink size={12} />
+            </a>
+          ) : (
+            <span className="text-[var(--text-muted)]">—</span>
+          )}
+        </div>
+      </div>
+
+      {/* External URLs */}
+      {(channelUrl || streamUrl || portfolioUrl) && (
+        <div className="space-y-1.5 text-xs">
+          {channelUrl && (
+            <div className="flex items-center justify-between rounded-lg border border-[var(--border)] bg-black/20 p-2">
+              <span className="text-[var(--text-muted)]">رابط القناة:</span>
+              <a
+                href={channelUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 text-[var(--accent)] hover:underline truncate max-w-[200px]"
+              >
+                <span dir="ltr" className="truncate">{channelUrl}</span>
+                <ExternalLink size={12} />
+              </a>
+            </div>
+          )}
+          {streamUrl && (
+            <div className="flex items-center justify-between rounded-lg border border-[var(--border)] bg-black/20 p-2">
+              <span className="text-[var(--text-muted)]">رابط البث:</span>
+              <a
+                href={streamUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 text-[var(--accent)] hover:underline truncate max-w-[200px]"
+              >
+                <span dir="ltr" className="truncate">{streamUrl}</span>
+                <ExternalLink size={12} />
+              </a>
+            </div>
+          )}
+          {portfolioUrl && (
+            <div className="flex items-center justify-between rounded-lg border border-[var(--border)] bg-black/20 p-2">
+              <span className="text-[var(--text-muted)]">معرض الأعمال:</span>
+              <a
+                href={portfolioUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 text-[var(--accent)] hover:underline truncate max-w-[200px]"
+              >
+                <span dir="ltr" className="truncate">{portfolioUrl}</span>
+                <ExternalLink size={12} />
+              </a>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Bio */}
+      {bio && (
+        <div className="rounded-lg border border-[var(--border)] bg-black/20 p-3 text-xs space-y-1">
+          <p className="font-semibold text-[var(--text-muted)]">نبذة وخبرات سابقة وسبب الانضمام:</p>
+          <div className="text-[var(--text)] leading-relaxed whitespace-pre-wrap">
+            <MarkdownContent>{bio}</MarkdownContent>
+          </div>
+        </div>
+      )}
+
+      {/* Discord Notification Status */}
+      <div className="flex items-center justify-between text-xs pt-1 border-t border-[var(--border)]">
+        <span
+          className={`dash-tag ${
+            row.discordReceipt ? "dash-tag-green" : ""
+          }`}
+        >
+          {t(row.discordReceipt ? "discordDelivered" : "discordPending")}
+        </span>
+
+        {!row.discordReceipt && (
+          <button
+            type="button"
+            className="dash-button"
+            disabled={busy}
+            onClick={() => void onRetry()}
+          >
+            <Send size={13} />
+            إعادة إرسال للديسكورد
+          </button>
+        )}
+      </div>
+
+      {/* Review Actions */}
+      <div className="grid gap-3 sm:grid-cols-2 pt-2 border-t border-[var(--border)]">
+        <div>
+          <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1">
+            حالة الطلب:
+          </label>
+          <select
+            value={status}
+            onChange={(e) => setStatus(e.target.value)}
+            className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] p-2 text-xs text-[var(--text)]"
+          >
+            <option value="pending">قيد المراجعة</option>
+            <option value="accepted">قبول الطلب</option>
+            <option value="rejected">رفض الطلب</option>
+          </select>
+        </div>
+
+        <div>
+          <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1">
+            ملاحظات الإدارة للطلب (تظهر للمتقدم):
+          </label>
+          <input
+            type="text"
+            value={note}
+            onChange={(e) => setNote(e.target.value)}
+            placeholder="مثال: تم قبولك وسيتم التواصل معك بالديسكورد..."
+            maxLength={2000}
+            className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] p-2 text-xs text-[var(--text)]"
+          />
+        </div>
+      </div>
+
+      <div className="flex justify-end pt-2">
+        <button
+          type="submit"
+          disabled={busy || saving}
+          className="inline-flex items-center gap-1.5 rounded-xl px-5 py-2 text-xs font-bold transition-all active:scale-95 cursor-pointer"
+          style={{ background: "var(--accent)", color: "#07080b" }}
+        >
+          {saving ? (
+            <>
+              <RefreshCw size={13} className="dash-spinning" />
+              جاري الحفظ...
+            </>
+          ) : (
+            <>
+              <Check size={13} />
+              حفظ حالة الطلب
+            </>
+          )}
+        </button>
+      </div>
+    </form>
+  );
+}
