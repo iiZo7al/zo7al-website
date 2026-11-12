@@ -141,37 +141,6 @@ export default function SolarSignaturePad({
 
   return (
     <div className="space-y-4 rounded-xl border border-[var(--border)] bg-black/20 p-4">
-      {/* Contract Download Banner */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 rounded-lg border border-[var(--border)] bg-[var(--surface)] p-3">
-        <div className="flex items-center gap-3">
-          <div className="relative h-12 w-10 shrink-0 overflow-hidden rounded border border-[var(--border)] bg-black">
-            <Image
-              src="/assets/site/solar-contract-pledge.png"
-              alt="عقد Solar"
-              fill
-              className="object-cover"
-            />
-          </div>
-          <div>
-            <p className="text-xs font-semibold text-[var(--text)]">
-              صورة عقد وتعهد كلان Solar System
-            </p>
-            <p className="text-[11px] text-[var(--text-muted)]">
-              قم بتحميل الصورة للتوقيع عليها عبر أي تطبيق تعديل صور
-            </p>
-          </div>
-        </div>
-
-        <a
-          href="/assets/site/solar-contract-pledge.png"
-          download="عقد_كلان_سولار.png"
-          className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--border)] bg-[var(--surface-elevated)] px-3.5 py-1.5 text-xs font-medium text-[var(--text)] hover:border-[var(--accent)] hover:text-[var(--accent)] transition-colors shrink-0"
-        >
-          <Download size={14} />
-          تنزيل صورة العقد
-        </a>
-      </div>
-
       {/* Mode Selector Tabs */}
       <div className="flex items-center gap-2 border-b border-[var(--border)] pb-2 text-xs">
         <button
@@ -204,6 +173,37 @@ export default function SolarSignaturePad({
       {/* Upload Mode */}
       {mode === "upload" && (
         <div className="space-y-3">
+          {/* Contract Download Banner (only shown in upload mode) */}
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 rounded-lg border border-[var(--border)] bg-[var(--surface)] p-3">
+            <div className="flex items-center gap-3">
+              <div className="relative h-12 w-10 shrink-0 overflow-hidden rounded border border-[var(--border)] bg-black">
+                <Image
+                  src="/assets/site/solar-contract-pledge.png"
+                  alt="عقد Solar"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              <div>
+                <p className="text-xs font-semibold text-[var(--text)]">
+                  صورة عقد وتعهد كلان Solar System
+                </p>
+                <p className="text-[11px] text-[var(--text-muted)]">
+                  قم بتحميل الصورة للتوقيع عليها عبر أي تطبيق تعديل صور
+                </p>
+              </div>
+            </div>
+
+            <a
+              href="/assets/site/solar-contract-pledge.png"
+              download="عقد_كلان_سولار.png"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--border)] bg-[var(--surface-elevated)] px-3.5 py-1.5 text-xs font-medium text-[var(--text)] hover:border-[var(--accent)] hover:text-[var(--accent)] transition-colors shrink-0"
+            >
+              <Download size={14} />
+              تنزيل صورة العقد
+            </a>
+          </div>
+
           <label className="flex flex-col items-center justify-center rounded-xl border border-dashed border-[var(--border-strong)] bg-[var(--surface)] p-6 text-center cursor-pointer hover:border-[var(--accent)] transition-colors">
             <Upload size={24} className="text-[var(--accent)] mb-2 opacity-80" />
             <span className="text-xs font-medium text-[var(--text)]">
