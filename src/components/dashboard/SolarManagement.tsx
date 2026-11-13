@@ -23,6 +23,7 @@ import {
 import MarkdownContent from "@/components/ui/MarkdownContent";
 import SolarContractViewerModal from "./SolarContractViewerModal";
 import SolarExcelSheet from "./SolarExcelSheet";
+import SolarMembersManager from "./SolarMembersManager";
 import type { DashboardData, Mutate, RequestRow } from "./types";
 import type { SolarAdminSubType, SolarRole } from "@/lib/data/solar";
 import type { SolarSettings } from "@/lib/server/solar-settings";
@@ -110,7 +111,7 @@ export default function SolarManagement({
   onExpired: () => void;
   onReload: () => void;
 }) {
-  const [activeTab, setActiveTab] = useState<"applicants" | "excel" | "settings">("applicants");
+  const [activeTab, setActiveTab] = useState<"applicants" | "members" | "excel" | "settings">("applicants");
   const [query, setQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("");
   const [roleFilter, setRoleFilter] = useState<string>("");
@@ -271,6 +272,19 @@ export default function SolarManagement({
 
             <button
               type="button"
+              onClick={() => setActiveTab("members")}
+              className={`inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all cursor-pointer ${
+                activeTab === "members"
+                  ? "bg-[var(--accent)] text-[#07080b]"
+                  : "border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text)]"
+              }`}
+            >
+              <Users size={16} />
+              أعضاء الكلان
+            </button>
+
+            <button
+              type="button"
               onClick={() => setActiveTab("excel")}
               className={`inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all cursor-pointer ${
                 activeTab === "excel"
@@ -306,6 +320,11 @@ export default function SolarManagement({
           </div>
         </div>
       </section>
+
+      {/* Tab: Clan Members */}
+      {activeTab === "members" && (
+        <SolarMembersManager onExpired={onExpired} />
+      )}
 
       {/* Tab: Excel Sheet & Members */}
       {activeTab === "excel" && (

@@ -13,6 +13,7 @@ import SolarRoster from "./SolarRoster";
 import SolarSponsor from "./SolarSponsor";
 import SolarMapCard from "./SolarMapCard";
 import SolarSocials from "./SolarSocials";
+import SolarClanMembers from "./SolarClanMembers";
 import SolarApplyModal from "./SolarApplyModal";
 import { solarCopy } from "@/lib/data/solar-copy";
 import { getSolarFaq } from "@/lib/data/solar-faq";
@@ -217,6 +218,28 @@ export default function SolarClient() {
               initialVisibleCount={4}
               showMoreLabel={commonT("viewMore")}
             />
+          </div>
+        </div>
+      </section>
+
+      {/* Section 6: Clan Members Section (Matching /minecraft Leaderboard) */}
+      <section
+        className="relative border-t py-24 sm:py-32"
+        style={{ borderColor: "var(--border)" }}
+        id="members"
+      >
+        <div className="mx-auto max-w-[1180px] px-6">
+          <SectionHeader
+            eyebrow={locale === "ar" ? "فريق Solar System" : "SOLAR SYSTEM ROSTER"}
+            title={locale === "ar" ? "أعضاء الكلان" : "Clan Members"}
+            text={
+              locale === "ar"
+                ? "تعرّف على الأعضاء الموجودين حالياً في كلان Solar System ورتبهم وحساباتهم الرسمية."
+                : "Meet the current members of Solar System Team, their clan ranks, and official social accounts."
+            }
+          />
+          <div className="mt-14">
+            <SolarClanMembers />
           </div>
         </div>
       </section>
