@@ -14,7 +14,11 @@ export async function getSyncedFortniteMaps(locale = "en"): Promise<{
     const found = parseCreatorIslands(html);
     if (found.length) {
       const known = new Map(FORTNITE_MAPS.map(map => [map.code, map]));
-      items = found.map(info => ({ ...known.get(info.code), ...info, id: known.get(info.code)?.id ?? info.code, category: known.get(info.code)?.category ?? "Featured", thumbnail: info.thumbnail ?? known.get(info.code)?.thumbnail ?? "" }));
+      items = found.map(info => {
+        const saved = known.get(info.code);
+        const localThumb = saved?.thumbnail?.startsWith("/assets/") ? saved.thumbnail : undefined;
+        return { ...saved, ...info, id: saved?.id ?? info.code, category: saved?.category ?? "Featured", thumbnail: localThumb ?? info.thumbnail ?? saved?.thumbnail ?? "" };
+      });
       const listedCodes = new Set(found.map(info => info.code));
       // A cached or partial creator page must not hide verified saved islands.
       items.push(...FORTNITE_MAPS.filter(map => !listedCodes.has(map.code)).map(map => ({ ...map })));
@@ -29,7 +33,8 @@ export async function getSyncedFortniteMaps(locale = "en"): Promise<{
       try {
         const html = await fetchExternal(islandCodeUrl(map.code, locale), 21600);
         const details = parseIslandDetails(html, map.code);
-        if (details) hydrated.set(map.code, { ...map, ...details, description: details.description || map.description, tags: details.tags?.length ? details.tags : map.tags, thumbnail: details.thumbnail ?? map.thumbnail });
+        const localThumb = map.thumbnail.startsWith("/assets/") ? map.thumbnail : undefined;
+        if (details) hydrated.set(map.code, { ...map, ...details, description: details.description || map.description, tags: details.tags?.length ? details.tags : map.tags, thumbnail: localThumb ?? details.thumbnail ?? map.thumbnail });
       } catch { /* A missing detail page never removes a valid island. */ }
     }
   }));
