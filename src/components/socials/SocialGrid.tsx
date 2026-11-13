@@ -23,7 +23,7 @@ export default function SocialGrid({
     <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
       {socials.map((social, i) => {
         const brandColor = brandDisplayColor(social.platform);
-        const showHandle = Boolean(social.handle) && !["modrinth", "curseforge"].includes(social.platform);
+        const showHandle = Boolean(social.handle) && !["modrinth", "curseforge", "github"].includes(social.platform);
         const platform = social.platform === "x" && /^https:\/\/(?:www\.)?(?:x|twitter)\.com\/i\/communities\//i.test(social.url)
           ? "x_community"
           : social.platform;
