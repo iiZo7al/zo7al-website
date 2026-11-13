@@ -1,7 +1,7 @@
 "use client";
 import {useState} from 'react';
 import {useTranslations} from 'next-intl';
-import {LoaderCircle,Mail,KeyRound} from 'lucide-react';
+import {AtSign,LoaderCircle,Mail,KeyRound} from 'lucide-react';
 import DetailsDialog from '@/components/ui/DetailsDialog';
 import {AccountMFAChallenge} from './AccountSecurity';
 import {PasskeySignin} from './AccountPasskeys';
@@ -17,7 +17,8 @@ export default function AccountLogin({onClose,next='/account',chooseAccount=fals
     {mfaRequired?<AccountMFAChallenge next={next} onComplete={onClose}/>:!configured?<p role="status" className="account-notice">{t(loadError&&errorCode&&t.has('errors.'+errorCode)?'errors.'+errorCode:loadError?'errors.UNAVAILABLE':'errors.CONFIGURATION')}</p>:<>
       {mode!=='recover'&&<div className="account-provider-buttons">{[...providers].sort((a,b)=>['discord','github','azure','google','modrinth','twitch'].indexOf(a)-['discord','github','azure','google','modrinth','twitch'].indexOf(b)).map(provider=><button key={provider} type="button" className="hub-button account-provider-button" disabled={busy} data-provider={provider} data-cursor="button" onClick={()=>void run('oauth',{provider})}><span className="account-provider-icon"><AccountIdentityIcon provider={provider}/></span><span>{accountProviderName(provider)}</span></button>)}<PasskeySignin onComplete={required=>{if(!required)onClose();}}/></div>}
       {email&&<>{mode!=='recover'&&<div className="account-login-divider"><span>{t('email')}</span></div>}<div className="account-auth-tabs">{(['signin','signup'] as const).map(tab=><button type="button" key={tab} aria-pressed={mode===tab} disabled={busy} onClick={()=>{setMode(tab);setMessage('');setError('');}}>{t(tab)}</button>)}</div>
-      <form className="hub-form account-login-form" onSubmit={event=>{event.preventDefault();const data=new FormData(event.currentTarget);void run(mode,{email:data.get('email'),...(mode==='recover'?{}:{password:data.get('password')})});}}>
+      <form className="hub-form account-login-form" onSubmit={event=>{event.preventDefault();const data=new FormData(event.currentTarget);void run(mode,{email:data.get('email'),...(mode==='signup'?{username:data.get('username')}:{}),...(mode==='recover'?{}:{password:data.get('password')})});}}>
+        {mode==='signup'&&<label>{t('username')}<div className="account-input"><AtSign size={17} aria-hidden="true"/><input name="username" type="text" autoComplete="username" dir="ltr" required minLength={3} maxLength={32} pattern="[a-zA-Z0-9_]{3,32}" autoCapitalize="none" spellCheck={false} disabled={busy}/></div></label>}
         <label>{t('email')}<div className="account-input"><Mail size={17} aria-hidden="true"/><input name="email" type="email" autoComplete="email" dir="ltr" required maxLength={254} disabled={busy}/></div></label>
         {mode!=='recover'&&<label>{t('password')}<div className="account-input"><KeyRound size={17} aria-hidden="true"/><input name="password" type="password" autoComplete={mode==='signup'?'new-password':'current-password'} required minLength={mode==='signup'?12:1} maxLength={128} disabled={busy}/></div>{mode==='signup'&&<small>{t('passwordHint')}</small>}</label>}
         <button className="hub-button hub-button-primary" disabled={busy} aria-busy={busy}>{busy?<LoaderCircle size={18} className="animate-spin"/>:null}{t(mode)}</button>

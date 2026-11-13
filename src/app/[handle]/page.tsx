@@ -87,7 +87,7 @@ export default async function MemberProfile({
               </a>
             ),
           )}
-          <MemberPlayerButton linkedUsername={member.minecraft} />
+          {member.minecraft && <MemberPlayerButton linkedUsername={member.minecraft} />}
         </div>
         <section className="mt-12">
           <h2 className="text-2xl font-semibold mb-6">{t("submissions")}</h2>
