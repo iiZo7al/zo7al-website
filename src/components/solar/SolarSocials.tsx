@@ -21,7 +21,7 @@ export default function SolarSocials() {
   return (
     <>
       <div
-        className="store-rank-grid"
+        className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3"
         dir={locale === "ar" ? "rtl" : "ltr"}
       >
         {SOLAR_SOCIALS.map((item, i) => {
@@ -41,11 +41,13 @@ export default function SolarSocials() {
               : brandDisplayColor(item.id);
 
           return (
-            <Reveal key={item.id} delay={i * 0.04} className="store-rank-reveal">
+            <Reveal key={item.id} delay={i * 0.04}>
               <article
-                className="store-rank group relative h-full"
+                className="card-glow group relative flex h-full flex-col overflow-hidden rounded-2xl border p-6 transition-all duration-300 hover:-translate-y-1"
                 style={
                   {
+                    background: "var(--surface)",
+                    borderColor: "var(--border)",
                     "--card-glow-color": brandColor,
                   } as CSSProperties
                 }
