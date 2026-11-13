@@ -17,7 +17,6 @@ import SolarClanMembers from "./SolarClanMembers";
 import SolarApplyModal from "./SolarApplyModal";
 import { solarCopy } from "@/lib/data/solar-copy";
 import { getSolarFaq } from "@/lib/data/solar-faq";
-import { discoverEasterEgg } from "@/lib/data/easter-eggs";
 import type { SolarAdminSubType, SolarRole } from "@/lib/data/solar";
 import "@/components/fortnite/fortnite.css";
 import "@/components/store/store.css";
@@ -30,7 +29,6 @@ export default function SolarClient() {
   const solarFaq = getSolarFaq(locale);
   const [applyOpen, setApplyOpen] = useState(false);
   const [selectedRole, setSelectedRole] = useState<SolarRole>("creator");
-  const [logoClicks, setLogoClicks] = useState(0);
   const [settings, setSettings] = useState<{
     isOpen: boolean;
     announcement: string;
@@ -58,20 +56,7 @@ export default function SolarClient() {
         <div className="space-y-6">
           {/* Official Clan 3D Logo */}
           <div className="flex items-center gap-4">
-            <button
-              type="button"
-              onClick={() => {
-                const next = logoClicks + 1;
-                if (next >= 5) {
-                  setLogoClicks(0);
-                  discoverEasterEgg("solar_eclipse");
-                } else {
-                  setLogoClicks(next);
-                }
-              }}
-              aria-label="Solar System Team Logo"
-              className="relative h-20 w-20 sm:h-24 sm:w-24 shrink-0 overflow-hidden drop-shadow-[0_12px_24px_rgba(255,122,0,0.35)] transition-transform active:scale-95 focus:outline-none"
-            >
+            <div className="relative h-20 w-20 sm:h-24 sm:w-24 shrink-0 overflow-hidden drop-shadow-[0_12px_24px_rgba(255,122,0,0.35)]">
               <Image
                 src="/assets/site/solar-clan-logo.png"
                 alt="Solar System Team Logo"
@@ -80,7 +65,7 @@ export default function SolarClient() {
                 priority
                 className="h-full w-full object-contain"
               />
-            </button>
+            </div>
           </div>
 
           {/* Announcement banner if set by admin */}
