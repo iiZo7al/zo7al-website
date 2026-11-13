@@ -9,13 +9,13 @@ import {useAccount,accountAction} from './AccountProvider';
 import GrassBlockIcon from '@/components/ui/GrassBlockIcon';
 import AccountLogin from './AccountLogin';
 import AccountSwitcher from './AccountSwitcher';
-import {EASTER_EGG_CHANGE_EVENT,hasFoundFirstEasterEgg} from '@/lib/data/easter-eggs';
+import {EASTER_EGG_CHANGE_EVENT,EASTER_EGGS,getDiscoveredEasterEggs} from '@/lib/data/easter-eggs';
 import './account.css';
 export default function AccountMenu() {
-  const t=useTranslations('account'),locale=useLocale(),{account,ready,refresh,canDashboard}=useAccount(),[open,setOpen]=useState(false),[login,setLogin]=useState(false),[busy,setBusy]=useState(false),[error,setError]=useState(''),[foundEasterEgg,setFoundEasterEgg]=useState(false);
+  const t=useTranslations('account'),locale=useLocale(),{account,ready,refresh,canDashboard}=useAccount(),[open,setOpen]=useState(false),[login,setLogin]=useState(false),[busy,setBusy]=useState(false),[error,setError]=useState(''),[eggCount,setEggCount]=useState(0);
   const root=useRef<HTMLDivElement>(null),trigger=useRef<HTMLButtonElement>(null),reduced=useReducedMotion();
   useEffect(()=>{
-    const update=()=>setFoundEasterEgg(hasFoundFirstEasterEgg());
+    const update=()=>setEggCount(Object.keys(getDiscoveredEasterEggs()).length);
     update();
     window.addEventListener(EASTER_EGG_CHANGE_EVENT,update);
     window.addEventListener('storage',update);
@@ -30,7 +30,7 @@ export default function AccountMenu() {
       <div className="account-menu-heading"><strong>{account.name}</strong><small dir="ltr">{account.minecraft?.username??account.email}</small></div>
       {([{href:'/account',key:'myAccount',icon:UserRound},{href:'/account?tab=player',key:'player',icon:GrassBlockIcon},{href:'/account?tab=profile',key:'profile',icon:UserRound},{href:'/account?tab=security',key:'securityTab',icon:KeyRound},{href:'/account?tab=settings',key:'settings',icon:Settings},{href:'/account?tab=connections',key:'connections',icon:Link2},{href:'/account?tab=subscriptions',key:'subscriptions',icon:Link2},{href:'/requests',key:'requests',icon:ClipboardList}] as const).map(({href,key,icon:Icon})=><Link key={key} href={href} data-cursor="link" onClick={()=>setOpen(false)}>{key==='subscriptions'?<i className="fi fi-sr-usd-circle text-[17px] shrink-0" aria-hidden="true"/>:<Icon size={17} aria-hidden="true"/>}{t(key)}</Link>)}
       {canDashboard&&<Link href="/dashboard" data-cursor="link" onClick={()=>setOpen(false)}><LayoutDashboard size={17} aria-hidden="true"/>{t('dashboard')}</Link>}
-      {foundEasterEgg&&<Link href="/easter-eggs" data-cursor="link" onClick={()=>setOpen(false)}><Sparkles size={17} aria-hidden="true"/>{locale==='ar'?'الأسرار المخفية':'Easter Eggs'}</Link>}
+      <Link href="/easter-eggs" data-cursor="link" onClick={()=>setOpen(false)}><Sparkles size={17} aria-hidden="true"/><span className="flex-1">{locale==='ar'?'الأسرار المخفية':'Easter Eggs'}</span><span className="text-[11px] text-[var(--text-muted)]">{eggCount}/{EASTER_EGGS.length}</span></Link>
       <AccountSwitcher onAdd={()=>{setOpen(false);setLogin(true);}} onSwitch={required=>{setOpen(false);if(required)setLogin(true);}}/>
       <button type="button" className="account-signout" data-cursor="button" disabled={busy} onClick={async()=>{setBusy(true);setError('');try{await accountAction('signout');await refresh();setOpen(false);}catch{setError(t('errors.UNAVAILABLE'));}finally{setBusy(false);}}}><LogOut size={17} aria-hidden="true"/>{t('signout')}</button>{error&&<p role="alert">{error}</p>}
     </motion.div>}</AnimatePresence>

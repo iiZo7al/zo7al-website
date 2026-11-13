@@ -48,7 +48,7 @@ export default async function Footer() {
               className="inline-block h-2 w-2 rounded-full"
               style={{ background: "var(--accent)" }}
             />
-            <BrandName name={SITE.name} />
+            <BrandName name={SITE.name} footerTrigger />
           </div>
           <p className="mt-4 max-w-xs text-sm leading-relaxed text-[var(--text-muted)]">
             {t("footer.tagline")}
