@@ -235,6 +235,25 @@ export default function SolarSponsor() {
                   </span>
                 </div>
               </div>
+
+              {/* Sponsor Website / Location CTA Button */}
+              <div className="pt-2">
+                <a
+                  href="https://maps.app.goo.gl/U7LgvzhaaXWmqtLk8"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-cursor="button"
+                  className="inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition-transform hover:scale-[1.02] active:scale-95"
+                  style={{ background: "var(--accent)", color: "#07080B" }}
+                >
+                  <span>
+                    {isArabic
+                      ? "زيارة موقع راعي الكلان"
+                      : t.sponsorVisitBtn || "Visit Sponsor Website"}
+                  </span>
+                  <ExternalLink size={15} />
+                </a>
+              </div>
             </div>
           </div>
         </article>
