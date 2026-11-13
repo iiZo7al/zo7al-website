@@ -18,6 +18,7 @@ import PageTransition from "@/components/layout/PageTransition";
 import CustomCursor from "@/components/cursor/CustomCursor";
 import BackToTop from "@/components/layout/BackToTop";
 import SmoothScroll from "@/components/ui/SmoothScroll";
+import EasterEggListener from "@/components/ui/EasterEggListener";
 import { isRtl } from "@/i18n/config";
 
 export const viewport: Viewport = { width: "device-width", initialScale: 1, viewportFit: "cover", themeColor: "#07080b" };
@@ -53,6 +54,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             <SmoothScroll />
             <CustomCursor />
             <CommandSearch />
+            <EasterEggListener />
             <AppShell navigation={<Navbar />} footer={<><Footer /><BackToTop /></>}>
             <PageTransition>
               <div className="flex-1">{children}</div>
