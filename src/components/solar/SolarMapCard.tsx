@@ -46,7 +46,7 @@ export default function SolarMapCard() {
   return (
     <>
       <div
-        className="fortnite-map-card card-glow group h-full overflow-hidden rounded-2xl border fortnite-map-spotlight"
+        className="fortnite-map-card card-glow group h-full overflow-hidden rounded-[20px] border fortnite-map-spotlight"
         style={{ background: "var(--surface)", borderColor: "var(--border)" }}
       >
         <a
@@ -70,15 +70,6 @@ export default function SolarMapCard() {
               background: "linear-gradient(to top, rgba(7,8,11,0.8), transparent 60%)",
             }}
           />
-          <span
-            className="absolute start-4 top-4 rounded-full px-3 py-1 text-[11px] font-semibold"
-            style={{
-              background: "rgba(7,8,11,0.6)",
-              color: "var(--accent-secondary)",
-            }}
-          >
-            {t.mapCategory}
-          </span>
           <span className="fortnite-new-badge">{t.mapTitle}</span>
         </a>
 
