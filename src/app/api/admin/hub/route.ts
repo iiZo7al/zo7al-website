@@ -38,6 +38,11 @@ export async function POST(request: Request) {
           const { syncAcceptedSolarApplicant } = await import("@/lib/server/solar-members");
           await syncAcceptedSolarApplicant(review.id);
         } catch {}
+      } else {
+        try {
+          const { removeSolarApplicantMember } = await import("@/lib/server/solar-members");
+          await removeSolarApplicantMember(review.id);
+        } catch {}
       }
       return Response.json({ok:true},{headers:privateHeaders});
     }
@@ -46,6 +51,10 @@ export async function POST(request: Request) {
       return Response.json({ok:true},{headers:privateHeaders});
     }
     if (body?.action === "deleteRequest" && typeof body.id === "string" && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(body.id)) {
+      try {
+        const { removeSolarApplicantMember } = await import("@/lib/server/solar-members");
+        await removeSolarApplicantMember(body.id);
+      } catch {}
       await (await siteDatabase()).query("DELETE FROM site_requests WHERE id=$1",[body.id]);
       return Response.json({ok:true},{headers:privateHeaders});
     }

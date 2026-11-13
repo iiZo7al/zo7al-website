@@ -14,6 +14,7 @@ import {
   X,
 } from "lucide-react";
 import DetailsDialog from "@/components/ui/DetailsDialog";
+import { SkeletonRow } from "@/components/ui/Skeleton";
 import {
   formatSolarMemberRank,
   parseSolarMemberRank,
@@ -253,7 +254,11 @@ export default function SolarMembersManager({
       )}
 
       {loading ? (
-        <p className="text-xs text-[var(--text-muted)]">جاري التحميل...</p>
+        <div className="space-y-2.5" aria-busy="true" aria-label="جاري التحميل...">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <SkeletonRow key={i} />
+          ))}
+        </div>
       ) : members.length === 0 ? (
         <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-8 text-center text-xs text-[var(--text-muted)]">
           لا يوجد أعضاء مضافون بعد. اضغط على «إضافة عضو للكلان» لإضافة أول عضو.

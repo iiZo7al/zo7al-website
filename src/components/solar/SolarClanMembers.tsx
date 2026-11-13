@@ -7,13 +7,13 @@ import { useLocale, useTranslations } from "next-intl";
 import {
   ArrowUpRight,
   Globe,
-  Trophy,
   UserRound,
   Users,
 } from "lucide-react";
 import BrandIcon, { BRAND_ICONS } from "@/components/ui/BrandIcon";
 import DetailsDialog from "@/components/ui/DetailsDialog";
 import DetailsIcon from "@/components/ui/DetailsIcon";
+import { SkeletonRow } from "@/components/ui/Skeleton";
 import {
   SOLAR_MEMBER_SOCIAL_PLATFORMS,
   type SolarMember,
@@ -55,10 +55,11 @@ export default function SolarClanMembers() {
 
   if (loading) {
     return (
-      <p className="community-empty" role="status">
-        <Users size={20} aria-hidden="true" />
-        {isAr ? "جاري تحميل أعضاء الكلان..." : "Loading clan members..."}
-      </p>
+      <div className="space-y-3" role="status" aria-busy="true" aria-label={isAr ? "جاري تحميل أعضاء الكلان..." : "Loading clan members..."}>
+        {Array.from({ length: 5 }).map((_, i) => (
+          <SkeletonRow key={i} />
+        ))}
+      </div>
     );
   }
 
@@ -74,22 +75,13 @@ export default function SolarClanMembers() {
   }
 
   const visible = expanded ? members : members.slice(0, 8);
-  const number = new Intl.NumberFormat(locale);
 
   return (
     <>
       <ol className="community-leader-list" dir={isAr ? "rtl" : "ltr"}>
-        {visible.map((member, index) => (
+        {visible.map((member) => (
           <li key={member.id}>
             <div className="community-leader-row">
-              <span className="community-leader-place">
-                {index < 3 ? (
-                  <Trophy size={19} aria-label={String(index + 1)} />
-                ) : (
-                  number.format(index + 1)
-                )}
-              </span>
-
               <span className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full border border-[var(--border-strong)] bg-[var(--surface-elevated)] flex items-center justify-center">
                 {member.avatar ? (
                   <Image
