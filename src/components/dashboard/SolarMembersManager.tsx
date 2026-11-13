@@ -15,7 +15,12 @@ import {
 } from "lucide-react";
 import DetailsDialog from "@/components/ui/DetailsDialog";
 import {
-  SOLAR_MEMBER_RANK_SUGGESTIONS,
+  formatSolarMemberRank,
+  parseSolarMemberRank,
+  roleNeedsGame,
+  SOLAR_MEMBER_ADMIN_SUBTYPES,
+  SOLAR_MEMBER_GAMES,
+  SOLAR_MEMBER_ROLES,
   SOLAR_MEMBER_SOCIAL_PLATFORMS,
   type SolarMember,
   type SolarMemberSocial,
@@ -26,6 +31,9 @@ const EMPTY_FORM = {
   id: "",
   name: "",
   rank: "",
+  role: "",
+  adminSubType: "",
+  game: "",
   avatar: "",
   bio: "",
   socials: [] as SolarMemberSocial[],
@@ -201,10 +209,14 @@ export default function SolarMembersManager({
 
   const openEdit = (m: SolarMember) => {
     setError("");
+    const parsed = parseSolarMemberRank(m.rank);
     setForm({
       id: m.id,
       name: m.name,
       rank: m.rank,
+      role: parsed.role,
+      adminSubType: parsed.adminSubType,
+      game: parsed.game,
       avatar: m.avatar,
       bio: m.bio,
       socials: m.socials.map((s) => ({ ...s })),
@@ -419,22 +431,97 @@ export default function SolarMembersManager({
               </label>
             </div>
 
-            {/* Quick rank suggestions */}
-            <div className="flex flex-wrap gap-1.5">
-              {SOLAR_MEMBER_RANK_SUGGESTIONS.map((suggestion) => (
-                <button
-                  key={suggestion}
-                  type="button"
-                  onClick={() => setForm((p) => ({ ...p, rank: suggestion }))}
-                  className={`rounded-full border px-2.5 py-1 text-[11px] transition-colors ${
-                    form.rank === suggestion
-                      ? "border-[var(--accent)] bg-[var(--accent)]/15 text-[var(--accent)]"
-                      : "border-[var(--border)] bg-[var(--surface)] text-[var(--text-muted)] hover:text-[var(--text)]"
-                  }`}
+            {/* Hierarchical Role / Rank / Game Selection */}
+            <div className="space-y-3 rounded-xl border border-[var(--border)] bg-black/20 p-4">
+              <label className="block space-y-1.5 text-xs">
+                <span className="font-semibold text-[var(--text)]">المرتبة / القسم</span>
+                <select
+                  value={form.role}
+                  onChange={(e) => {
+                    const nextRole = e.target.value;
+                    const nextSub = nextRole === "admin" ? form.adminSubType : "";
+                    const nextGame = roleNeedsGame(nextRole, nextSub) ? form.game : "";
+                    const formatted = formatSolarMemberRank(nextRole, nextSub, nextGame);
+                    setForm((p) => ({
+                      ...p,
+                      role: nextRole,
+                      adminSubType: nextSub,
+                      game: nextGame,
+                      rank: formatted || p.rank,
+                    }));
+                  }}
+                  className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--text)]"
                 >
-                  {suggestion}
-                </button>
-              ))}
+                  <option value="">اختر المرتبة / القسم...</option>
+                  {SOLAR_MEMBER_ROLES.map((r) => (
+                    <option key={r.id} value={r.id}>
+                      {r.label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+
+              {form.role === "admin" && (
+                <label className="block space-y-1.5 text-xs">
+                  <span className="font-semibold text-[var(--text)]">
+                    نوع الإشراف / الرتبة الإدارية
+                  </span>
+                  <select
+                    value={form.adminSubType}
+                    onChange={(e) => {
+                      const nextSub = e.target.value;
+                      const nextGame = roleNeedsGame(form.role, nextSub) ? form.game : "";
+                      const formatted = formatSolarMemberRank(form.role, nextSub, nextGame);
+                      setForm((p) => ({
+                        ...p,
+                        adminSubType: nextSub,
+                        game: nextGame,
+                        rank: formatted || p.rank,
+                      }));
+                    }}
+                    className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--text)]"
+                  >
+                    <option value="">اختر الرتبة الإدارية...</option>
+                    {SOLAR_MEMBER_ADMIN_SUBTYPES.map((s) => (
+                      <option key={s.id} value={s.id}>
+                        {s.label}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              )}
+
+              {roleNeedsGame(form.role, form.adminSubType) && (
+                <label className="block space-y-1.5 text-xs">
+                  <span className="font-semibold text-[var(--text)]">
+                    اللعبة (فيفا، فورت، ماينكرافت، أو روكيت)
+                  </span>
+                  <select
+                    value={form.game}
+                    onChange={(e) => {
+                      const nextGame = e.target.value;
+                      const formatted = formatSolarMemberRank(
+                        form.role,
+                        form.adminSubType,
+                        nextGame,
+                      );
+                      setForm((p) => ({
+                        ...p,
+                        game: nextGame,
+                        rank: formatted || p.rank,
+                      }));
+                    }}
+                    className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--text)]"
+                  >
+                    <option value="">اختر اللعبة...</option>
+                    {SOLAR_MEMBER_GAMES.map((g) => (
+                      <option key={g.id} value={g.id}>
+                        {g.optionLabel}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              )}
             </div>
 
             <label className="block space-y-1.5 text-xs">
