@@ -17,6 +17,7 @@ import Footer from "@/components/layout/Footer";
 import PageTransition from "@/components/layout/PageTransition";
 import CustomCursor from "@/components/cursor/CustomCursor";
 import BackToTop from "@/components/layout/BackToTop";
+import SmoothScroll from "@/components/ui/SmoothScroll";
 import { isRtl } from "@/i18n/config";
 
 export const viewport: Viewport = { width: "device-width", initialScale: 1, viewportFit: "cover", themeColor: "#07080b" };
@@ -49,6 +50,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <NextIntlClientProvider messages={messages}>
           <AccountProvider><CommunityProvider><CartProvider><MotionConfig reducedMotion="user">
             <div className="grain" aria-hidden="true" />
+            <SmoothScroll />
             <CustomCursor />
             <CommandSearch />
             <AppShell navigation={<Navbar />} footer={<><Footer /><BackToTop /></>}>
