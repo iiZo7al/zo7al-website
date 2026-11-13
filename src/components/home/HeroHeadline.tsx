@@ -122,6 +122,8 @@ export default function HeroHeadline() {
         const word = input.trim().toLowerCase();
         const destinations: Record<string, string> = {
           home: "/",
+          clan: "/solar",
+          solar: "/solar",
           games: "/game",
           maps: "/fortnite",
           fortnite: "/fortnite",

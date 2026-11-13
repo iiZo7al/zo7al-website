@@ -1,13 +1,13 @@
 import { hasAdminSession } from "@/lib/server/admin-account";
 import { privateHeaders, readJSON, sameOrigin } from "@/lib/server/site-security";
 import { getSolarSettings, saveSolarSettings } from "@/lib/server/solar-settings";
-import type { SolarRole } from "@/lib/data/solar";
+import type { SolarAdminSubType, SolarRole } from "@/lib/data/solar";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function GET(request: Request) {
-  if (!(await hasAdminSession(request))) {
+  if (!(await hasAdminSession(request, "solar"))) {
     return Response.json({ error: "UNAUTHORIZED" }, { status: 401, headers: privateHeaders });
   }
   try {
@@ -19,7 +19,7 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  if (!(await hasAdminSession(request))) {
+  if (!(await hasAdminSession(request, "solar"))) {
     return Response.json({ error: "UNAUTHORIZED" }, { status: 401, headers: privateHeaders });
   }
   if (!sameOrigin(request)) {
@@ -30,6 +30,7 @@ export async function POST(request: Request) {
       isOpen?: boolean;
       announcement?: string;
       closedRoles?: SolarRole[];
+      closedAdminSubTypes?: SolarAdminSubType[];
       requirements?: string;
     };
 
@@ -41,6 +42,7 @@ export async function POST(request: Request) {
       isOpen: typeof body.isOpen === "boolean" ? body.isOpen : undefined,
       announcement: typeof body.announcement === "string" ? body.announcement : undefined,
       closedRoles: Array.isArray(body.closedRoles) ? body.closedRoles : undefined,
+      closedAdminSubTypes: Array.isArray(body.closedAdminSubTypes) ? body.closedAdminSubTypes : undefined,
       requirements: typeof body.requirements === "string" ? body.requirements : undefined,
     });
 
