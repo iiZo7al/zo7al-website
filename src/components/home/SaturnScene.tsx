@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import { useFrame, useThree, type ThreeEvent } from "@react-three/fiber";
 import { PerspectiveCamera } from "@react-three/drei";
 import * as THREE from "three";
-import { discoverFirstEasterEgg } from "@/lib/data/easter-eggs";
 
 interface SaturnSceneProps {
   isTransitioning?: boolean;
@@ -78,7 +77,6 @@ export default function SaturnScene({ isTransitioning }: SaturnSceneProps) {
         sequence.current.push(key);
         if (sequence.current.length === KONAMI_CODE.length) {
           sequence.current = [];
-          discoverFirstEasterEgg();
           setExplosionId((value) => value + 1);
         }
       } else {
