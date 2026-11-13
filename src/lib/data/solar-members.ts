@@ -22,6 +22,8 @@ export type SolarMemberSocial = {
 
 export type SolarMember = {
   id: string;
+  userId?: string;
+  handle?: string;
   name: string;
   rank: string;
   avatar: string;

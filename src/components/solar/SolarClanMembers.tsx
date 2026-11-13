@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
 import {
   ArrowUpRight,
@@ -117,17 +118,29 @@ export default function SolarClanMembers() {
                 {member.rank}
               </span>
 
-              <button
-                type="button"
-                className="store-action store-details-button shrink-0"
-                onClick={() => setSelected(member)}
-                aria-haspopup="dialog"
-                aria-label={`${store("details")} — ${member.name}`}
-                title={store("details")}
-                data-cursor="button"
-              >
-                <DetailsIcon />
-              </button>
+              {member.handle ? (
+                <Link
+                  href={`/${encodeURIComponent(member.handle)}`}
+                  className="store-action store-details-button shrink-0"
+                  aria-label={`${store("details")} — ${member.name}`}
+                  title={store("details")}
+                  data-cursor="link"
+                >
+                  <DetailsIcon />
+                </Link>
+              ) : (
+                <button
+                  type="button"
+                  className="store-action store-details-button shrink-0"
+                  onClick={() => setSelected(member)}
+                  aria-haspopup="dialog"
+                  aria-label={`${store("details")} — ${member.name}`}
+                  title={store("details")}
+                  data-cursor="button"
+                >
+                  <DetailsIcon />
+                </button>
+              )}
             </div>
           </li>
         ))}
