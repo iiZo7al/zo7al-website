@@ -120,7 +120,7 @@ export default function SolarClanMembers() {
 
               {member.handle ? (
                 <Link
-                  href={`/${encodeURIComponent(member.handle)}`}
+                  href={`/@${encodeURIComponent(member.handle)}`}
                   className="store-action store-details-button shrink-0"
                   aria-label={`${store("details")} — ${member.name}`}
                   title={store("details")}

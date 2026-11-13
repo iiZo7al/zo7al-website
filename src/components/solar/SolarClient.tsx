@@ -129,7 +129,7 @@ export default function SolarClient() {
 
       {/* Section 1: Divisions Section */}
       <section className="relative pb-24 sm:pb-32" id="divisions">
-        <div className="mx-auto max-w-[1180px] px-6">
+        <div className="mx-auto max-w-[1600px] px-6">
           <SectionHeader
             eyebrow={t.divisionsEyebrow}
             title={t.divisionsTitle}
