@@ -62,8 +62,7 @@ const MAPS: FortniteMap[] = [
     title: "حرب الكلانات زحل Zo7al 🚀💥",
     code: "6387-4453-1682",
     category: "Clan Wars",
-    thumbnail:
-      "https://cdn-0001.qstv.on.epicgames.com/KSyPkiECgPrJXxxbgG/image/landscape_comp_s.jpeg",
+    thumbnail: "/assets/site/clan-wars-map.png",
   },
   {
     id: "doomspire-no-reload",
