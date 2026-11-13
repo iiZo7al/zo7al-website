@@ -10,7 +10,7 @@ import {
   UserRound,
   Users,
 } from "lucide-react";
-import BrandIcon from "@/components/ui/BrandIcon";
+import BrandIcon, { BRAND_ICONS } from "@/components/ui/BrandIcon";
 import DetailsDialog from "@/components/ui/DetailsDialog";
 import {
   SOLAR_MEMBER_SOCIAL_PLATFORMS,
@@ -19,16 +19,7 @@ import {
 import "@/components/community/community.css";
 
 function SocialPlatformIcon({ platform }: { platform: string }) {
-  if (
-    platform === "youtube" ||
-    platform === "x" ||
-    platform === "tiktok" ||
-    platform === "instagram" ||
-    platform === "twitch" ||
-    platform === "discord" ||
-    platform === "snapchat" ||
-    platform === "github"
-  ) {
+  if (platform in BRAND_ICONS) {
     return <BrandIcon slug={platform} size={18} />;
   }
   return <Globe size={18} aria-hidden="true" />;
