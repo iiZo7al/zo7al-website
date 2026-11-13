@@ -1,4 +1,4 @@
-import {isOwnerAccount} from '@/lib/server/admin-account';
+import {getAccountDashboardPermissions, isOwnerAccount} from '@/lib/server/admin-account';
 import {requireActionProof} from '@/lib/server/account-verification';
 import { AccountError, accountProviderEnabled, accountConfigured, accountHeaders, accountOrigin, accountSession, hasAccountSecondFactor, requireAccountSession, accountRequiresMFA, accountView, authRequest, clearAccount, requestCookie, requireAccount, setAccountTokens, startAccountFlow, ACCOUNT_ACCESS, type AuthUser } from '@/lib/server/account-auth';
 import { ACCOUNT_PROVIDERS, accountEmail, accountPassword, safeAccountName } from '@/lib/data/account';
@@ -18,7 +18,8 @@ export async function GET(request:Request) {
     if (!accountConfigured()) return Response.json({configured:false,account:null,providers:[],email:false},{headers});
     const [session,settings]=await Promise.all([accountSession(request,headers),authRequest('/settings')]);
     const mfaRequired=!!session&&!await hasAccountSecondFactor(request,session.user,session.access);
-    return Response.json({configured:true,canDashboard:!!session&&!mfaRequired&&isOwnerAccount(session.user.id),account:session&&!mfaRequired?await accountView(session.user):null,mfaRequired,mfaEnabled:true,passkeyEnabled:settings.passkeys_enabled===true,providers:ACCOUNT_PROVIDERS.filter(p=>accountProviderEnabled(p,settings)),email:settings.external?.email===true},{headers});
+    const dashboardPerms=session&&!mfaRequired?(isOwnerAccount(session.user.id)?['all']:await getAccountDashboardPermissions(session.user.id)):[];
+    return Response.json({configured:true,canDashboard:dashboardPerms.length>0,account:session&&!mfaRequired?await accountView(session.user):null,mfaRequired,mfaEnabled:true,passkeyEnabled:settings.passkeys_enabled===true,providers:ACCOUNT_PROVIDERS.filter(p=>accountProviderEnabled(p,settings)),email:settings.external?.email===true},{headers});
   } catch(error){return failed(error,headers);}
 }
 export async function POST(request:Request) {

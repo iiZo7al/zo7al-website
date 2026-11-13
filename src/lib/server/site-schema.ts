@@ -32,6 +32,7 @@ CREATE TABLE IF NOT EXISTS site_rate_limits (
 );
 CREATE TABLE IF NOT EXISTS site_platform_cache(platform text PRIMARY KEY,payload jsonb NOT NULL,updated_at timestamptz NOT NULL);
 CREATE TABLE IF NOT EXISTS site_admin_page_reads(page varchar(32) PRIMARY KEY,read_at timestamptz NOT NULL);
+CREATE TABLE IF NOT EXISTS site_dashboard_permissions(user_id uuid PRIMARY KEY,permissions jsonb NOT NULL DEFAULT '[]'::jsonb,updated_at timestamptz NOT NULL DEFAULT now());
 CREATE TABLE IF NOT EXISTS dashboard_connections (
  provider text PRIMARY KEY CHECK (provider IN ('youtube','curseforge','pelican')),
  sealed text NOT NULL, updated_at timestamptz NOT NULL DEFAULT now()

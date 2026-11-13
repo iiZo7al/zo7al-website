@@ -14,7 +14,7 @@ const pool={query:async(sql,args)=>engine.query(sql,args),connect:async()=>({que
 const db=stub('export async function siteDatabase(){return globalThis.__lifecycle.pool;}'),security=mod('src/lib/server/site-security.ts'),data=mod('src/lib/data/account.ts');
 const authURL=mod('src/lib/server/account-auth.ts',{'./site-db':db,'./site-security':security,'../data/account':data}),auth=await import(authURL);
 const verificationURL=mod('src/lib/server/account-verification.ts',{'./account-auth':authURL,'./site-db':db,'./site-security':security}),verification=await import(verificationURL);
-const ownerURL=mod('src/lib/server/admin-account.ts',{'./account-auth':authURL,'./site-security':security}),owner=await import(ownerURL);
+const ownerURL=mod('src/lib/server/admin-account.ts',{'./account-auth':authURL,'./site-security':security,'./site-db':db,'@/lib/data/dashboard-permissions':mod('src/lib/data/dashboard-permissions.ts')}),owner=await import(ownerURL);
 const adminURL=mod('src/lib/server/account-admin.ts',{'./account-auth':authURL});
 const deletionURL=mod('src/lib/server/account-deletion.ts',{'./site-db':db,'./site-security':security,'./account-auth':authURL,'./account-admin':adminURL,'./admin-account':ownerURL}),deletion=await import(deletionURL);
 const deletionRoute=await import(mod('src/app/api/account/deletion/route.ts',{'@/lib/server/account-auth':authURL,'@/lib/server/site-security':security,'@/lib/server/account-deletion':deletionURL,'@/lib/server/account-verification':verificationURL}));
