@@ -33,6 +33,12 @@ export async function POST(request: Request) {
       const review = validReview(body.value); if (!review) throw new Error("INVALID");
       const result = await (await siteDatabase()).query("UPDATE site_requests SET status=$3,public_note=$4,updated_at=now() WHERE id=$1 AND kind=$2 RETURNING id",[review.id,review.kind,review.status,review.note]);
       if (!result.rowCount) return Response.json({error:"INVALID"},{status:404,headers:privateHeaders});
+      if (review.status === "accepted") {
+        try {
+          const { syncAcceptedSolarApplicant } = await import("@/lib/server/solar-members");
+          await syncAcceptedSolarApplicant(review.id);
+        } catch {}
+      }
       return Response.json({ok:true},{headers:privateHeaders});
     }
     if (body?.action === "delete" && typeof body.id === "string" && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(body.id)) {

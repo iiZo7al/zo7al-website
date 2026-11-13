@@ -120,29 +120,24 @@ export default function SolarRoster({
   return (
     <div dir={isAr ? "rtl" : "ltr"}>
       {/* Divisions Grid — 7 Available Clan Divisions */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="store-rank-grid">
         {divisions.map((div, idx) => {
           const DivIcon = div.icon;
-          const isLastBanner = idx === divisions.length - 1;
           return (
             <Reveal
               key={div.role}
               delay={idx * 0.04}
-              className={isLastBanner ? "sm:col-span-2 lg:col-span-3" : ""}
+              className="store-rank-reveal"
             >
-              <article
-                className={`store-rank h-full ${
-                  isLastBanner ? "lg:flex-row lg:items-center lg:gap-8" : ""
-                }`}
-              >
-                <div className={isLastBanner ? "flex-1" : ""}>
+              <article className="store-rank h-full">
+                <div>
                   <span className="store-rank-badge">{div.tag}</span>
 
                   <div className="flex items-center gap-3.5 pe-20">
                     <span className="store-rank-icon shrink-0">
                       <DivIcon size={20} />
                     </span>
-                    <h4 className="text-lg font-bold text-[var(--text)] leading-snug">
+                    <h4 className="text-base font-bold text-[var(--text)] leading-snug">
                       {div.title}
                     </h4>
                   </div>
@@ -165,9 +160,7 @@ export default function SolarRoster({
                   type="button"
                   onClick={() => onOpenApply(div.role)}
                   data-cursor="button"
-                  className={`store-action store-action-primary ${
-                    isLastBanner ? "w-full lg:w-auto lg:shrink-0" : "w-full mt-auto"
-                  }`}
+                  className="store-action store-action-primary w-full mt-auto"
                 >
                   <span>{isAr ? "التقديم على هذا القسم" : "Apply to this Division"}</span>
                   <ArrowUpRight size={16} />
