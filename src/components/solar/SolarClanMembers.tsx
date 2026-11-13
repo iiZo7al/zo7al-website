@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import BrandIcon, { BRAND_ICONS } from "@/components/ui/BrandIcon";
 import DetailsDialog from "@/components/ui/DetailsDialog";
+import DetailsIcon from "@/components/ui/DetailsIcon";
 import {
   SOLAR_MEMBER_SOCIAL_PLATFORMS,
   type SolarMember,
@@ -118,12 +119,14 @@ export default function SolarClanMembers() {
 
               <button
                 type="button"
-                className="hub-button shrink-0"
-                aria-haspopup="dialog"
-                data-cursor="button"
+                className="store-action store-details-button shrink-0"
                 onClick={() => setSelected(member)}
+                aria-haspopup="dialog"
+                aria-label={`${store("details")} — ${member.name}`}
+                title={store("details")}
+                data-cursor="button"
               >
-                {store("details")}
+                <DetailsIcon />
               </button>
             </div>
           </li>

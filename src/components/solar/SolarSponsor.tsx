@@ -14,14 +14,10 @@ export default function SolarSponsor() {
   return (
     <Reveal>
       <article
-        className="card-glow overflow-hidden rounded-2xl border"
-        style={{
-          background: "var(--surface)",
-          borderColor: "var(--border)",
-        }}
+        className="store-rank overflow-hidden p-6 sm:p-10"
         dir={locale === "ar" ? "rtl" : "ltr"}
       >
-        <div className="grid gap-8 lg:grid-cols-[1.25fr_1fr] items-center p-6 sm:p-10">
+        <div className="grid gap-8 lg:grid-cols-[1.25fr_1fr] items-center">
           {/* Sponsor Banner Image */}
           <div className="relative aspect-video w-full overflow-hidden rounded-xl border border-[var(--border)] bg-black/40">
             <Image

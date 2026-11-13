@@ -43,11 +43,9 @@ export default function SolarSocials() {
           return (
             <Reveal key={item.id} delay={i * 0.04}>
               <article
-                className="card-glow group relative flex h-full flex-col overflow-hidden rounded-2xl border p-6 transition-all duration-300 hover:-translate-y-1"
+                className="store-rank group relative h-full"
                 style={
                   {
-                    background: "var(--surface)",
-                    borderColor: "var(--border)",
                     "--card-glow-color": brandColor,
                   } as CSSProperties
                 }
