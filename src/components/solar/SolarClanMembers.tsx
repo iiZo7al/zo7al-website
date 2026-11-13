@@ -5,14 +5,13 @@ import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import {
   ArrowUpRight,
-  ChevronRight,
   Globe,
   Trophy,
   UserRound,
   Users,
-  X,
 } from "lucide-react";
 import BrandIcon from "@/components/ui/BrandIcon";
+import DetailsDialog from "@/components/ui/DetailsDialog";
 import {
   SOLAR_MEMBER_SOCIAL_PLATFORMS,
   type SolarMember,
@@ -39,6 +38,7 @@ export default function SolarClanMembers() {
   const locale = useLocale();
   const isAr = locale === "ar";
   const common = useTranslations("common");
+  const store = useTranslations("store");
   const [members, setMembers] = useState<SolarMember[]>([]);
   const [loading, setLoading] = useState(true);
   const [expanded, setExpanded] = useState(false);
@@ -59,15 +59,6 @@ export default function SolarClanMembers() {
       });
     return () => controller.abort();
   }, []);
-
-  useEffect(() => {
-    if (!selected) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setSelected(null);
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [selected]);
 
   if (loading) {
     return (
@@ -97,12 +88,7 @@ export default function SolarClanMembers() {
       <ol className="community-leader-list" dir={isAr ? "rtl" : "ltr"}>
         {visible.map((member, index) => (
           <li key={member.id}>
-            <button
-              type="button"
-              onClick={() => setSelected(member)}
-              data-cursor="link"
-              className="community-leader-row w-full text-start"
-            >
+            <div className="community-leader-row">
               <span className="community-leader-place">
                 {index < 3 ? (
                   <Trophy size={19} aria-label={String(index + 1)} />
@@ -139,17 +125,16 @@ export default function SolarClanMembers() {
                 {member.rank}
               </span>
 
-              <span className="community-leader-value shrink-0">
-                <span className="hidden sm:inline text-xs font-medium">
-                  {isAr ? "التفاصيل" : "Details"}
-                </span>
-                <ChevronRight
-                  size={16}
-                  aria-hidden="true"
-                  className={isAr ? "rotate-180" : ""}
-                />
-              </span>
-            </button>
+              <button
+                type="button"
+                className="hub-button shrink-0"
+                aria-haspopup="dialog"
+                data-cursor="button"
+                onClick={() => setSelected(member)}
+              >
+                {store("details")}
+              </button>
+            </div>
           </li>
         ))}
       </ol>
@@ -167,132 +152,113 @@ export default function SolarClanMembers() {
         </div>
       )}
 
-      {/* Member Details Modal */}
       {selected && (
-        <div
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/75 p-4 backdrop-blur-md"
-          role="dialog"
-          aria-modal="true"
-          onClick={() => setSelected(null)}
+        <DetailsDialog
+          title={`${store("details")} · ${selected.name}`}
+          onClose={() => setSelected(null)}
         >
-          <div
-            className="checkout-shell store-checkout w-full max-w-lg rounded-2xl border border-[var(--border-strong)] bg-[var(--surface)] shadow-2xl overflow-hidden"
-            dir={isAr ? "rtl" : "ltr"}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="flex items-center justify-between border-b border-[var(--border)] px-6 py-4 bg-[var(--surface-elevated)]">
-              <div className="flex items-center gap-3">
-                <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full border border-[var(--border-strong)] bg-black flex items-center justify-center">
-                  {selected.avatar ? (
-                    <Image
-                      src={selected.avatar}
-                      alt={selected.name}
-                      width={48}
-                      height={48}
-                      unoptimized
-                      className="h-full w-full object-cover"
-                    />
-                  ) : (
-                    <UserRound size={22} className="text-[var(--text-muted)]" />
-                  )}
-                </div>
-                <div>
-                  <h3 className="text-base font-bold text-[var(--text)]">
-                    {selected.name}
-                  </h3>
-                  <span
-                    className="mt-1 inline-block rounded-full border px-2.5 py-0.5 text-[11px] font-semibold"
-                    style={{
-                      borderColor:
-                        "color-mix(in srgb, var(--accent) 40%, var(--border))",
-                      background:
-                        "color-mix(in srgb, var(--accent) 12%, transparent)",
-                      color: "var(--accent)",
-                    }}
-                  >
-                    {selected.rank}
-                  </span>
-                </div>
-              </div>
-              <button
-                type="button"
-                onClick={() => setSelected(null)}
-                aria-label={isAr ? "إغلاق" : "Close"}
-                className="rounded-lg p-1.5 text-[var(--text-muted)] hover:bg-white/5 hover:text-[var(--text)]"
-              >
-                <X size={18} />
-              </button>
-            </div>
-
-            <div className="p-6 space-y-5 max-h-[75vh] overflow-y-auto">
-              {selected.bio && (
-                <div className="rounded-xl border border-[var(--border)] bg-black/20 p-4">
-                  <p className="text-xs font-semibold text-[var(--text-muted)] mb-1">
-                    {isAr ? "نبذة عن العضو" : "About"}
-                  </p>
-                  <p className="text-sm text-[var(--text)] leading-relaxed whitespace-pre-wrap">
-                    {selected.bio}
-                  </p>
-                </div>
-              )}
-
-              <div>
-                <p className="text-xs font-semibold text-[var(--text-muted)] mb-3">
-                  {isAr ? "حسابات العضو" : "Social Accounts"}
-                </p>
-                {selected.socials.length === 0 ? (
-                  <p className="text-xs text-[var(--text-muted)] rounded-xl border border-[var(--border)] bg-black/20 p-4 text-center">
-                    {isAr
-                      ? "لم تتم إضافة حسابات لهذا العضو بعد."
-                      : "No social accounts linked yet."}
-                  </p>
+          <div className="community-dialog-body space-y-5" dir={isAr ? "rtl" : "ltr"}>
+            <div className="flex items-center gap-4 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4">
+              <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-full border border-[var(--border-strong)] bg-[var(--surface-elevated)] flex items-center justify-center">
+                {selected.avatar ? (
+                  <Image
+                    src={selected.avatar}
+                    alt={selected.name}
+                    width={64}
+                    height={64}
+                    unoptimized
+                    className="h-full w-full object-cover"
+                  />
                 ) : (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                    {selected.socials.map((s, idx) => {
-                      const platformLabel =
-                        SOLAR_MEMBER_SOCIAL_PLATFORMS.find(
-                          (p) => p.id === s.platform,
-                        )?.label ?? s.platform;
-                      return (
-                        <a
-                          key={`${s.platform}-${idx}`}
-                          href={s.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          data-cursor="link"
-                          className="flex items-center justify-between gap-3 rounded-xl border border-[var(--border)] bg-[var(--surface-elevated)] px-3.5 py-2.5 text-xs transition-colors hover:border-[var(--accent)]"
-                        >
-                          <div className="flex items-center gap-2.5 min-w-0">
-                            <span className="text-[var(--accent)] shrink-0">
-                              <SocialPlatformIcon platform={s.platform} />
-                            </span>
-                            <div className="min-w-0">
-                              <p className="font-semibold text-[var(--text)] truncate">
-                                {platformLabel}
-                              </p>
-                              {s.label && (
-                                <p
-                                  className="text-[11px] text-[var(--text-muted)] truncate"
-                                  dir="ltr"
-                                >
-                                  {s.label}
-                                </p>
-                              )}
-                            </div>
-                          </div>
-                          <ArrowUpRight
-                            size={14}
-                            className="text-[var(--text-muted)] shrink-0"
-                          />
-                        </a>
-                      );
-                    })}
-                  </div>
+                  <UserRound size={26} className="text-[var(--text-muted)]" />
                 )}
               </div>
+              <div className="min-w-0 flex-1">
+                <h3 className="text-base font-bold text-[var(--text)] truncate">
+                  {selected.name}
+                </h3>
+                <span
+                  className="mt-1.5 inline-block rounded-full border px-3 py-0.5 text-xs font-semibold"
+                  style={{
+                    borderColor:
+                      "color-mix(in srgb, var(--accent) 40%, var(--border))",
+                    background:
+                      "color-mix(in srgb, var(--accent) 12%, transparent)",
+                    color: "var(--accent)",
+                  }}
+                >
+                  {selected.rank}
+                </span>
+              </div>
+            </div>
+
+            {selected.bio && (
+              <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4">
+                <p className="text-xs font-semibold text-[var(--text-muted)] mb-1.5">
+                  {isAr ? "نبذة عن العضو" : "About"}
+                </p>
+                <p className="text-sm text-[var(--text)] leading-relaxed whitespace-pre-wrap">
+                  {selected.bio}
+                </p>
+              </div>
+            )}
+
+            <div>
+              <p className="text-xs font-semibold text-[var(--text-muted)] mb-3">
+                {isAr ? "حسابات العضو" : "Social Accounts"}
+              </p>
+              {selected.socials.length === 0 ? (
+                <p className="text-xs text-[var(--text-muted)] rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 text-center">
+                  {isAr
+                    ? "لم تتم إضافة حسابات لهذا العضو بعد."
+                    : "No social accounts linked yet."}
+                </p>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                  {selected.socials.map((s, idx) => {
+                    const platformLabel =
+                      SOLAR_MEMBER_SOCIAL_PLATFORMS.find(
+                        (p) => p.id === s.platform,
+                      )?.label ?? s.platform;
+                    return (
+                      <a
+                        key={`${s.platform}-${idx}`}
+                        href={s.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        data-cursor="link"
+                        className="flex items-center justify-between gap-3 rounded-2xl border border-[var(--border)] bg-[var(--surface)] px-4 py-3 text-xs transition-colors hover:border-[var(--accent)] hover:bg-[var(--surface-elevated)]"
+                      >
+                        <div className="flex items-center gap-3 min-w-0">
+                          <span className="text-[var(--accent)] shrink-0">
+                            <SocialPlatformIcon platform={s.platform} />
+                          </span>
+                          <div className="min-w-0">
+                            <p className="font-semibold text-[var(--text)] truncate">
+                              {platformLabel}
+                            </p>
+                            {s.label && (
+                              <p
+                                className="text-[11px] text-[var(--text-muted)] truncate"
+                                dir="ltr"
+                              >
+                                {s.label}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                        <ArrowUpRight
+                          size={14}
+                          className="text-[var(--text-muted)] shrink-0"
+                        />
+                      </a>
+                    );
+                  })}
+                </div>
+              )}
             </div>
           </div>
-        </div>
+        </DetailsDialog>
       )}
     </>
   );
