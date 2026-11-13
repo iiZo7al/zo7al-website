@@ -325,3 +325,31 @@ export async function syncAcceptedSolarApplicant(requestId: string): Promise<voi
 
   await saveSolarMembers([...current, added]);
 }
+
+export async function removeSolarApplicantMember(requestId: string): Promise<void> {
+  if (!UUID_RE.test(requestId)) return;
+  const db = await siteDatabase();
+  const reqRes = await db.query(
+    "SELECT id, user_id, payload FROM site_requests WHERE id = $1 AND kind = 'application' LIMIT 1",
+    [requestId],
+  );
+  const row = reqRes.rows[0];
+  const payload =
+    row?.payload && typeof row.payload === "object"
+      ? (row.payload as Record<string, unknown>)
+      : null;
+  if (payload && payload.platform !== "solar") return;
+
+  const reqUserId =
+    typeof row?.user_id === "string" && UUID_RE.test(row.user_id)
+      ? row.user_id
+      : undefined;
+
+  const current = await readStoredMembers();
+  const next = current.filter(
+    (m) => m.id !== requestId && !(reqUserId && m.userId === reqUserId),
+  );
+  if (next.length !== current.length) {
+    await saveSolarMembers(next);
+  }
+}

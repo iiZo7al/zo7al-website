@@ -21,6 +21,7 @@ import {
   FileSpreadsheet,
 } from "lucide-react";
 import MarkdownContent from "@/components/ui/MarkdownContent";
+import { Skeleton } from "@/components/ui/Skeleton";
 import SolarContractViewerModal from "./SolarContractViewerModal";
 import SolarExcelSheet from "./SolarExcelSheet";
 import SolarMembersManager from "./SolarMembersManager";
@@ -505,9 +506,10 @@ export default function SolarManagement({
           </div>
 
           {loadingSettings ? (
-            <div className="p-12 text-center text-[var(--text-muted)]">
-              <RefreshCw size={24} className="dash-spinning mx-auto mb-2" />
-              جاري تحميل إعدادات التقديم...
+            <div className="space-y-4 py-4" aria-busy="true" aria-label="جاري تحميل إعدادات التقديم...">
+              <Skeleton className="h-14 w-full rounded-2xl" />
+              <Skeleton className="h-24 w-full rounded-2xl" />
+              <Skeleton className="h-12 w-40 rounded-xl" />
             </div>
           ) : !settings ? (
             <div className="p-8 text-center text-red-400">
