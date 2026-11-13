@@ -2,6 +2,7 @@ import "server-only";
 import crypto from "node:crypto";
 import { siteDatabase } from "@/lib/server/site-db";
 import {
+  formatSolarMemberRank,
   normalizeSolarMemberSocials,
   safeMemberUrl,
   SOLAR_MEMBER_SOCIAL_PLATFORMS,
@@ -268,7 +269,9 @@ export async function syncAcceptedSolarApplicant(requestId: string): Promise<voi
 
   const roleKey = typeof payload.role === "string" ? payload.role : "";
   const subKey = typeof payload.adminSubType === "string" ? payload.adminSubType : "";
+  const gameKey = typeof payload.game === "string" ? payload.game : "";
   const rank =
+    formatSolarMemberRank(roleKey, subKey, gameKey) ||
     (roleKey === "admin" && subKey && SUBTYPE_TO_RANK[subKey]) ||
     ROLE_TO_RANK[roleKey] ||
     "عضو";
