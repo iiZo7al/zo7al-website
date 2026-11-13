@@ -14,7 +14,7 @@ import {
   X,
 } from "lucide-react";
 import DetailsDialog from "@/components/ui/DetailsDialog";
-import { SkeletonRow } from "@/components/ui/Skeleton";
+import { Skeleton } from "@/components/ui/Skeleton";
 import {
   formatSolarMemberRank,
   parseSolarMemberRank,
@@ -256,7 +256,23 @@ export default function SolarMembersManager({
       {loading ? (
         <div className="space-y-2.5" aria-busy="true" aria-label="جاري التحميل...">
           {Array.from({ length: 4 }).map((_, i) => (
-            <SkeletonRow key={i} />
+            <div
+              key={i}
+              className="flex items-center justify-between gap-3 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-3.5"
+            >
+              <div className="flex items-center gap-3 min-w-0 flex-1">
+                <Skeleton className="h-10 w-10 shrink-0 rounded-full" />
+                <div className="min-w-0 flex-1 space-y-2">
+                  <Skeleton className="h-4 w-36 max-w-[60%]" />
+                  <Skeleton className="h-3 w-24 max-w-[40%]" />
+                </div>
+              </div>
+              <div className="flex items-center gap-1.5 shrink-0">
+                <Skeleton className="h-8 w-8 rounded-lg" />
+                <Skeleton className="h-8 w-8 rounded-lg" />
+                <Skeleton className="h-8 w-8 rounded-lg" />
+              </div>
+            </div>
           ))}
         </div>
       ) : members.length === 0 ? (
