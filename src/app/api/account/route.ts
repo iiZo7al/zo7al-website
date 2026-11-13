@@ -5,7 +5,7 @@ import { ACCOUNT_PROVIDERS, accountEmail, accountPassword, safeAccountName } fro
 import { readJSON } from '@/lib/server/site-security';
 import { limitAttempt } from '@/lib/server/site-content';
 import { siteDatabase } from '@/lib/server/site-db';
-import { profileSettings } from '@/lib/data/member-profile';
+import { profileSettings, profileUsername } from '@/lib/data/member-profile';
 import { LOCALES } from '@/i18n/config';
 import { startMemberModrinth } from '@/lib/server/member-modrinth';
 import { cancelAccountDeletion,forgetSavedAccount } from '@/lib/server/account-auth';
@@ -42,9 +42,19 @@ export async function POST(request:Request) {
         if(!accountRequiresMFA(user,tokens.access_token!))await cancelAccountDeletion(user.id);
         return Response.json({ok:true,mfaRequired:accountRequiresMFA(user,tokens.access_token!)},{headers});
       }
-      if(body.action==='signup'&&!accountPassword(body.password))throw new AccountError('PASSWORD');
+      let signupUsername: string | null = null;
+      if(body.action==='signup') {
+        if(!accountPassword(body.password))throw new AccountError('PASSWORD');
+        signupUsername=profileUsername(body.username);
+        if(!signupUsername)throw new AccountError('INVALID');
+        const taken=await (await siteDatabase()).query('SELECT 1 FROM site_accounts WHERE lower(username)=lower($1) LIMIT 1',[signupUsername]);
+        if(taken.rows.length)throw new AccountError('USERNAME_TAKEN',409);
+      }
       const flow=await startAccountFlow(request,headers,body.action,body.next);
-      const result=await authRequest((body.action==='signup'?'/signup':'/recover')+'?redirect_to='+encodeURIComponent(flow.redirectTo),'POST',{email,...(body.action==='signup'?{password:body.password}:{}),code_challenge:flow.code_challenge,code_challenge_method:flow.code_challenge_method});
+      const result=await authRequest((body.action==='signup'?'/signup':'/recover')+'?redirect_to='+encodeURIComponent(flow.redirectTo),'POST',{email,...(body.action==='signup'?{password:body.password,data:{username:signupUsername}}:{}),code_challenge:flow.code_challenge,code_challenge_method:flow.code_challenge_method});
+      if(body.action==='signup'&&signupUsername&&result.user?.id) {
+        try { await (await siteDatabase()).query('INSERT INTO site_accounts(id,name,username) VALUES($1,$2,$3) ON CONFLICT(id) DO UPDATE SET username=COALESCE(site_accounts.username,EXCLUDED.username)',[result.user.id,signupUsername,signupUsername]); } catch {}
+      }
       if(result.access_token)setAccountTokens(result,headers);
       return Response.json({ok:true,message:result.access_token?'SIGNED_IN':'EMAIL_SENT'},{headers});
     }
@@ -79,6 +89,13 @@ export async function POST(request:Request) {
       const profile=profileSettings(body);if(!profile)throw new AccountError('INVALID');
       await accountView(user);
       try { await (await siteDatabase()).query('UPDATE site_accounts SET username=$2,avatar=$3,banner=$4,bio=$5,socials=$6,updated_at=now() WHERE id=$1',[user.id,profile.username,profile.avatar,profile.banner,profile.bio,JSON.stringify(profile.socials)]); }
+      catch(error){if((error as {code?:string}).code==='23505')throw new AccountError('USERNAME_TAKEN',409);throw error;}
+      return Response.json({ok:true},{headers});
+    }
+    if(body.action==='setUsername') {
+      const username=profileUsername(body.username);if(!username)throw new AccountError('INVALID');
+      await accountView(user);
+      try { await (await siteDatabase()).query('UPDATE site_accounts SET username=$2,updated_at=now() WHERE id=$1',[user.id,username]); }
       catch(error){if((error as {code?:string}).code==='23505')throw new AccountError('USERNAME_TAKEN',409);throw error;}
       return Response.json({ok:true},{headers});
     }

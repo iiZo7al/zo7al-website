@@ -103,6 +103,20 @@ export async function accountView(user: AuthUser): Promise<SiteAccount> {
   const fallback = safeAccountName(user.user_metadata?.full_name) ?? safeAccountName(user.user_metadata?.name) ?? user.email?.split('@')[0]?.slice(0,64) ?? 'Zo7al';
   await db.query('INSERT INTO site_accounts(id,name) VALUES($1,$2) ON CONFLICT(id) DO NOTHING', [user.id, fallback]);
   const row = (await db.query('SELECT a.name,a.username AS handle,a.avatar,a.banner,a.bio,a.socials,l.uuid,l.username,l.linked_at FROM site_accounts a LEFT JOIN site_minecraft_links l ON l.user_id=a.id WHERE a.id=$1',[user.id])).rows[0];
+  if (!row.handle) {
+    const rawMetaUsername = user.user_metadata?.username;
+    const pendingUsername =
+      typeof rawMetaUsername === 'string' &&
+      /^[a-zA-Z0-9_]{3,32}$/.test(rawMetaUsername.trim().replace(/^@/, ''))
+        ? rawMetaUsername.trim().replace(/^@/, '')
+        : null;
+    if (pendingUsername) {
+      try {
+        await db.query('UPDATE site_accounts SET username=$2 WHERE id=$1 AND username IS NULL', [user.id, pendingUsername]);
+        row.handle = pendingUsername;
+      } catch {}
+    }
+  }
   const modrinth=(await db.query('SELECT provider_id,name FROM site_member_modrinth_identities WHERE user_id=$1',[user.id])).rows[0];
   const internalEmail=user.email?.endsWith('@modrinth.accounts.zo7al.is-a.dev');
   // Linked provider contact details are never used to select/merge an authentication subject.
