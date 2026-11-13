@@ -13,7 +13,7 @@ import {
 import BrandIcon, { BRAND_ICONS } from "@/components/ui/BrandIcon";
 import DetailsDialog from "@/components/ui/DetailsDialog";
 import DetailsIcon from "@/components/ui/DetailsIcon";
-import { SkeletonRow } from "@/components/ui/Skeleton";
+import { Skeleton } from "@/components/ui/Skeleton";
 import {
   SOLAR_MEMBER_SOCIAL_PLATFORMS,
   type SolarMember,
@@ -55,11 +55,26 @@ export default function SolarClanMembers() {
 
   if (loading) {
     return (
-      <div className="space-y-3" role="status" aria-busy="true" aria-label={isAr ? "جاري تحميل أعضاء الكلان..." : "Loading clan members..."}>
+      <ol
+        className="community-leader-list"
+        dir={isAr ? "rtl" : "ltr"}
+        role="status"
+        aria-busy="true"
+        aria-label={isAr ? "جاري تحميل أعضاء الكلان..." : "Loading clan members..."}
+      >
         {Array.from({ length: 5 }).map((_, i) => (
-          <SkeletonRow key={i} />
+          <li key={i}>
+            <div className="community-leader-row">
+              <Skeleton className="h-10 w-10 shrink-0 rounded-full" />
+              <div className="community-leader-name">
+                <Skeleton className="h-4 w-36 max-w-[55%]" />
+              </div>
+              <Skeleton className="h-6 w-24 shrink-0 rounded-full" />
+              <Skeleton className="h-10 w-10 shrink-0 rounded-full" />
+            </div>
+          </li>
         ))}
-      </div>
+      </ol>
     );
   }
 
