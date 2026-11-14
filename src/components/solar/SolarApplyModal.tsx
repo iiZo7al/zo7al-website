@@ -50,7 +50,7 @@ export default function SolarApplyModal({
   const [step, setStep] = useState<1 | 2 | 3>(1);
 
   // Form Fields
-  const [name, setName] = useState(account?.name ?? "");
+  const [name, setName] = useState("");
   const [nickname, setNickname] = useState("");
   const [age, setAge] = useState("");
   const [country, setCountry] = useState("");
