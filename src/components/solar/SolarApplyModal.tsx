@@ -121,6 +121,10 @@ export default function SolarApplyModal({
       setError("يرجى اختيار مدة العقد المطلوبة");
       return;
     }
+    if (!signedContractUrl) {
+      setError("يرجى حفظ التوقيع أو رفع صورة العقد الموقّعة لإتمام التقديم.");
+      return;
+    }
     if (!pledgeAgreed) {
       setError("يرجى الموافقة على تعهد مقدّم Solar System لإتمام التقديم");
       return;
