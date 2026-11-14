@@ -122,6 +122,7 @@ export default function SolarManagement({
   const [viewingContract, setViewingContract] = useState<{
     signatureUrl: string;
     name: string;
+    isLeave?: boolean;
   } | null>(null);
 
   // Settings State
@@ -486,7 +487,7 @@ export default function SolarManagement({
                   onRetry={() => mutate("retryApplication", row.id)}
                   onDelete={() => mutate("deleteRequest", row.id)}
                   onViewContract={(sigUrl, appName) =>
-                    setViewingContract({ signatureUrl: sigUrl, name: appName })
+                    setViewingContract({ signatureUrl: sigUrl, name: appName, isLeave: true })
                   }
                 />
               ))}
@@ -498,6 +499,7 @@ export default function SolarManagement({
               isOpen={Boolean(viewingContract)}
               signatureUrl={viewingContract.signatureUrl}
               applicantName={viewingContract.name}
+              isLeave={viewingContract.isLeave}
               onClose={() => setViewingContract(null)}
             />
           )}
@@ -1243,7 +1245,9 @@ function SolarApplicantCard({
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 rounded-lg border border-amber-500/30 bg-amber-500/10 p-2.5">
               <div className="flex items-center gap-2">
                 <FileCheck size={16} className="text-[var(--accent)] shrink-0" />
-                <span className="text-[var(--text)] font-semibold">وثيقة العقد والتوقيع:</span>
+                <span className="text-[var(--text)] font-semibold">
+                  {isLeaveRequest ? "وثيقة تعهّد الإجازة:" : "وثيقة العقد والتوقيع:"}
+                </span>
               </div>
               <div className="flex items-center gap-2">
                 <button
@@ -1252,7 +1256,9 @@ function SolarApplicantCard({
                   className="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-bold transition-all active:scale-95 cursor-pointer bg-[var(--accent)] text-[#07080b]"
                 >
                   <Eye size={13} />
-                  <span>معاينة بالعقد / لحاله</span>
+                  <span>
+                    {isLeaveRequest ? "معاينة صورة التعهّد" : "معاينة بالعقد / لحاله"}
+                  </span>
                 </button>
                 <a
                   href={signedContractUrl}
@@ -1269,11 +1275,13 @@ function SolarApplicantCard({
         </div>
       )}
 
-      {/* Why Join */}
+      {/* Why Join / Leave Reason */}
       {whyJoin && (
         <div className="rounded-lg border border-[var(--border)] bg-black/20 p-3 text-xs space-y-1">
           <p className="font-semibold text-[var(--text-muted)]">
-            لماذا ترغب بالانضمام إلى Solar System؟
+            {isLeaveRequest
+              ? "لماذا ترغب باخذ اجازة في Solar System؟"
+              : "لماذا ترغب بالانضمام إلى Solar System؟"}
           </p>
           <div className="text-[var(--text)] leading-relaxed whitespace-pre-wrap">
             <MarkdownContent>{whyJoin}</MarkdownContent>
