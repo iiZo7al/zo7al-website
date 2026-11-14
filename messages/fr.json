@@ -329,7 +329,8 @@
       "modpacks": "Packs de mods",
       "community": "Communauté",
       "support": "Assistance et demandes",
-      "accountSecurity": "Compte et sécurité"
+      "accountSecurity": "Compte et sécurité",
+      "solarClan": "Clan Solar System"
     },
     "items": [
       {
@@ -711,6 +712,46 @@
         "a": "Ouvrez Mon compte → Comptes liés et choisissez Délier. Vérifiez votre identité par double authentification ou une méthode e-mail disponible. Conservez une autre méthode de connexion utilisable.",
         "href": "/account?tab=connections",
         "action": "Comptes associés"
+      },
+      {
+        "id": "solar-clan-join",
+        "category": "solarClan",
+        "q": "Comment rejoindre le clan Solar System et quelles divisions existent ?",
+        "a": "Rendez-vous sur la page Solar System, choisissez une division (Créateur, Streamer, Designer, Monteur, Joueur, Staff ou Rédacteur), remplissez le formulaire et enregistrez votre signature ou importez le contrat signé.",
+        "href": "/solar",
+        "action": "Clan Solar"
+      },
+      {
+        "id": "solar-events-staff",
+        "category": "solarClan",
+        "q": "Comment postuler pour gérer les événements Discord ?",
+        "a": "Cliquez sur \"Postuler Événements Discord\" à côté du bouton principal sur /solar. Ce rôle concerne uniquement les événements Discord (contrat max. 1,5 mois).",
+        "href": "/solar",
+        "action": "Événements Discord"
+      },
+      {
+        "id": "solar-members-portal",
+        "category": "solarClan",
+        "q": "Comment accéder au portail des membres et demander un congé ?",
+        "a": "Une fois accepté, le bouton principal mène vers /solar/members avec votre badge Membre du Clan et le formulaire de demande de congé.",
+        "href": "/solar/members",
+        "action": "Portail Membres"
+      },
+      {
+        "id": "solar-contract-signature",
+        "category": "solarClan",
+        "q": "La signature ou l'import du contrat signé est-elle obligatoire ?",
+        "a": "Oui. Toutes les candidatures Solar exigent l'enregistrement d'une signature numérique ou l'import du contrat signé.",
+        "href": "/requests?tab=applications",
+        "action": "Mes Demandes"
+      },
+      {
+        "id": "solar-sponsors-map",
+        "category": "solarClan",
+        "q": "Qui sont les sponsors du clan et où trouver la carte Clan Wars ?",
+        "a": "Les sponsors officiels sont Rasanah Services et Sewan ®. Retrouvez-les avec le code de l'île Fortnite sur /solar.",
+        "href": "/solar#sponsor",
+        "action": "Sponsors & Carte"
       }
     ],
     "clearSearch": "Effacer la recherche",

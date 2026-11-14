@@ -6,11 +6,13 @@ import Reveal from "@/components/ui/Reveal";
 import SolidIcon from "@/components/ui/SolidIcon";
 import { Award, Coffee, ExternalLink, ShieldCheck, Zap } from "lucide-react";
 import { solarCopy } from "@/lib/data/solar-copy";
+import { solarExtraCopy } from "@/lib/data/solar-i18n";
 
 export default function SolarSponsor() {
   const locale = useLocale();
   const isArabic = locale === "ar";
   const t = solarCopy(locale);
+  const tx = solarExtraCopy(locale);
 
   return (
     <div className="space-y-8">
@@ -167,18 +169,16 @@ export default function SolarSponsor() {
                 </span>
                 <span className="inline-flex items-center gap-1.5 rounded-full border border-[var(--border)] px-3 py-1 text-xs text-[var(--text-muted)]">
                   <Coffee size={12} aria-hidden="true" />
-                  {isArabic ? "قهوة مختصة" : "Specialty Coffee"}
+                  {tx.sewanCategory}
                 </span>
               </div>
 
               <div>
                 <h3 className="text-2xl sm:text-3xl font-bold text-[var(--text)]">
-                  Sewan ® صــيوان
+                  {tx.sewanName}
                 </h3>
                 <p className="mt-2 text-sm text-[var(--text-muted)] leading-relaxed">
-                  {isArabic
-                    ? "صــيوان (Sewan ®) علامة قهوة مختصة، شريك وراعٍ رسمي لكلان Solar System لدعم اللاعبين وصناع المحتوى وفعاليات المجتمع."
-                    : "Sewan ® Specialty Coffee is an official partner and sponsor of Solar System Team, supporting our players, creators, and community events."}
+                  {tx.sewanDesc}
                 </p>
               </div>
 
@@ -194,11 +194,7 @@ export default function SolarSponsor() {
                   >
                     <Coffee size={14} />
                   </span>
-                  <span>
-                    {isArabic
-                      ? "قهوة مختصة — جودة عالية وتجربة ضيافة فريدة"
-                      : "Specialty Coffee — craft quality & unique hospitality"}
-                  </span>
+                  <span>{tx.sewanPerk1}</span>
                 </div>
 
                 <div className="flex items-center gap-2.5 text-xs text-[var(--text-muted)]">
@@ -211,11 +207,7 @@ export default function SolarSponsor() {
                   >
                     <Award size={14} />
                   </span>
-                  <span>
-                    {isArabic
-                      ? "الشريك والراعي الرسمي لكلان Solar System"
-                      : "Official Partner & Sponsor for Solar System Team"}
-                  </span>
+                  <span>{tx.sewanPerk2}</span>
                 </div>
 
                 <div className="flex items-center gap-2.5 text-xs text-[var(--text-muted)]">
@@ -228,11 +220,7 @@ export default function SolarSponsor() {
                   >
                     <ShieldCheck size={14} />
                   </span>
-                  <span>
-                    {isArabic
-                      ? "دعم مستمر لبطولات الكلان وصناع المحتوى"
-                      : "Ongoing support for clan tournaments and content creators"}
-                  </span>
+                  <span>{tx.sewanPerk3}</span>
                 </div>
               </div>
 
@@ -246,11 +234,7 @@ export default function SolarSponsor() {
                   className="inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition-transform hover:scale-[1.02] active:scale-95"
                   style={{ background: "var(--accent)", color: "#07080B" }}
                 >
-                  <span>
-                    {isArabic
-                      ? "زيارة موقع راعي الكلان"
-                      : t.sponsorVisitBtn || "Visit Sponsor Website"}
-                  </span>
+                  <span>{tx.sewanVisitBtn}</span>
                   <ExternalLink size={15} />
                 </a>
               </div>

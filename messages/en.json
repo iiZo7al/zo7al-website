@@ -329,7 +329,8 @@
       "modpacks": "Modpacks",
       "community": "Community",
       "support": "Support & requests",
-      "accountSecurity": "Accounts & security"
+      "accountSecurity": "Accounts & security",
+      "solarClan": "Solar System Clan"
     },
     "items": [
       {
@@ -711,6 +712,46 @@
         "a": "Open My account → Linked accounts and select Unlink. Verify with 2FA or an available email method before removal. Keep another usable sign-in method so you retain access.",
         "href": "/account?tab=connections",
         "action": "Linked accounts"
+      },
+      {
+        "id": "solar-clan-join",
+        "category": "solarClan",
+        "q": "How do I join Solar System Clan and what divisions are available?",
+        "a": "Open the Solar System page, click Apply to Join Clan or pick a division (Content Creator, Streamer, Designer, Video Editor, Player, Staff & Admin, or Idea Writer), fill in your details, and save your signature or upload the signed contract.",
+        "href": "/solar",
+        "action": "Solar Clan"
+      },
+      {
+        "id": "solar-events-staff",
+        "category": "solarClan",
+        "q": "How do I apply for Discord Events Staff in Solar System?",
+        "a": "Click \"Apply for Discord Events Staff\" next to the clan apply button on the Solar page. This role is exclusively for managing Discord events (up to a 1.5-month contract) and is separate from joining the clan as a player.",
+        "href": "/solar",
+        "action": "Apply for Events"
+      },
+      {
+        "id": "solar-members-portal",
+        "category": "solarClan",
+        "q": "How do I access the Solar Members Portal and request leave?",
+        "a": "Once your clan application is accepted, the primary button changes to Accepted and links to /solar/members where your Clan Member badge appears and you can submit leave requests.",
+        "href": "/solar/members",
+        "action": "Members Portal"
+      },
+      {
+        "id": "solar-contract-signature",
+        "category": "solarClan",
+        "q": "Is saving a signature or uploading a signed contract mandatory?",
+        "a": "Yes. Every Solar application (Clan join, Discord Events Staff, and Leave requests) requires saving your drawn signature or uploading the signed contract image before submission. Track all requests in your Requests page.",
+        "href": "/requests?tab=applications",
+        "action": "My Requests"
+      },
+      {
+        "id": "solar-sponsors-map",
+        "category": "solarClan",
+        "q": "Who are Solar System Clan sponsors and where is the Clan Wars map?",
+        "a": "Solar System Clan is officially sponsored by Rasanah Services and Sewan ® Specialty Coffee. You can find both sponsors and the official Fortnite Clan Wars island code on the Solar page.",
+        "href": "/solar#sponsor",
+        "action": "Sponsors & Map"
       }
     ],
     "clearSearch": "Clear search",

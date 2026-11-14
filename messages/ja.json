@@ -329,7 +329,8 @@
       "modpacks": "Modpack",
       "community": "コミュニティ",
       "support": "サポートと申請",
-      "accountSecurity": "アカウントとセキュリティ"
+      "accountSecurity": "アカウントとセキュリティ",
+      "solarClan": "Solar System クラン"
     },
     "items": [
       {
@@ -711,6 +712,46 @@
         "a": "マイアカウント → 連携アカウントで解除を選びます。二段階認証または利用可能なメール方式で確認してから解除します。アクセスを保つため、別の使えるログイン方法を残してください。",
         "href": "/account?tab=connections",
         "action": "連携アカウント"
+      },
+      {
+        "id": "solar-clan-join",
+        "category": "solarClan",
+        "q": "Solar System クランへの参加方法と募集部門は？",
+        "a": "Solar System ページから部門（クリエイター、ストリーマー、デザイナー、編集者、プレイヤー、運営、企画ライター）を選び、情報を入力してデジタル署名を保存または署名済み契約書をアップロードしてください。",
+        "href": "/solar",
+        "action": "Solar クラン"
+      },
+      {
+        "id": "solar-events-staff",
+        "category": "solarClan",
+        "q": "Discordイベント運営への応募方法は？",
+        "a": "/solar ページのクラン応募ボタンの横にある「Discordイベント運営に応募」をクリックしてください。Discordイベント専用の役職（契約期間最大1.5ヶ月）です。",
+        "href": "/solar",
+        "action": "イベント運営応募"
+      },
+      {
+        "id": "solar-members-portal",
+        "category": "solarClan",
+        "q": "メンバーポータルへのアクセスと休暇申請の方法は？",
+        "a": "承認されると /solar/members ポータルにアクセスでき、クランメンバーバッジの表示や休暇申請が行えます。",
+        "href": "/solar/members",
+        "action": "メンバーポータル"
+      },
+      {
+        "id": "solar-contract-signature",
+        "category": "solarClan",
+        "q": "署名の保存または契約書画像のアップロードは必須ですか？",
+        "a": "はい。すべてのSolar応募（クラン参加、Discordイベント運営、休暇申請）で署名保存または契約書画像のアップロードが必須です。",
+        "href": "/requests?tab=applications",
+        "action": "リクエスト確認"
+      },
+      {
+        "id": "solar-sponsors-map",
+        "category": "solarClan",
+        "q": "公式スポンサーとClan Warsマップはどこにありますか？",
+        "a": "公式スポンサーは Rasanah Services と Sewan ® です。/solar ページでスポンサー情報とFortnite島コードを確認できます。",
+        "href": "/solar#sponsor",
+        "action": "スポンサー＆マップ"
       }
     ],
     "clearSearch": "検索をクリア",

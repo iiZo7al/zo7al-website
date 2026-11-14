@@ -18,6 +18,7 @@ import {
   SOLAR_MEMBER_SOCIAL_PLATFORMS,
   type SolarMember,
 } from "@/lib/data/solar-members";
+import { solarExtraCopy } from "@/lib/data/solar-i18n";
 import "@/components/community/community.css";
 
 function SocialPlatformIcon({ platform }: { platform: string }) {
@@ -30,6 +31,7 @@ function SocialPlatformIcon({ platform }: { platform: string }) {
 export default function SolarClanMembers() {
   const locale = useLocale();
   const isAr = locale === "ar";
+  const tx = solarExtraCopy(locale);
   const common = useTranslations("common");
   const store = useTranslations("store");
   const [members, setMembers] = useState<SolarMember[]>([]);
@@ -60,7 +62,7 @@ export default function SolarClanMembers() {
         dir={isAr ? "rtl" : "ltr"}
         role="status"
         aria-busy="true"
-        aria-label={isAr ? "جاري تحميل أعضاء الكلان..." : "Loading clan members..."}
+        aria-label={tx.loadingMembers}
       >
         {Array.from({ length: 5 }).map((_, i) => (
           <li key={i}>
@@ -82,9 +84,7 @@ export default function SolarClanMembers() {
     return (
       <p className="community-empty" role="status">
         <Users size={20} aria-hidden="true" />
-        {isAr
-          ? "لا يوجد أعضاء مضافون حالياً في القائمة."
-          : "No clan members listed yet."}
+        {tx.noMembers}
       </p>
     );
   }
@@ -209,7 +209,7 @@ export default function SolarClanMembers() {
             {selected.bio && (
               <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4">
                 <p className="text-xs font-semibold text-[var(--text-muted)] mb-1.5">
-                  {isAr ? "نبذة عن العضو" : "About"}
+                  {tx.aboutMember}
                 </p>
                 <p className="text-sm text-[var(--text)] leading-relaxed whitespace-pre-wrap">
                   {selected.bio}
@@ -219,13 +219,11 @@ export default function SolarClanMembers() {
 
             <div>
               <p className="text-xs font-semibold text-[var(--text-muted)] mb-3">
-                {isAr ? "حسابات العضو" : "Social Accounts"}
+                {tx.memberSocials}
               </p>
               {selected.socials.length === 0 ? (
                 <p className="text-xs text-[var(--text-muted)] rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 text-center">
-                  {isAr
-                    ? "لم تتم إضافة حسابات لهذا العضو بعد."
-                    : "No social accounts linked yet."}
+                  {tx.noMemberSocials}
                 </p>
               ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">

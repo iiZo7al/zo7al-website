@@ -1,7 +1,7 @@
 export const LOCALES = ["en", "ar", "es", "fr", "de", "pt", "tr", "ja", "ko", "zh"] as const;
 export type Locale = (typeof LOCALES)[number];
 
-export const DEFAULT_LOCALE: Locale = "en";
+export const DEFAULT_LOCALE: Locale = "ar";
 
 export const RTL_LOCALES: Locale[] = ["ar"];
 

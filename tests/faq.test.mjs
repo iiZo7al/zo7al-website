@@ -19,14 +19,14 @@ test('all FAQs cover the same durable features and only use existing internal de
  const privateTerms=/dashboard|داش\s*بورد|لوحة\s*ال?تحكم|tableau de bord|panel de control|painel de contro(?:le|lo)|ダッシュボード|대시보드|控制面板|仪表板/i;
  assert.ok(!base.includes('dashboard-access'));assert.ok(base.includes('project-updates'));
  for(const faq of Object.values(catalogs)){
-  assert.equal(faq.items.length,49);assert.equal(new Set(faq.items.map(item=>item.id )).size,49);
+  assert.equal(faq.items.length,54);assert.equal(new Set(faq.items.map(item=>item.id )).size,54);
   assert.deepEqual(faq.items.map(item=>item.id),base);
   assert.deepEqual(Object.keys(faq.categories),Object.keys(catalogs.en.categories));
   assert.ok(faq.clearSearch&&faq.filterLabel&&faq.resetFilters);
   for(const item of faq.items){
    assert.ok(item.q&&item.a&&faq.categories[item.category]);
    assert.ok(!privateTerms.test(JSON.stringify(item)),item.id+" contains administrator content");
-   if(item.href){assert.equal(faqActionHref(item.href),item.href);assert.ok(item.action);assert.ok(['/','/minecraft','/store','/socials','/support','/requests','/modpacks','/account'].includes(new URL(item.href,'https://zo7al.test').pathname));}
+   if(item.href){assert.equal(faqActionHref(item.href),item.href);assert.ok(item.action);assert.ok(['/','/minecraft','/store','/socials','/support','/requests','/modpacks','/account','/solar','/solar/members'].includes(new URL(item.href,'https://zo7al.test').pathname));}
   }
  }
  assert.ok(catalogs.ar.items.find(item=>item.id==='requests').a.includes('بحسابك'));
