@@ -19,6 +19,7 @@ import SolarClanMembers from "./SolarClanMembers";
 import SolarApplyModal from "./SolarApplyModal";
 import SolarEventsApplyModal from "./SolarEventsApplyModal";
 import { solarCopy } from "@/lib/data/solar-copy";
+import { solarExtraCopy } from "@/lib/data/solar-i18n";
 import { getSolarFaq } from "@/lib/data/solar-faq";
 import type { SolarAdminSubType, SolarRole } from "@/lib/data/solar";
 import type { SolarApplicationStatus } from "@/lib/server/solar-member-status";
@@ -27,12 +28,12 @@ import "@/components/store/store.css";
 
 export default function SolarClient() {
   const locale = useLocale();
-  const isAr = locale === "ar";
   const router = useRouter();
   const { account } = useAccount();
   const faqT = useTranslations("faq");
   const commonT = useTranslations("common");
   const t = solarCopy(locale);
+  const tx = solarExtraCopy(locale);
   const solarFaq = getSolarFaq(locale);
   const [applyOpen, setApplyOpen] = useState(false);
   const [eventsApplyOpen, setEventsApplyOpen] = useState(false);
@@ -74,17 +75,11 @@ export default function SolarClient() {
 
   const ctaLabel =
     effectiveStatus === "accepted"
-      ? isAr
-        ? "مقبول"
-        : "Accepted"
+      ? tx.accepted
       : effectiveStatus === "pending"
-        ? isAr
-          ? "قيد المراجعة"
-          : "Pending Review"
+        ? tx.pendingReview
         : effectiveStatus === "rejected"
-          ? isAr
-            ? "مرفوض"
-            : "Rejected"
+          ? tx.rejected
           : settings && !settings.isOpen
             ? t.applyClosedBtn
             : t.applyBtn;
@@ -159,7 +154,7 @@ export default function SolarClient() {
                 className="inline-flex items-center gap-2 rounded-full border border-[var(--accent)] px-6 py-3.5 text-sm font-semibold text-[var(--accent)] hover:bg-[var(--accent)] hover:text-[#07080B] transition-colors"
               >
                 <SolidIcon name="trophy" size={14} />
-                {isAr ? "قدم ادارة فعاليات ديسكورد" : "Apply for Discord Events Staff"}
+                {tx.eventsApplyBtn}
               </button>
             </MagneticButton>
 
@@ -296,13 +291,9 @@ export default function SolarClient() {
       >
         <div className="mx-auto max-w-[1180px] px-6">
           <SectionHeader
-            eyebrow={locale === "ar" ? "فريق Solar System" : "SOLAR SYSTEM ROSTER"}
-            title={locale === "ar" ? "أعضاء الكلان" : "Clan Members"}
-            text={
-              locale === "ar"
-                ? "تعرّف على الأعضاء الموجودين حالياً في كلان Solar System ورتبهم وحساباتهم الرسمية."
-                : "Meet the current members of Solar System Team, their clan ranks, and official social accounts."
-            }
+            eyebrow={tx.membersEyebrow}
+            title={tx.membersTitle}
+            text={tx.membersText}
           />
           <div className="mt-14">
             <SolarClanMembers />

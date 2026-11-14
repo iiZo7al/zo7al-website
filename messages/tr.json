@@ -329,7 +329,8 @@
       "modpacks": "Modpack'ler",
       "community": "Topluluk",
       "support": "Destek ve talepler",
-      "accountSecurity": "Hesap ve güvenlik"
+      "accountSecurity": "Hesap ve güvenlik",
+      "solarClan": "Solar System Klanı"
     },
     "items": [
       {
@@ -711,6 +712,46 @@
         "a": "Hesabım → Bağlı hesaplar bölümünde Bağlantıyı kaldır seçin. Kaldırmadan önce 2FA veya kullanılabilir e-posta yöntemiyle doğrulayın. Erişiminizi korumak için başka bir kullanılabilir giriş yöntemini tutun.",
         "href": "/account?tab=connections",
         "action": "Bağlı hesaplar"
+      },
+      {
+        "id": "solar-clan-join",
+        "category": "solarClan",
+        "q": "Solar System Klanına nasıl katılırım ve hangi bölümler var?",
+        "a": "Solar System sayfasına gidin, bir bölüm seçin (İçerik Üreticisi, Yayıncı, Tasarımcı, Editör, Oyuncu, Yetkili veya Fikir Yazarı), bilgilerinizi doldurun ve imzanızı kaydedin veya imzalı sözleşmeyi yükleyin.",
+        "href": "/solar",
+        "action": "Solar Klanı"
+      },
+      {
+        "id": "solar-events-staff",
+        "category": "solarClan",
+        "q": "Discord Etkinlik Yönetimi için nasıl başvurabilirim?",
+        "a": "/solar sayfasında klan başvuru butonunun yanındaki \"Discord Etkinlik Ekibi Başvurusu\" butonuna tıklayın. Bu rol yalnızca Discord etkinlikleri içindir (en fazla 1,5 aylık sözleşme).",
+        "href": "/solar",
+        "action": "Etkinlik Başvurusu"
+      },
+      {
+        "id": "solar-members-portal",
+        "category": "solarClan",
+        "q": "Üye Portalına nasıl girerim ve izin talep ederim?",
+        "a": "Başvurunuz kabul edildiğinde ana buton sizi Klan Üyesi rozetinizle birlikte /solar/members portalına yönlendirir; buradan izin talebi oluşturabilirsiniz.",
+        "href": "/solar/members",
+        "action": "Üye Portalı"
+      },
+      {
+        "id": "solar-contract-signature",
+        "category": "solarClan",
+        "q": "Dijital imza kaydetmek veya imzalı sözleşme yüklemek zorunlu mu?",
+        "a": "Evet. Tüm Solar başvurularında gönderim öncesi dijital imza kaydedilmesi veya imzalı sözleşme görselinin yüklenmesi zorunludur.",
+        "href": "/requests?tab=applications",
+        "action": "Taleplerim"
+      },
+      {
+        "id": "solar-sponsors-map",
+        "category": "solarClan",
+        "q": "Klan sponsorları kimler ve Clan Wars haritası nerede?",
+        "a": "Resmi sponsorlar Rasanah Services ve Sewan ®'dır. Her ikisini ve Fortnite ada kodunu /solar sayfasında bulabilirsiniz.",
+        "href": "/solar#sponsor",
+        "action": "Sponsorlar & Harita"
       }
     ],
     "clearSearch": "Aramayı temizle",

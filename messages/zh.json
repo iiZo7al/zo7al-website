@@ -329,7 +329,8 @@
       "modpacks": "整合包",
       "community": "社区",
       "support": "支持与申请",
-      "accountSecurity": "账户与安全"
+      "accountSecurity": "账户与安全",
+      "solarClan": "Solar System 战队"
     },
     "items": [
       {
@@ -711,6 +712,46 @@
         "a": "在我的账户 → 关联账户中选择解除关联，并先通过双重验证或可用邮箱方式确认身份。请保留另一种可用登录方式，以免失去账户访问权限。",
         "href": "/account?tab=connections",
         "action": "关联账户"
+      },
+      {
+        "id": "solar-clan-join",
+        "category": "solarClan",
+        "q": "如何加入 Solar System 战队？有哪些部门？",
+        "a": "前往 Solar System 页面，选择对应部门（内容创作者、主播、设计师、剪辑师、选手、管理或创意策划），填写信息并保存数字签名或上传签名后的合约图片。",
+        "href": "/solar",
+        "action": "Solar 战队"
+      },
+      {
+        "id": "solar-events-staff",
+        "category": "solarClan",
+        "q": "如何申请 Discord 活动管理职位？",
+        "a": "点击 /solar 页面战队申请按钮旁的“申请 Discord 活动管理”。该职位仅负责 Discord 活动（合约最长 1.5 个月），与作为选手加入战队分开。",
+        "href": "/solar",
+        "action": "申请活动管理"
+      },
+      {
+        "id": "solar-members-portal",
+        "category": "solarClan",
+        "q": "如何访问成员门户并申请请假？",
+        "a": "申请通过后即可访问 /solar/members 门户，查看战队成员徽章并提交请假申请。",
+        "href": "/solar/members",
+        "action": "成员门户"
+      },
+      {
+        "id": "solar-contract-signature",
+        "category": "solarClan",
+        "q": "保存签名或上传签名合约是强制的吗？",
+        "a": "是的。所有 Solar 申请（战队加入、Discord 活动管理、请假申请）在提交前都必须保存手写签名或上传已签名的合约图片。",
+        "href": "/requests?tab=applications",
+        "action": "查看申请"
+      },
+      {
+        "id": "solar-sponsors-map",
+        "category": "solarClan",
+        "q": "战队官方赞助商是谁？Clan Wars 地图在哪里？",
+        "a": "官方赞助商为 Rasanah Services 和 Sewan ®，您可以在 /solar 页面查看赞助商及 Fortnite 岛屿代码。",
+        "href": "/solar#sponsor",
+        "action": "赞助商与地图"
       }
     ],
     "clearSearch": "清除搜索",

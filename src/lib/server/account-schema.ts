@@ -1,6 +1,6 @@
 export const ACCOUNT_SCHEMA = `
 CREATE TABLE IF NOT EXISTS site_accounts (
- id uuid PRIMARY KEY, name varchar(64) NOT NULL DEFAULT '', locale varchar(8) NOT NULL DEFAULT 'en',
+ id uuid PRIMARY KEY, name varchar(64) NOT NULL DEFAULT '', locale varchar(8) NOT NULL DEFAULT 'ar',
  updated_at timestamptz NOT NULL DEFAULT now()
 );
 CREATE TABLE IF NOT EXISTS site_minecraft_links (

@@ -17,12 +17,14 @@ import { useAccount } from "@/components/account/AccountProvider";
 import SolarLeaveModal from "@/components/solar/SolarLeaveModal";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { SOLAR_LEAVE_DURATION_LABELS } from "@/lib/data/solar-leave";
+import { solarExtraCopy } from "@/lib/data/solar-i18n";
 import type { SolarUserStatus } from "@/lib/server/solar-member-status";
 import "@/components/store/store.css";
 
 export default function SolarMembersPortalPage() {
   const locale = useLocale();
   const isAr = locale === "ar";
+  const tx = solarExtraCopy(locale);
   const { account, ready } = useAccount();
 
   const [status, setStatus] = useState<SolarUserStatus | null>(null);
@@ -74,7 +76,7 @@ export default function SolarMembersPortalPage() {
           className="inline-flex items-center gap-2 text-xs font-medium text-[var(--text-muted)] hover:text-[var(--text)] mb-6"
         >
           <ArrowLeft size={14} className={isAr ? "rotate-180" : ""} />
-          {isAr ? "العودة إلى صفحة كلان Solar" : "Back to Solar Clan"}
+          {tx.backToSolar}
         </Link>
 
         {effectiveLoading ? (
@@ -86,14 +88,10 @@ export default function SolarMembersPortalPage() {
           <div className="rounded-3xl border border-[var(--border-strong)] bg-[var(--surface)] p-8 sm:p-12 text-center space-y-4">
             <ShieldAlert size={40} className="mx-auto text-[var(--accent)]" />
             <h1 className="text-2xl font-bold text-[var(--text)]">
-              {isAr
-                ? "هذه الصفحة مخصصة لأعضاء كلان Solar المقبولين فقط"
-                : "This portal is for accepted Solar Clan members only"}
+              {tx.membersOnlyTitle}
             </h1>
             <p className="text-sm text-[var(--text-muted)] max-w-md mx-auto">
-              {isAr
-                ? "إذا لم تكن عضواً مقبولاً بعد، يمكنك التقديم للانضمام للكلان عبر صفحة Solar."
-                : "If you haven't been accepted yet, you can apply to join the clan on the Solar page."}
+              {tx.membersOnlyDesc}
             </p>
             <div className="pt-2">
               <Link
@@ -101,7 +99,7 @@ export default function SolarMembersPortalPage() {
                 className="inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold"
                 style={{ background: "var(--accent)", color: "#07080B" }}
               >
-                {isAr ? "الانتقال إلى صفحة Solar" : "Go to Solar Page"}
+                {tx.goToSolar}
               </Link>
             </div>
           </div>
@@ -145,14 +143,11 @@ export default function SolarMembersPortalPage() {
                         height={14}
                         className="object-contain"
                       />
-                      {isAr ? "عضو من الكلان" : "Clan Member"}
+                      {tx.clanMemberBadge}
                     </span>
                   </div>
                   <p className="mt-1 text-sm text-[var(--text-muted)]">
-                    {effectiveStatus.memberInfo?.rank ||
-                      (isAr
-                        ? "مرحباً بك في بوابة أعضاء كلان Solar System"
-                        : "Welcome to the Solar System Clan Members Portal")}
+                    {effectiveStatus.memberInfo?.rank || tx.membersPortalSubtitle}
                   </p>
                 </div>
               </div>
@@ -165,7 +160,7 @@ export default function SolarMembersPortalPage() {
                 style={{ background: "var(--accent)", color: "#07080B" }}
               >
                 <CalendarClock size={17} />
-                {isAr ? "تقديم إجازة" : "Request Leave"}
+                {tx.requestLeaveBtn}
               </button>
             </section>
 
@@ -174,21 +169,17 @@ export default function SolarMembersPortalPage() {
               <div className="flex items-center justify-between gap-4">
                 <div>
                   <h2 className="text-lg font-bold text-[var(--text)]">
-                    {isAr ? "طلبات الإجازة الخاصة بك" : "Your Leave Requests"}
+                    {tx.yourLeaveRequests}
                   </h2>
                   <p className="text-xs text-[var(--text-muted)] mt-1">
-                    {isAr
-                      ? "تُراجع طلبات الإجازة من قبل الإدارة ويمكنك متابعة حالتها هنا."
-                      : "Leave requests are reviewed by staff and their status appears here."}
+                    {tx.yourLeaveRequestsDesc}
                   </p>
                 </div>
               </div>
 
               {effectiveStatus.leaveRequests.length === 0 ? (
                 <div className="rounded-2xl border border-dashed border-[var(--border-strong)] p-8 text-center text-sm text-[var(--text-muted)]">
-                  {isAr
-                    ? "لم تقم بتقديم أي طلب إجازة بعد."
-                    : "You haven't submitted any leave requests yet."}
+                  {tx.noLeaveRequests}
                 </div>
               ) : (
                 <div className="space-y-3">
@@ -202,18 +193,18 @@ export default function SolarMembersPortalPage() {
                     const badge =
                       req.status === "accepted"
                         ? {
-                            label: isAr ? "مقبول" : "Accepted",
+                            label: tx.statusAccepted,
                             cls: "bg-emerald-500/15 text-emerald-300 border-emerald-500/30",
                             Icon: CheckCircle2,
                           }
                         : req.status === "rejected"
                           ? {
-                              label: isAr ? "مرفوض" : "Rejected",
+                              label: tx.statusRejected,
                               cls: "bg-red-500/15 text-red-300 border-red-500/30",
                               Icon: XCircle,
                             }
                           : {
-                              label: isAr ? "قيد المراجعة" : "Pending Review",
+                              label: tx.statusPending,
                               cls: "bg-amber-500/15 text-amber-300 border-amber-500/30",
                               Icon: Clock,
                             };
@@ -225,7 +216,7 @@ export default function SolarMembersPortalPage() {
                       >
                         <div className="flex flex-wrap items-center justify-between gap-2">
                           <span className="text-sm font-semibold text-[var(--text)]">
-                            {isAr ? `مدة الإجازة: ${durText}` : `Duration: ${durText}`}
+                            {`${tx.durationLabel} ${durText}`}
                           </span>
                           <span
                             className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-semibold ${badge.cls}`}
@@ -241,7 +232,7 @@ export default function SolarMembersPortalPage() {
                         )}
                         {req.note && (
                           <p className="rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-xs text-[var(--text)]">
-                            {isAr ? `ملاحظة الإدارة: ${req.note}` : `Staff note: ${req.note}`}
+                            {`${tx.staffNoteLabel} ${req.note}`}
                           </p>
                         )}
                       </article>

@@ -329,7 +329,8 @@
       "modpacks": "Pacotes de mods",
       "community": "Comunidade",
       "support": "Suporte e solicitações",
-      "accountSecurity": "Conta e segurança"
+      "accountSecurity": "Conta e segurança",
+      "solarClan": "Clã Solar System"
     },
     "items": [
       {
@@ -711,6 +712,46 @@
         "a": "Abra Minha conta → Contas vinculadas e selecione Desvincular. Verifique com 2FA ou um método de e-mail disponível antes de remover. Mantenha outra forma válida de entrar para preservar seu acesso.",
         "href": "/account?tab=connections",
         "action": "Contas vinculadas"
+      },
+      {
+        "id": "solar-clan-join",
+        "category": "solarClan",
+        "q": "Como entro no Clã Solar System e quais divisões existem?",
+        "a": "Acesse a página Solar System, escolha uma divisão (Criador, Streamer, Designer, Editor, Jogador, Staff ou Roteirista), preencha seus dados e salve sua assinatura ou envie o contrato assinado.",
+        "href": "/solar",
+        "action": "Clã Solar"
+      },
+      {
+        "id": "solar-events-staff",
+        "category": "solarClan",
+        "q": "Como me candidato para Eventos do Discord no Solar System?",
+        "a": "Clique em \"Candidatar Eventos Discord\" ao lado do botão do clã em /solar. Esta função é exclusiva para eventos no Discord (contrato de até 1,5 mês).",
+        "href": "/solar",
+        "action": "Eventos Discord"
+      },
+      {
+        "id": "solar-members-portal",
+        "category": "solarClan",
+        "q": "Como acesso o Portal de Membros e solicito folga?",
+        "a": "Após a aprovação, o botão principal leva para /solar/members com seu selo de Membro do Clã e o formulário de folga.",
+        "href": "/solar/members",
+        "action": "Portal de Membros"
+      },
+      {
+        "id": "solar-contract-signature",
+        "category": "solarClan",
+        "q": "Salvar a assinatura ou enviar o contrato assinado é obrigatório?",
+        "a": "Sim. Todas as candidaturas Solar exigem salvar a assinatura digital ou enviar a imagem do contrato assinado.",
+        "href": "/requests?tab=applications",
+        "action": "Minhas Solicitações"
+      },
+      {
+        "id": "solar-sponsors-map",
+        "category": "solarClan",
+        "q": "Quem são os patrocinadores e onde está o mapa Clan Wars?",
+        "a": "Os patrocinadores oficiais são Rasanah Services e Sewan ®. Você encontra ambos e o código da ilha em /solar.",
+        "href": "/solar#sponsor",
+        "action": "Patrocinadores"
       }
     ],
     "clearSearch": "Limpar busca",

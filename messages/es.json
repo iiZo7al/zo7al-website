@@ -329,7 +329,8 @@
       "modpacks": "Paquetes de mods",
       "community": "Comunidad",
       "support": "Soporte y solicitudes",
-      "accountSecurity": "Cuenta y seguridad"
+      "accountSecurity": "Cuenta y seguridad",
+      "solarClan": "Clan Solar System"
     },
     "items": [
       {
@@ -711,6 +712,46 @@
         "a": "Abre Mi cuenta → Cuentas vinculadas y elige Desvincular. Confirma con 2FA o un método de correo disponible antes de eliminar el vínculo. Mantén otro método válido para conservar el acceso.",
         "href": "/account?tab=connections",
         "action": "Cuentas vinculadas"
+      },
+      {
+        "id": "solar-clan-join",
+        "category": "solarClan",
+        "q": "¿Cómo me uno a Solar System Clan y qué divisiones hay?",
+        "a": "Ve a la página de Solar System, elige una división (Creador, Streamer, Diseñador, Editor, Jugador, Staff o Guionista), completa tus datos y guarda tu firma o sube el contrato firmado.",
+        "href": "/solar",
+        "action": "Clan Solar"
+      },
+      {
+        "id": "solar-events-staff",
+        "category": "solarClan",
+        "q": "¿Cómo postulo a Gestión de Eventos Discord en Solar System?",
+        "a": "Haz clic en \"Postular a Eventos Discord\" junto al botón principal en /solar. Este rol es exclusivo para eventos de Discord (contrato máximo de 1.5 meses) y no equivale a ingresar como jugador.",
+        "href": "/solar",
+        "action": "Postular a Eventos"
+      },
+      {
+        "id": "solar-members-portal",
+        "category": "solarClan",
+        "q": "¿Cómo accedo al Portal de Miembros y solicito permisos?",
+        "a": "Cuando tu solicitud es aceptada, el botón principal te lleva a /solar/members donde verás tu insignia de Miembro del Clan y podrás solicitar permisos.",
+        "href": "/solar/members",
+        "action": "Portal de Miembros"
+      },
+      {
+        "id": "solar-contract-signature",
+        "category": "solarClan",
+        "q": "¿Es obligatorio guardar la firma o subir el contrato firmado?",
+        "a": "Sí. Todas las solicitudes de Solar requieren guardar la firma digital o subir la imagen del contrato firmado antes de enviar.",
+        "href": "/requests?tab=applications",
+        "action": "Mis Solicitudes"
+      },
+      {
+        "id": "solar-sponsors-map",
+        "category": "solarClan",
+        "q": "¿Quiénes son los patrocinadores y dónde está el mapa del clan?",
+        "a": "Los patrocinadores oficiales son Rasanah Services y Sewan ®. Puedes verlos junto al código de la isla Clan Wars en /solar.",
+        "href": "/solar#sponsor",
+        "action": "Patrocinadores"
       }
     ],
     "clearSearch": "Borrar búsqueda",

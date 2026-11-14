@@ -329,7 +329,8 @@
       "modpacks": "Modpakete",
       "community": "Community",
       "support": "Support und Anfragen",
-      "accountSecurity": "Konto & Sicherheit"
+      "accountSecurity": "Konto & Sicherheit",
+      "solarClan": "Solar System Clan"
     },
     "items": [
       {
@@ -711,6 +712,46 @@
         "a": "Öffne Mein Konto → Verknüpfte Konten und wähle Verknüpfung entfernen. Bestätige dich mit 2FA oder einer verfügbaren E-Mail-Methode. Behalte eine andere nutzbare Anmeldung, damit du Zugriff behältst.",
         "href": "/account?tab=connections",
         "action": "Verknüpfte Konten"
+      },
+      {
+        "id": "solar-clan-join",
+        "category": "solarClan",
+        "q": "Wie trete ich dem Solar System Clan bei?",
+        "a": "Öffne die Solar-Seite, wähle eine Abteilung (Creator, Streamer, Designer, Editor, Spieler, Staff oder Autor), fülle das Formular aus und speichere deine digitale Unterschrift oder lade den unterschriebenen Vertrag hoch.",
+        "href": "/solar",
+        "action": "Solar Clan"
+      },
+      {
+        "id": "solar-events-staff",
+        "category": "solarClan",
+        "q": "Wie bewerbe ich mich für die Discord-Event-Leitung?",
+        "a": "Klicke auf \"Discord-Events bewerben\" neben dem Clan-Bewerbungsbutton auf /solar. Diese Rolle gilt nur für Discord-Events (Vertrag max. 1,5 Monate).",
+        "href": "/solar",
+        "action": "Event-Bewerbung"
+      },
+      {
+        "id": "solar-members-portal",
+        "category": "solarClan",
+        "q": "Wie greife ich auf das Mitgliederportal zu und beantrage Urlaub?",
+        "a": "Nach Annahme führt der Button zu /solar/members mit deinem Clan-Mitglied-Abzeichen und dem Urlaubsantrag.",
+        "href": "/solar/members",
+        "action": "Mitgliederportal"
+      },
+      {
+        "id": "solar-contract-signature",
+        "category": "solarClan",
+        "q": "Ist die Unterschrift oder das Hochladen des Vertrags Pflicht?",
+        "a": "Ja. Bei allen Solar-Bewerbungen muss entweder eine digitale Signatur gespeichert oder der unterschriebene Vertrag hochgeladen werden.",
+        "href": "/requests?tab=applications",
+        "action": "Meine Anfragen"
+      },
+      {
+        "id": "solar-sponsors-map",
+        "category": "solarClan",
+        "q": "Wer sind die Clan-Sponsoren und wo ist die Clan-Wars-Map?",
+        "a": "Offizielle Sponsoren sind Rasanah Services und Sewan ®. Beide sowie der Fortnite-Inselcode befinden sich auf /solar.",
+        "href": "/solar#sponsor",
+        "action": "Sponsoren & Map"
       }
     ],
     "clearSearch": "Suche löschen",
