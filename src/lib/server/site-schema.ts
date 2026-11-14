@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS site_content_images (
  bytes bytea NOT NULL CHECK(octet_length(bytes)<=3500000), created_at timestamptz NOT NULL DEFAULT now()
 );
 ALTER TABLE site_content ADD COLUMN IF NOT EXISTS image_id uuid REFERENCES site_content_images(id) ON DELETE SET NULL;
+ALTER TABLE site_content ADD COLUMN IF NOT EXISTS translations jsonb NOT NULL DEFAULT '{}'::jsonb;
 CREATE TABLE IF NOT EXISTS site_requests (
  id uuid PRIMARY KEY, kind text NOT NULL CHECK (kind IN ('application','support','event')),
  token_hash char(64) NOT NULL, payload jsonb NOT NULL, status text NOT NULL DEFAULT 'pending',

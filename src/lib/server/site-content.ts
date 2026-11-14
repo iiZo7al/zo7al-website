@@ -6,6 +6,42 @@ import { tokenHash } from "./site-security";
 import { validateContent } from "../data/hub-validation";
 import type { HubTopic } from "../data/hub-validation";
 import { validateApplication, sendApplicationNotification } from "./creator-applications";
+
+const TRANSLATION_LOCALES = ["en", "ar", "es", "fr", "de", "pt", "tr", "ja", "ko", "zh"] as const;
+const GOOGLE_LOCALE_MAP: Record<string, string> = {
+  en: "en", ar: "ar", es: "es", fr: "fr", de: "de", pt: "pt", tr: "tr", ja: "ja", ko: "ko", zh: "zh-CN",
+};
+function isTestProcess(): boolean {
+  return process.env.NODE_ENV === "test" || process.argv.some((arg) => arg.endsWith(".test.mjs"));
+}
+async function translateText(text: string, sourceLocale: string, targetLocale: string): Promise<string> {
+  const trimmed = text.trim();
+  if (!trimmed || sourceLocale === targetLocale || isTestProcess()) return text;
+  const sl = GOOGLE_LOCALE_MAP[sourceLocale] ?? "auto";
+  const tl = GOOGLE_LOCALE_MAP[targetLocale] ?? targetLocale;
+  try {
+    const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${encodeURIComponent(sl)}&tl=${encodeURIComponent(tl)}&dt=t&q=${encodeURIComponent(trimmed)}`;
+    const res = await fetch(url, { signal: AbortSignal.timeout(4500), headers: { Accept: "application/json" } });
+    if (!res.ok) return text;
+    const data = (await res.json()) as unknown;
+    if (!Array.isArray(data) || !Array.isArray(data[0])) return text;
+    const translated = (data[0] as unknown[]).map((seg) => (Array.isArray(seg) && typeof seg[0] === "string" ? seg[0] : "")).join("").trim();
+    return translated || text;
+  } catch {
+    return text;
+  }
+}
+async function translateContentToAllLocales(title: string, body: string, sourceLocale: string) {
+  const translations: Record<string, { title: string; body: string }> = { [sourceLocale]: { title, body } };
+  if (isTestProcess()) return translations;
+  await Promise.allSettled(
+    TRANSLATION_LOCALES.filter((loc) => loc !== sourceLocale).map(async (target) => {
+      const [tTitle, tBody] = await Promise.all([translateText(title, sourceLocale, target), translateText(body, sourceLocale, target)]);
+      translations[target] = { title: tTitle.slice(0, 160), body: tBody };
+    }),
+  );
+  return translations;
+}
 export async function limitAttempt(key: string, limit: number, seconds: number) {
   const db = await siteDatabase();
   const hash = createHash("sha256").update(key).digest("hex");
@@ -14,7 +50,7 @@ export async function limitAttempt(key: string, limit: number, seconds: number) 
 }
 export async function publicContent(kind: "news" | "event" | "rule", locale: string, topic: HubTopic | "all" = "minecraft") {
   try {
-    const result = await (await siteDatabase()).query("SELECT c.poll_id AS \"pollId\",c.id,c.kind,c.topic,c.locale,c.title,c.body,c.starts_at AS \"startsAt\",c.registration_url AS \"registrationUrl\",c.created_at AS \"createdAt\",CASE WHEN i.id IS NOT NULL THEN json_build_object('id',i.id,'width',i.width,'height',i.height) ELSE NULL END AS image FROM site_content c LEFT JOIN site_content_images i ON i.id=c.image_id WHERE c.kind=$1 AND c.published AND c.locale=$2 AND ($3='all' OR c.topic=$3) ORDER BY COALESCE(c.starts_at,c.created_at) DESC LIMIT 40", [kind,locale,topic]);
+    const result = await (await siteDatabase()).query("SELECT c.poll_id AS \"pollId\",c.id,c.kind,c.topic,c.locale,COALESCE(NULLIF(c.translations->$2->>'title',''),c.title) AS title,COALESCE(NULLIF(c.translations->$2->>'body',''),c.body) AS body,c.starts_at AS \"startsAt\",c.registration_url AS \"registrationUrl\",c.created_at AS \"createdAt\",CASE WHEN i.id IS NOT NULL THEN json_build_object('id',i.id,'width',i.width,'height',i.height) ELSE NULL END AS image FROM site_content c LEFT JOIN site_content_images i ON i.id=c.image_id WHERE c.kind=$1 AND c.published AND ($3='all' OR c.topic=$3) ORDER BY COALESCE(c.starts_at,c.created_at) DESC LIMIT 40", [kind,locale,topic]);
     return { items: result.rows, available: true };
   } catch { return { items: [], available: false }; }
 }
@@ -23,6 +59,7 @@ export async function saveContent(value: unknown) {
   const id = content.id ?? randomUUID();
   const db = await siteDatabase();
   if (content.imageId && !(await db.query("SELECT id FROM site_content_images WHERE id=$1", [content.imageId])).rowCount) throw Error("INVALID");
+  const translations = await translateContentToAllLocales(content.title, content.body, content.locale);
   const client=await db.connect();
   try {
    await client.query('BEGIN');
@@ -36,7 +73,7 @@ export async function saveContent(value: unknown) {
     } else pollId=randomUUID();
     await client.query("INSERT INTO community_entries(id,kind,locale,topic,title,body,payload,published,moderation) VALUES($1,'poll',$2,$3,$4,'',$5,$6,'approved') ON CONFLICT(id) DO UPDATE SET locale=excluded.locale,topic=excluded.topic,title=excluded.title,payload=excluded.payload,published=excluded.published,moderation='approved',updated_at=now()",[pollId,content.locale,content.topic,content.poll.question,JSON.stringify({options:content.poll.options,endsAt:content.poll.endsAt}),content.published]);
    } else if(pollId){ await client.query('UPDATE community_entries SET published=false,updated_at=now() WHERE id=$1',[pollId]);pollId=null; }
-   await client.query("INSERT INTO site_content(id,kind,locale,title,body,published,starts_at,registration_url,image_id,topic,poll_id) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11) ON CONFLICT(id) DO UPDATE SET kind=excluded.kind,locale=excluded.locale,title=excluded.title,body=excluded.body,published=excluded.published,starts_at=excluded.starts_at,registration_url=excluded.registration_url,image_id=excluded.image_id,topic=excluded.topic,poll_id=excluded.poll_id,updated_at=now()",[id,content.kind,content.locale,content.title,content.body,content.published,content.startsAt,content.registrationUrl,content.imageId,content.topic,pollId]);
+   await client.query("INSERT INTO site_content(id,kind,locale,title,body,published,starts_at,registration_url,image_id,topic,poll_id,translations) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12::jsonb) ON CONFLICT(id) DO UPDATE SET kind=excluded.kind,locale=excluded.locale,title=excluded.title,body=excluded.body,published=excluded.published,starts_at=excluded.starts_at,registration_url=excluded.registration_url,image_id=excluded.image_id,topic=excluded.topic,poll_id=excluded.poll_id,translations=excluded.translations,updated_at=now()",[id,content.kind,content.locale,content.title,content.body,content.published,content.startsAt,content.registrationUrl,content.imageId,content.topic,pollId,JSON.stringify(translations)]);
    await client.query('COMMIT');
   }catch(error){await client.query('ROLLBACK').catch(()=>{});throw error;}finally{client.release();}
   return id;
