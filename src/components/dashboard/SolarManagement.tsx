@@ -27,6 +27,7 @@ import SolarExcelSheet from "./SolarExcelSheet";
 import SolarMembersManager from "./SolarMembersManager";
 import type { DashboardData, Mutate, RequestRow } from "./types";
 import type { SolarAdminSubType, SolarRole } from "@/lib/data/solar";
+import { SOLAR_LEAVE_DURATION_LABELS } from "@/lib/data/solar-leave";
 import type { SolarSettings } from "@/lib/server/solar-settings";
 
 const ROLE_LABELS: Record<string, string> = {
@@ -128,12 +129,13 @@ export default function SolarManagement({
   const [savingSettings, setSavingSettings] = useState(false);
   const [settingsMessage, setSettingsMessage] = useState<string | null>(null);
 
-  // Filter solar applications
+  // Filter solar applications (clan join + leave requests)
   const solarApplications = useMemo(() => {
     return data.requests.filter(
       (r) =>
         r.kind === "application" &&
         (r.payload.platform === "solar" ||
+          r.payload.platform === "solar-leave" ||
           (r.payload.subject && String(r.payload.subject).includes("Solar")))
     );
   }, [data.requests]);
@@ -775,12 +777,13 @@ function SolarApplicantCard({
   const [deleting, setDeleting] = useState(false);
 
   const payload = row.payload as Record<string, unknown>;
+  const isLeaveRequest = payload.platform === "solar-leave";
   const name = typeof payload.name === "string" ? payload.name : "متقدم بدون اسم";
   const nickname = typeof payload.nickname === "string" ? payload.nickname : null;
   const age = payload.age ? String(payload.age) : null;
   const country = typeof payload.country === "string" ? payload.country : null;
   const role = typeof payload.role === "string" ? payload.role : "creator";
-  const roleName = ROLE_LABELS[role] || role;
+  const roleName = isLeaveRequest ? "طلب إجازة" : ROLE_LABELS[role] || role;
   const adminSubType =
     typeof payload.adminSubType === "string"
       ? SUBTYPE_LABELS[payload.adminSubType] || payload.adminSubType
@@ -790,7 +793,12 @@ function SolarApplicantCard({
       ? GAME_LABELS[payload.game] || payload.game
       : null;
   const discord = typeof payload.discord === "string" ? payload.discord : "";
-  const whatsapp = typeof payload.whatsapp === "string" ? payload.whatsapp : "";
+  const whatsapp =
+    typeof payload.whatsapp === "string"
+      ? payload.whatsapp
+      : typeof payload.phone === "string"
+      ? payload.phone
+      : "";
   const channelUrl = typeof payload.channelUrl === "string" ? payload.channelUrl : "";
   const streamUrl = typeof payload.streamUrl === "string" ? payload.streamUrl : "";
   const portfolioUrl = typeof payload.portfolioUrl === "string" ? payload.portfolioUrl : "";
@@ -815,6 +823,20 @@ function SolarApplicantCard({
     contractDurationCustom ||
     contractDurationRaw ||
     null;
+  const leaveDurationRaw =
+    typeof payload.leaveDuration === "string" ? payload.leaveDuration : "";
+  const leaveDurationCustom =
+    typeof payload.leaveDurationCustom === "string"
+      ? payload.leaveDurationCustom
+      : "";
+  const leaveDuration =
+    leaveDurationRaw === "other" && leaveDurationCustom
+      ? leaveDurationCustom
+      : SOLAR_LEAVE_DURATION_LABELS[
+          leaveDurationRaw as keyof typeof SOLAR_LEAVE_DURATION_LABELS
+        ] ||
+        leaveDurationRaw ||
+        null;
   const signedContractUrl =
     typeof payload.signedContractUrl === "string"
       ? payload.signedContractUrl
@@ -826,6 +848,8 @@ function SolarApplicantCard({
   const whyJoin =
     typeof payload.whyJoin === "string"
       ? payload.whyJoin
+      : typeof payload.reason === "string"
+      ? payload.reason
       : typeof payload.bio === "string"
       ? payload.bio
       : "";
@@ -898,15 +922,21 @@ function SolarApplicantCard({
             border: "1px solid var(--border)",
           }}
         >
-          {roleName.split(" ")[0]}
+          {isLeaveRequest ? "طلب إجازة" : roleName.split(" ")[0]}
         </span>
       </div>
 
       {/* Division, Age, Country & Contract Attributes */}
       <div className="flex flex-wrap gap-2 text-xs">
         <span className="rounded-md border border-[var(--border)] bg-black/20 px-2 py-1 text-[var(--text-muted)]">
-          الرتبة: <strong className="text-[var(--text)]">{roleName}</strong>
+          {isLeaveRequest ? "النوع:" : "الرتبة:"}{" "}
+          <strong className="text-[var(--text)]">{roleName}</strong>
         </span>
+        {leaveDuration && (
+          <span className="rounded-md border border-[var(--border)] bg-black/20 px-2 py-1 text-[var(--text-muted)]">
+            مدة الإجازة: <strong className="text-[var(--accent)]">{leaveDuration}</strong>
+          </span>
+        )}
         {adminSubType && (
           <span className="rounded-md border border-[var(--border)] bg-black/20 px-2 py-1 text-[var(--text-muted)]">
             التخصص: <strong className="text-[var(--text)]">{adminSubType}</strong>

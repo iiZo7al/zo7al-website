@@ -48,7 +48,7 @@ export async function createTrackedRequest(kind: "application" | "support" | "ev
   if(kind==='application'&&userId){
    const client=await db.connect();
    try{await client.query('BEGIN');await client.query('SELECT pg_advisory_xact_lock(hashtext($1))',['application:'+userId+':'+platform]);
-    if((await client.query("SELECT id FROM site_requests WHERE user_id=$1 AND kind='application' AND payload->>'platform'=$2 LIMIT 1",[userId,platform])).rows.length)throw Error('ALREADY_APPLIED');
+    if((await client.query("SELECT id FROM site_requests WHERE user_id=$1 AND kind='application' AND payload->>'platform'=$2 AND (CASE WHEN $2='solar-leave' THEN status='pending' ELSE status IN ('pending','accepted') END) LIMIT 1",[userId,platform])).rows.length)throw Error('ALREADY_APPLIED');
     await client.query(insert,args);await client.query('COMMIT');
    }catch(error){await client.query('ROLLBACK').catch(()=>{});throw error;}finally{client.release();}
   }else await db.query(insert,args);

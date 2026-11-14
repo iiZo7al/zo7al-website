@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import PageHero from "@/components/ui/PageHero";
 import SectionHeader from "@/components/ui/SectionHeader";
@@ -9,6 +10,7 @@ import MagneticButton from "@/components/cursor/MagneticButton";
 import SolidIcon from "@/components/ui/SolidIcon";
 import BrandIcon from "@/components/ui/BrandIcon";
 import FaqAccordion from "@/components/faq/FaqAccordion";
+import { useAccount } from "@/components/account/AccountProvider";
 import SolarRoster from "./SolarRoster";
 import SolarSponsor from "./SolarSponsor";
 import SolarMapCard from "./SolarMapCard";
@@ -18,17 +20,22 @@ import SolarApplyModal from "./SolarApplyModal";
 import { solarCopy } from "@/lib/data/solar-copy";
 import { getSolarFaq } from "@/lib/data/solar-faq";
 import type { SolarAdminSubType, SolarRole } from "@/lib/data/solar";
+import type { SolarApplicationStatus } from "@/lib/server/solar-member-status";
 import "@/components/fortnite/fortnite.css";
 import "@/components/store/store.css";
 
 export default function SolarClient() {
   const locale = useLocale();
+  const isAr = locale === "ar";
+  const router = useRouter();
+  const { account } = useAccount();
   const faqT = useTranslations("faq");
   const commonT = useTranslations("common");
   const t = solarCopy(locale);
   const solarFaq = getSolarFaq(locale);
   const [applyOpen, setApplyOpen] = useState(false);
   const [selectedRole, setSelectedRole] = useState<SolarRole>("creator");
+  const [applicationStatus, setApplicationStatus] = useState<SolarApplicationStatus>(null);
   const [settings, setSettings] = useState<{
     isOpen: boolean;
     announcement: string;
@@ -44,6 +51,54 @@ export default function SolarClient() {
       })
       .catch(() => {});
   }, []);
+
+  useEffect(() => {
+    if (!account?.id) return;
+    let active = true;
+    fetch("/api/solar/status", { cache: "no-store" })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => {
+        if (active && d) {
+          setApplicationStatus(d.applicationStatus ?? null);
+        }
+      })
+      .catch(() => {});
+    return () => {
+      active = false;
+    };
+  }, [account?.id]);
+
+  const effectiveStatus: SolarApplicationStatus = account?.id ? applicationStatus : null;
+
+  const ctaLabel =
+    effectiveStatus === "accepted"
+      ? isAr
+        ? "مقبول"
+        : "Accepted"
+      : effectiveStatus === "pending"
+        ? isAr
+          ? "قيد المراجعة"
+          : "Pending Review"
+        : effectiveStatus === "rejected"
+          ? isAr
+            ? "مرفوض"
+            : "Rejected"
+          : settings && !settings.isOpen
+            ? t.applyClosedBtn
+            : t.applyBtn;
+
+  const handlePrimaryCta = () => {
+    if (effectiveStatus === "accepted") {
+      router.push("/solar/members");
+      return;
+    }
+    if (effectiveStatus === "pending") {
+      router.push("/requests?tab=applications");
+      return;
+    }
+    setSelectedRole("creator");
+    setApplyOpen(true);
+  };
 
   return (
     <main data-accent="solar">
@@ -84,16 +139,13 @@ export default function SolarClient() {
             <MagneticButton>
               <button
                 type="button"
-                onClick={() => {
-                  setSelectedRole("creator");
-                  setApplyOpen(true);
-                }}
+                onClick={handlePrimaryCta}
                 data-cursor="button"
                 className="inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-sm font-semibold"
                 style={{ background: "var(--accent)", color: "#07080B" }}
               >
                 <SolidIcon name="trophy" size={14} />
-                {settings && !settings.isOpen ? t.applyClosedBtn : t.applyBtn}
+                {ctaLabel}
               </button>
             </MagneticButton>
 
