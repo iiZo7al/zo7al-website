@@ -11,12 +11,14 @@ export default function SolarContractViewerModal({
   signatureUrl,
   applicantName,
   isLeave = false,
+  isEvents = false,
 }: {
   isOpen: boolean;
   onClose: () => void;
   signatureUrl: string;
   applicantName: string;
   isLeave?: boolean;
+  isEvents?: boolean;
 }) {
   const [activeTab, setActiveTab] = useState<"contract" | "signature">("contract");
   const [downloading, setDownloading] = useState(false);
@@ -37,6 +39,8 @@ export default function SolarContractViewerModal({
 
   const contractAsset = isLeave
     ? "/assets/site/solar-leave-pledge.png"
+    : isEvents
+    ? "/assets/site/solar-events-pledge.png"
     : "/assets/site/solar-contract-pledge.png";
 
   const handleDownloadMerged = async () => {
@@ -94,7 +98,7 @@ export default function SolarContractViewerModal({
       ctx.drawImage(sigImg, drawX, drawY, drawW, drawH);
 
       const link = document.createElement("a");
-      link.download = `${isLeave ? "solar-leave-contract" : "solar-contract"}-${applicantName.replace(/[^a-zA-Z0-9\u0600-\u06FF]/g, "_")}.png`;
+      link.download = `${isLeave ? "solar-leave-contract" : isEvents ? "solar-events-contract" : "solar-contract"}-${applicantName.replace(/[^a-zA-Z0-9\u0600-\u06FF]/g, "_")}.png`;
       link.href = canvas.toDataURL("image/png");
       link.click();
     } catch {
@@ -131,6 +135,8 @@ export default function SolarContractViewerModal({
             <h3 id="solar-contract-viewer-title" className="font-semibold text-base text-[var(--text)]">
               {isLeave
                 ? `معاينة عقد الإجازة والتوقيع — ${applicantName}`
+                : isEvents
+                ? `معاينة عقد إدارة الفعاليات والتوقيع — ${applicantName}`
                 : `معاينة العقد والتوقيع — ${applicantName}`}
             </h3>
             <p className="text-xs text-[var(--text-muted)]">

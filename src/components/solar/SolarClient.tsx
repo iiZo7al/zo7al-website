@@ -17,6 +17,7 @@ import SolarMapCard from "./SolarMapCard";
 import SolarSocials from "./SolarSocials";
 import SolarClanMembers from "./SolarClanMembers";
 import SolarApplyModal from "./SolarApplyModal";
+import SolarEventsApplyModal from "./SolarEventsApplyModal";
 import { solarCopy } from "@/lib/data/solar-copy";
 import { getSolarFaq } from "@/lib/data/solar-faq";
 import type { SolarAdminSubType, SolarRole } from "@/lib/data/solar";
@@ -34,6 +35,7 @@ export default function SolarClient() {
   const t = solarCopy(locale);
   const solarFaq = getSolarFaq(locale);
   const [applyOpen, setApplyOpen] = useState(false);
+  const [eventsApplyOpen, setEventsApplyOpen] = useState(false);
   const [selectedRole, setSelectedRole] = useState<SolarRole>("creator");
   const [applicationStatus, setApplicationStatus] = useState<SolarApplicationStatus>(null);
   const [settings, setSettings] = useState<{
@@ -146,6 +148,18 @@ export default function SolarClient() {
               >
                 <SolidIcon name="trophy" size={14} />
                 {ctaLabel}
+              </button>
+            </MagneticButton>
+
+            <MagneticButton>
+              <button
+                type="button"
+                onClick={() => setEventsApplyOpen(true)}
+                data-cursor="button"
+                className="inline-flex items-center gap-2 rounded-full border border-[var(--accent)] px-6 py-3.5 text-sm font-semibold text-[var(--accent)] hover:bg-[var(--accent)] hover:text-[#07080B] transition-colors"
+              >
+                <SolidIcon name="trophy" size={14} />
+                {isAr ? "قدم ادارة فعاليات ديسكورد" : "Apply for Discord Events Staff"}
               </button>
             </MagneticButton>
 
@@ -303,6 +317,12 @@ export default function SolarClient() {
         onClose={() => setApplyOpen(false)}
         initialRole={selectedRole}
         settings={settings}
+      />
+
+      {/* Discord Events Apply Modal */}
+      <SolarEventsApplyModal
+        isOpen={eventsApplyOpen}
+        onClose={() => setEventsApplyOpen(false)}
       />
     </main>
   );

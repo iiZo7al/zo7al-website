@@ -114,7 +114,7 @@ export default function SolarManagement({
   onExpired: () => void;
   onReload: () => void;
 }) {
-  const [activeTab, setActiveTab] = useState<"applicants" | "leaves" | "members" | "excel" | "settings">("applicants");
+  const [activeTab, setActiveTab] = useState<"applicants" | "leaves" | "events" | "members" | "excel" | "settings">("applicants");
   const [query, setQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("");
   const [roleFilter, setRoleFilter] = useState<string>("");
@@ -123,6 +123,7 @@ export default function SolarManagement({
     signatureUrl: string;
     name: string;
     isLeave?: boolean;
+    isEvents?: boolean;
   } | null>(null);
 
   // Settings State
@@ -131,12 +132,13 @@ export default function SolarManagement({
   const [savingSettings, setSavingSettings] = useState(false);
   const [settingsMessage, setSettingsMessage] = useState<string | null>(null);
 
-  // Filter solar clan join applications (excluding leave requests)
+  // Filter solar clan join applications (excluding leave & events requests)
   const solarApplications = useMemo(() => {
     return data.requests.filter(
       (r) =>
         r.kind === "application" &&
         r.payload.platform !== "solar-leave" &&
+        r.payload.platform !== "solar-events" &&
         (r.payload.platform === "solar" ||
           (r.payload.subject && String(r.payload.subject).includes("Solar")))
     );
@@ -146,6 +148,13 @@ export default function SolarManagement({
   const solarLeaveRequests = useMemo(() => {
     return data.requests.filter(
       (r) => r.kind === "application" && r.payload.platform === "solar-leave"
+    );
+  }, [data.requests]);
+
+  // Filter solar Discord events staff applications
+  const solarEventsRequests = useMemo(() => {
+    return data.requests.filter(
+      (r) => r.kind === "application" && r.payload.platform === "solar-events"
     );
   }, [data.requests]);
 
@@ -166,6 +175,15 @@ export default function SolarManagement({
     const rejected = solarLeaveRequests.filter((r) => r.status === "rejected").length;
     return { total, pending, accepted, rejected };
   }, [solarLeaveRequests]);
+
+  // Statistics for Discord events applications
+  const eventsStats = useMemo(() => {
+    const total = solarEventsRequests.length;
+    const pending = solarEventsRequests.filter((r) => r.status === "pending").length;
+    const accepted = solarEventsRequests.filter((r) => r.status === "accepted").length;
+    const rejected = solarEventsRequests.filter((r) => r.status === "rejected").length;
+    return { total, pending, accepted, rejected };
+  }, [solarEventsRequests]);
 
   // Load Settings
   useEffect(() => {
@@ -240,6 +258,7 @@ export default function SolarManagement({
 
   const filteredRows = solarApplications.filter(matches);
   const filteredLeaveRows = solarLeaveRequests.filter(matches);
+  const filteredEventsRows = solarEventsRequests.filter(matches);
 
   return (
     <div className="space-y-8" dir="rtl">
@@ -500,6 +519,146 @@ export default function SolarManagement({
               signatureUrl={viewingContract.signatureUrl}
               applicantName={viewingContract.name}
               isLeave={viewingContract.isLeave}
+              isEvents={viewingContract.isEvents}
+              onClose={() => setViewingContract(null)}
+            />
+          )}
+        </section>
+      )}
+
+      {/* Tab: Discord Events Staff Applications */}
+      {activeTab === "events" && (
+        <section className="space-y-6">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <button
+              type="button"
+              onClick={() => setStatusFilter("")}
+              className={`dash-panel card-glow p-4 rounded-xl border text-right transition-all ${
+                statusFilter === "" ? "border-[var(--accent)]" : "border-[var(--border)]"
+              }`}
+            >
+              <div className="flex items-center justify-between text-xs text-[var(--text-muted)]">
+                <span>إجمالي طلبات الفعاليات</span>
+                <FileCheck size={16} />
+              </div>
+              <strong className="mt-2 block text-2xl font-bold text-[var(--text)]">
+                {eventsStats.total}
+              </strong>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setStatusFilter("pending")}
+              className={`dash-panel card-glow p-4 rounded-xl border text-right transition-all ${
+                statusFilter === "pending"
+                  ? "border-amber-500"
+                  : "border-[var(--border)]"
+              }`}
+            >
+              <div className="flex items-center justify-between text-xs text-amber-400">
+                <span>قيد المراجعة</span>
+                <Clock size={16} />
+              </div>
+              <strong className="mt-2 block text-2xl font-bold text-amber-400">
+                {eventsStats.pending}
+              </strong>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setStatusFilter("accepted")}
+              className={`dash-panel card-glow p-4 rounded-xl border text-right transition-all ${
+                statusFilter === "accepted"
+                  ? "border-emerald-500"
+                  : "border-[var(--border)]"
+              }`}
+            >
+              <div className="flex items-center justify-between text-xs text-emerald-400">
+                <span>تم القبول</span>
+                <CheckCircle2 size={16} />
+              </div>
+              <strong className="mt-2 block text-2xl font-bold text-emerald-400">
+                {eventsStats.accepted}
+              </strong>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setStatusFilter("rejected")}
+              className={`dash-panel card-glow p-4 rounded-xl border text-right transition-all ${
+                statusFilter === "rejected"
+                  ? "border-rose-500"
+                  : "border-[var(--border)]"
+              }`}
+            >
+              <div className="flex items-center justify-between text-xs text-rose-400">
+                <span>مرفوض</span>
+                <XCircle size={16} />
+              </div>
+              <strong className="mt-2 block text-2xl font-bold text-rose-400">
+                {eventsStats.rejected}
+              </strong>
+            </button>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-3">
+            <div className="relative flex-1 min-w-[240px]">
+              <Search
+                size={16}
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[var(--text-muted)]"
+              />
+              <input
+                type="text"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="ابحث بالاسم، العمر، أو يوزر الديسكورد..."
+                className="dash-search w-full pr-10"
+              />
+            </div>
+
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              className="rounded-xl border border-[var(--border)] bg-[var(--surface)] px-4 py-2.5 text-sm text-[var(--text)]"
+            >
+              <option value="">جميع الحالات</option>
+              <option value="pending">قيد المراجعة</option>
+              <option value="accepted">تم القبول</option>
+              <option value="rejected">مرفوض</option>
+            </select>
+          </div>
+
+          {filteredEventsRows.length === 0 ? (
+            <div className="rounded-2xl border border-dashed border-[var(--border-strong)] p-10 text-center text-sm text-[var(--text-muted)]">
+              لا توجد طلبات إدارة فعاليات مطابقة للبحث حالياً.
+            </div>
+          ) : (
+            <div className="grid gap-5 md:grid-cols-2">
+              {filteredEventsRows.map((row) => (
+                <SolarApplicantCard
+                  key={row.id + ":" + row.status + ":" + row.note}
+                  row={row}
+                  busy={busy}
+                  copiedId={copiedId}
+                  onCopy={copyToClipboard}
+                  onSave={(value) => mutate("review", value)}
+                  onRetry={() => mutate("retryApplication", row.id)}
+                  onDelete={() => mutate("deleteRequest", row.id)}
+                  onViewContract={(sigUrl, appName) =>
+                    setViewingContract({ signatureUrl: sigUrl, name: appName, isEvents: true })
+                  }
+                />
+              ))}
+            </div>
+          )}
+
+          {viewingContract && (
+            <SolarContractViewerModal
+              isOpen={Boolean(viewingContract)}
+              signatureUrl={viewingContract.signatureUrl}
+              applicantName={viewingContract.name}
+              isLeave={viewingContract.isLeave}
+              isEvents={viewingContract.isEvents}
               onClose={() => setViewingContract(null)}
             />
           )}
@@ -950,12 +1109,17 @@ function SolarApplicantCard({
 
   const payload = row.payload as Record<string, unknown>;
   const isLeaveRequest = payload.platform === "solar-leave";
+  const isEventsRequest = payload.platform === "solar-events";
   const name = typeof payload.name === "string" ? payload.name : "متقدم بدون اسم";
   const nickname = typeof payload.nickname === "string" ? payload.nickname : null;
   const age = payload.age ? String(payload.age) : null;
   const country = typeof payload.country === "string" ? payload.country : null;
   const role = typeof payload.role === "string" ? payload.role : "creator";
-  const roleName = isLeaveRequest ? "طلب إجازة" : ROLE_LABELS[role] || role;
+  const roleName = isLeaveRequest
+    ? "طلب إجازة"
+    : isEventsRequest
+    ? "إدارة فعاليات ديسكورد"
+    : ROLE_LABELS[role] || role;
   const adminSubType =
     typeof payload.adminSubType === "string"
       ? SUBTYPE_LABELS[payload.adminSubType] || payload.adminSubType
@@ -1246,7 +1410,11 @@ function SolarApplicantCard({
               <div className="flex items-center gap-2">
                 <FileCheck size={16} className="text-[var(--accent)] shrink-0" />
                 <span className="text-[var(--text)] font-semibold">
-                  {isLeaveRequest ? "وثيقة تعهّد الإجازة:" : "وثيقة العقد والتوقيع:"}
+                  {isLeaveRequest
+                    ? "وثيقة تعهّد الإجازة:"
+                    : isEventsRequest
+                    ? "وثيقة عقد إدارة الفعاليات:"
+                    : "وثيقة العقد والتوقيع:"}
                 </span>
               </div>
               <div className="flex items-center gap-2">

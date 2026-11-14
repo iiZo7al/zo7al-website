@@ -358,6 +358,7 @@ export function validateSolarApplication(
       signedContractUrl = trimmed.slice(0, 4000);
     }
   }
+  if (!signedContractUrl) return null;
 
   const pledgeAgreed =
     input.pledgeAgreed === true ||
