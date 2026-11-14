@@ -18,6 +18,7 @@ import SolarLeaveModal from "@/components/solar/SolarLeaveModal";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { SOLAR_LEAVE_DURATION_LABELS } from "@/lib/data/solar-leave";
 import type { SolarUserStatus } from "@/lib/server/solar-member-status";
+import "@/components/store/store.css";
 
 export default function SolarMembersPortalPage() {
   const locale = useLocale();

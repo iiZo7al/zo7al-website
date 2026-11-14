@@ -19,6 +19,7 @@ import {
   Eye,
   FileCheck,
   FileSpreadsheet,
+  CalendarClock,
 } from "lucide-react";
 import MarkdownContent from "@/components/ui/MarkdownContent";
 import { Skeleton } from "@/components/ui/Skeleton";
@@ -113,7 +114,7 @@ export default function SolarManagement({
   onExpired: () => void;
   onReload: () => void;
 }) {
-  const [activeTab, setActiveTab] = useState<"applicants" | "members" | "excel" | "settings">("applicants");
+  const [activeTab, setActiveTab] = useState<"applicants" | "leaves" | "members" | "excel" | "settings">("applicants");
   const [query, setQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("");
   const [roleFilter, setRoleFilter] = useState<string>("");
@@ -129,18 +130,25 @@ export default function SolarManagement({
   const [savingSettings, setSavingSettings] = useState(false);
   const [settingsMessage, setSettingsMessage] = useState<string | null>(null);
 
-  // Filter solar applications (clan join + leave requests)
+  // Filter solar clan join applications (excluding leave requests)
   const solarApplications = useMemo(() => {
     return data.requests.filter(
       (r) =>
         r.kind === "application" &&
+        r.payload.platform !== "solar-leave" &&
         (r.payload.platform === "solar" ||
-          r.payload.platform === "solar-leave" ||
           (r.payload.subject && String(r.payload.subject).includes("Solar")))
     );
   }, [data.requests]);
 
-  // Statistics
+  // Filter solar leave requests
+  const solarLeaveRequests = useMemo(() => {
+    return data.requests.filter(
+      (r) => r.kind === "application" && r.payload.platform === "solar-leave"
+    );
+  }, [data.requests]);
+
+  // Statistics for join applications
   const stats = useMemo(() => {
     const total = solarApplications.length;
     const pending = solarApplications.filter((r) => r.status === "pending").length;
@@ -148,6 +156,15 @@ export default function SolarManagement({
     const rejected = solarApplications.filter((r) => r.status === "rejected").length;
     return { total, pending, accepted, rejected };
   }, [solarApplications]);
+
+  // Statistics for leave requests
+  const leaveStats = useMemo(() => {
+    const total = solarLeaveRequests.length;
+    const pending = solarLeaveRequests.filter((r) => r.status === "pending").length;
+    const accepted = solarLeaveRequests.filter((r) => r.status === "accepted").length;
+    const rejected = solarLeaveRequests.filter((r) => r.status === "rejected").length;
+    return { total, pending, accepted, rejected };
+  }, [solarLeaveRequests]);
 
   // Load Settings
   useEffect(() => {
@@ -221,6 +238,7 @@ export default function SolarManagement({
   };
 
   const filteredRows = solarApplications.filter(matches);
+  const filteredLeaveRows = solarLeaveRequests.filter(matches);
 
   return (
     <div className="space-y-8" dir="rtl">
@@ -254,7 +272,7 @@ export default function SolarManagement({
                 </span>
               </div>
               <p className="mt-1 text-sm text-[var(--text-muted)]">
-                مراجعة طلبات الانضمام للكلان، تحديث حالة المتقدمين، وتعديل إعدادات التقديم المتاحة.
+                مراجعة طلبات الانضمام للكلان، طلبات الإجازة، تحديث حالة المتقدمين، وتعديل إعدادات التقديم المتاحة.
               </p>
             </div>
           </div>
@@ -271,6 +289,19 @@ export default function SolarManagement({
             >
               <Users size={16} />
               طلبات التقديم ({stats.total})
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setActiveTab("leaves")}
+              className={`inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all cursor-pointer ${
+                activeTab === "leaves"
+                  ? "bg-[var(--accent)] text-[#07080b]"
+                  : "border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text)]"
+              }`}
+            >
+              <CalendarClock size={16} />
+              طلبات الإجازة ({leaveStats.total})
             </button>
 
             <button
@@ -332,6 +363,145 @@ export default function SolarManagement({
       {/* Tab: Excel Sheet & Members */}
       {activeTab === "excel" && (
         <SolarExcelSheet rows={solarApplications} busy={busy} mutate={mutate} />
+      )}
+
+      {/* Tab: Leave Requests */}
+      {activeTab === "leaves" && (
+        <section className="space-y-6">
+          {/* Leave Stats Bar */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <button
+              type="button"
+              onClick={() => setStatusFilter("")}
+              className={`dash-panel card-glow p-4 rounded-xl border text-right transition-all ${
+                statusFilter === "" ? "border-[var(--accent)]" : "border-[var(--border)]"
+              }`}
+            >
+              <div className="flex items-center justify-between text-xs text-[var(--text-muted)]">
+                <span>إجمالي طلبات الإجازة</span>
+                <CalendarClock size={16} />
+              </div>
+              <strong className="mt-2 block text-2xl font-bold text-[var(--text)]">
+                {leaveStats.total}
+              </strong>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setStatusFilter("pending")}
+              className={`dash-panel card-glow p-4 rounded-xl border text-right transition-all ${
+                statusFilter === "pending"
+                  ? "border-amber-500"
+                  : "border-[var(--border)]"
+              }`}
+            >
+              <div className="flex items-center justify-between text-xs text-amber-400">
+                <span>قيد المراجعة</span>
+                <Clock size={16} />
+              </div>
+              <strong className="mt-2 block text-2xl font-bold text-amber-400">
+                {leaveStats.pending}
+              </strong>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setStatusFilter("accepted")}
+              className={`dash-panel card-glow p-4 rounded-xl border text-right transition-all ${
+                statusFilter === "accepted"
+                  ? "border-emerald-500"
+                  : "border-[var(--border)]"
+              }`}
+            >
+              <div className="flex items-center justify-between text-xs text-emerald-400">
+                <span>تم القبول</span>
+                <CheckCircle2 size={16} />
+              </div>
+              <strong className="mt-2 block text-2xl font-bold text-emerald-400">
+                {leaveStats.accepted}
+              </strong>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setStatusFilter("rejected")}
+              className={`dash-panel card-glow p-4 rounded-xl border text-right transition-all ${
+                statusFilter === "rejected"
+                  ? "border-rose-500"
+                  : "border-[var(--border)]"
+              }`}
+            >
+              <div className="flex items-center justify-between text-xs text-rose-400">
+                <span>مرفوضة</span>
+                <XCircle size={16} />
+              </div>
+              <strong className="mt-2 block text-2xl font-bold text-rose-400">
+                {leaveStats.rejected}
+              </strong>
+            </button>
+          </div>
+
+          {/* Leave Filters Bar */}
+          <div className="flex flex-wrap items-center gap-3">
+            <div className="relative flex-1 min-w-[240px]">
+              <Search
+                size={16}
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[var(--text-muted)]"
+              />
+              <input
+                type="text"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="ابحث بالاسم، الديسكورد، الجوال أو سبب الإجازة..."
+                className="dash-search w-full pr-10"
+              />
+            </div>
+
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              className="rounded-xl border border-[var(--border)] bg-[var(--surface)] px-4 py-2.5 text-sm text-[var(--text)]"
+            >
+              <option value="">جميع الحالات</option>
+              <option value="pending">قيد المراجعة</option>
+              <option value="accepted">تم القبول</option>
+              <option value="rejected">مرفوض</option>
+            </select>
+          </div>
+
+          {filteredLeaveRows.length === 0 ? (
+            <div className="rounded-2xl border border-dashed border-[var(--border-strong)] p-10 text-center text-sm text-[var(--text-muted)]">
+              لا توجد طلبات إجازة مطابقة للبحث حالياً.
+            </div>
+          ) : (
+            <div className="grid gap-5 md:grid-cols-2">
+              {filteredLeaveRows.map((row) => (
+                <SolarApplicantCard
+                  key={row.id + ":" + row.status + ":" + row.note}
+                  row={row}
+                  busy={busy}
+                  copiedId={copiedId}
+                  onCopy={copyToClipboard}
+                  onSave={(value) => mutate("review", value)}
+                  onRetry={() => mutate("retryApplication", row.id)}
+                  onDelete={() => mutate("deleteRequest", row.id)}
+                  onViewContract={(sigUrl, appName) =>
+                    setViewingContract({ signatureUrl: sigUrl, name: appName })
+                  }
+                />
+              ))}
+            </div>
+          )}
+
+          {viewingContract && (
+            <SolarContractViewerModal
+              isOpen={Boolean(viewingContract)}
+              signatureUrl={viewingContract.signatureUrl}
+              applicantName={viewingContract.name}
+              onClose={() => setViewingContract(null)}
+            />
+          )}
+        </section>
       )}
 
       {/* Tab 1: Applicants Review */}
