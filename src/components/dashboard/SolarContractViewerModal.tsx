@@ -40,10 +40,6 @@ export default function SolarContractViewerModal({
     : "/assets/site/solar-contract-pledge.png";
 
   const handleDownloadMerged = async () => {
-    if (isLeave) {
-      handleDownloadSignatureOnly();
-      return;
-    }
     setDownloading(true);
     try {
       const canvas = document.createElement("canvas");
@@ -98,7 +94,7 @@ export default function SolarContractViewerModal({
       ctx.drawImage(sigImg, drawX, drawY, drawW, drawH);
 
       const link = document.createElement("a");
-      link.download = `solar-contract-${applicantName.replace(/[^a-zA-Z0-9\u0600-\u06FF]/g, "_")}.png`;
+      link.download = `${isLeave ? "solar-leave-contract" : "solar-contract"}-${applicantName.replace(/[^a-zA-Z0-9\u0600-\u06FF]/g, "_")}.png`;
       link.href = canvas.toDataURL("image/png");
       link.click();
     } catch {
@@ -110,7 +106,7 @@ export default function SolarContractViewerModal({
 
   const handleDownloadSignatureOnly = () => {
     const link = document.createElement("a");
-    link.download = `${isLeave ? "solar-leave-pledge" : "solar-signature"}-${applicantName.replace(/[^a-zA-Z0-9\u0600-\u06FF]/g, "_")}.png`;
+    link.download = `solar-signature-${applicantName.replace(/[^a-zA-Z0-9\u0600-\u06FF]/g, "_")}.png`;
     link.href = signatureUrl;
     link.click();
   };
@@ -134,13 +130,11 @@ export default function SolarContractViewerModal({
           <div>
             <h3 id="solar-contract-viewer-title" className="font-semibold text-base text-[var(--text)]">
               {isLeave
-                ? `معاينة تعهّد الإجازة والتوقيع — ${applicantName}`
+                ? `معاينة عقد الإجازة والتوقيع — ${applicantName}`
                 : `معاينة العقد والتوقيع — ${applicantName}`}
             </h3>
             <p className="text-xs text-[var(--text-muted)]">
-              {isLeave
-                ? "استعراض صورة تعهّد الإجازة الموقّعة المرفوعة من العضو."
-                : "اختر بين عرض التوقيع داخل العقد بمكانه المعتمد أو استعراض التوقيع منفرداً."}
+              اختر بين عرض التوقيع داخل العقد بمكانه المعتمد أو استعراض التوقيع منفرداً.
             </p>
           </div>
         </div>
@@ -157,84 +151,70 @@ export default function SolarContractViewerModal({
 
       {/* Body matching site modals */}
       <div className="store-checkout-body space-y-5" dir="rtl">
-        {!isLeave && (
-          <div className="flex items-center justify-center gap-2 border-b border-[var(--border)] pb-4">
-            <button
-              type="button"
-              onClick={() => setActiveTab("contract")}
-              className={`inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-xs font-bold transition-all cursor-pointer ${
-                activeTab === "contract"
-                  ? "bg-[var(--accent)] text-[#07080b] shadow-md shadow-[var(--accent)]/20"
-                  : "border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text)] bg-[var(--surface)]"
-              }`}
-            >
-              <FileCheck size={15} />
-              بالعقد (مكانه داخل العقد)
-            </button>
+        {/* Tab Controls */}
+        <div className="flex items-center justify-center gap-2 border-b border-[var(--border)] pb-4">
+          <button
+            type="button"
+            onClick={() => setActiveTab("contract")}
+            className={`inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-xs font-bold transition-all cursor-pointer ${
+              activeTab === "contract"
+                ? "bg-[var(--accent)] text-[#07080b] shadow-md shadow-[var(--accent)]/20"
+                : "border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text)] bg-[var(--surface)]"
+            }`}
+          >
+            <FileCheck size={15} />
+            بالعقد (مكانه داخل العقد)
+          </button>
 
-            <button
-              type="button"
-              onClick={() => setActiveTab("signature")}
-              className={`inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-xs font-bold transition-all cursor-pointer ${
-                activeTab === "signature"
-                  ? "bg-[var(--accent)] text-[#07080b] shadow-md shadow-[var(--accent)]/20"
-                  : "border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text)] bg-[var(--surface)]"
-              }`}
-            >
-              <PenTool size={15} />
-              التوقيع لحاله
-            </button>
-          </div>
-        )}
+          <button
+            type="button"
+            onClick={() => setActiveTab("signature")}
+            className={`inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-xs font-bold transition-all cursor-pointer ${
+              activeTab === "signature"
+                ? "bg-[var(--accent)] text-[#07080b] shadow-md shadow-[var(--accent)]/20"
+                : "border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text)] bg-[var(--surface)]"
+            }`}
+          >
+            <PenTool size={15} />
+            التوقيع لحاله
+          </button>
+        </div>
 
-        {/* View 1: Inside Contract (or uploaded leave pledge image) */}
+        {/* View 1: Inside Contract */}
         {activeTab === "contract" && (
           <div className="space-y-4">
-            {isLeave ? (
-              <div className="mx-auto flex max-w-md items-center justify-center rounded-xl border border-[var(--border)] bg-zinc-950 p-3 shadow-xl">
+            <div className="relative mx-auto max-w-[400px] aspect-[716/1024] overflow-hidden rounded-xl border border-[var(--border)] shadow-xl bg-black">
+              {/* Background Contract */}
+              <Image
+                src={contractAsset}
+                alt={isLeave ? "عقد الإجازة الرسمي لفريق Solar" : "وثيقة تعهد وعقد مقدّم Solar"}
+                fill
+                priority
+                className="object-contain"
+                sizes="(max-width: 640px) 100vw, 400px"
+              />
+
+              {/* Signature Overlay Placed Exactly inside Contract */}
+              <div
+                className="absolute pointer-events-none"
+                style={{
+                  left: "8%",
+                  top: "80%",
+                  width: "54%",
+                  height: "12%",
+                }}
+              >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={signatureUrl}
-                  alt={`تعهّد إجازة ${applicantName}`}
-                  className="max-h-[65vh] w-auto rounded-lg object-contain"
+                  alt={`توقيع ${applicantName}`}
+                  className="h-full w-full object-contain filter drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]"
                 />
               </div>
-            ) : (
-              <div className="relative mx-auto max-w-[400px] aspect-[716/1024] overflow-hidden rounded-xl border border-[var(--border)] shadow-xl bg-black">
-                {/* Background Contract */}
-                <Image
-                  src={contractAsset}
-                  alt="وثيقة تعهد وعقد مقدّم Solar"
-                  fill
-                  priority
-                  className="object-contain"
-                  sizes="(max-width: 640px) 100vw, 400px"
-                />
-
-                {/* Signature Overlay Placed Exactly inside Contract */}
-                <div
-                  className="absolute pointer-events-none"
-                  style={{
-                    left: "8%",
-                    top: "80%",
-                    width: "54%",
-                    height: "12%",
-                  }}
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={signatureUrl}
-                    alt={`توقيع ${applicantName}`}
-                    className="h-full w-full object-contain filter drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]"
-                  />
-                </div>
-              </div>
-            )}
+            </div>
 
             <p className="text-center text-xs text-[var(--text-muted)]">
-              {isLeave
-                ? "صورة تعهّد الإجازة الموقّعة المرفوعة بواسطة العضو."
-                : "يظهر التوقيع الرقمي في المكان المخصص له داخل وثيقة التعهد والعقد الرسمية."}
+              يظهر التوقيع الرقمي في المكان المخصص له داخل وثيقة العقد الرسمية.
             </p>
 
             <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
@@ -245,11 +225,7 @@ export default function SolarContractViewerModal({
                 className="store-action store-action-primary"
               >
                 <Download size={14} />
-                {downloading
-                  ? "جاري تجهيز الصورة..."
-                  : isLeave
-                  ? "تحميل صورة التعهّد الموقّعة (PNG)"
-                  : "تحميل العقد مع التوقيع (PNG)"}
+                {downloading ? "جاري تجهيز الصورة..." : "تحميل العقد مع التوقيع (PNG)"}
               </button>
 
               <a
@@ -259,7 +235,7 @@ export default function SolarContractViewerModal({
                 className="store-action"
               >
                 <ExternalLink size={14} />
-                {isLeave ? "فتح الصورة برابط مباشر" : "فتح التوقيع الأصلي"}
+                فتح التوقيع الأصلي
               </a>
             </div>
           </div>

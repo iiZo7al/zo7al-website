@@ -1256,9 +1256,7 @@ function SolarApplicantCard({
                   className="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-bold transition-all active:scale-95 cursor-pointer bg-[var(--accent)] text-[#07080b]"
                 >
                   <Eye size={13} />
-                  <span>
-                    {isLeaveRequest ? "معاينة صورة التعهّد" : "معاينة بالعقد / لحاله"}
-                  </span>
+                  <span>معاينة بالعقد / لحاله</span>
                 </button>
                 <a
                   href={signedContractUrl}
