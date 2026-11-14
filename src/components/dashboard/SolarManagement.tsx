@@ -326,6 +326,19 @@ export default function SolarManagement({
 
             <button
               type="button"
+              onClick={() => setActiveTab("events")}
+              className={`inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all cursor-pointer ${
+                activeTab === "events"
+                  ? "bg-[var(--accent)] text-[#07080b]"
+                  : "border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text)]"
+              }`}
+            >
+              <FileCheck size={16} />
+              طلبات إدارة الفعاليات ({eventsStats.total})
+            </button>
+
+            <button
+              type="button"
               onClick={() => setActiveTab("members")}
               className={`inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all cursor-pointer ${
                 activeTab === "members"
