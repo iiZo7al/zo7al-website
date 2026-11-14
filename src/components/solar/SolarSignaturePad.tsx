@@ -7,9 +7,15 @@ import { Download, Upload, Trash2, CheckCircle2, PenTool } from "lucide-react";
 export default function SolarSignaturePad({
   value,
   onChange,
+  contractImage = "/assets/site/solar-contract-pledge.png",
+  contractTitle = "صورة عقد وتعهد كلان Solar System",
+  downloadName = "عقد_كلان_سولار.png",
 }: {
   value?: string;
   onChange: (url: string) => void;
+  contractImage?: string;
+  contractTitle?: string;
+  downloadName?: string;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isDrawing, setIsDrawing] = useState(false);
@@ -178,15 +184,15 @@ export default function SolarSignaturePad({
             <div className="flex items-center gap-3">
               <div className="relative h-12 w-10 shrink-0 overflow-hidden rounded border border-[var(--border)] bg-black">
                 <Image
-                  src="/assets/site/solar-contract-pledge.png"
-                  alt="عقد Solar"
+                  src={contractImage}
+                  alt={contractTitle}
                   fill
                   className="object-cover"
                 />
               </div>
               <div>
                 <p className="text-xs font-semibold text-[var(--text)]">
-                  صورة عقد وتعهد كلان Solar System
+                  {contractTitle}
                 </p>
                 <p className="text-[11px] text-[var(--text-muted)]">
                   قم بتحميل الصورة للتوقيع عليها عبر أي تطبيق تعديل صور
@@ -195,8 +201,8 @@ export default function SolarSignaturePad({
             </div>
 
             <a
-              href="/assets/site/solar-contract-pledge.png"
-              download="عقد_كلان_سولار.png"
+              href={contractImage}
+              download={downloadName}
               className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--border)] bg-[var(--surface-elevated)] px-3.5 py-1.5 text-xs font-medium text-[var(--text)] hover:border-[var(--accent)] hover:text-[var(--accent)] transition-colors shrink-0"
             >
               <Download size={14} />

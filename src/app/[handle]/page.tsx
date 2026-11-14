@@ -9,6 +9,7 @@ import BrandIcon from "@/components/ui/BrandIcon";
 import MemberPlayerButton from "@/components/community/MemberPlayerButton";
 import ContentImage from "@/components/hub/ContentImage";
 import {contentImageUrl} from '@/lib/data/content-media';
+import { isAcceptedSolarMember } from "@/lib/server/solar-member-status";
 import "@/components/account/account.css";
 export const dynamic = "force-dynamic";
 export default async function MemberProfile({
@@ -27,17 +28,35 @@ export default async function MemberProfile({
     )
   ).rows[0];
   if (!member) notFound();
-  const badges=(await db.query("SELECT b.id,b.name,json_build_object('id',i.id,'width',i.width,'height',i.height) AS image FROM site_member_badges m JOIN site_badges b ON b.id=m.badge_id JOIN site_content_images i ON i.id=b.image_id WHERE m.user_id=$1 AND NOT b.archived ORDER BY m.awarded_at LIMIT 30",[member.id])).rows;
-  const entries = (
-    await db.query(
+  const [badgesResult, isSolarMember, entriesResult, t, locale, common] = await Promise.all([
+    db.query("SELECT b.id,b.name,json_build_object('id',i.id,'width',i.width,'height',i.height) AS image FROM site_member_badges m JOIN site_badges b ON b.id=m.badge_id JOIN site_content_images i ON i.id=b.image_id WHERE m.user_id=$1 AND NOT b.archived ORDER BY m.awarded_at LIMIT 30",[member.id]),
+    isAcceptedSolarMember(member.id),
+    db.query(
       `SELECT e.id,e.title,e.body,e.payload,e.created_at,CASE WHEN i.id IS NOT NULL THEN json_build_object('id',i.id,'width',i.width,'height',i.height) ELSE NULL END AS image FROM community_entries e LEFT JOIN site_content_images i ON i.id=e.image_id WHERE e.user_id=$1 AND e.kind='gallery' AND e.published AND e.moderation='approved' ORDER BY e.created_at DESC LIMIT 24`,
       [member.id],
-    )
-  ).rows;
-  const [t, locale, common] = await Promise.all([
+    ),
     getTranslations("account"),
-    getLocale(),getTranslations("common"),
+    getLocale(),
+    getTranslations("common"),
   ]);
+  const badges = badgesResult.rows;
+  const entries = entriesResult.rows;
+  const allBadges = [
+    ...(isSolarMember
+      ? [
+          {
+            id: "solar-clan-member",
+            name: locale === "ar" ? "عضو من الكلان" : "Clan Member",
+            src: "/assets/site/solar-clan-logo.png",
+          },
+        ]
+      : []),
+    ...badges.map((b) => ({
+      id: String(b.id),
+      name: String(b.name),
+      src: contentImageUrl(b.image),
+    })),
+  ];
   return (
     <main className="public-member-profile">
       <div className="member-profile-cover">
@@ -65,7 +84,7 @@ export default async function MemberProfile({
             <p className="account-help" dir="ltr">
               @{member.username}
             </p>
-            {badges.length>0&&<div className='member-profile-badges' aria-label={t('badges')}>{badges.map(b=><span key={b.id} className='member-badge' title={b.name} tabIndex={0}><Image src={contentImageUrl(b.image)} width={30} height={30} unoptimized alt={b.name}/><span className='member-badge-tooltip' aria-hidden='true'>{b.name}</span></span>)}</div>}
+            {allBadges.length>0&&<div className='member-profile-badges' aria-label={t('badges')}>{allBadges.map(b=><span key={b.id} className='member-badge' title={b.name} tabIndex={0}><Image src={b.src} width={30} height={30} unoptimized alt={b.name}/><span className='member-badge-tooltip' aria-hidden='true'>{b.name}</span></span>)}</div>}
           </div>
         </header>
         {member.bio && (
