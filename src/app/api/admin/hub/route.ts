@@ -31,8 +31,26 @@ export async function POST(request: Request) {
     }
     if (body?.action === "review") {
       const review = validReview(body.value); if (!review) throw new Error("INVALID");
-      const result = await (await siteDatabase()).query("UPDATE site_requests SET status=$3,public_note=$4,updated_at=now() WHERE id=$1 AND kind=$2 RETURNING id",[review.id,review.kind,review.status,review.note]);
+      const db = await siteDatabase();
+      const result = await db.query("UPDATE site_requests SET status=$3,public_note=$4,updated_at=now() WHERE id=$1 AND kind=$2 RETURNING id",[review.id,review.kind,review.status,review.note]);
       if (!result.rowCount) return Response.json({error:"INVALID"},{status:404,headers:privateHeaders});
+      const raw = body.value as Record<string, unknown>;
+      const validRoles = ["admin", "creator", "streamer", "player", "writer", "editor", "designer"];
+      const validSubTypes = ["president", "vice_president", "exec_supervisor", "dept_supervisor", "general_admin", "admin_monitor", "creators_supervisor", "creators_admin", "designers_supervisor", "players_supervisor", "players_admin", "editors_supervisor", "streamers_supervisor"];
+      const validGames = ["fortnite", "rocket", "minecraft", "fifa"];
+      if (review.kind === "application" && typeof raw.role === "string" && validRoles.includes(raw.role)) {
+        const patch: Record<string, string> = { role: raw.role };
+        if (raw.role === "admin" && typeof raw.adminSubType === "string" && validSubTypes.includes(raw.adminSubType)) {
+          patch.adminSubType = raw.adminSubType;
+        }
+        if (typeof raw.game === "string" && validGames.includes(raw.game)) {
+          patch.game = raw.game;
+        }
+        await db.query(
+          "UPDATE site_requests SET payload = (payload - 'adminSubType' - 'game') || $2::jsonb, updated_at = now() WHERE id = $1 AND kind = 'application' AND payload->>'platform' = 'solar'",
+          [review.id, JSON.stringify(patch)],
+        );
+      }
       if (review.status === "accepted") {
         try {
           const { syncAcceptedSolarApplicant } = await import("@/lib/server/solar-members");

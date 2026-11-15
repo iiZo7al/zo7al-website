@@ -1127,18 +1127,34 @@ function SolarApplicantCard({
   const nickname = typeof payload.nickname === "string" ? payload.nickname : null;
   const age = payload.age ? String(payload.age) : null;
   const country = typeof payload.country === "string" ? payload.country : null;
-  const role = typeof payload.role === "string" ? payload.role : "creator";
+  const initialRole = typeof payload.role === "string" ? payload.role : "creator";
+  const initialAdminSubType = typeof payload.adminSubType === "string" ? payload.adminSubType : "";
+  const initialGame = typeof payload.game === "string" ? payload.game : "";
+
+  const [editedRole, setEditedRole] = useState(initialRole);
+  const [editedAdminSubType, setEditedAdminSubType] = useState(initialAdminSubType);
+  const [editedGame, setEditedGame] = useState(initialGame);
+
+  const role = !isLeaveRequest && !isEventsRequest ? editedRole : initialRole;
   const roleName = isLeaveRequest
     ? "طلب إجازة"
     : isEventsRequest
     ? "إدارة فعاليات ديسكورد"
     : ROLE_LABELS[role] || role;
   const adminSubType =
-    typeof payload.adminSubType === "string"
+    !isLeaveRequest && !isEventsRequest
+      ? editedRole === "admin" && editedAdminSubType
+        ? SUBTYPE_LABELS[editedAdminSubType] || editedAdminSubType
+        : null
+      : typeof payload.adminSubType === "string"
       ? SUBTYPE_LABELS[payload.adminSubType] || payload.adminSubType
       : null;
   const game =
-    typeof payload.game === "string"
+    !isLeaveRequest && !isEventsRequest
+      ? editedGame
+        ? GAME_LABELS[editedGame] || editedGame
+        : null
+      : typeof payload.game === "string"
       ? GAME_LABELS[payload.game] || payload.game
       : null;
   const discord = typeof payload.discord === "string" ? payload.discord : "";
@@ -1212,6 +1228,13 @@ function SolarApplicantCard({
         kind: row.kind,
         status,
         note,
+        ...(!isLeaveRequest && !isEventsRequest
+          ? {
+              role: editedRole,
+              adminSubType: editedRole === "admin" ? editedAdminSubType : "",
+              game: editedGame,
+            }
+          : {}),
       });
     } finally {
       setSaving(false);
@@ -1490,6 +1513,71 @@ function SolarApplicantCard({
           </button>
         )}
       </div>
+
+      {/* Edit Role, Specialty & Game */}
+      {!isLeaveRequest && !isEventsRequest && (
+        <div className="grid gap-3 sm:grid-cols-3 pt-2 border-t border-[var(--border)]">
+          <div>
+            <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1">
+              الرتبة:
+            </label>
+            <select
+              value={editedRole}
+              onChange={(e) => {
+                const nextRole = e.target.value;
+                setEditedRole(nextRole);
+                if (nextRole !== "admin") setEditedAdminSubType("");
+              }}
+              className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] p-2 text-xs text-[var(--text)]"
+            >
+              {ALL_ROLES.map((r) => (
+                <option key={r.id} value={r.id}>
+                  {ROLE_LABELS[r.id] || r.label}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1">
+              التخصص:
+            </label>
+            <select
+              value={editedRole === "admin" ? editedAdminSubType : ""}
+              disabled={editedRole !== "admin"}
+              onChange={(e) => setEditedAdminSubType(e.target.value)}
+              className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] p-2 text-xs text-[var(--text)] disabled:opacity-50"
+            >
+              <option value="">
+                {editedRole === "admin" ? "— اختر التخصص —" : "للإدارة فقط"}
+              </option>
+              {ALL_ADMIN_SUBTYPES.map((sub) => (
+                <option key={sub.id} value={sub.id}>
+                  {sub.label}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1">
+              اللعبة:
+            </label>
+            <select
+              value={editedGame}
+              onChange={(e) => setEditedGame(e.target.value)}
+              className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] p-2 text-xs text-[var(--text)]"
+            >
+              <option value="">— غير محدد —</option>
+              {Object.entries(GAME_LABELS).map(([id, label]) => (
+                <option key={id} value={id}>
+                  {label}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+      )}
 
       {/* Review Actions */}
       <div className="grid gap-3 sm:grid-cols-2 pt-2 border-t border-[var(--border)]">
