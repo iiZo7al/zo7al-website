@@ -22,7 +22,7 @@ export type SolarAdminSubType =
   | "editors_supervisor" // مشرف ممنتجين
   | "streamers_supervisor"; // مشرف ستريمرز
 
-export type SolarGame = "fortnite" | "rocket" | "minecraft" | "fifa";
+export type SolarGame = "fortnite" | "rocket" | "minecraft" | "fifa" | "cod";
 
 export const SOLAR_CONTRACT_DURATIONS: { id: string; label: string }[] = [
   { id: "2_months", label: "شهرين" },
@@ -168,6 +168,7 @@ export const SOLAR_LEADERSHIP = [
 
 export function validateSolarApplication(
   value: unknown,
+  custom?: { roles?: string[]; adminSubTypes?: string[]; games?: string[] },
 ): SolarApplicationInput | null {
   if (!value || typeof value !== "object") return null;
   const input = value as Record<string, unknown>;
@@ -224,7 +225,7 @@ export function validateSolarApplication(
   )
     return null;
 
-  const validRoles: SolarRole[] = [
+  const validRoles: string[] = [
     "admin",
     "creator",
     "streamer",
@@ -232,6 +233,7 @@ export function validateSolarApplication(
     "editor",
     "designer",
     "player",
+    ...(custom?.roles ?? []),
   ];
   if (!validRoles.includes(role)) return null;
 
@@ -242,7 +244,7 @@ export function validateSolarApplication(
   let portfolioUrl: string | undefined;
 
   if (role === "admin") {
-    const validSubTypes: SolarAdminSubType[] = [
+    const validSubTypes: string[] = [
       "president",
       "vice_president",
       "exec_supervisor",
@@ -256,23 +258,26 @@ export function validateSolarApplication(
       "players_admin",
       "editors_supervisor",
       "streamers_supervisor",
+      ...(custom?.adminSubTypes ?? []),
     ];
     if (
-      input.adminSubType &&
-      validSubTypes.includes(input.adminSubType as unknown as SolarAdminSubType)
+      typeof input.adminSubType === "string" &&
+      validSubTypes.includes(input.adminSubType)
     ) {
       adminSubType = input.adminSubType as SolarAdminSubType;
       if (
         adminSubType === "players_supervisor" ||
         adminSubType === "players_admin"
       ) {
-        const validGames: SolarGame[] = [
+        const validGames: string[] = [
           "fortnite",
           "rocket",
           "fifa",
           "minecraft",
+          "cod",
+          ...(custom?.games ?? []),
         ];
-        if (validGames.includes(input.game as unknown as SolarGame)) {
+        if (typeof input.game === "string" && validGames.includes(input.game)) {
           game = input.game as SolarGame;
         } else {
           game = "fortnite";
@@ -280,13 +285,15 @@ export function validateSolarApplication(
       }
     }
   } else if (role === "player") {
-    const validGames: SolarGame[] = [
+    const validGames: string[] = [
       "fortnite",
       "rocket",
       "minecraft",
       "fifa",
+      "cod",
+      ...(custom?.games ?? []),
     ];
-    if (validGames.includes(input.game as unknown as SolarGame)) {
+    if (typeof input.game === "string" && validGames.includes(input.game)) {
       game = input.game as SolarGame;
     } else {
       game = "fortnite";

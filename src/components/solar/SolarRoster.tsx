@@ -81,7 +81,7 @@ export default function SolarRoster({
     },
     {
       role: "player",
-      title: isAr ? "لاعب (روكيت أو فورت أو ماين أو فيفا)" : "Player (Rocket, Fortnite, Minecraft, FIFA)",
+      title: isAr ? "لاعب (روكيت أو فورت أو ماين أو فيفا أو كود)" : "Player (Rocket, Fortnite, Minecraft, FIFA, Call of Duty)",
       tag: "Competitive",
       desc: isAr
         ? "تمثيل الكلان في البطولات والسكرمز والتحديات في الألعاب المعتمدة."
