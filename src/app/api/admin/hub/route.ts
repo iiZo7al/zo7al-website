@@ -37,13 +37,15 @@ export async function POST(request: Request) {
       const raw = body.value as Record<string, unknown>;
       const validRoles = ["admin", "creator", "streamer", "player", "writer", "editor", "designer"];
       const validSubTypes = ["president", "vice_president", "exec_supervisor", "dept_supervisor", "general_admin", "admin_monitor", "creators_supervisor", "creators_admin", "designers_supervisor", "players_supervisor", "players_admin", "editors_supervisor", "streamers_supervisor"];
-      const validGames = ["fortnite", "rocket", "minecraft", "fifa"];
-      if (review.kind === "application" && typeof raw.role === "string" && validRoles.includes(raw.role)) {
+      const validGames = ["fortnite", "rocket", "minecraft", "fifa", "cod"];
+      const isSlug = (v: unknown): v is string => typeof v === "string" && /^[a-z0-9_-]{2,40}$/.test(v);
+      if (review.kind === "application" && isSlug(raw.role) && (validRoles.includes(raw.role) || isSlug(raw.role))) {
         const patch: Record<string, string> = { role: raw.role };
-        if (raw.role === "admin" && typeof raw.adminSubType === "string" && validSubTypes.includes(raw.adminSubType)) {
+        if (raw.role === "admin" && isSlug(raw.adminSubType) && (validSubTypes.includes(raw.adminSubType) || isSlug(raw.adminSubType))) {
           patch.adminSubType = raw.adminSubType;
         }
-        if (typeof raw.game === "string" && validGames.includes(raw.game)) {
+        const canHaveGame = raw.role === "player" || (raw.role === "admin" && (patch.adminSubType === "players_supervisor" || patch.adminSubType === "players_admin"));
+        if (canHaveGame && isSlug(raw.game) && (validGames.includes(raw.game) || isSlug(raw.game))) {
           patch.game = raw.game;
         }
         await db.query(

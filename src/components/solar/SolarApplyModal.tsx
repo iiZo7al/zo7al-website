@@ -38,8 +38,12 @@ export default function SolarApplyModal({
   settings?: {
     isOpen: boolean;
     announcement: string;
-    closedRoles: SolarRole[];
-    closedAdminSubTypes?: SolarAdminSubType[];
+    closedRoles: string[];
+    closedAdminSubTypes?: string[];
+    closedGames?: string[];
+    customRoles?: { id: string; label: string }[];
+    customAdminSubTypes?: { id: string; label: string }[];
+    customGames?: { id: string; label: string }[];
   } | null;
 }) {
   const dialog = useRef<HTMLDialogElement>(null);
@@ -706,7 +710,7 @@ export default function SolarApplyModal({
                       ممنتج {settings?.closedRoles.includes("editor") ? "— (مغلق مؤقتاً)" : ""}
                     </option>
                     <option value="player" disabled={settings?.closedRoles.includes("player")}>
-                      لاعب (روكيت او فورت او ماين او فيفا) {settings?.closedRoles.includes("player") ? "— (مغلق مؤقتاً)" : ""}
+                      لاعب (روكيت او فورت او ماين او فيفا او كود) {settings?.closedRoles.includes("player") ? "— (مغلق مؤقتاً)" : ""}
                     </option>
                     <option value="admin" disabled={settings?.closedRoles.includes("admin")}>
                       اداري {settings?.closedRoles.includes("admin") ? "— (مغلق مؤقتاً)" : ""}
@@ -714,6 +718,14 @@ export default function SolarApplyModal({
                     <option value="writer" disabled={settings?.closedRoles.includes("writer")}>
                       كاتب افكار {settings?.closedRoles.includes("writer") ? "— (مغلق مؤقتاً)" : ""}
                     </option>
+                    {(settings?.customRoles ?? []).map((cr) => {
+                      const isClosed = settings?.closedRoles.includes(cr.id);
+                      return (
+                        <option key={cr.id} value={cr.id} disabled={isClosed}>
+                          {cr.label} {isClosed ? "— (مغلق مؤقتاً)" : ""}
+                        </option>
+                      );
+                    })}
                   </select>
                 </div>
 
@@ -728,10 +740,21 @@ export default function SolarApplyModal({
                       onChange={(e) => setGame(e.target.value as SolarGame)}
                       className="w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--text)] outline-none focus:border-[var(--accent)]"
                     >
-                      <option value="fortnite">فورتنايت (Fortnite)</option>
-                      <option value="rocket">روكيت ليق (Rocket League)</option>
-                      <option value="minecraft">ماينكرافت (Minecraft)</option>
-                      <option value="fifa">فيفا / FC (FIFA)</option>
+                      {[
+                        { id: "fortnite", label: "فورتنايت (Fortnite)" },
+                        { id: "rocket", label: "روكيت ليق (Rocket League)" },
+                        { id: "minecraft", label: "ماينكرافت (Minecraft)" },
+                        { id: "fifa", label: "فيفا / FC (FIFA)" },
+                        { id: "cod", label: "كود (Call of Duty)" },
+                        ...(settings?.customGames ?? []),
+                      ].map((g) => {
+                        const isClosed = settings?.closedGames?.includes(g.id);
+                        return (
+                          <option key={g.id} value={g.id} disabled={isClosed}>
+                            {g.label} {isClosed ? "— (مغلق مؤقتاً)" : ""}
+                          </option>
+                        );
+                      })}
                     </select>
                   </div>
                 )}
@@ -750,23 +773,22 @@ export default function SolarApplyModal({
                         }
                         className="w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--text)] outline-none focus:border-[var(--accent)]"
                       >
-                        {(
-                          [
-                            { id: "president", label: "الرئيس" },
-                            { id: "vice_president", label: "نائب الرئيس" },
-                            { id: "exec_supervisor", label: "مشرف تنفيذي" },
-                            { id: "dept_supervisor", label: "مشرف أقسام" },
-                            { id: "general_admin", label: "إدارة عامة" },
-                            { id: "admin_monitor", label: "مراقب إدارة" },
-                            { id: "creators_supervisor", label: "مشرف صناع محتوى" },
-                            { id: "creators_admin", label: "إداري صناع محتوى" },
-                            { id: "designers_supervisor", label: "مشرف مصممين" },
-                            { id: "players_supervisor", label: "مشرف لاعبين" },
-                            { id: "players_admin", label: "إداري لاعبين" },
-                            { id: "editors_supervisor", label: "مشرف ممنتجين" },
-                            { id: "streamers_supervisor", label: "مشرف ستريمرز" },
-                          ] as { id: SolarAdminSubType; label: string }[]
-                        ).map((sub) => {
+                        {[
+                          { id: "president", label: "الرئيس" },
+                          { id: "vice_president", label: "نائب الرئيس" },
+                          { id: "exec_supervisor", label: "مشرف تنفيذي" },
+                          { id: "dept_supervisor", label: "مشرف أقسام" },
+                          { id: "general_admin", label: "إدارة عامة" },
+                          { id: "admin_monitor", label: "مراقب إدارة" },
+                          { id: "creators_supervisor", label: "مشرف صناع محتوى" },
+                          { id: "creators_admin", label: "إداري صناع محتوى" },
+                          { id: "designers_supervisor", label: "مشرف مصممين" },
+                          { id: "players_supervisor", label: "مشرف لاعبين" },
+                          { id: "players_admin", label: "إداري لاعبين" },
+                          { id: "editors_supervisor", label: "مشرف ممنتجين" },
+                          { id: "streamers_supervisor", label: "مشرف ستريمرز" },
+                          ...(settings?.customAdminSubTypes ?? []),
+                        ].map((sub) => {
                           const isClosed = settings?.closedAdminSubTypes?.includes(sub.id);
                           return (
                             <option key={sub.id} value={sub.id} disabled={isClosed}>
@@ -781,17 +803,28 @@ export default function SolarApplyModal({
                       adminSubType === "players_admin") && (
                       <div className="pt-2 border-t border-[var(--border)]">
                         <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1">
-                          اللعبة (فيفا، فورت، أو روكيت) <span className="text-red-400">*</span>
+                          اللعبة (فيفا، فورت، روكيت، ماينكرافت، أو كود) <span className="text-red-400">*</span>
                         </label>
                         <select
                           value={game}
                           onChange={(e) => setGame(e.target.value as SolarGame)}
                           className="w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--text)] outline-none focus:border-[var(--accent)]"
                         >
-                          <option value="fifa">فيفا / FC (FIFA)</option>
-                          <option value="fortnite">فورتنايت (Fortnite)</option>
-                          <option value="rocket">روكيت ليق (Rocket League)</option>
-                          <option value="minecraft">ماينكرافت (Minecraft)</option>
+                          {[
+                            { id: "fifa", label: "فيفا / FC (FIFA)" },
+                            { id: "fortnite", label: "فورتنايت (Fortnite)" },
+                            { id: "rocket", label: "روكيت ليق (Rocket League)" },
+                            { id: "minecraft", label: "ماينكرافت (Minecraft)" },
+                            { id: "cod", label: "كود (Call of Duty)" },
+                            ...(settings?.customGames ?? []),
+                          ].map((g) => {
+                            const isClosed = settings?.closedGames?.includes(g.id);
+                            return (
+                              <option key={g.id} value={g.id} disabled={isClosed}>
+                                {g.label} {isClosed ? "— (مغلق مؤقتاً)" : ""}
+                              </option>
+                            );
+                          })}
                         </select>
                       </div>
                     )}

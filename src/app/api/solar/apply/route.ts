@@ -54,6 +54,7 @@ const gameLabels: Record<string, string> = {
   rocket: "روكيت ليق (Rocket League)",
   minecraft: "ماينكرافت (Minecraft)",
   fifa: "فيفا / FC (FIFA)",
+  cod: "كود (Call of Duty)",
 };
 
 export async function POST(request: Request) {
@@ -97,7 +98,11 @@ export async function POST(request: Request) {
     }
 
     const body = await readJSON(request, 64000);
-    const application = validateSolarApplication(body);
+    const application = validateSolarApplication(body, {
+      roles: settings.customRoles.map((r) => r.id),
+      adminSubTypes: settings.customAdminSubTypes.map((s) => s.id),
+      games: settings.customGames.map((g) => g.id),
+    });
     if (!application) {
       return Response.json(
         { error: "INVALID" },
@@ -109,7 +114,8 @@ export async function POST(request: Request) {
       settings.closedRoles.includes(application.role) ||
       (application.role === "admin" &&
         application.adminSubType &&
-        settings.closedAdminSubTypes.includes(application.adminSubType))
+        settings.closedAdminSubTypes.includes(application.adminSubType)) ||
+      (application.game && settings.closedGames.includes(application.game))
     ) {
       return Response.json(
         { error: "ROLE_CLOSED" },
@@ -117,10 +123,11 @@ export async function POST(request: Request) {
       );
     }
 
+    const customRoleLabel = settings.customRoles.find((r) => r.id === application.role)?.label;
     const payload = {
       ...application,
       platform: "solar",
-      subject: `طلب انضمام كلان Solar — ${application.name} (${roleLabels[application.role] || application.role})`,
+      subject: `طلب انضمام كلان Solar — ${application.name} (${roleLabels[application.role] || customRoleLabel || application.role})`,
       appliedAt: new Date().toISOString(),
     };
 

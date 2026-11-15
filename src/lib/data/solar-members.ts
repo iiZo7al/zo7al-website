@@ -64,6 +64,7 @@ export const SOLAR_MEMBER_GAMES = [
   { id: "rocket", label: "روكيت ليق", optionLabel: "روكيت ليق (Rocket League)" },
   { id: "minecraft", label: "ماينكرافت", optionLabel: "ماينكرافت (Minecraft)" },
   { id: "fifa", label: "فيفا", optionLabel: "فيفا / FC (FIFA)" },
+  { id: "cod", label: "كود", optionLabel: "كود (Call of Duty)" },
 ] as const;
 
 export function roleNeedsGame(role: string, adminSubType?: string): boolean {

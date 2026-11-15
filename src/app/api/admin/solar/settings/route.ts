@@ -26,11 +26,15 @@ export async function POST(request: Request) {
     return Response.json({ error: "INVALID" }, { status: 403, headers: privateHeaders });
   }
   try {
-    const body = await readJSON(request, 8000) as {
+    const body = await readJSON(request, 32000) as {
       isOpen?: boolean;
       announcement?: string;
-      closedRoles?: SolarRole[];
-      closedAdminSubTypes?: SolarAdminSubType[];
+      closedRoles?: string[];
+      closedAdminSubTypes?: string[];
+      closedGames?: string[];
+      customRoles?: { id: string; label: string }[];
+      customAdminSubTypes?: { id: string; label: string }[];
+      customGames?: { id: string; label: string }[];
       requirements?: string;
     };
 
@@ -43,6 +47,10 @@ export async function POST(request: Request) {
       announcement: typeof body.announcement === "string" ? body.announcement : undefined,
       closedRoles: Array.isArray(body.closedRoles) ? body.closedRoles : undefined,
       closedAdminSubTypes: Array.isArray(body.closedAdminSubTypes) ? body.closedAdminSubTypes : undefined,
+      closedGames: Array.isArray(body.closedGames) ? body.closedGames : undefined,
+      customRoles: Array.isArray(body.customRoles) ? body.customRoles : undefined,
+      customAdminSubTypes: Array.isArray(body.customAdminSubTypes) ? body.customAdminSubTypes : undefined,
+      customGames: Array.isArray(body.customGames) ? body.customGames : undefined,
       requirements: typeof body.requirements === "string" ? body.requirements : undefined,
     });
 

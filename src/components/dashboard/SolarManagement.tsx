@@ -20,6 +20,7 @@ import {
   FileCheck,
   FileSpreadsheet,
   CalendarClock,
+  Plus,
 } from "lucide-react";
 import MarkdownContent from "@/components/ui/MarkdownContent";
 import { Skeleton } from "@/components/ui/Skeleton";
@@ -28,8 +29,9 @@ import SolarExcelSheet from "./SolarExcelSheet";
 import SolarMembersManager from "./SolarMembersManager";
 import type { DashboardData, Mutate, RequestRow } from "./types";
 import type { SolarAdminSubType, SolarRole } from "@/lib/data/solar";
+import { roleNeedsGame } from "@/lib/data/solar-members";
 import { SOLAR_LEAVE_DURATION_LABELS } from "@/lib/data/solar-leave";
-import type { SolarSettings } from "@/lib/server/solar-settings";
+import type { CustomSolarOption, SolarSettings } from "@/lib/server/solar-settings";
 
 const ROLE_LABELS: Record<string, string> = {
   creator: "صانع محتوى (Content Creator)",
@@ -73,6 +75,7 @@ const GAME_LABELS: Record<string, string> = {
   rocket: "روكيت ليق (Rocket League)",
   minecraft: "ماينكرافت (Minecraft)",
   fifa: "فيفا / FC (FIFA)",
+  cod: "كود (Call of Duty)",
 };
 
 const ALL_ROLES: { id: SolarRole; label: string }[] = [
@@ -131,6 +134,12 @@ export default function SolarManagement({
   const [loadingSettings, setLoadingSettings] = useState(true);
   const [savingSettings, setSavingSettings] = useState(false);
   const [settingsMessage, setSettingsMessage] = useState<string | null>(null);
+  const [newRoleLabel, setNewRoleLabel] = useState("");
+  const [newSubTypeLabel, setNewSubTypeLabel] = useState("");
+  const [newGameLabel, setNewGameLabel] = useState("");
+
+  const makeCustomId = (prefix: string) =>
+    `${prefix}_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 6)}`;
 
   // Filter solar clan join applications (excluding leave & events requests)
   const solarApplications = useMemo(() => {
@@ -805,6 +814,9 @@ export default function SolarManagement({
                 row={row}
                 busy={busy}
                 copiedId={copiedId}
+                customRoles={settings?.customRoles ?? []}
+                customAdminSubTypes={settings?.customAdminSubTypes ?? []}
+                customGames={settings?.customGames ?? []}
                 onCopy={copyToClipboard}
                 onSave={(value) => mutate("review", value)}
                 onRetry={() => mutate("retryApplication", row.id)}
@@ -913,23 +925,26 @@ export default function SolarManagement({
                     التقديم حسب الأقسام والرتب
                   </h3>
                   <p className="text-xs text-[var(--text-muted)] mt-1">
-                    حدد الأقسام المتاحة للتقديم حالياً، ويمكنك إغلاق أي قسم مكتمل لا يستقبل أعضاء جدد.
+                    حدد الأقسام المتاحة للتقديم حالياً أو أضف رتباً جديدة، وأي رتبة تغلقها ستظهر للمتقدم ولكن لا تنضغط.
                   </p>
                 </div>
 
                 <div className="grid gap-3 sm:grid-cols-2">
-                  {ALL_ROLES.map((role) => {
+                  {[
+                    ...ALL_ROLES.map((r) => ({ ...r, custom: false })),
+                    ...(settings.customRoles ?? []).map((r) => ({ ...r, custom: true })),
+                  ].map((role) => {
                     const isClosed = settings.closedRoles.includes(role.id);
                     return (
-                      <label
+                      <div
                         key={role.id}
-                        className={`flex items-center justify-between rounded-xl border p-4 transition-all cursor-pointer ${
+                        className={`flex items-center justify-between gap-2 rounded-xl border p-4 transition-all ${
                           isClosed
                             ? "border-[var(--border)] bg-zinc-900/40 opacity-75"
                             : "border-[var(--accent)]/40 bg-[var(--surface)]"
                         }`}
                       >
-                        <div className="flex items-center gap-3">
+                        <label className="flex items-center gap-3 cursor-pointer flex-1 min-w-0">
                           <input
                             type="checkbox"
                             checked={!isClosed}
@@ -943,25 +958,71 @@ export default function SolarManagement({
                                 closedRoles: updatedClosed,
                               });
                             }}
-                            className="h-4 w-4 rounded accent-[var(--accent)]"
+                            className="h-4 w-4 rounded accent-[var(--accent)] shrink-0"
                           />
-                          <span className="text-sm font-semibold text-[var(--text)]">
+                          <span className="text-sm font-semibold text-[var(--text)] truncate">
                             {role.label}
                           </span>
-                        </div>
+                        </label>
 
-                        <span
-                          className={`text-xs px-2.5 py-0.5 rounded-full font-semibold ${
-                            isClosed
-                              ? "bg-rose-500/10 text-rose-400 border border-rose-500/20"
-                              : "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
-                          }`}
-                        >
-                          {isClosed ? "مغلق" : "متاح للتقديم"}
-                        </span>
-                      </label>
+                        <div className="flex items-center gap-2 shrink-0">
+                          <span
+                            className={`text-xs px-2.5 py-0.5 rounded-full font-semibold ${
+                              isClosed
+                                ? "bg-rose-500/10 text-rose-400 border border-rose-500/20"
+                                : "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
+                            }`}
+                          >
+                            {isClosed ? "مغلق (لا ينضغط)" : "متاح للتقديم"}
+                          </span>
+                          {role.custom && (
+                            <button
+                              type="button"
+                              onClick={() =>
+                                setSettings({
+                                  ...settings,
+                                  customRoles: (settings.customRoles ?? []).filter((r) => r.id !== role.id),
+                                  closedRoles: settings.closedRoles.filter((r) => r !== role.id),
+                                })
+                              }
+                              className="p-1 text-rose-400 hover:bg-rose-500/10 rounded-lg"
+                              title="حذف الرتبة"
+                            >
+                              <Trash2 size={14} />
+                            </button>
+                          )}
+                        </div>
+                      </div>
                     );
                   })}
+                </div>
+
+                <div className="flex flex-wrap gap-2 pt-2 border-t border-[var(--border)]">
+                  <input
+                    type="text"
+                    value={newRoleLabel}
+                    onChange={(e) => setNewRoleLabel(e.target.value)}
+                    maxLength={60}
+                    placeholder="اكتب اسم رتبة جديدة لإضافتها..."
+                    className="flex-1 min-w-[200px] rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-xs text-[var(--text)] focus:border-[var(--accent)] focus:outline-none"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const label = newRoleLabel.trim();
+                      if (!label) return;
+                      const id = makeCustomId("role");
+                      setSettings({
+                        ...settings,
+                        customRoles: [...(settings.customRoles ?? []), { id, label }],
+                      });
+                      setNewRoleLabel("");
+                    }}
+                    className="inline-flex items-center gap-1.5 rounded-xl px-4 py-2 text-xs font-bold bg-[var(--accent)] text-[#07080b] cursor-pointer"
+                  >
+                    <Plus size={14} />
+                    إضافة رتبة
+                  </button>
                 </div>
               </div>
 
@@ -969,27 +1030,30 @@ export default function SolarManagement({
               <div className="rounded-xl border border-[var(--border)] bg-black/20 p-5 space-y-4">
                 <div>
                   <h3 className="font-semibold text-base text-[var(--text)]">
-                    التحكم في رتب الإدارة (تظهر للمتقدم ولكن لا تنضغط إذا كانت مغلقة)
+                    التحكم في رتب وتخصصات الإدارة (تظهر للمتقدم ولكن لا تنضغط إذا كانت مغلقة)
                   </h3>
                   <p className="text-xs text-[var(--text-muted)] mt-1">
-                    عند إغلاق أي رتبة إدارية مثل الرئيس أو نائب الرئيس، ستظهر في قائمة التقديم كخيار غير قابل للاختيار ومغلق مؤقتاً.
+                    عند إغلاق أي تخصص إداري أو إضافة تخصص جديد، سيظهر في قائمة التقديم ويمكنك جعله غير متاح مؤقتاً.
                   </p>
                 </div>
 
                 <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                  {ALL_ADMIN_SUBTYPES.map((sub) => {
+                  {[
+                    ...ALL_ADMIN_SUBTYPES.map((s) => ({ ...s, custom: false })),
+                    ...(settings.customAdminSubTypes ?? []).map((s) => ({ ...s, custom: true })),
+                  ].map((sub) => {
                     const closedSubs = settings.closedAdminSubTypes ?? [];
                     const isClosed = closedSubs.includes(sub.id);
                     return (
-                      <label
+                      <div
                         key={sub.id}
-                        className={`flex items-center justify-between rounded-xl border p-3.5 transition-all cursor-pointer ${
+                        className={`flex items-center justify-between gap-2 rounded-xl border p-3.5 transition-all ${
                           isClosed
                             ? "border-[var(--border)] bg-zinc-900/40 opacity-75"
                             : "border-[var(--accent)]/40 bg-[var(--surface)]"
                         }`}
                       >
-                        <div className="flex items-center gap-2.5">
+                        <label className="flex items-center gap-2.5 cursor-pointer flex-1 min-w-0">
                           <input
                             type="checkbox"
                             checked={!isClosed}
@@ -1003,25 +1067,180 @@ export default function SolarManagement({
                                 closedAdminSubTypes: updatedClosed,
                               });
                             }}
-                            className="h-4 w-4 rounded accent-[var(--accent)]"
+                            className="h-4 w-4 rounded accent-[var(--accent)] shrink-0"
                           />
-                          <span className="text-xs font-semibold text-[var(--text)]">
+                          <span className="text-xs font-semibold text-[var(--text)] truncate">
                             {sub.label}
                           </span>
-                        </div>
+                        </label>
 
-                        <span
-                          className={`text-[11px] px-2 py-0.5 rounded-full font-semibold ${
-                            isClosed
-                              ? "bg-rose-500/10 text-rose-400 border border-rose-500/20"
-                              : "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
-                          }`}
-                        >
-                          {isClosed ? "مغلق (لا ينضغط)" : "متاح"}
-                        </span>
-                      </label>
+                        <div className="flex items-center gap-1.5 shrink-0">
+                          <span
+                            className={`text-[11px] px-2 py-0.5 rounded-full font-semibold ${
+                              isClosed
+                                ? "bg-rose-500/10 text-rose-400 border border-rose-500/20"
+                                : "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
+                            }`}
+                          >
+                            {isClosed ? "مغلق (لا ينضغط)" : "متاح"}
+                          </span>
+                          {sub.custom && (
+                            <button
+                              type="button"
+                              onClick={() =>
+                                setSettings({
+                                  ...settings,
+                                  customAdminSubTypes: (settings.customAdminSubTypes ?? []).filter((s) => s.id !== sub.id),
+                                  closedAdminSubTypes: closedSubs.filter((s) => s !== sub.id),
+                                })
+                              }
+                              className="p-1 text-rose-400 hover:bg-rose-500/10 rounded-lg"
+                              title="حذف التخصص"
+                            >
+                              <Trash2 size={13} />
+                            </button>
+                          )}
+                        </div>
+                      </div>
                     );
                   })}
+                </div>
+
+                <div className="flex flex-wrap gap-2 pt-2 border-t border-[var(--border)]">
+                  <input
+                    type="text"
+                    value={newSubTypeLabel}
+                    onChange={(e) => setNewSubTypeLabel(e.target.value)}
+                    maxLength={60}
+                    placeholder="اكتب اسم تخصص إداري جديد..."
+                    className="flex-1 min-w-[200px] rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-xs text-[var(--text)] focus:border-[var(--accent)] focus:outline-none"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const label = newSubTypeLabel.trim();
+                      if (!label) return;
+                      const id = makeCustomId("sub");
+                      setSettings({
+                        ...settings,
+                        customAdminSubTypes: [...(settings.customAdminSubTypes ?? []), { id, label }],
+                      });
+                      setNewSubTypeLabel("");
+                    }}
+                    className="inline-flex items-center gap-1.5 rounded-xl px-4 py-2 text-xs font-bold bg-[var(--accent)] text-[#07080b] cursor-pointer"
+                  >
+                    <Plus size={14} />
+                    إضافة تخصص
+                  </button>
+                </div>
+              </div>
+
+              {/* Per-Game Toggles */}
+              <div className="rounded-xl border border-[var(--border)] bg-black/20 p-5 space-y-4">
+                <div>
+                  <h3 className="font-semibold text-base text-[var(--text)]">
+                    التحكم في الألعاب (تظهر للمتقدم ولكن لا تنضغط إذا كانت مغلقة)
+                  </h3>
+                  <p className="text-xs text-[var(--text-muted)] mt-1">
+                    أضف ألعاباً جديدة أو أغلق ألعاباً مؤقتاً للاعبين وإدارة اللاعبين.
+                  </p>
+                </div>
+
+                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                  {[
+                    ...Object.entries(GAME_LABELS).map(([id, label]) => ({ id, label, custom: false })),
+                    ...(settings.customGames ?? []).map((g) => ({ ...g, custom: true })),
+                  ].map((g) => {
+                    const closedGames = settings.closedGames ?? [];
+                    const isClosed = closedGames.includes(g.id);
+                    return (
+                      <div
+                        key={g.id}
+                        className={`flex items-center justify-between gap-2 rounded-xl border p-3.5 transition-all ${
+                          isClosed
+                            ? "border-[var(--border)] bg-zinc-900/40 opacity-75"
+                            : "border-[var(--accent)]/40 bg-[var(--surface)]"
+                        }`}
+                      >
+                        <label className="flex items-center gap-2.5 cursor-pointer flex-1 min-w-0">
+                          <input
+                            type="checkbox"
+                            checked={!isClosed}
+                            onChange={(e) => {
+                              const checked = e.target.checked;
+                              const updatedClosed = checked
+                                ? closedGames.filter((id) => id !== g.id)
+                                : [...closedGames, g.id];
+                              setSettings({
+                                ...settings,
+                                closedGames: updatedClosed,
+                              });
+                            }}
+                            className="h-4 w-4 rounded accent-[var(--accent)] shrink-0"
+                          />
+                          <span className="text-xs font-semibold text-[var(--text)] truncate">
+                            {g.label}
+                          </span>
+                        </label>
+
+                        <div className="flex items-center gap-1.5 shrink-0">
+                          <span
+                            className={`text-[11px] px-2 py-0.5 rounded-full font-semibold ${
+                              isClosed
+                                ? "bg-rose-500/10 text-rose-400 border border-rose-500/20"
+                                : "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
+                            }`}
+                          >
+                            {isClosed ? "مغلق (لا ينضغط)" : "متاح"}
+                          </span>
+                          {g.custom && (
+                            <button
+                              type="button"
+                              onClick={() =>
+                                setSettings({
+                                  ...settings,
+                                  customGames: (settings.customGames ?? []).filter((item) => item.id !== g.id),
+                                  closedGames: closedGames.filter((id) => id !== g.id),
+                                })
+                              }
+                              className="p-1 text-rose-400 hover:bg-rose-500/10 rounded-lg"
+                              title="حذف اللعبة"
+                            >
+                              <Trash2 size={13} />
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                <div className="flex flex-wrap gap-2 pt-2 border-t border-[var(--border)]">
+                  <input
+                    type="text"
+                    value={newGameLabel}
+                    onChange={(e) => setNewGameLabel(e.target.value)}
+                    maxLength={60}
+                    placeholder="اكتب اسم لعبة جديدة..."
+                    className="flex-1 min-w-[200px] rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-xs text-[var(--text)] focus:border-[var(--accent)] focus:outline-none"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const label = newGameLabel.trim();
+                      if (!label) return;
+                      const id = makeCustomId("game");
+                      setSettings({
+                        ...settings,
+                        customGames: [...(settings.customGames ?? []), { id, label }],
+                      });
+                      setNewGameLabel("");
+                    }}
+                    className="inline-flex items-center gap-1.5 rounded-xl px-4 py-2 text-xs font-bold bg-[var(--accent)] text-[#07080b] cursor-pointer"
+                  >
+                    <Plus size={14} />
+                    إضافة لعبة
+                  </button>
                 </div>
               </div>
 
@@ -1097,6 +1316,9 @@ function SolarApplicantCard({
   row,
   busy,
   copiedId,
+  customRoles = [],
+  customAdminSubTypes = [],
+  customGames = [],
   onCopy,
   onSave,
   onRetry,
@@ -1106,6 +1328,9 @@ function SolarApplicantCard({
   row: RequestRow;
   busy: boolean;
   copiedId: string | null;
+  customRoles?: CustomSolarOption[];
+  customAdminSubTypes?: CustomSolarOption[];
+  customGames?: CustomSolarOption[];
   onCopy: (text: string, id: string) => void;
   onSave: (value: unknown) => Promise<boolean>;
   onRetry: () => Promise<boolean>;
@@ -1134,28 +1359,29 @@ function SolarApplicantCard({
   const [editedRole, setEditedRole] = useState(initialRole);
   const [editedAdminSubType, setEditedAdminSubType] = useState(initialAdminSubType);
   const [editedGame, setEditedGame] = useState(initialGame);
+  const canEditGame = roleNeedsGame(editedRole, editedAdminSubType);
 
   const role = !isLeaveRequest && !isEventsRequest ? editedRole : initialRole;
   const roleName = isLeaveRequest
     ? "طلب إجازة"
     : isEventsRequest
     ? "إدارة فعاليات ديسكورد"
-    : ROLE_LABELS[role] || role;
+    : ROLE_LABELS[role] || customRoles.find((r) => r.id === role)?.label || role;
   const adminSubType =
     !isLeaveRequest && !isEventsRequest
       ? editedRole === "admin" && editedAdminSubType
-        ? SUBTYPE_LABELS[editedAdminSubType] || editedAdminSubType
+        ? SUBTYPE_LABELS[editedAdminSubType] || customAdminSubTypes.find((s) => s.id === editedAdminSubType)?.label || editedAdminSubType
         : null
       : typeof payload.adminSubType === "string"
-      ? SUBTYPE_LABELS[payload.adminSubType] || payload.adminSubType
+      ? SUBTYPE_LABELS[payload.adminSubType] || customAdminSubTypes.find((s) => s.id === payload.adminSubType)?.label || payload.adminSubType
       : null;
   const game =
     !isLeaveRequest && !isEventsRequest
-      ? editedGame
-        ? GAME_LABELS[editedGame] || editedGame
+      ? canEditGame && editedGame
+        ? GAME_LABELS[editedGame] || customGames.find((g) => g.id === editedGame)?.label || editedGame
         : null
       : typeof payload.game === "string"
-      ? GAME_LABELS[payload.game] || payload.game
+      ? GAME_LABELS[payload.game] || customGames.find((g) => g.id === payload.game)?.label || payload.game
       : null;
   const discord = typeof payload.discord === "string" ? payload.discord : "";
   const whatsapp =
@@ -1232,7 +1458,7 @@ function SolarApplicantCard({
           ? {
               role: editedRole,
               adminSubType: editedRole === "admin" ? editedAdminSubType : "",
-              game: editedGame,
+              game: canEditGame ? editedGame : "",
             }
           : {}),
       });
@@ -1525,14 +1751,21 @@ function SolarApplicantCard({
               value={editedRole}
               onChange={(e) => {
                 const nextRole = e.target.value;
+                const nextSub = nextRole === "admin" ? editedAdminSubType : "";
                 setEditedRole(nextRole);
                 if (nextRole !== "admin") setEditedAdminSubType("");
+                if (!roleNeedsGame(nextRole, nextSub)) setEditedGame("");
               }}
               className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] p-2 text-xs text-[var(--text)]"
             >
               {ALL_ROLES.map((r) => (
                 <option key={r.id} value={r.id}>
                   {ROLE_LABELS[r.id] || r.label}
+                </option>
+              ))}
+              {customRoles.map((r) => (
+                <option key={r.id} value={r.id}>
+                  {r.label}
                 </option>
               ))}
             </select>
@@ -1545,13 +1778,22 @@ function SolarApplicantCard({
             <select
               value={editedRole === "admin" ? editedAdminSubType : ""}
               disabled={editedRole !== "admin"}
-              onChange={(e) => setEditedAdminSubType(e.target.value)}
+              onChange={(e) => {
+                const nextSub = e.target.value;
+                setEditedAdminSubType(nextSub);
+                if (!roleNeedsGame(editedRole, nextSub)) setEditedGame("");
+              }}
               className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] p-2 text-xs text-[var(--text)] disabled:opacity-50"
             >
               <option value="">
                 {editedRole === "admin" ? "— اختر التخصص —" : "للإدارة فقط"}
               </option>
               {ALL_ADMIN_SUBTYPES.map((sub) => (
+                <option key={sub.id} value={sub.id}>
+                  {sub.label}
+                </option>
+              ))}
+              {customAdminSubTypes.map((sub) => (
                 <option key={sub.id} value={sub.id}>
                   {sub.label}
                 </option>
@@ -1564,14 +1806,22 @@ function SolarApplicantCard({
               اللعبة:
             </label>
             <select
-              value={editedGame}
+              value={canEditGame ? editedGame : ""}
+              disabled={!canEditGame}
               onChange={(e) => setEditedGame(e.target.value)}
-              className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] p-2 text-xs text-[var(--text)]"
+              className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] p-2 text-xs text-[var(--text)] disabled:opacity-50"
             >
-              <option value="">— غير محدد —</option>
+              <option value="">
+                {canEditGame ? "— غير محدد —" : "لإدارة اللاعبين واللاعبين فقط"}
+              </option>
               {Object.entries(GAME_LABELS).map(([id, label]) => (
                 <option key={id} value={id}>
                   {label}
+                </option>
+              ))}
+              {customGames.map((g) => (
+                <option key={g.id} value={g.id}>
+                  {g.label}
                 </option>
               ))}
             </select>
