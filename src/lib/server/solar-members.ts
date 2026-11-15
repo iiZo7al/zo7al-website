@@ -303,6 +303,7 @@ export async function syncAcceptedSolarApplicant(requestId: string): Promise<voi
       ...existing,
       ...(userId ? { userId } : {}),
       ...(accountHandle ? { handle: accountHandle } : {}),
+      rank,
       avatar: accountAvatar || existing.avatar,
       updatedAt: new Date().toISOString(),
     };
