@@ -44,6 +44,7 @@ export type SolarSettings = {
   customRoles: CustomSolarOption[];
   customAdminSubTypes: CustomSolarOption[];
   customGames: CustomSolarOption[];
+  roleQuotas: Record<string, number>;
   requirements: string;
   updatedAt: string;
 };
@@ -57,9 +58,26 @@ export const DEFAULT_SOLAR_SETTINGS: SolarSettings = {
   customRoles: [],
   customAdminSubTypes: [],
   customGames: [],
+  roleQuotas: {},
   requirements: "",
   updatedAt: new Date(0).toISOString(),
 };
+
+function sanitizeRoleQuotas(raw: unknown): Record<string, number> {
+  if (!raw || typeof raw !== "object" || Array.isArray(raw)) return {};
+  const out: Record<string, number> = {};
+  let count = 0;
+  for (const [k, v] of Object.entries(raw as Record<string, unknown>)) {
+    const key = k.trim().toLowerCase();
+    if (!/^[a-z0-9_:-]{2,60}$/.test(key)) continue;
+    const num = typeof v === "number" ? v : Number(v);
+    if (!Number.isFinite(num) || num < 0 || num > 500) continue;
+    out[key] = Math.floor(num);
+    count++;
+    if (count >= 120) break;
+  }
+  return out;
+}
 
 function sanitizeCustomOptions(raw: unknown): CustomSolarOption[] {
   if (!Array.isArray(raw)) return [];
@@ -114,6 +132,7 @@ export async function getSolarSettings(): Promise<SolarSettings> {
       customRoles,
       customAdminSubTypes,
       customGames,
+      roleQuotas: sanitizeRoleQuotas(payload.roleQuotas),
       requirements: typeof payload.requirements === "string" ? payload.requirements.slice(0, 2000) : "",
       updatedAt: result.rows[0].updatedAt
         ? new Date(result.rows[0].updatedAt).toISOString()
@@ -160,6 +179,10 @@ export async function saveSolarSettings(input: Partial<SolarSettings>): Promise<
     customRoles,
     customAdminSubTypes,
     customGames,
+    roleQuotas:
+      input.roleQuotas !== undefined
+        ? sanitizeRoleQuotas(input.roleQuotas)
+        : current.roleQuotas,
     requirements:
       typeof input.requirements === "string"
         ? input.requirements.trim().slice(0, 2000)

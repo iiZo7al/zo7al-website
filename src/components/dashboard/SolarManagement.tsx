@@ -250,6 +250,27 @@ export default function SolarManagement({
     }
   };
 
+  const handleSaveQuotas = async (nextQuotas: Record<string, number>): Promise<boolean> => {
+    if (!settings) return false;
+    try {
+      const res = await fetch("/api/admin/solar/settings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...settings, roleQuotas: nextQuotas }),
+      });
+      if (res.status === 401) {
+        onExpired();
+        return false;
+      }
+      const resData = await res.json();
+      if (!res.ok || !resData.ok) return false;
+      setSettings(resData.settings);
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
   const copyToClipboard = (text: string, id: string) => {
     navigator.clipboard.writeText(text);
     setCopiedId(id);
@@ -404,7 +425,13 @@ export default function SolarManagement({
 
       {/* Tab: Excel Sheet & Members */}
       {activeTab === "excel" && (
-        <SolarExcelSheet rows={solarApplications} busy={busy} mutate={mutate} />
+        <SolarExcelSheet
+          rows={solarApplications}
+          busy={busy}
+          mutate={mutate}
+          settings={settings}
+          onSaveQuotas={handleSaveQuotas}
+        />
       )}
 
       {/* Tab: Leave Requests */}
