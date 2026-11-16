@@ -122,10 +122,14 @@ export async function POST(request: Request) {
 
     if (
       settings.closedRoles.includes(application.role) ||
+      settings.hiddenRoles.includes(application.role) ||
       (application.role === "admin" &&
         application.adminSubType &&
-        settings.closedAdminSubTypes.includes(application.adminSubType)) ||
-      (application.game && settings.closedGames.includes(application.game)) ||
+        (settings.closedAdminSubTypes.includes(application.adminSubType) ||
+          settings.hiddenAdminSubTypes.includes(application.adminSubType))) ||
+      (application.game &&
+        (settings.closedGames.includes(application.game) ||
+          settings.hiddenGames.includes(application.game))) ||
       (slotPlanKey && settings.fullPlanKeys.includes(slotPlanKey))
     ) {
       return Response.json(

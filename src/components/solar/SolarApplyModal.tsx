@@ -41,9 +41,13 @@ export default function SolarApplyModal({
     closedRoles: string[];
     closedAdminSubTypes?: string[];
     closedGames?: string[];
+    hiddenRoles?: string[];
+    hiddenAdminSubTypes?: string[];
+    hiddenGames?: string[];
     customRoles?: { id: string; label: string }[];
     customAdminSubTypes?: { id: string; label: string }[];
     customGames?: { id: string; label: string }[];
+    labelOverrides?: Record<string, string>;
     fullPlanKeys?: string[];
   } | null;
 }) {
@@ -698,35 +702,26 @@ export default function SolarApplyModal({
                     onChange={(e) => setRole(e.target.value as SolarRole)}
                     className="w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] px-3.5 py-2 text-sm text-[var(--text)] outline-none focus:border-[var(--accent)]"
                   >
-                    <option value="creator" disabled={settings?.closedRoles.includes("creator")}>
-                      صانع محتوى {settings?.closedRoles.includes("creator") ? "— (مغلق مؤقتاً)" : ""}
-                    </option>
-                    <option value="streamer" disabled={settings?.closedRoles.includes("streamer")}>
-                      ستريمر {settings?.closedRoles.includes("streamer") ? "— (مغلق مؤقتاً)" : ""}
-                    </option>
-                    <option value="designer" disabled={settings?.closedRoles.includes("designer")}>
-                      مصمم {settings?.closedRoles.includes("designer") ? "— (مغلق مؤقتاً)" : ""}
-                    </option>
-                    <option value="editor" disabled={settings?.closedRoles.includes("editor")}>
-                      ممنتج {settings?.closedRoles.includes("editor") ? "— (مغلق مؤقتاً)" : ""}
-                    </option>
-                    <option value="player" disabled={settings?.closedRoles.includes("player")}>
-                      لاعب بطولات {settings?.closedRoles.includes("player") ? "— (مغلق مؤقتاً)" : ""}
-                    </option>
-                    <option value="admin" disabled={settings?.closedRoles.includes("admin")}>
-                      اداري {settings?.closedRoles.includes("admin") ? "— (مغلق مؤقتاً)" : ""}
-                    </option>
-                    <option value="writer" disabled={settings?.closedRoles.includes("writer")}>
-                      كاتب افكار {settings?.closedRoles.includes("writer") ? "— (مغلق مؤقتاً)" : ""}
-                    </option>
-                    {(settings?.customRoles ?? []).map((cr) => {
-                      const isClosed = settings?.closedRoles.includes(cr.id);
-                      return (
-                        <option key={cr.id} value={cr.id} disabled={isClosed}>
-                          {cr.label} {isClosed ? "— (مغلق مؤقتاً)" : ""}
-                        </option>
-                      );
-                    })}
+                    {[
+                      { id: "creator", label: "صانع محتوى" },
+                      { id: "streamer", label: "ستريمر" },
+                      { id: "designer", label: "مصمم" },
+                      { id: "editor", label: "ممنتج" },
+                      { id: "player", label: "لاعب بطولات" },
+                      { id: "admin", label: "اداري" },
+                      { id: "writer", label: "كاتب افكار" },
+                      ...(settings?.customRoles ?? []),
+                    ]
+                      .filter((r) => !settings?.hiddenRoles?.includes(r.id))
+                      .map((r) => {
+                        const isClosed = settings?.closedRoles.includes(r.id);
+                        const label = settings?.labelOverrides?.[`role:${r.id}`] || r.label;
+                        return (
+                          <option key={r.id} value={r.id} disabled={isClosed}>
+                            {label} {isClosed ? "— (مغلق مؤقتاً)" : ""}
+                          </option>
+                        );
+                      })}
                   </select>
                 </div>
 
@@ -748,16 +743,19 @@ export default function SolarApplyModal({
                         { id: "fifa", label: "فيفا / FC (FIFA)" },
                         { id: "cod", label: "كود (Call of Duty)" },
                         ...(settings?.customGames ?? []),
-                      ].map((g) => {
-                        const isManualClosed = settings?.closedGames?.includes(g.id);
-                        const isQuotaFull = settings?.fullPlanKeys?.includes(`player:${g.id}`);
-                        const isClosed = Boolean(isManualClosed || isQuotaFull);
-                        return (
-                          <option key={g.id} value={g.id} disabled={isClosed}>
-                            {g.label} {isQuotaFull ? "— (مكتمل)" : isManualClosed ? "— (مغلق مؤقتاً)" : ""}
-                          </option>
-                        );
-                      })}
+                      ]
+                        .filter((g) => !settings?.hiddenGames?.includes(g.id))
+                        .map((g) => {
+                          const isManualClosed = settings?.closedGames?.includes(g.id);
+                          const isQuotaFull = settings?.fullPlanKeys?.includes(`player:${g.id}`);
+                          const isClosed = Boolean(isManualClosed || isQuotaFull);
+                          const label = settings?.labelOverrides?.[`game:${g.id}`] || g.label;
+                          return (
+                            <option key={g.id} value={g.id} disabled={isClosed}>
+                              {label} {isQuotaFull ? "— (مكتمل)" : isManualClosed ? "— (مغلق مؤقتاً)" : ""}
+                            </option>
+                          );
+                        })}
                     </select>
                   </div>
                 )}
@@ -791,14 +789,17 @@ export default function SolarApplyModal({
                           { id: "editors_supervisor", label: "مشرف ممنتجين" },
                           { id: "streamers_supervisor", label: "مشرف ستريمرز" },
                           ...(settings?.customAdminSubTypes ?? []),
-                        ].map((sub) => {
-                          const isClosed = settings?.closedAdminSubTypes?.includes(sub.id);
-                          return (
-                            <option key={sub.id} value={sub.id} disabled={isClosed}>
-                              {sub.label} {isClosed ? "— (مغلق مؤقتاً)" : ""}
-                            </option>
-                          );
-                        })}
+                        ]
+                          .filter((sub) => !settings?.hiddenAdminSubTypes?.includes(sub.id))
+                          .map((sub) => {
+                            const isClosed = settings?.closedAdminSubTypes?.includes(sub.id);
+                            const label = settings?.labelOverrides?.[`sub:${sub.id}`] || sub.label;
+                            return (
+                              <option key={sub.id} value={sub.id} disabled={isClosed}>
+                                {label} {isClosed ? "— (مغلق مؤقتاً)" : ""}
+                              </option>
+                            );
+                          })}
                       </select>
                     </div>
 
@@ -820,18 +821,21 @@ export default function SolarApplyModal({
                             { id: "minecraft", label: "ماينكرافت (Minecraft)" },
                             { id: "cod", label: "كود (Call of Duty)" },
                             ...(settings?.customGames ?? []),
-                          ].map((g) => {
-                            const isManualClosed = settings?.closedGames?.includes(g.id);
-                            const isQuotaFull = settings?.fullPlanKeys?.includes(
-                              `admin:${adminSubType}:${g.id}`
-                            );
-                            const isClosed = Boolean(isManualClosed || isQuotaFull);
-                            return (
-                              <option key={g.id} value={g.id} disabled={isClosed}>
-                                {g.label} {isQuotaFull ? "— (مكتمل)" : isManualClosed ? "— (مغلق مؤقتاً)" : ""}
-                              </option>
-                            );
-                          })}
+                          ]
+                            .filter((g) => !settings?.hiddenGames?.includes(g.id))
+                            .map((g) => {
+                              const isManualClosed = settings?.closedGames?.includes(g.id);
+                              const isQuotaFull = settings?.fullPlanKeys?.includes(
+                                `admin:${adminSubType}:${g.id}`
+                              );
+                              const isClosed = Boolean(isManualClosed || isQuotaFull);
+                              const label = settings?.labelOverrides?.[`game:${g.id}`] || g.label;
+                              return (
+                                <option key={g.id} value={g.id} disabled={isClosed}>
+                                  {label} {isQuotaFull ? "— (مكتمل)" : isManualClosed ? "— (مغلق مؤقتاً)" : ""}
+                                </option>
+                              );
+                            })}
                         </select>
                       </div>
                     )}

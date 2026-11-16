@@ -21,6 +21,8 @@ import {
   FileSpreadsheet,
   CalendarClock,
   Plus,
+  Pencil,
+  X,
 } from "lucide-react";
 import MarkdownContent from "@/components/ui/MarkdownContent";
 import { Skeleton } from "@/components/ui/Skeleton";
@@ -31,6 +33,7 @@ import type { DashboardData, Mutate, RequestRow } from "./types";
 import type { SolarAdminSubType, SolarRole } from "@/lib/data/solar";
 import { roleNeedsGame } from "@/lib/data/solar-members";
 import { SOLAR_LEAVE_DURATION_LABELS } from "@/lib/data/solar-leave";
+import { buildSolarPlanRows, matchesPlanRow } from "@/lib/data/solar-plan";
 import type { CustomSolarOption, SolarSettings } from "@/lib/server/solar-settings";
 
 const ROLE_LABELS: Record<string, string> = {
@@ -137,9 +140,103 @@ export default function SolarManagement({
   const [newRoleLabel, setNewRoleLabel] = useState("");
   const [newSubTypeLabel, setNewSubTypeLabel] = useState("");
   const [newGameLabel, setNewGameLabel] = useState("");
+  const [editingItem, setEditingItem] = useState<{
+    kind: "role" | "sub" | "game";
+    id: string;
+    custom: boolean;
+    draft: string;
+  } | null>(null);
 
   const makeCustomId = (prefix: string) =>
     `${prefix}_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 6)}`;
+
+  const handleSaveItemName = () => {
+    if (!settings || !editingItem) return;
+    const trimmed = editingItem.draft.trim();
+    if (!trimmed) return;
+    if (editingItem.custom) {
+      if (editingItem.kind === "role") {
+        setSettings({
+          ...settings,
+          customRoles: (settings.customRoles ?? []).map((r) =>
+            r.id === editingItem.id ? { ...r, label: trimmed } : r
+          ),
+        });
+      } else if (editingItem.kind === "sub") {
+        setSettings({
+          ...settings,
+          customAdminSubTypes: (settings.customAdminSubTypes ?? []).map((s) =>
+            s.id === editingItem.id ? { ...s, label: trimmed } : s
+          ),
+        });
+      } else {
+        setSettings({
+          ...settings,
+          customGames: (settings.customGames ?? []).map((g) =>
+            g.id === editingItem.id ? { ...g, label: trimmed } : g
+          ),
+        });
+      }
+    } else {
+      const key = `${editingItem.kind}:${editingItem.id}`;
+      setSettings({
+        ...settings,
+        labelOverrides: {
+          ...(settings.labelOverrides ?? {}),
+          [key]: trimmed,
+        },
+      });
+    }
+    setEditingItem(null);
+  };
+
+  const handleDeleteItem = (kind: "role" | "sub" | "game", id: string, custom: boolean) => {
+    if (!settings) return;
+    if (editingItem?.kind === kind && editingItem.id === id) {
+      setEditingItem(null);
+    }
+    if (custom) {
+      if (kind === "role") {
+        setSettings({
+          ...settings,
+          customRoles: (settings.customRoles ?? []).filter((r) => r.id !== id),
+          closedRoles: settings.closedRoles.filter((r) => r !== id),
+        });
+      } else if (kind === "sub") {
+        setSettings({
+          ...settings,
+          customAdminSubTypes: (settings.customAdminSubTypes ?? []).filter((s) => s.id !== id),
+          closedAdminSubTypes: (settings.closedAdminSubTypes ?? []).filter((s) => s !== id),
+        });
+      } else {
+        setSettings({
+          ...settings,
+          customGames: (settings.customGames ?? []).filter((g) => g.id !== id),
+          closedGames: (settings.closedGames ?? []).filter((g) => g !== id),
+        });
+      }
+    } else {
+      if (kind === "role") {
+        const hidden = settings.hiddenRoles ?? [];
+        setSettings({
+          ...settings,
+          hiddenRoles: hidden.includes(id) ? hidden : [...hidden, id],
+        });
+      } else if (kind === "sub") {
+        const hidden = settings.hiddenAdminSubTypes ?? [];
+        setSettings({
+          ...settings,
+          hiddenAdminSubTypes: hidden.includes(id) ? hidden : [...hidden, id],
+        });
+      } else {
+        const hidden = settings.hiddenGames ?? [];
+        setSettings({
+          ...settings,
+          hiddenGames: hidden.includes(id) ? hidden : [...hidden, id],
+        });
+      }
+    }
+  };
 
   // Filter solar clan join applications (excluding leave & events requests)
   const solarApplications = useMemo(() => {
@@ -152,6 +249,77 @@ export default function SolarManagement({
           (r.payload.subject && String(r.payload.subject).includes("Solar")))
     );
   }, [data.requests]);
+
+  const autoClosedFromExcel = useMemo(() => {
+    const roles = new Set<string>();
+    const subTypes = new Set<string>();
+    const games = new Set<string>();
+    if (!settings) return { roles, subTypes, games };
+
+    const acceptedPayloads = solarApplications
+      .filter((r) => r.status === "accepted")
+      .map((r) => r.payload as Record<string, unknown>);
+
+    const planRows = buildSolarPlanRows({
+      customGames: settings.customGames,
+      customAdminSubTypes: settings.customAdminSubTypes,
+      customRoles: settings.customRoles,
+      hiddenRoles: settings.hiddenRoles,
+      hiddenAdminSubTypes: settings.hiddenAdminSubTypes,
+      hiddenGames: settings.hiddenGames,
+      labelOverrides: settings.labelOverrides,
+    });
+
+    let playerTotal = 0;
+    let playerFull = 0;
+    let supTotal = 0;
+    let supFull = 0;
+    let paTotal = 0;
+    let paFull = 0;
+    const gameStats = new Map<string, { total: number; full: number }>();
+
+    for (const def of planRows) {
+      const required =
+        typeof settings.roleQuotas?.[def.key] === "number"
+          ? settings.roleQuotas[def.key]
+          : def.defaultCount;
+      const occupied = acceptedPayloads.filter((p) => matchesPlanRow(p, def)).length;
+      const isFull = occupied >= required;
+
+      if (def.game) {
+        const cur = gameStats.get(def.game) ?? { total: 0, full: 0 };
+        cur.total++;
+        if (isFull) cur.full++;
+        gameStats.set(def.game, cur);
+      }
+
+      if (def.role === "player" && def.game) {
+        playerTotal++;
+        if (isFull) playerFull++;
+      } else if (def.role === "admin" && def.adminSubType === "players_supervisor" && def.game) {
+        supTotal++;
+        if (isFull) supFull++;
+      } else if (def.role === "admin" && def.adminSubType === "players_admin" && def.game) {
+        paTotal++;
+        if (isFull) paFull++;
+      } else if (def.role === "admin" && def.adminSubType && isFull) {
+        subTypes.add(def.adminSubType);
+      } else if (def.role !== "admin" && isFull) {
+        roles.add(def.role);
+      }
+    }
+
+    if (playerTotal > 0 && playerFull === playerTotal) roles.add("player");
+    if (supTotal > 0 && supFull === supTotal) subTypes.add("players_supervisor");
+    if (paTotal > 0 && paFull === paTotal) subTypes.add("players_admin");
+    for (const [gameId, st] of gameStats.entries()) {
+      if (st.total > 0 && st.full === st.total) {
+        games.add(gameId);
+      }
+    }
+
+    return { roles, subTypes, games };
+  }, [settings, solarApplications]);
 
   // Filter solar leave requests
   const solarLeaveRequests = useMemo(() => {
@@ -958,70 +1126,136 @@ export default function SolarManagement({
 
                 <div className="grid gap-3 sm:grid-cols-2">
                   {[
-                    ...ALL_ROLES.map((r) => ({ ...r, custom: false })),
+                    ...ALL_ROLES.map((r) => ({
+                      id: r.id,
+                      label: settings.labelOverrides?.[`role:${r.id}`] || r.label,
+                      custom: false,
+                    })),
                     ...(settings.customRoles ?? []).map((r) => ({ ...r, custom: true })),
-                  ].map((role) => {
-                    const isClosed = settings.closedRoles.includes(role.id);
-                    return (
-                      <div
-                        key={role.id}
-                        className={`flex items-center justify-between gap-2 rounded-xl border p-4 transition-all ${
-                          isClosed
-                            ? "border-[var(--border)] bg-zinc-900/40 opacity-75"
-                            : "border-[var(--accent)]/40 bg-[var(--surface)]"
-                        }`}
-                      >
-                        <label className="flex items-center gap-3 cursor-pointer flex-1 min-w-0">
-                          <input
-                            type="checkbox"
-                            checked={!isClosed}
-                            onChange={(e) => {
-                              const checked = e.target.checked;
-                              const updatedClosed = checked
-                                ? settings.closedRoles.filter((r) => r !== role.id)
-                                : [...settings.closedRoles, role.id];
-                              setSettings({
-                                ...settings,
-                                closedRoles: updatedClosed,
-                              });
-                            }}
-                            className="h-4 w-4 rounded accent-[var(--accent)] shrink-0"
-                          />
-                          <span className="text-sm font-semibold text-[var(--text)] truncate">
-                            {role.label}
-                          </span>
-                        </label>
+                  ]
+                    .filter((role) => !(settings.hiddenRoles ?? []).includes(role.id))
+                    .map((role) => {
+                      const isManualClosed = settings.closedRoles.includes(role.id);
+                      const isAutoClosed = autoClosedFromExcel.roles.has(role.id);
+                      const isClosed = isManualClosed || isAutoClosed;
+                      const isEditing =
+                        editingItem?.kind === "role" && editingItem.id === role.id;
+                      return (
+                        <div
+                          key={role.id}
+                          className={`flex items-center justify-between gap-2 rounded-xl border p-4 transition-all ${
+                            isClosed
+                              ? "border-[var(--border)] bg-zinc-900/40 opacity-75"
+                              : "border-[var(--accent)]/40 bg-[var(--surface)]"
+                          }`}
+                        >
+                          {isEditing ? (
+                            <div className="flex items-center gap-1.5 flex-1 min-w-0">
+                              <input
+                                type="text"
+                                value={editingItem.draft}
+                                onChange={(e) =>
+                                  setEditingItem({ ...editingItem, draft: e.target.value })
+                                }
+                                onKeyDown={(e) => {
+                                  if (e.key === "Enter") {
+                                    e.preventDefault();
+                                    handleSaveItemName();
+                                  } else if (e.key === "Escape") {
+                                    setEditingItem(null);
+                                  }
+                                }}
+                                maxLength={60}
+                                autoFocus
+                                className="flex-1 min-w-0 rounded-lg border border-[var(--accent)] bg-black/30 px-2.5 py-1 text-xs text-[var(--text)] outline-none"
+                              />
+                              <button
+                                type="button"
+                                onClick={handleSaveItemName}
+                                className="p-1.5 rounded-lg bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 cursor-pointer"
+                                title="حفظ الاسم"
+                              >
+                                <Check size={13} />
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => setEditingItem(null)}
+                                className="p-1.5 rounded-lg bg-zinc-500/20 text-[var(--text-muted)] hover:text-[var(--text)] cursor-pointer"
+                                title="إلغاء"
+                              >
+                                <X size={13} />
+                              </button>
+                            </div>
+                          ) : (
+                            <label className="flex items-center gap-3 cursor-pointer flex-1 min-w-0">
+                              <input
+                                type="checkbox"
+                                checked={!isClosed}
+                                disabled={isAutoClosed}
+                                title={
+                                  isAutoClosed
+                                    ? "مكتمل في الإكسل — لفتحه قم بزيادة العدد المطلوب من جدول الإكسل"
+                                    : undefined
+                                }
+                                onChange={(e) => {
+                                  const checked = e.target.checked;
+                                  const updatedClosed = checked
+                                    ? settings.closedRoles.filter((r) => r !== role.id)
+                                    : [...settings.closedRoles, role.id];
+                                  setSettings({
+                                    ...settings,
+                                    closedRoles: updatedClosed,
+                                  });
+                                }}
+                                className="h-4 w-4 rounded accent-[var(--accent)] shrink-0 disabled:opacity-60"
+                              />
+                              <span className="text-sm font-semibold text-[var(--text)] truncate">
+                                {role.label}
+                              </span>
+                            </label>
+                          )}
 
-                        <div className="flex items-center gap-2 shrink-0">
-                          <span
-                            className={`text-xs px-2.5 py-0.5 rounded-full font-semibold ${
-                              isClosed
-                                ? "bg-rose-500/10 text-rose-400 border border-rose-500/20"
-                                : "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
-                            }`}
-                          >
-                            {isClosed ? "مغلق (لا ينضغط)" : "متاح للتقديم"}
-                          </span>
-                          {role.custom && (
+                          <div className="flex items-center gap-1.5 shrink-0">
+                            <span
+                              className={`text-xs px-2.5 py-0.5 rounded-full font-semibold ${
+                                isClosed
+                                  ? "bg-rose-500/10 text-rose-400 border border-rose-500/20"
+                                  : "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
+                              }`}
+                            >
+                              {isAutoClosed
+                                ? "مغلق (مكتمل)"
+                                : isManualClosed
+                                ? "مغلق (لا ينضغط)"
+                                : "متاح للتقديم"}
+                            </span>
                             <button
                               type="button"
                               onClick={() =>
-                                setSettings({
-                                  ...settings,
-                                  customRoles: (settings.customRoles ?? []).filter((r) => r.id !== role.id),
-                                  closedRoles: settings.closedRoles.filter((r) => r !== role.id),
+                                setEditingItem({
+                                  kind: "role",
+                                  id: role.id,
+                                  custom: role.custom,
+                                  draft: role.label,
                                 })
                               }
-                              className="p-1 text-rose-400 hover:bg-rose-500/10 rounded-lg"
+                              className="p-1 text-[var(--text-muted)] hover:text-[var(--accent)] hover:bg-white/5 rounded-lg cursor-pointer"
+                              title="تعديل الاسم"
+                            >
+                              <Pencil size={13} />
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => handleDeleteItem("role", role.id, role.custom)}
+                              className="p-1 text-rose-400 hover:bg-rose-500/10 rounded-lg cursor-pointer"
                               title="حذف الرتبة"
                             >
                               <Trash2 size={14} />
                             </button>
-                          )}
+                          </div>
                         </div>
-                      </div>
-                    );
-                  })}
+                      );
+                    })}
                 </div>
 
                 <div className="flex flex-wrap gap-2 pt-2 border-t border-[var(--border)]">
@@ -1066,71 +1300,137 @@ export default function SolarManagement({
 
                 <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                   {[
-                    ...ALL_ADMIN_SUBTYPES.map((s) => ({ ...s, custom: false })),
+                    ...ALL_ADMIN_SUBTYPES.map((s) => ({
+                      id: s.id,
+                      label: settings.labelOverrides?.[`sub:${s.id}`] || s.label,
+                      custom: false,
+                    })),
                     ...(settings.customAdminSubTypes ?? []).map((s) => ({ ...s, custom: true })),
-                  ].map((sub) => {
-                    const closedSubs = settings.closedAdminSubTypes ?? [];
-                    const isClosed = closedSubs.includes(sub.id);
-                    return (
-                      <div
-                        key={sub.id}
-                        className={`flex items-center justify-between gap-2 rounded-xl border p-3.5 transition-all ${
-                          isClosed
-                            ? "border-[var(--border)] bg-zinc-900/40 opacity-75"
-                            : "border-[var(--accent)]/40 bg-[var(--surface)]"
-                        }`}
-                      >
-                        <label className="flex items-center gap-2.5 cursor-pointer flex-1 min-w-0">
-                          <input
-                            type="checkbox"
-                            checked={!isClosed}
-                            onChange={(e) => {
-                              const checked = e.target.checked;
-                              const updatedClosed = checked
-                                ? closedSubs.filter((s) => s !== sub.id)
-                                : [...closedSubs, sub.id];
-                              setSettings({
-                                ...settings,
-                                closedAdminSubTypes: updatedClosed,
-                              });
-                            }}
-                            className="h-4 w-4 rounded accent-[var(--accent)] shrink-0"
-                          />
-                          <span className="text-xs font-semibold text-[var(--text)] truncate">
-                            {sub.label}
-                          </span>
-                        </label>
+                  ]
+                    .filter((sub) => !(settings.hiddenAdminSubTypes ?? []).includes(sub.id))
+                    .map((sub) => {
+                      const closedSubs = settings.closedAdminSubTypes ?? [];
+                      const isManualClosed = closedSubs.includes(sub.id);
+                      const isAutoClosed = autoClosedFromExcel.subTypes.has(sub.id);
+                      const isClosed = isManualClosed || isAutoClosed;
+                      const isEditing =
+                        editingItem?.kind === "sub" && editingItem.id === sub.id;
+                      return (
+                        <div
+                          key={sub.id}
+                          className={`flex items-center justify-between gap-2 rounded-xl border p-3.5 transition-all ${
+                            isClosed
+                              ? "border-[var(--border)] bg-zinc-900/40 opacity-75"
+                              : "border-[var(--accent)]/40 bg-[var(--surface)]"
+                          }`}
+                        >
+                          {isEditing ? (
+                            <div className="flex items-center gap-1 flex-1 min-w-0">
+                              <input
+                                type="text"
+                                value={editingItem.draft}
+                                onChange={(e) =>
+                                  setEditingItem({ ...editingItem, draft: e.target.value })
+                                }
+                                onKeyDown={(e) => {
+                                  if (e.key === "Enter") {
+                                    e.preventDefault();
+                                    handleSaveItemName();
+                                  } else if (e.key === "Escape") {
+                                    setEditingItem(null);
+                                  }
+                                }}
+                                maxLength={60}
+                                autoFocus
+                                className="flex-1 min-w-0 rounded-lg border border-[var(--accent)] bg-black/30 px-2 py-1 text-xs text-[var(--text)] outline-none"
+                              />
+                              <button
+                                type="button"
+                                onClick={handleSaveItemName}
+                                className="p-1 rounded-lg bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 cursor-pointer"
+                                title="حفظ الاسم"
+                              >
+                                <Check size={12} />
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => setEditingItem(null)}
+                                className="p-1 rounded-lg bg-zinc-500/20 text-[var(--text-muted)] hover:text-[var(--text)] cursor-pointer"
+                                title="إلغاء"
+                              >
+                                <X size={12} />
+                              </button>
+                            </div>
+                          ) : (
+                            <label className="flex items-center gap-2.5 cursor-pointer flex-1 min-w-0">
+                              <input
+                                type="checkbox"
+                                checked={!isClosed}
+                                disabled={isAutoClosed}
+                                title={
+                                  isAutoClosed
+                                    ? "مكتمل في الإكسل — لفتحه قم بزيادة العدد المطلوب من جدول الإكسل"
+                                    : undefined
+                                }
+                                onChange={(e) => {
+                                  const checked = e.target.checked;
+                                  const updatedClosed = checked
+                                    ? closedSubs.filter((s) => s !== sub.id)
+                                    : [...closedSubs, sub.id];
+                                  setSettings({
+                                    ...settings,
+                                    closedAdminSubTypes: updatedClosed,
+                                  });
+                                }}
+                                className="h-4 w-4 rounded accent-[var(--accent)] shrink-0 disabled:opacity-60"
+                              />
+                              <span className="text-xs font-semibold text-[var(--text)] truncate">
+                                {sub.label}
+                              </span>
+                            </label>
+                          )}
 
-                        <div className="flex items-center gap-1.5 shrink-0">
-                          <span
-                            className={`text-[11px] px-2 py-0.5 rounded-full font-semibold ${
-                              isClosed
-                                ? "bg-rose-500/10 text-rose-400 border border-rose-500/20"
-                                : "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
-                            }`}
-                          >
-                            {isClosed ? "مغلق (لا ينضغط)" : "متاح"}
-                          </span>
-                          {sub.custom && (
+                          <div className="flex items-center gap-1 shrink-0">
+                            <span
+                              className={`text-[11px] px-2 py-0.5 rounded-full font-semibold ${
+                                isClosed
+                                  ? "bg-rose-500/10 text-rose-400 border border-rose-500/20"
+                                  : "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
+                              }`}
+                            >
+                              {isAutoClosed
+                                ? "مغلق (مكتمل)"
+                                : isManualClosed
+                                ? "مغلق (لا ينضغط)"
+                                : "متاح"}
+                            </span>
                             <button
                               type="button"
                               onClick={() =>
-                                setSettings({
-                                  ...settings,
-                                  customAdminSubTypes: (settings.customAdminSubTypes ?? []).filter((s) => s.id !== sub.id),
-                                  closedAdminSubTypes: closedSubs.filter((s) => s !== sub.id),
+                                setEditingItem({
+                                  kind: "sub",
+                                  id: sub.id,
+                                  custom: sub.custom,
+                                  draft: sub.label,
                                 })
                               }
-                              className="p-1 text-rose-400 hover:bg-rose-500/10 rounded-lg"
+                              className="p-1 text-[var(--text-muted)] hover:text-[var(--accent)] hover:bg-white/5 rounded-lg cursor-pointer"
+                              title="تعديل الاسم"
+                            >
+                              <Pencil size={12} />
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => handleDeleteItem("sub", sub.id, sub.custom)}
+                              className="p-1 text-rose-400 hover:bg-rose-500/10 rounded-lg cursor-pointer"
                               title="حذف التخصص"
                             >
                               <Trash2 size={13} />
                             </button>
-                          )}
+                          </div>
                         </div>
-                      </div>
-                    );
-                  })}
+                      );
+                    })}
                 </div>
 
                 <div className="flex flex-wrap gap-2 pt-2 border-t border-[var(--border)]">
@@ -1175,71 +1475,137 @@ export default function SolarManagement({
 
                 <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                   {[
-                    ...Object.entries(GAME_LABELS).map(([id, label]) => ({ id, label, custom: false })),
+                    ...Object.entries(GAME_LABELS).map(([id, label]) => ({
+                      id,
+                      label: settings.labelOverrides?.[`game:${id}`] || label,
+                      custom: false,
+                    })),
                     ...(settings.customGames ?? []).map((g) => ({ ...g, custom: true })),
-                  ].map((g) => {
-                    const closedGames = settings.closedGames ?? [];
-                    const isClosed = closedGames.includes(g.id);
-                    return (
-                      <div
-                        key={g.id}
-                        className={`flex items-center justify-between gap-2 rounded-xl border p-3.5 transition-all ${
-                          isClosed
-                            ? "border-[var(--border)] bg-zinc-900/40 opacity-75"
-                            : "border-[var(--accent)]/40 bg-[var(--surface)]"
-                        }`}
-                      >
-                        <label className="flex items-center gap-2.5 cursor-pointer flex-1 min-w-0">
-                          <input
-                            type="checkbox"
-                            checked={!isClosed}
-                            onChange={(e) => {
-                              const checked = e.target.checked;
-                              const updatedClosed = checked
-                                ? closedGames.filter((id) => id !== g.id)
-                                : [...closedGames, g.id];
-                              setSettings({
-                                ...settings,
-                                closedGames: updatedClosed,
-                              });
-                            }}
-                            className="h-4 w-4 rounded accent-[var(--accent)] shrink-0"
-                          />
-                          <span className="text-xs font-semibold text-[var(--text)] truncate">
-                            {g.label}
-                          </span>
-                        </label>
+                  ]
+                    .filter((g) => !(settings.hiddenGames ?? []).includes(g.id))
+                    .map((g) => {
+                      const closedGames = settings.closedGames ?? [];
+                      const isManualClosed = closedGames.includes(g.id);
+                      const isAutoClosed = autoClosedFromExcel.games.has(g.id);
+                      const isClosed = isManualClosed || isAutoClosed;
+                      const isEditing =
+                        editingItem?.kind === "game" && editingItem.id === g.id;
+                      return (
+                        <div
+                          key={g.id}
+                          className={`flex items-center justify-between gap-2 rounded-xl border p-3.5 transition-all ${
+                            isClosed
+                              ? "border-[var(--border)] bg-zinc-900/40 opacity-75"
+                              : "border-[var(--accent)]/40 bg-[var(--surface)]"
+                          }`}
+                        >
+                          {isEditing ? (
+                            <div className="flex items-center gap-1 flex-1 min-w-0">
+                              <input
+                                type="text"
+                                value={editingItem.draft}
+                                onChange={(e) =>
+                                  setEditingItem({ ...editingItem, draft: e.target.value })
+                                }
+                                onKeyDown={(e) => {
+                                  if (e.key === "Enter") {
+                                    e.preventDefault();
+                                    handleSaveItemName();
+                                  } else if (e.key === "Escape") {
+                                    setEditingItem(null);
+                                  }
+                                }}
+                                maxLength={60}
+                                autoFocus
+                                className="flex-1 min-w-0 rounded-lg border border-[var(--accent)] bg-black/30 px-2 py-1 text-xs text-[var(--text)] outline-none"
+                              />
+                              <button
+                                type="button"
+                                onClick={handleSaveItemName}
+                                className="p-1 rounded-lg bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 cursor-pointer"
+                                title="حفظ الاسم"
+                              >
+                                <Check size={12} />
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => setEditingItem(null)}
+                                className="p-1 rounded-lg bg-zinc-500/20 text-[var(--text-muted)] hover:text-[var(--text)] cursor-pointer"
+                                title="إلغاء"
+                              >
+                                <X size={12} />
+                              </button>
+                            </div>
+                          ) : (
+                            <label className="flex items-center gap-2.5 cursor-pointer flex-1 min-w-0">
+                              <input
+                                type="checkbox"
+                                checked={!isClosed}
+                                disabled={isAutoClosed}
+                                title={
+                                  isAutoClosed
+                                    ? "مكتمل في الإكسل — لفتحه قم بزيادة العدد المطلوب من جدول الإكسل"
+                                    : undefined
+                                }
+                                onChange={(e) => {
+                                  const checked = e.target.checked;
+                                  const updatedClosed = checked
+                                    ? closedGames.filter((id) => id !== g.id)
+                                    : [...closedGames, g.id];
+                                  setSettings({
+                                    ...settings,
+                                    closedGames: updatedClosed,
+                                  });
+                                }}
+                                className="h-4 w-4 rounded accent-[var(--accent)] shrink-0 disabled:opacity-60"
+                              />
+                              <span className="text-xs font-semibold text-[var(--text)] truncate">
+                                {g.label}
+                              </span>
+                            </label>
+                          )}
 
-                        <div className="flex items-center gap-1.5 shrink-0">
-                          <span
-                            className={`text-[11px] px-2 py-0.5 rounded-full font-semibold ${
-                              isClosed
-                                ? "bg-rose-500/10 text-rose-400 border border-rose-500/20"
-                                : "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
-                            }`}
-                          >
-                            {isClosed ? "مغلق (لا ينضغط)" : "متاح"}
-                          </span>
-                          {g.custom && (
+                          <div className="flex items-center gap-1 shrink-0">
+                            <span
+                              className={`text-[11px] px-2 py-0.5 rounded-full font-semibold ${
+                                isClosed
+                                  ? "bg-rose-500/10 text-rose-400 border border-rose-500/20"
+                                  : "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
+                              }`}
+                            >
+                              {isAutoClosed
+                                ? "مغلق (مكتمل)"
+                                : isManualClosed
+                                ? "مغلق (لا ينضغط)"
+                                : "متاح"}
+                            </span>
                             <button
                               type="button"
                               onClick={() =>
-                                setSettings({
-                                  ...settings,
-                                  customGames: (settings.customGames ?? []).filter((item) => item.id !== g.id),
-                                  closedGames: closedGames.filter((id) => id !== g.id),
+                                setEditingItem({
+                                  kind: "game",
+                                  id: g.id,
+                                  custom: g.custom,
+                                  draft: g.label,
                                 })
                               }
-                              className="p-1 text-rose-400 hover:bg-rose-500/10 rounded-lg"
+                              className="p-1 text-[var(--text-muted)] hover:text-[var(--accent)] hover:bg-white/5 rounded-lg cursor-pointer"
+                              title="تعديل الاسم"
+                            >
+                              <Pencil size={12} />
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => handleDeleteItem("game", g.id, g.custom)}
+                              className="p-1 text-rose-400 hover:bg-rose-500/10 rounded-lg cursor-pointer"
                               title="حذف اللعبة"
                             >
                               <Trash2 size={13} />
                             </button>
-                          )}
+                          </div>
                         </div>
-                      </div>
-                    );
-                  })}
+                      );
+                    })}
                 </div>
 
                 <div className="flex flex-wrap gap-2 pt-2 border-t border-[var(--border)]">

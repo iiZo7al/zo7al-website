@@ -167,3 +167,84 @@ export function normalizeSolarMemberSocials(input: unknown): SolarMemberSocial[]
   }
   return out;
 }
+
+export function getSolarRankOrder(rank: string): number {
+  const s = (rank || "").trim().toLowerCase();
+  if (!s) return 999;
+
+  // 0. الرئيس (avoid matching نائب الرئيس)
+  if ((s.includes("رئيس") && !s.includes("نائب") && !s.includes("تنفيذي")) || s.includes("قائد الكلان")) return 0;
+  // 1. نائب الرئيس
+  if (s.includes("نائب الرئيس") || s.includes("نائب")) return 1;
+  // 2. الرئيس التنفيذي / مشرف تنفيذي
+  if (s.includes("تنفيذي")) return 2;
+  // 3. مشرف الأقسام
+  if (s.includes("مشرف الأقسام") || s.includes("مشرف اقسام")) return 3;
+  // 4. الإدارة العامة
+  if (s.includes("الإدارة العامة") || s.includes("إدارة عامة") || s.includes("ادارة عامة")) return 4;
+  // 5. مراقب الإدارة
+  if (s.includes("مراقب الإدارة") || s.includes("مراقب إدارة") || s.includes("مراقب ادارة")) return 5;
+  // 6. مشرف صناع المحتوى
+  if (s.includes("مشرف صناع")) return 6;
+  // 7. إداري صناع المحتوى
+  if (s.includes("إداري صناع") || s.includes("اداري صناع")) return 7;
+  // 8. صانع محتوى
+  if (s.includes("صانع محتوى") || s.includes("صناع محتوى")) return 8;
+  // 9. إداري ستريمر / مشرف ستريمرز
+  if ((s.includes("إداري") || s.includes("اداري") || s.includes("مشرف")) && s.includes("ستريمر")) return 9;
+  // 10. ستريمر
+  if (s.includes("ستريمر")) return 10;
+
+  // Player / Game departments:
+  // Fortnite (11-13)
+  if (s.includes("فورت")) {
+    if (s.includes("مشرف")) return 11;
+    if (s.includes("إداري") || s.includes("اداري")) return 12;
+    return 13;
+  }
+  // Minecraft (14-16)
+  if (s.includes("ماين")) {
+    if (s.includes("مشرف")) return 14;
+    if (s.includes("إداري") || s.includes("اداري")) return 15;
+    return 16;
+  }
+  // Rocket League (17-19)
+  if (s.includes("روكيت")) {
+    if (s.includes("مشرف")) return 17;
+    if (s.includes("إداري") || s.includes("اداري")) return 18;
+    return 19;
+  }
+  // FIFA (20-22)
+  if (s.includes("فيفا") || s.includes("fifa")) {
+    if (s.includes("مشرف")) return 20;
+    if (s.includes("إداري") || s.includes("اداري")) return 21;
+    return 22;
+  }
+  // Call of Duty (23-25)
+  if (s.includes("كود") || s.includes("cod") || s.includes("call of duty")) {
+    if (s.includes("مشرف")) return 23;
+    if (s.includes("إداري") || s.includes("اداري")) return 24;
+    return 25;
+  }
+  // Any other/new player rank (26)
+  if (s.includes("لاعب")) {
+    if (s.includes("مشرف")) return 26;
+    if (s.includes("إداري") || s.includes("اداري")) return 27;
+    return 28;
+  }
+
+  // 29. كاتب أفكار الكلان
+  if (s.includes("كاتب")) return 29;
+  // 30. مشرف المصممين
+  if (s.includes("مشرف") && s.includes("مصمم")) return 30;
+  // 31. مصمم
+  if (s.includes("مصمم") || s.includes("تصميم")) return 31;
+  // 32. مشرف الممنتجين
+  if (s.includes("مشرف") && (s.includes("ممنتج") || s.includes("مونتاج"))) return 32;
+  // 33. ممنتج
+  if (s.includes("ممنتج") || s.includes("مونتاج")) return 33;
+
+  // 34. Any other/new non-player role
+  return 34;
+}
+

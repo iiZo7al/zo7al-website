@@ -42,9 +42,13 @@ export type SolarSettings = {
   closedRoles: string[];
   closedAdminSubTypes: string[];
   closedGames: string[];
+  hiddenRoles: string[];
+  hiddenAdminSubTypes: string[];
+  hiddenGames: string[];
   customRoles: CustomSolarOption[];
   customAdminSubTypes: CustomSolarOption[];
   customGames: CustomSolarOption[];
+  labelOverrides: Record<string, string>;
   roleQuotas: Record<string, number>;
   requirements: string;
   updatedAt: string;
@@ -56,13 +60,33 @@ export const DEFAULT_SOLAR_SETTINGS: SolarSettings = {
   closedRoles: [],
   closedAdminSubTypes: [],
   closedGames: [],
+  hiddenRoles: [],
+  hiddenAdminSubTypes: [],
+  hiddenGames: [],
   customRoles: [],
   customAdminSubTypes: [],
   customGames: [],
+  labelOverrides: {},
   roleQuotas: {},
   requirements: "",
   updatedAt: new Date(0).toISOString(),
 };
+
+function sanitizeLabelOverrides(raw: unknown): Record<string, string> {
+  if (!raw || typeof raw !== "object" || Array.isArray(raw)) return {};
+  const out: Record<string, string> = {};
+  let count = 0;
+  for (const [k, v] of Object.entries(raw as Record<string, unknown>)) {
+    const key = k.trim().toLowerCase();
+    if (!/^[a-z0-9_:-]{2,60}$/.test(key)) continue;
+    const label = typeof v === "string" ? v.trim().slice(0, 60) : "";
+    if (!label) continue;
+    out[key] = label;
+    count++;
+    if (count >= 120) break;
+  }
+  return out;
+}
 
 function sanitizeRoleQuotas(raw: unknown): Record<string, number> {
   if (!raw || typeof raw !== "object" || Array.isArray(raw)) return {};
@@ -130,9 +154,13 @@ export async function getSolarSettings(): Promise<SolarSettings> {
       closedRoles: filterAllowedIds(payload.closedRoles, allowedRoles),
       closedAdminSubTypes: filterAllowedIds(payload.closedAdminSubTypes, allowedSubTypes),
       closedGames: filterAllowedIds(payload.closedGames, allowedGames),
+      hiddenRoles: filterAllowedIds(payload.hiddenRoles, allowedRoles),
+      hiddenAdminSubTypes: filterAllowedIds(payload.hiddenAdminSubTypes, allowedSubTypes),
+      hiddenGames: filterAllowedIds(payload.hiddenGames, allowedGames),
       customRoles,
       customAdminSubTypes,
       customGames,
+      labelOverrides: sanitizeLabelOverrides(payload.labelOverrides),
       roleQuotas: sanitizeRoleQuotas(payload.roleQuotas),
       requirements: typeof payload.requirements === "string" ? payload.requirements.slice(0, 2000) : "",
       updatedAt: result.rows[0].updatedAt
@@ -177,9 +205,25 @@ export async function saveSolarSettings(input: Partial<SolarSettings>): Promise<
       input.closedGames !== undefined
         ? filterAllowedIds(input.closedGames, allowedGames)
         : filterAllowedIds(current.closedGames, allowedGames),
+    hiddenRoles:
+      input.hiddenRoles !== undefined
+        ? filterAllowedIds(input.hiddenRoles, allowedRoles)
+        : filterAllowedIds(current.hiddenRoles, allowedRoles),
+    hiddenAdminSubTypes:
+      input.hiddenAdminSubTypes !== undefined
+        ? filterAllowedIds(input.hiddenAdminSubTypes, allowedSubTypes)
+        : filterAllowedIds(current.hiddenAdminSubTypes, allowedSubTypes),
+    hiddenGames:
+      input.hiddenGames !== undefined
+        ? filterAllowedIds(input.hiddenGames, allowedGames)
+        : filterAllowedIds(current.hiddenGames, allowedGames),
     customRoles,
     customAdminSubTypes,
     customGames,
+    labelOverrides:
+      input.labelOverrides !== undefined
+        ? sanitizeLabelOverrides(input.labelOverrides)
+        : current.labelOverrides,
     roleQuotas:
       input.roleQuotas !== undefined
         ? sanitizeRoleQuotas(input.roleQuotas)
@@ -228,6 +272,10 @@ export async function getEffectiveSolarSettings(): Promise<EffectiveSolarSetting
       customGames: settings.customGames,
       customAdminSubTypes: settings.customAdminSubTypes,
       customRoles: settings.customRoles,
+      hiddenRoles: settings.hiddenRoles,
+      hiddenAdminSubTypes: settings.hiddenAdminSubTypes,
+      hiddenGames: settings.hiddenGames,
+      labelOverrides: settings.labelOverrides,
     });
 
     const closedRolesSet = new Set(settings.closedRoles);

@@ -3,6 +3,7 @@ import crypto from "node:crypto";
 import { siteDatabase } from "@/lib/server/site-db";
 import {
   formatSolarMemberRank,
+  getSolarRankOrder,
   normalizeSolarMemberSocials,
   safeMemberUrl,
   SOLAR_MEMBER_SOCIAL_PLATFORMS,
@@ -101,7 +102,7 @@ async function readStoredMembers(): Promise<SolarMember[]> {
   return list
     .map((item, idx) => sanitizeMember(item, idx))
     .filter((m): m is SolarMember => m !== null)
-    .sort((a, b) => a.order - b.order);
+    .sort((a, b) => getSolarRankOrder(a.rank) - getSolarRankOrder(b.rank) || a.order - b.order);
 }
 
 export async function getSolarMembers(): Promise<SolarMember[]> {
@@ -143,7 +144,10 @@ export async function getSolarMembers(): Promise<SolarMember[]> {
 }
 
 export async function saveSolarMembers(members: SolarMember[]): Promise<SolarMember[]> {
-  const normalized = members.map((m, idx) => ({ ...m, order: idx }));
+  const sorted = [...members].sort(
+    (a, b) => getSolarRankOrder(a.rank) - getSolarRankOrder(b.rank) || a.order - b.order,
+  );
+  const normalized = sorted.map((m, idx) => ({ ...m, order: idx }));
   const db = await siteDatabase();
   await db.query(
     `INSERT INTO site_platform_cache (platform, payload, updated_at)
