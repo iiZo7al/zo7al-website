@@ -92,6 +92,8 @@ export async function createSolarWarningPledge(input: {
   reason: string;
   durationKey: SolarWarningDurationKey;
   customDays?: number;
+  customStartDate?: string;
+  customEndDate?: string;
 }): Promise<SolarWarningPledge | null> {
   const members = await getSolarMembers();
   const member = members.find((m) => m.id === input.memberId);
@@ -100,7 +102,12 @@ export async function createSolarWarningPledge(input: {
   const reason = input.reason.trim().slice(0, 1000);
   if (!reason) return null;
 
-  const expiry = computeWarningExpiry(input.durationKey, input.customDays);
+  const expiry = computeWarningExpiry(
+    input.durationKey,
+    input.customDays,
+    input.customStartDate,
+    input.customEndDate,
+  );
   if (!expiry) return null;
 
   const existing = await getSolarWarningPledges();

@@ -37,17 +37,40 @@ export const SOLAR_WARNING_DURATIONS: {
   { id: "7_days", label: "أسبوع (7 أيام)", hours: 168 },
   { id: "14_days", label: "أسبوعين (14 يوماً)", hours: 336 },
   { id: "30_days", label: "شهر (30 يوماً)", hours: 720 },
-  { id: "custom", label: "مدة مخصصة (بالأيام)" },
+  { id: "custom", label: "مدة مخصصة (تحديد من التقويم)" },
 ];
+
+const ISO_DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 
 export function computeWarningExpiry(
   durationKey: SolarWarningDurationKey,
   customDays?: number,
+  customStartDate?: string,
+  customEndDate?: string,
 ): { expiresAt: string; durationLabel: string } | null {
   const now = Date.now();
   if (durationKey === "custom") {
+    if (
+      customStartDate &&
+      customEndDate &&
+      ISO_DATE_RE.test(customStartDate) &&
+      ISO_DATE_RE.test(customEndDate)
+    ) {
+      const startMs = new Date(`${customStartDate}T00:00:00+03:00`).getTime();
+      const endMs = new Date(`${customEndDate}T23:59:59+03:00`).getTime();
+      if (Number.isNaN(startMs) || Number.isNaN(endMs) || endMs < startMs) return null;
+      const days = Math.round((new Date(`${customEndDate}T00:00:00Z`).getTime() - new Date(`${customStartDate}T00:00:00Z`).getTime()) / 86400000) + 1;
+      if (days < 1) return null;
+      const daysText =
+        days === 1 ? "يوم" : days === 2 ? "يومين" : days <= 10 ? "أيام" : "يوماً";
+      return {
+        expiresAt: new Date(endMs).toISOString(),
+        durationLabel: `من ${customStartDate} إلى ${customEndDate} (${days} ${daysText})`,
+      };
+    }
+
     const days = typeof customDays === "number" ? Math.round(customDays) : NaN;
-    if (!Number.isFinite(days) || days < 1 || days > 365) return null;
+    if (!Number.isFinite(days) || days < 1) return null;
     const expiresAt = new Date(now + days * 24 * 60 * 60 * 1000).toISOString();
     const durationLabel =
       days === 1

@@ -35,6 +35,8 @@ export async function POST(request: Request) {
       reason?: string;
       durationKey?: SolarWarningDurationKey;
       customDays?: number;
+      customStartDate?: string;
+      customEndDate?: string;
     };
     if (
       !body ||
@@ -50,6 +52,10 @@ export async function POST(request: Request) {
       reason: body.reason.trim(),
       durationKey: body.durationKey,
       customDays: typeof body.customDays === "number" ? body.customDays : undefined,
+      customStartDate:
+        typeof body.customStartDate === "string" ? body.customStartDate.trim() : undefined,
+      customEndDate:
+        typeof body.customEndDate === "string" ? body.customEndDate.trim() : undefined,
     });
     if (!pledge) {
       return Response.json({ error: "INVALID" }, { status: 400, headers: privateHeaders });
