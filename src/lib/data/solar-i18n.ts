@@ -45,6 +45,33 @@ export type SolarExtraCopy = {
   durationLabel: string;
   staffNoteLabel: string;
   applyToDivision: string;
+  warningPledgesTitle: string;
+  warningPledgesDesc: string;
+  warningPledgeCardTitle: string;
+  warningSigned: string;
+  warningPending: string;
+  warningReasonLabel: string;
+  warningDurationLabel: string;
+  warningExpiresAt: string;
+  openAndSignPledge: string;
+  sigDrawMode: string;
+  sigUploadMode: string;
+  sigContractTitle: string;
+  sigContractHint: string;
+  sigDownloadContract: string;
+  sigUploadPrompt: string;
+  sigUploadFormats: string;
+  sigDrawPrompt: string;
+  sigClear: string;
+  sigConfirm: string;
+  sigSaving: string;
+  sigProcessing: string;
+  sigAttached: string;
+  sigPreview: string;
+  sigErrorAuth: string;
+  sigErrorUpload: string;
+  sigErrorNetwork: string;
+  sigErrorSave: string;
   divisions: Record<SolarRole, { title: string; desc: string; perks: string[] }>;
 };
 
@@ -93,6 +120,33 @@ const ar: SolarExtraCopy = {
   durationLabel: "مدة الإجازة:",
   staffNoteLabel: "ملاحظة الإدارة:",
   applyToDivision: "التقديم على هذا القسم",
+  warningPledgesTitle: "التعهّدات والإنذارات الموجّهة لك",
+  warningPledgesDesc: "يرجى قراءة التعهّد وتوقيعه قبل انتهاء مدته المحددة.",
+  warningPledgeCardTitle: "تعهّد بعد استلام تحذير – Solar System",
+  warningSigned: "تم التوقيع والإرسال",
+  warningPending: "بانتظار توقيعك",
+  warningReasonLabel: "السبب:",
+  warningDurationLabel: "المدة:",
+  warningExpiresAt: "ينتهي في",
+  openAndSignPledge: "فتح وتوقيع التعهّد",
+  sigDrawMode: "التوقيع الرقمي (الأساسي)",
+  sigUploadMode: "أو رفع الصورة الموقّعة",
+  sigContractTitle: "صورة عقد وتعهد كلان Solar System",
+  sigContractHint: "قم بتحميل الصورة للتوقيع عليها عبر أي تطبيق تعديل صور",
+  sigDownloadContract: "تنزيل صورة العقد",
+  sigUploadPrompt: "انقر لاختيار ورفع صورة العقد بعد إضافة توقيعك",
+  sigUploadFormats: "يدعم PNG, JPG, WebP (بحد أقصى 5 ميجابايت)",
+  sigDrawPrompt: "ارسم توقيعك داخل المربع أدناه (بالفأرة أو اللمس):",
+  sigClear: "مسح",
+  sigConfirm: "اعتماد وحفظ هذا التوقيع",
+  sigSaving: "جاري حفظ التوقيع...",
+  sigProcessing: "جاري معالجة ورفع صورة التوقيع...",
+  sigAttached: "تم إرفاق صورة التوقيع بنجاح",
+  sigPreview: "معاينة التوقيع",
+  sigErrorAuth: "يجب تسجيل الدخول أولاً لرفع الصورة.",
+  sigErrorUpload: "حدث خطأ أثناء رفع الصورة، يرجى التأكد من حجم وصيغة الصورة.",
+  sigErrorNetwork: "تعذر الاتصال بالخادم لرفع الصورة.",
+  sigErrorSave: "تعذر حفظ التوقيع، يرجى المحاولة مجدداً.",
   divisions: {
     creator: {
       title: "صانع محتوى",
@@ -177,6 +231,33 @@ const en: SolarExtraCopy = {
   durationLabel: "Duration:",
   staffNoteLabel: "Staff note:",
   applyToDivision: "Apply to this Division",
+  warningPledgesTitle: "Warnings & Pledges Assigned to You",
+  warningPledgesDesc: "Please read and sign the pledge before its deadline expires.",
+  warningPledgeCardTitle: "Warning Pledge – Solar System",
+  warningSigned: "Signed & Submitted",
+  warningPending: "Awaiting Your Signature",
+  warningReasonLabel: "Reason:",
+  warningDurationLabel: "Duration:",
+  warningExpiresAt: "Expires at",
+  openAndSignPledge: "Open & Sign Pledge",
+  sigDrawMode: "Digital Signature (Primary)",
+  sigUploadMode: "Or Upload Signed Image",
+  sigContractTitle: "Solar System Clan Contract & Pledge Image",
+  sigContractHint: "Download the image to sign it using any photo editor",
+  sigDownloadContract: "Download Contract Image",
+  sigUploadPrompt: "Click to select and upload the signed contract image",
+  sigUploadFormats: "Supports PNG, JPG, WebP (max 5 MB)",
+  sigDrawPrompt: "Draw your signature inside the box below (mouse or touch):",
+  sigClear: "Clear",
+  sigConfirm: "Confirm & Save Signature",
+  sigSaving: "Saving signature...",
+  sigProcessing: "Processing and uploading signature image...",
+  sigAttached: "Signature image attached successfully",
+  sigPreview: "Preview Signature",
+  sigErrorAuth: "You must sign in first to upload an image.",
+  sigErrorUpload: "Error uploading image. Please check the file size and format.",
+  sigErrorNetwork: "Could not connect to the server to upload the image.",
+  sigErrorSave: "Could not save signature, please try again.",
   divisions: {
     creator: {
       title: "Content Creator",
@@ -199,7 +280,7 @@ const en: SolarExtraCopy = {
       perks: ["Credited edits", "Ongoing clan projects", "Skill growth"],
     },
     player: {
-      title: "Player (Rocket, Fortnite, Minecraft, FIFA)",
+      title: "Tournament Player",
       desc: "Represent Solar in scrims, challenges, and tournaments across supported games.",
       perks: ["Clan tournaments", "Team scrims", "Competitive roster"],
     },
@@ -261,6 +342,33 @@ const es: SolarExtraCopy = {
   durationLabel: "Duración:",
   staffNoteLabel: "Nota del equipo:",
   applyToDivision: "Postular a esta división",
+  warningPledgesTitle: "Advertencias y Compromisos Asignados",
+  warningPledgesDesc: "Lee y firma el compromiso antes de que venza el plazo.",
+  warningPledgeCardTitle: "Compromiso de Advertencia – Solar System",
+  warningSigned: "Firmado y Enviado",
+  warningPending: "Pendiente de Tu Firma",
+  warningReasonLabel: "Motivo:",
+  warningDurationLabel: "Duración:",
+  warningExpiresAt: "Vence el",
+  openAndSignPledge: "Abrir y Firmar Compromiso",
+  sigDrawMode: "Firma Digital (Principal)",
+  sigUploadMode: "O Subir Imagen Firmada",
+  sigContractTitle: "Imagen del Contrato y Compromiso de Solar System",
+  sigContractHint: "Descarga la imagen para firmarla con cualquier editor",
+  sigDownloadContract: "Descargar Imagen del Contrato",
+  sigUploadPrompt: "Haz clic para seleccionar y subir la imagen firmada",
+  sigUploadFormats: "Compatible con PNG, JPG, WebP (máx. 5 MB)",
+  sigDrawPrompt: "Dibuja tu firma en el recuadro inferior (ratón o táctil):",
+  sigClear: "Borrar",
+  sigConfirm: "Confirmar y Guardar Firma",
+  sigSaving: "Guardando firma...",
+  sigProcessing: "Procesando y subiendo imagen de firma...",
+  sigAttached: "Imagen de firma adjuntada correctamente",
+  sigPreview: "Ver Firma",
+  sigErrorAuth: "Debes iniciar sesión primero para subir una imagen.",
+  sigErrorUpload: "Error al subir la imagen. Verifica el tamaño y formato.",
+  sigErrorNetwork: "No se pudo conectar con el servidor para subir la imagen.",
+  sigErrorSave: "No se pudo guardar la firma, inténtalo de nuevo.",
   divisions: {
     creator: {
       title: "Creador de contenido",
@@ -283,7 +391,7 @@ const es: SolarExtraCopy = {
       perks: ["Créditos en ediciones", "Proyectos continuos", "Crecimiento profesional"],
     },
     player: {
-      title: "Jugador (Rocket, Fortnite, Minecraft, FIFA)",
+      title: "Jugador de Torneos",
       desc: "Representa a Solar en scrims, desafíos y torneos de los juegos compatibles.",
       perks: ["Torneos del clan", "Scrims de equipo", "Plantilla competitiva"],
     },
@@ -345,6 +453,33 @@ const fr: SolarExtraCopy = {
   durationLabel: "Durée :",
   staffNoteLabel: "Note du staff :",
   applyToDivision: "Postuler à cette division",
+  warningPledgesTitle: "Avertissements et Engagements Assignés",
+  warningPledgesDesc: "Veuillez lire et signer l'engagement avant la date limite.",
+  warningPledgeCardTitle: "Engagement d'Avertissement – Solar System",
+  warningSigned: "Signé et Envoyé",
+  warningPending: "En attente de votre signature",
+  warningReasonLabel: "Motif :",
+  warningDurationLabel: "Durée :",
+  warningExpiresAt: "Expire le",
+  openAndSignPledge: "Ouvrir et Signer",
+  sigDrawMode: "Signature Numérique (Principal)",
+  sigUploadMode: "Ou Importer une Image Signée",
+  sigContractTitle: "Image du Contrat et Engagement Solar System",
+  sigContractHint: "Téléchargez l'image pour la signer dans un éditeur",
+  sigDownloadContract: "Télécharger l'Image",
+  sigUploadPrompt: "Cliquez pour sélectionner et importer l'image signée",
+  sigUploadFormats: "PNG, JPG, WebP pris en charge (max 5 Mo)",
+  sigDrawPrompt: "Dessinez votre signature ci-dessous (souris ou tactile) :",
+  sigClear: "Effacer",
+  sigConfirm: "Confirmer et Enregistrer",
+  sigSaving: "Enregistrement de la signature...",
+  sigProcessing: "Traitement et envoi de la signature...",
+  sigAttached: "Signature jointe avec succès",
+  sigPreview: "Aperçu de la signature",
+  sigErrorAuth: "Vous devez d'abord vous connecter pour importer une image.",
+  sigErrorUpload: "Erreur lors de l'envoi. Vérifiez le format et la taille.",
+  sigErrorNetwork: "Impossible de joindre le serveur pour l'envoi.",
+  sigErrorSave: "Impossible d'enregistrer la signature, réessayez.",
   divisions: {
     creator: {
       title: "Créateur de contenu",
@@ -367,7 +502,7 @@ const fr: SolarExtraCopy = {
       perks: ["Crédits sur les montages", "Projets continus", "Montée en compétence"],
     },
     player: {
-      title: "Joueur (Rocket, Fortnite, Minecraft, FIFA)",
+      title: "Joueur de Tournois",
       desc: "Représentez Solar lors des scrims, défis et tournois officiels.",
       perks: ["Tournois du clan", "Scrims d'équipe", "Équipe compétitive"],
     },
@@ -429,6 +564,33 @@ const de: SolarExtraCopy = {
   durationLabel: "Dauer:",
   staffNoteLabel: "Team-Notiz:",
   applyToDivision: "Für diese Abteilung bewerben",
+  warningPledgesTitle: "Zugewiesene Verwarnungen & Gelöbnisse",
+  warningPledgesDesc: "Bitte lies und unterschreibe das Gelöbnis vor Ablauf der Frist.",
+  warningPledgeCardTitle: "Verwarnungs-Gelöbnis – Solar System",
+  warningSigned: "Unterschrieben & Gesendet",
+  warningPending: "Wartet auf deine Unterschrift",
+  warningReasonLabel: "Grund:",
+  warningDurationLabel: "Dauer:",
+  warningExpiresAt: "Läuft ab am",
+  openAndSignPledge: "Öffnen & Unterschreiben",
+  sigDrawMode: "Digitale Unterschrift (Standard)",
+  sigUploadMode: "Oder signiertes Bild hochladen",
+  sigContractTitle: "Solar System Clan-Vertrag & Gelöbnis-Bild",
+  sigContractHint: "Lade das Bild herunter, um es in einem Editor zu unterschreiben",
+  sigDownloadContract: "Vertragsbild herunterladen",
+  sigUploadPrompt: "Klicken, um das unterschriebene Bild hochzuladen",
+  sigUploadFormats: "Unterstützt PNG, JPG, WebP (max. 5 MB)",
+  sigDrawPrompt: "Zeichne deine Unterschrift unten (Maus oder Touch):",
+  sigClear: "Löschen",
+  sigConfirm: "Unterschrift bestätigen & speichern",
+  sigSaving: "Unterschrift wird gespeichert...",
+  sigProcessing: "Signaturbild wird verarbeitet und hochgeladen...",
+  sigAttached: "Unterschrift erfolgreich angehängt",
+  sigPreview: "Unterschrift ansehen",
+  sigErrorAuth: "Bitte melde dich zuerst an, um ein Bild hochzuladen.",
+  sigErrorUpload: "Fehler beim Hochladen. Prüfe Dateigröße und Format.",
+  sigErrorNetwork: "Verbindung zum Server fehlgeschlagen.",
+  sigErrorSave: "Unterschrift konnte nicht gespeichert werden.",
   divisions: {
     creator: {
       title: "Content Creator",
@@ -451,7 +613,7 @@ const de: SolarExtraCopy = {
       perks: ["Credits in Projekten", "Laufende Projekte", "Skill-Ausbau"],
     },
     player: {
-      title: "Spieler (Rocket, Fortnite, Minecraft, FIFA)",
+      title: "Turnierspieler",
       desc: "Vertrete Solar in Scrims, Challenges und Turnieren.",
       perks: ["Clan-Turniere", "Team-Scrims", "Wettkampf-Kader"],
     },
@@ -513,6 +675,33 @@ const pt: SolarExtraCopy = {
   durationLabel: "Duração:",
   staffNoteLabel: "Nota da equipe:",
   applyToDivision: "Candidatar-se a esta divisão",
+  warningPledgesTitle: "Avisos e Compromissos Atribuídos",
+  warningPledgesDesc: "Leia e assine o compromisso antes do prazo expirar.",
+  warningPledgeCardTitle: "Compromisso de Aviso – Solar System",
+  warningSigned: "Assinado e Enviado",
+  warningPending: "Aguardando Sua Assinatura",
+  warningReasonLabel: "Motivo:",
+  warningDurationLabel: "Duração:",
+  warningExpiresAt: "Expira em",
+  openAndSignPledge: "Abrir e Assinar",
+  sigDrawMode: "Assinatura Digital (Principal)",
+  sigUploadMode: "Ou Enviar Imagem Assinada",
+  sigContractTitle: "Imagem do Contrato e Compromisso Solar System",
+  sigContractHint: "Baixe a imagem para assinar em qualquer editor de imagens",
+  sigDownloadContract: "Baixar Imagem do Contrato",
+  sigUploadPrompt: "Clique para selecionar e enviar a imagem assinada",
+  sigUploadFormats: "Suporta PNG, JPG, WebP (máx. 5 MB)",
+  sigDrawPrompt: "Desenhe sua assinatura na caixa abaixo (mouse ou toque):",
+  sigClear: "Limpar",
+  sigConfirm: "Confirmar e Salvar Assinatura",
+  sigSaving: "Salvando assinatura...",
+  sigProcessing: "Processando e enviando imagem da assinatura...",
+  sigAttached: "Imagem da assinatura anexada com sucesso",
+  sigPreview: "Visualizar Assinatura",
+  sigErrorAuth: "Você precisa entrar primeiro para enviar uma imagem.",
+  sigErrorUpload: "Erro ao enviar imagem. Verifique o tamanho e formato.",
+  sigErrorNetwork: "Não foi possível conectar ao servidor para enviar.",
+  sigErrorSave: "Não foi possível salvar a assinatura, tente novamente.",
   divisions: {
     creator: {
       title: "Criador de conteúdo",
@@ -535,7 +724,7 @@ const pt: SolarExtraCopy = {
       perks: ["Créditos nas edições", "Projetos contínuos", "Evolução técnica"],
     },
     player: {
-      title: "Jogador (Rocket, Fortnite, Minecraft, FIFA)",
+      title: "Jogador de Torneios",
       desc: "Represente a Solar em scrims, desafios e torneios oficiais.",
       perks: ["Torneios do clã", "Scrims de equipe", "Elenco competitivo"],
     },
@@ -597,6 +786,33 @@ const tr: SolarExtraCopy = {
   durationLabel: "Süre:",
   staffNoteLabel: "Yönetici notu:",
   applyToDivision: "Bu Bölüme Başvur",
+  warningPledgesTitle: "Size Atanan Uyarılar ve Taahhütler",
+  warningPledgesDesc: "Lütfen süresi dolmadan taahhüdü okuyup imzalayın.",
+  warningPledgeCardTitle: "Uyarı Taahhüdü – Solar System",
+  warningSigned: "İmzalandı ve Gönderildi",
+  warningPending: "İmzanız Bekleniyor",
+  warningReasonLabel: "Sebep:",
+  warningDurationLabel: "Süre:",
+  warningExpiresAt: "Bitiş:",
+  openAndSignPledge: "Aç ve İmzala",
+  sigDrawMode: "Dijital İmza (Ana)",
+  sigUploadMode: "Veya İmzalı Görsel Yükle",
+  sigContractTitle: "Solar System Klan Sözleşmesi ve Taahhüt Görseli",
+  sigContractHint: "Herhangi bir düzenleyicide imzalamak için görseli indirin",
+  sigDownloadContract: "Sözleşme Görselini İndir",
+  sigUploadPrompt: "İmzalı sözleşme görselini seçip yüklemek için tıklayın",
+  sigUploadFormats: "PNG, JPG, WebP desteklenir (maks. 5 MB)",
+  sigDrawPrompt: "Aşağıdaki kutuya imzanızı çizin (fare veya dokunmatik):",
+  sigClear: "Temizle",
+  sigConfirm: "İmzayı Onayla ve Kaydet",
+  sigSaving: "İmza kaydediliyor...",
+  sigProcessing: "İmza görseli işleniyor ve yükleniyor...",
+  sigAttached: "İmza görseli başarıyla eklendi",
+  sigPreview: "İmzayı Önizle",
+  sigErrorAuth: "Görsel yüklemek için önce giriş yapmalısınız.",
+  sigErrorUpload: "Görsel yüklenemedi. Dosya boyutunu ve formatını kontrol edin.",
+  sigErrorNetwork: "Görsel yüklemek için sunucuya bağlanılamadı.",
+  sigErrorSave: "İmza kaydedilemedi, lütfen tekrar deneyin.",
   divisions: {
     creator: {
       title: "İçerik Üreticisi",
@@ -619,7 +835,7 @@ const tr: SolarExtraCopy = {
       perks: ["Projelerde isim kredisi", "Sürekli projeler", "Kurgu gelişimi"],
     },
     player: {
-      title: "Oyuncu (Rocket, Fortnite, Minecraft, FIFA)",
+      title: "Turnuva Oyuncusu",
       desc: "Turnuvalarda, scrimlerde ve meydan okumalarda Solar'ı temsil edin.",
       perks: ["Klan turnuvaları", "Takım scrimleri", "Rekabetçi kadro"],
     },
@@ -681,6 +897,33 @@ const ja: SolarExtraCopy = {
   durationLabel: "期間:",
   staffNoteLabel: "運営メモ:",
   applyToDivision: "この部門に応募する",
+  warningPledgesTitle: "あなた宛ての警告と誓約",
+  warningPledgesDesc: "期限が切れる前に誓約書を確認し、署名してください。",
+  warningPledgeCardTitle: "警告後の誓約 – Solar System",
+  warningSigned: "署名・提出済み",
+  warningPending: "署名待ち",
+  warningReasonLabel: "理由:",
+  warningDurationLabel: "期間:",
+  warningExpiresAt: "期限:",
+  openAndSignPledge: "開いて署名する",
+  sigDrawMode: "デジタル署名（基本）",
+  sigUploadMode: "または署名済み画像をアップロード",
+  sigContractTitle: "Solar System クラン契約・誓約画像",
+  sigContractHint: "画像をダウンロードして画像編集アプリで署名できます",
+  sigDownloadContract: "契約画像をダウンロード",
+  sigUploadPrompt: "クリックして署名済み契約画像を選択・アップロード",
+  sigUploadFormats: "PNG, JPG, WebP 対応（最大 5 MB）",
+  sigDrawPrompt: "下の枠内に署名を描いてください（マウス・タッチ対応）:",
+  sigClear: "消去",
+  sigConfirm: "この署名を確定して保存",
+  sigSaving: "署名を保存中...",
+  sigProcessing: "署名画像を処理・アップロード中...",
+  sigAttached: "署名画像が正常に添付されました",
+  sigPreview: "署名をプレビュー",
+  sigErrorAuth: "画像をアップロードするには先にログインしてください。",
+  sigErrorUpload: "画像のアップロードに失敗しました。サイズと形式をご確認ください。",
+  sigErrorNetwork: "サーバーに接続できませんでした。",
+  sigErrorSave: "署名を保存できませんでした。もう一度お試しください。",
   divisions: {
     creator: {
       title: "コンテンツクリエイター",
@@ -703,7 +946,7 @@ const ja: SolarExtraCopy = {
       perks: ["クレジット表記", "継続的な制作案件", "編集スキル向上"],
     },
     player: {
-      title: "プレイヤー (Rocket, Fortnite, Minecraft, FIFA)",
+      title: "トーナメントプレイヤー",
       desc: "スクリムや大会でSolarを代表して競技シーンに参戦します。",
       perks: ["クラン大会参加", "チームスクリム", "競技ロスター"],
     },
@@ -765,6 +1008,33 @@ const ko: SolarExtraCopy = {
   durationLabel: "기간:",
   staffNoteLabel: "운영진 메모:",
   applyToDivision: "이 부서에 지원하기",
+  warningPledgesTitle: "회원님에게 지정된 경고 및 서약",
+  warningPledgesDesc: "기한이 만료되기 전에 서약서를 읽고 서명해 주세요.",
+  warningPledgeCardTitle: "경고 후 서약 – Solar System",
+  warningSigned: "서명 및 제출 완료",
+  warningPending: "서명 대기 중",
+  warningReasonLabel: "사유:",
+  warningDurationLabel: "기간:",
+  warningExpiresAt: "만료:",
+  openAndSignPledge: "열고 서명하기",
+  sigDrawMode: "디지털 서명 (기본)",
+  sigUploadMode: "또는 서명된 이미지 업로드",
+  sigContractTitle: "Solar System 클랜 계약 및 서약 이미지",
+  sigContractHint: "이미지를 다운로드하여 편집 앱에서 서명할 수 있습니다",
+  sigDownloadContract: "계약 이미지 다운로드",
+  sigUploadPrompt: "클릭하여 서명된 계약 이미지를 선택 및 업로드",
+  sigUploadFormats: "PNG, JPG, WebP 지원 (최대 5 MB)",
+  sigDrawPrompt: "아래 상자 안에 서명을 그려주세요 (마우스 또는 터치):",
+  sigClear: "지우기",
+  sigConfirm: "이 서명 확정 및 저장",
+  sigSaving: "서명 저장 중...",
+  sigProcessing: "서명 이미지 처리 및 업로드 중...",
+  sigAttached: "서명 이미지가 성공적으로 첨부되었습니다",
+  sigPreview: "서명 미리보기",
+  sigErrorAuth: "이미지를 업로드하려면 먼저 로그인해야 합니다.",
+  sigErrorUpload: "이미지 업로드 중 오류가 발생했습니다. 크기와 형식을 확인하세요.",
+  sigErrorNetwork: "이미지 업로드를 위해 서버에 연결할 수 없습니다.",
+  sigErrorSave: "서명을 저장할 수 없습니다. 다시 시도해 주세요.",
   divisions: {
     creator: {
       title: "콘텐츠 크리에이터",
@@ -787,7 +1057,7 @@ const ko: SolarExtraCopy = {
       perks: ["편집 크레딧", "지속적인 프로젝트", "편집 역량 성장"],
     },
     player: {
-      title: "플레이어 (Rocket, Fortnite, Minecraft, FIFA)",
+      title: "토너먼트 플레이어",
       desc: "스크림과 토너먼트에서 Solar를 대표해 경쟁합니다.",
       perks: ["클랜 토너먼트", "팀 스크림", "경쟁 로스터"],
     },
@@ -849,6 +1119,33 @@ const zh: SolarExtraCopy = {
   durationLabel: "时长：",
   staffNoteLabel: "管理备注：",
   applyToDivision: "申请该部门",
+  warningPledgesTitle: "向您发出的警告与承诺书",
+  warningPledgesDesc: "请在截止时间前阅读并签署承诺书。",
+  warningPledgeCardTitle: "警告后承诺书 – Solar System",
+  warningSigned: "已签署并提交",
+  warningPending: "等待您的签署",
+  warningReasonLabel: "原因：",
+  warningDurationLabel: "时长：",
+  warningExpiresAt: "截止时间",
+  openAndSignPledge: "打开并签署",
+  sigDrawMode: "数字签名（默认）",
+  sigUploadMode: "或上传已签名图片",
+  sigContractTitle: "Solar System 战队合约与承诺书图片",
+  sigContractHint: "可下载图片并使用任意修图软件签名后上传",
+  sigDownloadContract: "下载合约图片",
+  sigUploadPrompt: "点击选择并上传已签名的合约图片",
+  sigUploadFormats: "支持 PNG、JPG、WebP（最大 5 MB）",
+  sigDrawPrompt: "请在下方方框内绘制您的签名（支持鼠标或触控）：",
+  sigClear: "清除",
+  sigConfirm: "确认并保存此签名",
+  sigSaving: "正在保存签名...",
+  sigProcessing: "正在处理并上传签名图片...",
+  sigAttached: "签名图片已成功附加",
+  sigPreview: "预览签名",
+  sigErrorAuth: "请先登录后再上传图片。",
+  sigErrorUpload: "图片上传失败，请检查文件大小和格式。",
+  sigErrorNetwork: "无法连接服务器上传图片。",
+  sigErrorSave: "无法保存签名，请重试。",
   divisions: {
     creator: {
       title: "内容创作者",
@@ -871,7 +1168,7 @@ const zh: SolarExtraCopy = {
       perks: ["作品署名", "持续项目", "剪辑技能提升"],
     },
     player: {
-      title: "选手 (Rocket, Fortnite, Minecraft, FIFA)",
+      title: "锦标赛选手",
       desc: "代表 Solar 参加训练赛、挑战赛和正式锦标赛。",
       perks: ["战队锦标赛", "团队训练赛", "竞技阵容"],
     },
@@ -903,4 +1200,168 @@ const DICT: Record<string, SolarExtraCopy> = {
 
 export function solarExtraCopy(locale: string): SolarExtraCopy {
   return DICT[locale] ?? DICT.ar;
+}
+
+const RANK_TOKEN_TRANSLATIONS: Record<string, Record<string, string>> = {
+  "الرئيس التنفيذي": {
+    en: "CEO", es: "Director Ejecutivo", fr: "PDG", de: "Geschäftsführer",
+    pt: "CEO", tr: "CEO", ja: "最高経営責任者", ko: "최고경영자", zh: "首席执行官",
+  },
+  "نائب الرئيس": {
+    en: "Vice President", es: "Vicepresidente", fr: "Vice-président", de: "Vizepräsident",
+    pt: "Vice-Presidente", tr: "Başkan Yardımcısı", ja: "副会長", ko: "부회장", zh: "副队长",
+  },
+  "الرئيس": {
+    en: "President", es: "Presidente", fr: "Président", de: "Präsident",
+    pt: "Presidente", tr: "Başkan", ja: "会長", ko: "회장", zh: "队长",
+  },
+  "مشرف تنفيذي": {
+    en: "Executive Supervisor", es: "Supervisor Ejecutivo", fr: "Superviseur Exécutif", de: "Exekutiv-Supervisor",
+    pt: "Supervisor Executivo", tr: "Yönetici Süpervizör", ja: "統括スーパーバイザー", ko: "총괄 관리자", zh: "执行主管",
+  },
+  "مشرف الأقسام": {
+    en: "Divisions Supervisor", es: "Supervisor de Divisiones", fr: "Superviseur des Divisions", de: "Abteilungsleiter",
+    pt: "Supervisor de Divisões", tr: "Bölüm Sorumlusu", ja: "部門スーパーバイザー", ko: "부서 총괄", zh: "部门主管",
+  },
+  "مشرف أقسام": {
+    en: "Divisions Supervisor", es: "Supervisor de Divisiones", fr: "Superviseur des Divisions", de: "Abteilungsleiter",
+    pt: "Supervisor de Divisões", tr: "Bölüm Sorumlusu", ja: "部門スーパーバイザー", ko: "부서 총괄", zh: "部门主管",
+  },
+  "الإدارة العامة": {
+    en: "General Management", es: "Gestión General", fr: "Direction Générale", de: "Allgemeine Verwaltung",
+    pt: "Gestão Geral", tr: "Genel Yönetim", ja: "総合管理", ko: "총괄 운영", zh: "综合管理",
+  },
+  "إدارة عامة": {
+    en: "General Management", es: "Gestión General", fr: "Direction Générale", de: "Allgemeine Verwaltung",
+    pt: "Gestão Geral", tr: "Genel Yönetim", ja: "総合管理", ko: "총괄 운영", zh: "综合管理",
+  },
+  "مراقب الإدارة": {
+    en: "Management Monitor", es: "Monitor de Gestión", fr: "Contrôleur de Gestion", de: "Management-Monitor",
+    pt: "Monitor de Gestão", tr: "Yönetim Denetçisi", ja: "管理モニター", ko: "운영 감사", zh: "管理监督",
+  },
+  "مراقب إدارة": {
+    en: "Management Monitor", es: "Monitor de Gestión", fr: "Contrôleur de Gestion", de: "Management-Monitor",
+    pt: "Monitor de Gestão", tr: "Yönetim Denetçisi", ja: "管理モニター", ko: "운영 감사", zh: "管理监督",
+  },
+  "مشرف صناع المحتوى": {
+    en: "Creators Supervisor", es: "Supervisor de Creadores", fr: "Superviseur Créateurs", de: "Creator-Supervisor",
+    pt: "Supervisor de Criadores", tr: "İçerik Üretici Sorumlusu", ja: "クリエイター担当", ko: "크리에이터 관리자", zh: "创作者主管",
+  },
+  "مشرف صناع محتوى": {
+    en: "Creators Supervisor", es: "Supervisor de Creadores", fr: "Superviseur Créateurs", de: "Creator-Supervisor",
+    pt: "Supervisor de Criadores", tr: "İçerik Üretici Sorumlusu", ja: "クリエイター担当", ko: "크리에이터 관리자", zh: "创作者主管",
+  },
+  "إداري صناع المحتوى": {
+    en: "Creators Admin", es: "Admin de Creadores", fr: "Admin Créateurs", de: "Creator-Admin",
+    pt: "Admin de Criadores", tr: "İçerik Üretici Yöneticisi", ja: "クリエイター運営", ko: "크리에이터 운영진", zh: "创作者管理",
+  },
+  "إداري صناع محتوى": {
+    en: "Creators Admin", es: "Admin de Creadores", fr: "Admin Créateurs", de: "Creator-Admin",
+    pt: "Admin de Criadores", tr: "İçerik Üretici Yöneticisi", ja: "クリエイター運営", ko: "크리에이터 운영진", zh: "创作者管理",
+  },
+  "إداري ستريمر": {
+    en: "Streamers Admin", es: "Admin de Streamers", fr: "Admin Streamers", de: "Streamer-Admin",
+    pt: "Admin de Streamers", tr: "Yayıncı Yöneticisi", ja: "配信者運営", ko: "스트리머 운영진", zh: "主播管理",
+  },
+  "مشرف ستريمرز": {
+    en: "Streamers Supervisor", es: "Supervisor de Streamers", fr: "Superviseur Streamers", de: "Streamer-Supervisor",
+    pt: "Supervisor de Streamers", tr: "Yayıncı Sorumlusu", ja: "配信者担当", ko: "스트리머 관리자", zh: "主播主管",
+  },
+  "مشرف المصممين": {
+    en: "Designers Supervisor", es: "Supervisor de Diseñadores", fr: "Superviseur Designers", de: "Designer-Supervisor",
+    pt: "Supervisor de Designers", tr: "Tasarımcı Sorumlusu", ja: "デザイナー担当", ko: "디자이너 관리자", zh: "设计师主管",
+  },
+  "مشرف مصممين": {
+    en: "Designers Supervisor", es: "Supervisor de Diseñadores", fr: "Superviseur Designers", de: "Designer-Supervisor",
+    pt: "Supervisor de Designers", tr: "Tasarımcı Sorumlusu", ja: "デザイナー担当", ko: "디자이너 관리자", zh: "设计师主管",
+  },
+  "مشرف الممنتجين": {
+    en: "Editors Supervisor", es: "Supervisor de Editores", fr: "Superviseur Monteurs", de: "Editor-Supervisor",
+    pt: "Supervisor de Editores", tr: "Editör Sorumlusu", ja: "編集者担当", ko: "편집자 관리자", zh: "剪辑师主管",
+  },
+  "مشرف ممنتجين": {
+    en: "Editors Supervisor", es: "Supervisor de Editores", fr: "Superviseur Monteurs", de: "Editor-Supervisor",
+    pt: "Supervisor de Editores", tr: "Editör Sorumlusu", ja: "編集者担当", ko: "편집자 관리자", zh: "剪辑师主管",
+  },
+  "مشرف لاعبين": {
+    en: "Players Supervisor", es: "Supervisor de Jugadores", fr: "Superviseur Joueurs", de: "Spieler-Supervisor",
+    pt: "Supervisor de Jogadores", tr: "Oyuncu Sorumlusu", ja: "選手担当", ko: "선수 관리자", zh: "选手主管",
+  },
+  "إداري لاعبين": {
+    en: "Players Admin", es: "Admin de Jugadores", fr: "Admin Joueurs", de: "Spieler-Admin",
+    pt: "Admin de Jogadores", tr: "Oyuncu Yöneticisi", ja: "選手運営", ko: "선수 운영진", zh: "选手管理",
+  },
+  "كاتب أفكار الكلان": {
+    en: "Clan Idea Writer", es: "Guionista del Clan", fr: "Scénariste du Clan", de: "Clan-Ideenschreiber",
+    pt: "Roteirista do Clã", tr: "Klan Fikir Yazarı", ja: "クラン企画作家", ko: "클랜 아이디어 작가", zh: "战队创意策划",
+  },
+  "كاتب أفكار": {
+    en: "Idea Writer", es: "Guionista de Ideas", fr: "Rédacteur d'Idées", de: "Ideenschreiber",
+    pt: "Roteirista de Ideias", tr: "Fikir Yazarı", ja: "企画作家", ko: "아이디어 작가", zh: "创意策划",
+  },
+  "صانع محتوى": {
+    en: "Content Creator", es: "Creador de Contenido", fr: "Créateur de Contenu", de: "Content Creator",
+    pt: "Criador de Conteúdo", tr: "İçerik Üreticisi", ja: "クリエイター", ko: "콘텐츠 크리에이터", zh: "内容创作者",
+  },
+  "لاعب بطولات": {
+    en: "Tournament Player", es: "Jugador de Torneos", fr: "Joueur de Tournois", de: "Turnierspieler",
+    pt: "Jogador de Torneios", tr: "Turnuva Oyuncusu", ja: "トーナメントプレイヤー", ko: "토너먼트 플레이어", zh: "锦标赛选手",
+  },
+  "ستريمر": {
+    en: "Streamer", es: "Streamer", fr: "Streamer", de: "Streamer",
+    pt: "Streamer", tr: "Yayıncı", ja: "ストリーマー", ko: "스트리머", zh: "主播",
+  },
+  "مصمم": {
+    en: "Designer", es: "Diseñador", fr: "Designer", de: "Designer",
+    pt: "Designer", tr: "Tasarımcı", ja: "デザイナー", ko: "디자이너", zh: "设计师",
+  },
+  "ممنتج": {
+    en: "Video Editor", es: "Editor de Video", fr: "Monteur Vidéo", de: "Video-Editor",
+    pt: "Editor de Vídeo", tr: "Video Editörü", ja: "動画編集者", ko: "영상 편집자", zh: "视频剪辑师",
+  },
+  "لاعب": {
+    en: "Player", es: "Jugador", fr: "Joueur", de: "Spieler",
+    pt: "Jogador", tr: "Oyuncu", ja: "プレイヤー", ko: "플레이어", zh: "选手",
+  },
+  "إداري": {
+    en: "Admin", es: "Admin", fr: "Admin", de: "Admin",
+    pt: "Admin", tr: "Yönetici", ja: "運営", ko: "운영진", zh: "管理",
+  },
+  "فورتنايت": {
+    en: "Fortnite", es: "Fortnite", fr: "Fortnite", de: "Fortnite",
+    pt: "Fortnite", tr: "Fortnite", ja: "フォートナイト", ko: "포트나이트", zh: "堡垒之夜",
+  },
+  "روكيت ليق": {
+    en: "Rocket League", es: "Rocket League", fr: "Rocket League", de: "Rocket League",
+    pt: "Rocket League", tr: "Rocket League", ja: "ロケットリーグ", ko: "로켓 리그", zh: "火箭联盟",
+  },
+  "ماينكرافت": {
+    en: "Minecraft", es: "Minecraft", fr: "Minecraft", de: "Minecraft",
+    pt: "Minecraft", tr: "Minecraft", ja: "マインクラフト", ko: "마인크래프트", zh: "我的世界",
+  },
+  "فيفا": {
+    en: "FIFA", es: "FIFA", fr: "FIFA", de: "FIFA",
+    pt: "FIFA", tr: "FIFA", ja: "FIFA", ko: "FIFA", zh: "FIFA",
+  },
+  "كود": {
+    en: "Call of Duty", es: "Call of Duty", fr: "Call of Duty", de: "Call of Duty",
+    pt: "Call of Duty", tr: "Call of Duty", ja: "Call of Duty", ko: "콜 오브 듀티", zh: "使命召唤",
+  },
+};
+
+const RANK_KEYS_SORTED = Object.keys(RANK_TOKEN_TRANSLATIONS).sort(
+  (a, b) => b.length - a.length
+);
+
+export function translateSolarRank(rank: string, locale: string): string {
+  if (!rank || locale === "ar") return rank;
+  const targetLocale = locale in DICT ? locale : "en";
+  let result = rank.trim();
+  for (const arKey of RANK_KEYS_SORTED) {
+    if (result.includes(arKey)) {
+      const translated = RANK_TOKEN_TRANSLATIONS[arKey][targetLocale] ?? RANK_TOKEN_TRANSLATIONS[arKey].en;
+      result = result.split(arKey).join(translated);
+    }
+  }
+  return result;
 }

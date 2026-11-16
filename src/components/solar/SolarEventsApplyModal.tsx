@@ -17,6 +17,8 @@ import { useLocale } from "next-intl";
 import { useAccount } from "@/components/account/AccountProvider";
 import AccountLogin from "@/components/account/AccountLogin";
 import SolarSignaturePad from "./SolarSignaturePad";
+import { solarCopy } from "@/lib/data/solar-copy";
+import { solarModalsCopy } from "@/lib/data/solar-modals-i18n";
 
 export default function SolarEventsApplyModal({
   isOpen,
@@ -27,6 +29,13 @@ export default function SolarEventsApplyModal({
 }) {
   const dialog = useRef<HTMLDialogElement>(null);
   const locale = useLocale();
+  const isAr = locale === "ar";
+  const dir = isAr ? "rtl" : "ltr";
+  const t = solarCopy(locale);
+  const m = solarModalsCopy(locale);
+  const ev = m.events;
+  const s = m.shared;
+
   const { account } = useAccount();
   const [showLogin, setShowLogin] = useState(false);
   const [step, setStep] = useState<1 | 2 | 3>(1);
@@ -58,9 +67,9 @@ export default function SolarEventsApplyModal({
   }, [isOpen]);
 
   const validateStep2 = () => {
-    if (!name.trim()) return "يرجى كتابة اسمك";
-    if (!age.trim()) return "يرجى كتابة عمرك";
-    if (!discord.trim()) return "يرجى كتابة حسابك ديسكورد (اليوزر)";
+    if (!name.trim()) return ev.errName;
+    if (!age.trim()) return ev.errAge;
+    if (!discord.trim()) return ev.errDiscord;
     return null;
   };
 
@@ -76,12 +85,12 @@ export default function SolarEventsApplyModal({
     }
 
     if (!signedContractUrl) {
-      setError("يرجى حفظ التوقيع أو رفع صورة العقد الموقّعة لإتمام التقديم.");
+      setError(ev.errSignature);
       return;
     }
 
     if (!pledgeAgreed) {
-      setError("يرجى الموافقة على تعهّد إدارة فعاليات الديسكورد لإتمام التقديم.");
+      setError(ev.errPledge);
       return;
     }
 
@@ -101,19 +110,19 @@ export default function SolarEventsApplyModal({
       const data = await res.json();
       if (!res.ok || !data.ok) {
         if (data.error === "AUTH_REQUIRED") {
-          setError("يجب تسجيل الدخول بحسابك أولاً لإتمام التقديم.");
+          setError(s.errAuth);
         } else if (data.error === "RATE_LIMIT") {
-          setError("لقد أرسلت طلباً مؤخراً. يرجى الانتظار قليلاً قبل المحاولة مجدداً.");
+          setError(s.errRateLimit);
         } else if (data.error === "ALREADY_APPLIED") {
-          setError("لديك طلب تقديم لإدارة فعاليات الديسكورد قيد المراجعة أو مقبول بالفعل.");
+          setError(ev.errAlreadyApplied);
         } else {
-          setError("حدث خطأ أثناء إرسال الطلب، يرجى التحقق من صحة البيانات والمحاولة مجدداً.");
+          setError(s.errServer);
         }
         return;
       }
       setSuccess({ reference: data.reference, token: data.token });
     } catch {
-      setError("تعذر الاتصال بالخادم، يرجى المحاولة لاحقاً.");
+      setError(s.errNetwork);
     } finally {
       setBusy(false);
     }
@@ -131,6 +140,9 @@ export default function SolarEventsApplyModal({
     onClose();
   };
 
+  const BackIcon = isAr ? ArrowRight : ArrowLeft;
+  const NextIcon = isAr ? ArrowLeft : ArrowRight;
+
   return (
     <dialog
       ref={dialog}
@@ -139,19 +151,19 @@ export default function SolarEventsApplyModal({
       aria-labelledby="solar-events-apply-dialog-title"
       className="checkout-shell store-checkout max-w-2xl"
     >
-      <header className="store-checkout-header" dir="rtl">
+      <header className="store-checkout-header" dir={dir}>
         <div className="store-checkout-brand">
           <span className="store-rank-icon">
             <SolidIcon name="trophy" size={20} />
           </span>
           <div>
             <h2 id="solar-events-apply-dialog-title" className="font-semibold text-lg">
-              تقديم إدارة فعاليات لسيرفر Solar System
+              {ev.title}
             </h2>
             <p className="text-xs text-[var(--text-muted)]">
-              {step === 1 && "الخطوة 1 من 3: شروط وقوانين إدارة فعاليات الديسكورد"}
-              {step === 2 && "الخطوة 2 من 3: البيانات الأساسية"}
-              {step === 3 && "الخطوة 3 من 3: التوقيع، التعهّد، وتأكيد التقديم"}
+              {step === 1 && ev.step1Sub}
+              {step === 2 && ev.step2Sub}
+              {step === 3 && ev.step3Sub}
             </p>
           </div>
         </div>
@@ -159,13 +171,13 @@ export default function SolarEventsApplyModal({
           type="button"
           className="store-close"
           onClick={onClose}
-          aria-label="إغلاق"
+          aria-label={s.closeAria}
         >
           <span aria-hidden="true">×</span>
         </button>
       </header>
 
-      <div className="store-checkout-body" dir={locale === "ar" ? "rtl" : "ltr"}>
+      <div className="store-checkout-body" dir={dir}>
         {success ? (
           <div className="space-y-6 text-center py-4">
             <div
@@ -180,17 +192,17 @@ export default function SolarEventsApplyModal({
             </div>
             <div>
               <h3 className="text-xl font-bold text-[var(--text)]">
-                تم استلام طلب تقديم إدارة الفعاليات بنجاح!
+                {ev.successTitle}
               </h3>
               <p className="mt-2 text-sm text-[var(--text-muted)] max-w-md mx-auto leading-relaxed">
-                سيتم مراجعة طلبك من قِبل الإدارة المسؤولة والتواصل معك عبر الديسكورد أو حالة الطلب.
+                {ev.successDesc}
               </p>
             </div>
             <div
               className="card-glow rounded-xl border p-4 max-w-sm mx-auto"
               style={{ background: "var(--surface)", borderColor: "var(--border)" }}
             >
-              <p className="text-xs text-[var(--text-muted)]">رقم المرجع:</p>
+              <p className="text-xs text-[var(--text-muted)]">{ev.referenceLabel}</p>
               <code dir="ltr" className="mt-1 block text-sm font-bold text-[var(--accent)]">
                 {success.reference}
               </code>
@@ -201,14 +213,14 @@ export default function SolarEventsApplyModal({
                 onClick={onClose}
                 className="store-action store-action-primary"
               >
-                متابعة حالة الطلب ↗
+                {ev.trackBtn} ↗
               </Link>
               <button
                 type="button"
                 onClick={handleReset}
                 className="store-action"
               >
-                إغلاق
+                {ev.closeBtn}
               </button>
             </div>
           </div>
@@ -227,10 +239,10 @@ export default function SolarEventsApplyModal({
 
             <div className="space-y-2 max-w-md mx-auto">
               <h3 className="text-xl sm:text-2xl font-bold text-[var(--text)]">
-                تسجيل الدخول مطلوب
+                {t.loginRequiredTitle}
               </h3>
               <p className="text-sm text-[var(--text-muted)] leading-relaxed">
-                يرجى تسجيل الدخول بحسابك أولاً للتقديم على إدارة فعاليات الديسكورد في Solar System.
+                {t.loginRequiredDesc}
               </p>
             </div>
 
@@ -242,7 +254,7 @@ export default function SolarEventsApplyModal({
                 style={{ background: "var(--accent)", color: "#07080b" }}
               >
                 <LogIn size={15} />
-                تسجيل الدخول الآن
+                {t.loginNow}
               </button>
 
               <button
@@ -250,27 +262,27 @@ export default function SolarEventsApplyModal({
                 onClick={onClose}
                 className="w-full sm:w-auto inline-flex items-center justify-center rounded-xl border border-[var(--border)] px-6 py-3 text-sm font-medium text-[var(--text-muted)] hover:text-[var(--text)] transition-colors cursor-pointer"
               >
-                إغلاق
+                {t.cancel}
               </button>
             </div>
 
             {showLogin && <AccountLogin onClose={() => setShowLogin(false)} />}
           </div>
         ) : (
-          <div className="space-y-5" dir="rtl">
+          <div className="space-y-5">
             {/* Step Navigation Wizard */}
             <div className="flex items-center justify-between border-b border-[var(--border)] pb-3 text-xs">
               <button
                 type="button"
                 onClick={() => setStep(1)}
-                className={`flex items-center gap-1.5 font-medium transition-colors cursor-pointer ${
+                className={`flex items-center gap-1.5 font-medium transition-colors ${
                   step === 1 ? "text-[var(--accent)] font-bold" : "text-[var(--text-muted)]"
                 }`}
               >
                 <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[var(--surface-elevated)] border text-[11px]">
                   1
                 </span>
-                <span>القوانين والشروط</span>
+                <span>{ev.step1Tab}</span>
               </button>
 
               <span className="text-[var(--border-strong)]">──</span>
@@ -278,14 +290,14 @@ export default function SolarEventsApplyModal({
               <button
                 type="button"
                 onClick={() => setStep(2)}
-                className={`flex items-center gap-1.5 font-medium transition-colors cursor-pointer ${
+                className={`flex items-center gap-1.5 font-medium transition-colors ${
                   step === 2 ? "text-[var(--accent)] font-bold" : "text-[var(--text-muted)]"
                 }`}
               >
                 <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[var(--surface-elevated)] border text-[11px]">
                   2
                 </span>
-                <span>البيانات الأساسية</span>
+                <span>{ev.step2Tab}</span>
               </button>
 
               <span className="text-[var(--border-strong)]">──</span>
@@ -301,14 +313,14 @@ export default function SolarEventsApplyModal({
                     setStep(3);
                   }
                 }}
-                className={`flex items-center gap-1.5 font-medium transition-colors cursor-pointer ${
+                className={`flex items-center gap-1.5 font-medium transition-colors ${
                   step === 3 ? "text-[var(--accent)] font-bold" : "text-[var(--text-muted)]"
                 }`}
               >
                 <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[var(--surface-elevated)] border text-[11px]">
                   3
                 </span>
-                <span>العقد والتعهّد</span>
+                <span>{ev.step3Tab}</span>
               </button>
             </div>
 
@@ -325,7 +337,7 @@ export default function SolarEventsApplyModal({
                   <UserCheck size={14} />
                 </div>
                 <div className="leading-tight">
-                  <span className="text-[var(--text-muted)] text-[11px]">حسابك: </span>
+                  <span className="text-[var(--text-muted)] text-[11px]">{s.yourAccount} </span>
                   <strong className="text-[var(--text)]">
                     {account.name || account.username || account.email}
                   </strong>
@@ -338,175 +350,136 @@ export default function SolarEventsApplyModal({
                   color: "var(--accent)",
                 }}
               >
-                حساب موثّق
+                {t.verifiedAccount}
               </span>
             </div>
 
             {error && (
               <div
-                role="alert"
                 className="rounded-xl border p-3 text-xs text-red-400"
                 style={{
                   background: "rgba(239, 68, 68, 0.1)",
-                  borderColor: "rgba(239, 68, 68, 0.3)",
+                  borderColor: "rgba(239, 68, 68, 0.25)",
                 }}
               >
                 {error}
               </div>
             )}
 
-            {/* STEP 1: Rules & Terms */}
+            {/* STEP 1 */}
             {step === 1 && (
               <div className="space-y-4">
-                <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4 sm:p-5 space-y-3 text-xs sm:text-sm leading-relaxed max-h-[55vh] overflow-y-auto">
-                  <div className="flex items-center gap-2 text-[var(--accent)] font-bold text-base">
-                    <ShieldCheck size={18} />
-                    <span>شروط وقوانين إدارة فعاليات الديسكورد – Solar System</span>
+                <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4 max-h-[380px] overflow-y-auto space-y-4 text-xs leading-relaxed text-[var(--text)]">
+                  <div className="border-b border-[var(--border)] pb-2">
+                    <h3 className="font-bold text-sm text-[var(--accent)]">
+                      {ev.rulesHeading}
+                    </h3>
+                    <p className="text-[11px] text-[var(--text-muted)] mt-1">
+                      {ev.rulesIntro}
+                    </p>
                   </div>
-                  <p className="text-[var(--text-muted)] text-xs">
-                    يرجى قراءة الشروط التالية قبل تقديم طلب الانضمام إلى إدارة فعاليات الديسكورد:
-                  </p>
 
-                  <div className="space-y-2.5 text-xs">
-                    <div>
-                      <h4 className="font-bold text-[var(--text)]">1. شروط الانضمام</h4>
-                      <ul className="list-disc list-inside space-y-1 text-[var(--text-muted)] mt-1 pr-1">
-                        <li>يجب الالتزام بمهام إدارة وتنظيم فعاليات الديسكورد الخاصة بفريق Solar System.</li>
-                        <li>لا يُعتبر هذا الطلب انضمامًا إلى الكلان أو الفريق كلاعب، وإنما هو مخصص لإدارة فعاليات الديسكورد فقط.</li>
-                        <li>يجب الالتزام بالمدة المحددة في العقد، والتي لا تتجاوز شهرًا ونصفًا.</li>
-                        <li>لا يُعتمد الانضمام إلى الإدارة إلا بعد موافقة الإدارة المسؤولة.</li>
-                      </ul>
+                  {ev.ruleSections.map((sec) => (
+                    <div key={sec.title}>
+                      <h4 className="font-bold text-[var(--text)] mb-1">{sec.title}</h4>
+                      {sec.items && (
+                        <ul className="list-disc list-inside space-y-0.5 text-[var(--text-muted)] ps-2">
+                          {sec.items.map((item) => (
+                            <li key={item}>{item}</li>
+                          ))}
+                        </ul>
+                      )}
+                      {sec.text && (
+                        <p className="text-[var(--text-muted)]">{sec.text}</p>
+                      )}
                     </div>
+                  ))}
 
-                    <div>
-                      <h4 className="font-bold text-[var(--text)]">2. الالتزام بالمهام</h4>
-                      <ul className="list-disc list-inside space-y-1 text-[var(--text-muted)] mt-1 pr-1">
-                        <li>يجب الالتزام بتنظيم الفعاليات والمساهمة في إنجاحها.</li>
-                        <li>يمنع استغلال الصلاحيات الممنوحة لأغراض شخصية أو مخالفة قوانين السيرفر.</li>
-                        <li>يجب التعامل مع المشاركين باحترام وعدل، والالتزام بتوجيهات الإدارة.</li>
-                        <li>في حال تعذّر أداء المهام أو الرغبة في الانسحاب، يجب إبلاغ الإدارة والتنسيق معها.</li>
-                      </ul>
-                    </div>
-
-                    <div>
-                      <h4 className="font-bold text-[var(--text)]">3. المسؤولية والانسحاب</h4>
-                      <ul className="list-disc list-inside space-y-1 text-[var(--text-muted)] mt-1 pr-1">
-                        <li>يتحمّل عضو إدارة الفعاليات مسؤولية تصرفاته وقراراته المتعلقة بمهامه.</li>
-                        <li>لا يُسمح بالانسحاب من الإدارة قبل انتهاء مدة العقد إلا بعد التنسيق مع الإدارة والحصول على موافقتها.</li>
-                        <li>يحق للإدارة اتخاذ الإجراءات المناسبة عند الإخلال بالمسؤوليات أو مخالفة القوانين المتفق عليها.</li>
-                      </ul>
-                    </div>
-
-                    <div>
-                      <h4 className="font-bold text-[var(--text)]">4. ديسكورد الفريق</h4>
-                      <ul className="list-disc list-inside space-y-1 text-[var(--text-muted)] mt-1 pr-1">
-                        <li>تتم جميع أمور إدارة الفعاليات والتنسيق بشأنها عبر سيرفر ديسكورد Solar System الرسمي.</li>
-                        <li>يجب متابعة الإعلانات والتعليمات والتحديثات المتعلقة بالفعاليات.</li>
-                        <li>يجب الالتزام بقوانين السيرفر والمحافظة على سمعته وتنظيمه.</li>
-                        <li className="flex items-center gap-1.5 flex-wrap">
-                          <span>رابط السيرفر الرسمي:</span>
-                          <a
-                            href="https://discord.gg/bCHAGPTUm"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1 text-[var(--accent)] hover:underline font-medium"
-                            dir="ltr"
-                          >
-                            https://discord.gg/bCHAGPTUm
-                            <ExternalLink size={12} />
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
-
-                    <div className="rounded-lg border border-[var(--border)] bg-black/20 p-3 mt-2">
-                      <h4 className="font-bold text-[var(--accent)]">الموافقة النهائية</h4>
-                      <p className="text-[var(--text-muted)] mt-1">
-                        بتقديم طلب الانضمام إلى إدارة فعاليات الديسكورد، أقرّ بأنني قرأت الشروط المذكورة أعلاه وفهمتها، وأوافق على الالتزام بها وتحمل مسؤولياتي المتعلقة بإدارة الفعاليات، وأعلم أن تقديم الطلب لا يعني الموافقة عليه تلقائيًا، وأن هذا الطلب خاص بإدارة فعاليات الديسكورد فقط ولا يُعد انضمامًا إلى الكلان.
-                      </p>
-                    </div>
-                  </div>
+                  <a
+                    href="https://discord.gg/bCHAGPTUm"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 text-xs text-[var(--accent)] hover:underline"
+                  >
+                    <span>{ev.discordLinkLabel}</span>
+                    <ExternalLink size={12} />
+                  </a>
                 </div>
 
-                <div className="flex justify-end pt-2">
+                <div className="pt-2">
                   <button
                     type="button"
-                    onClick={() => {
-                      setError(null);
-                      setStep(2);
-                    }}
-                    className="store-action store-action-primary flex items-center gap-2"
+                    onClick={() => setStep(2)}
+                    className="store-action store-action-primary w-full flex items-center justify-center gap-2"
                   >
-                    <span>قرأت الشروط وأوافق — متابعة</span>
-                    <ArrowLeft size={16} />
+                    <span>{ev.continueToStep2}</span>
+                    <NextIcon size={16} />
                   </button>
                 </div>
               </div>
             )}
 
-            {/* STEP 2: Questions */}
+            {/* STEP 2 */}
             {step === 2 && (
               <div className="space-y-4">
                 <div className="grid gap-3 sm:grid-cols-2">
-                  <div className="sm:col-span-2">
+                  <div>
                     <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1">
-                      اسمك؟ <span className="text-red-400">*</span>
+                      {ev.nameLabel} <span className="text-red-400">*</span>
                     </label>
                     <input
                       type="text"
                       required
+                      maxLength={64}
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      placeholder="اكتب اسمك..."
-                      maxLength={80}
-                      className="w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] px-3.5 py-2 text-sm text-[var(--text)] outline-none focus:border-[var(--accent)]"
+                      placeholder={ev.namePlaceholder}
+                      className="w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--text)] outline-none focus:border-[var(--accent)]"
                     />
                   </div>
 
                   <div>
                     <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1">
-                      عمرك؟ <span className="text-red-400">*</span>
+                      {ev.ageLabel} <span className="text-red-400">*</span>
                     </label>
                     <input
                       type="text"
                       required
+                      maxLength={12}
                       value={age}
                       onChange={(e) => setAge(e.target.value)}
-                      placeholder="مثال: 19"
-                      maxLength={20}
-                      className="w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] px-3.5 py-2 text-sm text-[var(--text)] outline-none focus:border-[var(--accent)]"
+                      placeholder={ev.agePlaceholder}
+                      className="w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--text)] outline-none focus:border-[var(--accent)]"
                     />
                   </div>
+                </div>
 
-                  <div>
-                    <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1">
-                      حسابك ديسكورد؟ (اليوزر) <span className="text-red-400">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      value={discord}
-                      onChange={(e) => setDiscord(e.target.value)}
-                      placeholder="username"
-                      maxLength={60}
-                      dir="ltr"
-                      className="w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] px-3.5 py-2 text-sm text-[var(--text)] outline-none focus:border-[var(--accent)]"
-                    />
-                  </div>
+                <div>
+                  <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1">
+                    {ev.discordLabel} <span className="text-red-400">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    maxLength={40}
+                    dir="ltr"
+                    value={discord}
+                    onChange={(e) => setDiscord(e.target.value)}
+                    placeholder={ev.discordPlaceholder}
+                    className={`w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--text)] outline-none focus:border-[var(--accent)] ${isAr ? "text-right" : "text-left"}`}
+                  />
                 </div>
 
                 <div className="flex items-center justify-between pt-2">
                   <button
                     type="button"
-                    onClick={() => {
-                      setError(null);
-                      setStep(1);
-                    }}
-                    className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--border)] px-4 py-2 text-xs font-medium text-[var(--text-muted)] hover:text-[var(--text)] cursor-pointer"
+                    onClick={() => setStep(1)}
+                    className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--border)] px-4 py-2 text-xs font-medium text-[var(--text-muted)] hover:text-[var(--text)]"
                   >
-                    <ArrowRight size={14} />
-                    الرجوع للشروط
+                    <BackIcon size={14} />
+                    {ev.backToRules}
                   </button>
+
                   <button
                     type="button"
                     onClick={() => {
@@ -520,61 +493,43 @@ export default function SolarEventsApplyModal({
                     }}
                     className="store-action store-action-primary flex items-center gap-2"
                   >
-                    <span>المتابعة للتوقيع والتعهّد</span>
-                    <ArrowLeft size={16} />
+                    <span>{ev.continueToStep3}</span>
+                    <NextIcon size={16} />
                   </button>
                 </div>
               </div>
             )}
 
-            {/* STEP 3: Contract Signature & Pledge */}
+            {/* STEP 3 */}
             {step === 3 && (
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
                   <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1">
-                    قم بتنزيل هذه الصورة وقم بتعديلها باي تطبيق للتعديل الصور لاضافة توقيعك ومن ثم ارفع الصورة مع التوقيع{" "}
-                    <span className="text-red-400">*</span>
+                    {ev.contractImageLabel} <span className="text-red-400">*</span>
                   </label>
                   <SolarSignaturePad
                     value={signedContractUrl}
-                    onChange={(url) => {
-                      setSignedContractUrl(url);
-                      setError(null);
-                    }}
-                    contractImage="/assets/site/solar-events-pledge.png"
-                    contractTitle="صورة عقد وتعهّد إدارة فعاليات الديسكورد – Solar System"
-                    downloadName="عقد_ادارة_فعاليات_سولار.png"
+                    onChange={(url) => setSignedContractUrl(url)}
+                    contractImage="/assets/site/solar-events-contract.png"
+                    contractTitle={ev.contractTitle}
+                    downloadName="solar-events-contract.png"
                   />
                 </div>
 
                 <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4 space-y-2 text-xs leading-relaxed">
                   <div className="flex items-center gap-2 text-[var(--accent)] font-bold">
                     <ShieldCheck size={16} />
-                    <span>تعهّد إدارة فعاليات الديسكورد – Solar System</span>
+                    <span>{ev.pledgeTitle}</span>
                   </div>
-                  <p className="text-[var(--text)]">
-                    أنا المقدّم أدناه، أتعهد بالالتزام بجميع أنظمة وقوانين فريق Solar System المتعلقة بإدارة وتنظيم فعاليات الديسكورد، وأداء المهام الموكلة إليّ وفقًا للإجراءات والتعليمات المعتمدة من الإدارة.
-                  </p>
-                  <p className="font-semibold text-[var(--text)]">وأتعهد بالالتزام بما يلي:</p>
-                  <ul className="list-disc list-inside space-y-0.5 text-[var(--text-muted)] pr-2">
-                    <li>الالتزام بمهام إدارة وتنظيم فعاليات الديسكورد والعمل على إنجاحها.</li>
-                    <li>التحلي بالصدق والأمانة وتحمل المسؤولية في جميع المهام والقرارات المتعلقة بإدارة الفعاليات.</li>
-                    <li>الالتزام بقوانين السيرفر واحترام جميع الأعضاء والمشاركين في الفعاليات.</li>
-                    <li>عدم إساءة استخدام الصلاحيات الممنوحة لي أو استغلالها لأغراض شخصية.</li>
-                    <li>الالتزام بتوجيهات الإدارة والتعليمات المتعلقة بتنظيم الفعاليات وإدارتها.</li>
-                    <li>متابعة الإعلانات والتعليمات الرسمية الخاصة بإدارة الفعاليات عبر سيرفر ديسكورد Solar System.</li>
-                    <li>عدم اتخاذ أي قرارات تتجاوز صلاحياتي أو تخالف أنظمة الفريق دون الرجوع إلى الإدارة.</li>
-                    <li>الالتزام بمدة العقد المعتمدة، والتي لا تتجاوز شهرًا ونصفًا، وعدم الانسحاب من إدارة الفعاليات قبل انتهاء المدة إلا بعد موافقة الإدارة.</li>
-                    <li>إبلاغ الإدارة في حال تعذّر أداء المهام الموكلة إليّ أو وجود ظروف تمنعني من الاستمرار في إدارة الفعاليات.</li>
+                  <p className="text-[var(--text)]">{ev.pledgeIntro}</p>
+                  <ul className="list-disc list-inside space-y-0.5 text-[var(--text-muted)] ps-2">
+                    {ev.pledgeItems.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
                   </ul>
-                  <p className="text-[var(--text-muted)]">
-                    وأقرّ بأن هذا التعهّد خاص بإدارة وتنظيم فعاليات الديسكورد فقط، ولا يُعتبر طلبًا للانضمام إلى الكلان أو الفريق كلاعب. كما أقرّ بأن مخالفة الشروط أو الإخلال بالمسؤوليات قد يؤدي إلى اتخاذ الإجراءات الإدارية المناسبة بحقي.
-                  </p>
-                  <p className="text-[var(--text-muted)]">
-                    وبناءً عليه، أؤكد التزامي الكامل بهذا التعهّد، وأتحمّل مسؤولية تصرفاتي وقراراتي المتعلقة بإدارة فعاليات الديسكورد، وأوافق على الالتزام بجميع الشروط المذكورة أعلاه.
-                  </p>
+                  <p className="text-[var(--text-muted)] pt-1">{ev.pledgeClosing}</p>
                   <p className="font-bold text-[var(--accent)] pt-1 text-[11px]">
-                    Solar System — الالتزام، الاحترام، والمسؤولية.
+                    {ev.pledgeMotto}
                   </p>
 
                   <label className="flex items-center gap-2 pt-2 border-t border-[var(--border)] cursor-pointer">
@@ -585,7 +540,7 @@ export default function SolarEventsApplyModal({
                       className="h-4 w-4 rounded border-[var(--border)] text-[var(--accent)] focus:ring-[var(--accent)]"
                     />
                     <span className="font-semibold text-xs text-[var(--text)]">
-                      موافق/ـة <span className="text-red-400">*</span>
+                      {ev.pledgeAgree} <span className="text-red-400">*</span>
                     </span>
                   </label>
                 </div>
@@ -593,21 +548,19 @@ export default function SolarEventsApplyModal({
                 <div className="flex items-center justify-between pt-2">
                   <button
                     type="button"
-                    onClick={() => {
-                      setError(null);
-                      setStep(2);
-                    }}
-                    className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--border)] px-4 py-2 text-xs font-medium text-[var(--text-muted)] hover:text-[var(--text)] cursor-pointer"
+                    onClick={() => setStep(2)}
+                    className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--border)] px-4 py-2 text-xs font-medium text-[var(--text-muted)] hover:text-[var(--text)]"
                   >
-                    <ArrowRight size={14} />
-                    تعديل البيانات
+                    <BackIcon size={14} />
+                    {ev.editInfo}
                   </button>
+
                   <button
                     type="submit"
                     disabled={busy || !pledgeAgreed}
                     className="store-action store-action-primary px-8"
                   >
-                    {busy ? "جاري الإرسال..." : "إرسال طلب إدارة الفعاليات"}
+                    {busy ? ev.submitting : ev.submitBtn}
                   </button>
                 </div>
               </form>

@@ -18,7 +18,7 @@ import {
   SOLAR_MEMBER_SOCIAL_PLATFORMS,
   type SolarMember,
 } from "@/lib/data/solar-members";
-import { solarExtraCopy } from "@/lib/data/solar-i18n";
+import { solarExtraCopy, translateSolarRank } from "@/lib/data/solar-i18n";
 import "@/components/community/community.css";
 
 function SocialPlatformIcon({ platform }: { platform: string }) {
@@ -122,7 +122,7 @@ export default function SolarClanMembers() {
                   color: "var(--accent)",
                 }}
               >
-                {member.rank}
+                {translateSolarRank(member.rank, locale)}
               </span>
 
               {member.handle ? (
@@ -201,7 +201,7 @@ export default function SolarClanMembers() {
                     color: "var(--accent)",
                   }}
                 >
-                  {selected.rank}
+                  {translateSolarRank(selected.rank, locale)}
                 </span>
               </div>
             </div>

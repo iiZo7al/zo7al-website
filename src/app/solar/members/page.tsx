@@ -19,7 +19,8 @@ import SolarLeaveModal from "@/components/solar/SolarLeaveModal";
 import SolarWarningPledgeModal from "@/components/solar/SolarWarningPledgeModal";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { SOLAR_LEAVE_DURATION_LABELS } from "@/lib/data/solar-leave";
-import { solarExtraCopy } from "@/lib/data/solar-i18n";
+import { solarExtraCopy, translateSolarRank } from "@/lib/data/solar-i18n";
+import { solarModalsCopy } from "@/lib/data/solar-modals-i18n";
 import type { SolarUserStatus } from "@/lib/server/solar-member-status";
 import type { SolarWarningPledge } from "@/lib/data/solar-warnings";
 import "@/components/store/store.css";
@@ -151,7 +152,9 @@ export default function SolarMembersPortalPage() {
                     </span>
                   </div>
                   <p className="mt-1 text-sm text-[var(--text-muted)]">
-                    {effectiveStatus.memberInfo?.rank || tx.membersPortalSubtitle}
+                    {effectiveStatus.memberInfo?.rank
+                      ? translateSolarRank(effectiveStatus.memberInfo.rank, locale)
+                      : tx.membersPortalSubtitle}
                   </p>
                 </div>
               </div>
@@ -177,10 +180,10 @@ export default function SolarMembersPortalPage() {
                   </span>
                   <div>
                     <h2 className="text-lg font-bold text-[var(--text)]">
-                      التعهّدات والإنذارات الموجّهة لك
+                      {tx.warningPledgesTitle}
                     </h2>
                     <p className="text-xs text-[var(--text-muted)] mt-0.5">
-                      يرجى قراءة التعهّد وتوقيعه قبل انتهاء مدته المحددة.
+                      {tx.warningPledgesDesc}
                     </p>
                   </div>
                 </div>
@@ -201,7 +204,7 @@ export default function SolarMembersPortalPage() {
                       >
                         <div className="flex flex-wrap items-center justify-between gap-2">
                           <span className="text-sm font-bold text-[var(--text)]">
-                            تعهّد بعد استلام تحذير – Solar System
+                            {tx.warningPledgeCardTitle}
                           </span>
                           <span
                             className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-semibold ${
@@ -211,12 +214,12 @@ export default function SolarMembersPortalPage() {
                             }`}
                           >
                             {isSigned ? <CheckCircle2 size={13} /> : <Clock size={13} />}
-                            {isSigned ? "تم التوقيع والإرسال" : "بانتظار توقيعك"}
+                            {isSigned ? tx.warningSigned : tx.warningPending}
                           </span>
                         </div>
 
                         <div className="rounded-xl border border-[var(--border)] bg-black/20 p-3 text-xs space-y-1">
-                          <span className="font-semibold text-rose-300">السبب:</span>
+                          <span className="font-semibold text-rose-300">{tx.warningReasonLabel}</span>
                           <p className="text-[var(--text)] leading-relaxed whitespace-pre-wrap">
                             {pledge.reason}
                           </p>
@@ -224,7 +227,7 @@ export default function SolarMembersPortalPage() {
 
                         <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
                           <span className="text-[11px] text-[var(--text-muted)]">
-                            المدة: <strong className="text-[var(--text)]">{pledge.durationLabel}</strong> — ينتهي في{" "}
+                            {tx.warningDurationLabel} <strong className="text-[var(--text)]">{pledge.durationLabel}</strong> — {tx.warningExpiresAt}{" "}
                             <span dir="ltr">{expiresFormatted}</span>
                           </span>
 
@@ -236,7 +239,7 @@ export default function SolarMembersPortalPage() {
                               style={{ background: "var(--accent)", color: "#07080B" }}
                             >
                               <FileSignature size={15} />
-                              فتح وتوقيع التعهّد
+                              {tx.openAndSignPledge}
                             </button>
                           )}
                         </div>
@@ -267,10 +270,12 @@ export default function SolarMembersPortalPage() {
               ) : (
                 <div className="space-y-3">
                   {effectiveStatus.leaveRequests.map((req) => {
+                    const leaveDurations = solarModalsCopy(locale).leave.durations;
                     const durText =
                       req.leaveDuration === "other" && req.leaveDurationCustom
                         ? req.leaveDurationCustom
-                        : SOLAR_LEAVE_DURATION_LABELS[req.leaveDuration] ||
+                        : leaveDurations[req.leaveDuration] ||
+                          SOLAR_LEAVE_DURATION_LABELS[req.leaveDuration] ||
                           req.leaveDuration;
 
                     const badge =

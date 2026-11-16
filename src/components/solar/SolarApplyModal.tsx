@@ -18,6 +18,8 @@ import { useAccount } from "@/components/account/AccountProvider";
 import AccountLogin from "@/components/account/AccountLogin";
 import SolarSignaturePad from "./SolarSignaturePad";
 import { solarCopy } from "@/lib/data/solar-copy";
+import { solarModalsCopy } from "@/lib/data/solar-modals-i18n";
+import { translateSolarRank } from "@/lib/data/solar-i18n";
 import type {
   SolarRole,
   SolarAdminSubType,
@@ -53,7 +55,13 @@ export default function SolarApplyModal({
 }) {
   const dialog = useRef<HTMLDialogElement>(null);
   const locale = useLocale();
+  const isAr = locale === "ar";
+  const dir = isAr ? "rtl" : "ltr";
   const t = solarCopy(locale);
+  const m = solarModalsCopy(locale);
+  const ap = m.apply;
+  const s = m.shared;
+
   const { account } = useAccount();
   const [showLogin, setShowLogin] = useState(false);
   const [step, setStep] = useState<1 | 2 | 3>(1);
@@ -101,17 +109,15 @@ export default function SolarApplyModal({
   }, [isOpen]);
 
   const validateStep2 = () => {
-    if (!name.trim()) return "يرجى كتابة اسمك";
-    if (!nickname.trim()) return "يرجى كتابة لقبك";
-    if (!age.trim()) return "يرجى كتابة عمرك";
-    if (!country.trim()) return "يرجى كتابة دولتك أو مدينتك";
-    if (!discord.trim()) return "يرجى كتابة حسابك الديسكورد";
-    if (!whatsapp.trim()) return "يرجى كتابة رقم جوالك للتواصل";
-    if (!experienceDuration.trim()) return "يرجى تحديد مدة خبرتك في التخصص";
-    if (role === "creator" && !channelUrl.trim())
-      return "يرجى وضع رابط قناتك أو حسابك";
-    if (role === "streamer" && !streamUrl.trim())
-      return "يرجى وضع رابط منصة البث الخاصة بك";
+    if (!name.trim()) return ap.errName;
+    if (!nickname.trim()) return ap.errNickname;
+    if (!age.trim()) return ap.errAge;
+    if (!country.trim()) return ap.errCountry;
+    if (!discord.trim()) return ap.errDiscord;
+    if (!whatsapp.trim()) return ap.errPhone;
+    if (!experienceDuration.trim()) return ap.errExperience;
+    if (role === "creator" && !channelUrl.trim()) return ap.errChannel;
+    if (role === "streamer" && !streamUrl.trim()) return ap.errStream;
     return null;
   };
 
@@ -127,19 +133,23 @@ export default function SolarApplyModal({
     }
 
     if (!contractDuration) {
-      setError("يرجى اختيار مدة العقد المطلوبة");
+      setError(ap.errCustomContract);
+      return;
+    }
+    if (contractDuration === "other" && !contractDurationCustom.trim()) {
+      setError(ap.errCustomContract);
       return;
     }
     if (!signedContractUrl) {
-      setError("يرجى حفظ التوقيع أو رفع صورة العقد الموقّعة لإتمام التقديم.");
+      setError(ap.errSignature);
       return;
     }
     if (!pledgeAgreed) {
-      setError("يرجى الموافقة على تعهد مقدّم Solar System لإتمام التقديم");
+      setError(ap.errPledge);
       return;
     }
     if (!whyJoin.trim()) {
-      setError("يرجى الإجابة عن: لماذا ترغب بالانضمام إلى Solar System؟");
+      setError(ap.errWhyJoin);
       return;
     }
 
@@ -186,23 +196,23 @@ export default function SolarApplyModal({
       const data = await res.json();
       if (!res.ok || !data.ok) {
         if (data.error === "AUTH_REQUIRED") {
-          setError("يجب تسجيل الدخول بحسابك أولاً لإتمام التقديم.");
+          setError(s.errAuth);
         } else if (data.error === "RECRUITMENT_CLOSED") {
-          setError("التقديم على كلان Solar مغلق حالياً من قِبل الإدارة.");
+          setError(ap.closedTitle);
         } else if (data.error === "ROLE_CLOSED") {
-          setError("التقديم على هذا القسم مغلق مؤقتاً.");
+          setError(ap.closedTitle);
         } else if (data.error === "RATE_LIMIT") {
-          setError("لقد أرسلت طلباً مؤخراً. يرجى الانتظار قليلاً قبل المحاولة مجدداً.");
+          setError(s.errRateLimit);
         } else if (data.error === "ALREADY_APPLIED") {
-          setError("لديك طلب انضمام قيد المراجعة بالفعل.");
+          setError(ap.errAlreadyApplied);
         } else {
-          setError("حدث خطأ أثناء إرسال الطلب، يرجى التحقق من صحة البيانات والمحاولة مجدداً.");
+          setError(s.errServer);
         }
         return;
       }
       setSuccess({ reference: data.reference, token: data.token });
     } catch {
-      setError("تعذر الاتصال بالخادم، يرجى المحاولة لاحقاً.");
+      setError(s.errNetwork);
     } finally {
       setBusy(false);
     }
@@ -227,6 +237,9 @@ export default function SolarApplyModal({
     onClose();
   };
 
+  const BackIcon = isAr ? ArrowRight : ArrowLeft;
+  const NextIcon = isAr ? ArrowLeft : ArrowRight;
+
   return (
     <dialog
       ref={dialog}
@@ -235,19 +248,19 @@ export default function SolarApplyModal({
       aria-labelledby="solar-apply-dialog-title"
       className="checkout-shell store-checkout max-w-2xl"
     >
-      <header className="store-checkout-header" dir="rtl">
+      <header className="store-checkout-header" dir={dir}>
         <div className="store-checkout-brand">
           <span className="store-rank-icon">
             <SolidIcon name="trophy" size={20} />
           </span>
           <div>
             <h2 id="solar-apply-dialog-title" className="font-semibold text-lg">
-              تقديم لفريق Solar System
+              {ap.title}
             </h2>
             <p className="text-xs text-[var(--text-muted)]">
-              {step === 1 && "الخطوة 1 من 3: قوانين وشروط مقدّمي الكلان"}
-              {step === 2 && "الخطوة 2 من 3: البيانات الشخصية والتخصص"}
-              {step === 3 && "الخطوة 3 من 3: العقد، التعهد، وتأكيد التقديم"}
+              {step === 1 && ap.step1Sub}
+              {step === 2 && ap.step2Sub}
+              {step === 3 && ap.step3Sub}
             </p>
           </div>
         </div>
@@ -255,13 +268,13 @@ export default function SolarApplyModal({
           type="button"
           className="store-close"
           onClick={onClose}
-          aria-label="إغلاق"
+          aria-label={s.closeAria}
         >
           <span aria-hidden="true">×</span>
         </button>
       </header>
 
-      <div className="store-checkout-body" dir={locale === "ar" ? "rtl" : "ltr"}>
+      <div className="store-checkout-body" dir={dir}>
         {success ? (
           <div className="space-y-6 text-center py-4">
             <div
@@ -315,13 +328,10 @@ export default function SolarApplyModal({
 
             <div className="space-y-2 max-w-md mx-auto">
               <h3 className="text-xl sm:text-2xl font-bold text-[var(--text)]">
-                {locale === "ar" ? "التقديم مغلق حالياً" : "Applications Closed"}
+                {ap.closedTitle}
               </h3>
               <p className="text-sm text-[var(--text-muted)] leading-relaxed">
-                {settings.announcement ||
-                  (locale === "ar"
-                    ? "باب الانضمام لكلان Solar System مغلق مؤقتاً في الوقت الحالي. تابع حسابات الكلان للإعلان عن فتح التقديم مجدداً."
-                    : "Solar System clan applications are temporarily closed at this time. Follow official clan channels for announcements.")}
+                {settings.announcement || ap.closedFallback}
               </p>
             </div>
 
@@ -398,7 +408,7 @@ export default function SolarApplyModal({
                 <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[var(--surface-elevated)] border text-[11px]">
                   1
                 </span>
-                <span>القوانين والشروط</span>
+                <span>{ap.step1Tab}</span>
               </button>
 
               <span className="text-[var(--border-strong)]">──</span>
@@ -413,7 +423,7 @@ export default function SolarApplyModal({
                 <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[var(--surface-elevated)] border text-[11px]">
                   2
                 </span>
-                <span>البيانات والتخصص</span>
+                <span>{ap.step2Tab}</span>
               </button>
 
               <span className="text-[var(--border-strong)]">──</span>
@@ -436,7 +446,7 @@ export default function SolarApplyModal({
                 <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[var(--surface-elevated)] border text-[11px]">
                   3
                 </span>
-                <span>العقد والتعهد</span>
+                <span>{ap.step3Tab}</span>
               </button>
             </div>
 
@@ -453,7 +463,7 @@ export default function SolarApplyModal({
                   <UserCheck size={14} />
                 </div>
                 <div className="leading-tight">
-                  <span className="text-[var(--text-muted)] text-[11px]">حسابك: </span>
+                  <span className="text-[var(--text-muted)] text-[11px]">{s.yourAccount} </span>
                   <strong className="text-[var(--text)]">
                     {account.name || account.username || account.email}
                   </strong>
@@ -488,94 +498,39 @@ export default function SolarApplyModal({
                 <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4 max-h-[380px] overflow-y-auto space-y-4 text-xs leading-relaxed text-[var(--text)]">
                   <div className="border-b border-[var(--border)] pb-2">
                     <h3 className="font-bold text-sm text-[var(--accent)]">
-                      قوانين وشروط مقدّمي Solar System
+                      {ap.rulesHeading}
                     </h3>
                     <p className="text-[11px] text-[var(--text-muted)] mt-1">
-                      يرجى قراءة جميع القوانين والشروط التالية بعناية قبل الموافقة على الانضمام إلى طاقم التقديم في كلان Solar System.
+                      {ap.rulesIntro}
                     </p>
                   </div>
 
-                  <div>
-                    <h4 className="font-bold text-[var(--text)] mb-1">1. الالتزام بالقوانين</h4>
-                    <ul className="list-disc list-inside space-y-0.5 text-[var(--text-muted)] pr-2">
-                      <li>الالتزام بجميع قوانين وأنظمة كلان Solar System.</li>
-                      <li>احترام الإدارة العليا وتنفيذ توجيهاتها.</li>
-                      <li>عدم استغلال منصب التقديم لتحقيق مصالح شخصية.</li>
-                    </ul>
-                  </div>
-
-                  <div>
-                    <h4 className="font-bold text-[var(--text)] mb-1">2. شروط التقديم</h4>
-                    <ul className="list-disc list-inside space-y-0.5 text-[var(--text-muted)] pr-2">
-                      <li>التعامل مع جميع المتقدمين باحترام وعدالة.</li>
-                      <li>عدم قبول أو رفض أي متقدم بناءً على الصداقة أو الخلافات الشخصية.</li>
-                      <li>الالتزام بمعايير الاختبارات المعتمدة من الإدارة.</li>
-                      <li>عدم تسريب أسئلة الاختبارات أو إجاباتها أو تفاصيلها.</li>
-                      <li>عدم التلاعب بنتائج الاختبارات أو تغييرها دون إذن الإدارة.</li>
-                    </ul>
-                  </div>
-
-                  <div>
-                    <h4 className="font-bold text-[var(--text)] mb-1">3. السلوك والانضباط</h4>
-                    <ul className="list-disc list-inside space-y-0.5 text-[var(--text-muted)] pr-2">
-                      <li>التحلي بالأخلاق والاحترام أثناء التعامل مع الأعضاء والمتقدمين.</li>
-                      <li>يمنع افتعال المشاكل أو إثارة الفتن بين أعضاء الكلان.</li>
-                      <li>يمنع الإساءة إلى أي عضو أو متقدم أو التقليل من شأنه.</li>
-                      <li>يمنع استخدام الصلاحيات للتهديد أو الظلم أو الانتقام الشخصي.</li>
-                    </ul>
-                  </div>
-
-                  <div>
-                    <h4 className="font-bold text-[var(--text)] mb-1">4. السرية والأمانة</h4>
-                    <ul className="list-disc list-inside space-y-0.5 text-[var(--text-muted)] pr-2">
-                      <li>المحافظة على سرية بيانات المتقدمين ومعلومات الكلان الداخلية.</li>
-                      <li>يمنع نشر المعلومات الداخلية أو مشاركتها مع أشخاص غير مخوّلين.</li>
-                      <li>الالتزام بالأمانة والمصداقية في جميع أعمال التقديم.</li>
-                    </ul>
-                  </div>
-
-                  <div>
-                    <h4 className="font-bold text-[var(--text)] mb-1">5. المسؤوليات والصلاحيات</h4>
-                    <ul className="list-disc list-inside space-y-0.5 text-[var(--text-muted)] pr-2">
-                      <li>الالتزام بالمهام الموكلة إليك وعدم تجاوز حدود صلاحياتك.</li>
-                      <li>يمنع تغيير القوانين أو إجراءات التقديم دون موافقة الإدارة.</li>
-                      <li>يجب إبلاغ الإدارة عن أي مخالفة أو محاولة تلاعب يتم اكتشافها.</li>
-                      <li>يتحمل المقدّم مسؤولية تصرفاته والقرارات الصادرة عنه ضمن مهامه.</li>
-                    </ul>
-                  </div>
-
-                  <div>
-                    <h4 className="font-bold text-[var(--text)] mb-1">6. مدة العقد وإنهاء الصلاحيات</h4>
-                    <ul className="list-disc list-inside space-y-0.5 text-[var(--text-muted)] pr-2">
-                      <li>تكون مدة العقد لا تقل عن شهرين ولا تزيد على سنتين، أو حسب المدة الأخرى التي يتم الاتفاق عليها مع الإدارة.</li>
-                      <li>يخضع تجديد العقد لموافقة الإدارة وتقييم أداء المقدّم.</li>
-                      <li>يحق للإدارة سحب صلاحيات المقدّم أو إنهاء عقده عند مخالفة القوانين والشروط.</li>
-                      <li>يحق للإدارة اتخاذ الإجراءات المناسبة وفقًا لطبيعة المخالفة ومدى خطورتها.</li>
-                    </ul>
-                  </div>
-
-                  <div>
-                    <h4 className="font-bold text-[var(--text)] mb-1">7. الموافقة النهائية</h4>
-                    <p className="text-[var(--text-muted)]">
-                      بتقديم طلب الانضمام إلى طاقم التقديم في Solar System، أقرّ بأنني قرأت جميع القوانين والشروط المذكورة أعلاه، وفهمتها، وأوافق على الالتزام بها طوال مدة العقد. كما أقرّ بأن مخالفة هذه القوانين قد تؤدي إلى سحب صلاحياتي أو إنهاء عقدي بقرار من الإدارة.
-                    </p>
-                  </div>
-
-                  <div>
-                    <h4 className="font-bold text-[var(--text)] mb-1">8. ديسكورد الفريق</h4>
-                    <p className="text-[var(--text-muted)]">
-                      يُعدّ سيرفر ديسكورد الفريق المنصة الرسمية والأساسية لجميع أمور فريق Solar System. تتم جميع أمور الفريق داخل السيرفر (إعلانات، اجتماعات، فعاليات، تقديمات).
-                    </p>
-                    <a
-                      href="https://discord.gg/bCHAGPTUm"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="mt-2 inline-flex items-center gap-1.5 text-xs text-[var(--accent)] hover:underline"
-                    >
-                      <span>الانضمام إلى سيرفر ديسكورد الفريق الرسمي</span>
-                      <ExternalLink size={12} />
-                    </a>
-                  </div>
+                  {ap.ruleSections.map((sec, idx) => (
+                    <div key={sec.title}>
+                      <h4 className="font-bold text-[var(--text)] mb-1">{sec.title}</h4>
+                      {sec.items && (
+                        <ul className="list-disc list-inside space-y-0.5 text-[var(--text-muted)] ps-2">
+                          {sec.items.map((item) => (
+                            <li key={item}>{item}</li>
+                          ))}
+                        </ul>
+                      )}
+                      {sec.text && (
+                        <p className="text-[var(--text-muted)]">{sec.text}</p>
+                      )}
+                      {idx === ap.ruleSections.length - 1 && (
+                        <a
+                          href="https://discord.gg/bCHAGPTUm"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="mt-2 inline-flex items-center gap-1.5 text-xs text-[var(--accent)] hover:underline"
+                        >
+                          <span>{ap.discordLinkLabel}</span>
+                          <ExternalLink size={12} />
+                        </a>
+                      )}
+                    </div>
+                  ))}
                 </div>
 
                 <div className="pt-2">
@@ -584,8 +539,8 @@ export default function SolarApplyModal({
                     onClick={() => setStep(2)}
                     className="store-action store-action-primary w-full flex items-center justify-center gap-2"
                   >
-                    <span>المتابعة لتعبئة البيانات الشخصية</span>
-                    <ArrowLeft size={16} />
+                    <span>{ap.continueToStep2}</span>
+                    <NextIcon size={16} />
                   </button>
                 </div>
               </div>
@@ -597,7 +552,7 @@ export default function SolarApplyModal({
                 <div className="grid gap-3 sm:grid-cols-2">
                   <div>
                     <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1">
-                      اسمك؟ <span className="text-red-400">*</span>
+                      {ap.nameLabel} <span className="text-red-400">*</span>
                     </label>
                     <input
                       type="text"
@@ -605,14 +560,14 @@ export default function SolarApplyModal({
                       maxLength={64}
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      placeholder="مثال: أحمد"
+                      placeholder={ap.namePlaceholder}
                       className="w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--text)] outline-none focus:border-[var(--accent)]"
                     />
                   </div>
 
                   <div>
                     <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1">
-                      لقبك؟ <span className="text-red-400">*</span>
+                      {ap.nicknameLabel} <span className="text-red-400">*</span>
                     </label>
                     <input
                       type="text"
@@ -620,7 +575,7 @@ export default function SolarApplyModal({
                       maxLength={64}
                       value={nickname}
                       onChange={(e) => setNickname(e.target.value)}
-                      placeholder="اسم الشهرة / الـ Nickname"
+                      placeholder={ap.nicknamePlaceholder}
                       className="w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--text)] outline-none focus:border-[var(--accent)]"
                     />
                   </div>
@@ -629,7 +584,7 @@ export default function SolarApplyModal({
                 <div className="grid gap-3 sm:grid-cols-2">
                   <div>
                     <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1">
-                      عمرك؟ <span className="text-red-400">*</span>
+                      {ap.ageLabel} <span className="text-red-400">*</span>
                     </label>
                     <input
                       type="text"
@@ -637,14 +592,14 @@ export default function SolarApplyModal({
                       maxLength={12}
                       value={age}
                       onChange={(e) => setAge(e.target.value)}
-                      placeholder="مثال: 18"
+                      placeholder={ap.agePlaceholder}
                       className="w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--text)] outline-none focus:border-[var(--accent)]"
                     />
                   </div>
 
                   <div>
                     <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1">
-                      من وين؟ <span className="text-red-400">*</span>
+                      {ap.countryLabel} <span className="text-red-400">*</span>
                     </label>
                     <input
                       type="text"
@@ -652,7 +607,7 @@ export default function SolarApplyModal({
                       maxLength={64}
                       value={country}
                       onChange={(e) => setCountry(e.target.value)}
-                      placeholder="الدولة / المدينة (مثال: السعودية - الرياض)"
+                      placeholder={ap.countryPlaceholder}
                       className="w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--text)] outline-none focus:border-[var(--accent)]"
                     />
                   </div>
@@ -661,7 +616,7 @@ export default function SolarApplyModal({
                 <div className="grid gap-3 sm:grid-cols-2">
                   <div>
                     <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1">
-                      حسابك ديسكورد؟ (اليوزر) <span className="text-red-400">*</span>
+                      {ap.discordLabel} <span className="text-red-400">*</span>
                     </label>
                     <input
                       type="text"
@@ -670,14 +625,14 @@ export default function SolarApplyModal({
                       dir="ltr"
                       value={discord}
                       onChange={(e) => setDiscord(e.target.value)}
-                      placeholder="zo7al أو user#0000"
-                      className="w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--text)] outline-none focus:border-[var(--accent)] text-right"
+                      placeholder={ap.discordPlaceholder}
+                      className={`w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--text)] outline-none focus:border-[var(--accent)] ${isAr ? "text-right" : "text-left"}`}
                     />
                   </div>
 
                   <div>
                     <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1">
-                      رقم جوالك؟ (للتواصل) <span className="text-red-400">*</span>
+                      {ap.phoneLabel} <span className="text-red-400">*</span>
                     </label>
                     <input
                       type="tel"
@@ -687,7 +642,7 @@ export default function SolarApplyModal({
                       value={whatsapp}
                       onChange={(e) => setWhatsapp(e.target.value)}
                       placeholder="+966 5x xxx xxxx"
-                      className="w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--text)] outline-none focus:border-[var(--accent)] text-right"
+                      className={`w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--text)] outline-none focus:border-[var(--accent)] ${isAr ? "text-right" : "text-left"}`}
                     />
                   </div>
                 </div>
@@ -695,7 +650,7 @@ export default function SolarApplyModal({
                 {/* Role Selection */}
                 <div>
                   <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1">
-                    وش تقدم؟ <span className="text-red-400">*</span>
+                    {ap.roleLabel} <span className="text-red-400">*</span>
                   </label>
                   <select
                     value={role}
@@ -703,22 +658,28 @@ export default function SolarApplyModal({
                     className="w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] px-3.5 py-2 text-sm text-[var(--text)] outline-none focus:border-[var(--accent)]"
                   >
                     {[
-                      { id: "creator", label: "صانع محتوى" },
-                      { id: "streamer", label: "ستريمر" },
-                      { id: "designer", label: "مصمم" },
-                      { id: "editor", label: "ممنتج" },
-                      { id: "player", label: "لاعب بطولات" },
-                      { id: "admin", label: "اداري" },
-                      { id: "writer", label: "كاتب افكار" },
-                      ...(settings?.customRoles ?? []),
+                      { id: "creator", label: ap.roles.creator },
+                      { id: "streamer", label: ap.roles.streamer },
+                      { id: "designer", label: ap.roles.designer },
+                      { id: "editor", label: ap.roles.editor },
+                      { id: "player", label: ap.roles.player },
+                      { id: "admin", label: ap.roles.admin },
+                      { id: "writer", label: ap.roles.writer },
+                      ...(settings?.customRoles ?? []).map((r) => ({
+                        id: r.id,
+                        label: translateSolarRank(r.label, locale),
+                      })),
                     ]
                       .filter((r) => !settings?.hiddenRoles?.includes(r.id))
                       .map((r) => {
                         const isClosed = settings?.closedRoles.includes(r.id);
-                        const label = settings?.labelOverrides?.[`role:${r.id}`] || r.label;
+                        const override = settings?.labelOverrides?.[`role:${r.id}`];
+                        const label = override
+                          ? translateSolarRank(override, locale)
+                          : r.label;
                         return (
                           <option key={r.id} value={r.id} disabled={isClosed}>
-                            {label} {isClosed ? "— (مغلق مؤقتاً)" : ""}
+                            {label} {isClosed ? s.closedBadge : ""}
                           </option>
                         );
                       })}
@@ -729,7 +690,7 @@ export default function SolarApplyModal({
                 {role === "player" && (
                   <div className="rounded-xl border border-[var(--border)] bg-[var(--surface-elevated)] p-3 space-y-2">
                     <label className="block text-xs font-semibold text-[var(--text-muted)]">
-                      اللعبة التنافسية <span className="text-red-400">*</span>
+                      {ap.gameLabel} <span className="text-red-400">*</span>
                     </label>
                     <select
                       value={game}
@@ -737,22 +698,28 @@ export default function SolarApplyModal({
                       className="w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--text)] outline-none focus:border-[var(--accent)]"
                     >
                       {[
-                        { id: "fortnite", label: "فورتنايت (Fortnite)" },
-                        { id: "rocket", label: "روكيت ليق (Rocket League)" },
-                        { id: "minecraft", label: "ماينكرافت (Minecraft)" },
-                        { id: "fifa", label: "فيفا / FC (FIFA)" },
-                        { id: "cod", label: "كود (Call of Duty)" },
-                        ...(settings?.customGames ?? []),
+                        { id: "fortnite", label: ap.games.fortnite },
+                        { id: "rocket", label: ap.games.rocket },
+                        { id: "minecraft", label: ap.games.minecraft },
+                        { id: "fifa", label: ap.games.fifa },
+                        { id: "cod", label: ap.games.cod },
+                        ...(settings?.customGames ?? []).map((g) => ({
+                          id: g.id,
+                          label: translateSolarRank(g.label, locale),
+                        })),
                       ]
                         .filter((g) => !settings?.hiddenGames?.includes(g.id))
                         .map((g) => {
                           const isManualClosed = settings?.closedGames?.includes(g.id);
                           const isQuotaFull = settings?.fullPlanKeys?.includes(`player:${g.id}`);
                           const isClosed = Boolean(isManualClosed || isQuotaFull);
-                          const label = settings?.labelOverrides?.[`game:${g.id}`] || g.label;
+                          const override = settings?.labelOverrides?.[`game:${g.id}`];
+                          const label = override
+                            ? translateSolarRank(override, locale)
+                            : g.label;
                           return (
                             <option key={g.id} value={g.id} disabled={isClosed}>
-                              {label} {isQuotaFull ? "— (مكتمل)" : isManualClosed ? "— (مغلق مؤقتاً)" : ""}
+                              {label} {isQuotaFull ? s.fullBadge : isManualClosed ? s.closedBadge : ""}
                             </option>
                           );
                         })}
@@ -765,7 +732,7 @@ export default function SolarApplyModal({
                   <div className="rounded-xl border border-[var(--border)] bg-[var(--surface-elevated)] p-3 space-y-3">
                     <div>
                       <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1">
-                        نوع الإشراف / الرتبة الإدارية <span className="text-red-400">*</span>
+                        {ap.adminSubTypeLabel} <span className="text-red-400">*</span>
                       </label>
                       <select
                         value={adminSubType}
@@ -775,28 +742,34 @@ export default function SolarApplyModal({
                         className="w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--text)] outline-none focus:border-[var(--accent)]"
                       >
                         {[
-                          { id: "president", label: "الرئيس" },
-                          { id: "vice_president", label: "نائب الرئيس" },
-                          { id: "exec_supervisor", label: "مشرف تنفيذي" },
-                          { id: "dept_supervisor", label: "مشرف أقسام" },
-                          { id: "general_admin", label: "إدارة عامة" },
-                          { id: "admin_monitor", label: "مراقب إدارة" },
-                          { id: "creators_supervisor", label: "مشرف صناع محتوى" },
-                          { id: "creators_admin", label: "إداري صناع محتوى" },
-                          { id: "designers_supervisor", label: "مشرف مصممين" },
-                          { id: "players_supervisor", label: "مشرف لاعبين" },
-                          { id: "players_admin", label: "إداري لاعبين" },
-                          { id: "editors_supervisor", label: "مشرف ممنتجين" },
-                          { id: "streamers_supervisor", label: "مشرف ستريمرز" },
-                          ...(settings?.customAdminSubTypes ?? []),
+                          { id: "president", label: ap.adminSubTypes.president },
+                          { id: "vice_president", label: ap.adminSubTypes.vice_president },
+                          { id: "exec_supervisor", label: ap.adminSubTypes.exec_supervisor },
+                          { id: "dept_supervisor", label: ap.adminSubTypes.dept_supervisor },
+                          { id: "general_admin", label: ap.adminSubTypes.general_admin },
+                          { id: "admin_monitor", label: ap.adminSubTypes.admin_monitor },
+                          { id: "creators_supervisor", label: ap.adminSubTypes.creators_supervisor },
+                          { id: "creators_admin", label: ap.adminSubTypes.creators_admin },
+                          { id: "designers_supervisor", label: ap.adminSubTypes.designers_supervisor },
+                          { id: "players_supervisor", label: ap.adminSubTypes.players_supervisor },
+                          { id: "players_admin", label: ap.adminSubTypes.players_admin },
+                          { id: "editors_supervisor", label: ap.adminSubTypes.editors_supervisor },
+                          { id: "streamers_supervisor", label: ap.adminSubTypes.streamers_supervisor },
+                          ...(settings?.customAdminSubTypes ?? []).map((sub) => ({
+                            id: sub.id,
+                            label: translateSolarRank(sub.label, locale),
+                          })),
                         ]
                           .filter((sub) => !settings?.hiddenAdminSubTypes?.includes(sub.id))
                           .map((sub) => {
                             const isClosed = settings?.closedAdminSubTypes?.includes(sub.id);
-                            const label = settings?.labelOverrides?.[`sub:${sub.id}`] || sub.label;
+                            const override = settings?.labelOverrides?.[`sub:${sub.id}`];
+                            const label = override
+                              ? translateSolarRank(override, locale)
+                              : sub.label;
                             return (
                               <option key={sub.id} value={sub.id} disabled={isClosed}>
-                                {label} {isClosed ? "— (مغلق مؤقتاً)" : ""}
+                                {label} {isClosed ? s.closedBadge : ""}
                               </option>
                             );
                           })}
@@ -807,7 +780,7 @@ export default function SolarApplyModal({
                       adminSubType === "players_admin") && (
                       <div className="pt-2 border-t border-[var(--border)]">
                         <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1">
-                          اللعبة (فيفا، فورت، روكيت، ماينكرافت، أو كود) <span className="text-red-400">*</span>
+                          {ap.adminGameLabel} <span className="text-red-400">*</span>
                         </label>
                         <select
                           value={game}
@@ -815,12 +788,15 @@ export default function SolarApplyModal({
                           className="w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--text)] outline-none focus:border-[var(--accent)]"
                         >
                           {[
-                            { id: "fifa", label: "فيفا / FC (FIFA)" },
-                            { id: "fortnite", label: "فورتنايت (Fortnite)" },
-                            { id: "rocket", label: "روكيت ليق (Rocket League)" },
-                            { id: "minecraft", label: "ماينكرافت (Minecraft)" },
-                            { id: "cod", label: "كود (Call of Duty)" },
-                            ...(settings?.customGames ?? []),
+                            { id: "fifa", label: ap.games.fifa },
+                            { id: "fortnite", label: ap.games.fortnite },
+                            { id: "rocket", label: ap.games.rocket },
+                            { id: "minecraft", label: ap.games.minecraft },
+                            { id: "cod", label: ap.games.cod },
+                            ...(settings?.customGames ?? []).map((g) => ({
+                              id: g.id,
+                              label: translateSolarRank(g.label, locale),
+                            })),
                           ]
                             .filter((g) => !settings?.hiddenGames?.includes(g.id))
                             .map((g) => {
@@ -829,10 +805,13 @@ export default function SolarApplyModal({
                                 `admin:${adminSubType}:${g.id}`
                               );
                               const isClosed = Boolean(isManualClosed || isQuotaFull);
-                              const label = settings?.labelOverrides?.[`game:${g.id}`] || g.label;
+                              const override = settings?.labelOverrides?.[`game:${g.id}`];
+                              const label = override
+                                ? translateSolarRank(override, locale)
+                                : g.label;
                               return (
                                 <option key={g.id} value={g.id} disabled={isClosed}>
-                                  {label} {isQuotaFull ? "— (مكتمل)" : isManualClosed ? "— (مغلق مؤقتاً)" : ""}
+                                  {label} {isQuotaFull ? s.fullBadge : isManualClosed ? s.closedBadge : ""}
                                 </option>
                               );
                             })}
@@ -846,7 +825,7 @@ export default function SolarApplyModal({
                 {(role === "creator" || role === "streamer") && (
                   <div>
                     <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1">
-                      لو اخترت صانع محتوى او ستريمر (حط رابط قناتك أو حسابك) <span className="text-red-400">*</span>
+                      {ap.channelLabel} <span className="text-red-400">*</span>
                     </label>
                     <input
                       type="url"
@@ -860,20 +839,19 @@ export default function SolarApplyModal({
                       }
                       placeholder={
                         role === "creator"
-                          ? "https://youtube.com/@... أو https://tiktok.com/@..."
-                          : "https://twitch.tv/... أو https://kick.com/..."
+                          ? ap.channelPlaceholderCreator
+                          : ap.channelPlaceholderStreamer
                       }
-                      className="w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--text)] outline-none focus:border-[var(--accent)] text-right"
+                      className={`w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--text)] outline-none focus:border-[var(--accent)] ${isAr ? "text-right" : "text-left"}`}
                     />
                   </div>
                 )}
-
 
                 {/* Portfolio URL */}
                 {(role === "writer" || role === "editor" || role === "designer") && (
                   <div>
                     <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1">
-                      رابط معرض الأعمال / النماذج (اختياري)
+                      {ap.portfolioLabel}
                     </label>
                     <input
                       type="url"
@@ -881,7 +859,7 @@ export default function SolarApplyModal({
                       value={portfolioUrl}
                       onChange={(e) => setPortfolioUrl(e.target.value)}
                       placeholder="Drive, Behance, YouTube, etc."
-                      className="w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--text)] outline-none focus:border-[var(--accent)] text-right"
+                      className={`w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--text)] outline-none focus:border-[var(--accent)] ${isAr ? "text-right" : "text-left"}`}
                     />
                   </div>
                 )}
@@ -890,7 +868,7 @@ export default function SolarApplyModal({
                 <div className="grid gap-3 sm:grid-cols-2">
                   <div>
                     <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1">
-                      كم مدة خبرتك في الي بتقدم فيه؟ <span className="text-red-400">*</span>
+                      {ap.experienceLabel} <span className="text-red-400">*</span>
                     </label>
                     <input
                       type="text"
@@ -898,22 +876,22 @@ export default function SolarApplyModal({
                       maxLength={64}
                       value={experienceDuration}
                       onChange={(e) => setExperienceDuration(e.target.value)}
-                      placeholder="مثال: سنتين، 6 أشهر..."
+                      placeholder={ap.experiencePlaceholder}
                       className="w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--text)] outline-none focus:border-[var(--accent)]"
                     />
                   </div>
 
                   <div>
                     <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1">
-                      هل عندك خبرة سابقة في الكلانات؟ <span className="text-red-400">*</span>
+                      {ap.prevClansLabel} <span className="text-red-400">*</span>
                     </label>
                     <select
                       value={hasPreviousClans ? "yes" : "no"}
                       onChange={(e) => setHasPreviousClans(e.target.value === "yes")}
                       className="w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--text)] outline-none focus:border-[var(--accent)]"
                     >
-                      <option value="yes">نعم</option>
-                      <option value="no">لا</option>
+                      <option value="yes">{s.yes}</option>
+                      <option value="no">{s.no}</option>
                     </select>
                   </div>
                 </div>
@@ -924,8 +902,8 @@ export default function SolarApplyModal({
                     onClick={() => setStep(1)}
                     className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--border)] px-4 py-2 text-xs font-medium text-[var(--text-muted)] hover:text-[var(--text)]"
                   >
-                    <ArrowRight size={14} />
-                    الرجوع للشروط
+                    <BackIcon size={14} />
+                    {ap.backToRules}
                   </button>
 
                   <button
@@ -941,8 +919,8 @@ export default function SolarApplyModal({
                     }}
                     className="store-action store-action-primary flex items-center gap-2"
                   >
-                    <span>المتابعة للعقد والتعهد</span>
-                    <ArrowLeft size={16} />
+                    <span>{ap.continueToStep3}</span>
+                    <NextIcon size={16} />
                   </button>
                 </div>
               </div>
@@ -954,7 +932,7 @@ export default function SolarApplyModal({
                 {/* Contract Duration */}
                 <div>
                   <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1">
-                    مدة العقد؟ تقدر تجدده! (كم مدة العقد في الكلان) <span className="text-red-400">*</span>
+                    {ap.contractDurationLabel} <span className="text-red-400">*</span>
                   </label>
                   <select
                     value={contractDuration}
@@ -963,7 +941,7 @@ export default function SolarApplyModal({
                   >
                     {SOLAR_CONTRACT_DURATIONS.map((d) => (
                       <option key={d.id} value={d.id}>
-                        {d.label}
+                        {ap.contractDurations[d.id] || d.label}
                       </option>
                     ))}
                   </select>
@@ -975,7 +953,7 @@ export default function SolarApplyModal({
                       maxLength={64}
                       value={contractDurationCustom}
                       onChange={(e) => setContractDurationCustom(e.target.value)}
-                      placeholder="حدد مدة العقد الأخرى..."
+                      placeholder={ap.contractDurationCustomPlaceholder}
                       className="mt-2 w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--text)] outline-none focus:border-[var(--accent)]"
                     />
                   )}
@@ -984,7 +962,7 @@ export default function SolarApplyModal({
                 {/* Contract Signature / Upload */}
                 <div>
                   <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1">
-                    صورة العقد والتوقيع <span className="text-red-400">*</span>
+                    {ap.contractImageLabel} <span className="text-red-400">*</span>
                   </label>
                   <SolarSignaturePad
                     value={signedContractUrl}
@@ -996,23 +974,16 @@ export default function SolarApplyModal({
                 <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4 space-y-2 text-xs leading-relaxed">
                   <div className="flex items-center gap-2 text-[var(--accent)] font-bold">
                     <ShieldCheck size={16} />
-                    <span>تعهّد مقدّم Solar System</span>
+                    <span>{ap.pledgeTitle}</span>
                   </div>
-                  <p className="text-[var(--text)]">
-                    أنا الموقّع أدناه، أتعهد بالالتزام بجميع أنظمة وقوانين كلان Solar System، والمحافظة على سمعته ومكانته، وعدم القيام بأي تصرّف يسيء إلى الكلان أو أعضائه.
-                  </p>
-                  <ul className="list-disc list-inside space-y-0.5 text-[var(--text-muted)] pr-2">
-                    <li>عدم تخريب القيم أو التدريبات أو الفعاليات أو تعطيل سيرها.</li>
-                    <li>الالتزام بالاحترام والأخلاق، وعدم افتعال المشاكل أو إثارة الفتن بين الأعضاء.</li>
-                    <li>عدم استغلال صلاحياتي كمقدّم لتحقيق مصالح شخصية أو الإضرار بالآخرين.</li>
-                    <li>عدم التلاعب بالاختبارات أو النتائج أو المعلومات بأي شكل من الأشكال.</li>
-                    <li>التعامل مع جميع المتقدمين بعدل ومساواة، دون محاباة أو تمييز.</li>
-                    <li>المحافظة على سرية معلومات المتقدمين وأعضاء الكلان، وعدم إفشائها لأي جهة غير مخوّلة.</li>
-                    <li>الالتزام بتوجيهات الإدارة وعدم تجاوز حدود الصلاحيات الممنوحة لي.</li>
-                    <li>تحمّل المسؤولية الكاملة عن أي مخالفة أو تصرّف يصدر مني أثناء أداء مهامي.</li>
+                  <p className="text-[var(--text)]">{ap.pledgeIntro}</p>
+                  <ul className="list-disc list-inside space-y-0.5 text-[var(--text-muted)] ps-2">
+                    {ap.pledgeItems.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
                   </ul>
                   <p className="font-bold text-[var(--accent)] pt-1 text-[11px]">
-                    Solar System — الالتزام، الاحترام، والعدالة.
+                    {ap.pledgeMotto}
                   </p>
 
                   <label className="flex items-center gap-2 pt-2 border-t border-[var(--border)] cursor-pointer">
@@ -1023,7 +994,7 @@ export default function SolarApplyModal({
                       className="h-4 w-4 rounded border-[var(--border)] text-[var(--accent)] focus:ring-[var(--accent)]"
                     />
                     <span className="font-semibold text-xs text-[var(--text)]">
-                      موافق على التعهد والشروط كاملة <span className="text-red-400">*</span>
+                      {ap.pledgeAgree} <span className="text-red-400">*</span>
                     </span>
                   </label>
                 </div>
@@ -1031,7 +1002,7 @@ export default function SolarApplyModal({
                 {/* Why Join */}
                 <div>
                   <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1">
-                    لماذا ترغب بالانضمام إلى Solar System؟ <span className="text-red-400">*</span>
+                    {ap.whyJoinLabel} <span className="text-red-400">*</span>
                   </label>
                   <textarea
                     required
@@ -1039,7 +1010,7 @@ export default function SolarApplyModal({
                     maxLength={2000}
                     value={whyJoin}
                     onChange={(e) => setWhyJoin(e.target.value)}
-                    placeholder="تحدث عن دافعك، ما يميزك، وما الذي تطمح لتقديمه للكلان..."
+                    placeholder={ap.whyJoinPlaceholder}
                     className="w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--text)] outline-none focus:border-[var(--accent)] leading-relaxed"
                   />
                 </div>
@@ -1051,8 +1022,8 @@ export default function SolarApplyModal({
                     onClick={() => setStep(2)}
                     className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--border)] px-4 py-2 text-xs font-medium text-[var(--text-muted)] hover:text-[var(--text)]"
                   >
-                    <ArrowRight size={14} />
-                    تعديل البيانات
+                    <BackIcon size={14} />
+                    {ap.editInfo}
                   </button>
 
                   <button
@@ -1060,7 +1031,7 @@ export default function SolarApplyModal({
                     disabled={busy || !pledgeAgreed}
                     className="store-action store-action-primary px-8"
                   >
-                    {busy ? "جاري الإرسال..." : "إرسال طلب الانضمام الآن"}
+                    {busy ? ap.submitting : ap.submitBtn}
                   </button>
                 </div>
               </form>

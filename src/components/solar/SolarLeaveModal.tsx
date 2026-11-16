@@ -11,7 +11,6 @@ import {
   ShieldCheck,
   ArrowRight,
   ArrowLeft,
-  ExternalLink,
   CalendarDays,
 } from "lucide-react";
 import { useLocale } from "next-intl";
@@ -23,6 +22,8 @@ import {
   type SolarLeaveDuration,
 } from "@/lib/data/solar-leave";
 import type { SolarLeavePrefill } from "@/lib/server/solar-member-status";
+import { solarCopy } from "@/lib/data/solar-copy";
+import { solarModalsCopy } from "@/lib/data/solar-modals-i18n";
 
 function toIsoDate(d: Date): string {
   const y = d.getFullYear();
@@ -59,6 +60,13 @@ export default function SolarLeaveModal({
 }) {
   const dialog = useRef<HTMLDialogElement>(null);
   const locale = useLocale();
+  const isAr = locale === "ar";
+  const dir = isAr ? "rtl" : "ltr";
+  const t = solarCopy(locale);
+  const m = solarModalsCopy(locale);
+  const lv = m.leave;
+  const s = m.shared;
+
   const { account } = useAccount();
   const [showLogin, setShowLogin] = useState(false);
   const [step, setStep] = useState<1 | 2 | 3>(1);
@@ -96,18 +104,18 @@ export default function SolarLeaveModal({
   const customDays = diffDaysInclusive(leaveStartDate, leaveEndDate);
 
   const validateStep2 = () => {
-    if (!name.trim()) return "يرجى كتابة اسمك";
-    if (!discord.trim()) return "يرجى كتابة حسابك ديسكورد (اليوزر)";
-    if (!phone.trim()) return "يرجى كتابة رقم جوالك للتواصل";
+    if (!name.trim()) return lv.errName;
+    if (!discord.trim()) return lv.errDiscord;
+    if (!phone.trim()) return lv.errPhone;
     if (leaveDuration === "other") {
       if (!leaveStartDate || !leaveEndDate) {
-        return "يرجى تحديد تاريخ بداية ونهاية الإجازة من التقويم";
+        return lv.errCalendarEmpty;
       }
       if (customDays === null || customDays < 1) {
-        return "تاريخ نهاية الإجازة يجب أن يكون بعد تاريخ البداية";
+        return lv.errCalendarOrder;
       }
       if (customDays > 14) {
-        return "الحد الأقصى لمدة الإجازة هو أسبوعين (14 يوماً)";
+        return lv.errCalendarMax;
       }
     }
     return null;
@@ -124,21 +132,17 @@ export default function SolarLeaveModal({
       return;
     }
     if (!signedContractUrl) {
-      setError("يرجى إرفاق أو رسم توقيعك على صورة التعهّد.");
+      setError(lv.errSignature);
       return;
     }
     if (!pledgeAgreed) {
-      setError("يرجى الموافقة على تعهّد إجازة Solar System لإتمام الطلب.");
-      return;
-    }
-    if (!reason.trim()) {
-      setError("يرجى الإجابة عن: لماذا ترغب باخذ اجازة في Solar System؟");
+      setError(lv.errPledge);
       return;
     }
 
     const customSummary =
       leaveDuration === "other" && customDays
-        ? `من ${leaveStartDate} إلى ${leaveEndDate} (${customDays} ${customDays === 1 ? "يوم" : customDays === 2 ? "يومين" : customDays <= 10 ? "أيام" : "يوماً"})`
+        ? `${leaveStartDate} → ${leaveEndDate} (${customDays} ${lv.daysSuffix})`
         : undefined;
 
     setBusy(true);
@@ -156,19 +160,19 @@ export default function SolarLeaveModal({
           leaveEndDate: leaveDuration === "other" ? leaveEndDate : undefined,
           signedContractUrl,
           pledgeAgreed,
-          reason: reason.trim(),
+          reason: reason.trim() || "—",
         }),
       });
       const data = await res.json();
       if (!res.ok) {
         if (data.error === "ALREADY_APPLIED") {
-          setError("لديك طلب إجازة قيد المراجعة بالفعل.");
+          setError(m.apply.errAlreadyApplied);
         } else if (data.error === "NOT_MEMBER") {
-          setError("طلب الإجازة متاح فقط لأعضاء كلان Solar System المقبولين.");
+          setError(lv.errNotMember);
         } else if (data.error === "RATE_LIMIT") {
-          setError("لقد أرسلت طلباً مؤخراً. يرجى الانتظار قليلاً قبل المحاولة مجدداً.");
+          setError(s.errRateLimit);
         } else {
-          setError("تعذر إرسال طلب الإجازة، يرجى التأكد من البيانات والمحاولة مجدداً.");
+          setError(s.errServer);
         }
         return;
       }
@@ -176,7 +180,7 @@ export default function SolarLeaveModal({
       setSuccess({ reference: data.reference });
       onSubmitted?.();
     } catch {
-      setError("تعذر الاتصال بالخادم، يرجى المحاولة لاحقاً.");
+      setError(s.errNetwork);
     } finally {
       setBusy(false);
     }
@@ -192,6 +196,9 @@ export default function SolarLeaveModal({
     onClose();
   };
 
+  const BackIcon = isAr ? ArrowRight : ArrowLeft;
+  const NextIcon = isAr ? ArrowLeft : ArrowRight;
+
   return (
     <dialog
       ref={dialog}
@@ -200,19 +207,19 @@ export default function SolarLeaveModal({
       aria-labelledby="solar-leave-dialog-title"
       className="checkout-shell store-checkout max-w-2xl"
     >
-      <header className="store-checkout-header" dir="rtl">
+      <header className="store-checkout-header" dir={dir}>
         <div className="store-checkout-brand">
           <span className="store-rank-icon">
             <SolidIcon name="trophy" size={20} />
           </span>
           <div>
             <h2 id="solar-leave-dialog-title" className="font-semibold text-lg">
-              اخذ اجازة لفريق Solar System
+              {lv.title}
             </h2>
             <p className="text-xs text-[var(--text-muted)]">
-              {step === 1 && "الخطوة 1 من 3: شروط وقوانين طلب الإجازة"}
-              {step === 2 && "الخطوة 2 من 3: البيانات الشخصية ومدة الإجازة"}
-              {step === 3 && "الخطوة 3 من 3: التوقيع، التعهّد، وسبب الإجازة"}
+              {step === 1 && lv.step1Sub}
+              {step === 2 && lv.step2Sub}
+              {step === 3 && lv.step3Sub}
             </p>
           </div>
         </div>
@@ -220,13 +227,13 @@ export default function SolarLeaveModal({
           type="button"
           className="store-close"
           onClick={onClose}
-          aria-label="إغلاق"
+          aria-label={s.closeAria}
         >
           <span aria-hidden="true">×</span>
         </button>
       </header>
 
-      <div className="store-checkout-body" dir={locale === "ar" ? "rtl" : "ltr"}>
+      <div className="store-checkout-body" dir={dir}>
         {success ? (
           <div className="space-y-6 text-center py-4">
             <div
@@ -241,17 +248,17 @@ export default function SolarLeaveModal({
             </div>
             <div>
               <h3 className="text-xl font-bold text-[var(--text)]">
-                تم استلام طلب الإجازة بنجاح!
+                {lv.successTitle}
               </h3>
               <p className="mt-2 text-sm text-[var(--text-muted)] max-w-md mx-auto leading-relaxed">
-                سيتم مراجعة طلب الإجازة من قِبل الإدارة وإشعارك بالنتيجة عبر حسابك أو الديسكورد.
+                {lv.successDesc}
               </p>
             </div>
             <div
               className="card-glow rounded-xl border p-4 max-w-sm mx-auto"
               style={{ background: "var(--surface)", borderColor: "var(--border)" }}
             >
-              <p className="text-xs text-[var(--text-muted)]">رقم المرجع:</p>
+              <p className="text-xs text-[var(--text-muted)]">{lv.referenceLabel}</p>
               <code dir="ltr" className="mt-1 block text-sm font-bold text-[var(--accent)]">
                 {success.reference}
               </code>
@@ -262,14 +269,14 @@ export default function SolarLeaveModal({
                 onClick={onClose}
                 className="store-action store-action-primary"
               >
-                متابعة حالة الطلب ↗
+                {m.events.trackBtn} ↗
               </Link>
               <button
                 type="button"
                 onClick={handleReset}
                 className="store-action"
               >
-                إغلاق
+                {lv.doneBtn}
               </button>
             </div>
           </div>
@@ -288,10 +295,10 @@ export default function SolarLeaveModal({
 
             <div className="space-y-2 max-w-md mx-auto">
               <h3 className="text-xl sm:text-2xl font-bold text-[var(--text)]">
-                تسجيل الدخول مطلوب
+                {t.loginRequiredTitle}
               </h3>
               <p className="text-sm text-[var(--text-muted)] leading-relaxed">
-                يرجى تسجيل الدخول بحسابك أولاً لتقديم طلب إجازة.
+                {t.loginRequiredDesc}
               </p>
             </div>
 
@@ -303,7 +310,7 @@ export default function SolarLeaveModal({
                 style={{ background: "var(--accent)", color: "#07080b" }}
               >
                 <LogIn size={15} />
-                تسجيل الدخول الآن
+                {t.loginNow}
               </button>
 
               <button
@@ -311,27 +318,27 @@ export default function SolarLeaveModal({
                 onClick={onClose}
                 className="w-full sm:w-auto inline-flex items-center justify-center rounded-xl border border-[var(--border)] px-6 py-3 text-sm font-medium text-[var(--text-muted)] hover:text-[var(--text)] transition-colors cursor-pointer"
               >
-                إغلاق
+                {t.cancel}
               </button>
             </div>
 
             {showLogin && <AccountLogin onClose={() => setShowLogin(false)} />}
           </div>
         ) : (
-          <div className="space-y-5" dir="rtl">
+          <div className="space-y-5">
             {/* Step Navigation Wizard */}
             <div className="flex items-center justify-between border-b border-[var(--border)] pb-3 text-xs">
               <button
                 type="button"
                 onClick={() => setStep(1)}
-                className={`flex items-center gap-1.5 font-medium transition-colors cursor-pointer ${
+                className={`flex items-center gap-1.5 font-medium transition-colors ${
                   step === 1 ? "text-[var(--accent)] font-bold" : "text-[var(--text-muted)]"
                 }`}
               >
                 <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[var(--surface-elevated)] border text-[11px]">
                   1
                 </span>
-                <span>القوانين والشروط</span>
+                <span>{lv.step1Tab}</span>
               </button>
 
               <span className="text-[var(--border-strong)]">──</span>
@@ -339,14 +346,14 @@ export default function SolarLeaveModal({
               <button
                 type="button"
                 onClick={() => setStep(2)}
-                className={`flex items-center gap-1.5 font-medium transition-colors cursor-pointer ${
+                className={`flex items-center gap-1.5 font-medium transition-colors ${
                   step === 2 ? "text-[var(--accent)] font-bold" : "text-[var(--text-muted)]"
                 }`}
               >
                 <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[var(--surface-elevated)] border text-[11px]">
                   2
                 </span>
-                <span>البيانات والمدة</span>
+                <span>{lv.step2Tab}</span>
               </button>
 
               <span className="text-[var(--border-strong)]">──</span>
@@ -362,14 +369,14 @@ export default function SolarLeaveModal({
                     setStep(3);
                   }
                 }}
-                className={`flex items-center gap-1.5 font-medium transition-colors cursor-pointer ${
+                className={`flex items-center gap-1.5 font-medium transition-colors ${
                   step === 3 ? "text-[var(--accent)] font-bold" : "text-[var(--text-muted)]"
                 }`}
               >
                 <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[var(--surface-elevated)] border text-[11px]">
                   3
                 </span>
-                <span>العقد والتعهّد</span>
+                <span>{lv.step3Tab}</span>
               </button>
             </div>
 
@@ -386,7 +393,7 @@ export default function SolarLeaveModal({
                   <UserCheck size={14} />
                 </div>
                 <div className="leading-tight">
-                  <span className="text-[var(--text-muted)] text-[11px]">حسابك: </span>
+                  <span className="text-[var(--text-muted)] text-[11px]">{s.yourAccount} </span>
                   <strong className="text-[var(--text)]">
                     {account.name || account.username || account.email}
                   </strong>
@@ -399,115 +406,72 @@ export default function SolarLeaveModal({
                   color: "var(--accent)",
                 }}
               >
-                حساب موثّق
+                {t.verifiedAccount}
               </span>
             </div>
 
             {error && (
               <div
-                role="alert"
                 className="rounded-xl border p-3 text-xs text-red-400"
                 style={{
                   background: "rgba(239, 68, 68, 0.1)",
-                  borderColor: "rgba(239, 68, 68, 0.3)",
+                  borderColor: "rgba(239, 68, 68, 0.25)",
                 }}
               >
                 {error}
               </div>
             )}
 
-            {/* STEP 1: LEAVE RULES & REGULATIONS */}
+            {/* STEP 1 */}
             {step === 1 && (
               <div className="space-y-4">
-                <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4 sm:p-5 space-y-3 text-xs sm:text-sm leading-relaxed max-h-[55vh] overflow-y-auto">
-                  <div className="flex items-center gap-2 text-[var(--accent)] font-bold text-base">
-                    <ShieldCheck size={18} />
-                    <span>شروط وقوانين طلب الإجازة – Solar System</span>
+                <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4 max-h-[380px] overflow-y-auto space-y-4 text-xs leading-relaxed text-[var(--text)]">
+                  <div className="border-b border-[var(--border)] pb-2">
+                    <h3 className="font-bold text-sm text-[var(--accent)]">
+                      {lv.rulesHeading}
+                    </h3>
+                    <p className="text-[11px] text-[var(--text-muted)] mt-1">
+                      {lv.rulesIntro}
+                    </p>
                   </div>
-                  <p className="text-[var(--text-muted)] text-xs">
-                    يرجى قراءة الشروط التالية قبل تقديم طلب الإجازة:
-                  </p>
 
-                  <div className="space-y-2.5 text-xs">
-                    <div>
-                      <h4 className="font-bold text-[var(--text)]">1. شروط الإجازة</h4>
-                      <ul className="list-disc list-inside space-y-1 text-[var(--text-muted)] mt-1 pr-1">
-                        <li>يجب تحديد سبب الإجازة ومدتها وتاريخ بدايتها ونهايتها.</li>
-                        <li>لا تُعتمد الإجازة إلا بعد موافقة الإدارة.</li>
-                        <li>يجب تقديم الطلب مسبقًا، إلا في الحالات الطارئة.</li>
-                      </ul>
+                  {lv.ruleSections.map((sec) => (
+                    <div key={sec.title}>
+                      <h4 className="font-bold text-[var(--text)] mb-1">{sec.title}</h4>
+                      {sec.items && (
+                        <ul className="list-disc list-inside space-y-0.5 text-[var(--text-muted)] ps-2">
+                          {sec.items.map((item) => (
+                            <li key={item}>{item}</li>
+                          ))}
+                        </ul>
+                      )}
+                      {sec.text && (
+                        <p className="text-[var(--text-muted)]">{sec.text}</p>
+                      )}
                     </div>
-
-                    <div>
-                      <h4 className="font-bold text-[var(--text)]">2. الالتزام</h4>
-                      <ul className="list-disc list-inside space-y-1 text-[var(--text-muted)] mt-1 pr-1">
-                        <li>يجب الالتزام بمدة الإجازة المعتمدة.</li>
-                        <li>يمنع تمديد الإجازة دون موافقة الإدارة.</li>
-                        <li>يجب إبلاغ الإدارة في حال تعذّر العودة في الموعد المحدد.</li>
-                      </ul>
-                    </div>
-
-                    <div>
-                      <h4 className="font-bold text-[var(--text)]">3. العودة من الإجازة</h4>
-                      <ul className="list-disc list-inside space-y-1 text-[var(--text-muted)] mt-1 pr-1">
-                        <li>يجب العودة إلى المهام بعد انتهاء الإجازة.</li>
-                        <li>يحق للإدارة اتخاذ الإجراءات المناسبة عند التغيب دون عذر أو مخالفة الشروط.</li>
-                      </ul>
-                    </div>
-
-                    <div>
-                      <h4 className="font-bold text-[var(--text)]">4. ديسكورد الفريق</h4>
-                      <ul className="list-disc list-inside space-y-1 text-[var(--text-muted)] mt-1 pr-1">
-                        <li>تتم جميع أمور الفريق وطلبات الإجازات عبر سيرفر ديسكورد Solar System الرسمي.</li>
-                        <li>يجب متابعة الإعلانات والتعليمات المتعلقة بطلب الإجازة.</li>
-                        <li className="flex items-center gap-1.5 flex-wrap">
-                          <span>رابط السيرفر الرسمي:</span>
-                          <a
-                            href="https://discord.gg/bCHAGPTUm"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1 text-[var(--accent)] hover:underline font-medium"
-                            dir="ltr"
-                          >
-                            https://discord.gg/bCHAGPTUm
-                            <ExternalLink size={12} />
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
-
-                    <div className="rounded-lg border border-[var(--border)] bg-black/20 p-3 mt-2">
-                      <h4 className="font-bold text-[var(--accent)]">الموافقة النهائية</h4>
-                      <p className="text-[var(--text-muted)] mt-1">
-                        بتقديم طلب الإجازة، أقرّ بأنني قرأت الشروط المذكورة أعلاه وفهمتها، وأوافق على الالتزام بها، وأعلم أن تقديم الطلب لا يعني الموافقة عليه تلقائيًا.
-                      </p>
-                    </div>
-                  </div>
+                  ))}
                 </div>
 
-                <div className="flex justify-end pt-2">
+                <div className="pt-2">
                   <button
                     type="button"
-                    onClick={() => {
-                      setError(null);
-                      setStep(2);
-                    }}
-                    className="store-action store-action-primary flex items-center gap-2"
+                    onClick={() => setStep(2)}
+                    className="store-action store-action-primary w-full flex items-center justify-center gap-2"
                   >
-                    <span>قرأت الشروط وأوافق — متابعة</span>
-                    <ArrowLeft size={16} />
+                    <span>{lv.continueToStep2}</span>
+                    <NextIcon size={16} />
                   </button>
                 </div>
               </div>
             )}
 
-            {/* STEP 2: PERSONAL INFO & LEAVE DURATION */}
+            {/* STEP 2 */}
             {step === 2 && (
               <div className="space-y-4">
                 <div className="grid gap-3 sm:grid-cols-2">
-                  <div className="sm:col-span-2">
+                  <div>
                     <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1">
-                      اسمك؟ <span className="text-red-400">*</span>
+                      {lv.nameLabel} <span className="text-red-400">*</span>
                     </label>
                     <input
                       type="text"
@@ -515,135 +479,111 @@ export default function SolarLeaveModal({
                       maxLength={80}
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      placeholder="اسمك الكامل"
-                      className="w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] px-3.5 py-2 text-sm text-[var(--text)] outline-none focus:border-[var(--accent)]"
+                      placeholder={lv.namePlaceholder}
+                      className="w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--text)] outline-none focus:border-[var(--accent)]"
                     />
                   </div>
 
                   <div>
                     <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1">
-                      حسابك ديسكورد؟ (اليوزر) <span className="text-red-400">*</span>
+                      {lv.discordLabel} <span className="text-red-400">*</span>
                     </label>
                     <input
                       type="text"
                       required
-                      maxLength={64}
+                      maxLength={60}
                       dir="ltr"
                       value={discord}
                       onChange={(e) => setDiscord(e.target.value)}
-                      placeholder="username"
-                      className="w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] px-3.5 py-2 text-sm text-[var(--text)] outline-none focus:border-[var(--accent)]"
+                      placeholder={lv.discordPlaceholder}
+                      className={`w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--text)] outline-none focus:border-[var(--accent)] ${isAr ? "text-right" : "text-left"}`}
                     />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1">
-                      رقم جوالك؟ (للتواصل) <span className="text-red-400">*</span>
-                    </label>
-                    <input
-                      type="tel"
-                      required
-                      maxLength={32}
-                      dir="ltr"
-                      value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
-                      placeholder="+966 5XXXXXXXX"
-                      className="w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] px-3.5 py-2 text-sm text-[var(--text)] outline-none focus:border-[var(--accent)]"
-                    />
-                  </div>
-
-                  <div className="sm:col-span-2">
-                    <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1.5">
-                      كم مدة الاجازة؟ <span className="text-red-400">*</span>
-                    </label>
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                      {SOLAR_LEAVE_DURATIONS.map((dur) => {
-                        const active = leaveDuration === dur.id;
-                        return (
-                          <button
-                            key={dur.id}
-                            type="button"
-                            onClick={() => setLeaveDuration(dur.id)}
-                            className={`rounded-xl border px-3 py-2 text-xs font-medium transition-colors cursor-pointer ${
-                              active
-                                ? "border-[var(--accent)] bg-[var(--glow)] text-[var(--text)]"
-                                : "border-[var(--border-strong)] bg-[var(--surface)] text-[var(--text-muted)] hover:text-[var(--text)]"
-                            }`}
-                          >
-                            {dur.label}
-                          </button>
-                        );
-                      })}
-                    </div>
-
-                    {leaveDuration === "other" && (
-                      <div className="mt-3 rounded-xl border border-[var(--border)] bg-black/20 p-3.5 space-y-3">
-                        <div className="flex items-center justify-between gap-2 text-xs">
-                          <span className="inline-flex items-center gap-1.5 font-semibold text-[var(--accent)]">
-                            <CalendarDays size={15} />
-                            تحديد مدة الإجازة من التقويم
-                          </span>
-                          <span className="text-[11px] text-[var(--text-muted)]">
-                            الحد الأقصى: أسبوعين (14 يوماً)
-                          </span>
-                        </div>
-                        <div className="grid gap-3 sm:grid-cols-2">
-                          <div>
-                            <label className="block text-[11px] font-semibold text-[var(--text-muted)] mb-1">
-                              تاريخ بداية الإجازة <span className="text-red-400">*</span>
-                            </label>
-                            <input
-                              type="date"
-                              required
-                              min={todayIso}
-                              value={leaveStartDate}
-                              onChange={(e) => {
-                                const nextStart = e.target.value;
-                                setLeaveStartDate(nextStart);
-                                if (leaveEndDate) {
-                                  const d = diffDaysInclusive(nextStart, leaveEndDate);
-                                  if (d === null || d < 1 || d > 14) {
-                                    setLeaveEndDate("");
-                                  }
-                                }
-                              }}
-                              dir="ltr"
-                              className="w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--text)] outline-none focus:border-[var(--accent)]"
-                            />
-                          </div>
-                          <div>
-                            <label className="block text-[11px] font-semibold text-[var(--text-muted)] mb-1">
-                              تاريخ نهاية الإجازة <span className="text-red-400">*</span>
-                            </label>
-                            <input
-                              type="date"
-                              required
-                              min={leaveStartDate || todayIso}
-                              max={maxEndIso}
-                              value={leaveEndDate}
-                              onChange={(e) => setLeaveEndDate(e.target.value)}
-                              dir="ltr"
-                              className="w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--text)] outline-none focus:border-[var(--accent)]"
-                            />
-                          </div>
-                        </div>
-                        {customDays !== null && customDays >= 1 && customDays <= 14 && (
-                          <p className="text-[11px] font-semibold text-emerald-400">
-                            المدة المحددة: {customDays}{" "}
-                            {customDays === 1
-                              ? "يوم"
-                              : customDays === 2
-                              ? "يومين"
-                              : customDays <= 10
-                              ? "أيام"
-                              : "يوماً"}{" "}
-                            (من {leaveStartDate} إلى {leaveEndDate})
-                          </p>
-                        )}
-                      </div>
-                    )}
                   </div>
                 </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1">
+                    {lv.phoneLabel} <span className="text-red-400">*</span>
+                  </label>
+                  <input
+                    type="tel"
+                    required
+                    maxLength={24}
+                    dir="ltr"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    placeholder="+966 5x xxx xxxx"
+                    className={`w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--text)] outline-none focus:border-[var(--accent)] ${isAr ? "text-right" : "text-left"}`}
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1">
+                    {lv.durationLabel} <span className="text-red-400">*</span>
+                  </label>
+                  <select
+                    value={leaveDuration}
+                    onChange={(e) => setLeaveDuration(e.target.value as SolarLeaveDuration)}
+                    className="w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] px-3.5 py-2 text-sm text-[var(--text)] outline-none focus:border-[var(--accent)]"
+                  >
+                    {SOLAR_LEAVE_DURATIONS.map((d) => (
+                      <option key={d.id} value={d.id}>
+                        {lv.durations[d.id] || d.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {leaveDuration === "other" && (
+                  <div className="rounded-xl border border-[var(--border)] bg-[var(--surface-elevated)] p-3.5 space-y-3">
+                    <div className="grid gap-3 sm:grid-cols-2">
+                      <div>
+                        <label className="flex items-center gap-1.5 text-xs font-semibold text-[var(--text-muted)] mb-1">
+                          <CalendarDays size={13} />
+                          <span>{lv.startDateLabel}</span>
+                        </label>
+                        <input
+                          type="date"
+                          min={todayIso}
+                          value={leaveStartDate}
+                          onChange={(e) => {
+                            setLeaveStartDate(e.target.value);
+                            if (leaveEndDate && e.target.value > leaveEndDate) {
+                              setLeaveEndDate("");
+                            }
+                          }}
+                          className="w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--text)] outline-none focus:border-[var(--accent)]"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="flex items-center gap-1.5 text-xs font-semibold text-[var(--text-muted)] mb-1">
+                          <CalendarDays size={13} />
+                          <span>{lv.endDateLabel}</span>
+                        </label>
+                        <input
+                          type="date"
+                          min={leaveStartDate || todayIso}
+                          max={maxEndIso}
+                          value={leaveEndDate}
+                          onChange={(e) => setLeaveEndDate(e.target.value)}
+                          className="w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--text)] outline-none focus:border-[var(--accent)]"
+                        />
+                      </div>
+                    </div>
+
+                    {customDays !== null && (
+                      <p
+                        className={`text-xs font-medium ${
+                          customDays > 14 ? "text-red-400" : "text-[var(--accent)]"
+                        }`}
+                      >
+                        {lv.selectedDurationPrefix} {customDays} {lv.daysSuffix}{" "}
+                        {customDays > 14 ? lv.maxDaysExceeded : ""}
+                      </p>
+                    )}
+                  </div>
+                )}
 
                 <div className="flex items-center justify-between pt-2">
                   <button
@@ -651,8 +591,8 @@ export default function SolarLeaveModal({
                     onClick={() => setStep(1)}
                     className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--border)] px-4 py-2 text-xs font-medium text-[var(--text-muted)] hover:text-[var(--text)]"
                   >
-                    <ArrowRight size={14} />
-                    الرجوع للشروط
+                    <BackIcon size={14} />
+                    {lv.backToRules}
                   </button>
 
                   <button
@@ -668,59 +608,42 @@ export default function SolarLeaveModal({
                     }}
                     className="store-action store-action-primary flex items-center gap-2"
                   >
-                    <span>المتابعة للتوقيع والتعهّد</span>
-                    <ArrowLeft size={16} />
+                    <span>{lv.continueToStep3}</span>
+                    <NextIcon size={16} />
                   </button>
                 </div>
               </div>
             )}
 
-            {/* STEP 3: SIGNATURE, PLEDGE & REASON */}
+            {/* STEP 3 */}
             {step === 3 && (
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
                   <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1">
-                    قم بتنزيل هذه الصورة وقم بتعديلها باي تطبيق للتعديل الصور لاضافة توقيعك ومن ثم ارفع الصورة مع التوقيع{" "}
-                    <span className="text-red-400">*</span>
+                    {lv.contractImageLabel} <span className="text-red-400">*</span>
                   </label>
                   <SolarSignaturePad
                     value={signedContractUrl}
                     onChange={(url) => setSignedContractUrl(url)}
-                    contractImage="/assets/site/solar-leave-pledge.png"
-                    contractTitle="صورة تعهّد إجازة Solar System"
-                    downloadName="عقد_اجازة_كلان_سولار.png"
+                    contractImage="/assets/site/solar-leave-contract.png"
+                    contractTitle={lv.contractTitle}
+                    downloadName="solar-leave-contract.png"
                   />
                 </div>
 
-                {/* Written Pledge Card */}
                 <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4 space-y-2 text-xs leading-relaxed">
                   <div className="flex items-center gap-2 text-[var(--accent)] font-bold">
                     <ShieldCheck size={16} />
-                    <span>تعهّد إجازة Solar System</span>
+                    <span>{lv.pledgeTitle}</span>
                   </div>
-                  <p className="text-[var(--text)]">
-                    أنا المقدّم أدناه، أتعهد بالالتزام بجميع أنظمة وقوانين كلان Solar System المتعلقة بالإجازات، وتقديم طلب الإجازة وفقًا للإجراءات المعتمدة من الإدارة.
-                  </p>
-                  <p className="font-semibold text-[var(--text)]">وأتعهد بالالتزام بما يلي:</p>
-                  <ul className="list-disc list-inside space-y-0.5 text-[var(--text-muted)] pr-2">
-                    <li>تقديم معلومات صحيحة ودقيقة عند طلب الإجازة.</li>
-                    <li>تحديد مدة الإجازة وموعد بدايتها ونهايتها بوضوح.</li>
-                    <li>عدم اعتبار الإجازة معتمدة إلا بعد موافقة الإدارة.</li>
-                    <li>الالتزام بمدة الإجازة المعتمدة وعدم تمديدها دون موافقة الإدارة.</li>
-                    <li>إبلاغ الإدارة في حال حدوث ظروف طارئة تمنعني من العودة في الموعد المحدد.</li>
-                    <li>عدم استغلال الإجازة للتهرب من المسؤوليات أو مخالفة قوانين الكلان.</li>
-                    <li>الالتزام بتعليمات الإدارة المتعلقة بطلب الإجازة ومتابعتها.</li>
-                    <li>متابعة الإعلانات والتعليمات الرسمية الخاصة بالفريق عبر سيرفر ديسكورد.</li>
-                    <li>العودة إلى مهامي بعد انتهاء الإجازة المعتمدة، ما لم تتم الموافقة على تمديدها.</li>
+                  <p className="text-[var(--text)]">{lv.pledgeIntro}</p>
+                  <ul className="list-disc list-inside space-y-0.5 text-[var(--text-muted)] ps-2">
+                    {lv.pledgeItems.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
                   </ul>
-                  <p className="text-[var(--text-muted)]">
-                    وأقرّ بأن تقديم طلب الإجازة لا يعني الموافقة عليه تلقائيًا، وأن مخالفة الشروط أو التغيب دون موافقة قد يؤدي إلى اتخاذ الإجراءات الإدارية المناسبة بحقي.
-                  </p>
-                  <p className="text-[var(--text-muted)]">
-                    وبناءً عليه، أؤكد التزامي الكامل بهذا التعهّد، وأتحمّل مسؤولية صحة المعلومات المقدمة والالتزام بمدة الإجازة المعتمدة.
-                  </p>
                   <p className="font-bold text-[var(--accent)] pt-1 text-[11px]">
-                    Solar System — الالتزام، الاحترام، والمسؤولية.
+                    {lv.pledgeMotto}
                   </p>
 
                   <label className="flex items-center gap-2 pt-2 border-t border-[var(--border)] cursor-pointer">
@@ -731,37 +654,33 @@ export default function SolarLeaveModal({
                       className="h-4 w-4 rounded border-[var(--border)] text-[var(--accent)] focus:ring-[var(--accent)]"
                     />
                     <span className="font-semibold text-xs text-[var(--text)]">
-                      موافق <span className="text-red-400">*</span>
+                      {lv.pledgeAgree} <span className="text-red-400">*</span>
                     </span>
                   </label>
                 </div>
 
-                {/* Reason */}
                 <div>
                   <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1">
-                    لماذا ترغب باخذ اجازة في Solar System؟{" "}
-                    <span className="text-red-400">*</span>
+                    {lv.reasonLabel}
                   </label>
                   <textarea
-                    required
                     rows={3}
-                    maxLength={2000}
+                    maxLength={1000}
                     value={reason}
                     onChange={(e) => setReason(e.target.value)}
-                    placeholder="اشرح سبب الإجازة وتاريخ بدايتها ونهايتها بوضوح..."
+                    placeholder={lv.reasonPlaceholder}
                     className="w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--text)] outline-none focus:border-[var(--accent)] leading-relaxed"
                   />
                 </div>
 
-                {/* Footer Buttons */}
                 <div className="flex items-center justify-between pt-2">
                   <button
                     type="button"
                     onClick={() => setStep(2)}
                     className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--border)] px-4 py-2 text-xs font-medium text-[var(--text-muted)] hover:text-[var(--text)]"
                   >
-                    <ArrowRight size={14} />
-                    تعديل البيانات
+                    <BackIcon size={14} />
+                    {lv.editInfo}
                   </button>
 
                   <button
@@ -769,7 +688,7 @@ export default function SolarLeaveModal({
                     disabled={busy || !pledgeAgreed}
                     className="store-action store-action-primary px-8"
                   >
-                    {busy ? "جاري الإرسال..." : "إرسال طلب الإجازة الآن"}
+                    {busy ? lv.submitting : lv.submitBtn}
                   </button>
                 </div>
               </form>
