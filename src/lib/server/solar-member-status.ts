@@ -1,5 +1,7 @@
 import { siteDatabase } from "./site-db";
 import { getSolarMembers } from "./solar-members";
+import { getSolarWarningPledges } from "./solar-warnings";
+import type { SolarWarningPledge } from "@/lib/data/solar-warnings";
 
 export type SolarApplicationStatus = "accepted" | "pending" | "rejected" | null;
 
@@ -15,6 +17,7 @@ export interface SolarLeaveRequestSummary {
 
 export interface SolarLeavePrefill {
   name?: string;
+  age?: string;
   discord?: string;
   phone?: string;
 }
@@ -29,10 +32,15 @@ export interface SolarUserStatus {
   } | null;
   prefill: SolarLeavePrefill | null;
   leaveRequests: SolarLeaveRequestSummary[];
+  warningPledges: SolarWarningPledge[];
 }
 
 export async function getUserSolarStatus(userId: string): Promise<SolarUserStatus> {
-  const [db, members] = await Promise.all([siteDatabase(), getSolarMembers()]);
+  const [db, members, allPledges] = await Promise.all([
+    siteDatabase(),
+    getSolarMembers(),
+    getSolarWarningPledges(),
+  ]);
   const memberRecord = members.find((m) => m.userId === userId) ?? null;
 
   const [appRes, leaveRes] = await Promise.all([
@@ -71,6 +79,10 @@ export async function getUserSolarStatus(userId: string): Promise<SolarUserStatu
     typeof appPayload.name === "string" && appPayload.name.trim()
       ? appPayload.name.trim()
       : memberRecord?.name;
+  const prefillAge =
+    typeof appPayload.age === "string" && appPayload.age.trim()
+      ? appPayload.age.trim()
+      : undefined;
   const prefillDiscord =
     typeof appPayload.discord === "string" && appPayload.discord.trim()
       ? appPayload.discord.trim()
@@ -81,9 +93,10 @@ export async function getUserSolarStatus(userId: string): Promise<SolarUserStatu
       : undefined;
 
   const prefill: SolarLeavePrefill | null =
-    prefillName || prefillDiscord || prefillPhone
+    prefillName || prefillAge || prefillDiscord || prefillPhone
       ? {
           ...(prefillName ? { name: prefillName } : {}),
+          ...(prefillAge ? { age: prefillAge } : {}),
           ...(prefillDiscord ? { discord: prefillDiscord } : {}),
           ...(prefillPhone ? { phone: prefillPhone } : {}),
         }
@@ -106,6 +119,12 @@ export async function getUserSolarStatus(userId: string): Promise<SolarUserStatu
     };
   });
 
+  const warningPledges = allPledges.filter(
+    (p) =>
+      (p.memberUserId && p.memberUserId === userId) ||
+      (memberRecord && p.memberId === memberRecord.id),
+  );
+
   return {
     applicationStatus,
     isMember,
@@ -118,6 +137,7 @@ export async function getUserSolarStatus(userId: string): Promise<SolarUserStatu
       : null,
     prefill,
     leaveRequests,
+    warningPledges,
   };
 }
 

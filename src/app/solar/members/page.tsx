@@ -9,16 +9,19 @@ import {
   CalendarClock,
   CheckCircle2,
   Clock,
+  FileSignature,
   ShieldAlert,
   UserRound,
   XCircle,
 } from "lucide-react";
 import { useAccount } from "@/components/account/AccountProvider";
 import SolarLeaveModal from "@/components/solar/SolarLeaveModal";
+import SolarWarningPledgeModal from "@/components/solar/SolarWarningPledgeModal";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { SOLAR_LEAVE_DURATION_LABELS } from "@/lib/data/solar-leave";
 import { solarExtraCopy } from "@/lib/data/solar-i18n";
 import type { SolarUserStatus } from "@/lib/server/solar-member-status";
+import type { SolarWarningPledge } from "@/lib/data/solar-warnings";
 import "@/components/store/store.css";
 
 export default function SolarMembersPortalPage() {
@@ -30,6 +33,7 @@ export default function SolarMembersPortalPage() {
   const [status, setStatus] = useState<SolarUserStatus | null>(null);
   const [loading, setLoading] = useState(false);
   const [leaveOpen, setLeaveOpen] = useState(false);
+  const [activePledge, setActivePledge] = useState<SolarWarningPledge | null>(null);
 
   const loadStatus = useCallback(() => {
     setLoading(true);
@@ -164,6 +168,85 @@ export default function SolarMembersPortalPage() {
               </button>
             </section>
 
+            {/* Warning Pledges Section */}
+            {effectiveStatus.warningPledges && effectiveStatus.warningPledges.length > 0 && (
+              <section className="rounded-3xl border border-rose-500/35 bg-rose-500/[0.04] p-6 sm:p-8 space-y-5">
+                <div className="flex items-center gap-3">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-rose-500/30 bg-rose-500/15 text-rose-400">
+                    <ShieldAlert size={20} />
+                  </span>
+                  <div>
+                    <h2 className="text-lg font-bold text-[var(--text)]">
+                      التعهّدات والإنذارات الموجّهة لك
+                    </h2>
+                    <p className="text-xs text-[var(--text-muted)] mt-0.5">
+                      يرجى قراءة التعهّد وتوقيعه قبل انتهاء مدته المحددة.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="space-y-3">
+                  {effectiveStatus.warningPledges.map((pledge) => {
+                    const isSigned = pledge.status === "signed";
+                    const expiresFormatted = new Intl.DateTimeFormat(locale, {
+                      dateStyle: "medium",
+                      timeStyle: "short",
+                      timeZone: "Asia/Riyadh",
+                    }).format(new Date(pledge.expiresAt));
+
+                    return (
+                      <article
+                        key={pledge.id}
+                        className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 sm:p-5 space-y-3"
+                      >
+                        <div className="flex flex-wrap items-center justify-between gap-2">
+                          <span className="text-sm font-bold text-[var(--text)]">
+                            تعهّد بعد استلام تحذير – Solar System
+                          </span>
+                          <span
+                            className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-semibold ${
+                              isSigned
+                                ? "bg-emerald-500/15 text-emerald-300 border-emerald-500/30"
+                                : "bg-rose-500/15 text-rose-300 border-rose-500/30"
+                            }`}
+                          >
+                            {isSigned ? <CheckCircle2 size={13} /> : <Clock size={13} />}
+                            {isSigned ? "تم التوقيع والإرسال" : "بانتظار توقيعك"}
+                          </span>
+                        </div>
+
+                        <div className="rounded-xl border border-[var(--border)] bg-black/20 p-3 text-xs space-y-1">
+                          <span className="font-semibold text-rose-300">السبب:</span>
+                          <p className="text-[var(--text)] leading-relaxed whitespace-pre-wrap">
+                            {pledge.reason}
+                          </p>
+                        </div>
+
+                        <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
+                          <span className="text-[11px] text-[var(--text-muted)]">
+                            المدة: <strong className="text-[var(--text)]">{pledge.durationLabel}</strong> — ينتهي في{" "}
+                            <span dir="ltr">{expiresFormatted}</span>
+                          </span>
+
+                          {!isSigned && (
+                            <button
+                              type="button"
+                              onClick={() => setActivePledge(pledge)}
+                              className="inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-xs font-bold transition-transform hover:scale-[1.02] active:scale-95 cursor-pointer"
+                              style={{ background: "var(--accent)", color: "#07080B" }}
+                            >
+                              <FileSignature size={15} />
+                              فتح وتوقيع التعهّد
+                            </button>
+                          )}
+                        </div>
+                      </article>
+                    );
+                  })}
+                </div>
+              </section>
+            )}
+
             {/* Leave Requests History */}
             <section className="rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-6 sm:p-8 space-y-5">
               <div className="flex items-center justify-between gap-4">
@@ -249,6 +332,15 @@ export default function SolarMembersPortalPage() {
         key={`${leaveOpen}-${effectiveStatus?.prefill?.name ?? ""}-${effectiveStatus?.prefill?.discord ?? ""}-${effectiveStatus?.prefill?.phone ?? ""}`}
         open={leaveOpen}
         onClose={() => setLeaveOpen(false)}
+        onSubmitted={loadStatus}
+        prefill={effectiveStatus?.prefill}
+      />
+
+      <SolarWarningPledgeModal
+        key={`${activePledge?.id ?? "none"}-${effectiveStatus?.prefill?.name ?? ""}-${effectiveStatus?.prefill?.age ?? ""}-${effectiveStatus?.prefill?.discord ?? ""}`}
+        open={Boolean(activePledge)}
+        pledge={activePledge}
+        onClose={() => setActivePledge(null)}
         onSubmitted={loadStatus}
         prefill={effectiveStatus?.prefill}
       />

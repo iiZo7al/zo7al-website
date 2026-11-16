@@ -23,12 +23,14 @@ import {
   Plus,
   Pencil,
   X,
+  ShieldAlert,
 } from "lucide-react";
 import MarkdownContent from "@/components/ui/MarkdownContent";
 import { Skeleton } from "@/components/ui/Skeleton";
 import SolarContractViewerModal from "./SolarContractViewerModal";
 import SolarExcelSheet from "./SolarExcelSheet";
 import SolarMembersManager from "./SolarMembersManager";
+import SolarWarningsManager from "./SolarWarningsManager";
 import type { DashboardData, Mutate, RequestRow } from "./types";
 import type { SolarAdminSubType, SolarRole } from "@/lib/data/solar";
 import { roleNeedsGame } from "@/lib/data/solar-members";
@@ -120,7 +122,7 @@ export default function SolarManagement({
   onExpired: () => void;
   onReload: () => void;
 }) {
-  const [activeTab, setActiveTab] = useState<"applicants" | "leaves" | "events" | "members" | "excel" | "settings">("applicants");
+  const [activeTab, setActiveTab] = useState<"applicants" | "leaves" | "events" | "members" | "excel" | "warnings" | "settings">("applicants");
   const [query, setQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("");
   const [roleFilter, setRoleFilter] = useState<string>("");
@@ -559,6 +561,19 @@ export default function SolarManagement({
             >
               <FileSpreadsheet size={16} />
               جدول Excel والأعضاء
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setActiveTab("warnings")}
+              className={`inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all cursor-pointer ${
+                activeTab === "warnings"
+                  ? "bg-[var(--accent)] text-[#07080b]"
+                  : "border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text)]"
+              }`}
+            >
+              <ShieldAlert size={16} />
+              التعهدات والإنذارات
             </button>
 
             <button
@@ -1044,6 +1059,26 @@ export default function SolarManagement({
             </div>
           )}
         </section>
+      )}
+
+      {/* Tab: Warning Pledges ("التعهدات والإنذارات") */}
+      {activeTab === "warnings" && (
+        <>
+          <SolarWarningsManager
+            onExpired={onExpired}
+            onViewContract={(sigUrl, appName) =>
+              setViewingContract({ signatureUrl: sigUrl, name: appName })
+            }
+          />
+          {viewingContract && (
+            <SolarContractViewerModal
+              isOpen={!!viewingContract}
+              onClose={() => setViewingContract(null)}
+              signatureUrl={viewingContract.signatureUrl}
+              applicantName={viewingContract.name}
+            />
+          )}
+        </>
       )}
 
       {/* Tab 2: Recruitment Settings ("حق التقديم") */}
