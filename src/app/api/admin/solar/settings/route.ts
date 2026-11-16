@@ -32,9 +32,13 @@ export async function POST(request: Request) {
       closedRoles?: string[];
       closedAdminSubTypes?: string[];
       closedGames?: string[];
+      hiddenRoles?: string[];
+      hiddenAdminSubTypes?: string[];
+      hiddenGames?: string[];
       customRoles?: { id: string; label: string }[];
       customAdminSubTypes?: { id: string; label: string }[];
       customGames?: { id: string; label: string }[];
+      labelOverrides?: Record<string, string>;
       roleQuotas?: Record<string, number>;
       requirements?: string;
     };
@@ -49,9 +53,16 @@ export async function POST(request: Request) {
       closedRoles: Array.isArray(body.closedRoles) ? body.closedRoles : undefined,
       closedAdminSubTypes: Array.isArray(body.closedAdminSubTypes) ? body.closedAdminSubTypes : undefined,
       closedGames: Array.isArray(body.closedGames) ? body.closedGames : undefined,
+      hiddenRoles: Array.isArray(body.hiddenRoles) ? body.hiddenRoles : undefined,
+      hiddenAdminSubTypes: Array.isArray(body.hiddenAdminSubTypes) ? body.hiddenAdminSubTypes : undefined,
+      hiddenGames: Array.isArray(body.hiddenGames) ? body.hiddenGames : undefined,
       customRoles: Array.isArray(body.customRoles) ? body.customRoles : undefined,
       customAdminSubTypes: Array.isArray(body.customAdminSubTypes) ? body.customAdminSubTypes : undefined,
       customGames: Array.isArray(body.customGames) ? body.customGames : undefined,
+      labelOverrides:
+        body.labelOverrides && typeof body.labelOverrides === "object" && !Array.isArray(body.labelOverrides)
+          ? body.labelOverrides
+          : undefined,
       roleQuotas:
         body.roleQuotas && typeof body.roleQuotas === "object" && !Array.isArray(body.roleQuotas)
           ? body.roleQuotas

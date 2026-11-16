@@ -62,10 +62,41 @@ export function buildSolarPlanRows(custom?: {
   customGames?: { id: string; label: string }[];
   customAdminSubTypes?: { id: string; label: string }[];
   customRoles?: { id: string; label: string }[];
+  hiddenRoles?: string[];
+  hiddenAdminSubTypes?: string[];
+  hiddenGames?: string[];
+  labelOverrides?: Record<string, string>;
 }): SolarPlanRowDef[] {
-  const list: SolarPlanRowDef[] = [...BUILTIN_SOLAR_PLAN_ROWS];
+  const hiddenRoles = new Set(custom?.hiddenRoles ?? []);
+  const hiddenSubs = new Set(custom?.hiddenAdminSubTypes ?? []);
+  const hiddenGames = new Set(custom?.hiddenGames ?? []);
+  const overrides = custom?.labelOverrides ?? {};
+
+  const list: SolarPlanRowDef[] = BUILTIN_SOLAR_PLAN_ROWS.filter((row) => {
+    if (hiddenRoles.has(row.role)) return false;
+    if (row.adminSubType && hiddenSubs.has(row.adminSubType)) return false;
+    if (row.game && hiddenGames.has(row.game)) return false;
+    return true;
+  }).map((row) => {
+    let rankLabel = row.rankLabel;
+    let department = row.department;
+    if (row.role !== "admin" && !row.game && overrides[`role:${row.role}`]) {
+      rankLabel = overrides[`role:${row.role}`];
+    } else if (row.role === "admin" && row.adminSubType && !row.game && overrides[`subtype:${row.adminSubType}`]) {
+      rankLabel = overrides[`subtype:${row.adminSubType}`];
+    } else if (row.game && overrides[`game:${row.game}`]) {
+      const gLabel = overrides[`game:${row.game}`];
+      department = gLabel;
+      if (row.role === "player") rankLabel = `لاعب ${gLabel}`;
+      else if (row.adminSubType === "players_supervisor") rankLabel = `مشرف لاعبين ${gLabel}`;
+      else if (row.adminSubType === "players_admin") rankLabel = `إداري لاعبين ${gLabel}`;
+    }
+    return { ...row, department, rankLabel };
+  });
+
   if (custom?.customGames?.length) {
     for (const g of custom.customGames) {
+      if (hiddenGames.has(g.id)) continue;
       list.push(
         { key: `admin:players_supervisor:${g.id}`, department: g.label, rankLabel: `مشرف لاعبين ${g.label}`, defaultCount: 1, role: "admin", adminSubType: "players_supervisor", game: g.id, isCustom: true },
         { key: `admin:players_admin:${g.id}`, department: g.label, rankLabel: `إداري لاعبين ${g.label}`, defaultCount: 1, role: "admin", adminSubType: "players_admin", game: g.id, isCustom: true },
@@ -75,9 +106,10 @@ export function buildSolarPlanRows(custom?: {
   }
   if (custom?.customAdminSubTypes?.length) {
     for (const s of custom.customAdminSubTypes) {
+      if (hiddenSubs.has(s.id)) continue;
       list.push({
         key: `admin:${s.id}`,
-        department: "تخصصات إدارية مخصصة",
+        department: "تخصصات إدارية",
         rankLabel: s.label,
         defaultCount: 1,
         role: "admin",
@@ -88,9 +120,10 @@ export function buildSolarPlanRows(custom?: {
   }
   if (custom?.customRoles?.length) {
     for (const r of custom.customRoles) {
+      if (hiddenRoles.has(r.id)) continue;
       list.push({
         key: `role:${r.id}`,
-        department: "رتب مخصصة",
+        department: "الأقسام والرتب",
         rankLabel: r.label,
         defaultCount: 1,
         role: r.id,

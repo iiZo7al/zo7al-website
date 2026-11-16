@@ -18,66 +18,7 @@ import {
 } from "lucide-react";
 import type { Mutate, RequestRow } from "./types";
 import type { SolarSettings } from "@/lib/server/solar-settings";
-
-interface PlanRowDef {
-  key: string;
-  department: string;
-  rankLabel: string;
-  defaultCount: number;
-  role: string;
-  adminSubType?: string;
-  game?: string;
-  isCustom?: boolean;
-}
-
-const BUILTIN_PLAN_ROWS: PlanRowDef[] = [
-  // الإدارة العليا
-  { key: "admin:president", department: "الإدارة العليا", rankLabel: "الرئيس", defaultCount: 1, role: "admin", adminSubType: "president" },
-  { key: "admin:vice_president", department: "الإدارة العليا", rankLabel: "نائب الرئيس", defaultCount: 1, role: "admin", adminSubType: "vice_president" },
-  { key: "admin:exec_supervisor", department: "الإدارة العليا", rankLabel: "الرئيس التنفيذي", defaultCount: 1, role: "admin", adminSubType: "exec_supervisor" },
-  { key: "admin:dept_supervisor", department: "الإدارة العليا", rankLabel: "مشرف الأقسام", defaultCount: 1, role: "admin", adminSubType: "dept_supervisor" },
-  { key: "admin:general_admin", department: "الإدارة العليا", rankLabel: "الإدارة العامة", defaultCount: 2, role: "admin", adminSubType: "general_admin" },
-  { key: "admin:admin_monitor", department: "الإدارة العليا", rankLabel: "مراقب الإدارة", defaultCount: 1, role: "admin", adminSubType: "admin_monitor" },
-
-  // صناع المحتوى
-  { key: "admin:creators_supervisor", department: "صناع المحتوى", rankLabel: "مشرف صناع المحتوى", defaultCount: 1, role: "admin", adminSubType: "creators_supervisor" },
-  { key: "admin:creators_admin", department: "صناع المحتوى", rankLabel: "إداري صناع المحتوى", defaultCount: 2, role: "admin", adminSubType: "creators_admin" },
-  { key: "role:creator", department: "صناع المحتوى", rankLabel: "صانع محتوى", defaultCount: 10, role: "creator" },
-  { key: "admin:streamers_supervisor", department: "صناع المحتوى", rankLabel: "إداري ستريمر", defaultCount: 1, role: "admin", adminSubType: "streamers_supervisor" },
-  { key: "role:streamer", department: "صناع المحتوى", rankLabel: "ستريمر", defaultCount: 3, role: "streamer" },
-
-  // فورتنايت
-  { key: "admin:players_supervisor:fortnite", department: "فورتنايت", rankLabel: "مشرف لاعبين فورتنايت", defaultCount: 1, role: "admin", adminSubType: "players_supervisor", game: "fortnite" },
-  { key: "admin:players_admin:fortnite", department: "فورتنايت", rankLabel: "إداري لاعبين فورتنايت", defaultCount: 1, role: "admin", adminSubType: "players_admin", game: "fortnite" },
-  { key: "player:fortnite", department: "فورتنايت", rankLabel: "لاعب فورتنايت", defaultCount: 5, role: "player", game: "fortnite" },
-
-  // ماينكرافت
-  { key: "admin:players_supervisor:minecraft", department: "ماينكرافت", rankLabel: "مشرف لاعبين ماينكرافت", defaultCount: 1, role: "admin", adminSubType: "players_supervisor", game: "minecraft" },
-  { key: "admin:players_admin:minecraft", department: "ماينكرافت", rankLabel: "إداري لاعبين ماينكرافت", defaultCount: 1, role: "admin", adminSubType: "players_admin", game: "minecraft" },
-  { key: "player:minecraft", department: "ماينكرافت", rankLabel: "لاعب ماينكرافت", defaultCount: 3, role: "player", game: "minecraft" },
-
-  // روكيت ليق
-  { key: "admin:players_supervisor:rocket", department: "روكيت ليق", rankLabel: "مشرف لاعبين روكيت ليق", defaultCount: 1, role: "admin", adminSubType: "players_supervisor", game: "rocket" },
-  { key: "admin:players_admin:rocket", department: "روكيت ليق", rankLabel: "إداري لاعبين روكيت ليق", defaultCount: 1, role: "admin", adminSubType: "players_admin", game: "rocket" },
-  { key: "player:rocket", department: "روكيت ليق", rankLabel: "لاعب روكيت ليق", defaultCount: 5, role: "player", game: "rocket" },
-
-  // فيفا
-  { key: "admin:players_supervisor:fifa", department: "فيفا", rankLabel: "مشرف لاعبين فيفا", defaultCount: 1, role: "admin", adminSubType: "players_supervisor", game: "fifa" },
-  { key: "admin:players_admin:fifa", department: "فيفا", rankLabel: "إداري لاعبين فيفا", defaultCount: 1, role: "admin", adminSubType: "players_admin", game: "fifa" },
-  { key: "player:fifa", department: "فيفا", rankLabel: "لاعب فيفا", defaultCount: 5, role: "player", game: "fifa" },
-
-  // كود (Call of Duty)
-  { key: "admin:players_supervisor:cod", department: "كود", rankLabel: "مشرف لاعبين كود", defaultCount: 1, role: "admin", adminSubType: "players_supervisor", game: "cod" },
-  { key: "admin:players_admin:cod", department: "كود", rankLabel: "إداري لاعبين كود", defaultCount: 1, role: "admin", adminSubType: "players_admin", game: "cod" },
-  { key: "player:cod", department: "كود", rankLabel: "لاعب كود", defaultCount: 5, role: "player", game: "cod" },
-
-  // الأفكار والتصميم والمونتاج
-  { key: "role:writer", department: "الأفكار والتصميم والمونتاج", rankLabel: "كاتب أفكار الكلان", defaultCount: 3, role: "writer" },
-  { key: "admin:designers_supervisor", department: "الأفكار والتصميم والمونتاج", rankLabel: "مشرف المصممين", defaultCount: 1, role: "admin", adminSubType: "designers_supervisor" },
-  { key: "role:designer", department: "الأفكار والتصميم والمونتاج", rankLabel: "مصمم", defaultCount: 3, role: "designer" },
-  { key: "admin:editors_supervisor", department: "الأفكار والتصميم والمونتاج", rankLabel: "مشرف الممنتجين", defaultCount: 1, role: "admin", adminSubType: "editors_supervisor" },
-  { key: "role:editor", department: "الأفكار والتصميم والمونتاج", rankLabel: "ممنتج", defaultCount: 3, role: "editor" },
-];
+import { buildSolarPlanRows, matchesPlanRow } from "@/lib/data/solar-plan";
 
 const ROLE_LABELS: Record<string, string> = {
   creator: "صانع محتوى",
@@ -224,44 +165,19 @@ export default function SolarExcelSheet({
   const [newStatus, setNewStatus] = useState("accepted");
   const [newNote, setNewNote] = useState("");
 
-  const planRows = useMemo(() => {
-    const list: PlanRowDef[] = [...BUILTIN_PLAN_ROWS];
-    if (settings?.customGames?.length) {
-      for (const g of settings.customGames) {
-        list.push(
-          { key: `admin:players_supervisor:${g.id}`, department: g.label, rankLabel: `مشرف لاعبين ${g.label}`, defaultCount: 1, role: "admin", adminSubType: "players_supervisor", game: g.id, isCustom: true },
-          { key: `admin:players_admin:${g.id}`, department: g.label, rankLabel: `إداري لاعبين ${g.label}`, defaultCount: 1, role: "admin", adminSubType: "players_admin", game: g.id, isCustom: true },
-          { key: `player:${g.id}`, department: g.label, rankLabel: `لاعب ${g.label}`, defaultCount: 5, role: "player", game: g.id, isCustom: true }
-        );
-      }
-    }
-    if (settings?.customAdminSubTypes?.length) {
-      for (const s of settings.customAdminSubTypes) {
-        list.push({
-          key: `admin:${s.id}`,
-          department: "تخصصات إدارية مخصصة",
-          rankLabel: s.label,
-          defaultCount: 1,
-          role: "admin",
-          adminSubType: s.id,
-          isCustom: true,
-        });
-      }
-    }
-    if (settings?.customRoles?.length) {
-      for (const r of settings.customRoles) {
-        list.push({
-          key: `role:${r.id}`,
-          department: "رتب مخصصة",
-          rankLabel: r.label,
-          defaultCount: 1,
-          role: r.id,
-          isCustom: true,
-        });
-      }
-    }
-    return list;
-  }, [settings]);
+  const planRows = useMemo(
+    () =>
+      buildSolarPlanRows({
+        customGames: settings?.customGames,
+        customAdminSubTypes: settings?.customAdminSubTypes,
+        customRoles: settings?.customRoles,
+        hiddenRoles: settings?.hiddenRoles,
+        hiddenAdminSubTypes: settings?.hiddenAdminSubTypes,
+        hiddenGames: settings?.hiddenGames,
+        labelOverrides: settings?.labelOverrides,
+      }),
+    [settings]
+  );
 
   const acceptedRows = useMemo(
     () => rows.filter((r) => r.status === "accepted"),
@@ -272,16 +188,9 @@ export default function SolarExcelSheet({
     return planRows.map((def) => {
       const required =
         typeof draftQuotas[def.key] === "number" ? draftQuotas[def.key] : def.defaultCount;
-      const matchedMembers = acceptedRows.filter((r) => {
-        const p = r.payload as Record<string, unknown>;
-        const rRole = String(p.role || "");
-        const rSub = String(p.adminSubType || "");
-        const rGame = String(p.game || "");
-        if (rRole !== def.role) return false;
-        if (def.adminSubType && rSub !== def.adminSubType) return false;
-        if (def.game && rGame !== def.game) return false;
-        return true;
-      });
+      const matchedMembers = acceptedRows.filter((r) =>
+        matchesPlanRow(r.payload as Record<string, unknown>, def)
+      );
       const emptyCount = Math.max(0, required - matchedMembers.length);
       return { def, required, matchedMembers, emptyCount };
     });
@@ -774,11 +683,6 @@ export default function SolarExcelSheet({
                   >
                     <td className="border-l border-[#cbd5e1] px-3 py-2 font-semibold whitespace-nowrap">
                       {def.department}
-                      {def.isCustom && (
-                        <span className="mr-1.5 rounded bg-[#162d47]/10 px-1.5 py-0.5 text-[10px] text-[#162d47]">
-                          مضاف
-                        </span>
-                      )}
                     </td>
                     <td className="border-l border-[#cbd5e1] px-3 py-2 font-bold whitespace-nowrap">
                       {def.rankLabel}
