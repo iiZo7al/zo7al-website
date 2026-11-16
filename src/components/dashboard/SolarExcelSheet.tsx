@@ -14,6 +14,7 @@ import {
   Save,
   UserCheck,
   CircleDashed,
+  Copy,
 } from "lucide-react";
 import type { Mutate, RequestRow } from "./types";
 import type { SolarSettings } from "@/lib/server/solar-settings";
@@ -378,6 +379,59 @@ export default function SolarExcelSheet({
     URL.revokeObjectURL(url);
   };
 
+  const [copiedWhatsapp, setCopiedWhatsapp] = useState(false);
+
+  const handleCopyWhatsapp = async () => {
+    const DEPT_ICONS: Record<string, string> = {
+      "الإدارة العليا": "👑",
+      "صناع المحتوى": "🎥",
+      "فورتنايت": "🎮",
+      "ماينكرافت": "⛏️",
+      "روكيت ليق": "🚗",
+      "فيفا": "⚽",
+      "كود": "🔫",
+      "الأفكار والتصميم والمونتاج": "🎨",
+    };
+
+    const grouped = new Map<string, { label: string; count: number }[]>();
+    let totalEmpty = 0;
+
+    for (const item of filteredPlan) {
+      if (item.emptyCount <= 0) continue;
+      totalEmpty += item.emptyCount;
+      const list = grouped.get(item.def.department) ?? [];
+      list.push({ label: item.def.rankLabel, count: item.emptyCount });
+      grouped.set(item.def.department, list);
+    }
+
+    const lines: string[] = ["**📋 الرتب التي تحتاج إلى أعضاء:**", ""];
+    if (grouped.size === 0) {
+      lines.push("جميع المقاعد مكتملة حالياً ✅", "");
+    } else {
+      for (const [dept, items] of grouped.entries()) {
+        const icon = DEPT_ICONS[dept] || "✨";
+        lines.push(`**${icon} ${dept}**`);
+        for (const it of items) {
+          lines.push(`- ${it.label}: ${it.count}`);
+        }
+        lines.push("");
+      }
+    }
+
+    lines.push("━━━━━━━━━━━━━━");
+    lines.push(`**📊 إجمالي المقاعد الشاغرة: ${totalEmpty}**`);
+    lines.push("");
+    lines.push("رابط التقديم : https://zo7al.is-a.dev/solar");
+
+    try {
+      await navigator.clipboard.writeText(lines.join("\n"));
+      setCopiedWhatsapp(true);
+      setTimeout(() => setCopiedWhatsapp(false), 2500);
+    } catch {
+      // ignore clipboard errors
+    }
+  };
+
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     return rows.filter((r) => {
@@ -620,6 +674,14 @@ export default function SolarExcelSheet({
                 {savingQuotas ? "جاري الحفظ..." : "حفظ الأعداد"}
               </button>
             )}
+            <button
+              type="button"
+              onClick={handleCopyWhatsapp}
+              className="inline-flex items-center gap-1.5 rounded-xl border border-emerald-500/40 bg-emerald-500/10 px-3.5 py-2 text-xs font-semibold text-emerald-300 hover:bg-emerald-500/20 transition-colors cursor-pointer"
+            >
+              {copiedWhatsapp ? <Check size={14} /> : <Copy size={14} />}
+              {copiedWhatsapp ? "تم نسخ رسالة الواتساب!" : "نسخ كرسالة واتساب"}
+            </button>
             <button
               type="button"
               onClick={handleDownloadPlanCsv}
