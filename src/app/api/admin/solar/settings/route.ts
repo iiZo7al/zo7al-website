@@ -35,6 +35,7 @@ export async function POST(request: Request) {
       customRoles?: { id: string; label: string }[];
       customAdminSubTypes?: { id: string; label: string }[];
       customGames?: { id: string; label: string }[];
+      roleQuotas?: Record<string, number>;
       requirements?: string;
     };
 
@@ -51,6 +52,10 @@ export async function POST(request: Request) {
       customRoles: Array.isArray(body.customRoles) ? body.customRoles : undefined,
       customAdminSubTypes: Array.isArray(body.customAdminSubTypes) ? body.customAdminSubTypes : undefined,
       customGames: Array.isArray(body.customGames) ? body.customGames : undefined,
+      roleQuotas:
+        body.roleQuotas && typeof body.roleQuotas === "object" && !Array.isArray(body.roleQuotas)
+          ? body.roleQuotas
+          : undefined,
       requirements: typeof body.requirements === "string" ? body.requirements : undefined,
     });
 

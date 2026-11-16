@@ -6,11 +6,13 @@ import SolidIcon from "@/components/ui/SolidIcon";
 import {
   Check,
   LockKeyhole,
+  UserCheck,
   LogIn,
   ShieldCheck,
   ArrowRight,
   ArrowLeft,
   ExternalLink,
+  CalendarDays,
 } from "lucide-react";
 import { useLocale } from "next-intl";
 import { useAccount } from "@/components/account/AccountProvider";
@@ -21,6 +23,28 @@ import {
   type SolarLeaveDuration,
 } from "@/lib/data/solar-leave";
 import type { SolarLeavePrefill } from "@/lib/server/solar-member-status";
+
+function toIsoDate(d: Date): string {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
+}
+
+function addDaysIso(iso: string, days: number): string {
+  const d = new Date(`${iso}T00:00:00`);
+  if (Number.isNaN(d.getTime())) return "";
+  d.setDate(d.getDate() + days);
+  return toIsoDate(d);
+}
+
+function diffDaysInclusive(startIso: string, endIso: string): number | null {
+  if (!startIso || !endIso) return null;
+  const start = new Date(`${startIso}T00:00:00`).getTime();
+  const end = new Date(`${endIso}T00:00:00`).getTime();
+  if (Number.isNaN(start) || Number.isNaN(end) || end < start) return null;
+  return Math.round((end - start) / 86400000) + 1;
+}
 
 export default function SolarLeaveModal({
   open,
@@ -39,11 +63,14 @@ export default function SolarLeaveModal({
   const [showLogin, setShowLogin] = useState(false);
   const [step, setStep] = useState<1 | 2 | 3>(1);
 
+  const todayIso = toIsoDate(new Date());
+
   const [name, setName] = useState(() => prefill?.name || account?.name || "");
   const [discord, setDiscord] = useState(() => prefill?.discord || "");
   const [phone, setPhone] = useState(() => prefill?.phone || "");
   const [leaveDuration, setLeaveDuration] = useState<SolarLeaveDuration>("2_days");
-  const [leaveDurationCustom, setLeaveDurationCustom] = useState("");
+  const [leaveStartDate, setLeaveStartDate] = useState(todayIso);
+  const [leaveEndDate, setLeaveEndDate] = useState("");
   const [signedContractUrl, setSignedContractUrl] = useState("");
   const [pledgeAgreed, setPledgeAgreed] = useState(false);
   const [reason, setReason] = useState("");
@@ -65,12 +92,23 @@ export default function SolarLeaveModal({
     };
   }, [open]);
 
+  const maxEndIso = leaveStartDate ? addDaysIso(leaveStartDate, 13) : addDaysIso(todayIso, 13);
+  const customDays = diffDaysInclusive(leaveStartDate, leaveEndDate);
+
   const validateStep2 = () => {
     if (!name.trim()) return "يرجى كتابة اسمك";
     if (!discord.trim()) return "يرجى كتابة حسابك ديسكورد (اليوزر)";
     if (!phone.trim()) return "يرجى كتابة رقم جوالك للتواصل";
-    if (leaveDuration === "other" && !leaveDurationCustom.trim()) {
-      return "يرجى كتابة مدة الإجازة في خانة أخرى";
+    if (leaveDuration === "other") {
+      if (!leaveStartDate || !leaveEndDate) {
+        return "يرجى تحديد تاريخ بداية ونهاية الإجازة من التقويم";
+      }
+      if (customDays === null || customDays < 1) {
+        return "تاريخ نهاية الإجازة يجب أن يكون بعد تاريخ البداية";
+      }
+      if (customDays > 14) {
+        return "الحد الأقصى لمدة الإجازة هو أسبوعين (14 يوماً)";
+      }
     }
     return null;
   };
@@ -98,6 +136,11 @@ export default function SolarLeaveModal({
       return;
     }
 
+    const customSummary =
+      leaveDuration === "other" && customDays
+        ? `من ${leaveStartDate} إلى ${leaveEndDate} (${customDays} ${customDays === 1 ? "يوم" : customDays === 2 ? "يومين" : customDays <= 10 ? "أيام" : "يوماً"})`
+        : undefined;
+
     setBusy(true);
     try {
       const res = await fetch("/api/solar/leave", {
@@ -108,8 +151,9 @@ export default function SolarLeaveModal({
           discord: discord.trim(),
           phone: phone.trim(),
           leaveDuration,
-          leaveDurationCustom:
-            leaveDuration === "other" ? leaveDurationCustom.trim() : undefined,
+          leaveDurationCustom: customSummary,
+          leaveStartDate: leaveDuration === "other" ? leaveStartDate : undefined,
+          leaveEndDate: leaveDuration === "other" ? leaveEndDate : undefined,
           signedContractUrl,
           pledgeAgreed,
           reason: reason.trim(),
@@ -274,25 +318,99 @@ export default function SolarLeaveModal({
             {showLogin && <AccountLogin onClose={() => setShowLogin(false)} />}
           </div>
         ) : (
-          <div className="space-y-6" dir="rtl">
-            {/* Step Progress Indicator */}
-            <div className="flex items-center gap-2">
-              {[1, 2, 3].map((s) => (
+          <div className="space-y-5" dir="rtl">
+            {/* Step Navigation Wizard */}
+            <div className="flex items-center justify-between border-b border-[var(--border)] pb-3 text-xs">
+              <button
+                type="button"
+                onClick={() => setStep(1)}
+                className={`flex items-center gap-1.5 font-medium transition-colors cursor-pointer ${
+                  step === 1 ? "text-[var(--accent)] font-bold" : "text-[var(--text-muted)]"
+                }`}
+              >
+                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[var(--surface-elevated)] border text-[11px]">
+                  1
+                </span>
+                <span>القوانين والشروط</span>
+              </button>
+
+              <span className="text-[var(--border-strong)]">──</span>
+
+              <button
+                type="button"
+                onClick={() => setStep(2)}
+                className={`flex items-center gap-1.5 font-medium transition-colors cursor-pointer ${
+                  step === 2 ? "text-[var(--accent)] font-bold" : "text-[var(--text-muted)]"
+                }`}
+              >
+                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[var(--surface-elevated)] border text-[11px]">
+                  2
+                </span>
+                <span>البيانات والمدة</span>
+              </button>
+
+              <span className="text-[var(--border-strong)]">──</span>
+
+              <button
+                type="button"
+                onClick={() => {
+                  const err = validateStep2();
+                  if (err) {
+                    setError(err);
+                  } else {
+                    setError(null);
+                    setStep(3);
+                  }
+                }}
+                className={`flex items-center gap-1.5 font-medium transition-colors cursor-pointer ${
+                  step === 3 ? "text-[var(--accent)] font-bold" : "text-[var(--text-muted)]"
+                }`}
+              >
+                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[var(--surface-elevated)] border text-[11px]">
+                  3
+                </span>
+                <span>العقد والتعهّد</span>
+              </button>
+            </div>
+
+            {/* Account Info Badge */}
+            <div className="flex items-center justify-between rounded-xl border border-[var(--border)] bg-black/20 p-2.5 text-xs">
+              <div className="flex items-center gap-2">
                 <div
-                  key={s}
-                  className="h-1.5 flex-1 rounded-full transition-colors"
+                  className="flex h-6 w-6 items-center justify-center rounded-lg"
                   style={{
-                    background:
-                      s <= step ? "var(--accent)" : "var(--border-strong)",
+                    background: "color-mix(in srgb, var(--accent) 15%, transparent)",
+                    color: "var(--accent)",
                   }}
-                />
-              ))}
+                >
+                  <UserCheck size={14} />
+                </div>
+                <div className="leading-tight">
+                  <span className="text-[var(--text-muted)] text-[11px]">حسابك: </span>
+                  <strong className="text-[var(--text)]">
+                    {account.name || account.username || account.email}
+                  </strong>
+                </div>
+              </div>
+              <span
+                className="rounded-full px-2 py-0.5 text-[10px] font-medium"
+                style={{
+                  background: "color-mix(in srgb, var(--accent) 12%, transparent)",
+                  color: "var(--accent)",
+                }}
+              >
+                حساب موثّق
+              </span>
             </div>
 
             {error && (
               <div
                 role="alert"
-                className="rounded-xl border border-red-500/30 bg-red-500/10 p-3 text-xs text-red-400"
+                className="rounded-xl border p-3 text-xs text-red-400"
+                style={{
+                  background: "rgba(239, 68, 68, 0.1)",
+                  borderColor: "rgba(239, 68, 68, 0.3)",
+                }}
               >
                 {error}
               </div>
@@ -459,15 +577,70 @@ export default function SolarLeaveModal({
                     </div>
 
                     {leaveDuration === "other" && (
-                      <input
-                        type="text"
-                        required
-                        maxLength={64}
-                        value={leaveDurationCustom}
-                        onChange={(e) => setLeaveDurationCustom(e.target.value)}
-                        placeholder="اكتب مدة الإجازة المطلوبة وتاريخها..."
-                        className="mt-2.5 w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] px-3.5 py-2 text-sm text-[var(--text)] outline-none focus:border-[var(--accent)]"
-                      />
+                      <div className="mt-3 rounded-xl border border-[var(--border)] bg-black/20 p-3.5 space-y-3">
+                        <div className="flex items-center justify-between gap-2 text-xs">
+                          <span className="inline-flex items-center gap-1.5 font-semibold text-[var(--accent)]">
+                            <CalendarDays size={15} />
+                            تحديد مدة الإجازة من التقويم
+                          </span>
+                          <span className="text-[11px] text-[var(--text-muted)]">
+                            الحد الأقصى: أسبوعين (14 يوماً)
+                          </span>
+                        </div>
+                        <div className="grid gap-3 sm:grid-cols-2">
+                          <div>
+                            <label className="block text-[11px] font-semibold text-[var(--text-muted)] mb-1">
+                              تاريخ بداية الإجازة <span className="text-red-400">*</span>
+                            </label>
+                            <input
+                              type="date"
+                              required
+                              min={todayIso}
+                              value={leaveStartDate}
+                              onChange={(e) => {
+                                const nextStart = e.target.value;
+                                setLeaveStartDate(nextStart);
+                                if (leaveEndDate) {
+                                  const d = diffDaysInclusive(nextStart, leaveEndDate);
+                                  if (d === null || d < 1 || d > 14) {
+                                    setLeaveEndDate("");
+                                  }
+                                }
+                              }}
+                              dir="ltr"
+                              className="w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--text)] outline-none focus:border-[var(--accent)]"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-[11px] font-semibold text-[var(--text-muted)] mb-1">
+                              تاريخ نهاية الإجازة <span className="text-red-400">*</span>
+                            </label>
+                            <input
+                              type="date"
+                              required
+                              min={leaveStartDate || todayIso}
+                              max={maxEndIso}
+                              value={leaveEndDate}
+                              onChange={(e) => setLeaveEndDate(e.target.value)}
+                              dir="ltr"
+                              className="w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--text)] outline-none focus:border-[var(--accent)]"
+                            />
+                          </div>
+                        </div>
+                        {customDays !== null && customDays >= 1 && customDays <= 14 && (
+                          <p className="text-[11px] font-semibold text-emerald-400">
+                            المدة المحددة: {customDays}{" "}
+                            {customDays === 1
+                              ? "يوم"
+                              : customDays === 2
+                              ? "يومين"
+                              : customDays <= 10
+                              ? "أيام"
+                              : "يوماً"}{" "}
+                            (من {leaveStartDate} إلى {leaveEndDate})
+                          </p>
+                        )}
+                      </div>
                     )}
                   </div>
                 </div>

@@ -6,6 +6,7 @@ import SolidIcon from "@/components/ui/SolidIcon";
 import {
   Check,
   LockKeyhole,
+  UserCheck,
   LogIn,
   ShieldCheck,
   ArrowRight,
@@ -233,136 +234,210 @@ export default function SolarEventsApplyModal({
               </p>
             </div>
 
-            <div className="flex flex-wrap items-center justify-center gap-3">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
               <button
                 type="button"
                 onClick={() => setShowLogin(true)}
-                className="store-action store-action-primary px-6 py-2.5"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl px-7 py-3 text-sm font-semibold transition-transform active:scale-95 cursor-pointer"
+                style={{ background: "var(--accent)", color: "#07080b" }}
               >
-                <LogIn size={16} />
-                تسجيل الدخول أو إنشاء حساب
+                <LogIn size={15} />
+                تسجيل الدخول الآن
+              </button>
+
+              <button
+                type="button"
+                onClick={onClose}
+                className="w-full sm:w-auto inline-flex items-center justify-center rounded-xl border border-[var(--border)] px-6 py-3 text-sm font-medium text-[var(--text-muted)] hover:text-[var(--text)] transition-colors cursor-pointer"
+              >
+                إغلاق
               </button>
             </div>
 
-            {showLogin && (
-              <div className="mt-4 text-right">
-                <AccountLogin onClose={() => setShowLogin(false)} />
-              </div>
-            )}
+            {showLogin && <AccountLogin onClose={() => setShowLogin(false)} />}
           </div>
         ) : (
-          <div className="space-y-6" dir="rtl">
-            {/* Step Indicator */}
-            <div className="flex items-center justify-between gap-2 rounded-xl border border-[var(--border)] bg-[var(--surface)] p-2 text-xs">
-              {[
-                { id: 1, label: "1. الشروط والقوانين" },
-                { id: 2, label: "2. البيانات" },
-                { id: 3, label: "3. العقد والتعهّد" },
-              ].map((s) => (
-                <button
-                  key={s.id}
-                  type="button"
-                  onClick={() => {
-                    if (s.id === 1) setStep(1);
-                    else if (s.id === 2) setStep(2);
-                    else if (s.id === 3 && !validateStep2()) setStep(3);
+          <div className="space-y-5" dir="rtl">
+            {/* Step Navigation Wizard */}
+            <div className="flex items-center justify-between border-b border-[var(--border)] pb-3 text-xs">
+              <button
+                type="button"
+                onClick={() => setStep(1)}
+                className={`flex items-center gap-1.5 font-medium transition-colors cursor-pointer ${
+                  step === 1 ? "text-[var(--accent)] font-bold" : "text-[var(--text-muted)]"
+                }`}
+              >
+                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[var(--surface-elevated)] border text-[11px]">
+                  1
+                </span>
+                <span>القوانين والشروط</span>
+              </button>
+
+              <span className="text-[var(--border-strong)]">──</span>
+
+              <button
+                type="button"
+                onClick={() => setStep(2)}
+                className={`flex items-center gap-1.5 font-medium transition-colors cursor-pointer ${
+                  step === 2 ? "text-[var(--accent)] font-bold" : "text-[var(--text-muted)]"
+                }`}
+              >
+                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[var(--surface-elevated)] border text-[11px]">
+                  2
+                </span>
+                <span>البيانات الأساسية</span>
+              </button>
+
+              <span className="text-[var(--border-strong)]">──</span>
+
+              <button
+                type="button"
+                onClick={() => {
+                  const err = validateStep2();
+                  if (err) {
+                    setError(err);
+                  } else {
+                    setError(null);
+                    setStep(3);
+                  }
+                }}
+                className={`flex items-center gap-1.5 font-medium transition-colors cursor-pointer ${
+                  step === 3 ? "text-[var(--accent)] font-bold" : "text-[var(--text-muted)]"
+                }`}
+              >
+                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[var(--surface-elevated)] border text-[11px]">
+                  3
+                </span>
+                <span>العقد والتعهّد</span>
+              </button>
+            </div>
+
+            {/* Account Info Badge */}
+            <div className="flex items-center justify-between rounded-xl border border-[var(--border)] bg-black/20 p-2.5 text-xs">
+              <div className="flex items-center gap-2">
+                <div
+                  className="flex h-6 w-6 items-center justify-center rounded-lg"
+                  style={{
+                    background: "color-mix(in srgb, var(--accent) 15%, transparent)",
+                    color: "var(--accent)",
                   }}
-                  className={`flex-1 rounded-lg py-2 font-semibold transition-all ${
-                    step === s.id
-                      ? "bg-[var(--accent)] text-[#07080b]"
-                      : "text-[var(--text-muted)] hover:text-[var(--text)]"
-                  }`}
                 >
-                  {s.label}
-                </button>
-              ))}
+                  <UserCheck size={14} />
+                </div>
+                <div className="leading-tight">
+                  <span className="text-[var(--text-muted)] text-[11px]">حسابك: </span>
+                  <strong className="text-[var(--text)]">
+                    {account.name || account.username || account.email}
+                  </strong>
+                </div>
+              </div>
+              <span
+                className="rounded-full px-2 py-0.5 text-[10px] font-medium"
+                style={{
+                  background: "color-mix(in srgb, var(--accent) 12%, transparent)",
+                  color: "var(--accent)",
+                }}
+              >
+                حساب موثّق
+              </span>
             </div>
 
             {error && (
-              <div className="rounded-xl border border-rose-500/40 bg-rose-500/10 p-3.5 text-xs font-medium text-rose-300">
+              <div
+                role="alert"
+                className="rounded-xl border p-3 text-xs text-red-400"
+                style={{
+                  background: "rgba(239, 68, 68, 0.1)",
+                  borderColor: "rgba(239, 68, 68, 0.3)",
+                }}
+              >
                 {error}
               </div>
             )}
 
             {/* STEP 1: Rules & Terms */}
             {step === 1 && (
-              <div className="space-y-5">
-                <div className="rounded-xl border border-[var(--border)] bg-black/20 p-5 space-y-4 text-xs sm:text-sm leading-relaxed text-[var(--text-muted)] max-h-[52vh] overflow-y-auto">
-                  <h3 className="text-base font-bold text-[var(--text)]">
-                    شروط وقوانين إدارة فعاليات الديسكورد – Solar System
-                  </h3>
-                  <p>
+              <div className="space-y-4">
+                <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4 sm:p-5 space-y-3 text-xs sm:text-sm leading-relaxed max-h-[55vh] overflow-y-auto">
+                  <div className="flex items-center gap-2 text-[var(--accent)] font-bold text-base">
+                    <ShieldCheck size={18} />
+                    <span>شروط وقوانين إدارة فعاليات الديسكورد – Solar System</span>
+                  </div>
+                  <p className="text-[var(--text-muted)] text-xs">
                     يرجى قراءة الشروط التالية قبل تقديم طلب الانضمام إلى إدارة فعاليات الديسكورد:
                   </p>
 
-                  <div className="space-y-1.5">
-                    <h4 className="font-bold text-[var(--accent)]">1. شروط الانضمام</h4>
-                    <ul className="list-disc pr-5 space-y-1">
-                      <li>يجب الالتزام بمهام إدارة وتنظيم فعاليات الديسكورد الخاصة بفريق Solar System.</li>
-                      <li>لا يُعتبر هذا الطلب انضمامًا إلى الكلان أو الفريق كلاعب، وإنما هو مخصص لإدارة فعاليات الديسكورد فقط.</li>
-                      <li>يجب الالتزام بالمدة المحددة في العقد، والتي لا تتجاوز شهرًا ونصفًا.</li>
-                      <li>لا يُعتمد الانضمام إلى الإدارة إلا بعد موافقة الإدارة المسؤولة.</li>
-                    </ul>
-                  </div>
+                  <div className="space-y-2.5 text-xs">
+                    <div>
+                      <h4 className="font-bold text-[var(--text)]">1. شروط الانضمام</h4>
+                      <ul className="list-disc list-inside space-y-1 text-[var(--text-muted)] mt-1 pr-1">
+                        <li>يجب الالتزام بمهام إدارة وتنظيم فعاليات الديسكورد الخاصة بفريق Solar System.</li>
+                        <li>لا يُعتبر هذا الطلب انضمامًا إلى الكلان أو الفريق كلاعب، وإنما هو مخصص لإدارة فعاليات الديسكورد فقط.</li>
+                        <li>يجب الالتزام بالمدة المحددة في العقد، والتي لا تتجاوز شهرًا ونصفًا.</li>
+                        <li>لا يُعتمد الانضمام إلى الإدارة إلا بعد موافقة الإدارة المسؤولة.</li>
+                      </ul>
+                    </div>
 
-                  <div className="space-y-1.5">
-                    <h4 className="font-bold text-[var(--accent)]">2. الالتزام بالمهام</h4>
-                    <ul className="list-disc pr-5 space-y-1">
-                      <li>يجب الالتزام بتنظيم الفعاليات والمساهمة في إنجاحها.</li>
-                      <li>يمنع استغلال الصلاحيات الممنوحة لأغراض شخصية أو مخالفة قوانين السيرفر.</li>
-                      <li>يجب التعامل مع المشاركين باحترام وعدل، والالتزام بتوجيهات الإدارة.</li>
-                      <li>في حال تعذّر أداء المهام أو الرغبة في الانسحاب، يجب إبلاغ الإدارة والتنسيق معها.</li>
-                    </ul>
-                  </div>
+                    <div>
+                      <h4 className="font-bold text-[var(--text)]">2. الالتزام بالمهام</h4>
+                      <ul className="list-disc list-inside space-y-1 text-[var(--text-muted)] mt-1 pr-1">
+                        <li>يجب الالتزام بتنظيم الفعاليات والمساهمة في إنجاحها.</li>
+                        <li>يمنع استغلال الصلاحيات الممنوحة لأغراض شخصية أو مخالفة قوانين السيرفر.</li>
+                        <li>يجب التعامل مع المشاركين باحترام وعدل، والالتزام بتوجيهات الإدارة.</li>
+                        <li>في حال تعذّر أداء المهام أو الرغبة في الانسحاب، يجب إبلاغ الإدارة والتنسيق معها.</li>
+                      </ul>
+                    </div>
 
-                  <div className="space-y-1.5">
-                    <h4 className="font-bold text-[var(--accent)]">3. المسؤولية والانسحاب</h4>
-                    <ul className="list-disc pr-5 space-y-1">
-                      <li>يتحمّل عضو إدارة الفعاليات مسؤولية تصرفاته وقراراته المتعلقة بمهامه.</li>
-                      <li>لا يُسمح بالانسحاب من الإدارة قبل انتهاء مدة العقد إلا بعد التنسيق مع الإدارة والحصول على موافقتها.</li>
-                      <li>يحق للإدارة اتخاذ الإجراءات المناسبة عند الإخلال بالمسؤوليات أو مخالفة القوانين المتفق عليها.</li>
-                    </ul>
-                  </div>
+                    <div>
+                      <h4 className="font-bold text-[var(--text)]">3. المسؤولية والانسحاب</h4>
+                      <ul className="list-disc list-inside space-y-1 text-[var(--text-muted)] mt-1 pr-1">
+                        <li>يتحمّل عضو إدارة الفعاليات مسؤولية تصرفاته وقراراته المتعلقة بمهامه.</li>
+                        <li>لا يُسمح بالانسحاب من الإدارة قبل انتهاء مدة العقد إلا بعد التنسيق مع الإدارة والحصول على موافقتها.</li>
+                        <li>يحق للإدارة اتخاذ الإجراءات المناسبة عند الإخلال بالمسؤوليات أو مخالفة القوانين المتفق عليها.</li>
+                      </ul>
+                    </div>
 
-                  <div className="space-y-1.5">
-                    <h4 className="font-bold text-[var(--accent)]">4. ديسكورد الفريق</h4>
-                    <ul className="list-disc pr-5 space-y-1">
-                      <li>تتم جميع أمور إدارة الفعاليات والتنسيق بشأنها عبر سيرفر ديسكورد Solar System الرسمي.</li>
-                      <li>يجب متابعة الإعلانات والتعليمات والتحديثات المتعلقة بالفعاليات.</li>
-                      <li>يجب الالتزام بقوانين السيرفر والمحافظة على سمعته وتنظيمه.</li>
-                    </ul>
-                    <p className="pt-1">
-                      رابط السيرفر الرسمي:{" "}
-                      <a
-                        href="https://discord.gg/bCHAGPTUm"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 text-[var(--accent)] underline"
-                      >
-                        https://discord.gg/bCHAGPTUm
-                        <ExternalLink size={12} />
-                      </a>
-                    </p>
-                  </div>
+                    <div>
+                      <h4 className="font-bold text-[var(--text)]">4. ديسكورد الفريق</h4>
+                      <ul className="list-disc list-inside space-y-1 text-[var(--text-muted)] mt-1 pr-1">
+                        <li>تتم جميع أمور إدارة الفعاليات والتنسيق بشأنها عبر سيرفر ديسكورد Solar System الرسمي.</li>
+                        <li>يجب متابعة الإعلانات والتعليمات والتحديثات المتعلقة بالفعاليات.</li>
+                        <li>يجب الالتزام بقوانين السيرفر والمحافظة على سمعته وتنظيمه.</li>
+                        <li className="flex items-center gap-1.5 flex-wrap">
+                          <span>رابط السيرفر الرسمي:</span>
+                          <a
+                            href="https://discord.gg/bCHAGPTUm"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1 text-[var(--accent)] hover:underline font-medium"
+                            dir="ltr"
+                          >
+                            https://discord.gg/bCHAGPTUm
+                            <ExternalLink size={12} />
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
 
-                  <div className="space-y-1.5 border-t border-[var(--border)] pt-3">
-                    <h4 className="font-bold text-[var(--text)]">الموافقة النهائية</h4>
-                    <p>
-                      بتقديم طلب الانضمام إلى إدارة فعاليات الديسكورد، أقرّ بأنني قرأت الشروط المذكورة أعلاه وفهمتها، وأوافق على الالتزام بها وتحمل مسؤولياتي المتعلقة بإدارة الفعاليات، وأعلم أن تقديم الطلب لا يعني الموافقة عليه تلقائيًا، وأن هذا الطلب خاص بإدارة فعاليات الديسكورد فقط ولا يُعد انضمامًا إلى الكلان.
-                    </p>
+                    <div className="rounded-lg border border-[var(--border)] bg-black/20 p-3 mt-2">
+                      <h4 className="font-bold text-[var(--accent)]">الموافقة النهائية</h4>
+                      <p className="text-[var(--text-muted)] mt-1">
+                        بتقديم طلب الانضمام إلى إدارة فعاليات الديسكورد، أقرّ بأنني قرأت الشروط المذكورة أعلاه وفهمتها، وأوافق على الالتزام بها وتحمل مسؤولياتي المتعلقة بإدارة الفعاليات، وأعلم أن تقديم الطلب لا يعني الموافقة عليه تلقائيًا، وأن هذا الطلب خاص بإدارة فعاليات الديسكورد فقط ولا يُعد انضمامًا إلى الكلان.
+                      </p>
+                    </div>
                   </div>
                 </div>
 
-                <div className="flex justify-end">
+                <div className="flex justify-end pt-2">
                   <button
                     type="button"
                     onClick={() => {
                       setError(null);
                       setStep(2);
                     }}
-                    className="store-action store-action-primary px-6 py-2.5"
+                    className="store-action store-action-primary flex items-center gap-2"
                   >
-                    فهمت الشروط، التالي
+                    <span>قرأت الشروط وأوافق — متابعة</span>
                     <ArrowLeft size={16} />
                   </button>
                 </div>
@@ -372,60 +447,65 @@ export default function SolarEventsApplyModal({
             {/* STEP 2: Questions */}
             {step === 2 && (
               <div className="space-y-4">
-                <div>
-                  <label className="block text-xs font-semibold text-[var(--text)] mb-1.5">
-                    اسمك؟ <span className="text-rose-400">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder="اكتب اسمك..."
-                    maxLength={80}
-                    className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3.5 py-2.5 text-sm text-[var(--text)]"
-                  />
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <div className="sm:col-span-2">
+                    <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1">
+                      اسمك؟ <span className="text-red-400">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      placeholder="اكتب اسمك..."
+                      maxLength={80}
+                      className="w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] px-3.5 py-2 text-sm text-[var(--text)] outline-none focus:border-[var(--accent)]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1">
+                      عمرك؟ <span className="text-red-400">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={age}
+                      onChange={(e) => setAge(e.target.value)}
+                      placeholder="مثال: 19"
+                      maxLength={20}
+                      className="w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] px-3.5 py-2 text-sm text-[var(--text)] outline-none focus:border-[var(--accent)]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1">
+                      حسابك ديسكورد؟ (اليوزر) <span className="text-red-400">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={discord}
+                      onChange={(e) => setDiscord(e.target.value)}
+                      placeholder="username"
+                      maxLength={60}
+                      dir="ltr"
+                      className="w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] px-3.5 py-2 text-sm text-[var(--text)] outline-none focus:border-[var(--accent)]"
+                    />
+                  </div>
                 </div>
 
-                <div>
-                  <label className="block text-xs font-semibold text-[var(--text)] mb-1.5">
-                    عمرك؟ <span className="text-rose-400">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    value={age}
-                    onChange={(e) => setAge(e.target.value)}
-                    placeholder="مثال: 19"
-                    maxLength={20}
-                    className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3.5 py-2.5 text-sm text-[var(--text)]"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-semibold text-[var(--text)] mb-1.5">
-                    حسابك ديسكورد؟ (اليوزر) <span className="text-rose-400">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    value={discord}
-                    onChange={(e) => setDiscord(e.target.value)}
-                    placeholder="مثال: username"
-                    maxLength={60}
-                    dir="ltr"
-                    className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3.5 py-2.5 text-sm text-[var(--text)] text-right"
-                  />
-                </div>
-
-                <div className="flex items-center justify-between pt-3">
+                <div className="flex items-center justify-between pt-2">
                   <button
                     type="button"
                     onClick={() => {
                       setError(null);
                       setStep(1);
                     }}
-                    className="store-action"
+                    className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--border)] px-4 py-2 text-xs font-medium text-[var(--text-muted)] hover:text-[var(--text)] cursor-pointer"
                   >
-                    <ArrowRight size={16} />
-                    السابق
+                    <ArrowRight size={14} />
+                    الرجوع للشروط
                   </button>
                   <button
                     type="button"
@@ -438,9 +518,9 @@ export default function SolarEventsApplyModal({
                       setError(null);
                       setStep(3);
                     }}
-                    className="store-action store-action-primary px-6 py-2.5"
+                    className="store-action store-action-primary flex items-center gap-2"
                   >
-                    التالي: العقد والتعهّد
+                    <span>المتابعة للتوقيع والتعهّد</span>
                     <ArrowLeft size={16} />
                   </button>
                 </div>
@@ -449,11 +529,11 @@ export default function SolarEventsApplyModal({
 
             {/* STEP 3: Contract Signature & Pledge */}
             {step === 3 && (
-              <form onSubmit={handleSubmit} className="space-y-5">
-                <div className="space-y-2">
-                  <label className="block text-xs font-semibold text-[var(--text)]">
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div>
+                  <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1">
                     قم بتنزيل هذه الصورة وقم بتعديلها باي تطبيق للتعديل الصور لاضافة توقيعك ومن ثم ارفع الصورة مع التوقيع{" "}
-                    <span className="text-rose-400">*</span>
+                    <span className="text-red-400">*</span>
                   </label>
                   <SolarSignaturePad
                     value={signedContractUrl}
@@ -467,16 +547,16 @@ export default function SolarEventsApplyModal({
                   />
                 </div>
 
-                <div className="rounded-xl border border-[var(--border)] bg-black/20 p-4 space-y-2.5 text-xs leading-relaxed text-[var(--text-muted)] max-h-60 overflow-y-auto">
-                  <h4 className="font-bold text-sm text-[var(--text)] flex items-center gap-2">
-                    <ShieldCheck size={16} className="text-[var(--accent)]" />
-                    تعهّد إدارة فعاليات الديسكورد – Solar System
-                  </h4>
-                  <p>
+                <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4 space-y-2 text-xs leading-relaxed">
+                  <div className="flex items-center gap-2 text-[var(--accent)] font-bold">
+                    <ShieldCheck size={16} />
+                    <span>تعهّد إدارة فعاليات الديسكورد – Solar System</span>
+                  </div>
+                  <p className="text-[var(--text)]">
                     أنا المقدّم أدناه، أتعهد بالالتزام بجميع أنظمة وقوانين فريق Solar System المتعلقة بإدارة وتنظيم فعاليات الديسكورد، وأداء المهام الموكلة إليّ وفقًا للإجراءات والتعليمات المعتمدة من الإدارة.
                   </p>
                   <p className="font-semibold text-[var(--text)]">وأتعهد بالالتزام بما يلي:</p>
-                  <ul className="list-disc pr-5 space-y-1">
+                  <ul className="list-disc list-inside space-y-0.5 text-[var(--text-muted)] pr-2">
                     <li>الالتزام بمهام إدارة وتنظيم فعاليات الديسكورد والعمل على إنجاحها.</li>
                     <li>التحلي بالصدق والأمانة وتحمل المسؤولية في جميع المهام والقرارات المتعلقة بإدارة الفعاليات.</li>
                     <li>الالتزام بقوانين السيرفر واحترام جميع الأعضاء والمشاركين في الفعاليات.</li>
@@ -487,28 +567,28 @@ export default function SolarEventsApplyModal({
                     <li>الالتزام بمدة العقد المعتمدة، والتي لا تتجاوز شهرًا ونصفًا، وعدم الانسحاب من إدارة الفعاليات قبل انتهاء المدة إلا بعد موافقة الإدارة.</li>
                     <li>إبلاغ الإدارة في حال تعذّر أداء المهام الموكلة إليّ أو وجود ظروف تمنعني من الاستمرار في إدارة الفعاليات.</li>
                   </ul>
-                  <p>
+                  <p className="text-[var(--text-muted)]">
                     وأقرّ بأن هذا التعهّد خاص بإدارة وتنظيم فعاليات الديسكورد فقط، ولا يُعتبر طلبًا للانضمام إلى الكلان أو الفريق كلاعب. كما أقرّ بأن مخالفة الشروط أو الإخلال بالمسؤوليات قد يؤدي إلى اتخاذ الإجراءات الإدارية المناسبة بحقي.
                   </p>
-                  <p>
+                  <p className="text-[var(--text-muted)]">
                     وبناءً عليه، أؤكد التزامي الكامل بهذا التعهّد، وأتحمّل مسؤولية تصرفاتي وقراراتي المتعلقة بإدارة فعاليات الديسكورد، وأوافق على الالتزام بجميع الشروط المذكورة أعلاه.
                   </p>
-                  <p className="font-semibold text-[var(--accent)]">
+                  <p className="font-bold text-[var(--accent)] pt-1 text-[11px]">
                     Solar System — الالتزام، الاحترام، والمسؤولية.
                   </p>
-                </div>
 
-                <label className="flex items-center gap-3 rounded-xl border border-[var(--border)] bg-[var(--surface)] p-3.5 cursor-pointer hover:border-[var(--accent)] transition-colors">
-                  <input
-                    type="checkbox"
-                    checked={pledgeAgreed}
-                    onChange={(e) => setPledgeAgreed(e.target.checked)}
-                    className="h-4 w-4 accent-[var(--accent)]"
-                  />
-                  <span className="text-xs sm:text-sm font-semibold text-[var(--text)]">
-                    موافق/ـة <span className="text-rose-400">*</span>
-                  </span>
-                </label>
+                  <label className="flex items-center gap-2 pt-2 border-t border-[var(--border)] cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={pledgeAgreed}
+                      onChange={(e) => setPledgeAgreed(e.target.checked)}
+                      className="h-4 w-4 rounded border-[var(--border)] text-[var(--accent)] focus:ring-[var(--accent)]"
+                    />
+                    <span className="font-semibold text-xs text-[var(--text)]">
+                      موافق/ـة <span className="text-red-400">*</span>
+                    </span>
+                  </label>
+                </div>
 
                 <div className="flex items-center justify-between pt-2">
                   <button
@@ -517,15 +597,15 @@ export default function SolarEventsApplyModal({
                       setError(null);
                       setStep(2);
                     }}
-                    className="store-action"
+                    className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--border)] px-4 py-2 text-xs font-medium text-[var(--text-muted)] hover:text-[var(--text)] cursor-pointer"
                   >
-                    <ArrowRight size={16} />
-                    السابق
+                    <ArrowRight size={14} />
+                    تعديل البيانات
                   </button>
                   <button
                     type="submit"
-                    disabled={busy}
-                    className="store-action store-action-primary px-7 py-2.5"
+                    disabled={busy || !pledgeAgreed}
+                    className="store-action store-action-primary px-8"
                   >
                     {busy ? "جاري الإرسال..." : "إرسال طلب إدارة الفعاليات"}
                   </button>
