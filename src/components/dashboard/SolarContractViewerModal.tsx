@@ -12,6 +12,7 @@ export default function SolarContractViewerModal({
   applicantName,
   isLeave = false,
   isEvents = false,
+  isWarning = false,
 }: {
   isOpen: boolean;
   onClose: () => void;
@@ -19,6 +20,7 @@ export default function SolarContractViewerModal({
   applicantName: string;
   isLeave?: boolean;
   isEvents?: boolean;
+  isWarning?: boolean;
 }) {
   const [activeTab, setActiveTab] = useState<"contract" | "signature">("contract");
   const [downloading, setDownloading] = useState(false);
@@ -37,7 +39,9 @@ export default function SolarContractViewerModal({
     };
   }, [isOpen]);
 
-  const contractAsset = isLeave
+  const contractAsset = isWarning
+    ? "/assets/site/solar-warning-pledge.png"
+    : isLeave
     ? "/assets/site/solar-leave-pledge.png"
     : isEvents
     ? "/assets/site/solar-events-pledge.png"

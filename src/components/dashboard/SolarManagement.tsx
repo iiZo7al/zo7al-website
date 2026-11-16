@@ -132,6 +132,7 @@ export default function SolarManagement({
     name: string;
     isLeave?: boolean;
     isEvents?: boolean;
+    isWarning?: boolean;
   } | null>(null);
 
   // Settings State
@@ -1067,7 +1068,7 @@ export default function SolarManagement({
           <SolarWarningsManager
             onExpired={onExpired}
             onViewContract={(sigUrl, appName) =>
-              setViewingContract({ signatureUrl: sigUrl, name: appName })
+              setViewingContract({ signatureUrl: sigUrl, name: appName, isWarning: true })
             }
           />
           {viewingContract && (
@@ -1076,6 +1077,7 @@ export default function SolarManagement({
               onClose={() => setViewingContract(null)}
               signatureUrl={viewingContract.signatureUrl}
               applicantName={viewingContract.name}
+              isWarning={viewingContract.isWarning}
             />
           )}
         </>

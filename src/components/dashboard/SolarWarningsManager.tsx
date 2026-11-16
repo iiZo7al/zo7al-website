@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useLocale } from "next-intl";
 import {
   AlertTriangle,
+  CalendarDays,
   CheckCircle2,
   Clock,
   Eye,
@@ -20,6 +21,21 @@ import {
   type SolarWarningPledge,
 } from "@/lib/data/solar-warnings";
 
+function toIsoDate(d: Date): string {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
+}
+
+function diffDaysInclusive(startIso: string, endIso: string): number | null {
+  if (!startIso || !endIso) return null;
+  const start = new Date(`${startIso}T00:00:00Z`).getTime();
+  const end = new Date(`${endIso}T00:00:00Z`).getTime();
+  if (Number.isNaN(start) || Number.isNaN(end) || end < start) return null;
+  return Math.round((end - start) / 86400000) + 1;
+}
+
 export default function SolarWarningsManager({
   onExpired,
   onViewContract,
@@ -28,6 +44,7 @@ export default function SolarWarningsManager({
   onViewContract: (signatureUrl: string, name: string) => void;
 }) {
   const locale = useLocale();
+  const todayIso = toIsoDate(new Date());
   const [members, setMembers] = useState<SolarMember[]>([]);
   const [pledges, setPledges] = useState<SolarWarningPledge[]>([]);
   const [loading, setLoading] = useState(true);
@@ -39,7 +56,8 @@ export default function SolarWarningsManager({
   const [selectedMemberId, setSelectedMemberId] = useState("");
   const [reason, setReason] = useState("");
   const [durationKey, setDurationKey] = useState<SolarWarningDurationKey>("7_days");
-  const [customDays, setCustomDays] = useState("5");
+  const [customStartDate, setCustomStartDate] = useState(todayIso);
+  const [customEndDate, setCustomEndDate] = useState("");
 
   const loadAll = useCallback(async () => {
     setLoading(true);
@@ -120,13 +138,16 @@ export default function SolarWarningsManager({
       setError("يرجى كتابة سبب التحذير / التعهد.");
       return;
     }
-    const parsedCustomDays = Number(customDays);
-    if (
-      durationKey === "custom" &&
-      (!Number.isFinite(parsedCustomDays) || parsedCustomDays < 1 || parsedCustomDays > 365)
-    ) {
-      setError("يرجى إدخال عدد أيام صحيح بين 1 و 365.");
-      return;
+    const customDays = diffDaysInclusive(customStartDate, customEndDate);
+    if (durationKey === "custom") {
+      if (!customStartDate || !customEndDate) {
+        setError("يرجى تحديد تاريخ بداية ونهاية مدة التعهد من التقويم.");
+        return;
+      }
+      if (customDays === null || customDays < 1) {
+        setError("تاريخ نهاية التعهد يجب أن يكون بعد تاريخ البداية.");
+        return;
+      }
     }
 
     setSending(true);
@@ -138,7 +159,9 @@ export default function SolarWarningsManager({
           memberId: selectedMemberId,
           reason: reason.trim(),
           durationKey,
-          ...(durationKey === "custom" ? { customDays: parsedCustomDays } : {}),
+          ...(durationKey === "custom"
+            ? { customStartDate, customEndDate }
+            : {}),
         }),
       });
       if (res.status === 401) {
@@ -253,30 +276,78 @@ export default function SolarWarningsManager({
             <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1.5">
               مدة التعهد (يختفي وينحذف تلقائياً بعدها) <span className="text-red-400">*</span>
             </label>
-            <div className="flex gap-2">
-              <select
-                value={durationKey}
-                onChange={(e) => setDurationKey(e.target.value as SolarWarningDurationKey)}
-                className="flex-1 rounded-xl border border-[var(--border)] bg-black/20 px-3 py-2.5 text-xs text-[var(--text)] outline-none focus:border-[var(--accent)]"
-              >
-                {SOLAR_WARNING_DURATIONS.map((d) => (
-                  <option key={d.id} value={d.id}>
-                    {d.label}
-                  </option>
-                ))}
-              </select>
-              {durationKey === "custom" && (
-                <input
-                  type="number"
-                  min={1}
-                  max={365}
-                  value={customDays}
-                  onChange={(e) => setCustomDays(e.target.value)}
-                  placeholder="عدد الأيام"
-                  className="w-28 rounded-xl border border-[var(--border)] bg-black/20 px-3 py-2.5 text-xs text-[var(--text)] outline-none focus:border-[var(--accent)]"
-                />
-              )}
-            </div>
+            <select
+              value={durationKey}
+              onChange={(e) => setDurationKey(e.target.value as SolarWarningDurationKey)}
+              className="w-full rounded-xl border border-[var(--border)] bg-black/20 px-3 py-2.5 text-xs text-[var(--text)] outline-none focus:border-[var(--accent)]"
+            >
+              {SOLAR_WARNING_DURATIONS.map((d) => (
+                <option key={d.id} value={d.id}>
+                  {d.label}
+                </option>
+              ))}
+            </select>
+
+            {durationKey === "custom" && (() => {
+              const daysCount = diffDaysInclusive(customStartDate, customEndDate);
+              return (
+                <div className="mt-3 rounded-xl border border-[var(--border)] bg-black/25 p-3 space-y-2.5">
+                  <div className="flex items-center gap-1.5 text-xs font-semibold text-[var(--accent)]">
+                    <CalendarDays size={14} />
+                    <span>تحديد مدة التعهد من التقويم (بدون حد أقصى)</span>
+                  </div>
+                  <div className="grid gap-2.5 sm:grid-cols-2">
+                    <div>
+                      <label className="block text-[11px] font-semibold text-[var(--text-muted)] mb-1">
+                        تاريخ البداية <span className="text-red-400">*</span>
+                      </label>
+                      <input
+                        type="date"
+                        required
+                        min={todayIso}
+                        value={customStartDate}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          setCustomStartDate(val);
+                          if (customEndDate && val && customEndDate < val) {
+                            setCustomEndDate("");
+                          }
+                        }}
+                        dir="ltr"
+                        className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-xs text-[var(--text)] outline-none focus:border-[var(--accent)]"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[11px] font-semibold text-[var(--text-muted)] mb-1">
+                        تاريخ الانتهاء <span className="text-red-400">*</span>
+                      </label>
+                      <input
+                        type="date"
+                        required
+                        min={customStartDate || todayIso}
+                        value={customEndDate}
+                        onChange={(e) => setCustomEndDate(e.target.value)}
+                        dir="ltr"
+                        className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-xs text-[var(--text)] outline-none focus:border-[var(--accent)]"
+                      />
+                    </div>
+                  </div>
+                  {daysCount !== null && daysCount >= 1 && (
+                    <p className="text-[11px] font-semibold text-emerald-400">
+                      المدة المحددة: {daysCount}{" "}
+                      {daysCount === 1
+                        ? "يوم"
+                        : daysCount === 2
+                          ? "يومين"
+                          : daysCount <= 10
+                            ? "أيام"
+                            : "يوماً"}{" "}
+                      (من {customStartDate} إلى {customEndDate})
+                    </p>
+                  )}
+                </div>
+              );
+            })()}
           </div>
         </div>
 
