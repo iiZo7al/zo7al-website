@@ -2,14 +2,16 @@
 
 import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
+import { useLocale } from "next-intl";
 import { Download, Upload, Trash2, CheckCircle2, PenTool } from "lucide-react";
+import { solarExtraCopy } from "@/lib/data/solar-i18n";
 
 export default function SolarSignaturePad({
   value,
   onChange,
   contractImage = "/assets/site/solar-contract-pledge.png",
-  contractTitle = "صورة عقد وتعهد كلان Solar System",
-  downloadName = "عقد_كلان_سولار.png",
+  contractTitle,
+  downloadName = "solar-contract.png",
 }: {
   value?: string;
   onChange: (url: string) => void;
@@ -17,6 +19,9 @@ export default function SolarSignaturePad({
   contractTitle?: string;
   downloadName?: string;
 }) {
+  const locale = useLocale();
+  const tx = solarExtraCopy(locale);
+  const resolvedTitle = contractTitle ?? tx.sigContractTitle;
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [hasDrawn, setHasDrawn] = useState(false);
@@ -105,15 +110,13 @@ export default function SolarSignaturePad({
       const data = await res.json();
       if (!res.ok || !data.ok) {
         setUploadError(
-          data.error === "AUTH_REQUIRED"
-            ? "يجب تسجيل الدخول أولاً لرفع الصورة."
-            : "حدث خطأ أثناء رفع الصورة، يرجى التأكد من حجم وصيغة الصورة."
+          data.error === "AUTH_REQUIRED" ? tx.sigErrorAuth : tx.sigErrorUpload
         );
         return;
       }
       onChange(data.url);
     } catch {
-      setUploadError("تعذر الاتصال بالخادم لرفع الصورة.");
+      setUploadError(tx.sigErrorNetwork);
     } finally {
       setUploading(false);
     }
@@ -134,12 +137,12 @@ export default function SolarSignaturePad({
       });
       const data = await res.json();
       if (!res.ok || !data.ok) {
-        setUploadError("تعذر حفظ التوقيع، يرجى المحاولة مجدداً.");
+        setUploadError(tx.sigErrorSave);
         return;
       }
       onChange(data.url);
     } catch {
-      setUploadError("تعذر حفظ التوقيع.");
+      setUploadError(tx.sigErrorSave);
     } finally {
       setUploading(false);
     }
@@ -159,7 +162,7 @@ export default function SolarSignaturePad({
           }`}
         >
           <PenTool size={13} />
-          التوقيع الرقمي (الأساسي)
+          {tx.sigDrawMode}
         </button>
 
         <button
@@ -172,7 +175,7 @@ export default function SolarSignaturePad({
           }`}
         >
           <Upload size={13} />
-          أو رفع الصورة الموقّعة
+          {tx.sigUploadMode}
         </button>
       </div>
 
@@ -185,17 +188,17 @@ export default function SolarSignaturePad({
               <div className="relative h-12 w-10 shrink-0 overflow-hidden rounded border border-[var(--border)] bg-black">
                 <Image
                   src={contractImage}
-                  alt={contractTitle}
+                  alt={resolvedTitle}
                   fill
                   className="object-cover"
                 />
               </div>
               <div>
                 <p className="text-xs font-semibold text-[var(--text)]">
-                  {contractTitle}
+                  {resolvedTitle}
                 </p>
                 <p className="text-[11px] text-[var(--text-muted)]">
-                  قم بتحميل الصورة للتوقيع عليها عبر أي تطبيق تعديل صور
+                  {tx.sigContractHint}
                 </p>
               </div>
             </div>
@@ -206,17 +209,17 @@ export default function SolarSignaturePad({
               className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--border)] bg-[var(--surface-elevated)] px-3.5 py-1.5 text-xs font-medium text-[var(--text)] hover:border-[var(--accent)] hover:text-[var(--accent)] transition-colors shrink-0"
             >
               <Download size={14} />
-              تنزيل صورة العقد
+              {tx.sigDownloadContract}
             </a>
           </div>
 
           <label className="flex flex-col items-center justify-center rounded-xl border border-dashed border-[var(--border-strong)] bg-[var(--surface)] p-6 text-center cursor-pointer hover:border-[var(--accent)] transition-colors">
             <Upload size={24} className="text-[var(--accent)] mb-2 opacity-80" />
             <span className="text-xs font-medium text-[var(--text)]">
-              انقر لاختيار ورفع صورة العقد بعد إضافة توقيعك
+              {tx.sigUploadPrompt}
             </span>
             <span className="text-[11px] text-[var(--text-muted)] mt-1">
-              يدعم PNG, JPG, WebP (بحد أقصى 5 ميجابايت)
+              {tx.sigUploadFormats}
             </span>
             <input
               type="file"
@@ -233,7 +236,7 @@ export default function SolarSignaturePad({
       {mode === "draw" && (
         <div className="space-y-3">
           <div className="flex items-center justify-between text-xs text-[var(--text-muted)]">
-            <span>ارسم توقيعك داخل المربع أدناه (بالفأرة أو اللمس):</span>
+            <span>{tx.sigDrawPrompt}</span>
             {hasDrawn && (
               <button
                 type="button"
@@ -241,7 +244,7 @@ export default function SolarSignaturePad({
                 className="inline-flex items-center gap-1 text-rose-400 hover:underline"
               >
                 <Trash2 size={12} />
-                مسح
+                {tx.sigClear}
               </button>
             )}
           </div>
@@ -269,7 +272,7 @@ export default function SolarSignaturePad({
               disabled={uploading}
               className="w-full inline-flex items-center justify-center gap-1.5 rounded-xl border border-[var(--accent)] bg-[var(--accent)]/10 px-4 py-2 text-xs font-semibold text-[var(--accent)] hover:bg-[var(--accent)]/20 transition-colors"
             >
-              {uploading ? "جاري حفظ التوقيع..." : "اعتماد وحفظ هذا التوقيع"}
+              {uploading ? tx.sigSaving : tx.sigConfirm}
             </button>
           )}
         </div>
@@ -278,7 +281,7 @@ export default function SolarSignaturePad({
       {/* Uploading indicator */}
       {uploading && (
         <p className="text-xs text-[var(--accent)] animate-pulse text-center">
-          جاري معالجة ورفع صورة التوقيع...
+          {tx.sigProcessing}
         </p>
       )}
 
@@ -292,7 +295,7 @@ export default function SolarSignaturePad({
         <div className="flex items-center justify-between rounded-lg border border-emerald-500/30 bg-emerald-500/10 p-2.5 text-xs text-emerald-400">
           <div className="flex items-center gap-2">
             <CheckCircle2 size={16} />
-            <span>تم إرفاق صورة التوقيع بنجاح</span>
+            <span>{tx.sigAttached}</span>
           </div>
           <a
             href={value}
@@ -300,7 +303,7 @@ export default function SolarSignaturePad({
             rel="noopener noreferrer"
             className="text-[11px] underline hover:text-emerald-300"
           >
-            معاينة التوقيع
+            {tx.sigPreview}
           </a>
         </div>
       )}

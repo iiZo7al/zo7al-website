@@ -14,6 +14,7 @@ import {
   Video,
 } from "lucide-react";
 import type { SolarRole } from "@/lib/data/solar";
+import { solarExtraCopy } from "@/lib/data/solar-i18n";
 
 export default function SolarRoster({
   onOpenApply,
@@ -22,6 +23,7 @@ export default function SolarRoster({
 }) {
   const locale = useLocale();
   const isAr = locale === "ar";
+  const tx = solarExtraCopy(locale);
 
   const divisions: {
     role: SolarRole;
@@ -33,86 +35,58 @@ export default function SolarRoster({
   }[] = [
     {
       role: "creator",
-      title: isAr ? "صانع محتوى" : "Content Creator",
+      title: tx.divisions.creator.title,
       tag: "Creator",
-      desc: isAr
-        ? "صناعة فيديوهات ومقاطع إبداعية على يوتيوب وتيك توك ومنصات التواصل باسم الكلان."
-        : "Create gaming videos and short-form content on YouTube, TikTok, and social platforms.",
-      perks: isAr
-        ? ["دعم ونشر المحتوى", "تعاونات جماعية", "رتبة خاصة بالديسكورد"]
-        : ["Channel shoutouts", "Group collaborations", "Special Discord rank"],
+      desc: tx.divisions.creator.desc,
+      perks: tx.divisions.creator.perks,
       icon: Video,
     },
     {
       role: "streamer",
-      title: isAr ? "ستريمر" : "Streamer",
+      title: tx.divisions.streamer.title,
       tag: "Streamer",
-      desc: isAr
-        ? "تقديم بثوث مباشرة تفاعلية على تويتش أو كيك أو تيك توك بمحتوى ممتع ومنتظم."
-        : "Host engaging live streams on Twitch, Kick, or TikTok representing Solar.",
-      perks: isAr
-        ? ["ترويج البثوث المباشرة", "فعاليات مع المجتمع", "رتبة ستريمر رسمية"]
-        : ["Stream promotion", "Community events", "Official streamer rank"],
+      desc: tx.divisions.streamer.desc,
+      perks: tx.divisions.streamer.perks,
       icon: Radio,
     },
     {
       role: "designer",
-      title: isAr ? "مصمم" : "Designer",
+      title: tx.divisions.designer.title,
       tag: "Designer",
-      desc: isAr
-        ? "تصميم الصور المصغرة، الشعارات، البانرات والهوية البصرية الخاصة بالكلان وأعضائه."
-        : "Design thumbnails, banners, logos, and visual assets for the clan.",
-      perks: isAr
-        ? ["إبراز أعمالك باسمك", "تطوير الهوية البصرية", "عمل جماعي إبداعي"]
-        : ["Portfolio credit", "Clan visual identity", "Creative teamwork"],
+      desc: tx.divisions.designer.desc,
+      perks: tx.divisions.designer.perks,
       icon: Palette,
     },
     {
       role: "editor",
-      title: isAr ? "ممنتج" : "Video Editor",
+      title: tx.divisions.editor.title,
       tag: "Editor",
-      desc: isAr
-        ? "مونتاج فيديوهات اليوتيوب واللقطات القصيرة بأسلوب احترافي وجذاب."
-        : "Edit YouTube videos, montages, and short clips with clean pacing.",
-      perks: isAr
-        ? ["توثيق اسمك في الأعمال", "مشاريع مستمرة", "تطوير مهارات المونتاج"]
-        : ["Credited edits", "Ongoing clan projects", "Skill growth"],
+      desc: tx.divisions.editor.desc,
+      perks: tx.divisions.editor.perks,
       icon: Film,
     },
     {
       role: "player",
-      title: isAr ? "لاعب بطولات" : "Tournament Player",
+      title: tx.divisions.player.title,
       tag: "Competitive",
-      desc: isAr
-        ? "تمثيل الكلان في البطولات والسكرمز والتحديات في الألعاب المعتمدة."
-        : "Represent Solar in scrims, challenges, and tournaments across supported games.",
-      perks: isAr
-        ? ["مشاركة في البطولات", "تدريبات وسكرمز", "تشكيلة تنافسية"]
-        : ["Clan tournaments", "Team scrims", "Competitive roster"],
+      desc: tx.divisions.player.desc,
+      perks: tx.divisions.player.perks,
       icon: Gamepad2,
     },
     {
       role: "admin",
-      title: isAr ? "إداري" : "Staff & Admin",
+      title: tx.divisions.admin.title,
       tag: "Staff",
-      desc: isAr
-        ? "تنظيم الأقسام، متابعة الأعضاء، إدارة التقديمات، وتنسيق الفعاليات داخل الديسكورد."
-        : "Manage divisions, review applications, and organize Discord events.",
-      perks: isAr
-        ? ["صلاحيات إشرافية", "تنسيق وإدارة الفريق", "خبرة قيادية"]
-        : ["Staff permissions", "Team coordination", "Leadership experience"],
+      desc: tx.divisions.admin.desc,
+      perks: tx.divisions.admin.perks,
       icon: ShieldCheck,
     },
     {
       role: "writer",
-      title: isAr ? "كاتب أفكار" : "Idea Writer",
+      title: tx.divisions.writer.title,
       tag: "Ideas",
-      desc: isAr
-        ? "ابتكار أفكار فيديوهات، تحديات، وفعاليات إبداعية لصناع المحتوى والكلان."
-        : "Brainstorm creative video concepts, challenges, and clan event ideas.",
-      perks: isAr
-        ? ["تنفيذ أفكارك بالمحتوى", "العمل مع صناع المحتوى", "بيئة إبداعية"]
-        : ["See ideas produced", "Work with creators", "Creative environment"],
+      desc: tx.divisions.writer.desc,
+      perks: tx.divisions.writer.perks,
       icon: Lightbulb,
     },
   ];
@@ -162,7 +136,7 @@ export default function SolarRoster({
                   data-cursor="button"
                   className="store-action store-action-primary w-full mt-auto"
                 >
-                  <span>{isAr ? "التقديم على هذا القسم" : "Apply to this Division"}</span>
+                  <span>{tx.applyToDivision}</span>
                   <ArrowUpRight size={16} />
                 </button>
               </article>
