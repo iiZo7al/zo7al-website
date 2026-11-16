@@ -20,6 +20,8 @@ import {
   type SolarWarningDurationKey,
   type SolarWarningPledge,
 } from "@/lib/data/solar-warnings";
+import { solarDashboardCopy } from "@/lib/data/solar-dashboard-i18n";
+import { translateSolarRank } from "@/lib/data/solar-i18n";
 
 function toIsoDate(d: Date): string {
   const y = d.getFullYear();
@@ -44,6 +46,10 @@ export default function SolarWarningsManager({
   onViewContract: (signatureUrl: string, name: string) => void;
 }) {
   const locale = useLocale();
+  const isAr = locale === "ar";
+  const dir = isAr ? "rtl" : "ltr";
+  const w = solarDashboardCopy(locale).warnings;
+
   const todayIso = toIsoDate(new Date());
   const [members, setMembers] = useState<SolarMember[]>([]);
   const [pledges, setPledges] = useState<SolarWarningPledge[]>([]);
@@ -81,11 +87,11 @@ export default function SolarWarningsManager({
         setPledges(Array.isArray(wData.pledges) ? wData.pledges : []);
       }
     } catch {
-      setError("تعذر تحميل التعهدات وأعضاء الكلان.");
+      setError(w.loadError);
     } finally {
       setLoading(false);
     }
-  }, [onExpired]);
+  }, [onExpired, w.loadError]);
 
   useEffect(() => {
     let active = true;
@@ -115,7 +121,7 @@ export default function SolarWarningsManager({
         }
       })
       .catch(() => {
-        if (active) setError("تعذر تحميل التعهدات وأعضاء الكلان.");
+        if (active) setError(w.loadError);
       })
       .finally(() => {
         if (active) setLoading(false);
@@ -123,7 +129,7 @@ export default function SolarWarningsManager({
     return () => {
       active = false;
     };
-  }, [onExpired]);
+  }, [onExpired, w.loadError]);
 
   const handleSendPledge = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -131,21 +137,21 @@ export default function SolarWarningsManager({
     setError(null);
 
     if (!selectedMemberId) {
-      setError("يرجى اختيار عضو من الكلان.");
+      setError(w.selectMemberError);
       return;
     }
     if (!reason.trim()) {
-      setError("يرجى كتابة سبب التحذير / التعهد.");
+      setError(w.reasonError);
       return;
     }
     const customDays = diffDaysInclusive(customStartDate, customEndDate);
     if (durationKey === "custom") {
       if (!customStartDate || !customEndDate) {
-        setError("يرجى تحديد تاريخ بداية ونهاية مدة التعهد من التقويم.");
+        setError(w.dateRequiredError);
         return;
       }
       if (customDays === null || customDays < 1) {
-        setError("تاريخ نهاية التعهد يجب أن يكون بعد تاريخ البداية.");
+        setError(w.dateOrderError);
         return;
       }
     }
@@ -170,14 +176,14 @@ export default function SolarWarningsManager({
       }
       const data = await res.json();
       if (!res.ok || !data.ok || !data.pledge) {
-        setError("تعذر إرسال التعهد، يرجى التحقق من البيانات.");
+        setError(w.sendError);
         return;
       }
       setPledges((prev) => [data.pledge, ...prev]);
       setReason("");
-      setMessage("تم إرسال التعهد للعضو بنجاح وسيظهر له في صفحة /solar/members.");
+      setMessage(w.sendSuccess);
     } catch {
-      setError("حدث خطأ أثناء إرسال التعهد.");
+      setError(w.sendNetworkError);
     } finally {
       setSending(false);
     }
@@ -204,11 +210,11 @@ export default function SolarWarningsManager({
   const selectedMember = members.find((m) => m.id === selectedMemberId);
 
   return (
-    <div className="space-y-6" dir="rtl">
+    <div className="space-y-6" dir={dir}>
       {/* Send New Warning Pledge */}
       <form
         onSubmit={handleSendPledge}
-        className="dash-panel rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5 sm:p-6 space-y-4 text-right"
+        className={`dash-panel rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5 sm:p-6 space-y-4 ${isAr ? "text-right" : "text-left"}`}
       >
         <div className="flex items-center justify-between gap-3 border-b border-[var(--border)] pb-3">
           <div className="flex items-center gap-2.5">
@@ -217,12 +223,12 @@ export default function SolarWarningsManager({
             </span>
             <div>
               <h3 className="font-bold text-base text-[var(--text)]">
-                إرسال تعهّد / تحذير لعضو في الكلان
+                {w.heading}
               </h3>
               <p className="text-xs text-[var(--text-muted)]">
-                يصل التعهد مباشرة إلى العضو في صفحة{" "}
+                {w.subheadingPrefix}{" "}
                 <code dir="ltr" className="text-[var(--accent)]">/solar/members</code>{" "}
-                وينحذف تلقائياً بعد انتهاء المدة المحددة.
+                {w.subheadingSuffix}
               </p>
             </div>
           </div>
@@ -233,7 +239,7 @@ export default function SolarWarningsManager({
             className="dash-button"
           >
             <RefreshCw size={13} className={loading ? "dash-spinning" : ""} />
-            تحديث
+            {w.refresh}
           </button>
         </div>
 
@@ -251,30 +257,30 @@ export default function SolarWarningsManager({
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
             <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1.5">
-              اختر العضو من الكلان <span className="text-red-400">*</span>
+              {w.selectMemberLabel} <span className="text-red-400">*</span>
             </label>
             <select
               value={selectedMemberId}
               onChange={(e) => setSelectedMemberId(e.target.value)}
               className="w-full rounded-xl border border-[var(--border)] bg-black/20 px-3 py-2.5 text-xs text-[var(--text)] outline-none focus:border-[var(--accent)]"
             >
-              {members.length === 0 && <option value="">لا يوجد أعضاء مسجلين</option>}
+              {members.length === 0 && <option value="">{w.noMembersOption}</option>}
               {members.map((m) => (
                 <option key={m.id} value={m.id}>
-                  {m.name} — {m.rank} {m.userId ? "" : "(غير مربوط بحساب)"}
+                  {m.name} — {translateSolarRank(m.rank, locale)} {m.userId ? "" : w.unlinkedSuffix}
                 </option>
               ))}
             </select>
             {selectedMember && !selectedMember.userId && (
               <p className="mt-1 text-[11px] text-amber-400">
-                تنبيه: هذا العضو غير مربوط بحساب موقع بعد؛ لن يظهر له التعهد في /solar/members حتى يتم ربط حسابه.
+                {w.unlinkedWarning}
               </p>
             )}
           </div>
 
           <div>
             <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1.5">
-              مدة التعهد (يختفي وينحذف تلقائياً بعدها) <span className="text-red-400">*</span>
+              {w.durationLabel} <span className="text-red-400">*</span>
             </label>
             <select
               value={durationKey}
@@ -283,9 +289,10 @@ export default function SolarWarningsManager({
             >
               {SOLAR_WARNING_DURATIONS.map((d) => (
                 <option key={d.id} value={d.id}>
-                  {d.label}
+                  {w.durations[d.id] || d.label}
                 </option>
               ))}
+              <option value="custom">{w.customCalendarOption}</option>
             </select>
 
             {durationKey === "custom" && (() => {
@@ -294,12 +301,12 @@ export default function SolarWarningsManager({
                 <div className="mt-3 rounded-xl border border-[var(--border)] bg-black/25 p-3 space-y-2.5">
                   <div className="flex items-center gap-1.5 text-xs font-semibold text-[var(--accent)]">
                     <CalendarDays size={14} />
-                    <span>تحديد مدة التعهد من التقويم (بدون حد أقصى)</span>
+                    <span>{w.customCalendarOption}</span>
                   </div>
                   <div className="grid gap-2.5 sm:grid-cols-2">
                     <div>
                       <label className="block text-[11px] font-semibold text-[var(--text-muted)] mb-1">
-                        تاريخ البداية <span className="text-red-400">*</span>
+                        {w.startDateLabel} <span className="text-red-400">*</span>
                       </label>
                       <input
                         type="date"
@@ -319,7 +326,7 @@ export default function SolarWarningsManager({
                     </div>
                     <div>
                       <label className="block text-[11px] font-semibold text-[var(--text-muted)] mb-1">
-                        تاريخ الانتهاء <span className="text-red-400">*</span>
+                        {w.endDateLabel} <span className="text-red-400">*</span>
                       </label>
                       <input
                         type="date"
@@ -334,15 +341,9 @@ export default function SolarWarningsManager({
                   </div>
                   {daysCount !== null && daysCount >= 1 && (
                     <p className="text-[11px] font-semibold text-emerald-400">
-                      المدة المحددة: {daysCount}{" "}
-                      {daysCount === 1
-                        ? "يوم"
-                        : daysCount === 2
-                          ? "يومين"
-                          : daysCount <= 10
-                            ? "أيام"
-                            : "يوماً"}{" "}
-                      (من {customStartDate} إلى {customEndDate})
+                      {w.selectedDuration} {daysCount}{" "}
+                      {daysCount === 1 ? w.daySingular : w.dayPlural}{" "}
+                      ({w.fromToPrefix} {customStartDate} {w.toWord} {customEndDate})
                     </p>
                   )}
                 </div>
@@ -353,14 +354,14 @@ export default function SolarWarningsManager({
 
         <div>
           <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1.5">
-            سبب التعهد / التحذير <span className="text-red-400">*</span>
+            {w.reasonLabel} <span className="text-red-400">*</span>
           </label>
           <textarea
             value={reason}
             onChange={(e) => setReason(e.target.value)}
             rows={3}
             maxLength={1000}
-            placeholder="اكتب سبب إصدار التحذير والتعهد بوضوح ليظهر للعضو..."
+            placeholder={w.reasonPlaceholder}
             className="w-full rounded-xl border border-[var(--border)] bg-black/20 p-3 text-xs text-[var(--text)] outline-none focus:border-[var(--accent)]"
           />
         </div>
@@ -375,12 +376,12 @@ export default function SolarWarningsManager({
             {sending ? (
               <>
                 <RefreshCw size={14} className="dash-spinning" />
-                جاري الإرسال...
+                {w.sending}
               </>
             ) : (
               <>
                 <Send size={14} />
-                إرسال التعهد للعضو
+                {w.sendBtn}
               </>
             )}
           </button>
@@ -388,10 +389,10 @@ export default function SolarWarningsManager({
       </form>
 
       {/* Active / Signed Pledges List */}
-      <section className="dash-panel rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5 sm:p-6 space-y-4 text-right">
+      <section className={`dash-panel rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5 sm:p-6 space-y-4 ${isAr ? "text-right" : "text-left"}`}>
         <div className="flex items-center justify-between gap-2">
           <h3 className="font-bold text-base text-[var(--text)]">
-            التعهدات النشطة والموقّعة ({pledges.length})
+            {w.activeListTitle} ({pledges.length})
           </h3>
         </div>
 
@@ -402,7 +403,7 @@ export default function SolarWarningsManager({
           </div>
         ) : pledges.length === 0 ? (
           <div className="rounded-xl border border-dashed border-[var(--border)] p-8 text-center text-xs text-[var(--text-muted)]">
-            لا توجد تعهدات نشطة حالياً.
+            {w.noActivePledges}
           </div>
         ) : (
           <div className="grid gap-4 md:grid-cols-2">
@@ -425,7 +426,7 @@ export default function SolarWarningsManager({
                         {pledge.memberName}
                       </h4>
                       <p className="text-[11px] text-[var(--text-muted)]">
-                        {pledge.memberRank}
+                        {translateSolarRank(pledge.memberRank, locale)}
                       </p>
                     </div>
                     <span
@@ -436,14 +437,14 @@ export default function SolarWarningsManager({
                       }`}
                     >
                       {isSigned ? <CheckCircle2 size={12} /> : <Clock size={12} />}
-                      {isSigned ? "تم التوقيع" : "بانتظار التوقيع"}
+                      {isSigned ? w.signedBadge : w.pendingBadge}
                     </span>
                   </div>
 
                   <div className="rounded-lg border border-[var(--border)] bg-black/20 p-2.5 text-xs space-y-1">
                     <div className="flex items-center gap-1 text-rose-300 font-semibold">
                       <AlertTriangle size={12} />
-                      <span>السبب:</span>
+                      <span>{w.reasonPrefix}</span>
                     </div>
                     <p className="text-[var(--text)] leading-relaxed whitespace-pre-wrap">
                       {pledge.reason}
@@ -453,9 +454,9 @@ export default function SolarWarningsManager({
                   {isSigned && (
                     <div className="rounded-lg border border-emerald-500/20 bg-emerald-500/5 p-2.5 text-[11px] space-y-1 text-[var(--text-muted)]">
                       <div>
-                        الاسم: <strong className="text-[var(--text)]">{pledge.signerName}</strong>{" "}
-                        | العمر: <strong className="text-[var(--text)]">{pledge.signerAge}</strong>{" "}
-                        | ديسكورد:{" "}
+                        {w.nameLabel} <strong className="text-[var(--text)]">{pledge.signerName}</strong>{" "}
+                        | {w.ageLabel} <strong className="text-[var(--text)]">{pledge.signerAge}</strong>{" "}
+                        | {w.discordLabel}{" "}
                         <code dir="ltr" className="text-[var(--text)]">
                           {pledge.signerDiscord}
                         </code>
@@ -472,7 +473,7 @@ export default function SolarWarningsManager({
                           className="mt-1 inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-bold bg-[var(--accent)] text-[#07080b] cursor-pointer"
                         >
                           <Eye size={13} />
-                          معاينة التوقيع / التعهد
+                          {w.viewSignature}
                         </button>
                       )}
                     </div>
@@ -480,7 +481,7 @@ export default function SolarWarningsManager({
 
                   <div className="flex items-center justify-between gap-2 pt-1 border-t border-[var(--border)] text-[11px] text-[var(--text-muted)]">
                     <span>
-                      المدة: <strong className="text-[var(--text)]">{pledge.durationLabel}</strong> — ينحذف:{" "}
+                      {w.durationPrefix} <strong className="text-[var(--text)]">{pledge.durationLabel}</strong> — {w.expiresPrefix}{" "}
                       <span dir="ltr">{expiresFormatted}</span>
                     </span>
                     <button
@@ -490,7 +491,7 @@ export default function SolarWarningsManager({
                       className="inline-flex items-center gap-1 rounded-lg border border-rose-500/30 bg-rose-500/10 px-2.5 py-1 text-[11px] font-semibold text-rose-400 hover:bg-rose-500/20 cursor-pointer disabled:opacity-50"
                     >
                       <Trash2 size={12} />
-                      حذف
+                      {w.deleteBtn}
                     </button>
                   </div>
                 </article>

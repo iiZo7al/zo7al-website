@@ -13,6 +13,19 @@ function MandatoryUsernameDialog({ onSaved }: { onSaved: () => Promise<void> }) 
   const [username, setUsername] = useState('');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
+  const USERNAME_COPY: Record<string, { title: string; desc: string; save: string }> = {
+    ar: { title: 'اختر اسم المستخدم (Username)', desc: 'لإكمال إنشاء حسابك، يجب عليك اختيار اسم مستخدم خاص بك (أحرف إنجليزية أو أرقام أو _ فقط).', save: 'حفظ اسم المستخدم' },
+    en: { title: 'Choose Your Username', desc: 'To finish setting up your account, please choose your unique username (letters, numbers, or _).', save: 'Save Username' },
+    es: { title: 'Elige tu nombre de usuario', desc: 'Para completar tu cuenta, elige un nombre de usuario único (letras, números o _).', save: 'Guardar usuario' },
+    fr: { title: 'Choisissez votre nom d’utilisateur', desc: 'Pour finaliser votre compte, choisissez un nom d’utilisateur unique (lettres, chiffres ou _).', save: 'Enregistrer' },
+    de: { title: 'Benutzername wählen', desc: 'Um dein Konto abzuschließen, wähle bitte einen eindeutigen Benutzernamen (Buchstaben, Zahlen oder _).', save: 'Benutzername speichern' },
+    pt: { title: 'Escolha seu nome de usuário', desc: 'Para concluir sua conta, escolha um nome de usuário único (letras, números ou _).', save: 'Salvar usuário' },
+    tr: { title: 'Kullanıcı Adını Seç', desc: 'Hesabını tamamlamak için benzersiz bir kullanıcı adı seç (harf, rakam veya _).', save: 'Kullanıcı Adını Kaydet' },
+    ja: { title: 'ユーザー名を選択', desc: 'アカウント設定を完了するには、固有のユーザー名（英数字または _）を入力してください。', save: 'ユーザー名を保存' },
+    ko: { title: '사용자 이름 선택', desc: '계정 설정을 완료하려면 고유한 사용자 이름(영문, 숫자 또는 _)을 선택하세요.', save: '사용자 이름 저장' },
+    zh: { title: '选择您的用户名', desc: '要完成账号设置，请选择一个唯一的用户名（仅限字母、数字或 _）。', save: '保存用户名' },
+  };
+  const uc = USERNAME_COPY[locale] ?? USERNAME_COPY.en;
 
   return (
     <div
@@ -26,12 +39,10 @@ function MandatoryUsernameDialog({ onSaved }: { onSaved: () => Promise<void> }) 
         dir={isAr ? 'rtl' : 'ltr'}
       >
         <h2 id="mandatory-username-title" className="text-lg font-bold text-[var(--text)]">
-          {isAr ? 'اختر اسم المستخدم (Username)' : 'Choose Your Username'}
+          {uc.title}
         </h2>
         <p className="mt-1.5 text-xs text-[var(--text-muted)] leading-relaxed">
-          {isAr
-            ? 'لإكمال إنشاء حسابك، يجب عليك اختيار اسم مستخدم خاص بك (أحرف إنجليزية أو أرقام أو _ فقط).'
-            : 'To finish setting up your account, please choose your unique username (letters, numbers, or _).'}
+          {uc.desc}
         </p>
 
         <form
@@ -86,7 +97,7 @@ function MandatoryUsernameDialog({ onSaved }: { onSaved: () => Promise<void> }) 
               aria-busy={busy}
             >
               {busy ? <LoaderCircle size={16} className="animate-spin" /> : null}
-              {isAr ? 'حفظ اسم المستخدم' : 'Save Username'}
+              {uc.save}
             </button>
             <button
               type="button"

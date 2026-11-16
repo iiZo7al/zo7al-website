@@ -37,6 +37,9 @@ import { roleNeedsGame } from "@/lib/data/solar-members";
 import { SOLAR_LEAVE_DURATION_LABELS } from "@/lib/data/solar-leave";
 import { buildSolarPlanRows, matchesPlanRow } from "@/lib/data/solar-plan";
 import type { CustomSolarOption, SolarSettings } from "@/lib/server/solar-settings";
+import { solarDashboardCopy } from "@/lib/data/solar-dashboard-i18n";
+import { solarModalsCopy } from "@/lib/data/solar-modals-i18n";
+import { translateSolarRank } from "@/lib/data/solar-i18n";
 
 const ROLE_LABELS: Record<string, string> = {
   creator: "صانع محتوى (Content Creator)",
@@ -122,6 +125,11 @@ export default function SolarManagement({
   onExpired: () => void;
   onReload: () => void;
 }) {
+  const locale = useLocale();
+  const isAr = locale === "ar";
+  const dir = isAr ? "rtl" : "ltr";
+  const m = solarDashboardCopy(locale).management;
+
   const [activeTab, setActiveTab] = useState<"applicants" | "leaves" | "events" | "members" | "excel" | "warnings" | "settings">("applicants");
   const [query, setQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("");
@@ -140,6 +148,7 @@ export default function SolarManagement({
   const [loadingSettings, setLoadingSettings] = useState(true);
   const [savingSettings, setSavingSettings] = useState(false);
   const [settingsMessage, setSettingsMessage] = useState<string | null>(null);
+  const [settingsSuccess, setSettingsSuccess] = useState(false);
   const [newRoleLabel, setNewRoleLabel] = useState("");
   const [newSubTypeLabel, setNewSubTypeLabel] = useState("");
   const [newGameLabel, setNewGameLabel] = useState("");
@@ -413,9 +422,11 @@ export default function SolarManagement({
       }
 
       setSettings(resData.settings);
-      setSettingsMessage("تم حفظ إعدادات التقديم بنجاح!");
+      setSettingsSuccess(true);
+      setSettingsMessage(m.settingsSaved);
     } catch {
-      setSettingsMessage("تعذر حفظ الإعدادات، يرجى المحاولة مجدداً.");
+      setSettingsSuccess(false);
+      setSettingsMessage(m.settingsSaveError);
     } finally {
       setSavingSettings(false);
     }
@@ -462,7 +473,7 @@ export default function SolarManagement({
   const filteredEventsRows = solarEventsRequests.filter(matches);
 
   return (
-    <div className="space-y-8" dir="rtl">
+    <div className="space-y-8" dir={dir}>
       {/* Header Banner */}
       <section className="dash-panel card-glow p-6 sm:p-8 rounded-2xl border border-[var(--border)] bg-[var(--surface)]">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
@@ -480,7 +491,7 @@ export default function SolarManagement({
             <div>
               <div className="flex items-center gap-2">
                 <h1 className="text-2xl font-bold text-[var(--text)]">
-                  إدارة كلان Solar System
+                  {m.headerTitle}
                 </h1>
                 <span
                   className="rounded-full px-2.5 py-0.5 text-xs font-semibold"
@@ -493,7 +504,7 @@ export default function SolarManagement({
                 </span>
               </div>
               <p className="mt-1 text-sm text-[var(--text-muted)]">
-                مراجعة طلبات الانضمام للكلان، طلبات الإجازة، تحديث حالة المتقدمين، وتعديل إعدادات التقديم المتاحة.
+                {m.headerSubtitle}
               </p>
             </div>
           </div>
@@ -509,7 +520,7 @@ export default function SolarManagement({
               }`}
             >
               <Users size={16} />
-              طلبات التقديم ({stats.total})
+              {m.tabApplications} ({stats.total})
             </button>
 
             <button
@@ -522,7 +533,7 @@ export default function SolarManagement({
               }`}
             >
               <CalendarClock size={16} />
-              طلبات الإجازة ({leaveStats.total})
+              {m.tabLeaves} ({leaveStats.total})
             </button>
 
             <button
@@ -535,7 +546,7 @@ export default function SolarManagement({
               }`}
             >
               <FileCheck size={16} />
-              طلبات إدارة الفعاليات ({eventsStats.total})
+              {m.tabEvents} ({eventsStats.total})
             </button>
 
             <button
@@ -548,7 +559,7 @@ export default function SolarManagement({
               }`}
             >
               <Users size={16} />
-              أعضاء الكلان
+              {m.tabMembers}
             </button>
 
             <button
@@ -561,7 +572,7 @@ export default function SolarManagement({
               }`}
             >
               <FileSpreadsheet size={16} />
-              جدول Excel والأعضاء
+              {m.tabExcel}
             </button>
 
             <button
@@ -574,7 +585,7 @@ export default function SolarManagement({
               }`}
             >
               <ShieldAlert size={16} />
-              التعهدات والإنذارات
+              {m.tabWarnings}
             </button>
 
             <button
@@ -587,13 +598,13 @@ export default function SolarManagement({
               }`}
             >
               <Sliders size={16} />
-              إعدادات التقديم
+              {m.tabSettings}
             </button>
 
             <button
               type="button"
               onClick={onReload}
-              title="تحديث البيانات"
+              title={m.refreshDataTitle}
               className="inline-flex items-center justify-center rounded-xl border border-[var(--border)] p-2.5 text-[var(--text-muted)] hover:text-[var(--text)] transition-all cursor-pointer"
             >
               <RefreshCw size={16} />
@@ -626,12 +637,12 @@ export default function SolarManagement({
             <button
               type="button"
               onClick={() => setStatusFilter("")}
-              className={`dash-panel card-glow p-4 rounded-xl border text-right transition-all ${
+              className={`dash-panel card-glow p-4 rounded-xl border ${isAr ? "text-right" : "text-left"} transition-all ${
                 statusFilter === "" ? "border-[var(--accent)]" : "border-[var(--border)]"
               }`}
             >
               <div className="flex items-center justify-between text-xs text-[var(--text-muted)]">
-                <span>إجمالي طلبات الإجازة</span>
+                <span>{m.leaveStatTotal}</span>
                 <CalendarClock size={16} />
               </div>
               <strong className="mt-2 block text-2xl font-bold text-[var(--text)]">
@@ -642,14 +653,14 @@ export default function SolarManagement({
             <button
               type="button"
               onClick={() => setStatusFilter("pending")}
-              className={`dash-panel card-glow p-4 rounded-xl border text-right transition-all ${
+              className={`dash-panel card-glow p-4 rounded-xl border ${isAr ? "text-right" : "text-left"} transition-all ${
                 statusFilter === "pending"
                   ? "border-amber-500"
                   : "border-[var(--border)]"
               }`}
             >
               <div className="flex items-center justify-between text-xs text-amber-400">
-                <span>قيد المراجعة</span>
+                <span>{m.statPending}</span>
                 <Clock size={16} />
               </div>
               <strong className="mt-2 block text-2xl font-bold text-amber-400">
@@ -660,14 +671,14 @@ export default function SolarManagement({
             <button
               type="button"
               onClick={() => setStatusFilter("accepted")}
-              className={`dash-panel card-glow p-4 rounded-xl border text-right transition-all ${
+              className={`dash-panel card-glow p-4 rounded-xl border ${isAr ? "text-right" : "text-left"} transition-all ${
                 statusFilter === "accepted"
                   ? "border-emerald-500"
                   : "border-[var(--border)]"
               }`}
             >
               <div className="flex items-center justify-between text-xs text-emerald-400">
-                <span>تم القبول</span>
+                <span>{m.statAccepted}</span>
                 <CheckCircle2 size={16} />
               </div>
               <strong className="mt-2 block text-2xl font-bold text-emerald-400">
@@ -678,14 +689,14 @@ export default function SolarManagement({
             <button
               type="button"
               onClick={() => setStatusFilter("rejected")}
-              className={`dash-panel card-glow p-4 rounded-xl border text-right transition-all ${
+              className={`dash-panel card-glow p-4 rounded-xl border ${isAr ? "text-right" : "text-left"} transition-all ${
                 statusFilter === "rejected"
                   ? "border-rose-500"
                   : "border-[var(--border)]"
               }`}
             >
               <div className="flex items-center justify-between text-xs text-rose-400">
-                <span>مرفوضة</span>
+                <span>{m.statRejected}</span>
                 <XCircle size={16} />
               </div>
               <strong className="mt-2 block text-2xl font-bold text-rose-400">
@@ -699,14 +710,14 @@ export default function SolarManagement({
             <div className="relative flex-1 min-w-[240px]">
               <Search
                 size={16}
-                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[var(--text-muted)]"
+                className="absolute start-3.5 top-1/2 -translate-y-1/2 text-[var(--text-muted)]"
               />
               <input
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="ابحث بالاسم، الديسكورد، الجوال أو سبب الإجازة..."
-                className="dash-search w-full pr-10"
+                placeholder={m.leaveSearchPlaceholder}
+                className="dash-search w-full ps-10"
               />
             </div>
 
@@ -715,16 +726,16 @@ export default function SolarManagement({
               onChange={(e) => setStatusFilter(e.target.value)}
               className="rounded-xl border border-[var(--border)] bg-[var(--surface)] px-4 py-2.5 text-sm text-[var(--text)]"
             >
-              <option value="">جميع الحالات</option>
-              <option value="pending">قيد المراجعة</option>
-              <option value="accepted">تم القبول</option>
-              <option value="rejected">مرفوض</option>
+              <option value="">{m.allStatuses}</option>
+              <option value="pending">{m.statusPending}</option>
+              <option value="accepted">{m.statusAccepted}</option>
+              <option value="rejected">{m.statusRejected}</option>
             </select>
           </div>
 
           {filteredLeaveRows.length === 0 ? (
             <div className="rounded-2xl border border-dashed border-[var(--border-strong)] p-10 text-center text-sm text-[var(--text-muted)]">
-              لا توجد طلبات إجازة مطابقة للبحث حالياً.
+              {m.noMatchingLeaves}
             </div>
           ) : (
             <div className="grid gap-5 md:grid-cols-2">
@@ -766,12 +777,12 @@ export default function SolarManagement({
             <button
               type="button"
               onClick={() => setStatusFilter("")}
-              className={`dash-panel card-glow p-4 rounded-xl border text-right transition-all ${
+              className={`dash-panel card-glow p-4 rounded-xl border ${isAr ? "text-right" : "text-left"} transition-all ${
                 statusFilter === "" ? "border-[var(--accent)]" : "border-[var(--border)]"
               }`}
             >
               <div className="flex items-center justify-between text-xs text-[var(--text-muted)]">
-                <span>إجمالي طلبات الفعاليات</span>
+                <span>{m.eventsStatTotal}</span>
                 <FileCheck size={16} />
               </div>
               <strong className="mt-2 block text-2xl font-bold text-[var(--text)]">
@@ -782,14 +793,14 @@ export default function SolarManagement({
             <button
               type="button"
               onClick={() => setStatusFilter("pending")}
-              className={`dash-panel card-glow p-4 rounded-xl border text-right transition-all ${
+              className={`dash-panel card-glow p-4 rounded-xl border ${isAr ? "text-right" : "text-left"} transition-all ${
                 statusFilter === "pending"
                   ? "border-amber-500"
                   : "border-[var(--border)]"
               }`}
             >
               <div className="flex items-center justify-between text-xs text-amber-400">
-                <span>قيد المراجعة</span>
+                <span>{m.statPending}</span>
                 <Clock size={16} />
               </div>
               <strong className="mt-2 block text-2xl font-bold text-amber-400">
@@ -800,14 +811,14 @@ export default function SolarManagement({
             <button
               type="button"
               onClick={() => setStatusFilter("accepted")}
-              className={`dash-panel card-glow p-4 rounded-xl border text-right transition-all ${
+              className={`dash-panel card-glow p-4 rounded-xl border ${isAr ? "text-right" : "text-left"} transition-all ${
                 statusFilter === "accepted"
                   ? "border-emerald-500"
                   : "border-[var(--border)]"
               }`}
             >
               <div className="flex items-center justify-between text-xs text-emerald-400">
-                <span>تم القبول</span>
+                <span>{m.statAccepted}</span>
                 <CheckCircle2 size={16} />
               </div>
               <strong className="mt-2 block text-2xl font-bold text-emerald-400">
@@ -818,14 +829,14 @@ export default function SolarManagement({
             <button
               type="button"
               onClick={() => setStatusFilter("rejected")}
-              className={`dash-panel card-glow p-4 rounded-xl border text-right transition-all ${
+              className={`dash-panel card-glow p-4 rounded-xl border ${isAr ? "text-right" : "text-left"} transition-all ${
                 statusFilter === "rejected"
                   ? "border-rose-500"
                   : "border-[var(--border)]"
               }`}
             >
               <div className="flex items-center justify-between text-xs text-rose-400">
-                <span>مرفوض</span>
+                <span>{m.statRejected}</span>
                 <XCircle size={16} />
               </div>
               <strong className="mt-2 block text-2xl font-bold text-rose-400">
@@ -838,14 +849,14 @@ export default function SolarManagement({
             <div className="relative flex-1 min-w-[240px]">
               <Search
                 size={16}
-                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[var(--text-muted)]"
+                className="absolute start-3.5 top-1/2 -translate-y-1/2 text-[var(--text-muted)]"
               />
               <input
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="ابحث بالاسم، العمر، أو يوزر الديسكورد..."
-                className="dash-search w-full pr-10"
+                placeholder={m.eventsSearchPlaceholder}
+                className="dash-search w-full ps-10"
               />
             </div>
 
@@ -854,16 +865,16 @@ export default function SolarManagement({
               onChange={(e) => setStatusFilter(e.target.value)}
               className="rounded-xl border border-[var(--border)] bg-[var(--surface)] px-4 py-2.5 text-sm text-[var(--text)]"
             >
-              <option value="">جميع الحالات</option>
-              <option value="pending">قيد المراجعة</option>
-              <option value="accepted">تم القبول</option>
-              <option value="rejected">مرفوض</option>
+              <option value="">{m.allStatuses}</option>
+              <option value="pending">{m.statusPending}</option>
+              <option value="accepted">{m.statusAccepted}</option>
+              <option value="rejected">{m.statusRejected}</option>
             </select>
           </div>
 
           {filteredEventsRows.length === 0 ? (
             <div className="rounded-2xl border border-dashed border-[var(--border-strong)] p-10 text-center text-sm text-[var(--text-muted)]">
-              لا توجد طلبات إدارة فعاليات مطابقة للبحث حالياً.
+              {m.noMatchingEvents}
             </div>
           ) : (
             <div className="grid gap-5 md:grid-cols-2">
@@ -906,12 +917,12 @@ export default function SolarManagement({
             <button
               type="button"
               onClick={() => setStatusFilter("")}
-              className={`dash-panel card-glow p-4 rounded-xl border text-right transition-all ${
+              className={`dash-panel card-glow p-4 rounded-xl border ${isAr ? "text-right" : "text-left"} transition-all ${
                 statusFilter === "" ? "border-[var(--accent)]" : "border-[var(--border)]"
               }`}
             >
               <div className="flex items-center justify-between text-xs text-[var(--text-muted)]">
-                <span>إجمالي الطلبات</span>
+                <span>{m.statTotal}</span>
                 <Users size={16} />
               </div>
               <strong className="mt-2 block text-2xl font-bold text-[var(--text)]">
@@ -922,14 +933,14 @@ export default function SolarManagement({
             <button
               type="button"
               onClick={() => setStatusFilter("pending")}
-              className={`dash-panel card-glow p-4 rounded-xl border text-right transition-all ${
+              className={`dash-panel card-glow p-4 rounded-xl border ${isAr ? "text-right" : "text-left"} transition-all ${
                 statusFilter === "pending"
                   ? "border-amber-500"
                   : "border-[var(--border)]"
               }`}
             >
               <div className="flex items-center justify-between text-xs text-amber-400">
-                <span>قيد المراجعة</span>
+                <span>{m.statPending}</span>
                 <Clock size={16} />
               </div>
               <strong className="mt-2 block text-2xl font-bold text-amber-400">
@@ -940,14 +951,14 @@ export default function SolarManagement({
             <button
               type="button"
               onClick={() => setStatusFilter("accepted")}
-              className={`dash-panel card-glow p-4 rounded-xl border text-right transition-all ${
+              className={`dash-panel card-glow p-4 rounded-xl border ${isAr ? "text-right" : "text-left"} transition-all ${
                 statusFilter === "accepted"
                   ? "border-emerald-500"
                   : "border-[var(--border)]"
               }`}
             >
               <div className="flex items-center justify-between text-xs text-emerald-400">
-                <span>تم القبول</span>
+                <span>{m.statAccepted}</span>
                 <CheckCircle2 size={16} />
               </div>
               <strong className="mt-2 block text-2xl font-bold text-emerald-400">
@@ -958,14 +969,14 @@ export default function SolarManagement({
             <button
               type="button"
               onClick={() => setStatusFilter("rejected")}
-              className={`dash-panel card-glow p-4 rounded-xl border text-right transition-all ${
+              className={`dash-panel card-glow p-4 rounded-xl border ${isAr ? "text-right" : "text-left"} transition-all ${
                 statusFilter === "rejected"
                   ? "border-rose-500"
                   : "border-[var(--border)]"
               }`}
             >
               <div className="flex items-center justify-between text-xs text-rose-400">
-                <span>مرفوضة</span>
+                <span>{m.statRejected}</span>
                 <XCircle size={16} />
               </div>
               <strong className="mt-2 block text-2xl font-bold text-rose-400">
@@ -979,14 +990,14 @@ export default function SolarManagement({
             <div className="relative flex-1 min-w-[240px]">
               <Search
                 size={16}
-                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[var(--text-muted)]"
+                className="absolute start-3.5 top-1/2 -translate-y-1/2 text-[var(--text-muted)]"
               />
               <input
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="ابحث بالاسم، الديسكورد، الواتساب أو رقم الطلب..."
-                className="dash-search w-full pr-10"
+                placeholder={m.searchPlaceholder}
+                className="dash-search w-full ps-10"
               />
             </div>
 
@@ -995,10 +1006,10 @@ export default function SolarManagement({
               onChange={(e) => setStatusFilter(e.target.value)}
               className="rounded-xl border border-[var(--border)] bg-[var(--surface)] px-4 py-2.5 text-sm text-[var(--text)]"
             >
-              <option value="">جميع الحالات</option>
-              <option value="pending">قيد المراجعة</option>
-              <option value="accepted">تم القبول</option>
-              <option value="rejected">مرفوض</option>
+              <option value="">{m.allStatuses}</option>
+              <option value="pending">{m.statusPending}</option>
+              <option value="accepted">{m.statusAccepted}</option>
+              <option value="rejected">{m.statusRejected}</option>
             </select>
 
             <select
@@ -1006,14 +1017,12 @@ export default function SolarManagement({
               onChange={(e) => setRoleFilter(e.target.value)}
               className="rounded-xl border border-[var(--border)] bg-[var(--surface)] px-4 py-2.5 text-sm text-[var(--text)]"
             >
-              <option value="">جميع الأقسام</option>
-              <option value="creator">صناع المحتوى</option>
-              <option value="streamer">الستريمرز</option>
-              <option value="player">لاعبين (الفريق التنافسي)</option>
-              <option value="admin">الإدارة والإشراف</option>
-              <option value="editor">المونتاج</option>
-              <option value="designer">التصميم</option>
-              <option value="writer">كتاب الأفكار</option>
+              <option value="">{m.allRoles}</option>
+              {ALL_ROLES.map((r) => (
+                <option key={r.id} value={r.id}>
+                  {translateSolarRank(r.label, locale)}
+                </option>
+              ))}
             </select>
           </div>
 
@@ -1052,10 +1061,10 @@ export default function SolarManagement({
             <div className="dash-panel card-glow rounded-2xl border border-[var(--border)] p-12 text-center">
               <Users size={36} className="mx-auto text-[var(--text-muted)] opacity-40 mb-3" />
               <p className="text-base font-medium text-[var(--text)]">
-                لا توجد طلبات تقديم مطابقة للبحث أو الفلتر
+                {m.noMatchingApps}
               </p>
               <p className="text-xs text-[var(--text-muted)] mt-1">
-                طلبات الانضمام الجديدة لكلان Solar ستظهر هنا بمجرد تقديمها عبر الموقع.
+                {m.noAppsHint}
               </p>
             </div>
           )}
@@ -1083,34 +1092,34 @@ export default function SolarManagement({
         </>
       )}
 
-      {/* Tab 2: Recruitment Settings ("حق التقديم") */}
+      {/* Tab 2: Recruitment Settings */}
       {activeTab === "settings" && (
         <section className="dash-panel card-glow rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 sm:p-8">
           <div className="border-b border-[var(--border)] pb-5 mb-6">
             <h2 className="text-xl font-bold text-[var(--text)]">
-              إعدادات وحالة التقديم لكلان Solar
+              {m.settingsTitle}
             </h2>
             <p className="mt-1 text-sm text-[var(--text-muted)]">
-              تحكم في فتح وإغلاق التقديم العام، وتفعيل أو إيقاف التقديم على أقسام ورتب معينة، وإضافة إعلانات تظهر للمتقدمين.
+              {m.settingsDesc}
             </p>
           </div>
 
           {loadingSettings ? (
-            <div className="space-y-4 py-4" aria-busy="true" aria-label="جاري تحميل إعدادات التقديم...">
+            <div className="space-y-4 py-4" aria-busy="true" aria-label={m.loadingSettingsAria}>
               <Skeleton className="h-14 w-full rounded-2xl" />
               <Skeleton className="h-24 w-full rounded-2xl" />
               <Skeleton className="h-12 w-40 rounded-xl" />
             </div>
           ) : !settings ? (
             <div className="p-8 text-center text-red-400">
-              تعذر تحميل إعدادات التقديم.
+              {m.settingsLoadError}
             </div>
           ) : (
             <form onSubmit={handleSaveSettings} className="space-y-6">
               {settingsMessage && (
                 <div
                   className={`rounded-xl border p-4 text-sm ${
-                    settingsMessage.includes("بنجاح")
+                    settingsSuccess
                       ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-400"
                       : "border-red-500/30 bg-red-500/10 text-red-400"
                   }`}
@@ -1123,10 +1132,10 @@ export default function SolarManagement({
               <div className="flex items-center justify-between rounded-xl border border-[var(--border)] bg-black/20 p-5">
                 <div>
                   <h3 className="font-semibold text-base text-[var(--text)]">
-                    حالة التقديم العامة للكلان
+                    {m.globalStatusTitle}
                   </h3>
                   <p className="text-xs text-[var(--text-muted)] mt-1">
-                    عند إغلاق التقديم، لن يتمكن أي زائر من تقديم طلب جديد وسيظهر تنبيه بأن التقديم مغلق.
+                    {m.globalStatusDesc}
                   </p>
                 </div>
 
@@ -1140,11 +1149,11 @@ export default function SolarManagement({
                     className="sr-only peer"
                   />
                   <div className="w-14 h-8 bg-zinc-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[4px] after:start-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-[var(--accent)]"></div>
-                  <span className="mr-3 text-sm font-bold">
+                  <span className="ms-3 text-sm font-bold">
                     {settings.isOpen ? (
-                      <span className="text-emerald-400">مفتوح</span>
+                      <span className="text-emerald-400">{m.statusOpen}</span>
                     ) : (
-                      <span className="text-rose-400">مغلق</span>
+                      <span className="text-rose-400">{m.statusClosed}</span>
                     )}
                   </span>
                 </label>
@@ -1154,10 +1163,10 @@ export default function SolarManagement({
               <div className="rounded-xl border border-[var(--border)] bg-black/20 p-5 space-y-4">
                 <div>
                   <h3 className="font-semibold text-base text-[var(--text)]">
-                    التقديم حسب الأقسام والرتب
+                    {m.rolesSectionTitle}
                   </h3>
                   <p className="text-xs text-[var(--text-muted)] mt-1">
-                    حدد الأقسام المتاحة للتقديم حالياً أو أضف رتباً جديدة، وأي رتبة تغلقها ستظهر للمتقدم ولكن لا تنضغط.
+                    {m.rolesSectionDesc}
                   </p>
                 </div>
 
@@ -1177,6 +1186,7 @@ export default function SolarManagement({
                       const isClosed = isManualClosed || isAutoClosed;
                       const isEditing =
                         editingItem?.kind === "role" && editingItem.id === role.id;
+                      const displayLabel = translateSolarRank(role.label, locale);
                       return (
                         <div
                           key={role.id}
@@ -1210,7 +1220,7 @@ export default function SolarManagement({
                                 type="button"
                                 onClick={handleSaveItemName}
                                 className="p-1.5 rounded-lg bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 cursor-pointer"
-                                title="حفظ الاسم"
+                                title={m.saveNameTitle}
                               >
                                 <Check size={13} />
                               </button>
@@ -1218,7 +1228,7 @@ export default function SolarManagement({
                                 type="button"
                                 onClick={() => setEditingItem(null)}
                                 className="p-1.5 rounded-lg bg-zinc-500/20 text-[var(--text-muted)] hover:text-[var(--text)] cursor-pointer"
-                                title="إلغاء"
+                                title={m.cancelTitle}
                               >
                                 <X size={13} />
                               </button>
@@ -1231,7 +1241,7 @@ export default function SolarManagement({
                                 disabled={isAutoClosed}
                                 title={
                                   isAutoClosed
-                                    ? "مكتمل في الإكسل — لفتحه قم بزيادة العدد المطلوب من جدول الإكسل"
+                                    ? m.excelFullTooltip
                                     : undefined
                                 }
                                 onChange={(e) => {
@@ -1247,7 +1257,7 @@ export default function SolarManagement({
                                 className="h-4 w-4 rounded accent-[var(--accent)] shrink-0 disabled:opacity-60"
                               />
                               <span className="text-sm font-semibold text-[var(--text)] truncate">
-                                {role.label}
+                                {displayLabel}
                               </span>
                             </label>
                           )}
@@ -1261,10 +1271,10 @@ export default function SolarManagement({
                               }`}
                             >
                               {isAutoClosed
-                                ? "مغلق (مكتمل)"
+                                ? m.badgeFull
                                 : isManualClosed
-                                ? "مغلق (لا ينضغط)"
-                                : "متاح للتقديم"}
+                                ? m.badgeClosed
+                                : m.badgeOpenRole}
                             </span>
                             <button
                               type="button"
@@ -1277,7 +1287,7 @@ export default function SolarManagement({
                                 })
                               }
                               className="p-1 text-[var(--text-muted)] hover:text-[var(--accent)] hover:bg-white/5 rounded-lg cursor-pointer"
-                              title="تعديل الاسم"
+                              title={m.editNameTitle}
                             >
                               <Pencil size={13} />
                             </button>
@@ -1285,7 +1295,7 @@ export default function SolarManagement({
                               type="button"
                               onClick={() => handleDeleteItem("role", role.id, role.custom)}
                               className="p-1 text-rose-400 hover:bg-rose-500/10 rounded-lg cursor-pointer"
-                              title="حذف الرتبة"
+                              title={m.deleteItemTitle}
                             >
                               <Trash2 size={14} />
                             </button>
@@ -1301,7 +1311,7 @@ export default function SolarManagement({
                     value={newRoleLabel}
                     onChange={(e) => setNewRoleLabel(e.target.value)}
                     maxLength={60}
-                    placeholder="اكتب اسم رتبة جديدة لإضافتها..."
+                    placeholder={m.newRolePlaceholder}
                     className="flex-1 min-w-[200px] rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-xs text-[var(--text)] focus:border-[var(--accent)] focus:outline-none"
                   />
                   <button
@@ -1319,7 +1329,7 @@ export default function SolarManagement({
                     className="inline-flex items-center gap-1.5 rounded-xl px-4 py-2 text-xs font-bold bg-[var(--accent)] text-[#07080b] cursor-pointer"
                   >
                     <Plus size={14} />
-                    إضافة رتبة
+                    {m.addRoleBtn}
                   </button>
                 </div>
               </div>
@@ -1328,10 +1338,10 @@ export default function SolarManagement({
               <div className="rounded-xl border border-[var(--border)] bg-black/20 p-5 space-y-4">
                 <div>
                   <h3 className="font-semibold text-base text-[var(--text)]">
-                    التحكم في رتب وتخصصات الإدارة (تظهر للمتقدم ولكن لا تنضغط إذا كانت مغلقة)
+                    {m.adminSubsSectionTitle}
                   </h3>
                   <p className="text-xs text-[var(--text-muted)] mt-1">
-                    عند إغلاق أي تخصص إداري أو إضافة تخصص جديد، سيظهر في قائمة التقديم ويمكنك جعله غير متاح مؤقتاً.
+                    {m.adminSubsSectionDesc}
                   </p>
                 </div>
 
@@ -1352,6 +1362,7 @@ export default function SolarManagement({
                       const isClosed = isManualClosed || isAutoClosed;
                       const isEditing =
                         editingItem?.kind === "sub" && editingItem.id === sub.id;
+                      const displayLabel = translateSolarRank(sub.label, locale);
                       return (
                         <div
                           key={sub.id}
@@ -1385,7 +1396,7 @@ export default function SolarManagement({
                                 type="button"
                                 onClick={handleSaveItemName}
                                 className="p-1 rounded-lg bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 cursor-pointer"
-                                title="حفظ الاسم"
+                                title={m.saveNameTitle}
                               >
                                 <Check size={12} />
                               </button>
@@ -1393,7 +1404,7 @@ export default function SolarManagement({
                                 type="button"
                                 onClick={() => setEditingItem(null)}
                                 className="p-1 rounded-lg bg-zinc-500/20 text-[var(--text-muted)] hover:text-[var(--text)] cursor-pointer"
-                                title="إلغاء"
+                                title={m.cancelTitle}
                               >
                                 <X size={12} />
                               </button>
@@ -1406,7 +1417,7 @@ export default function SolarManagement({
                                 disabled={isAutoClosed}
                                 title={
                                   isAutoClosed
-                                    ? "مكتمل في الإكسل — لفتحه قم بزيادة العدد المطلوب من جدول الإكسل"
+                                    ? m.excelFullTooltip
                                     : undefined
                                 }
                                 onChange={(e) => {
@@ -1422,7 +1433,7 @@ export default function SolarManagement({
                                 className="h-4 w-4 rounded accent-[var(--accent)] shrink-0 disabled:opacity-60"
                               />
                               <span className="text-xs font-semibold text-[var(--text)] truncate">
-                                {sub.label}
+                                {displayLabel}
                               </span>
                             </label>
                           )}
@@ -1436,10 +1447,10 @@ export default function SolarManagement({
                               }`}
                             >
                               {isAutoClosed
-                                ? "مغلق (مكتمل)"
+                                ? m.badgeFull
                                 : isManualClosed
-                                ? "مغلق (لا ينضغط)"
-                                : "متاح"}
+                                ? m.badgeClosed
+                                : m.badgeAvailable}
                             </span>
                             <button
                               type="button"
@@ -1452,7 +1463,7 @@ export default function SolarManagement({
                                 })
                               }
                               className="p-1 text-[var(--text-muted)] hover:text-[var(--accent)] hover:bg-white/5 rounded-lg cursor-pointer"
-                              title="تعديل الاسم"
+                              title={m.editNameTitle}
                             >
                               <Pencil size={12} />
                             </button>
@@ -1460,7 +1471,7 @@ export default function SolarManagement({
                               type="button"
                               onClick={() => handleDeleteItem("sub", sub.id, sub.custom)}
                               className="p-1 text-rose-400 hover:bg-rose-500/10 rounded-lg cursor-pointer"
-                              title="حذف التخصص"
+                              title={m.deleteItemTitle}
                             >
                               <Trash2 size={13} />
                             </button>
@@ -1476,7 +1487,7 @@ export default function SolarManagement({
                     value={newSubTypeLabel}
                     onChange={(e) => setNewSubTypeLabel(e.target.value)}
                     maxLength={60}
-                    placeholder="اكتب اسم تخصص إداري جديد..."
+                    placeholder={m.newAdminSubPlaceholder}
                     className="flex-1 min-w-[200px] rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-xs text-[var(--text)] focus:border-[var(--accent)] focus:outline-none"
                   />
                   <button
@@ -1494,7 +1505,7 @@ export default function SolarManagement({
                     className="inline-flex items-center gap-1.5 rounded-xl px-4 py-2 text-xs font-bold bg-[var(--accent)] text-[#07080b] cursor-pointer"
                   >
                     <Plus size={14} />
-                    إضافة تخصص
+                    {m.addAdminSubBtn}
                   </button>
                 </div>
               </div>
@@ -1503,10 +1514,10 @@ export default function SolarManagement({
               <div className="rounded-xl border border-[var(--border)] bg-black/20 p-5 space-y-4">
                 <div>
                   <h3 className="font-semibold text-base text-[var(--text)]">
-                    التحكم في الألعاب (تظهر للمتقدم ولكن لا تنضغط إذا كانت مغلقة)
+                    {m.gamesSectionTitle}
                   </h3>
                   <p className="text-xs text-[var(--text-muted)] mt-1">
-                    أضف ألعاباً جديدة أو أغلق ألعاباً مؤقتاً للاعبين وإدارة اللاعبين.
+                    {m.gamesSectionDesc}
                   </p>
                 </div>
 
@@ -1527,6 +1538,7 @@ export default function SolarManagement({
                       const isClosed = isManualClosed || isAutoClosed;
                       const isEditing =
                         editingItem?.kind === "game" && editingItem.id === g.id;
+                      const displayLabel = translateSolarRank(g.label, locale);
                       return (
                         <div
                           key={g.id}
@@ -1560,7 +1572,7 @@ export default function SolarManagement({
                                 type="button"
                                 onClick={handleSaveItemName}
                                 className="p-1 rounded-lg bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 cursor-pointer"
-                                title="حفظ الاسم"
+                                title={m.saveNameTitle}
                               >
                                 <Check size={12} />
                               </button>
@@ -1568,7 +1580,7 @@ export default function SolarManagement({
                                 type="button"
                                 onClick={() => setEditingItem(null)}
                                 className="p-1 rounded-lg bg-zinc-500/20 text-[var(--text-muted)] hover:text-[var(--text)] cursor-pointer"
-                                title="إلغاء"
+                                title={m.cancelTitle}
                               >
                                 <X size={12} />
                               </button>
@@ -1581,7 +1593,7 @@ export default function SolarManagement({
                                 disabled={isAutoClosed}
                                 title={
                                   isAutoClosed
-                                    ? "مكتمل في الإكسل — لفتحه قم بزيادة العدد المطلوب من جدول الإكسل"
+                                    ? m.excelFullTooltip
                                     : undefined
                                 }
                                 onChange={(e) => {
@@ -1597,7 +1609,7 @@ export default function SolarManagement({
                                 className="h-4 w-4 rounded accent-[var(--accent)] shrink-0 disabled:opacity-60"
                               />
                               <span className="text-xs font-semibold text-[var(--text)] truncate">
-                                {g.label}
+                                {displayLabel}
                               </span>
                             </label>
                           )}
@@ -1611,10 +1623,10 @@ export default function SolarManagement({
                               }`}
                             >
                               {isAutoClosed
-                                ? "مغلق (مكتمل)"
+                                ? m.badgeFull
                                 : isManualClosed
-                                ? "مغلق (لا ينضغط)"
-                                : "متاح"}
+                                ? m.badgeClosed
+                                : m.badgeAvailable}
                             </span>
                             <button
                               type="button"
@@ -1627,7 +1639,7 @@ export default function SolarManagement({
                                 })
                               }
                               className="p-1 text-[var(--text-muted)] hover:text-[var(--accent)] hover:bg-white/5 rounded-lg cursor-pointer"
-                              title="تعديل الاسم"
+                              title={m.editNameTitle}
                             >
                               <Pencil size={12} />
                             </button>
@@ -1635,7 +1647,7 @@ export default function SolarManagement({
                               type="button"
                               onClick={() => handleDeleteItem("game", g.id, g.custom)}
                               className="p-1 text-rose-400 hover:bg-rose-500/10 rounded-lg cursor-pointer"
-                              title="حذف اللعبة"
+                              title={m.deleteItemTitle}
                             >
                               <Trash2 size={13} />
                             </button>
@@ -1651,7 +1663,7 @@ export default function SolarManagement({
                     value={newGameLabel}
                     onChange={(e) => setNewGameLabel(e.target.value)}
                     maxLength={60}
-                    placeholder="اكتب اسم لعبة جديدة..."
+                    placeholder={m.newGamePlaceholder}
                     className="flex-1 min-w-[200px] rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-xs text-[var(--text)] focus:border-[var(--accent)] focus:outline-none"
                   />
                   <button
@@ -1669,7 +1681,7 @@ export default function SolarManagement({
                     className="inline-flex items-center gap-1.5 rounded-xl px-4 py-2 text-xs font-bold bg-[var(--accent)] text-[#07080b] cursor-pointer"
                   >
                     <Plus size={14} />
-                    إضافة لعبة
+                    {m.addGameBtn}
                   </button>
                 </div>
               </div>
@@ -1677,10 +1689,10 @@ export default function SolarManagement({
               {/* Announcement / Message to Applicants */}
               <div className="space-y-2">
                 <label className="block text-sm font-semibold text-[var(--text)]">
-                  إعلان أو تنبيه التقديم (اختياري)
+                  {m.announcementLabel}
                 </label>
                 <p className="text-xs text-[var(--text-muted)]">
-                  رسالة تظهر في أعلى نافذة التقديم (مثل: &quot;نبحث حالياً عن لاعبين تنافسيين لفريق فورتنايت ومحرري فيديو&quot;).
+                  {m.announcementHint}
                 </p>
                 <input
                   type="text"
@@ -1689,7 +1701,7 @@ export default function SolarManagement({
                     setSettings({ ...settings, announcement: e.target.value })
                   }
                   maxLength={500}
-                  placeholder="اكتب إعلاناً أو تنبيهاً يظهر للمتقدمين..."
+                  placeholder={m.announcementPlaceholder}
                   className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] p-3 text-sm text-[var(--text)] focus:border-[var(--accent)] focus:outline-none"
                 />
               </div>
@@ -1697,10 +1709,10 @@ export default function SolarManagement({
               {/* Requirements & Guidelines */}
               <div className="space-y-2">
                 <label className="block text-sm font-semibold text-[var(--text)]">
-                  شروط وملاحظات التقديم
+                  {m.guidelinesLabel}
                 </label>
                 <p className="text-xs text-[var(--text-muted)]">
-                  تعليمات توضح شروط القبول ومتطلبات كل رتبة.
+                  {m.guidelinesHint}
                 </p>
                 <textarea
                   value={settings.requirements}
@@ -1709,7 +1721,7 @@ export default function SolarManagement({
                   }
                   maxLength={2000}
                   rows={4}
-                  placeholder="مثال: يرجى إرفاق رابط القناة أو البث والتأكد من إمكانية التواصل عبر الديسكورد..."
+                  placeholder={m.guidelinesPlaceholder}
                   className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] p-3 text-sm text-[var(--text)] focus:border-[var(--accent)] focus:outline-none"
                 />
               </div>
@@ -1724,12 +1736,12 @@ export default function SolarManagement({
                   {savingSettings ? (
                     <>
                       <RefreshCw size={16} className="dash-spinning" />
-                      جاري الحفظ...
+                      {m.savingSettings}
                     </>
                   ) : (
                     <>
                       <Check size={16} />
-                      حفظ إعدادات التقديم
+                      {m.saveSettingsBtn}
                     </>
                   )}
                 </button>
@@ -1769,6 +1781,9 @@ function SolarApplicantCard({
 }) {
   const t = useTranslations("hub");
   const locale = useLocale();
+  const isAr = locale === "ar";
+  const m = solarDashboardCopy(locale).management;
+  const modals = solarModalsCopy(locale);
 
   const [status, setStatus] = useState(row.status);
   const [note, setNote] = useState(row.note);
@@ -1778,7 +1793,7 @@ function SolarApplicantCard({
   const payload = row.payload as Record<string, unknown>;
   const isLeaveRequest = payload.platform === "solar-leave";
   const isEventsRequest = payload.platform === "solar-events";
-  const name = typeof payload.name === "string" ? payload.name : "متقدم بدون اسم";
+  const name = typeof payload.name === "string" ? payload.name : m.unnamedApplicant;
   const nickname = typeof payload.nickname === "string" ? payload.nickname : null;
   const age = payload.age ? String(payload.age) : null;
   const country = typeof payload.country === "string" ? payload.country : null;
@@ -1793,25 +1808,41 @@ function SolarApplicantCard({
 
   const role = !isLeaveRequest && !isEventsRequest ? editedRole : initialRole;
   const roleName = isLeaveRequest
-    ? "طلب إجازة"
+    ? m.leaveRequestType
     : isEventsRequest
-    ? "إدارة فعاليات ديسكورد"
-    : ROLE_LABELS[role] || customRoles.find((r) => r.id === role)?.label || role;
+    ? m.eventsRequestType
+    : translateSolarRank(ROLE_LABELS[role] || customRoles.find((r) => r.id === role)?.label || role, locale);
   const adminSubType =
     !isLeaveRequest && !isEventsRequest
       ? editedRole === "admin" && editedAdminSubType
-        ? SUBTYPE_LABELS[editedAdminSubType] || customAdminSubTypes.find((s) => s.id === editedAdminSubType)?.label || editedAdminSubType
+        ? translateSolarRank(
+            SUBTYPE_LABELS[editedAdminSubType] ||
+              customAdminSubTypes.find((s) => s.id === editedAdminSubType)?.label ||
+              editedAdminSubType,
+            locale
+          )
         : null
       : typeof payload.adminSubType === "string"
-      ? SUBTYPE_LABELS[payload.adminSubType] || customAdminSubTypes.find((s) => s.id === payload.adminSubType)?.label || payload.adminSubType
+      ? translateSolarRank(
+          SUBTYPE_LABELS[payload.adminSubType] ||
+            customAdminSubTypes.find((s) => s.id === payload.adminSubType)?.label ||
+            payload.adminSubType,
+          locale
+        )
       : null;
   const game =
     !isLeaveRequest && !isEventsRequest
       ? canEditGame && editedGame
-        ? GAME_LABELS[editedGame] || customGames.find((g) => g.id === editedGame)?.label || editedGame
+        ? translateSolarRank(
+            GAME_LABELS[editedGame] || customGames.find((g) => g.id === editedGame)?.label || editedGame,
+            locale
+          )
         : null
       : typeof payload.game === "string"
-      ? GAME_LABELS[payload.game] || customGames.find((g) => g.id === payload.game)?.label || payload.game
+      ? translateSolarRank(
+          GAME_LABELS[payload.game] || customGames.find((g) => g.id === payload.game)?.label || payload.game,
+          locale
+        )
       : null;
   const discord = typeof payload.discord === "string" ? payload.discord : "";
   const whatsapp =
@@ -1840,6 +1871,7 @@ function SolarApplicantCard({
       ? payload.contractDurationCustom
       : "";
   const contractDuration =
+    modals.apply.contractDurations?.[contractDurationRaw] ||
     CONTRACT_LABELS[contractDurationRaw] ||
     contractDurationCustom ||
     contractDurationRaw ||
@@ -1853,7 +1885,8 @@ function SolarApplicantCard({
   const leaveDuration =
     leaveDurationRaw === "other" && leaveDurationCustom
       ? leaveDurationCustom
-      : SOLAR_LEAVE_DURATION_LABELS[
+      : modals.leave.durations?.[leaveDurationRaw] ||
+        SOLAR_LEAVE_DURATION_LABELS[
           leaveDurationRaw as keyof typeof SOLAR_LEAVE_DURATION_LABELS
         ] ||
         leaveDurationRaw ||
@@ -1902,7 +1935,7 @@ function SolarApplicantCard({
   return (
     <form
       onSubmit={handleFormSubmit}
-      className="dash-panel card-glow rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5 space-y-4 text-right"
+      className={`dash-panel card-glow rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5 space-y-4 ${isAr ? "text-right" : "text-left"}`}
     >
       {/* Header */}
       <div className="flex items-start justify-between gap-3 border-b border-[var(--border)] pb-3">
@@ -1911,7 +1944,7 @@ function SolarApplicantCard({
             <h3 className="font-bold text-lg text-[var(--text)]">
               {name}
               {nickname && (
-                <span className="text-sm font-normal text-[var(--text-muted)] mr-1.5">
+                <span className="text-sm font-normal text-[var(--text-muted)] ms-1.5">
                   ({nickname})
                 </span>
               )}
@@ -1926,10 +1959,10 @@ function SolarApplicantCard({
               }`}
             >
               {status === "accepted"
-                ? "مقبول"
+                ? m.statusAccepted
                 : status === "rejected"
-                ? "مرفوض"
-                : "قيد المراجعة"}
+                ? m.statusRejected
+                : m.statusPending}
             </span>
           </div>
 
@@ -1950,59 +1983,59 @@ function SolarApplicantCard({
             border: "1px solid var(--border)",
           }}
         >
-          {isLeaveRequest ? "طلب إجازة" : roleName.split(" ")[0]}
+          {isLeaveRequest ? m.leaveRequestType : roleName.split(" ")[0]}
         </span>
       </div>
 
       {/* Division, Age, Country & Contract Attributes */}
       <div className="flex flex-wrap gap-2 text-xs">
         <span className="rounded-md border border-[var(--border)] bg-black/20 px-2 py-1 text-[var(--text-muted)]">
-          {isLeaveRequest ? "النوع:" : "الرتبة:"}{" "}
+          {isLeaveRequest ? m.typePrefix : m.rankPrefix}{" "}
           <strong className="text-[var(--text)]">{roleName}</strong>
         </span>
         {leaveDuration && (
           <span className="rounded-md border border-[var(--border)] bg-black/20 px-2 py-1 text-[var(--text-muted)]">
-            مدة الإجازة: <strong className="text-[var(--accent)]">{leaveDuration}</strong>
+            {m.leaveDurationPrefix} <strong className="text-[var(--accent)]">{leaveDuration}</strong>
           </span>
         )}
         {adminSubType && (
           <span className="rounded-md border border-[var(--border)] bg-black/20 px-2 py-1 text-[var(--text-muted)]">
-            التخصص: <strong className="text-[var(--text)]">{adminSubType}</strong>
+            {m.adminSubPrefix} <strong className="text-[var(--text)]">{adminSubType}</strong>
           </span>
         )}
         {game && (
           <span className="rounded-md border border-[var(--border)] bg-black/20 px-2 py-1 text-[var(--text-muted)]">
-            اللعبة: <strong className="text-[var(--text)]">{game}</strong>
+            {m.gamePrefix} <strong className="text-[var(--text)]">{game}</strong>
           </span>
         )}
         {age && (
           <span className="rounded-md border border-[var(--border)] bg-black/20 px-2 py-1 text-[var(--text-muted)]">
-            العمر: <strong className="text-[var(--text)]">{age} سنة</strong>
+            {m.agePrefix} <strong className="text-[var(--text)]">{age} {m.yearsSuffix}</strong>
           </span>
         )}
         {country && (
           <span className="rounded-md border border-[var(--border)] bg-black/20 px-2 py-1 text-[var(--text-muted)]">
-            من وين: <strong className="text-[var(--text)]">{country}</strong>
+            {m.countryPrefix} <strong className="text-[var(--text)]">{country}</strong>
           </span>
         )}
         {experienceDuration && (
           <span className="rounded-md border border-[var(--border)] bg-black/20 px-2 py-1 text-[var(--text-muted)]">
-            مدة الخبرة: <strong className="text-[var(--text)]">{experienceDuration}</strong>
+            {m.experiencePrefix} <strong className="text-[var(--text)]">{experienceDuration}</strong>
           </span>
         )}
         {hasPreviousClans !== null && (
           <span className="rounded-md border border-[var(--border)] bg-black/20 px-2 py-1 text-[var(--text-muted)]">
-            كلانات سابقة: <strong className="text-[var(--text)]">{hasPreviousClans ? "نعم" : "لا"}</strong>
+            {m.prevClansPrefix} <strong className="text-[var(--text)]">{hasPreviousClans ? m.yes : m.no}</strong>
           </span>
         )}
         {contractDuration && (
           <span className="rounded-md border border-[var(--border)] bg-black/20 px-2 py-1 text-[var(--text-muted)]">
-            مدة العقد: <strong className="text-[var(--accent)]">{contractDuration}</strong>
+            {m.contractPrefix} <strong className="text-[var(--accent)]">{contractDuration}</strong>
           </span>
         )}
         <span className="rounded-md border border-[var(--border)] bg-black/20 px-2 py-1 text-[var(--text-muted)]">
-          التعهد: <strong className={pledgeAgreed ? "text-emerald-400" : "text-amber-400"}>
-            {pledgeAgreed ? "موافق وملتزم" : "لم يؤكد"}
+          {m.pledgePrefix} <strong className={pledgeAgreed ? "text-emerald-400" : "text-amber-400"}>
+            {pledgeAgreed ? m.pledgeAgreed : m.pledgeUnconfirmed}
           </strong>
         </span>
       </div>
@@ -2011,7 +2044,7 @@ function SolarApplicantCard({
       <div className="grid gap-2 sm:grid-cols-2 text-xs">
         {/* Discord */}
         <div className="flex items-center justify-between rounded-lg border border-[var(--border)] bg-black/20 p-2">
-          <span className="text-[var(--text-muted)]">الديسكورد:</span>
+          <span className="text-[var(--text-muted)]">{m.discordPrefix}</span>
           <div className="flex items-center gap-1.5">
             <code dir="ltr" className="font-mono font-semibold text-[var(--text)]">
               {discord || "—"}
@@ -2021,7 +2054,7 @@ function SolarApplicantCard({
                 type="button"
                 onClick={() => onCopy(discord, `disc-${row.id}`)}
                 className="text-[var(--text-muted)] hover:text-[var(--text)]"
-                title="نسخ اسم الحساب"
+                title={m.copyDiscordTitle}
               >
                 {copiedId === `disc-${row.id}` ? (
                   <Check size={13} className="text-emerald-400" />
@@ -2035,7 +2068,7 @@ function SolarApplicantCard({
 
         {/* WhatsApp */}
         <div className="flex items-center justify-between rounded-lg border border-[var(--border)] bg-black/20 p-2">
-          <span className="text-[var(--text-muted)]">الواتساب:</span>
+          <span className="text-[var(--text-muted)]">{m.whatsappPrefix}</span>
           {whatsappClean ? (
             <a
               href={`https://wa.me/${whatsappClean}`}
@@ -2057,7 +2090,7 @@ function SolarApplicantCard({
         <div className="space-y-1.5 text-xs">
           {channelUrl && (
             <div className="flex items-center justify-between rounded-lg border border-[var(--border)] bg-black/20 p-2">
-              <span className="text-[var(--text-muted)]">رابط القناة:</span>
+              <span className="text-[var(--text-muted)]">{m.channelPrefix}</span>
               <a
                 href={channelUrl}
                 target="_blank"
@@ -2071,7 +2104,7 @@ function SolarApplicantCard({
           )}
           {streamUrl && (
             <div className="flex items-center justify-between rounded-lg border border-[var(--border)] bg-black/20 p-2">
-              <span className="text-[var(--text-muted)]">رابط البث:</span>
+              <span className="text-[var(--text-muted)]">{m.streamPrefix}</span>
               <a
                 href={streamUrl}
                 target="_blank"
@@ -2085,7 +2118,7 @@ function SolarApplicantCard({
           )}
           {portfolioUrl && (
             <div className="flex items-center justify-between rounded-lg border border-[var(--border)] bg-black/20 p-2">
-              <span className="text-[var(--text-muted)]">معرض الأعمال:</span>
+              <span className="text-[var(--text-muted)]">{m.portfolioPrefix}</span>
               <a
                 href={portfolioUrl}
                 target="_blank"
@@ -2103,10 +2136,10 @@ function SolarApplicantCard({
                 <FileCheck size={16} className="text-[var(--accent)] shrink-0" />
                 <span className="text-[var(--text)] font-semibold">
                   {isLeaveRequest
-                    ? "وثيقة تعهّد الإجازة:"
+                    ? m.docLeave
                     : isEventsRequest
-                    ? "وثيقة عقد إدارة الفعاليات:"
-                    : "وثيقة العقد والتوقيع:"}
+                    ? m.docEvents
+                    : m.docDefault}
                 </span>
               </div>
               <div className="flex items-center gap-2">
@@ -2116,14 +2149,14 @@ function SolarApplicantCard({
                   className="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-bold transition-all active:scale-95 cursor-pointer bg-[var(--accent)] text-[#07080b]"
                 >
                   <Eye size={13} />
-                  <span>معاينة بالعقد / لحاله</span>
+                  <span>{m.previewContractBtn}</span>
                 </button>
                 <a
                   href={signedContractUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1 text-[var(--accent)] hover:underline text-xs p-1"
-                  title="فتح الرابط الأصلي"
+                  title={m.openOriginalTitle}
                 >
                   <ExternalLink size={13} />
                 </a>
@@ -2138,8 +2171,8 @@ function SolarApplicantCard({
         <div className="rounded-lg border border-[var(--border)] bg-black/20 p-3 text-xs space-y-1">
           <p className="font-semibold text-[var(--text-muted)]">
             {isLeaveRequest
-              ? "لماذا ترغب باخذ اجازة في Solar System؟"
-              : "لماذا ترغب بالانضمام إلى Solar System؟"}
+              ? m.reasonLeaveLabel
+              : m.reasonApplyLabel}
           </p>
           <div className="text-[var(--text)] leading-relaxed whitespace-pre-wrap">
             <MarkdownContent>{whyJoin}</MarkdownContent>
@@ -2165,7 +2198,7 @@ function SolarApplicantCard({
             onClick={() => void onRetry()}
           >
             <Send size={13} />
-            إعادة إرسال للديسكورد
+            {m.resendDiscordBtn}
           </button>
         )}
       </div>
@@ -2175,7 +2208,7 @@ function SolarApplicantCard({
         <div className="grid gap-3 sm:grid-cols-3 pt-2 border-t border-[var(--border)]">
           <div>
             <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1">
-              الرتبة:
+              {m.editRoleLabel}
             </label>
             <select
               value={editedRole}
@@ -2190,7 +2223,7 @@ function SolarApplicantCard({
             >
               {ALL_ROLES.map((r) => (
                 <option key={r.id} value={r.id}>
-                  {ROLE_LABELS[r.id] || r.label}
+                  {translateSolarRank(ROLE_LABELS[r.id] || r.label, locale)}
                 </option>
               ))}
               {customRoles.map((r) => (
@@ -2203,7 +2236,7 @@ function SolarApplicantCard({
 
           <div>
             <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1">
-              التخصص:
+              {m.editAdminSubLabel}
             </label>
             <select
               value={editedRole === "admin" ? editedAdminSubType : ""}
@@ -2216,11 +2249,11 @@ function SolarApplicantCard({
               className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] p-2 text-xs text-[var(--text)] disabled:opacity-50"
             >
               <option value="">
-                {editedRole === "admin" ? "— اختر التخصص —" : "للإدارة فقط"}
+                {editedRole === "admin" ? m.chooseSubOption : m.adminOnlyOption}
               </option>
               {ALL_ADMIN_SUBTYPES.map((sub) => (
                 <option key={sub.id} value={sub.id}>
-                  {sub.label}
+                  {translateSolarRank(sub.label, locale)}
                 </option>
               ))}
               {customAdminSubTypes.map((sub) => (
@@ -2233,7 +2266,7 @@ function SolarApplicantCard({
 
           <div>
             <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1">
-              اللعبة:
+              {m.editGameLabel}
             </label>
             <select
               value={canEditGame ? editedGame : ""}
@@ -2242,11 +2275,11 @@ function SolarApplicantCard({
               className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] p-2 text-xs text-[var(--text)] disabled:opacity-50"
             >
               <option value="">
-                {canEditGame ? "— غير محدد —" : "لإدارة اللاعبين واللاعبين فقط"}
+                {canEditGame ? m.unspecifiedOption : m.playersOnlyOption}
               </option>
               {Object.entries(GAME_LABELS).map(([id, label]) => (
                 <option key={id} value={id}>
-                  {label}
+                  {translateSolarRank(label, locale)}
                 </option>
               ))}
               {customGames.map((g) => (
@@ -2263,28 +2296,28 @@ function SolarApplicantCard({
       <div className="grid gap-3 sm:grid-cols-2 pt-2 border-t border-[var(--border)]">
         <div>
           <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1">
-            حالة الطلب:
+            {m.appStatusLabel}
           </label>
           <select
             value={status}
             onChange={(e) => setStatus(e.target.value)}
             className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] p-2 text-xs text-[var(--text)]"
           >
-            <option value="pending">قيد المراجعة</option>
-            <option value="accepted">قبول الطلب</option>
-            <option value="rejected">رفض الطلب</option>
+            <option value="pending">{m.statusPending}</option>
+            <option value="accepted">{m.acceptOption}</option>
+            <option value="rejected">{m.rejectOption}</option>
           </select>
         </div>
 
         <div>
           <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1">
-            ملاحظات الإدارة للطلب (تظهر للمتقدم):
+            {m.staffNoteLabel}
           </label>
           <input
             type="text"
             value={note}
             onChange={(e) => setNote(e.target.value)}
-            placeholder="مثال: تم قبولك وسيتم التواصل معك بالديسكورد..."
+            placeholder={m.staffNotePlaceholder}
             maxLength={2000}
             className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] p-2 text-xs text-[var(--text)]"
           />
@@ -2298,7 +2331,7 @@ function SolarApplicantCard({
           onClick={async () => {
             if (
               window.confirm(
-                `هل أنت متأكد من حذف طلب "${name}" نهائياً من لوحة التحكم؟ لا يمكن التراجع عن هذا الإجراء.`
+                m.confirmDeleteApp.replace("{name}", name)
               )
             ) {
               setDeleting(true);
@@ -2312,7 +2345,7 @@ function SolarApplicantCard({
           className="inline-flex items-center gap-1.5 rounded-xl border border-rose-500/30 bg-rose-500/10 px-3.5 py-2 text-xs font-semibold text-rose-400 hover:bg-rose-500/20 transition-all cursor-pointer disabled:opacity-50"
         >
           <Trash2 size={13} />
-          <span>{deleting ? "جاري الحذف..." : "حذف الطلب"}</span>
+          <span>{deleting ? m.deleting : m.deleteAppBtn}</span>
         </button>
 
         <button
@@ -2324,12 +2357,12 @@ function SolarApplicantCard({
           {saving ? (
             <>
               <RefreshCw size={13} className="dash-spinning" />
-              جاري الحفظ...
+              {m.savingApp}
             </>
           ) : (
             <>
               <Check size={13} />
-              حفظ حالة الطلب
+              {m.saveAppBtn}
             </>
           )}
         </button>

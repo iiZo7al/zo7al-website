@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo, useRef } from "react";
+import { useLocale } from "next-intl";
 import {
   Download,
   Upload,
@@ -19,6 +20,8 @@ import {
 import type { Mutate, RequestRow } from "./types";
 import type { SolarSettings } from "@/lib/server/solar-settings";
 import { buildSolarPlanRows, matchesPlanRow } from "@/lib/data/solar-plan";
+import { solarDashboardCopy } from "@/lib/data/solar-dashboard-i18n";
+import { translateSolarRank } from "@/lib/data/solar-i18n";
 
 const ROLE_LABELS: Record<string, string> = {
   creator: "صانع محتوى",
@@ -46,11 +49,6 @@ const SUBTYPE_LABELS: Record<string, string> = {
   streamers_supervisor: "مشرف ستريمرز",
 };
 
-const STATUS_LABELS: Record<string, string> = {
-  accepted: "مقبول (عضو)",
-  pending: "قيد المراجعة",
-  rejected: "مرفوض",
-};
 
 function escapeCsvCell(val: unknown): string {
   const s = val == null ? "" : String(val).replace(/\r?\n/g, " ");
@@ -137,6 +135,11 @@ export default function SolarExcelSheet({
   settings?: SolarSettings | null;
   onSaveQuotas?: (quotas: Record<string, number>) => Promise<boolean>;
 }) {
+  const locale = useLocale();
+  const isAr = locale === "ar";
+  const dir = isAr ? "rtl" : "ltr";
+  const t = solarDashboardCopy(locale).excel;
+
   const [excelView, setExcelView] = useState<"plan" | "members">("plan");
   const [sheetFilter, setSheetFilter] = useState<"all" | "accepted" | "pending" | "rejected">("all");
   const [query, setQuery] = useState("");
@@ -209,9 +212,9 @@ export default function SolarExcelSheet({
       const memberText = matchedMembers
         .map((m) => `${m.payload.name ?? ""} ${m.payload.nickname ?? ""} ${m.payload.discord ?? ""}`)
         .join(" ");
-      return `${def.department} ${def.rankLabel} ${memberText}`.toLowerCase().includes(q);
+      return `${def.department} ${def.rankLabel} ${translateSolarRank(def.department, locale)} ${translateSolarRank(def.rankLabel, locale)} ${memberText}`.toLowerCase().includes(q);
     });
-  }, [planWithSlots, deptFilter, query]);
+  }, [planWithSlots, deptFilter, query, locale]);
 
   const planTotals = useMemo(() => {
     let required = 0;
@@ -243,26 +246,26 @@ export default function SolarExcelSheet({
     setSavingQuotas(false);
     if (ok) {
       setDraftQuotasOverride(null);
-      setQuotaMsg("تم حفظ أعداد الرتب والأماكن الفاضية بنجاح!");
+      setQuotaMsg(t.quotasSaved);
     } else {
-      setQuotaMsg("تعذر حفظ الأعداد، يرجى المحاولة مجدداً.");
+      setQuotaMsg(t.quotasSaveError);
     }
   };
 
   const handleDownloadPlanCsv = () => {
-    const headers = ["القسم", "الرتبة", "العدد المطلوب", "المشغول", "الأماكن الفاضية", "الأعضاء الحاليين"];
+    const headers = [t.colDept, t.colRank, t.colRequired, t.occupiedWord, t.emptyWord, t.colMembersSlots];
     const csvRows = [headers.map(escapeCsvCell).join(",")];
     for (const item of filteredPlan) {
       const names = item.matchedMembers
         .map((m) => {
           const p = m.payload as Record<string, unknown>;
-          return String(p.nickname || p.name || p.discord || "عضو");
+          return String(p.nickname || p.name || p.discord || t.memberFallback);
         })
         .join(" | ");
       csvRows.push(
         [
-          item.def.department,
-          item.def.rankLabel,
+          translateSolarRank(item.def.department, locale),
+          translateSolarRank(item.def.rankLabel, locale),
           item.required,
           item.matchedMembers.length,
           item.emptyCount,
@@ -273,7 +276,7 @@ export default function SolarExcelSheet({
       );
     }
     csvRows.push(
-      ["الإجمالي", "", planTotals.required, planTotals.occupied, planTotals.empty, ""]
+      [t.totalRow, "", planTotals.required, planTotals.occupied, planTotals.empty, ""]
         .map(escapeCsvCell)
         .join(",")
     );
@@ -309,17 +312,17 @@ export default function SolarExcelSheet({
       if (item.emptyCount <= 0) continue;
       totalEmpty += item.emptyCount;
       const list = grouped.get(item.def.department) ?? [];
-      list.push({ label: item.def.rankLabel, count: item.emptyCount });
+      list.push({ label: translateSolarRank(item.def.rankLabel, locale), count: item.emptyCount });
       grouped.set(item.def.department, list);
     }
 
-    const lines: string[] = ["**📋 الرتب التي تحتاج إلى أعضاء:**", ""];
+    const lines: string[] = [t.waHeader, ""];
     if (grouped.size === 0) {
-      lines.push("جميع المقاعد مكتملة حالياً ✅", "");
+      lines.push(t.waAllFull, "");
     } else {
       for (const [dept, items] of grouped.entries()) {
         const icon = DEPT_ICONS[dept] || "✨";
-        lines.push(`**${icon} ${dept}**`);
+        lines.push(`**${icon} ${translateSolarRank(dept, locale)}**`);
         for (const it of items) {
           lines.push(`- ${it.label}: ${it.count}`);
         }
@@ -328,9 +331,9 @@ export default function SolarExcelSheet({
     }
 
     lines.push("━━━━━━━━━━━━━━");
-    lines.push(`**📊 إجمالي المقاعد الشاغرة: ${totalEmpty}**`);
+    lines.push(t.waTotalEmpty.replace("{count}", String(totalEmpty)));
     lines.push("");
-    lines.push("رابط التقديم : https://zo7al.is-a.dev/solar");
+    lines.push(t.waApplyLink);
 
     try {
       await navigator.clipboard.writeText(lines.join("\n"));
@@ -350,23 +353,30 @@ export default function SolarExcelSheet({
     });
   }, [rows, sheetFilter, query]);
 
+  const statusLabel = (s: string) =>
+    s === "accepted"
+      ? t.statusAcceptedMember
+      : s === "rejected"
+      ? t.statusRejected
+      : t.statusPendingReview;
+
   const handleDownloadCsv = () => {
     const headers = [
-      "الاسم",
-      "اللقب",
-      "العمر",
-      "الدولة",
-      "الديسكورد",
-      "الجوال",
-      "الرتبة",
-      "التخصص",
-      "اللعبة",
-      "الرابط",
-      "مدة الخبرة",
-      "مدة العقد",
-      "الحالة",
-      "ملاحظات الإدارة",
-      "التاريخ",
+      t.colName,
+      t.colNick,
+      "Age",
+      "Country",
+      t.colDiscord,
+      t.colWhatsapp,
+      t.colRole,
+      t.colSubGame,
+      "Game",
+      "URL",
+      "Experience",
+      t.colContract,
+      t.colStatus,
+      t.colNotes,
+      "Date",
     ];
     const csvRows = [headers.map(escapeCsvCell).join(",")];
     for (const r of filtered) {
@@ -380,15 +390,15 @@ export default function SolarExcelSheet({
           p.country ?? "",
           p.discord ?? "",
           p.whatsapp ?? "",
-          ROLE_LABELS[String(p.role)] || String(p.role ?? ""),
-          SUBTYPE_LABELS[String(p.adminSubType)] || String(p.adminSubType ?? ""),
-          p.game ?? "",
+          translateSolarRank(ROLE_LABELS[String(p.role)] || String(p.role ?? ""), locale),
+          translateSolarRank(SUBTYPE_LABELS[String(p.adminSubType)] || String(p.adminSubType ?? ""), locale),
+          translateSolarRank(String(p.game ?? ""), locale),
           url,
           p.experienceDuration ?? "",
           p.contractDuration ?? "",
-          STATUS_LABELS[r.status] || r.status,
+          statusLabel(r.status),
           r.note ?? "",
-          r.createdAt ? new Date(r.createdAt).toLocaleDateString("ar-SA") : "",
+          r.createdAt ? new Date(r.createdAt).toLocaleDateString(locale) : "",
         ]
           .map(escapeCsvCell)
           .join(",")
@@ -458,7 +468,7 @@ export default function SolarExcelSheet({
       const text = await file.text();
       const parsed = parseCsvLines(text);
       if (parsed.length < 2) {
-        setUploadMsg("الملف فارغ أو لا يحتوي على صفوف بيانات.");
+        setUploadMsg(t.uploadEmptyError);
         return;
       }
       const header = parsed[0].map((h) => h.toLowerCase());
@@ -499,17 +509,17 @@ export default function SolarExcelSheet({
       })).filter((x) => x.name.trim().length > 0);
 
       if (!items.length) {
-        setUploadMsg("لم يتم العثور على صفوف صالحة تحتوي على الاسم.");
+        setUploadMsg(t.uploadNoValidRows);
         return;
       }
       const ok = await mutate("importSolar", items.slice(0, 200));
       setUploadMsg(
         ok
-          ? `تم رفع واستيراد ${Math.min(items.length, 200)} سجل بنجاح في الجدول!`
-          : "حدث خطأ أثناء رفع البيانات، يرجى المحاولة مجدداً."
+          ? t.uploadSuccess.replace("{count}", String(Math.min(items.length, 200)))
+          : t.uploadError
       );
     } catch {
-      setUploadMsg("تعذر قراءة الملف. تأكد أنه بصيغة CSV صحيحة.");
+      setUploadMsg(t.uploadParseError);
     } finally {
       if (fileInputRef.current) fileInputRef.current.value = "";
     }
@@ -540,7 +550,7 @@ export default function SolarExcelSheet({
   };
 
   return (
-    <section className="dash-panel card-glow rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5 sm:p-6 space-y-5" dir="rtl">
+    <section className="dash-panel card-glow rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5 sm:p-6 space-y-5" dir={dir}>
       {/* Sub-view Switcher */}
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[var(--border)] pb-4">
         <div className="flex flex-wrap items-center gap-2">
@@ -554,7 +564,7 @@ export default function SolarExcelSheet({
             }`}
           >
             <FileSpreadsheet size={15} />
-            سجل أعضاء الكلان | خطة توزيع الرتب
+            {t.tabPlan}
           </button>
           <button
             type="button"
@@ -565,7 +575,7 @@ export default function SolarExcelSheet({
                 : "border border-[var(--border)] bg-black/20 text-[var(--text-muted)] hover:text-[var(--text)]"
             }`}
           >
-            سجل المتقدمين الكامل ({rows.length})
+            {t.tabAllRecords.replace("{count}", String(rows.length))}
           </button>
         </div>
 
@@ -580,7 +590,7 @@ export default function SolarExcelSheet({
                 style={{ background: "var(--accent)", color: "#07080b" }}
               >
                 <Save size={14} />
-                {savingQuotas ? "جاري الحفظ..." : "حفظ الأعداد"}
+                {savingQuotas ? t.saving : t.saveQuotas}
               </button>
             )}
             <button
@@ -589,7 +599,7 @@ export default function SolarExcelSheet({
               className="inline-flex items-center gap-1.5 rounded-xl border border-emerald-500/40 bg-emerald-500/10 px-3.5 py-2 text-xs font-semibold text-emerald-300 hover:bg-emerald-500/20 transition-colors cursor-pointer"
             >
               {copiedWhatsapp ? <Check size={14} /> : <Copy size={14} />}
-              {copiedWhatsapp ? "تم نسخ رسالة الواتساب!" : "نسخ كرسالة واتساب"}
+              {copiedWhatsapp ? t.copiedWhatsapp : t.copyWhatsapp}
             </button>
             <button
               type="button"
@@ -597,7 +607,7 @@ export default function SolarExcelSheet({
               className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--border)] bg-black/20 px-3.5 py-2 text-xs font-semibold text-[var(--text)] hover:border-[var(--accent)] transition-colors cursor-pointer"
             >
               <Download size={14} />
-              تحميل خطة التوزيع (CSV)
+              {t.downloadPlanCsv}
             </button>
           </div>
         )}
@@ -623,7 +633,7 @@ export default function SolarExcelSheet({
                     : "border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text)]"
                 }`}
               >
-                كل الأقسام
+                {t.allDepts}
               </button>
               {departments.map((dept) => (
                 <button
@@ -636,7 +646,7 @@ export default function SolarExcelSheet({
                       : "border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text)]"
                   }`}
                 >
-                  {dept}
+                  {translateSolarRank(dept, locale)}
                 </button>
               ))}
             </div>
@@ -644,31 +654,31 @@ export default function SolarExcelSheet({
             <div className="relative min-w-[220px] flex-1 max-w-xs">
               <Search
                 size={14}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)]"
+                className="absolute start-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)]"
               />
               <input
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="بحث بالقسم أو الرتبة أو العضو..."
-                className="dash-search w-full pr-9 py-1.5 text-xs"
+                placeholder={t.searchPlanPlaceholder}
+                className="dash-search w-full ps-9 py-1.5 text-xs"
               />
             </div>
           </div>
 
-          {/* Excel Distribution Table matching image.png */}
+          {/* Excel Distribution Table */}
           <div className="overflow-x-auto rounded-xl border border-[#243b55] shadow-lg">
             <div className="bg-[#162d47] px-4 py-3 text-center text-base font-extrabold text-white tracking-wide border-b border-[#243b55]">
-              سجل أعضاء الكلان | خطة توزيع الرتب
+              {t.planTableTitle}
             </div>
-            <table className="w-full border-collapse text-xs text-right">
+            <table className={`w-full border-collapse text-xs ${isAr ? "text-right" : "text-left"}`}>
               <thead>
                 <tr className="bg-[#ed7d31] text-white font-bold">
-                  <th className="border-l border-white/25 px-3 py-2.5 whitespace-nowrap">القسم</th>
-                  <th className="border-l border-white/25 px-3 py-2.5 whitespace-nowrap">الرتبة</th>
-                  <th className="border-l border-white/25 px-3 py-2.5 text-center whitespace-nowrap">العدد المطلوب</th>
-                  <th className="border-l border-white/25 px-3 py-2.5 text-center whitespace-nowrap">المشغول / الفاضي</th>
-                  <th className="px-3 py-2.5 min-w-[260px]">الأعضاء والأماكن الفاضية</th>
+                  <th className="border-e border-white/25 px-3 py-2.5 whitespace-nowrap">{t.colDept}</th>
+                  <th className="border-e border-white/25 px-3 py-2.5 whitespace-nowrap">{t.colRank}</th>
+                  <th className="border-e border-white/25 px-3 py-2.5 text-center whitespace-nowrap">{t.colRequired}</th>
+                  <th className="border-e border-white/25 px-3 py-2.5 text-center whitespace-nowrap">{t.colOccupiedEmpty}</th>
+                  <th className="px-3 py-2.5 min-w-[260px]">{t.colMembersSlots}</th>
                 </tr>
               </thead>
               <tbody>
@@ -681,13 +691,13 @@ export default function SolarExcelSheet({
                         : "bg-[#f8fafc] text-[#111827] border-b border-[#cbd5e1]"
                     }
                   >
-                    <td className="border-l border-[#cbd5e1] px-3 py-2 font-semibold whitespace-nowrap">
-                      {def.department}
+                    <td className="border-e border-[#cbd5e1] px-3 py-2 font-semibold whitespace-nowrap">
+                      {translateSolarRank(def.department, locale)}
                     </td>
-                    <td className="border-l border-[#cbd5e1] px-3 py-2 font-bold whitespace-nowrap">
-                      {def.rankLabel}
+                    <td className="border-e border-[#cbd5e1] px-3 py-2 font-bold whitespace-nowrap">
+                      {translateSolarRank(def.rankLabel, locale)}
                     </td>
-                    <td className="border-l border-[#cbd5e1] px-2 py-1.5 text-center whitespace-nowrap">
+                    <td className="border-e border-[#cbd5e1] px-2 py-1.5 text-center whitespace-nowrap">
                       <div className="inline-flex items-center gap-1 rounded-lg bg-white border border-[#cbd5e1] px-1.5 py-0.5">
                         <button
                           type="button"
@@ -698,7 +708,7 @@ export default function SolarExcelSheet({
                             }))
                           }
                           className="p-0.5 text-[#334155] hover:text-[#ed7d31] cursor-pointer"
-                          title="إنقاص العدد"
+                          title={t.decreaseTitle}
                         >
                           <Minus size={12} />
                         </button>
@@ -725,24 +735,24 @@ export default function SolarExcelSheet({
                             }))
                           }
                           className="p-0.5 text-[#334155] hover:text-[#ed7d31] cursor-pointer"
-                          title="زيادة العدد"
+                          title={t.increaseTitle}
                         >
                           <Plus size={12} />
                         </button>
                       </div>
                     </td>
-                    <td className="border-l border-[#cbd5e1] px-3 py-2 text-center font-bold whitespace-nowrap">
+                    <td className="border-e border-[#cbd5e1] px-3 py-2 text-center font-bold whitespace-nowrap">
                       <span className="text-emerald-700">{matchedMembers.length}</span>
                       <span className="mx-1 text-[#64748b]">/</span>
                       <span className={emptyCount > 0 ? "text-amber-700" : "text-slate-400"}>
-                        {emptyCount} فاضي
+                        {emptyCount} {t.emptyWord}
                       </span>
                     </td>
                     <td className="px-3 py-2">
                       <div className="flex flex-wrap items-center gap-1.5">
                         {matchedMembers.map((m) => {
                           const p = m.payload as Record<string, unknown>;
-                          const label = String(p.nickname || p.name || p.discord || "عضو");
+                          const label = String(p.nickname || p.name || p.discord || t.memberFallback);
                           return (
                             <span
                               key={m.id}
@@ -760,7 +770,7 @@ export default function SolarExcelSheet({
                             className="inline-flex items-center gap-1 rounded-md border border-dashed border-[#94a3b8] bg-white/70 px-2 py-0.5 text-[11px] font-medium text-[#64748b]"
                           >
                             <CircleDashed size={11} />
-                            مكان فاضي
+                            {t.emptySlot}
                           </span>
                         ))}
                         {required === 0 && matchedMembers.length === 0 && (
@@ -773,17 +783,17 @@ export default function SolarExcelSheet({
               </tbody>
               <tfoot>
                 <tr className="bg-[#162d47] text-white font-extrabold">
-                  <td className="border-l border-white/20 px-3 py-2.5" colSpan={2}>
-                    الإجمالي
+                  <td className="border-e border-white/20 px-3 py-2.5" colSpan={2}>
+                    {t.totalRow}
                   </td>
-                  <td className="border-l border-white/20 px-3 py-2.5 text-center text-sm">
+                  <td className="border-e border-white/20 px-3 py-2.5 text-center text-sm">
                     {planTotals.required}
                   </td>
-                  <td className="border-l border-white/20 px-3 py-2.5 text-center">
-                    {planTotals.occupied} مشغول · {planTotals.empty} فاضي
+                  <td className="border-e border-white/20 px-3 py-2.5 text-center">
+                    {planTotals.occupied} {t.occupiedWord} · {planTotals.empty} {t.emptyWord}
                   </td>
                   <td className="px-3 py-2.5 text-[11px] font-normal text-white/80">
-                    أي عضو يتم قبوله في التقديم ينزل تلقائياً في مكانه المخصص هنا، وأي رتبة تضاف في إعدادات التقديم تظهر تلقائياً.
+                    {t.totalFooterNote}
                   </td>
                 </tr>
               </tfoot>
@@ -807,10 +817,10 @@ export default function SolarExcelSheet({
           </div>
           <div>
             <h2 className="text-lg font-bold text-[var(--text)]">
-              جدول Excel للأعضاء والمتقدمين ({filtered.length})
+              {t.membersTitle.replace("{count}", String(filtered.length))}
             </h2>
             <p className="text-xs text-[var(--text-muted)]">
-              استعراض، تعديل، رفع (استيراد CSV/Excel) وتحميل قائمة أعضاء الكلان والموافق عليهم والمتقدمين.
+              {t.membersSubtitle}
             </p>
           </div>
         </div>
@@ -822,7 +832,7 @@ export default function SolarExcelSheet({
             className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--border)] bg-black/20 px-3.5 py-2 text-xs font-semibold text-[var(--text)] hover:border-[var(--accent)] transition-colors cursor-pointer"
           >
             <Plus size={14} />
-            إضافة صف سريع
+            {t.quickAddBtn}
           </button>
 
           <button
@@ -831,12 +841,12 @@ export default function SolarExcelSheet({
             className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--border)] bg-black/20 px-3.5 py-2 text-xs font-semibold text-[var(--text-muted)] hover:text-[var(--text)] transition-colors cursor-pointer"
           >
             <FileDown size={14} />
-            نموذج فارغ
+            {t.emptyTemplateBtn}
           </button>
 
           <label className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--accent)]/40 bg-[var(--accent)]/10 px-3.5 py-2 text-xs font-semibold text-[var(--accent)] hover:bg-[var(--accent)]/20 transition-colors cursor-pointer">
             <Upload size={14} />
-            <span>رفع ملف Excel (CSV)</span>
+            <span>{t.uploadCsvBtn}</span>
             <input
               ref={fileInputRef}
               type="file"
@@ -854,7 +864,7 @@ export default function SolarExcelSheet({
             style={{ background: "var(--accent)", color: "#07080b" }}
           >
             <Download size={14} />
-            <span>تحميل Excel (CSV)</span>
+            <span>{t.downloadCsvBtn}</span>
           </button>
         </div>
       </div>
@@ -872,28 +882,28 @@ export default function SolarExcelSheet({
           className="grid gap-2 sm:grid-cols-4 lg:grid-cols-8 items-end rounded-xl border border-[var(--accent)]/30 bg-black/25 p-3"
         >
           <div>
-            <label className="block text-[11px] text-[var(--text-muted)] mb-1">الاسم *</label>
+            <label className="block text-[11px] text-[var(--text-muted)] mb-1">{t.nameReqLabel}</label>
             <input
               type="text"
               required
               value={newName}
               onChange={(e) => setNewName(e.target.value)}
-              placeholder="الاسم"
+              placeholder={t.namePlaceholder}
               className="w-full rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1.5 text-xs text-[var(--text)]"
             />
           </div>
           <div>
-            <label className="block text-[11px] text-[var(--text-muted)] mb-1">اللقب</label>
+            <label className="block text-[11px] text-[var(--text-muted)] mb-1">{t.nickLabel}</label>
             <input
               type="text"
               value={newNickname}
               onChange={(e) => setNewNickname(e.target.value)}
-              placeholder="اللقب"
+              placeholder={t.nickPlaceholder}
               className="w-full rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1.5 text-xs text-[var(--text)]"
             />
           </div>
           <div>
-            <label className="block text-[11px] text-[var(--text-muted)] mb-1">الديسكورد</label>
+            <label className="block text-[11px] text-[var(--text-muted)] mb-1">{t.discordLabel}</label>
             <input
               type="text"
               dir="ltr"
@@ -904,7 +914,7 @@ export default function SolarExcelSheet({
             />
           </div>
           <div>
-            <label className="block text-[11px] text-[var(--text-muted)] mb-1">الجوال</label>
+            <label className="block text-[11px] text-[var(--text-muted)] mb-1">{t.whatsappLabel}</label>
             <input
               type="text"
               dir="ltr"
@@ -915,7 +925,7 @@ export default function SolarExcelSheet({
             />
           </div>
           <div>
-            <label className="block text-[11px] text-[var(--text-muted)] mb-1">الرتبة</label>
+            <label className="block text-[11px] text-[var(--text-muted)] mb-1">{t.roleLabel}</label>
             <select
               value={newRole}
               onChange={(e) => setNewRole(e.target.value)}
@@ -923,30 +933,30 @@ export default function SolarExcelSheet({
             >
               {Object.entries(ROLE_LABELS).map(([k, v]) => (
                 <option key={k} value={k}>
-                  {v}
+                  {translateSolarRank(v, locale)}
                 </option>
               ))}
             </select>
           </div>
           <div>
-            <label className="block text-[11px] text-[var(--text-muted)] mb-1">الحالة</label>
+            <label className="block text-[11px] text-[var(--text-muted)] mb-1">{t.statusLabel}</label>
             <select
               value={newStatus}
               onChange={(e) => setNewStatus(e.target.value)}
               className="w-full rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2 py-1.5 text-xs text-[var(--text)]"
             >
-              <option value="accepted">مقبول (عضو)</option>
-              <option value="pending">قيد المراجعة</option>
-              <option value="rejected">مرفوض</option>
+              <option value="accepted">{t.statusAcceptedMember}</option>
+              <option value="pending">{t.statusPendingReview}</option>
+              <option value="rejected">{t.statusRejected}</option>
             </select>
           </div>
           <div>
-            <label className="block text-[11px] text-[var(--text-muted)] mb-1">ملاحظة</label>
+            <label className="block text-[11px] text-[var(--text-muted)] mb-1">{t.noteLabel}</label>
             <input
               type="text"
               value={newNote}
               onChange={(e) => setNewNote(e.target.value)}
-              placeholder="ملاحظة"
+              placeholder={t.notePlaceholder}
               className="w-full rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1.5 text-xs text-[var(--text)]"
             />
           </div>
@@ -957,7 +967,7 @@ export default function SolarExcelSheet({
             style={{ background: "var(--accent)", color: "#07080b" }}
           >
             <Check size={13} />
-            حفظ الصف
+            {t.saveRowBtn}
           </button>
         </form>
       )}
@@ -967,10 +977,10 @@ export default function SolarExcelSheet({
         <div className="flex flex-wrap items-center gap-2 text-xs">
           {(
             [
-              { id: "all", label: "الكل" },
-              { id: "accepted", label: "الأعضاء الموافق عليهم" },
-              { id: "pending", label: "قيد المراجعة" },
-              { id: "rejected", label: "المرفوضين" },
+              { id: "all", label: t.filterAll },
+              { id: "accepted", label: t.filterAccepted },
+              { id: "pending", label: t.filterPending },
+              { id: "rejected", label: t.filterRejected },
             ] as const
           ).map((tab) => (
             <button
@@ -991,34 +1001,34 @@ export default function SolarExcelSheet({
         <div className="relative min-w-[220px] flex-1 max-w-xs">
           <Search
             size={14}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)]"
+            className="absolute start-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)]"
           />
           <input
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="بحث في الجدول..."
-            className="dash-search w-full pr-9 py-1.5 text-xs"
+            placeholder={t.searchTablePlaceholder}
+            className="dash-search w-full ps-9 py-1.5 text-xs"
           />
         </div>
       </div>
 
       {/* Excel-style Grid Table */}
       <div className="overflow-x-auto rounded-xl border border-[var(--border)] bg-black/30">
-        <table className="w-full border-collapse text-xs text-right whitespace-nowrap">
+        <table className={`w-full border-collapse text-xs whitespace-nowrap ${isAr ? "text-right" : "text-left"}`}>
           <thead>
             <tr className="bg-[var(--surface-elevated)] text-[var(--text-muted)] border-b border-[var(--border)]">
-              <th className="border-l border-[var(--border)] px-3 py-2.5 font-bold">#</th>
-              <th className="border-l border-[var(--border)] px-3 py-2.5 font-bold">الاسم</th>
-              <th className="border-l border-[var(--border)] px-3 py-2.5 font-bold">اللقب</th>
-              <th className="border-l border-[var(--border)] px-3 py-2.5 font-bold">الديسكورد</th>
-              <th className="border-l border-[var(--border)] px-3 py-2.5 font-bold">الجوال</th>
-              <th className="border-l border-[var(--border)] px-3 py-2.5 font-bold">الرتبة</th>
-              <th className="border-l border-[var(--border)] px-3 py-2.5 font-bold">التخصص / اللعبة</th>
-              <th className="border-l border-[var(--border)] px-3 py-2.5 font-bold">مدة العقد</th>
-              <th className="border-l border-[var(--border)] px-3 py-2.5 font-bold">الحالة</th>
-              <th className="border-l border-[var(--border)] px-3 py-2.5 font-bold min-w-[180px]">ملاحظات</th>
-              <th className="px-3 py-2.5 font-bold text-center">إجراء</th>
+              <th className="border-e border-[var(--border)] px-3 py-2.5 font-bold">#</th>
+              <th className="border-e border-[var(--border)] px-3 py-2.5 font-bold">{t.colName}</th>
+              <th className="border-e border-[var(--border)] px-3 py-2.5 font-bold">{t.colNick}</th>
+              <th className="border-e border-[var(--border)] px-3 py-2.5 font-bold">{t.colDiscord}</th>
+              <th className="border-e border-[var(--border)] px-3 py-2.5 font-bold">{t.colWhatsapp}</th>
+              <th className="border-e border-[var(--border)] px-3 py-2.5 font-bold">{t.colRole}</th>
+              <th className="border-e border-[var(--border)] px-3 py-2.5 font-bold">{t.colSubGame}</th>
+              <th className="border-e border-[var(--border)] px-3 py-2.5 font-bold">{t.colContract}</th>
+              <th className="border-e border-[var(--border)] px-3 py-2.5 font-bold">{t.colStatus}</th>
+              <th className="border-e border-[var(--border)] px-3 py-2.5 font-bold min-w-[180px]">{t.colNotes}</th>
+              <th className="px-3 py-2.5 font-bold text-center">{t.colAction}</th>
             </tr>
           </thead>
           <tbody>
@@ -1032,36 +1042,38 @@ export default function SolarExcelSheet({
                   key={row.id}
                   className="border-b border-[var(--border)] hover:bg-white/[0.03] transition-colors"
                 >
-                  <td className="border-l border-[var(--border)] px-3 py-2 text-[var(--text-muted)] font-mono">
+                  <td className="border-e border-[var(--border)] px-3 py-2 text-[var(--text-muted)] font-mono">
                     {index + 1}
                   </td>
-                  <td className="border-l border-[var(--border)] px-3 py-2 font-semibold text-[var(--text)]">
+                  <td className="border-e border-[var(--border)] px-3 py-2 font-semibold text-[var(--text)]">
                     {String(p.name ?? "—")}
                   </td>
-                  <td className="border-l border-[var(--border)] px-3 py-2 text-[var(--text-muted)]">
+                  <td className="border-e border-[var(--border)] px-3 py-2 text-[var(--text-muted)]">
                     {String(p.nickname ?? "—")}
                   </td>
-                  <td className="border-l border-[var(--border)] px-3 py-2 font-mono text-[var(--text)]" dir="ltr">
+                  <td className="border-e border-[var(--border)] px-3 py-2 font-mono text-[var(--text)]" dir="ltr">
                     {String(p.discord ?? "—")}
                   </td>
-                  <td className="border-l border-[var(--border)] px-3 py-2 font-mono text-emerald-400" dir="ltr">
+                  <td className="border-e border-[var(--border)] px-3 py-2 font-mono text-emerald-400" dir="ltr">
                     {String(p.whatsapp ?? "—")}
                   </td>
-                  <td className="border-l border-[var(--border)] px-3 py-2 text-[var(--accent)] font-medium">
-                    {ROLE_LABELS[String(p.role)] || String(p.role ?? "—")}
+                  <td className="border-e border-[var(--border)] px-3 py-2 text-[var(--accent)] font-medium">
+                    {translateSolarRank(ROLE_LABELS[String(p.role)] || String(p.role ?? "—"), locale)}
                   </td>
-                  <td className="border-l border-[var(--border)] px-3 py-2 text-[var(--text-muted)]">
+                  <td className="border-e border-[var(--border)] px-3 py-2 text-[var(--text-muted)]">
                     {[
-                      SUBTYPE_LABELS[String(p.adminSubType)] || p.adminSubType,
-                      p.game,
+                      SUBTYPE_LABELS[String(p.adminSubType)]
+                        ? translateSolarRank(SUBTYPE_LABELS[String(p.adminSubType)], locale)
+                        : p.adminSubType,
+                      p.game ? translateSolarRank(String(p.game), locale) : null,
                     ]
                       .filter(Boolean)
                       .join(" · ") || "—"}
                   </td>
-                  <td className="border-l border-[var(--border)] px-3 py-2 text-[var(--text-muted)]">
+                  <td className="border-e border-[var(--border)] px-3 py-2 text-[var(--text-muted)]">
                     {String(p.contractDuration ?? "—")}
                   </td>
-                  <td className="border-l border-[var(--border)] px-2 py-1.5">
+                  <td className="border-e border-[var(--border)] px-2 py-1.5">
                     <select
                       value={rowStatus}
                       onChange={(e) =>
@@ -1075,19 +1087,19 @@ export default function SolarExcelSheet({
                           : "text-amber-400"
                       }`}
                     >
-                      <option value="accepted">مقبول (عضو)</option>
-                      <option value="pending">قيد المراجعة</option>
-                      <option value="rejected">مرفوض</option>
+                      <option value="accepted">{t.statusAcceptedMember}</option>
+                      <option value="pending">{t.statusPendingReview}</option>
+                      <option value="rejected">{t.statusRejected}</option>
                     </select>
                   </td>
-                  <td className="border-l border-[var(--border)] px-2 py-1.5">
+                  <td className="border-e border-[var(--border)] px-2 py-1.5">
                     <input
                       type="text"
                       value={rowNote}
                       onChange={(e) =>
                         setEditingNotes((prev) => ({ ...prev, [row.id]: e.target.value }))
                       }
-                      placeholder="أضف ملاحظة..."
+                      placeholder={t.addNotePlaceholder}
                       className="w-full rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2 py-1 text-xs text-[var(--text)]"
                     />
                   </td>
@@ -1105,7 +1117,7 @@ export default function SolarExcelSheet({
                               note: rowNote,
                             })
                           }
-                          title="حفظ التعديل"
+                          title={t.saveEditTitle}
                           className="rounded-lg bg-[var(--accent)] px-2 py-1 text-[#07080b] font-bold hover:opacity-90 cursor-pointer"
                         >
                           <Check size={13} />
@@ -1115,11 +1127,11 @@ export default function SolarExcelSheet({
                         type="button"
                         disabled={busy}
                         onClick={() => {
-                          if (window.confirm(`حذف "${String(p.name ?? "")}" من الجدول؟`)) {
+                          if (window.confirm(t.confirmDeleteRow.replace("{name}", String(p.name ?? "")))) {
                             void mutate("deleteRequest", row.id);
                           }
                         }}
-                        title="حذف السجل"
+                        title={t.deleteRowTitle}
                         className="rounded-lg border border-rose-500/30 bg-rose-500/10 p-1 text-rose-400 hover:bg-rose-500/20 cursor-pointer"
                       >
                         <Trash2 size={13} />
@@ -1132,7 +1144,7 @@ export default function SolarExcelSheet({
             {!filtered.length && (
               <tr>
                 <td colSpan={11} className="px-4 py-10 text-center text-[var(--text-muted)]">
-                  لا توجد سجلات مطابقة حالياً. يمكنك رفع ملف CSV أو إضافة صف جديد.
+                  {t.emptyTable}
                 </td>
               </tr>
             )}

@@ -15,8 +15,9 @@ import {
 } from "lucide-react";
 import DetailsDialog from "@/components/ui/DetailsDialog";
 import {
-  DASHBOARD_PERMISSION_LABELS,
   DASHBOARD_SPECIFIC_PERMISSIONS,
+  getDashboardPermissionLabel,
+  getPermissionsUiCopy,
   type DashboardPermission,
 } from "@/lib/data/dashboard-permissions";
 type Profile = {
@@ -39,6 +40,7 @@ export default function MemberProfiles({
     h = useTranslations("hub"),
     locale = useLocale();
   const isAr = locale === "ar";
+  const permUi = getPermissionsUiCopy(locale);
   const [profiles, setProfiles] = useState<Profile[]>([]),
     [query, setQuery] = useState(""),
     [version, setVersion] = useState(0),
@@ -179,15 +181,15 @@ export default function MemberProfiles({
                     <h3>{p.name}</h3>
                     {p.isOwner ? (
                       <span className="rounded-full border border-[var(--accent)]/40 bg-[var(--accent)]/15 px-2.5 py-0.5 text-[11px] font-semibold text-[var(--accent)]">
-                        {isAr ? "المالك" : "Owner"}
+                        {permUi.owner}
                       </span>
                     ) : hasAll ? (
                       <span className="rounded-full border border-emerald-500/40 bg-emerald-500/15 px-2.5 py-0.5 text-[11px] font-semibold text-emerald-300">
-                        {isAr ? "كل الصلاحيات" : "Full Access"}
+                        {permUi.fullAccess}
                       </span>
                     ) : perms.length > 0 ? (
                       <span className="rounded-full border border-sky-500/40 bg-sky-500/15 px-2.5 py-0.5 text-[11px] font-semibold text-sky-300">
-                        {isAr ? `${perms.length} صلاحيات` : `${perms.length} permissions`}
+                        {permUi.permissionsCount(perms.length)}
                       </span>
                     ) : null}
                   </div>
@@ -226,7 +228,7 @@ export default function MemberProfiles({
                       }}
                     >
                       <KeyRound size={16} />
-                      {isAr ? "الصلاحيات" : "Permissions"}
+                      {permUi.permissionsBtn}
                     </button>
                   )}
                   {banned ? (
@@ -268,18 +270,13 @@ export default function MemberProfiles({
       </div>
       {permProfile && (
         <DetailsDialog
-          title={
-            (isAr ? "صلاحيات لوحة التحكم · " : "Dashboard Permissions · ") +
-            permProfile.name
-          }
+          title={permUi.modalTitlePrefix + permProfile.name}
           onClose={() => setPermProfile(null)}
           style={{ width: "min(620px, calc(100vw - 24px))" }}
         >
           <div className="p-6 space-y-5" dir={isAr ? "rtl" : "ltr"}>
             <p className="text-xs text-[var(--text-muted)] leading-relaxed">
-              {isAr
-                ? "يمكنك منح العضو كل الصلاحيات أو اختيار صلاحيات محددة. عند منحه أي صلاحية سيظهر له رابط «لوحة التحكم» في قائمة حسابه."
-                : "Grant full access or specific dashboard sections. Once granted, the Dashboard link appears in their account menu."}
+              {permUi.modalDesc}
             </p>
 
             {/* All permissions toggle */}
@@ -296,11 +293,7 @@ export default function MemberProfiles({
                   : "border-[var(--border)] bg-[var(--surface)] text-[var(--text)] hover:border-[var(--border-strong)]"
               }`}
             >
-              <span>
-                {isAr
-                  ? DASHBOARD_PERMISSION_LABELS.all.ar
-                  : DASHBOARD_PERMISSION_LABELS.all.en}
-              </span>
+              <span>{getDashboardPermissionLabel("all", locale)}</span>
               <span
                 className={`flex h-5 w-5 items-center justify-center rounded-md border ${
                   permDraft.includes("all")
@@ -315,7 +308,7 @@ export default function MemberProfiles({
             {/* Specific permissions grid */}
             <div className="space-y-2">
               <p className="text-xs font-semibold text-[var(--text-muted)]">
-                {isAr ? "أو صلاحيات محددة:" : "Or specific permissions:"}
+                {permUi.orSpecific}
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-[45vh] overflow-y-auto pe-1">
                 {DASHBOARD_SPECIFIC_PERMISSIONS.map((perm) => {
@@ -341,11 +334,7 @@ export default function MemberProfiles({
                           : "border-[var(--border)] bg-[var(--surface)] text-[var(--text-muted)] hover:text-[var(--text)]"
                       } ${disabled ? "opacity-60 cursor-not-allowed" : ""}`}
                     >
-                      <span>
-                        {isAr
-                          ? DASHBOARD_PERMISSION_LABELS[perm].ar
-                          : DASHBOARD_PERMISSION_LABELS[perm].en}
-                      </span>
+                      <span>{getDashboardPermissionLabel(perm, locale)}</span>
                       <span
                         className={`flex h-4 w-4 shrink-0 items-center justify-center rounded border ${
                           checked
@@ -368,7 +357,7 @@ export default function MemberProfiles({
                 onClick={() => void savePermissions([])}
                 className="dash-button dash-danger text-xs"
               >
-                {isAr ? "إزالة كل الصلاحيات" : "Revoke All"}
+                {permUi.revokeAll}
               </button>
               <div className="flex items-center gap-2">
                 <button
@@ -377,7 +366,7 @@ export default function MemberProfiles({
                   onClick={() => setPermProfile(null)}
                   className="dash-button text-xs"
                 >
-                  {isAr ? "إلغاء" : "Cancel"}
+                  {permUi.cancel}
                 </button>
                 <button
                   type="button"
@@ -385,7 +374,7 @@ export default function MemberProfiles({
                   onClick={() => void savePermissions(permDraft)}
                   className="dash-button dash-button-primary text-xs"
                 >
-                  {isAr ? "حفظ الصلاحيات" : "Save Permissions"}
+                  {permUi.savePermissions}
                 </button>
               </div>
             </div>

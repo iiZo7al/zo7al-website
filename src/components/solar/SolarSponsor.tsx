@@ -87,11 +87,7 @@ export default function SolarSponsor() {
                   >
                     <Zap size={14} />
                   </span>
-                  <span>
-                    {isArabic
-                      ? "تمكين صناع المحتوى واللاعبين التنافسيين بأفضل الإمكانيات"
-                      : "Empowering creators and competitive players with top opportunities"}
-                  </span>
+                  <span>{tx.rasanahPerk1}</span>
                 </div>
 
                 <div className="flex items-center gap-2.5 text-xs text-[var(--text-muted)]">
@@ -104,11 +100,7 @@ export default function SolarSponsor() {
                   >
                     <ShieldCheck size={14} />
                   </span>
-                  <span>
-                    {isArabic
-                      ? "شراكة استراتيجية طويلة الأمد لبناء بيئة مجتمعية احترافية"
-                      : "Long-term strategic partnership building a professional community"}
-                  </span>
+                  <span>{tx.rasanahPerk2}</span>
                 </div>
               </div>
 
@@ -122,11 +114,7 @@ export default function SolarSponsor() {
                   className="inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition-transform hover:scale-[1.02] active:scale-95"
                   style={{ background: "var(--accent)", color: "#07080B" }}
                 >
-                  <span>
-                    {isArabic
-                      ? "زيارة موقع راعي الكلان"
-                      : t.sponsorVisitBtn || "Visit Sponsor Website"}
-                  </span>
+                  <span>{t.sponsorVisitBtn || "Visit Sponsor Website"}</span>
                   <ExternalLink size={15} />
                 </a>
               </div>
