@@ -41,12 +41,13 @@ export default async function MemberProfile({
   ]);
   const badges = badgesResult.rows;
   const entries = entriesResult.rows;
+  const { solarExtraCopy } = await import("@/lib/data/solar-i18n");
   const allBadges = [
     ...(isSolarMember
       ? [
           {
             id: "solar-clan-member",
-            name: locale === "ar" ? "عضو من الكلان" : "Clan Member",
+            name: solarExtraCopy(locale).clanMemberBadge,
             src: "/assets/site/solar-clan-logo.png",
           },
         ]

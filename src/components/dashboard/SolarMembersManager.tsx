@@ -1,7 +1,8 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
+import { useLocale } from "next-intl";
 import {
   ArrowDown,
   ArrowUp,
@@ -27,6 +28,8 @@ import {
   type SolarMemberSocial,
   type SolarMemberSocialPlatform,
 } from "@/lib/data/solar-members";
+import { solarDashboardCopy } from "@/lib/data/solar-dashboard-i18n";
+import { translateSolarRank } from "@/lib/data/solar-i18n";
 
 const EMPTY_FORM = {
   id: "",
@@ -45,6 +48,11 @@ export default function SolarMembersManager({
 }: {
   onExpired: () => void;
 }) {
+  const locale = useLocale();
+  const isAr = locale === "ar";
+  const dir = isAr ? "rtl" : "ltr";
+  const mb = solarDashboardCopy(locale).members;
+
   const [members, setMembers] = useState<SolarMember[]>([]);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
@@ -52,24 +60,6 @@ export default function SolarMembersManager({
   const [error, setError] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
   const [form, setForm] = useState(EMPTY_FORM);
-
-  const loadMembers = useCallback(async () => {
-    try {
-      const res = await fetch("/api/admin/solar/members", { cache: "no-store" });
-      if (res.status === 401) {
-        onExpired();
-        return;
-      }
-      if (res.ok) {
-        const data = await res.json();
-        setMembers(Array.isArray(data.members) ? data.members : []);
-      }
-    } catch {
-      setError("تعذر تحميل أعضاء الكلان.");
-    } finally {
-      setLoading(false);
-    }
-  }, [onExpired]);
 
   useEffect(() => {
     let active = true;
@@ -88,7 +78,7 @@ export default function SolarMembersManager({
         }
       })
       .catch(() => {
-        if (active) setError("تعذر تحميل أعضاء الكلان.");
+        if (active) setError(mb.loadError);
       })
       .finally(() => {
         if (active) setLoading(false);
@@ -96,7 +86,7 @@ export default function SolarMembersManager({
     return () => {
       active = false;
     };
-  }, [onExpired]);
+  }, [onExpired, mb.loadError]);
 
   const handleUploadAvatar = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -109,12 +99,12 @@ export default function SolarMembersManager({
       const res = await fetch("/api/solar/upload", { method: "POST", body: fd });
       const data = await res.json();
       if (!res.ok || !data.ok) {
-        setError("تعذر رفع الصورة. تأكد من صيغة وحجم الملف.");
+        setError(mb.uploadError);
         return;
       }
       setForm((prev) => ({ ...prev, avatar: data.url }));
     } catch {
-      setError("حدث خطأ أثناء رفع الصورة.");
+      setError(mb.uploadNetworkError);
     } finally {
       setUploading(false);
     }
@@ -123,7 +113,7 @@ export default function SolarMembersManager({
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.name.trim() || !form.rank.trim()) {
-      setError("يرجى كتابة اسم الشخص ورتبته في الكلان.");
+      setError(mb.requiredError);
       return;
     }
     setBusy(true);
@@ -150,21 +140,21 @@ export default function SolarMembersManager({
       }
       const data = await res.json();
       if (!res.ok || !data.ok) {
-        setError("تعذر حفظ بيانات العضو. تأكد من صحة الروابط.");
+        setError(mb.saveError);
         return;
       }
       setMembers(data.members ?? []);
       setDialogOpen(false);
       setForm(EMPTY_FORM);
     } catch {
-      setError("تعذر الاتصال بالخادم.");
+      setError(mb.networkError);
     } finally {
       setBusy(false);
     }
   };
 
   const handleDelete = async (id: string) => {
-    if (!window.confirm("هل تريد حذف هذا العضو من قائمة الكلان؟")) return;
+    if (!window.confirm(mb.confirmDelete)) return;
     setBusy(true);
     try {
       const res = await fetch("/api/admin/solar/members", {
@@ -226,15 +216,15 @@ export default function SolarMembersManager({
   };
 
   return (
-    <div className="space-y-6" dir="rtl">
+    <div className="space-y-6" dir={dir}>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h3 className="text-base font-bold text-[var(--text)] flex items-center gap-2">
             <Users size={18} className="text-[var(--accent)]" />
-            أعضاء الكلان ({members.length})
+            {mb.title} ({members.length})
           </h3>
           <p className="text-xs text-[var(--text-muted)] mt-1">
-            يظهرون في نهاية صفحة كلان سولار (/solar) بنفس شكل قائمة المتصدرين مع صورة ورتبة وزر تفاصيل وحسابات كل عضو.
+            {mb.subtitle}
           </p>
         </div>
         <button
@@ -243,7 +233,7 @@ export default function SolarMembersManager({
           className="dash-button dash-button-primary text-xs"
         >
           <Plus size={15} />
-          إضافة عضو للكلان
+          {mb.addBtn}
         </button>
       </div>
 
@@ -254,7 +244,7 @@ export default function SolarMembersManager({
       )}
 
       {loading ? (
-        <div className="space-y-2.5" aria-busy="true" aria-label="جاري التحميل...">
+        <div className="space-y-2.5" aria-busy="true" aria-label={mb.loadingAria}>
           {Array.from({ length: 4 }).map((_, i) => (
             <div
               key={i}
@@ -277,7 +267,7 @@ export default function SolarMembersManager({
         </div>
       ) : members.length === 0 ? (
         <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-8 text-center text-xs text-[var(--text-muted)]">
-          لا يوجد أعضاء مضافون بعد. اضغط على «إضافة عضو للكلان» لإضافة أول عضو.
+          {mb.emptyState}
         </div>
       ) : (
         <div className="space-y-2.5">
@@ -310,11 +300,11 @@ export default function SolarMembersManager({
                       {m.name}
                     </strong>
                     <span className="rounded-full border border-[var(--accent)]/40 bg-[var(--accent)]/10 px-2.5 py-0.5 text-[11px] font-semibold text-[var(--accent)]">
-                      {m.rank}
+                      {translateSolarRank(m.rank, locale)}
                     </span>
                   </div>
                   <p className="text-[11px] text-[var(--text-muted)] mt-0.5">
-                    {m.socials.length} حساب مرتبط
+                    {m.socials.length} {mb.linkedSocialsSuffix}
                     {m.bio ? ` · ${m.bio.slice(0, 60)}${m.bio.length > 60 ? "..." : ""}` : ""}
                   </p>
                 </div>
@@ -325,7 +315,7 @@ export default function SolarMembersManager({
                   type="button"
                   disabled={busy || idx === 0}
                   onClick={() => void handleMove(m.id, "up")}
-                  aria-label="تحريك لأعلى"
+                  aria-label={mb.moveUp}
                   className="dash-icon-button"
                 >
                   <ArrowUp size={15} />
@@ -334,7 +324,7 @@ export default function SolarMembersManager({
                   type="button"
                   disabled={busy || idx === members.length - 1}
                   onClick={() => void handleMove(m.id, "down")}
-                  aria-label="تحريك لأسفل"
+                  aria-label={mb.moveDown}
                   className="dash-icon-button"
                 >
                   <ArrowDown size={15} />
@@ -346,7 +336,7 @@ export default function SolarMembersManager({
                   className="dash-button text-xs"
                 >
                   <Edit3 size={14} />
-                  تعديل
+                  {mb.editBtn}
                 </button>
                 <button
                   type="button"
@@ -355,7 +345,7 @@ export default function SolarMembersManager({
                   className="dash-button dash-danger text-xs"
                 >
                   <Trash2 size={14} />
-                  حذف
+                  {mb.deleteBtn}
                 </button>
               </div>
             </div>
@@ -365,11 +355,11 @@ export default function SolarMembersManager({
 
       {dialogOpen && (
         <DetailsDialog
-          title={form.id ? `تعديل العضو · ${form.name}` : "إضافة عضو جديد للكلان"}
+          title={form.id ? mb.editDialogTitle.replace("{name}", form.name) : mb.addDialogTitle}
           onClose={() => setDialogOpen(false)}
           style={{ width: "min(640px, calc(100vw - 24px))" }}
         >
-          <form onSubmit={handleSave} className="p-6 space-y-5 max-h-[82vh] overflow-y-auto" dir="rtl">
+          <form onSubmit={handleSave} className="p-6 space-y-5 max-h-[82vh] overflow-y-auto" dir={dir}>
             {error && (
               <p className="hub-error text-xs" role="alert">
                 {error}
@@ -396,7 +386,7 @@ export default function SolarMembersManager({
                 <div className="flex flex-wrap items-center gap-2">
                   <label className="dash-button text-xs cursor-pointer">
                     <Upload size={14} />
-                    {uploading ? "جاري الرفع..." : "رفع صورة من جهازك"}
+                    {uploading ? mb.uploading : mb.uploadAvatar}
                     <input
                       type="file"
                       accept="image/*"
@@ -411,7 +401,7 @@ export default function SolarMembersManager({
                       onClick={() => setForm((p) => ({ ...p, avatar: "" }))}
                       className="text-xs text-rose-400 hover:underline"
                     >
-                      إزالة الصورة
+                      {mb.removeAvatar}
                     </button>
                   )}
                 </div>
@@ -419,7 +409,7 @@ export default function SolarMembersManager({
                   type="text"
                   value={form.avatar}
                   onChange={(e) => setForm((p) => ({ ...p, avatar: e.target.value }))}
-                  placeholder="أو الصق رابط الصورة مباشرة (https://...)"
+                  placeholder={mb.avatarUrlPlaceholder}
                   dir="ltr"
                   className="w-full rounded-lg border border-[var(--border)] bg-[var(--surface)] px-3 py-1.5 text-xs text-[var(--text)]"
                 />
@@ -428,25 +418,25 @@ export default function SolarMembersManager({
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <label className="block space-y-1.5 text-xs">
-                <span className="font-semibold text-[var(--text)]">اسم الشخص *</span>
+                <span className="font-semibold text-[var(--text)]">{mb.nameLabel}</span>
                 <input
                   type="text"
                   required
                   value={form.name}
                   onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))}
-                  placeholder="مثال: Zo7al"
+                  placeholder={mb.namePlaceholder}
                   className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--text)]"
                 />
               </label>
 
               <label className="block space-y-1.5 text-xs">
-                <span className="font-semibold text-[var(--text)]">رتبته بالكلان *</span>
+                <span className="font-semibold text-[var(--text)]">{mb.rankLabel}</span>
                 <input
                   type="text"
                   required
                   value={form.rank}
                   onChange={(e) => setForm((p) => ({ ...p, rank: e.target.value }))}
-                  placeholder="مثال: قائد الكلان / صانع محتوى"
+                  placeholder={mb.rankPlaceholder}
                   className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--text)]"
                 />
               </label>
@@ -455,7 +445,7 @@ export default function SolarMembersManager({
             {/* Hierarchical Role / Rank / Game Selection */}
             <div className="space-y-3 rounded-xl border border-[var(--border)] bg-black/20 p-4">
               <label className="block space-y-1.5 text-xs">
-                <span className="font-semibold text-[var(--text)]">المرتبة / القسم</span>
+                <span className="font-semibold text-[var(--text)]">{mb.roleSelectLabel}</span>
                 <select
                   value={form.role}
                   onChange={(e) => {
@@ -473,10 +463,10 @@ export default function SolarMembersManager({
                   }}
                   className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--text)]"
                 >
-                  <option value="">اختر المرتبة / القسم...</option>
+                  <option value="">{mb.roleSelectPlaceholder}</option>
                   {SOLAR_MEMBER_ROLES.map((r) => (
                     <option key={r.id} value={r.id}>
-                      {r.label}
+                      {translateSolarRank(r.label, locale)}
                     </option>
                   ))}
                 </select>
@@ -485,7 +475,7 @@ export default function SolarMembersManager({
               {form.role === "admin" && (
                 <label className="block space-y-1.5 text-xs">
                   <span className="font-semibold text-[var(--text)]">
-                    نوع الإشراف / الرتبة الإدارية
+                    {mb.adminSubSelectLabel}
                   </span>
                   <select
                     value={form.adminSubType}
@@ -502,10 +492,10 @@ export default function SolarMembersManager({
                     }}
                     className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--text)]"
                   >
-                    <option value="">اختر الرتبة الإدارية...</option>
+                    <option value="">{mb.adminSubSelectPlaceholder}</option>
                     {SOLAR_MEMBER_ADMIN_SUBTYPES.map((s) => (
                       <option key={s.id} value={s.id}>
-                        {s.label}
+                        {translateSolarRank(s.label, locale)}
                       </option>
                     ))}
                   </select>
@@ -515,7 +505,7 @@ export default function SolarMembersManager({
               {roleNeedsGame(form.role, form.adminSubType) && (
                 <label className="block space-y-1.5 text-xs">
                   <span className="font-semibold text-[var(--text)]">
-                    اللعبة (فيفا، فورت، ماينكرافت، أو روكيت)
+                    {mb.gameSelectLabel}
                   </span>
                   <select
                     value={form.game}
@@ -534,10 +524,10 @@ export default function SolarMembersManager({
                     }}
                     className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--text)]"
                   >
-                    <option value="">اختر اللعبة...</option>
+                    <option value="">{mb.gameSelectPlaceholder}</option>
                     {SOLAR_MEMBER_GAMES.map((g) => (
                       <option key={g.id} value={g.id}>
-                        {g.optionLabel}
+                        {translateSolarRank(g.optionLabel, locale)}
                       </option>
                     ))}
                   </select>
@@ -546,13 +536,13 @@ export default function SolarMembersManager({
             </div>
 
             <label className="block space-y-1.5 text-xs">
-              <span className="font-semibold text-[var(--text)]">نبذة / تفاصيل إضافية (اختياري)</span>
+              <span className="font-semibold text-[var(--text)]">{mb.bioLabel}</span>
               <textarea
                 rows={2}
                 maxLength={600}
                 value={form.bio}
                 onChange={(e) => setForm((p) => ({ ...p, bio: e.target.value }))}
-                placeholder="معلومات مختصرة تظهر عند فتح تفاصيل العضو..."
+                placeholder={mb.bioPlaceholder}
                 className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--text)]"
               />
             </label>
@@ -561,7 +551,7 @@ export default function SolarMembersManager({
             <div className="space-y-3 rounded-xl border border-[var(--border)] bg-black/20 p-4">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-semibold text-[var(--text)]">
-                  حسابات العضو (تظهر في صفحة التفاصيل)
+                  {mb.socialsLabel}
                 </span>
                 <button
                   type="button"
@@ -577,13 +567,13 @@ export default function SolarMembersManager({
                   className="dash-button text-xs"
                 >
                   <Plus size={13} />
-                  إضافة حساب
+                  {mb.addSocialBtn}
                 </button>
               </div>
 
               {form.socials.length === 0 ? (
                 <p className="text-[11px] text-[var(--text-muted)]">
-                  لا توجد حسابات مضافة بعد.
+                  {mb.noSocials}
                 </p>
               ) : (
                 <div className="space-y-2">
@@ -624,7 +614,7 @@ export default function SolarMembersManager({
                             ),
                           }));
                         }}
-                        placeholder="اليوزر (@...)"
+                        placeholder={mb.socialPlaceholder}
                         dir="ltr"
                         className="rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1.5 text-xs text-[var(--text)]"
                       />
@@ -655,7 +645,7 @@ export default function SolarMembersManager({
                             socials: p.socials.filter((_, i) => i !== idx),
                           }))
                         }
-                        aria-label="حذف الحساب"
+                        aria-label={mb.deleteSocialAria}
                         className="rounded-lg p-1.5 text-rose-400 hover:bg-rose-500/10"
                       >
                         <X size={15} />
@@ -672,14 +662,14 @@ export default function SolarMembersManager({
                 onClick={() => setDialogOpen(false)}
                 className="dash-button text-xs"
               >
-                إلغاء
+                {mb.cancelBtn}
               </button>
               <button
                 type="submit"
                 disabled={busy || uploading}
                 className="dash-button dash-button-primary text-xs"
               >
-                {busy ? "جاري الحفظ..." : "حفظ العضو"}
+                {busy ? mb.saving : mb.saveBtn}
               </button>
             </div>
           </form>

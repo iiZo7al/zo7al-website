@@ -13,19 +13,142 @@ import type { DashboardData, ManagementTab, Mutate, RequestRow } from "./types";
 import ContentImageField from "./ContentImageField";
 import ContentImage from "@/components/hub/ContentImage";
 
-const FIELD_LABELS: Record<string, string> = {
-  name: "الاسم واللقب",
-  discord: "حساب الديسكورد",
-  whatsapp: "رقم الواتساب",
-  role: "الرتبة",
-  adminSubType: "نوع الإشراف",
-  game: "اللعبة",
-  channelUrl: "رابط القناة",
-  streamUrl: "رابط البث",
-  portfolioUrl: "رابط الأعمال",
-  bio: "نبذة وسبب الانضمام",
-  appliedAt: "وقت التقديم",
+const FIELD_LABELS: Record<string, Record<string, string>> = {
+  ar: {
+    name: "الاسم واللقب",
+    discord: "حساب الديسكورد",
+    whatsapp: "رقم الواتساب",
+    role: "الرتبة",
+    adminSubType: "نوع الإشراف",
+    game: "اللعبة",
+    channelUrl: "رابط القناة",
+    streamUrl: "رابط البث",
+    portfolioUrl: "رابط الأعمال",
+    bio: "نبذة وسبب الانضمام",
+    appliedAt: "وقت التقديم",
+  },
+  en: {
+    name: "Full Name",
+    discord: "Discord Account",
+    whatsapp: "WhatsApp Number",
+    role: "Rank",
+    adminSubType: "Admin Type",
+    game: "Game",
+    channelUrl: "Channel URL",
+    streamUrl: "Stream URL",
+    portfolioUrl: "Portfolio URL",
+    bio: "Bio & Reason for Joining",
+    appliedAt: "Applied At",
+  },
+  es: {
+    name: "Nombre completo",
+    discord: "Cuenta de Discord",
+    whatsapp: "Número de WhatsApp",
+    role: "Rango",
+    adminSubType: "Tipo de administración",
+    game: "Juego",
+    channelUrl: "URL del canal",
+    streamUrl: "URL del stream",
+    portfolioUrl: "URL del portafolio",
+    bio: "Biografía y motivo",
+    appliedAt: "Fecha de solicitud",
+  },
+  fr: {
+    name: "Nom complet",
+    discord: "Compte Discord",
+    whatsapp: "Numéro WhatsApp",
+    role: "Rang",
+    adminSubType: "Type d'administration",
+    game: "Jeu",
+    channelUrl: "URL de la chaîne",
+    streamUrl: "URL du stream",
+    portfolioUrl: "URL du portfolio",
+    bio: "Bio et motivation",
+    appliedAt: "Date de candidature",
+  },
+  de: {
+    name: "Vollständiger Name",
+    discord: "Discord-Konto",
+    whatsapp: "WhatsApp-Nummer",
+    role: "Rang",
+    adminSubType: "Admin-Typ",
+    game: "Spiel",
+    channelUrl: "Kanal-URL",
+    streamUrl: "Stream-URL",
+    portfolioUrl: "Portfolio-URL",
+    bio: "Bio & Beitrittsgrund",
+    appliedAt: "Beworben am",
+  },
+  pt: {
+    name: "Nome completo",
+    discord: "Conta do Discord",
+    whatsapp: "Número do WhatsApp",
+    role: "Cargo",
+    adminSubType: "Tipo de administração",
+    game: "Jogo",
+    channelUrl: "URL do canal",
+    streamUrl: "URL da live",
+    portfolioUrl: "URL do portfólio",
+    bio: "Bio e motivo",
+    appliedAt: "Enviado em",
+  },
+  tr: {
+    name: "Ad Soyad",
+    discord: "Discord Hesabı",
+    whatsapp: "WhatsApp Numarası",
+    role: "Rütbe",
+    adminSubType: "Yönetim Türü",
+    game: "Oyun",
+    channelUrl: "Kanal Bağlantısı",
+    streamUrl: "Yayın Bağlantısı",
+    portfolioUrl: "Portfolyo Bağlantısı",
+    bio: "Hakkında ve Katılım Nedeni",
+    appliedAt: "Başvuru Zamanı",
+  },
+  ja: {
+    name: "氏名",
+    discord: "Discord アカウント",
+    whatsapp: "WhatsApp 番号",
+    role: "ランク",
+    adminSubType: "管理タイプ",
+    game: "ゲーム",
+    channelUrl: "チャンネルURL",
+    streamUrl: "配信URL",
+    portfolioUrl: "ポートフォリオURL",
+    bio: "自己紹介・応募理由",
+    appliedAt: "応募日時",
+  },
+  ko: {
+    name: "이름",
+    discord: "Discord 계정",
+    whatsapp: "WhatsApp 번호",
+    role: "등급",
+    adminSubType: "관리 유형",
+    game: "게임",
+    channelUrl: "채널 URL",
+    streamUrl: "방송 URL",
+    portfolioUrl: "포트폴리오 URL",
+    bio: "소개 및 지원 동기",
+    appliedAt: "지원 일시",
+  },
+  zh: {
+    name: "姓名",
+    discord: "Discord 账号",
+    whatsapp: "WhatsApp 号码",
+    role: "职位",
+    adminSubType: "管理类型",
+    game: "游戏",
+    channelUrl: "频道链接",
+    streamUrl: "直播链接",
+    portfolioUrl: "作品集链接",
+    bio: "简介与加入原因",
+    appliedAt: "申请时间",
+  },
 };
+
+function getFieldLabel(key: string, locale: string): string {
+  return FIELD_LABELS[locale]?.[key] ?? FIELD_LABELS.en[key] ?? key;
+}
 
 export default function DashboardManagement({ data,tab,busy,mutate }: { data:DashboardData; tab:ManagementTab; busy:boolean; mutate:Mutate }) {
   const t = useTranslations("hub"), d = useTranslations("dashboard"), locale = useLocale();
@@ -120,7 +243,7 @@ function ReviewCard({ row,busy,onSave,onRetry }: { row:RequestRow; busy:boolean;
     {platform === "solar" && <div className="dash-application-banner" style={{ background: "linear-gradient(135deg, color-mix(in srgb, var(--accent) 18%, transparent), var(--surface))", border: "1px solid var(--border)" }}><Image src="/assets/site/solar-clan-map.png" width={400} height={200} alt="SOLAR CLAN" style={{ objectFit: "cover", width: "100%", height: "100%" }} /><span className="dash-tag" style={{ background: "var(--accent)", color: "#07080b", fontWeight: 700 }}>SOLAR CLAN</span></div>}
     <div className="dash-section-heading"><h3 dir="auto">{String(row.payload.minecraft??row.payload.epic??row.payload.subject??row.payload.eventTitle??row.payload.name??row.id)}</h3><span className="dash-tag">{t("status_"+row.status)}</span></div>
     <p className="dash-help"><time dateTime={row.createdAt}>{new Intl.DateTimeFormat(locale,{dateStyle:"medium",timeStyle:"short",timeZone:"Asia/Riyadh"}).format(new Date(row.createdAt))}</time></p><bdi className="dash-reference">{row.id}</bdi>
-    <dl className="dash-review-fields">{Object.entries(row.payload).filter(([key]) => !["consent","website","platform","subject"].includes(key)).map(([key,value]) => { const href = link(key, value); return <div key={key}><dt>{t.has(key)?t(key):FIELD_LABELS[key]||key}</dt><dd dir="auto">{href ? <a href={href} target="_blank" rel="noopener noreferrer">{String(value)}<ExternalLink size={13} aria-hidden="true" /></a> : ["message","reason","description","note","body","bio"].includes(key) ? <MarkdownContent>{String(value)}</MarkdownContent> : String(value)}</dd></div>; })}</dl>
+    <dl className="dash-review-fields">{Object.entries(row.payload).filter(([key]) => !["consent","website","platform","subject"].includes(key)).map(([key,value]) => { const href = link(key, value); return <div key={key}><dt>{t.has(key)?t(key):getFieldLabel(key, locale)}</dt><dd dir="auto">{href ? <a href={href} target="_blank" rel="noopener noreferrer">{String(value)}<ExternalLink size={13} aria-hidden="true" /></a> : ["message","reason","description","note","body","bio"].includes(key) ? <MarkdownContent>{String(value)}</MarkdownContent> : String(value)}</dd></div>; })}</dl>
     <span className={"dash-tag "+(row.discordReceipt?"dash-tag-green":"")}>{t(row.discordReceipt?"discordDelivered":"discordPending")}</span>
     {row.kind === "application" && !row.discordReceipt && <button className="dash-button" type="button" disabled={busy} onClick={() => void onRetry()}><Send size={14}/>{t("retryDiscord")}</button>}
     <label>{t("status")}<select value={status} onChange={e => setStatus(e.target.value)}>{statuses.map(s => <option key={s} value={s}>{t("status_"+s)}</option>)}</select></label>

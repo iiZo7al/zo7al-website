@@ -2,7 +2,9 @@
 
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
+import { useLocale } from "next-intl";
 import { Download, ExternalLink, FileCheck, PenTool } from "lucide-react";
+import { solarDashboardCopy } from "@/lib/data/solar-dashboard-i18n";
 import "@/components/store/store.css";
 
 export default function SolarContractViewerModal({
@@ -22,6 +24,10 @@ export default function SolarContractViewerModal({
   isEvents?: boolean;
   isWarning?: boolean;
 }) {
+  const locale = useLocale();
+  const isAr = locale === "ar";
+  const dir = isAr ? "rtl" : "ltr";
+  const cv = solarDashboardCopy(locale).contractViewer;
   const [activeTab, setActiveTab] = useState<"contract" | "signature">("contract");
   const [downloading, setDownloading] = useState(false);
   const dialogRef = useRef<HTMLDialogElement>(null);
@@ -130,21 +136,22 @@ export default function SolarContractViewerModal({
       className="checkout-shell store-checkout max-w-2xl"
     >
       {/* Header matching site modals */}
-      <header className="store-checkout-header" dir="rtl">
+      <header className="store-checkout-header" dir={dir}>
         <div className="store-checkout-brand">
           <span className="store-rank-icon">
             <FileCheck size={20} />
           </span>
           <div>
             <h3 id="solar-contract-viewer-title" className="font-semibold text-base text-[var(--text)]">
-              {isLeave
-                ? `معاينة عقد الإجازة والتوقيع — ${applicantName}`
+              {(isLeave
+                ? cv.leaveTitle
                 : isEvents
-                ? `معاينة عقد إدارة الفعاليات والتوقيع — ${applicantName}`
-                : `معاينة العقد والتوقيع — ${applicantName}`}
+                ? cv.eventsTitle
+                : cv.defaultTitle
+              ).replace("{name}", applicantName)}
             </h3>
             <p className="text-xs text-[var(--text-muted)]">
-              اختر بين عرض التوقيع داخل العقد بمكانه المعتمد أو استعراض التوقيع منفرداً.
+              {cv.subtitle}
             </p>
           </div>
         </div>
@@ -153,14 +160,14 @@ export default function SolarContractViewerModal({
           type="button"
           onClick={onClose}
           className="store-close"
-          aria-label="إغلاق"
+          aria-label={cv.closeAria}
         >
           <span aria-hidden="true">×</span>
         </button>
       </header>
 
       {/* Body matching site modals */}
-      <div className="store-checkout-body space-y-5" dir="rtl">
+      <div className="store-checkout-body space-y-5" dir={dir}>
         {/* Tab Controls */}
         <div className="flex items-center justify-center gap-2 border-b border-[var(--border)] pb-4">
           <button
@@ -173,7 +180,7 @@ export default function SolarContractViewerModal({
             }`}
           >
             <FileCheck size={15} />
-            بالعقد (مكانه داخل العقد)
+            {cv.tabContract}
           </button>
 
           <button
@@ -186,7 +193,7 @@ export default function SolarContractViewerModal({
             }`}
           >
             <PenTool size={15} />
-            التوقيع لحاله
+            {cv.tabSignature}
           </button>
         </div>
 
@@ -197,7 +204,7 @@ export default function SolarContractViewerModal({
               {/* Background Contract */}
               <Image
                 src={contractAsset}
-                alt={isLeave ? "عقد الإجازة الرسمي لفريق Solar" : "وثيقة تعهد وعقد مقدّم Solar"}
+                alt={isLeave ? cv.leaveAlt : cv.defaultAlt}
                 fill
                 priority
                 className="object-contain"
@@ -217,14 +224,14 @@ export default function SolarContractViewerModal({
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={signatureUrl}
-                  alt={`توقيع ${applicantName}`}
+                  alt={cv.sigAlt.replace("{name}", applicantName)}
                   className="h-full w-full object-contain filter drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]"
                 />
               </div>
             </div>
 
             <p className="text-center text-xs text-[var(--text-muted)]">
-              يظهر التوقيع الرقمي في المكان المخصص له داخل وثيقة العقد الرسمية.
+              {cv.contractNote}
             </p>
 
             <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
@@ -235,7 +242,7 @@ export default function SolarContractViewerModal({
                 className="store-action store-action-primary"
               >
                 <Download size={14} />
-                {downloading ? "جاري تجهيز الصورة..." : "تحميل العقد مع التوقيع (PNG)"}
+                {downloading ? cv.downloading : cv.downloadMerged}
               </button>
 
               <a
@@ -245,7 +252,7 @@ export default function SolarContractViewerModal({
                 className="store-action"
               >
                 <ExternalLink size={14} />
-                فتح التوقيع الأصلي
+                {cv.openOriginal}
               </a>
             </div>
           </div>
@@ -258,13 +265,13 @@ export default function SolarContractViewerModal({
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={signatureUrl}
-                alt={`توقيع ${applicantName}`}
+                alt={cv.sigAlt.replace("{name}", applicantName)}
                 className="max-h-full max-w-full object-contain filter drop-shadow-[0_4px_12px_rgba(255,138,0,0.2)]"
               />
             </div>
 
             <p className="text-center text-xs text-[var(--text-muted)]">
-              التوقيع الرقمي المرفوع أو المرسوم بواسطة المتقدم.
+              {cv.sigNote}
             </p>
 
             <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
@@ -274,7 +281,7 @@ export default function SolarContractViewerModal({
                 className="store-action store-action-primary"
               >
                 <Download size={14} />
-                تحميل التوقيع فقط (PNG)
+                {cv.downloadSigOnly}
               </button>
 
               <a
@@ -284,7 +291,7 @@ export default function SolarContractViewerModal({
                 className="store-action"
               >
                 <ExternalLink size={14} />
-                فتح برابط مباشر
+                {cv.openDirect}
               </a>
             </div>
           </div>
