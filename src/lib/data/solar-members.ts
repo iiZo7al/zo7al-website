@@ -169,7 +169,10 @@ export function normalizeSolarMemberSocials(input: unknown): SolarMemberSocial[]
 }
 
 export function getSolarRankOrder(rank: string): number {
-  const s = (rank || "").trim().toLowerCase();
+  const s = (rank || "")
+    .trim()
+    .toLowerCase()
+    .replace(/[أإآ]/g, "ا");
   if (!s) return 999;
 
   // 0. الرئيس (avoid matching نائب الرئيس)
@@ -179,19 +182,19 @@ export function getSolarRankOrder(rank: string): number {
   // 2. الرئيس التنفيذي / مشرف تنفيذي
   if (s.includes("تنفيذي")) return 2;
   // 3. مشرف الأقسام
-  if (s.includes("مشرف الأقسام") || s.includes("مشرف اقسام")) return 3;
+  if (s.includes("مشرف الاقسام") || s.includes("مشرف اقسام")) return 3;
   // 4. الإدارة العامة
-  if (s.includes("الإدارة العامة") || s.includes("إدارة عامة") || s.includes("ادارة عامة")) return 4;
+  if (s.includes("الادارة العامة") || s.includes("ادارة عامة")) return 4;
   // 5. مراقب الإدارة
-  if (s.includes("مراقب الإدارة") || s.includes("مراقب إدارة") || s.includes("مراقب ادارة")) return 5;
+  if (s.includes("مراقب الادارة") || s.includes("مراقب ادارة")) return 5;
   // 6. مشرف صناع المحتوى
   if (s.includes("مشرف صناع")) return 6;
   // 7. إداري صناع المحتوى
-  if (s.includes("إداري صناع") || s.includes("اداري صناع")) return 7;
+  if (s.includes("اداري صناع")) return 7;
   // 8. صانع محتوى
   if (s.includes("صانع محتوى") || s.includes("صناع محتوى")) return 8;
   // 9. إداري ستريمر / مشرف ستريمرز
-  if ((s.includes("إداري") || s.includes("اداري") || s.includes("مشرف")) && s.includes("ستريمر")) return 9;
+  if ((s.includes("اداري") || s.includes("مشرف")) && s.includes("ستريمر")) return 9;
   // 10. ستريمر
   if (s.includes("ستريمر")) return 10;
 

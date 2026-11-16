@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import SolidIcon from "@/components/ui/SolidIcon";
 import {
   Check,
   ShieldAlert,
@@ -130,41 +129,41 @@ export default function SolarWarningPledgeModal({
   return (
     <dialog
       ref={dialog}
+      onCancel={resetAndClose}
       onClose={resetAndClose}
       onClick={(e) => {
         if (e.target === dialog.current) resetAndClose();
       }}
-      className="fixed inset-0 m-auto max-h-[90dvh] w-full max-w-2xl rounded-2xl border border-[var(--border-strong)] bg-[var(--bg-secondary)] p-0 text-[var(--text)] backdrop:bg-black/80 backdrop:backdrop-blur-md shadow-2xl"
+      aria-labelledby="solar-warning-dialog-title"
+      className="checkout-shell store-checkout max-w-2xl"
     >
-      <div className="flex flex-col max-h-[90dvh] text-right" dir="rtl">
-        {/* Header */}
-        <div className="flex items-center justify-between border-b border-[var(--border)] px-6 py-4">
-          <div className="flex items-center gap-3">
-            <span
-              className="flex h-9 w-9 items-center justify-center rounded-xl border border-rose-500/30 bg-rose-500/10 text-rose-400"
-            >
-              <ShieldAlert size={18} />
-            </span>
-            <div>
-              <h2 className="font-bold text-lg text-[var(--text)]">
-                تعهّد بعد استلام تحذير – Solar System
-              </h2>
-              <p className="text-xs text-[var(--text-muted)]">
-                اقرأ التعهّد، أكد بياناتك، ثم وقّع وأرسل التعهّد للإدارة
-              </p>
-            </div>
+      <header className="store-checkout-header" dir="rtl">
+        <div className="store-checkout-brand">
+          <span className="store-rank-icon">
+            <ShieldAlert size={20} />
+          </span>
+          <div>
+            <h2 id="solar-warning-dialog-title" className="font-semibold text-lg">
+              تعهّد بعد استلام تحذير – Solar System
+            </h2>
+            <p className="text-xs text-[var(--text-muted)]">
+              {step === 1 && "الخطوة 1 من 3: قراءة التعهّد والشروط"}
+              {step === 2 && "الخطوة 2 من 3: تأكيد بيانات العضو"}
+              {step === 3 && "الخطوة 3 من 3: التوقيع والموافقة على التعهّد"}
+            </p>
           </div>
-          <button
-            type="button"
-            onClick={resetAndClose}
-            className="flex h-8 w-8 items-center justify-center rounded-full border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text)]"
-          >
-            <SolidIcon name="cross" size={14} />
-          </button>
         </div>
+        <button
+          type="button"
+          className="store-close"
+          onClick={resetAndClose}
+          aria-label="إغلاق"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </header>
 
-        {/* Body */}
-        <div className="overflow-y-auto p-6 space-y-5">
+      <div className="store-checkout-body" dir="rtl">
           {success ? (
             <div className="py-6 text-center space-y-4">
               <div
@@ -478,7 +477,6 @@ export default function SolarWarningPledgeModal({
               )}
             </div>
           )}
-        </div>
       </div>
     </dialog>
   );
