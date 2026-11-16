@@ -8,7 +8,7 @@ import {
 } from "@/lib/server/site-security";
 import { validateSolarApplication } from "@/lib/data/solar";
 import { webhookUrl } from "@/lib/server/creator-applications";
-import { getSolarSettings } from "@/lib/server/solar-settings";
+import { getEffectiveSolarSettings } from "@/lib/server/solar-settings";
 
 export const runtime = "nodejs";
 
@@ -75,7 +75,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const settings = await getSolarSettings();
+    const settings = await getEffectiveSolarSettings();
     if (!settings.isOpen) {
       return Response.json(
         { error: "RECRUITMENT_CLOSED" },
@@ -110,12 +110,23 @@ export async function POST(request: Request) {
       );
     }
 
+    const slotPlanKey =
+      application.role === "player" && application.game
+        ? `player:${application.game}`
+        : application.role === "admin" &&
+            (application.adminSubType === "players_supervisor" ||
+              application.adminSubType === "players_admin") &&
+            application.game
+          ? `admin:${application.adminSubType}:${application.game}`
+          : null;
+
     if (
       settings.closedRoles.includes(application.role) ||
       (application.role === "admin" &&
         application.adminSubType &&
         settings.closedAdminSubTypes.includes(application.adminSubType)) ||
-      (application.game && settings.closedGames.includes(application.game))
+      (application.game && settings.closedGames.includes(application.game)) ||
+      (slotPlanKey && settings.fullPlanKeys.includes(slotPlanKey))
     ) {
       return Response.json(
         { error: "ROLE_CLOSED" },

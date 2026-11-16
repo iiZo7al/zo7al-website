@@ -44,6 +44,7 @@ export default function SolarApplyModal({
     customRoles?: { id: string; label: string }[];
     customAdminSubTypes?: { id: string; label: string }[];
     customGames?: { id: string; label: string }[];
+    fullPlanKeys?: string[];
   } | null;
 }) {
   const dialog = useRef<HTMLDialogElement>(null);
@@ -710,7 +711,7 @@ export default function SolarApplyModal({
                       ممنتج {settings?.closedRoles.includes("editor") ? "— (مغلق مؤقتاً)" : ""}
                     </option>
                     <option value="player" disabled={settings?.closedRoles.includes("player")}>
-                      لاعب (روكيت او فورت او ماين او فيفا او كود) {settings?.closedRoles.includes("player") ? "— (مغلق مؤقتاً)" : ""}
+                      لاعب بطولات {settings?.closedRoles.includes("player") ? "— (مغلق مؤقتاً)" : ""}
                     </option>
                     <option value="admin" disabled={settings?.closedRoles.includes("admin")}>
                       اداري {settings?.closedRoles.includes("admin") ? "— (مغلق مؤقتاً)" : ""}
@@ -748,10 +749,12 @@ export default function SolarApplyModal({
                         { id: "cod", label: "كود (Call of Duty)" },
                         ...(settings?.customGames ?? []),
                       ].map((g) => {
-                        const isClosed = settings?.closedGames?.includes(g.id);
+                        const isManualClosed = settings?.closedGames?.includes(g.id);
+                        const isQuotaFull = settings?.fullPlanKeys?.includes(`player:${g.id}`);
+                        const isClosed = Boolean(isManualClosed || isQuotaFull);
                         return (
                           <option key={g.id} value={g.id} disabled={isClosed}>
-                            {g.label} {isClosed ? "— (مغلق مؤقتاً)" : ""}
+                            {g.label} {isQuotaFull ? "— (مكتمل)" : isManualClosed ? "— (مغلق مؤقتاً)" : ""}
                           </option>
                         );
                       })}
@@ -818,10 +821,14 @@ export default function SolarApplyModal({
                             { id: "cod", label: "كود (Call of Duty)" },
                             ...(settings?.customGames ?? []),
                           ].map((g) => {
-                            const isClosed = settings?.closedGames?.includes(g.id);
+                            const isManualClosed = settings?.closedGames?.includes(g.id);
+                            const isQuotaFull = settings?.fullPlanKeys?.includes(
+                              `admin:${adminSubType}:${g.id}`
+                            );
+                            const isClosed = Boolean(isManualClosed || isQuotaFull);
                             return (
                               <option key={g.id} value={g.id} disabled={isClosed}>
-                                {g.label} {isClosed ? "— (مغلق مؤقتاً)" : ""}
+                                {g.label} {isQuotaFull ? "— (مكتمل)" : isManualClosed ? "— (مغلق مؤقتاً)" : ""}
                               </option>
                             );
                           })}

@@ -1,6 +1,7 @@
 import "server-only";
 import { siteDatabase } from "@/lib/server/site-db";
 import type { SolarAdminSubType, SolarRole } from "@/lib/data/solar";
+import { buildSolarPlanRows, matchesPlanRow } from "@/lib/data/solar-plan";
 
 const VALID_ROLES: SolarRole[] = [
   "admin",
@@ -201,3 +202,92 @@ export async function saveSolarSettings(input: Partial<SolarSettings>): Promise<
 
   return next;
 }
+
+export type EffectiveSolarSettings = SolarSettings & {
+  fullPlanKeys: string[];
+};
+
+export async function getEffectiveSolarSettings(): Promise<EffectiveSolarSettings> {
+  const settings = await getSolarSettings();
+  const fullPlanKeys: string[] = [];
+
+  try {
+    const db = await siteDatabase();
+    const res = await db.query(
+      `SELECT payload FROM site_requests
+       WHERE kind = 'application'
+         AND status = 'accepted'
+         AND COALESCE(payload->>'platform', '') NOT IN ('solar-leave', 'solar-events')
+         AND (payload->>'platform' = 'solar' OR COALESCE(payload->>'subject', '') LIKE '%Solar%')`
+    );
+    const acceptedPayloads = res.rows
+      .map((r) => (r.payload && typeof r.payload === "object" ? (r.payload as Record<string, unknown>) : null))
+      .filter((p): p is Record<string, unknown> => p !== null);
+
+    const planRows = buildSolarPlanRows({
+      customGames: settings.customGames,
+      customAdminSubTypes: settings.customAdminSubTypes,
+      customRoles: settings.customRoles,
+    });
+
+    const closedRolesSet = new Set(settings.closedRoles);
+    const closedSubTypesSet = new Set(settings.closedAdminSubTypes);
+
+    let playerRowsTotal = 0;
+    let playerRowsFull = 0;
+    let supRowsTotal = 0;
+    let supRowsFull = 0;
+    let paRowsTotal = 0;
+    let paRowsFull = 0;
+
+    for (const def of planRows) {
+      const required =
+        typeof settings.roleQuotas[def.key] === "number"
+          ? settings.roleQuotas[def.key]
+          : def.defaultCount;
+      const occupied = acceptedPayloads.filter((p) => matchesPlanRow(p, def)).length;
+      const isFull = occupied >= required;
+      if (isFull) {
+        fullPlanKeys.push(def.key);
+      }
+
+      if (def.role === "player" && def.game) {
+        playerRowsTotal++;
+        if (isFull) playerRowsFull++;
+      } else if (def.role === "admin" && def.adminSubType === "players_supervisor" && def.game) {
+        supRowsTotal++;
+        if (isFull) supRowsFull++;
+      } else if (def.role === "admin" && def.adminSubType === "players_admin" && def.game) {
+        paRowsTotal++;
+        if (isFull) paRowsFull++;
+      } else if (def.role === "admin" && def.adminSubType && isFull) {
+        closedSubTypesSet.add(def.adminSubType);
+      } else if (def.role !== "admin" && isFull) {
+        closedRolesSet.add(def.role);
+      }
+    }
+
+    if (playerRowsTotal > 0 && playerRowsFull === playerRowsTotal) {
+      closedRolesSet.add("player");
+    }
+    if (supRowsTotal > 0 && supRowsFull === supRowsTotal) {
+      closedSubTypesSet.add("players_supervisor");
+    }
+    if (paRowsTotal > 0 && paRowsFull === paRowsTotal) {
+      closedSubTypesSet.add("players_admin");
+    }
+
+    return {
+      ...settings,
+      closedRoles: Array.from(closedRolesSet),
+      closedAdminSubTypes: Array.from(closedSubTypesSet),
+      fullPlanKeys,
+    };
+  } catch {
+    return {
+      ...settings,
+      fullPlanKeys,
+    };
+  }
+}
+

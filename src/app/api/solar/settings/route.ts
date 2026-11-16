@@ -1,4 +1,4 @@
-import { getSolarSettings } from "@/lib/server/solar-settings";
+import { getEffectiveSolarSettings } from "@/lib/server/solar-settings";
 import { privateHeaders } from "@/lib/server/site-security";
 
 export const runtime = "nodejs";
@@ -6,7 +6,7 @@ export const dynamic = "force-dynamic";
 
 export async function GET() {
   try {
-    const settings = await getSolarSettings();
+    const settings = await getEffectiveSolarSettings();
     return Response.json(
       { ok: true, settings },
       { headers: { ...privateHeaders, "Cache-Control": "public, max-age=15, stale-while-revalidate=60" } }
