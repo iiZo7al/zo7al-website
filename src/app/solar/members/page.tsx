@@ -17,6 +17,8 @@ import {
 import { useAccount } from "@/components/account/AccountProvider";
 import SolarLeaveModal from "@/components/solar/SolarLeaveModal";
 import SolarWarningPledgeModal from "@/components/solar/SolarWarningPledgeModal";
+import SolarRankDuties from "@/components/solar/SolarRankDuties";
+import SolarCollaborationRequests from "@/components/solar/SolarCollaborationRequests";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { SOLAR_LEAVE_DURATION_LABELS } from "@/lib/data/solar-leave";
 import { solarExtraCopy, translateSolarRank } from "@/lib/data/solar-i18n";
@@ -249,6 +251,16 @@ export default function SolarMembersPortalPage() {
                 </div>
               </section>
             )}
+
+            {/* Creator Collaboration Requests */}
+            <SolarCollaborationRequests
+              userRank={effectiveStatus.memberInfo?.rank}
+              userName={effectiveStatus.memberInfo?.name || account.name}
+              userAvatar={account.avatar}
+            />
+
+            {/* Rank Duties & Guidelines (To-Do list - Read-only) */}
+            <SolarRankDuties userRank={effectiveStatus.memberInfo?.rank} />
 
             {/* Leave Requests History */}
             <section className="rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-6 sm:p-8 space-y-5">
