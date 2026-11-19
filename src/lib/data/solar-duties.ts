@@ -291,9 +291,10 @@ export const SOLAR_ROLE_DUTIES: Record<string, SolarRoleDutiesConfig> = {
 
 /**
  * Matches a user's free-text or structured rank to a corresponding duties role ID.
+ * Returns empty string if not a recognized role.
  */
 export function resolveDutiesRoleId(rank: string | undefined | null): string {
-  if (!rank) return "creator";
+  if (!rank) return "";
   const normalized = rank.toLowerCase().trim();
 
   if (normalized.includes("صانع محتوى") || normalized.includes("creator")) return "creator";
@@ -312,5 +313,5 @@ export function resolveDutiesRoleId(rank: string | undefined | null): string {
     return "admin";
   }
 
-  return "creator";
+  return "";
 }

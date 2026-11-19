@@ -61,10 +61,10 @@ export async function POST(request: Request) {
   const status = await getUserSolarStatus(user.id);
   const userRole = resolveDutiesRoleId(status.memberInfo?.rank);
 
-  // Creators and Admins can create requests
-  if (userRole !== "creator" && userRole !== "admin") {
+  // Strictly Creators only can create requests
+  if (userRole !== "creator") {
     return Response.json(
-      { error: "CREATOR_ONLY", message: "هذه الميزة مخصصة لصناع المحتوى والإدارة" },
+      { error: "CREATOR_ONLY", message: "هذه الميزة مخصصة حصراً لصناع المحتوى" },
       { status: 403, headers: privateHeaders },
     );
   }
@@ -136,8 +136,8 @@ export async function PATCH(request: Request) {
       // Must be pending
       if (current.status !== "pending") return null;
 
-      // Writers can accept writer requests, Editors editor requests, Designers designer requests, Admins anything
-      if (userRole !== "admin" && userRole !== current.targetRole) {
+      // Writers can only accept writer requests, Editors only editor requests, Designers only designer requests
+      if (userRole !== current.targetRole) {
         return null;
       }
 
