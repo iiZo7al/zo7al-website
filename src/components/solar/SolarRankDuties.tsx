@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { useLocale } from "next-intl";
 import type { LucideIcon } from "lucide-react";
 import {
@@ -40,16 +39,18 @@ export default function SolarRankDuties({ userRank }: SolarRankDutiesProps) {
   const isAr = locale === "ar";
   const userRoleId = resolveDutiesRoleId(userRank);
 
-  const roleKeys = Object.keys(SOLAR_ROLE_DUTIES);
-  const [selectedRole, setSelectedRole] = useState<string>(userRoleId || "creator");
+  // If user role is not recognized or not a member of defined roles, don't display
+  if (!userRoleId || !SOLAR_ROLE_DUTIES[userRoleId]) {
+    return null;
+  }
 
-  const currentRoleConfig = SOLAR_ROLE_DUTIES[selectedRole] || SOLAR_ROLE_DUTIES.creator;
-  const isUserCurrentRole = selectedRole === userRoleId;
+  const currentRoleConfig = SOLAR_ROLE_DUTIES[userRoleId];
+  const Icon = ROLE_ICONS[userRoleId] || Sparkles;
 
   return (
     <section className="rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-6 sm:p-8 space-y-6">
       {/* Header */}
-      <div className="flex flex-wrap items-center justify-between gap-4">
+      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[var(--border)] pb-5">
         <div className="flex items-center gap-3">
           <span
             className="flex h-11 w-11 items-center justify-center rounded-2xl border border-[var(--border-strong)]"
@@ -58,104 +59,45 @@ export default function SolarRankDuties({ userRank }: SolarRankDutiesProps) {
               color: "var(--accent)",
             }}
           >
-            <ListTodo size={22} />
+            <Icon size={22} />
           </span>
           <div>
             <div className="flex items-center gap-2">
               <h2 className="text-lg sm:text-xl font-bold text-[var(--text)]">
-                مهام ومسؤوليات الرتب
+                مهام ومسؤوليات رتبتك ({currentRoleConfig.roleLabel})
               </h2>
               <span
                 className="inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[10px] font-semibold"
                 style={{
-                  background: "color-mix(in srgb, var(--accent) 12%, transparent)",
+                  background: "color-mix(in srgb, var(--accent) 14%, transparent)",
                   color: "var(--accent)",
-                  border: "1px solid color-mix(in srgb, var(--accent) 25%, transparent)",
+                  border: "1px solid color-mix(in srgb, var(--accent) 30%, transparent)",
                 }}
               >
-                لائحة إرشادية
+                خاص برتبتك
               </span>
             </div>
-            <p className="text-xs text-[var(--text-muted)] mt-0.5">
-              قائمة To-Do إرشادية تنظيمية توضح الواجبات والمهام المطلوبة من كل عضو حسب رتبته في الكلان.
+            <p className="text-xs text-[var(--text-muted)] mt-1">
+              {currentRoleConfig.description}
             </p>
           </div>
         </div>
 
         <div className="flex items-center gap-1.5 text-xs text-[var(--text-muted)] rounded-xl border border-[var(--border)] bg-[var(--surface-elevated)] px-3 py-1.5">
           <Info size={14} className="text-[var(--accent)] shrink-0" />
-          <span>القائمة مرجعية وغير قابلة للضغط</span>
+          <span>قائمة إرشادية غير قابلة للضغط</span>
         </div>
       </div>
 
-      {/* Role Selector Tabs */}
-      <div className="flex flex-wrap gap-2 pt-1 border-b border-[var(--border)] pb-4">
-        {roleKeys.map((key) => {
-          const cfg = SOLAR_ROLE_DUTIES[key];
-          const Icon = ROLE_ICONS[key] || Sparkles;
-          const isSelected = selectedRole === key;
-          const isUserRole = key === userRoleId;
-
-          return (
-            <button
-              key={key}
-              type="button"
-              onClick={() => setSelectedRole(key)}
-              className={`inline-flex items-center gap-2 rounded-2xl px-4 py-2.5 text-xs font-semibold transition-all cursor-pointer ${
-                isSelected
-                  ? "border border-[var(--accent)] shadow-sm"
-                  : "border border-[var(--border)] bg-[var(--surface-elevated)] text-[var(--text-muted)] hover:text-[var(--text)] hover:border-[var(--border-strong)]"
-              }`}
-              style={
-                isSelected
-                  ? {
-                      background: "color-mix(in srgb, var(--accent) 18%, transparent)",
-                      color: "var(--text)",
-                    }
-                  : undefined
-              }
-            >
-              <Icon size={14} className={isSelected ? "text-[var(--accent)]" : ""} />
-              <span>{cfg.roleLabel}</span>
-              {isUserRole && (
-                <span
-                  className="rounded-full px-1.5 py-0.2 text-[9px] font-bold"
-                  style={{
-                    background: "var(--accent)",
-                    color: "#07080B",
-                  }}
-                >
-                  رتبتك
-                </span>
-              )}
-            </button>
-          );
-        })}
-      </div>
-
-      {/* Role Details & Duties Checklist */}
+      {/* Duties Checklist */}
       <div className="space-y-4">
-        <div className="flex flex-wrap items-center justify-between gap-2">
-          <div>
-            <h3 className="text-sm font-bold text-[var(--text)] flex items-center gap-2">
-              <span>مهام رتبة:</span>
-              <span className="text-[var(--accent)]">{currentRoleConfig.roleLabel}</span>
-              {isUserCurrentRole && (
-                <span className="text-xs font-normal text-[var(--text-muted)]">
-                  (هذه رتبتك الحالية في الكلان)
-                </span>
-              )}
-            </h3>
-            <p className="text-xs text-[var(--text-muted)] mt-1">
-              {currentRoleConfig.description}
-            </p>
-          </div>
-          <span className="text-xs font-medium text-[var(--text-muted)]">
-            {currentRoleConfig.duties.length} مهام محددة
+        <div className="flex items-center justify-between text-xs text-[var(--text-muted)]">
+          <span className="font-semibold text-[var(--text)]">
+            قائمة المهام والواجبات المطلوبة منك:
           </span>
+          <span>{currentRoleConfig.duties.length} مهام محددة</span>
         </div>
 
-        {/* Read-Only Checklist Items */}
         <div className="grid gap-3 sm:grid-cols-2">
           {currentRoleConfig.duties.map((duty: SolarRoleDuty, index: number) => (
             <div
